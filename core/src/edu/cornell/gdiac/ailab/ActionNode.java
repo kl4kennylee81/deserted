@@ -8,5 +8,11 @@ public class ActionNode {
 	int xPosition;
 	int yPosition;
 	
+	public ActionNode(Action action, float executePoint, int xPos, int yPos){
+		this.action = action;
+		this.executePoint = executePoint;
+		this.xPosition = xPos;
+		this.yPosition = yPos;
+	}
 	
 }

@@ -4,11 +4,39 @@ import java.util.List;
 
 public class ActionBarController {
 	//TEMP
+	GridBoard board;
+	List<Character> characters;
+	ActionBar bar;
+	boolean isSelection;
+	boolean isAttack;
+	
 	public ActionBarController(GridBoard board, List<Character> chars, ActionBar bar) {
-		
+		this.board = board;
+		this.characters = chars;
+		this.bar = bar;
+		this.isSelection = false;
 	}
 	
 	public void update(){
+		this.isSelection = false;
+		this.isAttack = false;
+		for (Character c : characters){
+			c.castPosition %= 1;
+			c.castPosition += c.speed;
+			if (c.castPosition >= bar.castPoint && c.castPosition-c.speed < bar.castPoint) {
+				c.needsSelection = true;
+				this.isSelection = true;
+			}
+		}
+		
+	}
+	
+	public boolean isAttack() {
+		return isAttack;
+	}
+	
+	public boolean isSelection() {
+		return isSelection;
 		
 	}
 }

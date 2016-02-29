@@ -66,6 +66,12 @@ public class GameEngine implements Screen {
 		AFTER
 	}
 	
+	public static enum InGameState {
+		NORMAL,
+		SELECTION,
+		ATTACK
+	}
+	
 	// ASSET LOADING INFORMATION
 	// Messages to display to the player
 	/** The message font to use */
@@ -87,26 +93,15 @@ public class GameEngine implements Screen {
 	/** Background image for the canvas */
 	private static final String BCKGD_TEXTURE = "images/stars.jpg";
 	
-	/** File storing the 3D model for a board tile */
-	private static final String TILE_MODEL   = "models/Tile.obj";
 	/** File storing the texture for a board tile */
 	private static final String TILE_TEXTURE = "models/Tile.png";
 
-	/** File storing the 3D model for the ship */
-	private static final String SHIP_MODEL = "models/Ship.obj";
 	/** File storing the enemy texture for a ship */
-	private static final String ENEMY_TEXTURE  = "models/Ship.png";
+	private static final String PLAYER_TEXTURE  = "models/Ship.png";
 	/** File storing the player texture for a ship */
-	private static final String PLAYER_TEXTURE = "models/ShipPlayer.png";
-	/** File storing the 3D model for the afterburner */
-	private static final String FIRE_MODEL   = "models/Fire.obj";
-	/** File storing the fire texture for the afterburner  */
-	private static final String FIRE_TEXTURE = "models/Fire.png";
-
-	/** File storing information about the 3D model */
-	private static final String PHOTON_MODEL   = "models/Photon.obj";
-	/** File storing the texture for the 3D model */
-	private static final String PHOTON_TEXTURE = "models/Photon.png";
+	private static final String ENEMY_TEXTURE = "models/ShipPlayer.png";
+	
+	private static final String WHITE_BOX = "images/white.png";
 
 	// We keep sound information in the sound controller, as it belongs there
 	
@@ -130,19 +125,6 @@ public class GameEngine implements Screen {
     /** Used to draw the game onto the screen (VIEW CLASS) */
     private GameCanvas canvas;
     
-    /** XBox 360 controller, IF one is connected */
-    private XBox360Controller xbox;
-    
-    // OLD
-    // Location and animation information for game objects (MODEL CLASSES) 
-    /** The grid of tiles (MODEL CLASS) */
-    //private Board board; 
-    /** The ship objects (MODEL CLASS) */   
-    //private ShipList ships; 
-    /** Collection of photons on screen. (MODEL CLASS) */ 
-    //private PhotonPool photons; 
-    // OLD
-    
     //Current Models
     private GridBoard board;
     private List<Character> characters;
@@ -150,6 +132,8 @@ public class GameEngine implements Screen {
 
     /** The current game state (SIMPLE FIELD) */
     private GameState gameState;
+    /** The current in game state */
+    private InGameState inGameState;
     /** How far along (0 to 1) we are in loading process */
 	private float  gameLoad;
 	
@@ -160,17 +144,9 @@ public class GameEngine implements Screen {
 	 */
     public GameEngine() {
     	gameState = GameState.LOAD;
+    	inGameState = inGameState.NORMAL;
     	gameLoad  = 0.0f;
 		canvas = new GameCanvas();
-		
-		// Attach an XBox controller if one exists
-		if (Controllers.getControllers().size > 0) {
-			Controller controller = Controllers.getControllers().get(0);
-			if (controller.getName().toLowerCase().contains("xbox") &&
-				controller.getName().contains("360")) {
-				xbox = new XBox360Controller(0);
-			}
-		}
 	}
 
     
@@ -243,26 +219,17 @@ public class GameEngine implements Screen {
 
         // Create the models.
         board = new GridBoard(BOARD_WIDTH,BOARD_HEIGHT);
-        board.setTileMesh(createMesh(TILE_MODEL,TILE_TEXTURE));
+        board.setTileTexture(manager.get(TILE_TEXTURE,Texture.class));
         characters = new LinkedList<Character>();
-        characters.add(new Character(0));
-        characters.add(new Character(1));
-        characters.add(new Character(2));
-        characters.add(new Character(3));
+        //Texture playerTexture = manager.get(PLAYER_TEXTURE,Texture.class);
+        Texture enemyTexture = manager.get(ENEMY_TEXTURE,Texture.class);
+        
+        characters.add(new Character(0,enemyTexture,Color.GREEN));
+        characters.add(new Character(1,enemyTexture,Color.YELLOW));
+        characters.add(new Character(2,enemyTexture,Color.RED));
+        characters.add(new Character(3,enemyTexture,Color.BROWN));
         
         bar = new ActionBar();
-        
-        /*
-        board = new Board(BOARD_WIDTH, BOARD_HEIGHT);
-		board.setTileMesh(createMesh(TILE_MODEL,TILE_TEXTURE));
-		        
-        ships = new ShipList(MAX_SHIPS);
-        ships.setPlayerMesh(createMesh(SHIP_MODEL,PLAYER_TEXTURE));
-        ships.setEnemyMesh(createMesh(SHIP_MODEL,ENEMY_TEXTURE));
-        ships.setFireMesh(createMesh(FIRE_MODEL,FIRE_TEXTURE));
-
-        photons = new PhotonPool(MAX_PHOTONS);
-        photons.setPhotonMesh(createMesh(PHOTON_MODEL,PHOTON_TEXTURE));*/
         
 		// Create the three subcontrollers
         gameplayController = new GameplayController(board,characters,bar);
@@ -281,20 +248,12 @@ public class GameEngine implements Screen {
 	 * @return true if the user reset the game.
 	 */
 	private boolean didReset() {
-		if (xbox != null && xbox.getGuide()) {
-        	Gdx.app.exit();			
-		}
 		if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
         	Gdx.app.exit();
         }
 
         if (gameState == GameState.BEFORE) {
             // start the game when the player hits 'the any key' 
-        	if (xbox != null && xbox.getStart()) {
-    			gameState = GameState.PLAY;
-    			return true;
-        	} 
-        		
         	for(int i = 0;i < 255;i++) {
         		if (Gdx.input.isKeyPressed(i)) {
         			gameState = GameState.PLAY;
@@ -305,10 +264,6 @@ public class GameEngine implements Screen {
 
         if (gameState == GameState.PLAY || gameState == GameState.FINISH || gameState == GameState.AFTER) {
             // If the player presses 'R', reset the game.
-        	if (xbox != null && xbox.getBack()) {
-                gameState = GameState.PLAY;
-                return true;        		
-        	}
             if (Gdx.input.isKeyPressed(Keys.R)) {
                 gameState = GameState.PLAY;
                 return true;
@@ -343,8 +298,11 @@ public class GameEngine implements Screen {
 	 * Draws the game board while we are still loading
 	 */
 	public void drawLoad() {
+		// Draw the game
+		Gdx.gl.glClearColor(0.39f, 0.58f, 0.93f, 1.0f);  // Homage to the XNA years
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         canvas.begin();
-		canvas.drawMessage(MESSG_LOAD, Color.WHITE);
+		canvas.drawMessage(MESSG_LOAD);
         canvas.end();
     }
     
@@ -352,6 +310,35 @@ public class GameEngine implements Screen {
      * The primary update loop of the game; called while it is running.
      */
     public void updateGame() {
+    	switch(inGameState){
+    	case NORMAL:
+    		actionBarController.update();
+    		if (actionBarController.isAttack()){
+    			inGameState = InGameState.ATTACK;
+    		} else if (actionBarController.isSelection) {
+    			inGameState = InGameState.SELECTION;
+    		}
+    		break;
+    	case SELECTION:
+    		selectionMenuController.update();
+    		if (selectionMenuController.isDone()){
+    			inGameState = InGameState.NORMAL;
+    		}
+    		break;
+    	case ATTACK:
+    		break;
+    		
+    	}
+    	/*
+    	if (actionBarController.isAttack()){
+			inGameState = InGameState.ATTACK;
+		} else if (actionBarController.isSelection) {
+			inGameState = InGameState.SELECTION;
+		} else {
+			inGameState = InGameState.NORMAL;
+		}*/
+		
+    	/*
     	// Update the ships
 		gameplayController.update();
 
@@ -365,47 +352,21 @@ public class GameEngine implements Screen {
 		// Resolve any collisions
 		selectionMenuController.update();
 		actionBarController.update();
-
-        // if the player ship is dead, end the game with a Game Over:
-		/*if (gameState == GameState.PLAY) {
-			if (!ships.getPlayer().isActive()) {
-				gameState = GameState.FINISH;
-				Sound s = SoundController.get(SoundController.GAME_OVER_SOUND);
-				s.play(1); // LibGDX Bug: This really needs a priority system
-			} else if (ships.numActive() <= 1) {
-				gameState = GameState.FINISH;
-			}
-		} else if (gameState == GameState.FINISH) {
-			if (!ships.getPlayer().isAlive() || ships.numAlive() <= 1) {
-				gameState = GameState.AFTER;
-			}
-        }*/
+		*/
     }
     
     /**
      * Called to draw when we are playing the game.
      */
     public void drawGame() {
-    	canvas.setEyePan(1.0f);
-        canvas.begin();
-
-        // Perform the three required passes
-		gl20.glEnable(GL_BLEND);
-		System.out.println("what");
-        board.draw(canvas);
-        canvas.end();
-        return;
-        
-        /*
-        for (Character c : characters){
-        	c.draw(canvas);
-        }
-        bar.draw(canvas);
-
-        // Optional message pass
-        switch (gameState) {
+    	// Draw the game
+		Gdx.gl.glClearColor(0.39f, 0.58f, 0.93f, 1.0f);  // Homage to the XNA years
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		canvas.begin();
+		
+		switch (gameState) {
         case BEFORE:
-    		canvas.drawMessage(MESSG_BEFORE_1, MESSG_BEFORE_2, Color.WHITE);
+    		canvas.drawMessage(MESSG_BEFORE_1, MESSG_BEFORE_2);
     		break;
         case FINISH:
         case AFTER:
@@ -413,16 +374,20 @@ public class GameEngine implements Screen {
         		canvas.drawMessage(MESSG_LOST, MESSG_RESTART, Color.WHITE);
         	} else {
         		canvas.drawMessage(MESSG_WON, MESSG_RESTART, Color.WHITE);
-        	}*//*
+        	}*/
         	break;
         case LOAD:
-    		canvas.drawMessage(MESSG_LOAD, Color.WHITE);
+    		canvas.drawMessage(MESSG_LOAD);
     		break;
         case PLAY:
-        	// No message.
+        	board.draw(canvas);
+            for (Character c : characters){
+            	c.draw(canvas);
+            }
+            bar.draw(canvas);
         	break;
         }
-        canvas.end();*/
+        canvas.end();
 	}
 	
 	/**
@@ -463,38 +428,30 @@ public class GameEngine implements Screen {
 		manager.setLoader(Mesh.class, new MeshLoader(new InternalFileHandleResolver()));
 		assets = new Array<String>();
 		
-		// We have to force the canvas to fully load (so we can draw something)
-		initializeCanvas();
+		manager.load(BCKGD_TEXTURE,Texture.class);
+		assets.add(BCKGD_TEXTURE);
 		
 		MeshLoader.MeshParameter parameter = new MeshLoader.MeshParameter();
 		parameter.attribs = new VertexAttribute[2];
 		parameter.attribs[0] = new VertexAttribute(Usage.Position, 3, "vPosition");
 		parameter.attribs[1] = new VertexAttribute(Usage.TextureCoordinates, 2, "vUV");
 
-		// Board tile
-		manager.load(TILE_MODEL,Mesh.class,parameter);
-		assets.add(TILE_MODEL);
 		manager.load(TILE_TEXTURE,Texture.class);
 		assets.add(TILE_TEXTURE);
-
-		// Ship information
-		manager.load(SHIP_MODEL,Mesh.class,parameter);
-		assets.add(SHIP_MODEL);
-		manager.load(FIRE_MODEL,Mesh.class,parameter);
-		assets.add(FIRE_MODEL);
+		
 		manager.load(ENEMY_TEXTURE,Texture.class);
 		assets.add(ENEMY_TEXTURE);
 		manager.load(PLAYER_TEXTURE,Texture.class);
 		assets.add(PLAYER_TEXTURE);
-		manager.load(FIRE_TEXTURE,Texture.class);
-		assets.add(FIRE_TEXTURE);
-
-		// Photon information
-		manager.load(PHOTON_MODEL,Mesh.class,parameter);
-		assets.add(PHOTON_MODEL);
-		manager.load(PHOTON_TEXTURE,Texture.class);
-		assets.add(PHOTON_TEXTURE);
-
+		
+		manager.load(WHITE_BOX,Texture.class);
+		assets.add(WHITE_BOX);
+		
+		manager.finishLoading();
+		
+		// We have to force the canvas to fully load (so we can draw something)
+		initializeCanvas();
+		
         // Sound controller manages its own material
         SoundController.PreLoadContent(manager);
     }
@@ -506,39 +463,20 @@ public class GameEngine implements Screen {
 	 * needed to draw anything at all, we block until the assets have finished
 	 * loading.
 	 */
-    private void initializeCanvas() {
-		// Load the background.
-		manager.load(BCKGD_TEXTURE,Texture.class);
-		assets.add(BCKGD_TEXTURE);
-		
-		// Provide basic font support
-		FileHandleResolver resolver = new InternalFileHandleResolver();
-		manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
-		manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
-		
-		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-		size2Params.fontFileName = FONT_FILE;
-		size2Params.fontParameters.size = FONT_SIZE;
-		manager.load(FONT_FILE, BitmapFont.class, size2Params);
-		assets.add(FONT_FILE);
-		manager.finishLoading();
-		
-		/*
-		if (manager.isLoaded(BCKGD_TEXTURE)) {
-			Texture texture = manager.get(BCKGD_TEXTURE, Texture.class);
-			texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-			canvas.setBackground(texture);
-		}
-		*/
-		if (manager.isLoaded(FONT_FILE)) {
-			canvas.setFont(manager.get(FONT_FILE,BitmapFont.class));
-		}
+    private void initializeCanvas() {    	
+    	canvas.setFont(new BitmapFont());
+		Texture texture = manager.get(BCKGD_TEXTURE, Texture.class);
+		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+		canvas.setBackground(texture);
+		canvas.setWhite(manager.get(WHITE_BOX, Texture.class));
     }
     
     /**
      * Unloads all assets previously loaded.
      */
     private void unload() {
+    	canvas.setBackground(null);
+    	canvas.setFont(null);
     	
     	for(String s : assets) {
     		if (manager.isLoaded(s)) {
@@ -549,27 +487,5 @@ public class GameEngine implements Screen {
     	// Unload sound separately
 		SoundController.UnloadContent(manager);
     }
-    
-    /**
-     * Returns a new textured mesh from the given components.
-     *
-     * If either model or texture has not yet been loaded by the asset manager,
-     * this method returns null.
-     *
-     * @param model the filename of the mesh model
-     * @param texture the filename the texture to wrap the model
-     *
-     * @return a new textured mesh from the given components.
-     */
-	private TexturedMesh createMesh(String model, String texture) {
-		if (manager.isLoaded(model) && manager.isLoaded(texture)) {
-			TexturedMesh mesh = new TexturedMesh(manager.get(model, Mesh.class));
-			Texture mtext = manager.get(texture,Texture.class);
-			mesh.setTexture(mtext);
-			return mesh;
-		}
-		return null;
-	}
-
 }
 

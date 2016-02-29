@@ -1,176 +1,143 @@
 /*
  * GameCanvas.cs
  *
- * This class is similar to the GameCanvas for the previous lab, except that now
- * we have support for 3D models.  Because we are trying to hide as much of the
- * 3D specific code as possible, we internalize many features that do not belong
- * in this class as part of a proper model-view-controller separation.  For example,
- * we have specific methods for drawing Tiles or Ships, instead of a general method
- * for drawing 3D models.  
+ * To properly follow the model-view-controller separation, we should not have
+ * any specific drawing code in GameMode. All of that code goes here.  As
+ * with GameEngine, this is a class that you are going to want to copy for
+ * your own projects.
  *
- * Needless to say, you should not emulate this GameCanvas at all; you should have
- * much better separation in your code.  As your games will (likely) be 2D, this
- * should not be a problem.
+ * An important part of this canvas design is that it is loosely coupled with
+ * the model classes. All of the drawing methods are abstracted enough that
+ * it does not require knowledge of the interfaces of the model classes.  This
+ * important, as the model classes are likely to change often.
  *
- * Author: Walker M. White, Cristian Zaloj
- * Based on original AI Game Lab by Yi Xu and Don Holden, 2007
- * LibGDX version, 1/24/2015
+ * Author: Walker M. White
+ * Based on original GameX Ship Demo by Rama C. Hoetzlein, 2002
+ * LibGDX version, 1/16/2015
  */
 package edu.cornell.gdiac.ailab;
 
-import static com.badlogic.gdx.Gdx.gl20;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.glutils.*;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.*;
 
-import edu.cornell.gdiac.mesh.*;
+import edu.cornell.gdiac.mesh.TexturedMesh;
 
 /**
  * Primary view class for the game, abstracting the basic graphics calls.
  * 
- * This version of GameCanvas combines both 3D and 2D drawing.  As this combination
- * is complicated, and we want to hide the details, we make a lot of design decisions 
- * in this canvas that are not ideal.  Do not use this canvas as an example of good
- * architecture design.
+ *  This version of GameCanvas only supports (rectangular) Sprite drawing.
+ *  support for polygonal textures and drawing primitives will be present
+ *  in future labs.
  */
 public class GameCanvas {
-
+	/** Drawing context to handle textures as sprites */
+	private SpriteBatch spriteBatch;
 	/** Canvas background image. */
 	private Texture background;
 	/** Font object for displaying images */
 	private BitmapFont displayFont;
-	/** Glyph layout to compute the size */
-	private GlyphLayout displayLayout;
-		
-	// Constants only needed locally.
-	/** Reverse the y-direction so that it is consistent with SpriteBatch */
-	private static final Vector3 UP_REVERSED = new Vector3(0,-1,0);
-	/** For managing the camera pan interpolation at the start of the game */
-	private static final Interpolation.SwingIn SWING_IN = new Interpolation.SwingIn(0.1f);
-	/** Distance from the eye to the target */
-	private static final float EYE_DIST  = 400.0f;
-	/** Field of view for the perspective */
-	private static final float FOV = 0.7f;
-	/** Near distance for perspective clipping */
-	private static final float NEAR_DIST = 10.0f;
-	/** Far distance for perspective clipping */
-	private static final float FAR_DIST  = 500.0f;
-	/** Horizontal clipping width */
-	private static final int   CLIP_X = 500;
-	/** Vertical clipping width */
-	private static final int   CLIP_Y = 450;
-	/** Multiplicative factors for initial camera pan */
-	private static final float INIT_TARGET_PAN = 0.1f;
-	private static final float INIT_EYE_PAN = 0.05f;
-	/** Tile drawing constants */
-	private static final float TILE_SIZE = 32.0f;
-	private static final float TILE_DEPTH = 3.0f;
-	/** Ship drawing constants */
-	private static final float SHIP_SIZE = 30.0f;
-	private static final float SHIP_FALL_TRANS = -16f;
-	private static final float SHIP_FALL_X_SKEW = 0.04f;
-	private static final float SHIP_FALL_Z_SKEW = 0.03f;
-	/** Photon drawing constants */
-	private static final float PHOTON_TRANS = -15f;
-	private static final float PHOTON_SIZE  = 12f;
-	private static final float PHOTON_DECAY = 8f;
-	/** Constants for shader program locations */
-	private static final String SHADER_VERTEX = "shaders/Tinted.vert";
-	private static final String SHADER_FRAGMT = "shaders/Tinted.frag";
-	private static final String SHADER_U_TEXT = "unTexture";
-	private static final String SHADER_U_VIEWP = "unVP";
-	private static final String SHADER_U_WORLD = "unWorld";
-	private static final String SHADER_U_TINT = "unTint";
+	/** White texture */
+	private Texture white;
 	
-	// Instance attributes	
 	/** Value to cache window width (if we are currently full screen) */
 	int width;
 	/** Value to cache window height (if we are currently full screen) */
 	int height;
 	
-	/** Draws Sprite objects to the background and foreground (e.g. font) */
-	protected SpriteBatch spriteBatch;
-	/** Draws 3D objects in the intermediate levels between background and foreground */
-	protected ShaderProgram program;
-	/** Track whether or not we are actively drawing (for error checking) */
+	/** Track whether or not we are active (for error checking) */
 	private boolean active;
-	/** Track whether or not we are actively 3D drawing (for error checking) */
-	private boolean shading;
-	/** The panning factor for the eye, used when the game first loads */
-	private float eyepan;
-	/** 3D Models for the various passes. */
-	private TexturedMesh model;
-
-	// For managing the camera and perspective
-	/** Orthographic camera for the SpriteBatch layer */
-	private OrthographicCamera spriteCam;
-	/** Target for Perspective FOV */
-	private Vector3 target;
-	/** Eye for Perspective FOV */
-	private Vector3 eye;
-
-	// CACHE OBJECTS
-	/** Projection Matrix */
-	private Matrix4 proj;
-	/** View Matrix */
-	private Matrix4 view;
-	/** World Matrix */
-	private Matrix4 world;
-	/** Temporary Matrix (for Calculations) */
-	private Matrix4 tmpMat;
 	
-	/** Temporary Vectors */
-	private Vector3 tmp0;
-	private Vector3 tmp1;
-	private Vector2 tmp2d;
-
+	/** The current color blending mode */
+	private BlendState blend;
+	
+	// CACHE OBJECTS
+	/** Affine cache for current sprite to draw */
+	private Affine2 local;
+	/** Affine cache for all sprites this drawing pass */
+	private Affine2 global;
+	/** Cache object to unify everything under a master draw method */
+	private TextureRegion holder;
+		
+	public void test(){
+		begin();
+		end();
+	}
+	
 	/**
 	 * Creates a new GameCanvas determined by the application configuration.
 	 * 
 	 * Width, height, and fullscreen are taken from the LWGJApplicationConfig
-	 * object used to start the application.  This constructor initializes all
-	 * of the necessary graphics objects.
+	 * object used to start the application.
 	 */
 	public GameCanvas() {
-		// Initialize instance attributes
-		active  = false;
-		shading = false;
-		eyepan  = 0.0f;
-		
-		
-		// Compile shader and assign texture slot		
-		program = new ShaderProgram(Gdx.files.internal(SHADER_VERTEX),Gdx.files.internal(SHADER_FRAGMT));
-		program.begin();
-		//gl20.glEnable(GL20.GL_BLEND);
-		program.setUniformi(SHADER_U_TEXT,0);
-		program.end();
+		this.width  = Gdx.graphics.getWidth();
+		this.height = Gdx.graphics.getHeight();
 
-		// Create and initialize the sprite batch
+		active = false;
 		spriteBatch = new SpriteBatch();
-		//spriteBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		spriteCam = new OrthographicCamera(getWidth(),getHeight());
-		spriteCam.setToOrtho(false);
-		spriteBatch.setProjectionMatrix(spriteCam.combined);
 		
-		// Initialize the perspective camera objects
-		eye = new Vector3();
-		target = new Vector3();
-		world = new Matrix4();
-		view  = new Matrix4();
-		proj  = new Matrix4();
+		// Set the projection matrix (for proper scaling)
+		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
+		
 		
 		// Initialize the cache objects
-		tmpMat = new Matrix4();
-		tmp0  = new Vector3();
-		tmp1  = new Vector3();
-		tmp2d = new Vector2();
-		model = null;
+		holder = new TextureRegion();
+		local  = new Affine2();
+		global = new Affine2();
 	}
 	
 	/**
+	 * Creates a new GameCanvas of the given size.
+	 *
+	 * The canvas will be displayed in a window, not fullscreen.
+	 *
+	 * @param width The width of the canvas window
+	 * @param height The height of the canvas window
+	 */
+	public GameCanvas(int width, int height) {
+		this(width,height,false);
+	}
+
+	/**
+	 * Creates a new GameCanvas with the giving parameters.
+	 *
+	 * This constructor will completely override the settings in the
+	 * LWGJApplicationConfig object used to start the application.
+	 *
+	 * @param width The width of the canvas window
+	 * @param height The height of the canvas window
+	 * @param fullscreen Whether or not the window should be full screen.
+	 */	 
+	protected GameCanvas(int width, int height, boolean fullscreen) {
+		// Create a new graphics manager.
+		this.width  = width;
+		this.height = height;
+		if (fullscreen) {
+			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+		} else {
+			Gdx.graphics.setWindowedMode(width, height);
+			
+		}
+		
+		// Continue as normal
+		active = false;
+		spriteBatch = new SpriteBatch();
+
+		// Set the projection matrix (for proper scaling)
+		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
+		
+		
+		// Initialize the cache objects
+		holder = new TextureRegion();
+		local  = new Affine2();
+		global = new Affine2();
+	}
+		
+    /**
      * Eliminate any resources that should be garbage collected manually.
      */
     public void dispose() {
@@ -178,16 +145,37 @@ public class GameCanvas {
 			Gdx.app.error("GameCanvas", "Cannot dispose while drawing active", new IllegalStateException());
 			return;
 		}
-		
-		// Dispose what requires a manual deletion.
 		spriteBatch.dispose();
     	spriteBatch = null;
-    	program.dispose();
-    	program = null;
-    	
-    	// Everything else is just garbage collected.
+    	global = null;
+    	local  = null;
+    	holder = null;
     }
+    
+    /**
+	 * Sets the font used to display messages.
+	 *
+	 * @param font the font used to display messages.
+	 */
+	public void setFont(BitmapFont font) {
+		displayFont = font;
+	}
 
+	/**
+	 * Sets the background texture for this canvas.
+	 *
+	 * The canvas fills the screen, and everything is drawn on top of the canvas.
+	 *
+	 * @param background the background texture for this canvas.
+	 */
+	public void setBackground(Texture background) {
+		this.background = background;
+	}
+	
+	public void setWhite(Texture white) {
+		this.white = white;
+	}
+	
 	/**
 	 * Returns the width of this canvas
 	 *
@@ -212,6 +200,7 @@ public class GameCanvas {
 	 * @param width the canvas width
 	 */
 	public void setWidth(int width) {
+		System.out.println("Resizing width");
 		if (active) {
 			Gdx.app.error("GameCanvas", "Cannot alter property while drawing active", new IllegalStateException());
 			return;
@@ -247,6 +236,7 @@ public class GameCanvas {
 	 * @param height the canvas height
 	 */
 	public void setHeight(int height) {
+		System.out.println("Resizing height");
 		if (active) {
 			Gdx.app.error("GameCanvas", "Cannot alter property while drawing active", new IllegalStateException());
 			return;
@@ -281,6 +271,7 @@ public class GameCanvas {
 	 * @param height the canvas height
 	 */
 	public void setSize(int width, int height) {
+		System.out.println("Resizing size");
 		if (active) {
 			Gdx.app.error("GameCanvas", "Cannot alter property while drawing active", new IllegalStateException());
 			return;
@@ -326,73 +317,6 @@ public class GameCanvas {
 			Gdx.graphics.setWindowedMode(width, height);
 		}
 	}
-
-	/**
-	 * Returns the panning factor for the eye value.
-	 *
-	 * This provides the zoom-in effect at the start of the game.  The eyepan is a
-	 * value between 0 and 1.  When it is 1, the eye is locked into the correct place
-	 * to start a game.
-	 *
-	 * @return The eyepan value in [0,1]
-	 */
-	public float getEyePan() {
-		return eyepan;
-	}
-	
-	/**
-	 * Returns the font used to display messages.
-	 *
-	 * @return the font used to display messages.
-	 */
-	public BitmapFont getFont() {
-		return displayFont;
-	}
-	
-	/**
-	 * Sets the font used to display messages.
-	 *
-	 * @param font the font used to display messages.
-	 */
-	public void setFont(BitmapFont font) {
-		displayFont = font;
-		displayLayout = (font != null ? new GlyphLayout() : null);
-	}
-	
-	/**
-	 * Returns the background texture for this canvas.
-	 *
-	 * The canvas fills the screen, and everything is drawn on top of the canvas.
-	 *
-	 * @return the background texture for this canvas.
-	 */
-	public Texture getBackground() {
-		return background;
-	}
-	
-	/**
-	 * Sets the background texture for this canvas.
-	 *
-	 * The canvas fills the screen, and everything is drawn on top of the canvas.
-	 *
-	 * @param background the background texture for this canvas.
-	 */
-	public void setBackground(Texture background) {
-		this.background = background;
-	}
-
-	/**
-	 * Sets the panning factor for the eye value.
-	 *
-	 * This provides the zoom-in effect at the start of the game.  The eyepan is a
-	 * value between 0 and 1.  When it is 1, the eye is locked into the correct place
-	 * to start a game.
-	 *
-	 * @param value The eyepan value in [0,1]
-	 */
-	public void setEyePan(float value) {
-		eyepan = value;
-	}
 	
 	/**
 	 * Resets the SpriteBatch camera when this canvas is resized.
@@ -400,152 +324,443 @@ public class GameCanvas {
 	 * If you do not call this when the window is resized, you will get
 	 * weird scaling issues.
 	 */
-	public void resize() {
+	 public void resize() {
 		// Resizing screws up the spriteBatch projection matrix
-		spriteCam.setToOrtho(false,getWidth(),getHeight());
-		spriteBatch.setProjectionMatrix(spriteCam.combined);
+		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
 	}
 	
 	/**
-	 * Begins a drawing pass with no set camera.
+	 * Returns the current color blending state for this canvas.
 	 *
-	 * This method is used only during the loading screen.  You cannot draw
-	 * any 3D models after this method.
+	 * Textures draw to this canvas will be composited according
+	 * to the rules of this blend state.
+	 *
+	 * @return the current color blending state for this canvas
 	 */
-	public void begin() {
-		// We are drawing
-		active = true;
-		shading = false;
-		
-		// Clear the screen and depth buffer
-		setDepthState(DepthState.DEFAULT);
-		gl20.glClearColor(0, 0, 0, 0);
-		gl20.glClearDepthf(1.0f);
-		gl20.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
-		// Draw the background
-		drawBackground();
-
+	public BlendState getBlendState() {
+		return blend;
 	}
 	
 	/**
-	 * Begins a drawing pass with the camera focused at postion (x,y)
+	 * Sets the color blending state for this canvas.
 	 *
-	 * If eyepan is not 1, the camera will interpolate between the goal position
-	 * and (x,y).  This command will draw the background, no matter what else
-	 * is drawn this pass.
+	 * Any texture draw subsequent to this call will use the rules of this blend 
+	 * state to composite with other textures.  Unlike the other setters, if it is 
+	 * perfectly safe to use this setter while  drawing is active (e.g. in-between 
+	 * a begin-end pair).  
 	 *
-	 * @param x The x-coordinate of the player's ship
-	 * @param y The y-coordinate of the player's ship
+	 * @param state the color blending rule
 	 */
-	public void begin(float x, float y) {
-		// We are drawing
-		active = true;
-		
-		// Clear the screen and depth buffer
-		setDepthState(DepthState.DEFAULT);
-		gl20.glClearColor(0, 0, 0, 0);
-		gl20.glClearDepthf(1.0f);
-		gl20.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-
-		// Draw the background
-		drawBackground();
-
-		// Set eye and target positions.
-		if (eyepan < 1.0f) {
-			tmp0.set(x,y,0);
-			tmp1.set(tmp0).scl(INIT_TARGET_PAN);
-			target.set(tmp1).interpolate(tmp0,eyepan,SWING_IN);
-
-			tmp0.add(0, NEAR_DIST, -EYE_DIST);
-			tmp1.set(tmp0).scl(INIT_EYE_PAN);
-			eye.set(tmp1).interpolate(tmp0,eyepan,SWING_IN);
-		} else {
-			target.set(x, y, 0);
-			eye.set(target).add(0, NEAR_DIST, -EYE_DIST);
+	public void setBlendState(BlendState state) {
+		if (state == blend) {
+			return;
 		}
-		
-		// Position the camera
-		view.setToLookAt(eye,target,UP_REVERSED);
-		setToPerspectiveFOV(proj, FOV, (float)getWidth() / (float)getHeight(), NEAR_DIST, FAR_DIST);
-		tmpMat.set(view).mulLeft(proj);
-
-		setDepthState(DepthState.DEFAULT);
-		setBlendState(BlendState.ALPHA_BLEND);
-		setCullState(CullState.CLOCKWISE);
-
-		// Time to start drawing 3D objects
-		shading = true;
-		program.begin();
-		program.setUniformMatrix(SHADER_U_VIEWP, tmpMat);
+		switch (state) {
+		case NO_PREMULT:
+			spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA,GL20.GL_ONE_MINUS_SRC_ALPHA);
+			break;
+		case ALPHA_BLEND:
+			spriteBatch.setBlendFunction(GL20.GL_ONE,GL20.GL_ONE_MINUS_SRC_ALPHA);
+			break;
+		case ADDITIVE:
+			spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA,GL20.GL_ONE);
+			break;
+		case OPAQUE:
+			spriteBatch.setBlendFunction(GL20.GL_ONE,GL20.GL_ZERO);
+			break;
+		}
+		blend = state;
 	}
-	
+
+	/**
+	 * Start and active drawing sequence with the identity transform.
+	 *
+	 * Nothing is flushed to the graphics card until the method end() is called.
+	 */
+    public void begin() {
+    	spriteBatch.begin();
+    	active = true;
+    	drawBackground();
+    }
+
+	/**
+	 * Start and active drawing sequence with the given transform.
+	 *
+	 * All textures drawn will have the given transform applied before any
+	 * any other subsequent transforms.
+	 *
+	 * Nothing is flushed to the graphics card until the method end() is called.
+	 *
+	 * @param transform The drawing transform.
+	 */
+    public void begin(Affine2 transform) {
+    	global.set(transform);
+    	spriteBatch.begin();
+    	drawBackground();
+    }
+
 	/**
 	 * Ends a drawing sequence, flushing textures to the graphics card.
 	 */
-	public void end() {
-		if (shading) {
-			program.end();
-			shading = false;
-		}
-		active = false;
-	}
+    public void end() {
+    	spriteBatch.end();
+    	active = false;
+    }
 
+    public void drawBackground() {
+    	drawOverlay(background, Color.WHITE, true);
+    }
+    
 	/**
-	 * Draws the background image to the screen.
+	 * Draws the texture at the given position.
 	 *
-	 * This image will not move, no matter what the camera does.  It is just "space".
-	 */
-	private void drawBackground() {
-		if (background == null) {
-			return;
-		}
-		setDepthState(DepthState.NONE);
-		setBlendState(BlendState.OPAQUE);
-		setCullState(CullState.COUNTER_CLOCKWISE);
-		
-		// Only use of spritebatch in game.
-		spriteBatch.begin();
-		spriteBatch.draw(background, 0, 0, getWidth(), getHeight());
-		spriteBatch.end();
-	}
-
-	/**
-	 * Draws a board tile to the screen.
+	 * Unless otherwise transformed by the global transform (@see begin(Affine2)),
+	 * the texture will be unscaled.  The bottom left of the texture will be positioned
+	 * at the given coordinates.
 	 *
-	 * @param model The textured mesh object (with color) for the tile
-	 * @param x The tile x-coordinate in world coordinates
-	 * @param y The tile y-coordinate in world coordinates
-	 * @param z The tile z-coordinate in world coordinates
-	 * @param angle The tile z-rotation (for falling animation)
+	 * @param image The texture to draw
+	 * @param x 	The x-coordinate of the bottom left corner
+	 * @param y 	The y-coordinate of the bottom left corner
 	 */
-	public void drawTile(TexturedMesh model, float x, float y, float z, float angle) {
+	public void draw(Texture image, float x, float y) {
 		if (!active) {
 			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
 			return;
-		} 
-		/*else if (!shading) {
-			Gdx.app.error("GameCanvas", "Cannot draw after a message is displayed", new IllegalStateException());
+		}
+		// Call the master drawing method
+		holder.setRegion(image);
+		draw(image,Color.WHITE,0,0,x,y,0,1.0f,1.0f);
+	}
+
+	/**
+	 * Draws the tinted texture at the given position.
+	 *
+	 * The texture colors will be multiplied by the given color.  This will turn
+	 * any white into the given color.  Other colors will be similarly affected.
+	 *
+	 * Unless otherwise transformed by the global transform (@see begin(Affine2)),
+	 * the texture will be unscaled.  The bottom left of the texture will be positioned
+	 * at the given coordinates.
+	 *
+	 * @param image The texture to draw
+	 * @param tint  The color tint
+	 * @param x 	The x-coordinate of the bottom left corner
+	 * @param y 	The y-coordinate of the bottom left corner
+	 */
+	public void draw(Texture image, Color tint, float x, float y) {
+		if (!active) {
+			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
 			return;
-		} */
-		else if (this.model != model) {
-			this.model = model;
-			model.getTexture().bind(0);
+		}
+		// Call the master drawing method
+		holder.setRegion(image);
+		draw(image,tint,0,0,x,y,0,1.0f,1.0f);
+	}
+
+	/**
+	 * Draws the tinted texture with the given transformations
+	 *
+	 * The texture colors will be multiplied by the given color.  This will turn
+	 * any white into the given color.  Other colors will be similarly affected.
+	 *
+	 * The transformations are BEFORE after the global transform (@see begin(Affine2)).  
+	 * As a result, the specified texture origin will be applied to all transforms 
+	 * (both the local and global).
+	 *
+	 * The local transformations in this method are applied in the following order: 
+	 * scaling, then rotation, then translation (e.g. placement at (sx,sy)).
+	 *
+	 * @param image The texture to draw
+	 * @param tint  The color tint
+	 * @param ox 	The x-coordinate of texture origin (in pixels)
+	 * @param oy 	The y-coordinate of texture origin (in pixels)
+	 * @param x 	The x-coordinate of the screen location
+	 * @param y 	The y-coordinate of the screen location
+	 * @param angle The rotation angle (in degrees) about the origin.
+	 * @param sx 	The x-axis scaling factor
+	 * @param sy 	The y-axis scaling factor
+	 */	
+	public void draw(Texture image, Color tint, float ox, float oy, 
+					float x, float y, float angle, float sx, float sy) {
+		if (!active) {
+			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
+			return;
+		}
+		// Call the master drawing method
+		holder.setRegion(image);
+		draw(holder,tint,ox,oy,x,y,angle,sx,sy);
+	}
+	
+	/**
+	 * Draws the texture region (filmstrip) at the given position.
+	 *
+	 * A texture region is a single texture file that can hold one or more textures.
+	 * It is used for filmstrip animation.
+	 *
+	 * Unless otherwise transformed by the global transform (@see begin(Affine2)),
+	 * the texture will be unscaled.  The bottom left of the texture will be positioned
+	 * at the given coordinates.
+	 *
+	 * @param image The texture to draw
+	 * @param x 	The x-coordinate of the bottom left corner
+	 * @param y 	The y-coordinate of the bottom left corner
+	 */
+	public void draw(TextureRegion region, float x, float y) {
+		if (!active) {
+			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
+			return;
+		}
+		// Call the master drawing method		
+		draw(region,Color.WHITE,0,0,x,y,0,1.0f,1.0f);
+	}
+
+	/**
+	 * Draws the tinted texture region (filmstrip) at the given position.
+	 *
+	 * A texture region is a single texture file that can hold one or more textures.
+	 * It is used for filmstrip animation.
+	 *
+	 * The texture colors will be multiplied by the given color.  This will turn
+	 * any white into the given color.  Other colors will be similarly affected.
+	 *
+	 * Unless otherwise transformed by the global transform (@see begin(Affine2)),
+	 * the texture will be unscaled.  The bottom left of the texture will be positioned
+	 * at the given coordinates.
+	 *
+	 * @param image The texture to draw
+	 * @param tint  The color tint
+	 * @param x 	The x-coordinate of the bottom left corner
+	 * @param y 	The y-coordinate of the bottom left corner
+	 */
+	public void draw(TextureRegion region, Color tint, float x, float y) {
+		if (!active) {
+			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
+			return;
+		}
+		// Call the master drawing method
+		draw(region,tint,0,0,x,y,0,1.0f,1.0f);
+	}
+	
+	/**
+	 * Draws the tinted texture region (filmstrip) with the given transformations
+	 *
+	 * THIS IS THE MASTER DRAW METHOD (Read this for exercise 4)
+	 *
+	 * A texture region is a single texture file that can hold one or more textures.
+	 * It is used for filmstrip animation.
+	 *
+	 * The texture colors will be multiplied by the given color.  This will turn
+	 * any white into the given color.  Other colors will be similarly affected.
+	 *
+	 * The transformations are BEFORE after the global transform (@see begin(Affine2)).  
+	 * As a result, the specified texture origin will be applied to all transforms 
+	 * (both the local and global).
+	 *
+	 * The local transformations in this method are applied in the following order: 
+	 * scaling, then rotation, then translation (e.g. placement at (sx,sy)).
+	 *
+	 * @param image The texture to draw
+	 * @param tint  The color tint
+	 * @param ox 	The x-coordinate of texture origin (in pixels)
+	 * @param oy 	The y-coordinate of texture origin (in pixels)
+	 * @param x 	The x-coordinate of the texture origin
+	 * @param y 	The y-coordinate of the texture origin
+	 * @param angle The rotation angle (in degrees) about the origin.
+	 * @param sx 	The x-axis scaling factor
+	 * @param sy 	The y-axis scaling factor
+	 */	
+	public void draw(TextureRegion region, Color tint, float ox, float oy, 
+					 float x, float y, float angle, float sx, float sy) {
+		if (!active) {
+			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
+			return;
+		}
+		for (float tx = x - this.width; tx < this.width + ox/2  ; tx += this.width){
+			for (float ty = y - this.height; ty < this.height + oy/2 ; ty += this.height){
+				if (tx + ox/2 > 0 && ty + oy/2 > 0){
+					computeTransform(ox,oy,tx,ty,angle,sx,sy);
+					spriteBatch.setColor(tint);
+					spriteBatch.draw(region,region.getRegionWidth(),region.getRegionHeight(),local);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Compute the affine transform (and store it in local) for this image.
+	 * 
+	 * This helper is meant to simplify all of the math in the above draw method
+	 * so that you do not need to worry about it when working on Exercise 4.
+	 *
+	 * @param ox 	The x-coordinate of texture origin (in pixels)
+	 * @param oy 	The y-coordinate of texture origin (in pixels)
+	 * @param x 	The x-coordinate of the texture origin
+	 * @param y 	The y-coordinate of the texture origin
+	 * @param angle The rotation angle (in degrees) about the origin.
+	 * @param sx 	The x-axis scaling factor
+	 * @param sy 	The y-axis scaling factor
+	 */
+	private void computeTransform(float ox, float oy, float x, float y, float angle, float sx, float sy) {
+		local.set(global);
+		local.translate(x,y);
+		local.rotate(angle);
+		local.scale(sx,sy);
+		local.translate(-ox,-oy);
+	}
+
+	/**
+     * Draw an unscaled overlay image.
+     *
+     * An overlay image is one that is not scaled by the global transform
+     * This is ideal for backgrounds, foregrounds and uniform HUDs that do not
+     * track the camera.
+     * 
+     * @param image Texture to draw as an overlay
+	 * @param x 	The x-coordinate of the bottom left corner
+	 * @param y 	The y-coordinate of the bottom left corner
+	 */
+    public void drawOverlay(Texture image, float x, float y) {
+		if (!active) {
+			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
+			return;
+		}
+		drawOverlay(image,Color.WHITE,x,y);
+    }
+    
+	/**
+     * Draw an unscaled overlay image tinted by the given color.
+     *
+     * An overlay image is one that is not scaled by the global transform
+     * This is ideal for backgrounds, foregrounds and uniform HUDs that do not
+     * track the camera.
+     * 
+     * The texture colors will be multiplied by the given color.  This will turn
+	 * any white into the given color.  Other colors will be similarly affected.
+	 *
+     * @param image Texture to draw as an overlay
+	 * @param tint  The color tint
+	 * @param x 	The x-coordinate of the bottom left corner
+	 * @param y 	The y-coordinate of the bottom left corner
+	 */
+	public void drawOverlay(Texture image, Color tint, float x, float y) {
+		if (!active) {
+			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
+			return;
+		}
+		spriteBatch.setColor(tint);
+		spriteBatch.draw(image, x, y);
+    }
+
+	/**
+     * Draw an stretched overlay image.
+     *
+     * An overlay image is one that is not scaled by the global transform
+     * This is ideal for backgrounds, foregrounds and uniform HUDs that do not
+     * track the camera.
+     * 
+     * The image will be drawn starting at the bottom right corner, and will
+     * be stretched to fill the whole screen if appropriate.
+     *
+     * @param image Texture to draw as an overlay
+	 * @param fill	Whether to stretch the image to fill the screen
+	 */
+    public void drawOverlay(Texture image, boolean fill) {
+		if (!active) {
+			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
+			return;
+		}
+		drawOverlay(image,Color.WHITE,fill);
+    }
+    
+	/**
+     * Draw an stretched overlay image tinted by the given color.
+     *
+     * An overlay image is one that is not scaled by the global transform
+     * This is ideal for backgrounds, foregrounds and uniform HUDs that do not
+     * track the camera.
+     * 
+     * The image will be drawn starting at the bottom right corner, and will
+     * be stretched to fill the whole screen if appropriate.
+     *
+	 * The texture colors will be multiplied by the given color.  This will turn
+	 * any white into the given color.  Other colors will be similarly affected.
+     *
+     * @param image Texture to draw as an overlay
+	 * @param tint  The color tint
+	 * @param fill	Whether to stretch the image to fill the screen
+	 */
+	public void drawOverlay(Texture image, Color tint, boolean fill) {
+		if (!active) {
+			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
+			return;
 		}
 		
-		// Very primitive culling code
-		tmp0.set(target).sub(x, y, 0);
-		if(Math.abs(tmp0.x) > CLIP_X || Math.abs(tmp0.y) > CLIP_Y) return;
-		
-		// World transform components
-		world.setToTranslation(x,y,z);
-		world.rotateRad(0, 0, 1, angle); // z-rotation
-		world.scale(TILE_SIZE, TILE_SIZE, TILE_DEPTH);
-		
-		// Set world transform
-		program.setUniformMatrix(SHADER_U_WORLD, world);
-		program.setUniformf(SHADER_U_TINT, model.getColor());
-		model.getMesh().render(program, GL20.GL_TRIANGLES);
+		float w, h;
+		if (fill) {
+			w = getWidth();
+			h = getHeight();
+		} else {
+			w = image.getWidth();
+			h = image.getHeight();
+		}
+		spriteBatch.setColor(tint);
+		spriteBatch.draw(image, 0, 0, w, h);
+    }
+	
+	/**
+     * Draw an stretched overlay image tinted by the given color.
+     *
+     * An overlay image is one that is not scaled by the global transform
+     * This is ideal for backgrounds, foregrounds and uniform HUDs that do not
+     * track the camera.
+     * 
+     * The image will be drawn starting at the bottom right corner, and will
+     * be stretched to fill the whole screen if appropriate.
+     *
+	 * The texture colors will be multiplied by the given color.  This will turn
+	 * any white into the given color.  Other colors will be similarly affected.
+     *
+     * Rotates image by the given rotation factor.
+     *
+     * @param image Texture to draw as an overlay
+	 * @param tint  The color tint
+	 * @param fill	Whether to stretch the image to fill the screen
+	 * @param rot   Rotation factor of image
+	 */
+	public void drawOverlay(Texture image, Color tint, boolean fill, float rot) {
+		if (!active) {
+			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
+			return;
+		}
+		float w, h;
+		int iw, ih;
+		w = getWidth();
+		h = getHeight();
+		iw = image.getWidth();
+		ih = image.getHeight();
+		spriteBatch.setColor(tint);
+		spriteBatch.draw(image, -w/2, -h/2, w, h, w*2, h*2, 1.1f, 1.1f, rot, 0, 0, iw, ih, false, false);
+    }
+	
+	public void drawMessage(String msg){
+		displayFont.draw(spriteBatch, msg, 400,400);
+	}
+	
+	public void drawMessage(String msg1, String msg2){
+		displayFont.draw(spriteBatch, msg1, 400,300);
+		displayFont.draw(spriteBatch, msg2, 400,500);
+	}
+	
+	public void drawActionBar(float x, float y, float ratio){
+		spriteBatch.setColor(Color.RED);
+		spriteBatch.draw(white, x, y, 600, 20);
+		spriteBatch.setColor(Color.GREEN);
+		spriteBatch.draw(white, x, y, 600*ratio, 20);
+	}
+	
+	public void drawTile(float x, float y, Texture mesh, int size, Color tint){
+		spriteBatch.setColor(tint);
+		spriteBatch.draw(mesh,x,y,size,size);
 	}
 	
 	/**
@@ -557,414 +772,52 @@ public class GameCanvas {
 	 * @param z The ship z-coordinate (for falling animation)
 	 * @param angle The ship angle for rotation in plane
 	 */	 
-	public void drawShip(TexturedMesh model, float x, float y, float z, float angle) {
-		if (!active) {
-			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
-			return;
-		} else if (!shading) {
-			Gdx.app.error("GameCanvas", "Cannot draw after a message is displayed", new IllegalStateException());
-			return;
-		} else if (model == null) {
-			Gdx.app.error("GameCanvas", "Attempt to draw ship without a model", new IllegalStateException());
-			return;
-		} else if (this.model != model) {
-			this.model = model;
-			model.getTexture().bind(0);
-		}
-		
-		// World transform components
-		world.setToTranslation(x, y, SHIP_FALL_TRANS + z);
-		world.rotateRad(1,0,0,SHIP_FALL_X_SKEW*z);
-		world.rotateRad(0,0,1,(float)Math.toRadians(angle) + SHIP_FALL_Z_SKEW*z);
-		world.rotateRad(0,1,0,(float)Math.PI);
-		world.rotateRad(1.0f,0.0f,0.0f,(float)(Math.PI/2));
-		world.scale(SHIP_SIZE,SHIP_SIZE,SHIP_SIZE);
-
-		// Very primitive culling code
-		tmp0.set(target).sub(world.getTranslation(tmp1));
-		if(Math.abs(tmp0.x) > CLIP_X || Math.abs(tmp0.y) > CLIP_Y) return;
-		
-		// Set world transform
-		program.setUniformMatrix(SHADER_U_WORLD, world);
-		program.setUniformf(SHADER_U_TINT, model.getColor());
-		model.getMesh().render(program, GL20.GL_TRIANGLES);
+	public void drawShip(Texture model, float x, float y, Color color, int angle) {
+		spriteBatch.setColor(color);
+		spriteBatch.draw(model, x, y, 50, 50, 100, 100, 1, 1, angle, 0, 0, model.getWidth(),model.getHeight(),false,false);
 	}
 	
-	/**
-	 * Draws the ship exhaust to the screen.
-	 *
-	 * This method has to be different from drawShip because the blending mode is
-	 * different.
-	 *
-	 * @param model The textured mesh object (with color) for the ship
-	 * @param x The ship x-coordinate in world coordinates
-	 * @param y The ship y-coordinate in world coordinates
-	 * @param z The ship z-coordinate (for falling animation)
-	 * @param angle The ship angle for rotation in plane
-	 */	 
-	public void drawFire(TexturedMesh model, float x, float y, float z, float angle) {
-		if (!active) {
-			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
-			return;
-		} else if (!shading) {
-			Gdx.app.error("GameCanvas", "Cannot draw after a message is displayed", new IllegalStateException());
-			return;
-		} else if (model == null) {
-			Gdx.app.error("GameCanvas", "Attempt to draw afterburner without a model", new IllegalStateException());
-			return;
-		} else if (this.model != model) {
-			setDepthState(DepthState.READ);
-			setBlendState(BlendState.ADDITIVE);
-			setCullState(CullState.CLOCKWISE);
-			
-			this.model = model;
-			model.getTexture().bind(0);
-		}
-		
-		// World transform components
-		world.setToTranslation(x, y, SHIP_FALL_TRANS + z);
-		world.rotateRad(1,0,0,SHIP_FALL_X_SKEW*z);
-		world.rotateRad(0,0,1,(float)Math.toRadians(angle) + SHIP_FALL_Z_SKEW*z);
-		world.rotateRad(0,1,0,(float)Math.PI);
-		world.rotateRad(1.0f,0.0f,0.0f,(float)(Math.PI/2));
-		world.scale(SHIP_SIZE,SHIP_SIZE,SHIP_SIZE);
-
-		// Very primitive culling code
-		tmp0.set(target).sub(world.getTranslation(tmp1));
-		if(Math.abs(tmp0.x) > CLIP_X || Math.abs(tmp0.y) > CLIP_Y) return;
-		
-		// Set world transform
-		program.setUniformMatrix(SHADER_U_WORLD, world);
-		program.setUniformf(SHADER_U_TINT, model.getColor());
-		model.getMesh().render(program, GL20.GL_TRIANGLES);
+	//Generalize all these to a draw box function
+	
+	public void drawHealthBars(float x, float y, float ratio){
+		spriteBatch.setColor(Color.WHITE);
+		spriteBatch.draw(white, x, y, 100,10);
+		spriteBatch.setColor(Color.GREEN);
+		spriteBatch.draw(white, x, y, 100*ratio,10);
 	}
 	
-	/**
-	 * Draws a photon to the screen.
-	 *
-	 * @param model The textured mesh object (with color) for the photon
-	 * @param x  The photon x-coordinate in world coordinates
-	 * @param y  The photon y-coordinate in world coordinates
-	 * @param vx The photon x-velocity
-	 * @param vy The photon y-velocity
-	 * @param r  The distance from the photon to its source (for decay)
-	 */	 
-	public void drawPhoton(TexturedMesh model, float x, float y, float vx, float vy, float r) {
-		if (!active) {
-			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
-			return;
-		} else if (!shading) {
-			Gdx.app.error("GameCanvas", "Cannot draw after a message is displayed", new IllegalStateException());
-			return;
-		} else if (model == null) {
-			Gdx.app.error("GameCanvas", "Attempt to draw photon without a model", new IllegalStateException());
-			return;
-		} else if (this.model != model) {
-			setDepthState(DepthState.READ);
-			setBlendState(BlendState.ADDITIVE);
-			setCullState(CullState.CLOCKWISE);
-			
-			this.model = model;
-			model.getTexture().bind(0);
-		}
-
-		tmp2d.set(vx,vy).nor();
-		tmpMat.idt();
-		tmpMat.val[0] = tmp2d.x;
-		tmpMat.val[1] = tmp2d.y;
-		tmpMat.val[4] = -tmp2d.y;
-		tmpMat.val[5] = tmp2d.x;
-
-		// Compute world transform
-		float scale = PHOTON_SIZE+PHOTON_DECAY*r;
-		world.setToTranslation(x, y, PHOTON_TRANS);
-		world.mul(tmpMat);
-		world.scale(scale,scale,scale);
-
-		// Draw a photon instance
-		program.setUniformMatrix(SHADER_U_WORLD, world);
-		program.setUniformf(SHADER_U_TINT, model.getColor());
-		model.getMesh().render(program, GL20.GL_TRIANGLES);
+	public void drawToken(float x, float y, Color color) {
+		spriteBatch.setColor(color);
+		spriteBatch.draw(white,x-10,y,20,20);
 	}
 	
-	/**
-	 * Draws a message at the center of the screen
-	 *
-	 * The message is an overlay (like the background) and is unaffected by the
-	 * camera position.
-	 *
-	 * Once a message is drawn, the canvas is unable to draw any more 3D objects.
-	 * The user must call end().
-	 *
-	 * @param message The text to draw
-	 * @param color   The color to tint the font
-	 */
-	public void drawMessage(String message, Color color) {
-		if (!active) {
-			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
-			return;
-		} else if (displayFont == null) {
-			Gdx.app.error("GameCanvas", "Cannot create a message without a font", new IllegalStateException());
-			return;
-		} else if (shading) {
-			program.end();
-			shading = false;
-		}
-		
-		setDepthState(DepthState.NONE);
-		setBlendState(BlendState.ALPHA_BLEND);
-		setCullState(CullState.COUNTER_CLOCKWISE);
-		
-		displayLayout.setText(displayFont,message);
-		spriteBatch.begin();
-		float x = (getWidth()  - displayLayout.width) / 2.0f;
-		float y = (getHeight() + displayLayout.height) / 2.0f;
-		displayFont.setColor(color);
-		displayFont.draw(spriteBatch, displayLayout, x, y);
-		spriteBatch.end();
-	}
-
-	/**
-	 * Draws a two-line message at the center of the screen
-	 *
-	 * The message is an overlay (like the background) and is unaffected by the
-	 * camera position.
-	 *
-	 * Once a message is drawn, the canvas is unable to draw any more 3D objects.
-	 * The user must call end().
-	 *
-	 * @param mess1 The top text to draw
-	 * @param mess2 The bottom text to draw
-	 * @param color The color to tint the font
-	 */
-	public void drawMessage(String mess1, String mess2, Color color) {
-		if (!active) {
-			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
-			return;
-		} else if (displayFont == null) {
-			Gdx.app.error("GameCanvas", "Cannot create a message without a font", new IllegalStateException());
-			return;
-		} else if (shading) {
-			program.end();
-			shading = false;
-		}
-		
-		setDepthState(DepthState.NONE);
-		setBlendState(BlendState.ALPHA_BLEND);
-		setCullState(CullState.COUNTER_CLOCKWISE);
-		
-		float x, y;
-		
-		spriteBatch.begin();
-		displayFont.setColor(color);
-
-		displayLayout.setText(displayFont,mess1);
-		x = (getWidth()  - displayLayout.width) / 2.0f;
-		y = displayLayout.height+(getHeight() + displayLayout.height) / 2.0f;
-		displayFont.draw(spriteBatch, displayLayout, x, y);
-		
-		displayLayout.setText(displayFont,mess2);
-		x = (getWidth() - displayLayout.width) / 2.0f;
-		y = -displayLayout.height+(getHeight() + displayLayout.height) / 2.0f;
-		displayFont.draw(spriteBatch, displayLayout, x, y);		
-		spriteBatch.end();
-	}
-
-	
-	/**
-	 * Sets the given matrix to a FOV perspective.
-	 *
-	 * The field of view matrix is computed as follows:
-	 *
-	 *        /
-	 *       /_
-	 *      /  \  <-  FOV 
-	 * EYE /____|_____
-     *
-	 * Let ys = cot(fov)
-	 * Let xs = ys / aspect
-	 * Let a = zfar / (znear - zfar)
-	 * The matrix is
-	 * | xs  0   0      0     |
-	 * | 0   ys  0      0     |
-	 * | 0   0   a  znear * a |
-	 * | 0   0  -1      0     |
-	 *
-	 * @param out Non-null matrix to store result
-	 * @param fov field of view y-direction in radians from center plane
-	 * @param aspect Width / Height
-	 * @param znear Near clip distance
-	 * @param zfar Far clip distance
-	 *
-	 * @returns Newly created matrix stored in out
-	 */
-	private Matrix4 setToPerspectiveFOV(Matrix4 out, float fov, float aspect, float znear, float zfar) {
-		float ys = (float)(1.0 / Math.tan(fov));
-		float xs = ys / aspect;
-		float a  = zfar / (znear - zfar);
-
-		out.val[0 ] = xs;
-		out.val[4 ] = 0.0f;
-		out.val[8 ] = 0.0f;
-		out.val[12] = 0.0f;
-
-		out.val[1 ] = 0.0f;
-		out.val[5 ] = ys;
-		out.val[9 ] = 0.0f;
-		out.val[13] = 0.0f;
-
-		out.val[2 ] = 0.0f;
-		out.val[6 ] = 0.0f;
-		out.val[10] = a;
-		out.val[14] = znear * a;
-
-		out.val[3 ] = 0.0f;
-		out.val[7 ] = 0.0f;
-		out.val[11] = -1.0f;
-		out.val[15] = 0.0f;
-
-		return out;
+	public void drawSelection(float x, float y){
+		spriteBatch.setColor(Color.RED);
+		spriteBatch.draw(white, x-5, y, 10, 10);
 	}
 	
-	/**
-	 * Sets the mode for blending colors on-screen.
-	 *
-	 * @param state The blending mode
-	 */
-	private void setBlendState(BlendState state) {
-		int blendMod = 0;
-		int blendSrc = 0;
-		int blendDst = 0;
-		int blendModAlpha = 0;
-		int blendSrcAlpha = 0;
-		int blendDstAlpha = 0;	
-		
-		switch (state) {
-		case ALPHA_BLEND:
-			blendMod = GL20.GL_FUNC_ADD;
-			blendSrc = GL20.GL_ONE;
-			blendDst = GL20.GL_ONE_MINUS_SRC_ALPHA;
-			blendModAlpha = GL20.GL_FUNC_ADD;
-			blendSrcAlpha = GL20.GL_ONE;
-			blendDstAlpha = GL20.GL_ONE_MINUS_SRC_ALPHA;
-			break;
-		case NO_PREMULT:
-			blendMod = GL20.GL_FUNC_ADD;
-			blendSrc = GL20.GL_SRC_ALPHA;
-			blendDst = GL20.GL_ONE_MINUS_SRC_ALPHA;
-			blendModAlpha = GL20.GL_FUNC_ADD;
-			blendSrcAlpha = GL20.GL_ONE;
-			blendDstAlpha = GL20.GL_ZERO;
-			break;
-		case ADDITIVE:
-			blendMod = GL20.GL_FUNC_ADD;
-			blendSrc = GL20.GL_SRC_ALPHA;
-			blendDst = GL20.GL_ONE;
-			blendModAlpha = GL20.GL_FUNC_ADD;
-			blendSrcAlpha = GL20.GL_ONE;
-			blendDstAlpha = GL20.GL_ZERO;
-			break;
-		case OPAQUE:
-			blendMod = GL20.GL_FUNC_ADD;
-			blendSrc = GL20.GL_ONE;
-			blendDst = GL20.GL_ZERO;
-			blendModAlpha = GL20.GL_FUNC_ADD;
-			blendSrcAlpha = GL20.GL_ONE;
-			blendDstAlpha = GL20.GL_ZERO;
-			break;
-		}
-		
-		gl20.glBlendEquationSeparate(blendMod, blendModAlpha);
-		gl20.glBlendFuncSeparate(blendSrc, blendDst, blendSrcAlpha, blendDstAlpha);
+	public void drawPointer(float x, float y){
+		spriteBatch.setColor(Color.CORAL);
+		spriteBatch.draw(white,x,y,10,10);
 	}
 	
-	/**
-	 * Sets the mode for culling unwanted polygons based on depth.
-	 *
-	 * @param state The depth mode
-	 */
-	private void setDepthState(DepthState state) {
-		boolean shouldRead  = true;
-		boolean shouldWrite = true;
-		int depthFunc = 0;
-		
-		switch (state) {
-		case NONE:
-			shouldRead  = false;
-			shouldWrite = false;
-			depthFunc = GL20.GL_ALWAYS;
-			break;
-		case READ:
-			shouldRead  = false;
-			shouldWrite = true;
-			depthFunc = GL20.GL_LEQUAL;
-			break;
-		case WRITE:
-			shouldRead  = false;
-			shouldWrite = true;
-			depthFunc = GL20.GL_ALWAYS;
-			break;
-		case DEFAULT:
-			shouldRead  = true;
-			shouldWrite = true;
-			depthFunc = GL20.GL_LEQUAL;
-			break;
-		}
-		
-        if (shouldRead || shouldWrite) {
-        	gl20.glEnable(GL20.GL_DEPTH_TEST);
-        	gl20.glDepthMask(shouldWrite);
-        	gl20.glDepthFunc(depthFunc);
-        } else {
-        	gl20.glDisable(GL20.GL_DEPTH_TEST);
-        }
+	public void drawBox(float x, float y, float width, float height, Color color){
+		spriteBatch.setColor(color);
+		spriteBatch.draw(white,x,y,width,height);
 	}
 	
-	/**
-	 * Sets the mode for culling unwanted polygons based on facing.
-	 *
-	 * @param state The culling mode
-	 */
-	private void setCullState(CullState state) {
-		boolean cull = true;
-    	int mode = 0;
-    	int face = 0;
-    	
-    	switch (state) {
-    	case NONE:
-            cull = false;
-            mode = GL20.GL_BACK;
-            face = GL20.GL_CCW;
-			break;
-    	case CLOCKWISE:
-            cull = true;
-            mode = GL20.GL_BACK;
-            face = GL20.GL_CCW;
-			break;
-    	case COUNTER_CLOCKWISE:
-            cull = true;
-            mode = GL20.GL_BACK;
-            face = GL20.GL_CW;
-			break;
-    	}
-        if (cull) {
-        	gl20.glEnable(GL20.GL_CULL_FACE);
-        	gl20.glFrontFace(face);
-        	gl20.glCullFace(mode);
-        } else {
-        	gl20.glDisable(GL20.GL_CULL_FACE);
-        }
+	public void drawText(String msg, float x, float y) {
+		displayFont.draw(spriteBatch, msg, x,y);
+	}
 
-	}
-		
 	/**
-	 * Enumeration of supported blend states.
+	 * Enumeration of supported BlendStates.
 	 *
 	 * For reasons of convenience, we do not allow user-defined blend functions.
 	 * 99% of the time, we find that the following blend modes are sufficient
 	 * (particularly with 2D games).
 	 */
-	private static enum BlendState {
+	public enum BlendState {
 		/** Alpha blending on, assuming the colors have pre-multipled alpha (DEFAULT) */
 		ALPHA_BLEND,
 		/** Alpha blending on, assuming the colors have no pre-multipled alpha */
@@ -973,40 +826,5 @@ public class GameCanvas {
 		ADDITIVE,
 		/** Color values are draw on top of one another with no transparency support */
 		OPAQUE
-	}
-
-	/**
-	 * Enumeration of supported depth states.
-	 *
-	 * For reasons of convenience, we do not allow user-defined depth functions.
-	 * 99% of the time, we find that the following depth modes are sufficient
-	 * (particularly with 2D games).
-	 */
-	private static enum DepthState {
-		/** Do not enable depth masking at all. */
-		NONE,
-		/** Read from the depth value, but do not write to it */
-		READ,
-		/** Write to the depth value, but do not read from it */
-		WRITE,
-		/** Read and write to the depth value, providing normal masking */
-		DEFAULT
-	}
-
-	/**
-	 * Enumeration of supported culling states.
-	 *
-	 * For reasons of convenience, we do not allow user-defined culling operations.
-	 * 99% of the time, we find that the following culling modes are sufficient
-	 * (particularly with 2D games).
-	 */
-	private static enum CullState {
-		/** Do not remove the backsides of any polygons; show both sides */
-		NONE,
-		/** Remove polygon backsides, using clockwise motion to define the front */
-		CLOCKWISE,
-		/** Remove polygon backsides, using counter-clockwise motion to define the front */
-		COUNTER_CLOCKWISE
-	}
-
+	}	
 }

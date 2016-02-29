@@ -75,24 +75,9 @@ public class GameplayController {
 	 * but photon collisions are not.
 	 */
 	public void update() {
-		// Adjust for drift and remove dead ships
-		/*for (Ship s : ships) {
-			adjustForDrift(s);
-			checkForDeath(s);
-
-			if (!s.isFalling() && controls[s.getId()] != null) {
-				int action = controls[s.getId()].getAction();
-				boolean firing = (action & InputController.CONTROL_FIRE) != 0;
-				s.update(action);
-				if (firing && s.canFire()) {
-					fireWeapon(s);
-				} else {
-					s.coolDown(true);
-				}
-
-			} else {
-				s.update(InputController.CONTROL_NO_ACTION);
-			}
-		}*/
+		for (Character c : characters){
+			c.castPosition += c.speed;
+			c.castPosition %= 1;
+		}
 	}	
 }

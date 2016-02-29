@@ -28,6 +28,16 @@ public class Action {
 		SLOW
 	}
 	
+	public Action(String name, int cost, int damage, int range, Pattern pattern, Effect effect, String description){
+		this.name = name;
+		this.cost = cost;
+		this.damage = damage;
+		this.range = range;
+		this.pattern = pattern;
+		this.effect = effect;
+		this.description = description;
+	}
+	
 	//TODO Selection menu draw for menu and bar tokens, pass in offsets
 	
 	

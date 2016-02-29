@@ -1,18 +1,22 @@
 package edu.cornell.gdiac.ailab;
 
-import edu.cornell.gdiac.mesh.TexturedMesh;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 
 public class GridBoard {
 	float space;
-	TexturedMesh tileMesh;
+	Texture tileMesh;
 	Tile[][] tiles;
 	// In number of tiles
 	int width;
 	int height;
+	int size;
 	
-	//CHANGE
-	final int TILE_WIDTH = 5;
-	final int TILE_HEIGHT = 5;
+	/** Color of a regular tile */
+	private static final Color BASIC_COLOR1 = new Color(0.2f, 0.2f, 1.0f, 1.0f);
+	private static final Color BASIC_COLOR2 = new Color(1.0f, 0.6f, 0.2f, 1.0f);
+	/** Highlight color for power tiles */
+	private static final Color POWER_COLOR = new Color( 0.0f,  1.0f,  1.0f, 0.5f);
 	
 	private class Tile {
 		//Currently targeting
@@ -27,15 +31,25 @@ public class GridBoard {
 		//Currently has a character
 		boolean isOccupied;
 		
+		public Tile() {
+			isHighlighted = canTarget = isAttacked = isOccupied = false;
+		}
+		
 	}
 	
 	public GridBoard(int width, int height) {
 		this.width = width;
 		this.height = height;
+		size = 100;
 		tiles = new Tile[width][height];
+		for (int x = 0; x < width; x++){
+			for (int y = 0; y < height; y++){
+				tiles[x][y] = new Tile();
+			}
+		}
 	}
 	
-	public void setTileMesh(TexturedMesh mesh) {
+	public void setTileTexture(Texture mesh) {
 		tileMesh = mesh;
 	}
 	
@@ -67,22 +81,28 @@ public class GridBoard {
 		Tile tile = tiles[x][y];
 
 		// Compute drawing coordinates
-		float sx = x*100;
-		float sy = y*100;
+		
+		float sx = size*x+100;
+		float sy = size*y;
 
 		// You can modify the following to change a tile's highlight color.
 		// BASIC_COLOR corresponds to no highlight.
 		///////////////////////////////////////////////////////
 		/*
-		tileMesh.setColor(BASIC_COLOR);
-		if (tile.power) {
+		if (x<width/2){
+			((TexturedMesh) tileMesh).setColor(BASIC_COLOR1);
+		} else {
+			tileMesh.setColor(BASIC_COLOR2);
+		}
+		if (tile.isHighlighted) {
 			tileMesh.setColor(POWER_COLOR);
 		}*/
+		Color color = x<width/2 ? BASIC_COLOR1 : BASIC_COLOR2;
 
 		///////////////////////////////////////////////////////
 
 		// Draw
-		canvas.drawTile(tileMesh, sx, sy, 0.5f, 0.5f);
+		canvas.drawTile(sx,sy,tileMesh,size,color);
 	}
 	
 	public void update(){

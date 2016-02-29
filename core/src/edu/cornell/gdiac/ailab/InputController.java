@@ -31,7 +31,7 @@ public interface InputController {
 	public static final int CONTROL_MOVE_DOWN  = 0x08;
 	/** Fire the ship weapon */
 	public static final int CONTROL_FIRE 	   = 0x10;
-
+	
 	/**
 	 * Return the action of this ship (but do not process)
 	 * 
@@ -41,6 +41,14 @@ public interface InputController {
 	 *
 	 * @return the action of this ship
 	 */
-	public int getAction();
+	public void getAction();
+	
+	public boolean pressedEnter();
+	public boolean pressedA();
+	public boolean pressedS();
+	public boolean pressedUp();
+	public boolean pressedDown();
+	public boolean pressedLeft();
+	public boolean pressedRight();
 }
 

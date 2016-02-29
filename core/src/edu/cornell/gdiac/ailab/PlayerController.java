@@ -12,6 +12,7 @@
  package edu.cornell.gdiac.ailab;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.*;
 
@@ -23,6 +24,21 @@ import edu.cornell.gdiac.util.*;
 public class PlayerController implements InputController {
 	/** Whether to enable keyboard control (as opposed to X-Box) */
 	private boolean keyboard;
+	
+	private boolean pressedEnter;
+	private boolean lastPressedEnter;
+	private boolean pressedA;
+	private boolean lastPressedA;
+	private boolean pressedS;
+	private boolean lastPressedS;
+	private boolean pressedUp;
+	private boolean lastPressedUp;
+	private boolean pressedDown;
+	private boolean lastPressedDown;
+	private boolean pressedLeft;
+	private boolean lastPressedLeft;
+	private boolean pressedRight;
+	private boolean lastPressedRight;
 	
 	/** The XBox Controller hooked to this machine */
 	private XBox360Controller xbox;
@@ -56,51 +72,56 @@ public class PlayerController implements InputController {
 	 *
 	 * @return the action of this ship
 	 */
-    public int getAction() {
-		int code = CONTROL_NO_ACTION;
+    public void getAction() {
+		int enter = Input.Keys.ENTER;
+		int a = Input.Keys.A;
+		int s = Input.Keys.S;
+		int up = Input.Keys.UP;
+		int down = Input.Keys.DOWN;
+		int left = Input.Keys.LEFT;
+		int right = Input.Keys.RIGHT;
 		
-		if (keyboard) {
-			if (Gdx.input.isKeyPressed(Keys.UP))    code |= CONTROL_MOVE_UP;
-			if (Gdx.input.isKeyPressed(Keys.LEFT))  code |= CONTROL_MOVE_LEFT;
-			if (Gdx.input.isKeyPressed(Keys.DOWN))  code |= CONTROL_MOVE_DOWN;
-			if (Gdx.input.isKeyPressed(Keys.RIGHT)) code |= CONTROL_MOVE_RIGHT;
-			if (Gdx.input.isKeyPressed(Keys.SPACE)) code |= CONTROL_FIRE;
-		} else {
-			double ANALOG_THRESH  = 0.3;
-			double TRIGGER_THRESH = -0.75;
-			if (xbox.getLeftY() < -ANALOG_THRESH)	code |= CONTROL_MOVE_UP;
-			if (xbox.getLeftX() < -ANALOG_THRESH)  	code |= CONTROL_MOVE_LEFT;
-			if (xbox.getLeftY() > ANALOG_THRESH)   code |= CONTROL_MOVE_DOWN;
-			if (xbox.getLeftX() > ANALOG_THRESH) 	code |= CONTROL_MOVE_RIGHT;
-			if (xbox.getRightTrigger() > TRIGGER_THRESH) code |= CONTROL_FIRE;
-		}
-
-		// Prevent diagonal movement.
-        if ((code & CONTROL_MOVE_UP) != 0 && (code & CONTROL_MOVE_LEFT) != 0) {
-            code ^= CONTROL_MOVE_UP;
-        }
-
-		if ((code & CONTROL_MOVE_UP) != 0 && (code & CONTROL_MOVE_RIGHT) != 0) {
-			code ^= CONTROL_MOVE_RIGHT;
-        }
-
-		if ((code & CONTROL_MOVE_DOWN) != 0 && (code & CONTROL_MOVE_RIGHT) != 0) {
-			code ^= CONTROL_MOVE_DOWN;
-        }
-
-		if ((code & CONTROL_MOVE_DOWN) != 0 && (code & CONTROL_MOVE_LEFT) != 0) {
-			code ^= CONTROL_MOVE_LEFT;
-        }
-
-		// Cancel out conflicting movements.
-		if ((code & CONTROL_MOVE_LEFT) != 0 && (code & CONTROL_MOVE_RIGHT) != 0) {
-			code ^= (CONTROL_MOVE_LEFT | CONTROL_MOVE_RIGHT);
-        }
-
-		if ((code & CONTROL_MOVE_UP) != 0 && (code & CONTROL_MOVE_DOWN) != 0) {
-			code ^= (CONTROL_MOVE_UP | CONTROL_MOVE_DOWN);
-        }
-
-		return code;
+		lastPressedEnter = pressedEnter;
+		pressedEnter = Gdx.input.isKeyPressed(enter);
+		lastPressedA = pressedA;
+		pressedA = Gdx.input.isKeyPressed(a);
+		lastPressedS = pressedS;
+		pressedS = Gdx.input.isKeyPressed(s);
+		lastPressedUp = pressedUp;
+		pressedUp = Gdx.input.isKeyPressed(up);
+		lastPressedDown = pressedDown;
+		pressedDown = Gdx.input.isKeyPressed(down);
+		lastPressedLeft = pressedLeft;
+		pressedLeft = Gdx.input.isKeyPressed(left);
+		lastPressedRight = pressedRight;
+		pressedRight = Gdx.input.isKeyPressed(right);
 	}
+    
+    public boolean pressedEnter() {
+    	return pressedEnter && !lastPressedEnter;
+    }
+    
+    public boolean pressedA() {
+    	return pressedA && !lastPressedA;
+    }
+    
+    public boolean pressedS() {
+    	return pressedS && !lastPressedS;
+    }
+    
+    public boolean pressedUp() {
+    	return pressedUp && !lastPressedUp;
+    }
+    
+    public boolean pressedDown() {
+    	return pressedDown && !lastPressedDown;
+    }
+    
+    public boolean pressedLeft() {
+    	return pressedLeft && !lastPressedLeft;
+    }
+    
+    public boolean pressedRight() {
+    	return pressedRight && !lastPressedRight;
+    }
 }
