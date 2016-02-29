@@ -40,6 +40,8 @@ public class GameCanvas {
 	private Texture background;
 	/** Font object for displaying images */
 	private BitmapFont displayFont;
+	
+	private GlyphLayout layout;
 	/** White texture */
 	private Texture white;
 	
@@ -83,6 +85,7 @@ public class GameCanvas {
 		// Set the projection matrix (for proper scaling)
 		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
 		
+		layout = new GlyphLayout();
 		
 		// Initialize the cache objects
 		holder = new TextureRegion();
@@ -130,6 +133,7 @@ public class GameCanvas {
 		// Set the projection matrix (for proper scaling)
 		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
 		
+		layout = new GlyphLayout();
 		
 		// Initialize the cache objects
 		holder = new TextureRegion();
@@ -796,8 +800,8 @@ public class GameCanvas {
 		spriteBatch.draw(white, x-5, y, 10, 10);
 	}
 	
-	public void drawPointer(float x, float y){
-		spriteBatch.setColor(Color.CORAL);
+	public void drawPointer(float x, float y, Color color){
+		spriteBatch.setColor(color);
 		spriteBatch.draw(white,x,y,10,10);
 	}
 	
@@ -806,8 +810,16 @@ public class GameCanvas {
 		spriteBatch.draw(white,x,y,width,height);
 	}
 	
-	public void drawText(String msg, float x, float y) {
+	public void drawText(String msg, float x, float y, Color color) {
+		displayFont.setColor(color);
 		displayFont.draw(spriteBatch, msg, x,y);
+	}
+	
+	public void drawCenteredText(String msg, float x, float y) {
+		layout.setText(displayFont, msg);
+		float width = layout.width;
+		displayFont.setColor(Color.WHITE);
+		displayFont.draw(spriteBatch, msg, x-width/2, y);
 	}
 
 	/**

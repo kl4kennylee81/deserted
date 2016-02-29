@@ -19,6 +19,9 @@ public class SelectionMenu {
 	int takenSlots;
 	TexturedMesh menuMesh;
 	TexturedMesh menuBar;
+	private boolean choosingTarget;
+	private int selectedX;
+	private int selectedY;
 	
 	//Initialized with character
 	//draw menu
@@ -34,26 +37,85 @@ public class SelectionMenu {
 		totalSlots = 4;
 		takenSlots = 0;
 		selectedActions = new LinkedList<ActionNode>();
+		choosingTarget = false;
 	}
 	
 	public void add(ActionNode actionNode){
 		selectedActions.addLast(actionNode);
+		takenSlots += actionNode.action.cost;
+	}
+	
+	public void removeLast(){
+		ActionNode an = selectedActions.pollLast();
+		if (an != null) {
+			takenSlots -= an.action.cost;
+		}
+	}
+	
+	public Action getSelectedAction(){
+		return actions[selectedAction];
+	}
+	
+	public boolean getChoosingTarget(){
+		return choosingTarget;
+	}
+	
+	public int getSelectedX(){
+		return selectedX;
+	}
+	
+	public int getSelectedY(){
+		return selectedY;
+	}
+	
+	public void setChoosingTarget(boolean ct){
+		choosingTarget = ct;
+	}
+	
+	public void setSelectedX(int x){
+		selectedX = x;
+	}
+	
+	public void setSelectedY(int y){
+		selectedY = y;
 	}
 	
 	public void draw(GameCanvas canvas){
+		//Draw action names
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
-			canvas.drawText(action.name, 200, 630-50*i);
+			if (action.cost > totalSlots - takenSlots){
+				canvas.drawText(action.name, 200, 630-50*i, new Color(1f, 1f, 1f, 0.5f));
+			} else {
+				canvas.drawText(action.name, 200, 630-50*i, Color.WHITE);
+			}
 		}
-		canvas.drawPointer(180,620-50*selectedAction);
+		
+		if (choosingTarget){
+			//draws grid target
+			canvas.drawPointer(145+selectedX*100, 45+selectedY*100, Color.BLACK);
+		} else {
+			//draws action name pointers
+			canvas.drawPointer(180,620-50*selectedAction, Color.CORAL);
+		}
+		
+		//Draw action bar with 3 black boxes to show 4 slots
 		int offset = 0;
-		canvas.drawBox(400,600,300,30,Color.WHITE);
-		for (ActionNode an : selectedActions){
-			
-			canvas.drawText(an.action.name, 400+offset+an.action.cost*30, 580);
-			offset+=75*an.action.cost;
-			canvas.drawBox(395+offset,600,10,30,Color.BLACK);
+		for (int i = 0; i < 4; i++){
+			if (i < takenSlots) {
+				canvas.drawBox(400+80*i,600,75,30,Color.CORAL);
+			} else {
+				canvas.drawBox(400+80*i,600,75,30,Color.WHITE);
+			}
 		}
+		
+		//Write the names of selected action
+		for (ActionNode an : selectedActions){
+			canvas.drawCenteredText(an.action.name, 400+offset+75*an.action.cost/2, 580);
+			offset+=75*an.action.cost;
+		}
+		
+		//TODO: add color to used up boxes and a lighter color to highlight what the current selected action would add
 		
 	}
 }

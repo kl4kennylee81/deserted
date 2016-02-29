@@ -87,6 +87,10 @@ public class Character {
 		return health > 0;
 	}
 	
+	boolean isSelecting() {
+		return isSelecting;
+	}
+	
 	float getCastPosition() {
 		return castPosition;
 	}
@@ -101,6 +105,14 @@ public class Character {
 	
 	String getName() {
 		return name;
+	}
+	
+	SelectionMenu getSelectionMenu() {
+		return selectionMenu;
+	}
+	
+	void setSelecting(boolean isSelecting) {
+		this.isSelecting = isSelecting;
 	}
 	
 	void setCastPosition(float castPosition) {
