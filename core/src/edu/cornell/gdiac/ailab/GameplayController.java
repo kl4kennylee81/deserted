@@ -16,6 +16,7 @@
  */
 package edu.cornell.gdiac.ailab;
 
+import java.util.List;
 import java.util.Random;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.*;
@@ -32,11 +33,17 @@ public class GameplayController {
 	private static final float DRIFT_SPEED = 0.325f;
 
 	/** Reference to the game board */
-	public Board board; 
+	public GridBoard board; 
+	
+	public List<Character> characters;
+	
+	public ActionBar bar;
+	
+	
 	/** Reference to all the ships in the game */	
-	public ShipList ships; 
+	//public ShipList ships; 
 	/** Reference to the active photons */
-	public PhotonPool photons; 
+	//public PhotonPool photons; 
 	
 	/** List of all the input (both player and AI) controllers */
 	protected InputController[] controls;
@@ -48,64 +55,18 @@ public class GameplayController {
 	 * Creates a GameplayController for the given models.
 	 *
 	 * @param board The game board 
-	 * @param ships The list of ships 
-	 * @param photons The active photons
+	 * @param chars The list of characters
+	 * @param bar The action bar
 	 */
-	public GameplayController(Board board, ShipList ships, PhotonPool photons) {
+	public GameplayController(GridBoard board, List<Character> chars, ActionBar bar) {
 		this.board = board;
-		this.ships = ships;
-		this.photons = photons;
+		this.characters = chars;
+		this.bar = bar;
 		
-		initShipPositions();
-		controls = new InputController[ships.size()];
+		controls = new InputController[4];
 		controls[0] = new PlayerController();
-		for(int ii = 1; ii < ships.size(); ii++) {
-			controls[ii] = new AIController(ii,board,ships);			
-		}
 	}
-
-	/**
-	 * Initializes the ships to new random locations.  
-	 *
-	 * The player is always at the center of the board.
-	 */
-	private void initShipPositions() {
-		// Set the player position
-		float px = board.boardToScreen(board.getWidth() / 2);
-		float py = board.boardToScreen(board.getHeight() / 2);
-		ships.get(0).getPosition().set(px,py);
-
-		// Create a list of available AI positions
-		Vector2[] positions = new Vector2[board.getWidth() * board.getHeight() - 1];
-		int ii = 0;
-		for (int x = 0; x < board.getWidth(); x++) {
-			for (int y = 0; y < board.getHeight(); y++) {
-				// Leave the center space for the player.
-				if (x != board.getWidth() / 2 || y != board.getHeight() / 2) {
-					positions[ii++] = new Vector2(x, y);
-				}	
-			}
-		}
-
-		// Shuffle positions
-		random = new Random();
-		Vector2 rTemp = new Vector2();
-		for (ii = 0; ii < positions.length; ii++) {
-			int jj = random.nextInt(positions.length);
-			rTemp.set(positions[ii]);
-			positions[ii].set(positions[jj]);
-			positions[jj].set(rTemp);
-		}	
-
-		// Assign positions
-		for (ii = 1; ii < ships.size(); ii++) {
-			Vector2 tile = positions[ii-1];
-			float sx = board.boardToScreen((int)tile.x);
-			float sy = board.boardToScreen((int)tile.y);
-			ships.get(ii).getPosition().set(sx, sy);
-		}
-	}
-
+	
 	/** 
 	 * Invokes the controller for this ship.
 	 *
@@ -115,7 +76,7 @@ public class GameplayController {
 	 */
 	public void update() {
 		// Adjust for drift and remove dead ships
-		for (Ship s : ships) {
+		/*for (Ship s : ships) {
 			adjustForDrift(s);
 			checkForDeath(s);
 
@@ -132,92 +93,6 @@ public class GameplayController {
 			} else {
 				s.update(InputController.CONTROL_NO_ACTION);
 			}
-		}
+		}*/
 	}	
-
-	/** 
-	 * Nudges the ship back to the center of a tile if it is not moving.
-	 *
-	 * @param ship The ship to adjust
-	 */
-	private void adjustForDrift(Ship ship) {
-		// Drift to line up vertically with the grid.
-		if (ship.getVX() == 0.0f) {
-			float offset = board.centerOffset(ship.getX());
-			if (offset < -DRIFT_TOLER) {
-				ship.setX(ship.getX()+DRIFT_SPEED);
-			} else if (offset > DRIFT_TOLER) {
-				ship.setX(ship.getX()-DRIFT_SPEED);
-			}
-		}
-
-		// Drift to line up horizontally with the grid.
-		if (ship.getVY() == 0.0f) {
-			float offset = board.centerOffset(ship.getY());
-			if (offset < -DRIFT_TOLER) {
-				ship.setY(ship.getY()+DRIFT_SPEED);
-			} else if (offset > DRIFT_TOLER) {
-				ship.setY(ship.getY()-DRIFT_SPEED);
-			}
-		}
-	}
-	
-	/**
-	 * Determines if a ship is on a destroyed tile. 
-	 *
-	 * If so, the ship is killed.
-	 *
-	 * @param ship The ship to check
-	 */
-	private void checkForDeath(Ship ship) {
-		// Nothing to do if ship is already dead.
-		if (!ship.isActive()) {
-			return;
-		}
-
-		// Get the tile for the ship
-		int tx = board.screenToBoard(ship.getX());
-		int ty = board.screenToBoard(ship.getY());
-
-		if (!board.inBounds(tx,ty) || board.isDestroyedAt(tx, ty)) {
-			ship.play(SoundController.FALL_SOUND);
-			ship.destroy();
-		}
-	}
-
-	/** Firing angle for normal tiles */
-	private static final float NORMAL_ANGLE = 90.0f;
-	/** Firing angle for power tiles */
-	private static final float POWER_ANGLE = 45.0f;
-	/** Firing color for normal tiles */
-	private static final Color NORMAL_COLOR = Color.CYAN;
-	/** Firing color for power tiles */
-	private static final Color POWER_COLOR = Color.RED;
-	/** Half of a circle (for radian conversions) */
-	private static final float HALF_CIRCLE = 180.0f;
-	
-	/**
-	 * Creates photons and udates the ship's cooldown.
-	 *
-	 * Firing a weapon requires access to all other models, so we have factored
-	 * this behavior out of the Ship into the GameplayController.
-	 */
-	private void fireWeapon(Ship ship) {
-		// Determine the number of photons to create.
-		boolean isPower = board.isPowerTileAtScreen(ship.getX(), ship.getY());
-		float angPlus = isPower ? POWER_ANGLE : NORMAL_ANGLE;
-		Color c = isPower ? POWER_COLOR : NORMAL_COLOR;
-		for (float fireAngle = 0.0f; fireAngle < 360.0f; fireAngle += angPlus) {
-			float vx = (float) Math.cos(fireAngle * Math.PI / HALF_CIRCLE);
-			float vy = (float) Math.sin(fireAngle * Math.PI / HALF_CIRCLE);
-
-			photons.allocate(ship.getId(), ship.getX(), ship.getY(), vx, vy, c);
-		}
-
-		// Manage the sound effects.
-		ship.play(SoundController.FIRE_SOUND);
-
-		// Reset the firing cooldown.
-		ship.coolDown(false);
-	}
 }

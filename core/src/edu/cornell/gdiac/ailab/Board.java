@@ -365,7 +365,7 @@ public class Board {
 		///////////////////////////////////////////////////////
 
 		// Draw
-		canvas.drawTile(tileMesh, sx, sy, sz, a);
+		//canvas.drawTile(tileMesh, sx, sy, sz, a);
 	}
 	
 	// METHODS FOR LAB 2

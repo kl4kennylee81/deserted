@@ -19,6 +19,9 @@ package edu.cornell.gdiac.ailab;
 import static com.badlogic.gdx.Gdx.gl20;
 import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.audio.*;
@@ -112,23 +115,38 @@ public class GameEngine implements Screen {
 	/** Container to track the assets loaded so far */
 	private Array<String> assets;
 	
+	//OLD
 	/** Subcontroller for physics (CONTROLLER CLASS) */
-    private CollisionController physicsController;
+    //private CollisionController physicsController;
+    //OLD
+    
+    
 	/** Subcontroller for gameplay (CONTROLLER CLASS) */
     private GameplayController gameplayController;
+    /** Subcontroller for selection menu (CONTROLLER CLASS) */
+    private SelectionMenuController selectionMenuController;
+    /** Subcontroller for action bar (CONTROLLER CLASS) */
+    private ActionBarController actionBarController;
     /** Used to draw the game onto the screen (VIEW CLASS) */
     private GameCanvas canvas;
     
     /** XBox 360 controller, IF one is connected */
     private XBox360Controller xbox;
     
+    // OLD
     // Location and animation information for game objects (MODEL CLASSES) 
     /** The grid of tiles (MODEL CLASS) */
-    private Board board; 
+    //private Board board; 
     /** The ship objects (MODEL CLASS) */   
-    private ShipList ships; 
+    //private ShipList ships; 
     /** Collection of photons on screen. (MODEL CLASS) */ 
-    private PhotonPool photons; 
+    //private PhotonPool photons; 
+    // OLD
+    
+    //Current Models
+    private GridBoard board;
+    private List<Character> characters;
+    private ActionBar bar;
 
     /** The current game state (SIMPLE FIELD) */
     private GameState gameState;
@@ -216,14 +234,25 @@ public class GameEngine implements Screen {
 	 */
 	public void resetGame() {
 		// Local constants
-        int BOARD_WIDTH  = 40; 
-        int BOARD_HEIGHT = 40;
+        int BOARD_WIDTH  = 6; 
+        int BOARD_HEIGHT = 4;
         int MAX_SHIPS    = 20;
         int MAX_PHOTONS  = 1024;
 
         gameState = GameState.PLAY;
 
         // Create the models.
+        board = new GridBoard(BOARD_WIDTH,BOARD_HEIGHT);
+        board.setTileMesh(createMesh(TILE_MODEL,TILE_TEXTURE));
+        characters = new LinkedList<Character>();
+        characters.add(new Character(0));
+        characters.add(new Character(1));
+        characters.add(new Character(2));
+        characters.add(new Character(3));
+        
+        bar = new ActionBar();
+        
+        /*
         board = new Board(BOARD_WIDTH, BOARD_HEIGHT);
 		board.setTileMesh(createMesh(TILE_MODEL,TILE_TEXTURE));
 		        
@@ -233,11 +262,15 @@ public class GameEngine implements Screen {
         ships.setFireMesh(createMesh(FIRE_MODEL,FIRE_TEXTURE));
 
         photons = new PhotonPool(MAX_PHOTONS);
-        photons.setPhotonMesh(createMesh(PHOTON_MODEL,PHOTON_TEXTURE));
+        photons.setPhotonMesh(createMesh(PHOTON_MODEL,PHOTON_TEXTURE));*/
         
-		// Create the two subcontroller
-        gameplayController = new GameplayController(board,ships,photons);
-        physicsController = new CollisionController(board, ships, photons);
+		// Create the three subcontrollers
+        gameplayController = new GameplayController(board,characters,bar);
+        selectionMenuController = new SelectionMenuController(board,characters,bar);
+        actionBarController = new ActionBarController(board,characters,bar);
+        
+        
+        //physicsController = new CollisionController(board, ships, photons);
 	}
 		
 	/** 
@@ -310,19 +343,7 @@ public class GameEngine implements Screen {
 	 * Draws the game board while we are still loading
 	 */
 	public void drawLoad() {
-        canvas.setEyePan(gameLoad);
-        
-        if (ships != null) {
-	        canvas.begin(ships.getPlayer().getX(), ships.getPlayer().getY());
-    	    // Perform the three required passes
-			gl20.glEnable(GL_BLEND);
-	        board.draw(canvas);
-	        ships.draw(canvas);
-	        photons.draw(canvas);
-	    } else {
-	        canvas.begin();
-	    }	
-
+        canvas.begin();
 		canvas.drawMessage(MESSG_LOAD, Color.WHITE);
         canvas.end();
     }
@@ -336,13 +357,17 @@ public class GameEngine implements Screen {
 
 		// Update the other elements
 		board.update();
-		photons.update();
+		for (Character c : characters){
+			c.update();
+		}
+		bar.update();
 
 		// Resolve any collisions
-		physicsController.update();
+		selectionMenuController.update();
+		actionBarController.update();
 
         // if the player ship is dead, end the game with a Game Over:
-		if (gameState == GameState.PLAY) {
+		/*if (gameState == GameState.PLAY) {
 			if (!ships.getPlayer().isActive()) {
 				gameState = GameState.FINISH;
 				Sound s = SoundController.get(SoundController.GAME_OVER_SOUND);
@@ -354,21 +379,28 @@ public class GameEngine implements Screen {
 			if (!ships.getPlayer().isAlive() || ships.numAlive() <= 1) {
 				gameState = GameState.AFTER;
 			}
-        }
+        }*/
     }
     
     /**
      * Called to draw when we are playing the game.
      */
     public void drawGame() {
-        canvas.setEyePan(1.0f);
-        canvas.begin(ships.getPlayer().getX(), ships.getPlayer().getY());
+    	canvas.setEyePan(1.0f);
+        canvas.begin();
 
         // Perform the three required passes
 		gl20.glEnable(GL_BLEND);
+		System.out.println("what");
         board.draw(canvas);
-        ships.draw(canvas);
-        photons.draw(canvas);
+        canvas.end();
+        return;
+        
+        /*
+        for (Character c : characters){
+        	c.draw(canvas);
+        }
+        bar.draw(canvas);
 
         // Optional message pass
         switch (gameState) {
@@ -377,11 +409,11 @@ public class GameEngine implements Screen {
     		break;
         case FINISH:
         case AFTER:
-        	if (!ships.getPlayer().isActive()) {
+        	/*if (!ships.getPlayer().isActive()) {
         		canvas.drawMessage(MESSG_LOST, MESSG_RESTART, Color.WHITE);
         	} else {
         		canvas.drawMessage(MESSG_WON, MESSG_RESTART, Color.WHITE);
-        	}
+        	}*//*
         	break;
         case LOAD:
     		canvas.drawMessage(MESSG_LOAD, Color.WHITE);
@@ -390,7 +422,7 @@ public class GameEngine implements Screen {
         	// No message.
         	break;
         }
-        canvas.end();
+        canvas.end();*/
 	}
 	
 	/**
@@ -491,11 +523,13 @@ public class GameEngine implements Screen {
 		assets.add(FONT_FILE);
 		manager.finishLoading();
 		
+		/*
 		if (manager.isLoaded(BCKGD_TEXTURE)) {
 			Texture texture = manager.get(BCKGD_TEXTURE, Texture.class);
 			texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 			canvas.setBackground(texture);
 		}
+		*/
 		if (manager.isLoaded(FONT_FILE)) {
 			canvas.setFont(manager.get(FONT_FILE,BitmapFont.class));
 		}
@@ -505,8 +539,6 @@ public class GameEngine implements Screen {
      * Unloads all assets previously loaded.
      */
     private void unload() {
-    	canvas.setBackground(null);
-    	canvas.setFont(null);
     	
     	for(String s : assets) {
     		if (manager.isLoaded(s)) {

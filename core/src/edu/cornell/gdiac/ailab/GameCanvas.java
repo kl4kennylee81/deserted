@@ -523,10 +523,12 @@ public class GameCanvas {
 		if (!active) {
 			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
 			return;
-		} else if (!shading) {
+		} 
+		/*else if (!shading) {
 			Gdx.app.error("GameCanvas", "Cannot draw after a message is displayed", new IllegalStateException());
 			return;
-		} else if (this.model != model) {
+		} */
+		else if (this.model != model) {
 			this.model = model;
 			model.getTexture().bind(0);
 		}

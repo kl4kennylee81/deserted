@@ -48,7 +48,7 @@ public class AIController implements InputController {
 	/** The game board; used for pathfinding */
 	private Board board;
 	/** The other ships; used to find targets */
-	private ShipList fleet;
+	//private ShipList fleet;
 	/** The ship's current state in the FSM */
 	private FSMState state;
 	/** The target ship (to chase or attack). */
@@ -70,10 +70,10 @@ public class AIController implements InputController {
 	 * @param board The game board (for pathfinding)
 	 * @param ships The list of ships (for targetting)
 	 */
-	public AIController(int id, Board board, ShipList ships) {
-		this.ship = ships.get(id);
+	public AIController(int id, Board board) {
+		//this.ship = ships.get(id);
 		this.board = board;
-		this.fleet = ships;
+		//this.fleet = ships;
 		
 		state = FSMState.SPAWN;
 		move  = CONTROL_NO_ACTION;
