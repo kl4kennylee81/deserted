@@ -28,6 +28,7 @@ public class AIController {
 			if (c.needsSelection && c.isAI){
 				c.needsSelection = false;
 				//TODO: some function to set c's queuedActions
+				//break it up into whatever module/functions you want
 			}
 		}
 	}

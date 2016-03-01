@@ -322,7 +322,6 @@ public class GameEngine implements Screen {
     		if (actionBarController.isAttack){
     			inGameState = InGameState.ATTACK;
     		} else if (actionBarController.isPlayerSelection) {
-    			//Think about how to actually add AI
     			inGameState = InGameState.SELECTION;
     		} else if (actionBarController.isAISelection) {
     			aiController.update();
@@ -344,33 +343,8 @@ public class GameEngine implements Screen {
     				inGameState = InGameState.NORMAL;
     			}
     		}
-    		break;
-    		
+    		break;	
     	}
-    	/*
-    	if (actionBarController.isAttack()){
-			inGameState = InGameState.ATTACK;
-		} else if (actionBarController.isSelection) {
-			inGameState = InGameState.SELECTION;
-		} else {
-			inGameState = InGameState.NORMAL;
-		}*/
-		
-    	/*
-    	// Update the ships
-		gameplayController.update();
-
-		// Update the other elements
-		board.update();
-		for (Character c : characters){
-			c.update();
-		}
-		bar.update();
-
-		// Resolve any collisions
-		selectionMenuController.update();
-		actionBarController.update();
-		*/
     }
     
     /**
