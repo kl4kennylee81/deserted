@@ -177,7 +177,7 @@ public class SelectionMenu {
 			if (action.cost > TOTAL_SLOTS - takenSlots){
 				canvas.drawText(action.name, 200, 630-50*i, new Color(1f, 1f, 1f, 0.5f));
 			} else {
-				canvas.drawText(action.name, 200, 630-50*i, Color.WHITE);
+				canvas.drawText(action.name, 200, 630-50*i, Color.BLACK);
 			}
 		}
 		
@@ -203,7 +203,7 @@ public class SelectionMenu {
 		
 		//Write the names of selected action
 		for (ActionNode an : selectedActions){
-			canvas.drawCenteredText(an.action.name, 400+offset+75*an.action.cost/2, 580);
+			canvas.drawCenteredText(an.action.name, 400+offset+75*an.action.cost/2, 580, Color.BLACK);
 			offset+=75*an.action.cost;
 		}
 		

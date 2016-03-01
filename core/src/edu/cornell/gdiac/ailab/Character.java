@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
+import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.ailab.Action.Effect;
 import edu.cornell.gdiac.mesh.TexturedMesh;
 
@@ -33,6 +34,8 @@ public class Character {
 	boolean needsAttack;
 	
 	boolean isPersisting;
+	boolean isAI;
+	Difficulty diff;
 	
 	Action[] availableActions; 
 	
@@ -135,6 +138,11 @@ public class Character {
 	
 	public void setQueuedActions(List<ActionNode> actions){
 		this.queuedActions = (LinkedList<ActionNode>) actions;
+	}
+	
+	public void setAI(Difficulty diff){
+		this.diff = diff;
+		this.isAI = true;
 	}
 	
 	boolean needShadow() {

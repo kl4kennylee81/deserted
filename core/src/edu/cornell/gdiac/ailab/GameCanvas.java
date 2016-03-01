@@ -815,10 +815,10 @@ public class GameCanvas {
 		displayFont.draw(spriteBatch, msg, x,y);
 	}
 	
-	public void drawCenteredText(String msg, float x, float y) {
+	public void drawCenteredText(String msg, float x, float y, Color color) {
 		layout.setText(displayFont, msg);
 		float width = layout.width;
-		displayFont.setColor(Color.WHITE);
+		displayFont.setColor(color);
 		displayFont.draw(spriteBatch, msg, x-width/2, y);
 	}
 

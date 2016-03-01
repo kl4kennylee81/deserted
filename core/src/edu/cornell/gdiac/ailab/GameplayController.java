@@ -56,6 +56,8 @@ public class GameplayController {
 		selected = null;
 	}
 	
+	int i;
+	 
 	/** 
 	 * Invokes the controller for this ship.
 	 *
@@ -81,12 +83,11 @@ public class GameplayController {
 					//System.out.println("setting to selected");
 					isDone = false;
 					selected = c;
+					i = 0;
 					break;
 				}
 			}
 		}
-		isDone = true;
-		
 	}	
 	
 	private void executeAction(ActionNode a_node){

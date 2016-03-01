@@ -19,7 +19,8 @@ public class Action {
 		SHIELD,
 		STRAIGHT,
 		DIAGONAL,
-		SINGLE
+		SINGLE,
+		NOP
 	}
 	
 	/* TODO: Make separate effect class for values */
