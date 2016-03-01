@@ -15,6 +15,7 @@ public class Character {
 	int health;
 	int max_health;
 	float speed;
+	float castSpeed;
 	//Highlight during selection screen
 	boolean isHighlighted;
 	int xPosition;
@@ -61,6 +62,7 @@ public class Character {
 			angle = 180;
 			leftside = true;
 			speed = 0.007f;
+			castSpeed = 0.003f;
 			break;
 		case 1:
 			xPosition = 0;
@@ -68,6 +70,7 @@ public class Character {
 			angle = 180;
 			leftside = true;
 			speed = 0.004f;
+			castSpeed = 0.006f;
 			break;
 		case 2:
 			xPosition = 5;
@@ -75,6 +78,7 @@ public class Character {
 			angle = 0;
 			leftside = false;
 			speed = 0.005f;
+			castSpeed = 0.005f;
 			break;
 		case 3:
 			xPosition = 5;
@@ -82,6 +86,7 @@ public class Character {
 			angle = 0;
 			leftside = false;
 			speed = 0.006f;
+			castSpeed = 0.004f;
 			break;
 		}
 	}

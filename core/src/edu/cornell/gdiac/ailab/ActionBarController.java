@@ -22,8 +22,12 @@ public class ActionBarController {
 		this.isAttack = false;
 		for (Character c : characters){
 			c.castPosition %= 1;
-			c.castPosition += c.speed;
-			if (c.castPosition >= bar.castPoint && c.castPosition-c.speed < bar.castPoint) {
+			if (c.castPosition > bar.castPoint){
+				c.castPosition += c.castSpeed;
+			} else {
+				c.castPosition += c.speed;
+			}
+			if (c.castPosition >= bar.castPoint && c.castPosition-c.castSpeed < bar.castPoint) {
 				c.needsSelection = true;
 				this.isSelection = true;
 			}
