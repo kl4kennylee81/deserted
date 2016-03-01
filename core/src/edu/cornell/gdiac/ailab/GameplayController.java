@@ -68,19 +68,19 @@ public class GameplayController {
 	public void update() {
 		//TODO EVERYTHING
 		if (selected != null){
+			//System.out.println("why wtf\n");
 			//Do that dudes actions
-			i++;
-			if (i==60){
-				//Just for now, a quick pause for the attack
-				selected.popCast();
-				selected.needsAttack = false;
-				selected = null;
-			}
+			ActionNode action = selected.popCast();
+			selected.needsAttack = false;
+			executeAction(action);
+			selected = null;
 		} else {
 			isDone = true;
 			//Sort characters by speed then check their attacks
+			//these characters should be presorted in the initial loading
 			for (Character c : characters){
 				if (c.needsAttack){
+					//System.out.println("setting to selected");
 					isDone = false;
 					selected = c;
 					i = 0;
@@ -89,6 +89,53 @@ public class GameplayController {
 			}
 		}
 	}	
+	
+	private void executeAction(ActionNode a_node){
+		//switch between types of actions
+		switch(a_node.action.pattern){
+			case MOVE:
+				executeMovement(a_node);
+				break;
+			case SHIELD:
+				executeShield(a_node);
+				break;
+			case STRAIGHT:
+				executeStraight(a_node);
+				break;
+			case DIAGONAL:
+				executeDiagonal(a_node);
+				break;
+			case SINGLE:
+				executeSingle(a_node);
+				break;
+		}
+	}
+	
+	private void executeMovement(ActionNode a_node){
+		selected.xPosition = a_node.xPosition;
+		selected.yPosition = a_node.yPosition;
+	}
+	
+	private void executeShield(ActionNode a_node){
+		
+	}
+	
+	private void executeStraight(ActionNode a_node){
+		int selected_xPos = selected.xPosition;
+		//
+	}
+	
+	private void executeDiagonal(ActionNode a_node){
+		
+	}
+	
+	private void executeSingle(ActionNode a_node){
+		
+	}
+	
+	private void processHit(Character c, ActionNode action){
+		
+	}
 	
 	// make isDone true when every character who needs to attack has attacked
 	public boolean isDone() {

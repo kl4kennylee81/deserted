@@ -33,6 +33,7 @@ public class Character {
 	boolean isSelecting;
 	boolean needsAttack;
 	
+	boolean isPersisting;
 	boolean isAI;
 	Difficulty diff;
 	
@@ -161,8 +162,8 @@ public class Character {
 		}
 	}
 	
-	public void popCast(){
-		queuedActions.poll();
+	public ActionNode popCast(){
+		return queuedActions.poll();
 	}
 	
 	public void draw(GameCanvas canvas){
