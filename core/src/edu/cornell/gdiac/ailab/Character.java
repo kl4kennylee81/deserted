@@ -154,8 +154,8 @@ public class Character {
 		}
 	}
 	
-	public void popCast(){
-		queuedActions.poll();
+	public ActionNode popCast(){
+		return queuedActions.poll();
 	}
 	
 	public void draw(GameCanvas canvas){
