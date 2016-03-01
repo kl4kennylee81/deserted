@@ -32,6 +32,8 @@ public class Character {
 	boolean isSelecting;
 	boolean needsAttack;
 	
+	boolean isPersisting;
+	
 	Action[] availableActions; 
 	
 	//PersistingActions: add persisting actions for things like shield or projectiles
