@@ -21,7 +21,9 @@ public class ActionBarController {
 		this.isSelection = false;
 		this.isAttack = false;
 		for (Character c : characters){
-			c.castPosition %= 1;
+			if (c.castPosition > 1){
+				c.castPosition %= 1;	
+			}
 			float oldCast = c.castPosition;
 			if (c.castPosition > bar.castPoint){
 				c.castPosition += c.castSpeed;

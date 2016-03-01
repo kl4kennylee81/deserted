@@ -56,6 +56,8 @@ public class GameplayController {
 		selected = null;
 	}
 	
+	int i;
+	 
 	/** 
 	 * Invokes the controller for this ship.
 	 *
@@ -81,8 +83,6 @@ public class GameplayController {
 				}
 			}
 		}
-		isDone = true;
-		
 	}	
 	
 	// make isDone true when every character who needs to attack has attacked
