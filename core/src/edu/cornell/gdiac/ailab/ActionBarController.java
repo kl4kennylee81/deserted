@@ -22,12 +22,13 @@ public class ActionBarController {
 		this.isAttack = false;
 		for (Character c : characters){
 			c.castPosition %= 1;
+			float oldCast = c.castPosition;
 			if (c.castPosition > bar.castPoint){
 				c.castPosition += c.castSpeed;
 			} else {
 				c.castPosition += c.speed;
 			}
-			if (c.castPosition >= bar.castPoint && c.castPosition-c.castSpeed < bar.castPoint) {
+			if (c.castPosition >= bar.castPoint && oldCast < bar.castPoint) {
 				c.needsSelection = true;
 				this.isSelection = true;
 			}
@@ -36,7 +37,6 @@ public class ActionBarController {
 				this.isAttack = true;
 			}
 		}
-		
 	}
 	
 	public boolean isAttack() {
