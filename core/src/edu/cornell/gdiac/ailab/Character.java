@@ -29,16 +29,19 @@ public class Character {
 	boolean leftside;
 	boolean needsSelection;
 	boolean isSelecting;
+	boolean needsAttack;
 	
 	Action[] availableActions; 
+	
+	//PersistingActions: add persisting actions for things like shield or projectiles
 			
-	List<Action> queuedActions;
+	LinkedList<ActionNode> queuedActions;
 	
 	public Character (int i, Texture texture, Color color) {
 		this.texture = texture;
 		this.color = color;
 		castPosition = 0;
-		queuedActions = new LinkedList<Action>();
+		queuedActions = new LinkedList<ActionNode>();
 		availableActions = new Action[4];
 		
 		//We will preload moves in actual game, that way we don't need Pattern and Effect from Action
@@ -123,6 +126,34 @@ public class Character {
 		this.texture = texture;
 	}
 	
+	public void setQueuedActions(List<ActionNode> actions){
+		this.queuedActions = (LinkedList<ActionNode>) actions;
+	}
+	
+	boolean needShadow() {
+		return xPosition!=selectionMenu.shadowX || yPosition!=selectionMenu.shadowY;
+	}
+	
+	boolean hasAttacks() {
+		return queuedActions.peek() != null;
+	}
+	
+	float getNextCast() {
+		ActionNode an = queuedActions.peek();
+		if (an != null){
+			return an.executePoint;
+		} else {
+			return 2f;
+		}
+	}
+	
+	public void executeCast(){
+		
+	}
+	
+	public void interruptCast(){
+		
+	}
 	
 	public void draw(GameCanvas canvas){
 		drawShip(canvas);
@@ -131,6 +162,9 @@ public class Character {
 		if (isSelecting){
 			drawSelection(canvas);
 			selectionMenu.draw(canvas);
+			if(needShadow()){
+				drawShadowShip(canvas);
+			}
 		}
 	}
 	
@@ -139,6 +173,13 @@ public class Character {
 		float canvasY = 100*yPosition;
 		int angle = leftside ? 270 : 90;
 		canvas.drawShip(texture, canvasX,canvasY,color,angle);
+	}
+	
+	public void drawShadowShip(GameCanvas canvas){
+		float canvasX = 100 + 100*selectionMenu.shadowX;
+		float canvasY = 100*selectionMenu.shadowY;
+		int angle = leftside ? 270 : 90;
+		canvas.drawShip(texture, canvasX,canvasY,color.cpy().lerp(Color.CLEAR, 0.3f),angle);
 	}
 	
 	private void drawHealth(GameCanvas canvas){

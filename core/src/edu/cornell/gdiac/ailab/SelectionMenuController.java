@@ -38,55 +38,54 @@ public class SelectionMenuController {
 		this.boardHeight = board.height;
 	}
 	
-	
-	//BIG TODO: after using move need to show some copy on board of where it would be
-	
 	public void update(){
 		controls.getAction();
 		if (selected != null){
-			board.reset();
-			board.occupy(characters);
 			SelectionMenu menu = selected.getSelectionMenu();
 			Action action = menu.getSelectedAction();
 			boolean choosingTarget =  menu.getChoosingTarget();
-			int curX = selected.xPosition;
-			int curY = selected.yPosition;
+			int shadowX = menu.shadowX;
+			int shadowY = menu.shadowY;
 			int selectedX = menu.getSelectedX();
 			int selectedY = menu.getSelectedY();
 			boolean leftside = selected.leftside;
-			drawHighlights(selected, action, choosingTarget, selectedX, selectedY);
+			board.reset();
+			board.occupy(characters, selected, menu.shadowX, menu.shadowY);
+			if (menu.canDoAction()){
+				drawHighlights(selected, action, choosingTarget, selectedX, selectedY, shadowX, shadowY);
+			}
 			if (!choosingTarget){
 				if (controls.pressedEnter()){
 					selected.setSelecting(false);
+					selected.setQueuedActions(menu.getQueuedActions());
 					selected = null;
-				} else if (controls.pressedA()){
+				} else if (controls.pressedA() && menu.canDoAction()){
 					if (action.pattern == Pattern.STRAIGHT){
-						//Change casttime based on action.cost
-						menu.add(new ActionNode(action,0.8f,0,0));
+						menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*0.075f,0,0));
 					} else if (action.pattern == Pattern.SINGLE){
 						selectedX = leftside ? SINGLE_X_LEFT : SINGLE_X_RIGHT;
 						selectedY = SINGLE_Y;
 						menu.setChoosingTarget(true);
 					} else if (action.pattern == Pattern.MOVE){
-						if (!board.isOccupied(curX, curY+1)){
-							selectedX = curX;
-							selectedY = curY+1;
-						} else if (!board.isOccupied(curX+1, curY)){
-							selectedX = curX+1;
-							selectedY = curY;
-						} else if (!board.isOccupied(curX-1, curY)){
-							selectedX = curX-1;
-							selectedY = curY;
-						} else if (!board.isOccupied(curX, curY-1)){
-							selectedX = curX;
-							selectedY = curY-1;
+						if (!board.isOccupied(shadowX, shadowY+1)){
+							selectedX = shadowX;
+							selectedY = shadowY+1;
+						} else if (!board.isOccupied(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
+							selectedX = shadowX+1;
+							selectedY = shadowY;
+						} else if (!board.isOccupied(shadowX-1, shadowY) && !(!leftside && shadowY == boardWidth/2)){
+							selectedX = shadowX-1;
+							selectedY = shadowY;
+						} else if (!board.isOccupied(shadowX, shadowY-1)){
+							selectedX = shadowX;
+							selectedY = shadowY-1;
 						} else {
 							//do something to tell them they cant move
 						}
 						menu.setChoosingTarget(true);
 					} else if (action.pattern == Pattern.DIAGONAL){
 						selectedX = X_OFFSCREEN;
-						if (curY < boardHeight/2){
+						if (shadowY < boardHeight/2){
 							selectedY = DIAGONAL_UP;
 						} else {
 							selectedY = DIAGONAL_DOWN;
@@ -96,15 +95,15 @@ public class SelectionMenuController {
 						
 					}
 				} else if (controls.pressedS()){
-					menu.removeLast();
-				} else if (controls.pressedUp() && !controls.pressedDown()){
-					menu.selectedAction -= 1;
-					if (menu.selectedAction < 0){
-						menu.selectedAction += 4;
+					ActionNode old = menu.removeLast();
+					if (old != null && old.action.pattern == Pattern.MOVE){
+						menu.rewindShadow();
 					}
+				} else if (controls.pressedUp() && !controls.pressedDown()){
+					//Actions go from up down, so we need to flip
+					menu.changeSelected(false);
 				} else if (controls.pressedDown() && !controls.pressedUp()){
-					menu.selectedAction += 1;
-					menu.selectedAction %= 4;
+					menu.changeSelected(true);
 				}
 			} else {
 				switch (action.pattern){
@@ -136,24 +135,26 @@ public class SelectionMenuController {
 				case MOVE:
 					//Need to check in all of these if its a valid move;
 					if (controls.pressedUp() && !controls.pressedDown()){
-						if (!board.isOccupied(curX, curY+1)){
-							selectedX = curX;
-							selectedY = curY+1;
+						if (!board.isOccupied(shadowX, shadowY+1)){
+							selectedX = shadowX;
+							selectedY = shadowY+1;
 						}
+						
 					} else if (controls.pressedDown() && !controls.pressedUp()){
-						if (!board.isOccupied(curX, curY-1)){
-							selectedX = curX;
-							selectedY = curY-1;
+						if (!board.isOccupied(shadowX, shadowY-1)){
+							selectedX = shadowX;
+							selectedY = shadowY-1;
 						}
 					} else if (controls.pressedLeft() && !controls.pressedRight()){
-						if (!board.isOccupied(curX-1, curY)){
-							selectedX = curX-1;
-							selectedY = curY;
+						//if (not occupied) and (not rightside at x=3)
+						if (!board.isOccupied(shadowX-1, shadowY) && !(!leftside && shadowX == boardWidth/2)){
+							selectedX = shadowX-1;
+							selectedY = shadowY;
 						}
 					} else if (controls.pressedRight() && !controls.pressedLeft()){
-						if (!board.isOccupied(curX+1, curY)){
-							selectedX = curX+1;
-							selectedY = curY;
+						if (!board.isOccupied(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
+							selectedX = shadowX+1;
+							selectedY = shadowY;
 						}
 					}
 					break;
@@ -167,10 +168,20 @@ public class SelectionMenuController {
 				default:
 					break;
 				}
-				if (controls.pressedA()){
-					//Change casttime based on action.cost
-					menu.add(new ActionNode(action,0.8f,selectedX,selectedY));
+				if (controls.pressedEnter()){
+					menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/menu.TOTAL_SLOTS),selectedX,selectedY));
 					menu.setChoosingTarget(false);
+					selected.setSelecting(false);
+					selected.setQueuedActions(menu.getQueuedActions());
+					selected = null;
+				}
+				if (controls.pressedA()){
+					menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/menu.TOTAL_SLOTS),selectedX,selectedY));
+					menu.setChoosingTarget(false);
+					menu.resetPointer();
+					if (action.pattern == Pattern.MOVE){
+						menu.setShadow(selectedX,selectedY);
+					}
 				} else if (controls.pressedS()){
 					menu.setChoosingTarget(false);
 				}
@@ -183,6 +194,9 @@ public class SelectionMenuController {
 				if (c.needsSelection){
 					isDone = false;
 					selected = c;
+					SelectionMenu menu = c.getSelectionMenu();
+					menu.reset();
+					menu.setShadow(c.xPosition,c.yPosition);
 					c.needsSelection = false;
 					c.isSelecting = true;
 					break;
@@ -191,18 +205,18 @@ public class SelectionMenuController {
 		}	
 	}
 	
-	public void drawHighlights(Character selected, Action action, boolean choosingTarget, int xPos, int yPos){
+	public void drawHighlights(Character selected, Action action, boolean choosingTarget, int xPos, int yPos, int shadX, int shadY){
 		if (action.pattern == Pattern.STRAIGHT){
-			drawStraight(selected.leftside, selected.xPosition, selected.yPosition);
+			drawStraight(selected.leftside, shadX, shadY);
 		}
 		if (action.pattern == Pattern.SINGLE){
 			drawSingle(selected.leftside, choosingTarget, xPos, yPos);
 		}
 		if (action.pattern == Pattern.MOVE){
-			drawMove(selected, selected.leftside, choosingTarget, xPos, yPos);
+			drawMove(shadX, shadY, selected.leftside, choosingTarget, xPos, yPos);
 		}
 		if (action.pattern == Pattern.DIAGONAL){
-			drawDiagonal(selected,selected.leftside, choosingTarget, yPos);
+			drawDiagonal(shadX, shadY,selected.leftside, choosingTarget, yPos);
 		}
 	}
 	
@@ -229,24 +243,27 @@ public class SelectionMenuController {
 		}
 	}
 	
-	public void drawMove(Character selected, boolean leftside, boolean choosingTarget, int x, int y){
-		int curX = selected.xPosition;
-		int curY = selected.yPosition;
-		board.setCanTarget(curX-1, curY);
-		board.setCanTarget(curX+1, curY);
-		board.setCanTarget(curX, curY-1);
-		board.setCanTarget(curX, curY+1);
+	public void drawMove(int xPos, int yPos, boolean leftside, boolean choosingTarget, int x, int y){
+		//if not leftside and at x=2 then draw
+		if (!(leftside && xPos == boardWidth/2-1)){
+			board.setCanTarget(xPos+1, yPos);
+		}
+		if (!(!leftside && xPos == boardWidth/2)){
+			board.setCanTarget(xPos-1, yPos);
+		}
+		board.setCanTarget(xPos, yPos-1);
+		board.setCanTarget(xPos, yPos+1);
 		if (choosingTarget){
 			board.setHighlighted(x, y);
 		} else {
-			if (!board.isOccupied(curX, curY+1)){
-				board.setHighlighted(curX, curY+1);
-			} else if (!board.isOccupied(curX+1, curY)){
-				board.setHighlighted(curX+1, curY);
-			} else if (!board.isOccupied(curX-1, curY)){
-				board.setHighlighted(curX-1, curY);
-			} else if (!board.isOccupied(curX, curY-1)){
-				board.setHighlighted(curX, curY-1);
+			if (!board.isOccupied(xPos, yPos+1)){
+				board.setHighlighted(xPos, yPos+1);
+			} else if (!board.isOccupied(xPos+1, yPos) && !(leftside && xPos == boardWidth/2-1)){
+				board.setHighlighted(xPos+1, yPos);
+			} else if (!board.isOccupied(xPos-1, yPos) && !(!leftside && xPos == boardWidth/2)){
+				board.setHighlighted(xPos-1, yPos);
+			} else if (!board.isOccupied(xPos, yPos-1)){
+				board.setHighlighted(xPos, yPos-1);
 			} else {
 				//should never get here
 				//this means we let them move when every space was occupied
@@ -255,60 +272,58 @@ public class SelectionMenuController {
 		}
 	}
 	
-	public void drawDiagonal(Character selected, boolean leftside, boolean choosingTarget, int yPos){
-		int curY = selected.yPosition;
+	public void drawDiagonal(int xPos, int yPos, boolean leftside, boolean choosingTarget, int yTarget){
 		if (leftside){
-			int curX = selected.xPosition+1;
+			xPos++;
 			if (!choosingTarget){
-				if (curY < boardHeight/2){
+				if (yPos < boardHeight/2){
 					for (int i = 0; i < boardHeight; i++){
-						board.setHighlighted(curX+i, curY+i);
-						board.setCanTarget(curX+i, curY-i);
+						board.setHighlighted(xPos+i, yPos+i);
+						board.setCanTarget(xPos+i, yPos-i);
 					}
 				} else {
 					for (int i = 0; i < boardHeight; i++){
-						board.setHighlighted(curX+i, curY-i);
-						board.setCanTarget(curX+i, curY+i);
+						board.setHighlighted(xPos+i, yPos-i);
+						board.setCanTarget(xPos+i, yPos+i);
 					}
 				}
 			} else {
-				if (yPos == DIAGONAL_UP){
+				if (yTarget == DIAGONAL_UP){
 					for (int i = 0; i < boardHeight; i++){
-						board.setHighlighted(curX+i, curY+i);
-						board.setCanTarget(curX+i, curY-i);
+						board.setHighlighted(xPos+i, yPos+i);
+						board.setCanTarget(xPos+i, yPos-i);
 					}
 				} else {
 					for (int i = 0; i < boardHeight; i++){
-						board.setHighlighted(curX+i, curY-i);
-						board.setCanTarget(curX+i, curY+i);
+						board.setHighlighted(xPos+i, yPos-i);
+						board.setCanTarget(xPos+i, yPos+i);
 					}
 				}
-				
 			}
 		} else {
-			int curX = selected.xPosition-1;
+			xPos--;
 			if (!choosingTarget){
-				if (curY < boardHeight/2){
+				if (yPos < boardHeight/2){
 					for (int i = 0; i < boardHeight; i++){
-						board.setHighlighted(curX-i, curY+i);
-						board.setCanTarget(curX-i, curY-i);
+						board.setHighlighted(xPos-i, yPos+i);
+						board.setCanTarget(xPos-i, yPos-i);
 					}
 				} else {
 					for (int i = 0; i < boardHeight; i++){
-						board.setHighlighted(curX-i, curY-i);
-						board.setCanTarget(curX-i, curY+i);
+						board.setHighlighted(xPos-i, yPos-i);
+						board.setCanTarget(xPos-i, yPos+i);
 					}
 				}
 			} else {
-				if (yPos == DIAGONAL_UP){
+				if (yTarget == DIAGONAL_UP){
 					for (int i = 0; i < boardHeight; i++){
-						board.setHighlighted(curX-i, curY+i);
-						board.setCanTarget(curX-i, curY-i);
+						board.setHighlighted(xPos-i, yPos+i);
+						board.setCanTarget(xPos-i, yPos-i);
 					}
 				} else {
 					for (int i = 0; i < boardHeight; i++){
-						board.setHighlighted(curX-i, curY-i);
-						board.setCanTarget(curX-i, curY+i);
+						board.setHighlighted(xPos-i, yPos-i);
+						board.setCanTarget(xPos-i, yPos+i);
 					}
 				}
 				

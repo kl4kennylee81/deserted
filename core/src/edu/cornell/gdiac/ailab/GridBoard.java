@@ -152,9 +152,13 @@ public class GridBoard {
 		}
 	}
 	
-	public void occupy(List<Character> chars){
+	public void occupy(List<Character> chars, Character selected, int x, int y){
 		for (Character c : chars){
-			tiles[c.xPosition][c.yPosition].isOccupied = true;
+			if (c.equals(selected)){
+				tiles[x][y].isOccupied = true;
+			} else {
+				tiles[c.xPosition][c.yPosition].isOccupied = true;
+			}
 		}
 	}
 	

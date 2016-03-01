@@ -323,9 +323,18 @@ public class GameEngine implements Screen {
     		selectionMenuController.update();
     		if (selectionMenuController.isDone()){
     			inGameState = InGameState.NORMAL;
+    			board.reset();
     		}
     		break;
     	case ATTACK:
+    		gameplayController.update();
+    		if (gameplayController.isDone()){
+    			if (actionBarController.isSelection){
+    				inGameState = InGameState.SELECTION;
+    			} else {
+    				inGameState = InGameState.SELECTION;
+    			}
+    		}
     		break;
     		
     	}

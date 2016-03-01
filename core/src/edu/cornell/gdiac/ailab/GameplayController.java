@@ -22,15 +22,9 @@ import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.graphics.*;
 
 /**
- * Class to process AI and player input
- *
  * As a major subcontroller, this class must have a reference to all the models.
  */
 public class GameplayController {
-	/** How close to the center of the tile we need to be to stop drifting */
-	private static final float DRIFT_TOLER = 1.0f;
-	/** How fast we drift to the tile center when paused */
-	private static final float DRIFT_SPEED = 0.325f;
 
 	/** Reference to the game board */
 	public GridBoard board; 
@@ -39,14 +33,9 @@ public class GameplayController {
 	
 	public ActionBar bar;
 	
+	boolean isDone;
 	
-	/** Reference to all the ships in the game */	
-	//public ShipList ships; 
-	/** Reference to the active photons */
-	//public PhotonPool photons; 
-	
-	/** List of all the input (both player and AI) controllers */
-	protected InputController[] controls;
+	Character selected;
 
 	/** Random number generator for state initialization */
 	private Random random;
@@ -62,9 +51,9 @@ public class GameplayController {
 		this.board = board;
 		this.characters = chars;
 		this.bar = bar;
+		this.isDone = false;
 		
-		controls = new InputController[4];
-		controls[0] = new PlayerController();
+		selected = null;
 	}
 	
 	/** 
@@ -75,9 +64,27 @@ public class GameplayController {
 	 * but photon collisions are not.
 	 */
 	public void update() {
-		for (Character c : characters){
-			c.castPosition += c.speed;
-			c.castPosition %= 1;
-		}
+		//TODO EVERYTHING
+		/*
+		if (selected != null){
+			//Do that dudes actions
+		} else {
+			isDone = true;
+			//Sort characters by speed then check their attacks
+			for (Character c : characters){
+				if (c.needsAttack){
+					isDone = false;
+					selected = c;
+					break;
+				}
+			}
+		}*/
+		isDone = true;
+		
 	}	
+	
+	// make isDone true when every character who needs to attack has attacked
+	public boolean isDone() {
+		return isDone;
+	}
 }

@@ -27,6 +27,10 @@ public class ActionBarController {
 				c.needsSelection = true;
 				this.isSelection = true;
 			}
+			if (c.hasAttacks() && c.castPosition >= c.getNextCast()){
+				c.needsAttack = true;
+				this.isAttack = true;
+			}
 		}
 		
 	}

@@ -15,14 +15,22 @@ public class SelectionMenu {
 	Action[] actions;
 	int selectedAction;
 	LinkedList<ActionNode> selectedActions;
-	int totalSlots;
+	final int TOTAL_SLOTS = 4;
 	int takenSlots;
 	TexturedMesh menuMesh;
 	TexturedMesh menuBar;
 	private boolean choosingTarget;
 	private int selectedX;
 	private int selectedY;
+	private float lerpVal;
+	private boolean increasing;
 	
+	int shadowX;
+	int shadowY;
+	
+	LinkedList<Integer> oldShadowX;
+	LinkedList<Integer> oldShadowY;
+
 	//Initialized with character
 	//draw menu
 	//draw action selection bar
@@ -31,13 +39,18 @@ public class SelectionMenu {
 	// interval = (ActionBar.length-ActionBar.castPoint)/SelectionMenu.totalSlots
 	// actionNode.executePoint = ActionBar.castPoint + interval * (selectedAction.cost + takenSlots)
 	
+	//Currently under the impression that there will always be a one cost skill
+	
 	public SelectionMenu(Action[] actions){
 		this.actions = actions;
 		selectedAction = 0;
-		totalSlots = 4;
 		takenSlots = 0;
-		selectedActions = new LinkedList<ActionNode>();
 		choosingTarget = false;
+		selectedActions = new LinkedList<ActionNode>();
+		oldShadowX = new LinkedList<Integer>();
+		oldShadowY = new LinkedList<Integer>();
+		lerpVal = 0;
+		increasing = true;
 	}
 	
 	public void add(ActionNode actionNode){
@@ -45,11 +58,16 @@ public class SelectionMenu {
 		takenSlots += actionNode.action.cost;
 	}
 	
-	public void removeLast(){
+	public ActionNode removeLast(){
 		ActionNode an = selectedActions.pollLast();
 		if (an != null) {
 			takenSlots -= an.action.cost;
 		}
+		return an;
+	}
+	
+	public List<ActionNode> getQueuedActions(){
+		return selectedActions;
 	}
 	
 	public Action getSelectedAction(){
@@ -80,11 +98,83 @@ public class SelectionMenu {
 		selectedY = y;
 	}
 	
+	public void setShadow(int shadX, int shadY){
+		shadowX = shadX;
+		shadowY = shadY;
+		oldShadowX.push(shadX);
+		oldShadowY.push(shadY);
+	}
+	
+	public void rewindShadow(){
+		oldShadowX.pop();
+		oldShadowY.pop();
+		shadowX = oldShadowX.peek();
+		shadowY = oldShadowY.peek();
+	}
+	
+	public boolean canDoAction(){
+		return takenSlots < TOTAL_SLOTS;
+	}
+	
+	public boolean changeSelected(boolean up){
+		if (up){
+			for (int i = 0; i < TOTAL_SLOTS; i++){
+				selectedAction += 1;
+				selectedAction %= TOTAL_SLOTS;
+				if (actions[selectedAction].cost <= TOTAL_SLOTS - takenSlots){
+					return true;
+				}
+			}
+		} else {
+			for (int i = 0; i < TOTAL_SLOTS; i++){
+				selectedAction -= 1;
+				if (selectedAction < 0){
+					selectedAction += TOTAL_SLOTS;
+				}
+				if (actions[selectedAction].cost <= TOTAL_SLOTS - takenSlots){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public void resetPointer(){
+		if (actions[selectedAction].cost > TOTAL_SLOTS - takenSlots && takenSlots < TOTAL_SLOTS){
+			for (int i = 0; i < TOTAL_SLOTS; i++){
+				selectedAction = i;
+				if (actions[selectedAction].cost <= TOTAL_SLOTS - takenSlots){
+					return;
+				}
+			}
+		}
+	}
+	
+	public void reset(){
+		selectedAction = 0;
+		takenSlots = 0;
+		choosingTarget = false;
+		selectedActions.clear();
+		oldShadowX.clear();
+		oldShadowY.clear();
+	}
+	
 	public void draw(GameCanvas canvas){
+		if (increasing){
+			lerpVal+=0.03;
+			if (lerpVal >= 1){
+				increasing = false;
+			}
+		} else {
+			lerpVal -= 0.03;
+			if (lerpVal <= 0){
+				increasing = true;
+			}
+		}
 		//Draw action names
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
-			if (action.cost > totalSlots - takenSlots){
+			if (action.cost > TOTAL_SLOTS - takenSlots){
 				canvas.drawText(action.name, 200, 630-50*i, new Color(1f, 1f, 1f, 0.5f));
 			} else {
 				canvas.drawText(action.name, 200, 630-50*i, Color.WHITE);
@@ -94,7 +184,7 @@ public class SelectionMenu {
 		if (choosingTarget){
 			//draws grid target
 			canvas.drawPointer(145+selectedX*100, 45+selectedY*100, Color.BLACK);
-		} else {
+		} else if (canDoAction()){
 			//draws action name pointers
 			canvas.drawPointer(180,620-50*selectedAction, Color.CORAL);
 		}
@@ -104,6 +194,8 @@ public class SelectionMenu {
 		for (int i = 0; i < 4; i++){
 			if (i < takenSlots) {
 				canvas.drawBox(400+80*i,600,75,30,Color.CORAL);
+			} else if (i < takenSlots+actions[selectedAction].cost){
+				canvas.drawBox(400+80*i,600,75,30,Color.WHITE.cpy().lerp(Color.RED,lerpVal));
 			} else {
 				canvas.drawBox(400+80*i,600,75,30,Color.WHITE);
 			}
