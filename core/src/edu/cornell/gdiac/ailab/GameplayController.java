@@ -65,9 +65,11 @@ public class GameplayController {
 	 */
 	public void update() {
 		//TODO EVERYTHING
-		/*
 		if (selected != null){
 			//Do that dudes actions
+			selected.popCast();
+			selected.needsAttack = false;
+			selected = null;
 		} else {
 			isDone = true;
 			//Sort characters by speed then check their attacks
@@ -78,7 +80,7 @@ public class GameplayController {
 					break;
 				}
 			}
-		}*/
+		}
 		isDone = true;
 		
 	}	

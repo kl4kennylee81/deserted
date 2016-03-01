@@ -313,7 +313,7 @@ public class GameEngine implements Screen {
     	switch(inGameState){
     	case NORMAL:
     		actionBarController.update();
-    		if (actionBarController.isAttack()){
+    		if (actionBarController.isAttack){
     			inGameState = InGameState.ATTACK;
     		} else if (actionBarController.isSelection) {
     			inGameState = InGameState.SELECTION;
@@ -332,7 +332,7 @@ public class GameEngine implements Screen {
     			if (actionBarController.isSelection){
     				inGameState = InGameState.SELECTION;
     			} else {
-    				inGameState = InGameState.SELECTION;
+    				inGameState = InGameState.NORMAL;
     			}
     		}
     		break;

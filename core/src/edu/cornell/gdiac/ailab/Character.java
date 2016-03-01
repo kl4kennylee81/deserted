@@ -147,12 +147,8 @@ public class Character {
 		}
 	}
 	
-	public void executeCast(){
-		
-	}
-	
-	public void interruptCast(){
-		
+	public void popCast(){
+		queuedActions.poll();
 	}
 	
 	public void draw(GameCanvas canvas){

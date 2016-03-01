@@ -62,6 +62,7 @@ public class SelectionMenuController {
 				} else if (controls.pressedA() && menu.canDoAction()){
 					if (action.pattern == Pattern.STRAIGHT){
 						menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*0.075f,0,0));
+						menu.resetPointer();
 					} else if (action.pattern == Pattern.SINGLE){
 						selectedX = leftside ? SINGLE_X_LEFT : SINGLE_X_RIGHT;
 						selectedY = SINGLE_Y;
