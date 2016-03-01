@@ -43,6 +43,7 @@ public class Character {
 	boolean needsSelection;
 	boolean isSelecting;
 	boolean needsAttack;
+	boolean isAlive;
 	
 	boolean needsShadow;
 	
@@ -63,6 +64,9 @@ public class Character {
 	LinkedList<ActionNode> queuedActions;
 	
 	public Character (int i, Texture texture, Color color) {
+		// this is temporary we will pass in hp afterwards
+		this.health = 10;
+		this.maxHealth = 10;
 		this.texture = texture;
 		this.color = color;
 		castPosition = 0;
@@ -86,6 +90,7 @@ public class Character {
 		selectionMenu = new SelectionMenu(availableActions);
 		switch(i) {
 		case 0:
+			name = "kyle";
 			xPosition = 0;
 			yPosition = 0;
 			angle = 180;
@@ -94,6 +99,7 @@ public class Character {
 			castSpeed = 0.003f;
 			break;
 		case 1:
+			name = "jon";
 			xPosition = 0;
 			yPosition = 3;
 			angle = 180;
@@ -102,6 +108,7 @@ public class Character {
 			castSpeed = 0.006f;
 			break;
 		case 2:
+			name = "cameron";
 			xPosition = 5;
 			yPosition = 0;
 			angle = 0;
@@ -110,6 +117,7 @@ public class Character {
 			castSpeed = 0.005f;
 			break;
 		case 3:
+			name = "ishaan";
 			xPosition = 5;
 			yPosition = 3;
 			angle = 0;

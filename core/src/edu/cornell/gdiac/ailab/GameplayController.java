@@ -67,12 +67,15 @@ public class GameplayController {
 	 */
 	public void update() {
 		//TODO EVERYTHING
+		board.occupy(characters);
 		if (selected != null){
 			//System.out.println("why wtf\n");
 			//Do that dudes actions
 			ActionNode action = selected.popCast();
 			selected.needsAttack = false;
-			executeAction(action);
+			if (!action.isInterrupted){
+				executeAction(action);
+			}
 			selected = null;
 		} else {
 			isDone = true;
@@ -112,8 +115,12 @@ public class GameplayController {
 	}
 	
 	private void executeMovement(ActionNode a_node){
-		selected.xPosition = a_node.xPosition;
-		selected.yPosition = a_node.yPosition;
+		int total_moves = (Math.abs(selected.xPosition-a_node.xPosition)
+				+Math.abs(selected.yPosition-a_node.yPosition));
+		if (total_moves==1 && !board.isOccupied(a_node.xPosition, a_node.yPosition)){
+			selected.xPosition = a_node.xPosition;
+			selected.yPosition = a_node.yPosition;			
+		}
 	}
 	
 	private void executeShield(ActionNode a_node){
@@ -121,8 +128,62 @@ public class GameplayController {
 	}
 	
 	private void executeStraight(ActionNode a_node){
-		int selected_xPos = selected.xPosition;
-		//
+		int selected_yPos = selected.yPosition;
+		// the leftmost x index that it can hit
+		int xHitrange;
+		if (selected.leftside){
+			xHitrange = Math.min(selected.xPosition+a_node.action.range,board.width);
+		}
+		else{
+		// the rightmost x index that it can hit
+			xHitrange = Math.max(0,selected.xPosition-a_node.action.range);
+		}
+		Character closest_enemy = null;
+		for (Character c:characters){
+			// same players unit thus skip it
+			if (c.leftside==selected.leftside){
+				continue;
+			}
+			if (c.yPosition == selected_yPos){
+				// you're on left enemy on right
+				if (selected.leftside){
+					// enemy has to be within range
+					if (c.xPosition <= xHitrange){
+						if (closest_enemy!=null){
+							// enemy is on right side 4 5 6 want to hit 4 first
+							if (closest_enemy.xPosition>c.xPosition){
+								closest_enemy = c;
+							}
+						}
+						else{
+							closest_enemy = c;
+						}
+					}
+				}
+				// you're on right enemy on left
+				else{
+					//enemy has to be within range
+					if (c.xPosition >= xHitrange){
+						if (closest_enemy!=null){
+							// enemy is on left side 1 2 3 so want to hit 3 first
+							if (closest_enemy.xPosition < c.xPosition){
+								closest_enemy = c;
+							}
+						}
+						else{
+							closest_enemy = c;
+						}
+					}
+				}
+			}
+		}	
+		// execute the hit interrupt and do damage to closest enemy
+		applyDamage(a_node,closest_enemy);
+	}
+	
+	private void applyDamage(ActionNode a_node,Character target){
+		System.out.println(target.getName());
+		target.health = Math.max(target.health-a_node.action.damage, 0);
 	}
 	
 	private void executeDiagonal(ActionNode a_node){

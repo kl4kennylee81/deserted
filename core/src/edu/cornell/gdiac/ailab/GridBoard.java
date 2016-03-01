@@ -164,6 +164,14 @@ public class GridBoard {
 			}
 		}
 	}
+
+	public void occupy(List<Character> chars){
+		for (Character c : chars){
+				tiles[c.xPosition][c.yPosition].isOccupied = true;
+		}
+	}
+	
+	
 	
 	public boolean isOccupied(int x, int y){
 		if (x>=0 && x<width && y>=0 && y<height){
