@@ -32,6 +32,7 @@ public class Character {
 	boolean needsSelection;
 	boolean isSelecting;
 	boolean needsAttack;
+	boolean isAlive;
 	
 	boolean isPersisting;
 	boolean isAI;
@@ -44,6 +45,9 @@ public class Character {
 	LinkedList<ActionNode> queuedActions;
 	
 	public Character (int i, Texture texture, Color color) {
+		// this is temporary we will pass in hp afterwards
+		this.health = 10;
+		this.max_health = 10;
 		this.texture = texture;
 		this.color = color;
 		castPosition = 0;
@@ -200,7 +204,8 @@ public class Character {
 	private void drawHealth(GameCanvas canvas){
 		float canvasX = 100 + 100*xPosition;
 		float canvasY = 90 + 100*yPosition;
-		canvas.drawHealthBars(canvasX,canvasY,0.5f);
+		float health_proportion = (((float)health)/max_health);
+		canvas.drawHealthBars(canvasX,canvasY,health_proportion);
 	}
 	
 	private void drawToken(GameCanvas canvas){

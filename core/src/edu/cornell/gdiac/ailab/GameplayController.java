@@ -115,7 +115,9 @@ public class GameplayController {
 	}
 	
 	private void executeMovement(ActionNode a_node){
-		if (!board.isOccupied(a_node.xPosition, a_node.yPosition)){
+		int total_moves = (Math.abs(selected.xPosition-a_node.xPosition)
+				+Math.abs(selected.yPosition-a_node.yPosition));
+		if (total_moves==1 && !board.isOccupied(a_node.xPosition, a_node.yPosition)){
 			selected.xPosition = a_node.xPosition;
 			selected.yPosition = a_node.yPosition;			
 		}
@@ -181,7 +183,7 @@ public class GameplayController {
 	
 	private void applyDamage(ActionNode a_node,Character target){
 		System.out.println(target.getName());
-		target.health = Math.min(target.health-a_node.action.damage, 0);
+		target.health = Math.max(target.health-a_node.action.damage, 0);
 	}
 	
 	private void executeDiagonal(ActionNode a_node){
