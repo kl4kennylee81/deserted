@@ -2,6 +2,7 @@ package edu.cornell.gdiac.ailab;
 
 import java.util.List;
 
+import edu.cornell.gdiac.ailab.Action.Effect;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 
 public class SelectionMenuController {
@@ -13,6 +14,8 @@ public class SelectionMenuController {
 	ActionBar bar;
 	InputController controls;
 	boolean isDone;
+	
+	Action nop;
 	
 	int boardWidth;
 	int boardHeight;
@@ -36,6 +39,7 @@ public class SelectionMenuController {
 		
 		this.boardWidth = board.width;
 		this.boardHeight = board.height;
+		nop = new Action("NOP", 1, 0, 0, Pattern.NOP, Effect.REGULAR, "no action");
 	}
 	
 	public void update(){
@@ -93,13 +97,16 @@ public class SelectionMenuController {
 						}
 						menu.setChoosingTarget(true);
 					} else if (action.pattern == Pattern.SHIELD){
-						
+						//FILL IN SHIELD
 					}
 				} else if (controls.pressedS()){
 					ActionNode old = menu.removeLast();
 					if (old != null && old.action.pattern == Pattern.MOVE){
 						menu.rewindShadow();
 					}
+				} else if (controls.pressedD() && menu.canDoAction()){
+					menu.add(new ActionNode(nop,bar.castPoint+(action.cost+menu.takenSlots)*0.075f,0,0));
+					menu.resetPointer();
 				} else if (controls.pressedUp() && !controls.pressedDown()){
 					//Actions go from up down, so we need to flip
 					menu.changeSelected(false);

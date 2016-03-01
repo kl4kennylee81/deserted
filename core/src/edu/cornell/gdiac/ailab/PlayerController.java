@@ -31,6 +31,8 @@ public class PlayerController implements InputController {
 	private boolean lastPressedA;
 	private boolean pressedS;
 	private boolean lastPressedS;
+	private boolean pressedD;
+	private boolean lastPressedD;
 	private boolean pressedUp;
 	private boolean lastPressedUp;
 	private boolean pressedDown;
@@ -76,6 +78,7 @@ public class PlayerController implements InputController {
 		int enter = Input.Keys.ENTER;
 		int a = Input.Keys.A;
 		int s = Input.Keys.S;
+		int d = Input.Keys.D;
 		int up = Input.Keys.UP;
 		int down = Input.Keys.DOWN;
 		int left = Input.Keys.LEFT;
@@ -87,6 +90,8 @@ public class PlayerController implements InputController {
 		pressedA = Gdx.input.isKeyPressed(a);
 		lastPressedS = pressedS;
 		pressedS = Gdx.input.isKeyPressed(s);
+		lastPressedD = pressedD;
+		pressedD = Gdx.input.isKeyPressed(d);
 		lastPressedUp = pressedUp;
 		pressedUp = Gdx.input.isKeyPressed(up);
 		lastPressedDown = pressedDown;
@@ -107,6 +112,10 @@ public class PlayerController implements InputController {
     
     public boolean pressedS() {
     	return pressedS && !lastPressedS;
+    }
+    
+    public boolean pressedD() {
+    	return pressedD && !lastPressedD;
     }
     
     public boolean pressedUp() {

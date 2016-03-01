@@ -36,6 +36,7 @@ import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.*;
 import com.badlogic.gdx.utils.*;
 
+import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.mesh.*;
 import edu.cornell.gdiac.util.*;
 
@@ -122,6 +123,8 @@ public class GameEngine implements Screen {
     private SelectionMenuController selectionMenuController;
     /** Subcontroller for action bar (CONTROLLER CLASS) */
     private ActionBarController actionBarController;
+    /** Subcontroller for ai selection (CONTROLLER CLASS) */
+    private AIController aiController;
     /** Used to draw the game onto the screen (VIEW CLASS) */
     private GameCanvas canvas;
     
@@ -227,7 +230,9 @@ public class GameEngine implements Screen {
         characters.add(new Character(0,enemyTexture,Color.GREEN));
         characters.add(new Character(1,enemyTexture,Color.YELLOW));
         characters.add(new Character(2,enemyTexture,Color.RED));
+        characters.get(2).setAI(Difficulty.EASY);
         characters.add(new Character(3,enemyTexture,Color.BROWN));
+        characters.get(3).setAI(Difficulty.EASY);
         
         bar = new ActionBar();
         
@@ -235,6 +240,7 @@ public class GameEngine implements Screen {
         gameplayController = new GameplayController(board,characters,bar);
         selectionMenuController = new SelectionMenuController(board,characters,bar);
         actionBarController = new ActionBarController(board,characters,bar);
+        aiController = new AIController(board,characters,bar);
         
         
         //physicsController = new CollisionController(board, ships, photons);
@@ -305,7 +311,7 @@ public class GameEngine implements Screen {
 		canvas.drawMessage(MESSG_LOAD);
         canvas.end();
     }
-    
+	
     /**
      * The primary update loop of the game; called while it is running.
      */
@@ -315,8 +321,11 @@ public class GameEngine implements Screen {
     		actionBarController.update();
     		if (actionBarController.isAttack){
     			inGameState = InGameState.ATTACK;
-    		} else if (actionBarController.isSelection) {
+    		} else if (actionBarController.isPlayerSelection) {
+    			//Think about how to actually add AI
     			inGameState = InGameState.SELECTION;
+    		} else if (actionBarController.isAISelection) {
+    			aiController.update();
     		}
     		break;
     	case SELECTION:
@@ -329,7 +338,7 @@ public class GameEngine implements Screen {
     	case ATTACK:
     		gameplayController.update();
     		if (gameplayController.isDone()){
-    			if (actionBarController.isSelection){
+    			if (actionBarController.isPlayerSelection){
     				inGameState = InGameState.SELECTION;
     			} else {
     				inGameState = InGameState.NORMAL;

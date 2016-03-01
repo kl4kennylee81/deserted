@@ -46,6 +46,7 @@ public interface InputController {
 	public boolean pressedEnter();
 	public boolean pressedA();
 	public boolean pressedS();
+	public boolean pressedD();
 	public boolean pressedUp();
 	public boolean pressedDown();
 	public boolean pressedLeft();

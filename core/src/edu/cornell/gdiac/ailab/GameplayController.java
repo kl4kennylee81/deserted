@@ -69,9 +69,13 @@ public class GameplayController {
 		//TODO EVERYTHING
 		if (selected != null){
 			//Do that dudes actions
-			selected.popCast();
-			selected.needsAttack = false;
-			selected = null;
+			i++;
+			if (i==60){
+				//Just for now, a quick pause for the attack
+				selected.popCast();
+				selected.needsAttack = false;
+				selected = null;
+			}
 		} else {
 			isDone = true;
 			//Sort characters by speed then check their attacks
@@ -79,6 +83,7 @@ public class GameplayController {
 				if (c.needsAttack){
 					isDone = false;
 					selected = c;
+					i = 0;
 					break;
 				}
 			}
