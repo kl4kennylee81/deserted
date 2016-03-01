@@ -22,6 +22,7 @@ public class GridBoard {
 	/** Highlight color for power tiles */
 	private static final Color CAN_TARGET_COLOR = new Color( 1f,  1.0f,  0f, 1.0f);
 	private static final Color HIGHLIGHT_COLOR = new Color( 0.0f,  1.0f,  1.0f, 1.0f);
+	private static final Color ATTACK_COLOR = new Color( 1f, 0f, 0f, 1f);
 	
 	private class Tile {
 		//Currently targeting
@@ -124,6 +125,8 @@ public class GridBoard {
 			color.lerp(HIGHLIGHT_COLOR,lerpVal);
 		} else if (tile.canTarget){
 			color = CAN_TARGET_COLOR;
+		} else if (tile.isAttacked){
+			color = ATTACK_COLOR;
 		}
 
 		///////////////////////////////////////////////////////

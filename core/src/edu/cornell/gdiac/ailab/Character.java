@@ -14,7 +14,7 @@ import edu.cornell.gdiac.mesh.TexturedMesh;
 public class Character {
 	String name;
 	int health;
-	int max_health;
+	int maxHealth;
 	float speed;
 	float castSpeed;
 	//Highlight during selection screen
@@ -49,6 +49,8 @@ public class Character {
 		castPosition = 0;
 		queuedActions = new LinkedList<ActionNode>();
 		availableActions = new Action[4];
+		
+		maxHealth = health = 6;
 		
 		//We will preload moves in actual game, that way we don't need Pattern and Effect from Action
 		Action move = new Action("Move", 1, 0, 1, Pattern.MOVE, Effect.REGULAR, "move your dude");
@@ -196,7 +198,7 @@ public class Character {
 	private void drawHealth(GameCanvas canvas){
 		float canvasX = 100 + 100*xPosition;
 		float canvasY = 90 + 100*yPosition;
-		canvas.drawHealthBars(canvasX,canvasY,0.5f);
+		canvas.drawHealthBars(canvasX,canvasY,((float)health)/maxHealth);
 	}
 	
 	private void drawToken(GameCanvas canvas){
