@@ -48,13 +48,14 @@ public class SelectionMenuController {
 			SelectionMenu menu = selected.getSelectionMenu();
 			Action action = menu.getSelectedAction();
 			boolean choosingTarget =  menu.getChoosingTarget();
-			int shadowX = menu.shadowX;
-			int shadowY = menu.shadowY;
+			int shadowX = selected.shadowX;
+			int shadowY = selected.shadowY;
 			int selectedX = menu.getSelectedX();
 			int selectedY = menu.getSelectedY();
 			boolean leftside = selected.leftside;
 			board.reset();
-			board.occupy(characters, selected, menu.shadowX, menu.shadowY);
+			//TODO: change it to just send characters selected and then find shadows from selected
+			board.occupy(characters, selected, selected.shadowX, selected.shadowY);
 			if (menu.canDoAction()){
 				drawHighlights(selected, action, choosingTarget, selectedX, selectedY, shadowX, shadowY);
 			}
@@ -63,6 +64,7 @@ public class SelectionMenuController {
 					selected.setSelecting(false);
 					selected.setQueuedActions(menu.getQueuedActions());
 					selected = null;
+					resetNeedsShadow();
 				} else if (controls.pressedA() && menu.canDoAction()){
 					if (action.pattern == Pattern.STRAIGHT){
 						menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*0.075f,0,0));
@@ -102,7 +104,7 @@ public class SelectionMenuController {
 				} else if (controls.pressedS()){
 					ActionNode old = menu.removeLast();
 					if (old != null && old.action.pattern == Pattern.MOVE){
-						menu.rewindShadow();
+						selected.rewindShadow();
 					}
 				} else if (controls.pressedD() && menu.canDoAction()){
 					menu.add(new ActionNode(nop,bar.castPoint+(action.cost+menu.takenSlots)*0.075f,0,0));
@@ -179,16 +181,20 @@ public class SelectionMenuController {
 				if (controls.pressedEnter()){
 					menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/menu.TOTAL_SLOTS),selectedX,selectedY));
 					menu.setChoosingTarget(false);
+					if (action.pattern == Pattern.MOVE){
+						selected.setShadow(selectedX,selectedY);
+					}
 					selected.setSelecting(false);
 					selected.setQueuedActions(menu.getQueuedActions());
 					selected = null;
+					resetNeedsShadow();
 				}
 				if (controls.pressedA()){
 					menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/menu.TOTAL_SLOTS),selectedX,selectedY));
 					menu.setChoosingTarget(false);
 					menu.resetPointer();
 					if (action.pattern == Pattern.MOVE){
-						menu.setShadow(selectedX,selectedY);
+						selected.setShadow(selectedX,selectedY);
 					}
 				} else if (controls.pressedS()){
 					menu.setChoosingTarget(false);
@@ -204,13 +210,27 @@ public class SelectionMenuController {
 					selected = c;
 					SelectionMenu menu = c.getSelectionMenu();
 					menu.reset();
-					menu.setShadow(c.xPosition,c.yPosition);
 					c.needsSelection = false;
 					c.isSelecting = true;
+					setNeedsShadow();
 					break;
 				}
 			}
 		}	
+	}
+	
+	private void setNeedsShadow(){
+		for (Character c : characters){
+			if (c.leftside == selected.leftside){
+				c.needsShadow = true;
+			}
+		}
+	}
+	
+	private void resetNeedsShadow(){
+		for (Character c : characters){
+			c.needsShadow = false;
+		}
 	}
 	
 	public void drawHighlights(Character selected, Action action, boolean choosingTarget, int xPos, int yPos, int shadX, int shadY){

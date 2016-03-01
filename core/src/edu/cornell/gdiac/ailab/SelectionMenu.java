@@ -24,12 +24,6 @@ public class SelectionMenu {
 	private int selectedY;
 	private float lerpVal;
 	private boolean increasing;
-	
-	int shadowX;
-	int shadowY;
-	
-	LinkedList<Integer> oldShadowX;
-	LinkedList<Integer> oldShadowY;
 
 	//Initialized with character
 	//draw menu
@@ -47,8 +41,6 @@ public class SelectionMenu {
 		takenSlots = 0;
 		choosingTarget = false;
 		selectedActions = new LinkedList<ActionNode>();
-		oldShadowX = new LinkedList<Integer>();
-		oldShadowY = new LinkedList<Integer>();
 		lerpVal = 0;
 		increasing = true;
 	}
@@ -98,20 +90,6 @@ public class SelectionMenu {
 		selectedY = y;
 	}
 	
-	public void setShadow(int shadX, int shadY){
-		shadowX = shadX;
-		shadowY = shadY;
-		oldShadowX.push(shadX);
-		oldShadowY.push(shadY);
-	}
-	
-	public void rewindShadow(){
-		oldShadowX.pop();
-		oldShadowY.pop();
-		shadowX = oldShadowX.peek();
-		shadowY = oldShadowY.peek();
-	}
-	
 	public boolean canDoAction(){
 		return takenSlots < TOTAL_SLOTS;
 	}
@@ -155,8 +133,6 @@ public class SelectionMenu {
 		takenSlots = 0;
 		choosingTarget = false;
 		selectedActions.clear();
-		oldShadowX.clear();
-		oldShadowY.clear();
 	}
 	
 	public void draw(GameCanvas canvas){

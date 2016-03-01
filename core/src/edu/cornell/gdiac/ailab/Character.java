@@ -11,10 +11,21 @@ import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.ailab.Action.Effect;
 import edu.cornell.gdiac.mesh.TexturedMesh;
 
+
+//TODO remove last element in oldShadowXY when move is done
+
+/*
+
+oldShadowX.clear();
+oldShadowY.clear();
+
+*/
+
+
 public class Character {
 	String name;
 	int health;
-	int max_health;
+	int maxHealth;
 	float speed;
 	float castSpeed;
 	//Highlight during selection screen
@@ -34,6 +45,14 @@ public class Character {
 	boolean needsAttack;
 	boolean isAlive;
 	
+	boolean needsShadow;
+	
+	int shadowX;
+	int shadowY;
+	
+	LinkedList<Integer> oldShadowX;
+	LinkedList<Integer> oldShadowY;
+	
 	boolean isPersisting;
 	boolean isAI;
 	Difficulty diff;
@@ -47,12 +66,17 @@ public class Character {
 	public Character (int i, Texture texture, Color color) {
 		// this is temporary we will pass in hp afterwards
 		this.health = 10;
-		this.max_health = 10;
+		this.maxHealth = 10;
 		this.texture = texture;
 		this.color = color;
 		castPosition = 0;
 		queuedActions = new LinkedList<ActionNode>();
 		availableActions = new Action[4];
+		
+		oldShadowX = new LinkedList<Integer>();
+		oldShadowY = new LinkedList<Integer>();
+		
+		maxHealth = health = 6;
 		
 		//We will preload moves in actual game, that way we don't need Pattern and Effect from Action
 		Action move = new Action("Move", 1, 0, 1, Pattern.MOVE, Effect.REGULAR, "move your dude");
@@ -102,6 +126,7 @@ public class Character {
 			castSpeed = 0.004f;
 			break;
 		}
+		setShadow(xPosition,yPosition);
 	}
 	
 	boolean isAlive() {
@@ -154,7 +179,12 @@ public class Character {
 	}
 	
 	boolean needShadow() {
-		return xPosition!=selectionMenu.shadowX || yPosition!=selectionMenu.shadowY;
+		return (oldShadowX.size()>1) && needsShadow;
+	}
+	
+	public void popLastShadow(){
+		oldShadowX.pollLast();
+		oldShadowY.pollLast();
 	}
 	
 	boolean hasAttacks() {
@@ -174,6 +204,20 @@ public class Character {
 		return queuedActions.poll();
 	}
 	
+	public void setShadow(int shadX, int shadY){
+		shadowX = shadX;
+		shadowY = shadY;
+		oldShadowX.push(shadX);
+		oldShadowY.push(shadY);
+	}
+	
+	public void rewindShadow(){
+		oldShadowX.pop();
+		oldShadowY.pop();
+		shadowX = oldShadowX.peek();
+		shadowY = oldShadowY.peek();
+	}
+	
 	public void draw(GameCanvas canvas){
 		drawShip(canvas);
 		drawHealth(canvas);
@@ -181,9 +225,9 @@ public class Character {
 		if (isSelecting){
 			drawSelection(canvas);
 			selectionMenu.draw(canvas);
-			if(needShadow()){
-				drawShadowShip(canvas);
-			}
+		}
+		if(needShadow()){
+			drawShadowShip(canvas);
 		}
 	}
 	
@@ -195,17 +239,38 @@ public class Character {
 	}
 	
 	public void drawShadowShip(GameCanvas canvas){
-		float canvasX = 100 + 100*selectionMenu.shadowX;
-		float canvasY = 100*selectionMenu.shadowY;
+		//DRAW LINES TO OUTLINE SHIP MOVEMENT
+		float canvasX = 100 + 100*shadowX;
+		float canvasY = 100*shadowY;
 		int angle = leftside ? 270 : 90;
 		canvas.drawShip(texture, canvasX,canvasY,color.cpy().lerp(Color.CLEAR, 0.3f),angle);
+		int tempX = shadowX;
+		int tempY = shadowY;
+		int nowX;
+		int nowY;
+		System.out.println(xPosition+ " "+ yPosition);
+		for (int i = 1; i < oldShadowX.size(); i++){
+			nowX = oldShadowX.get(i);
+			nowY = oldShadowY.get(i);
+			if (nowX != tempX && nowY == tempY){
+				int minX = Math.min(nowX, tempX);
+				canvas.drawBox(147 + 100*minX, 47 + 100*nowY, 106, 6, Color.BLACK);
+			} else if (nowY != tempY && nowX == tempX){
+				int minY = Math.min(nowY, tempY);
+				canvas.drawBox(147+100*nowX, 47+100*minY, 6, 106, Color.BLACK);
+			} else {
+				System.out.println("UNEXPECTED BEHAVIOR AS OF 3/1");
+			}
+			
+			tempX = nowX;
+			tempY = nowY;
+		}
 	}
 	
 	private void drawHealth(GameCanvas canvas){
 		float canvasX = 100 + 100*xPosition;
 		float canvasY = 90 + 100*yPosition;
-		float health_proportion = (((float)health)/max_health);
-		canvas.drawHealthBars(canvasX,canvasY,health_proportion);
+		canvas.drawHealthBars(canvasX,canvasY,((float)health)/maxHealth);
 	}
 	
 	private void drawToken(GameCanvas canvas){
