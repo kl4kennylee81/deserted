@@ -115,6 +115,7 @@ public class GameplayController {
 	}
 	
 	private void executeMovement(ActionNode a_node){
+		selected.popLastShadow();
 		int total_moves = (Math.abs(selected.xPosition-a_node.xPosition)
 				+Math.abs(selected.yPosition-a_node.yPosition));
 		if (total_moves==1 && !board.isOccupied(a_node.xPosition, a_node.yPosition)){
