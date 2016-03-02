@@ -132,6 +132,7 @@ public class GameEngine implements Screen {
     private GridBoard board;
     private List<Character> characters;
     private ActionBar bar;
+    private List<textMessage> textMessages;
 
     /** The current game state (SIMPLE FIELD) */
     private GameState gameState;
@@ -227,6 +228,8 @@ public class GameEngine implements Screen {
         //Texture playerTexture = manager.get(PLAYER_TEXTURE,Texture.class);
         Texture enemyTexture = manager.get(ENEMY_TEXTURE,Texture.class);
         
+        textMessages = new LinkedList<textMessage>();
+        
         characters.add(new Character(0,enemyTexture,Color.GREEN));
         characters.add(new Character(1,enemyTexture,Color.YELLOW));
         characters.add(new Character(2,enemyTexture,Color.RED));
@@ -237,7 +240,7 @@ public class GameEngine implements Screen {
         bar = new ActionBar();
         
 		// Create the three subcontrollers
-        gameplayController = new GameplayController(board,characters,bar);
+        gameplayController = new GameplayController(board,characters,bar,textMessages);
         selectionMenuController = new SelectionMenuController(board,characters,bar);
         actionBarController = new ActionBarController(board,characters,bar);
         aiController = new AIController(board,characters,bar);
@@ -318,6 +321,7 @@ public class GameEngine implements Screen {
     	switch(inGameState){
     	case NORMAL:
     		actionBarController.update();
+    		updateTextMessages();
     		if (actionBarController.isAttack){
     			inGameState = InGameState.ATTACK;
     		} else if (actionBarController.isPlayerSelection) {
@@ -375,6 +379,19 @@ public class GameEngine implements Screen {
     	return leftsideDead() || rightsideDead();
     }
     
+    public void updateTextMessages(){
+//		List<textMessage> tempMsg = new LinkedList<textMessage>();
+		for (textMessage m: textMessages){
+	    	System.out.println("updating the textMessages");
+			if (m.duration > 0){
+				m.duration--;
+				m.y_pos+=0.4;
+//				tempMsg.add(m);
+			}
+		}
+//		textMessages = tempMsg;
+    }
+    
     /**
      * Called to draw when we are playing the game.
      */
@@ -409,6 +426,10 @@ public class GameEngine implements Screen {
             	c.draw(canvas);
             }
             bar.draw(canvas);
+            
+            for (textMessage m : textMessages){
+            	m.draw(canvas);
+            }
         	break;
         }
         canvas.end();

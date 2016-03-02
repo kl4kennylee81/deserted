@@ -33,6 +33,8 @@ public class GameplayController {
 	
 	public ActionBar bar;
 	
+	public List<textMessage> textMessages;
+	
 	boolean isDone;
 	
 	Character selected;
@@ -47,10 +49,11 @@ public class GameplayController {
 	 * @param chars The list of characters
 	 * @param bar The action bar
 	 */
-	public GameplayController(GridBoard board, List<Character> chars, ActionBar bar) {
+	public GameplayController(GridBoard board, List<Character> chars, ActionBar bar, List<textMessage> textMsgs) {
 		this.board = board;
 		this.characters = chars;
 		this.bar = bar;
+		this.textMessages = textMsgs;
 		this.isDone = false;
 		
 		selected = null;
@@ -101,7 +104,7 @@ public class GameplayController {
 				executeShield(a_node);
 				break;
 			case STRAIGHT:
-				executeInstantStraight(a_node);
+				executeStraight(a_node);
 				break;
 			case DIAGONAL:
 				executeDiagonal(a_node);
@@ -222,7 +225,7 @@ public class GameplayController {
 		// TODO
 	}
 	
-	private void executeInstantStraight(ActionNode a_node){
+	private void executeStraight(ActionNode a_node){
 		Coordinate[] path = straightHitPath(a_node);
 		// execute the hit interrupt and do damage to closest enemy
 		processHitPath(a_node,path);
@@ -261,6 +264,10 @@ public class GameplayController {
 	
 	private void processHit(ActionNode a_node,Character target){
 		applyDamage(a_node,target);
+		
+		//add text bubble for amount of damage in front of target
+		String attack_damage = Integer.toString(a_node.action.damage);
+		textMessages.add(new textMessage(attack_damage,4*textMessage.SECOND,target));
 		
 		//handle interruption
 		if (target.queuedActions.peek() != null &&!target.queuedActions.peek().isInterrupted){
