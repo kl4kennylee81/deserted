@@ -193,8 +193,9 @@ public class GameplayController {
 			numTiles = Math.min(board.width-1,selected.xPosition + a_node.action.range) - selected.xPosition;
 		}
 		else{
-			numTiles = Math.max(0, selected.xPosition - a_node.action.range);
+			numTiles = Math.max(0, Math.min(selected.xPosition,a_node.action.range));
 		}
+		
 		Coordinate[] path = new Coordinate[numTiles];
 		for (int i=0;i<numTiles;i++){
 			if (selected.leftside){
