@@ -95,7 +95,6 @@ public class GameplayController {
 		//switch between types of actions
 		switch(a_node.action.pattern){
 			case MOVE:
-				selected.popLastShadow();
 				executeMovement(a_node);
 				break;
 			case SHIELD:
