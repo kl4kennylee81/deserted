@@ -238,6 +238,9 @@ public class GameplayController {
 		boolean hasHit = false;
 		for (int i=0;i<path.length;i++){
 			for (Character c:characters){
+				if (selected.leftside ==c.leftside){
+					continue;
+				}
 				if (c.xPosition == path[i].x && c.yPosition == path[i].y){
 					processHit(a_node,c);
 					hasHit = true;
