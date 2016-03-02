@@ -248,7 +248,6 @@ public class Character {
 		int tempY = shadowY;
 		int nowX;
 		int nowY;
-		System.out.println(xPosition+ " "+ yPosition);
 		for (int i = 1; i < oldShadowX.size(); i++){
 			nowX = oldShadowX.get(i);
 			nowY = oldShadowY.get(i);

@@ -23,8 +23,8 @@ public class SelectionMenuController {
 	private static final int SINGLE_X_LEFT = 3;
 	private static final int SINGLE_X_RIGHT = 2;
 	
-	private static final int DIAGONAL_UP = 3;
-	private static final int DIAGONAL_DOWN = 0;
+	public static final int DIAGONAL_UP = 3;
+	public static final int DIAGONAL_DOWN = 0;
 	private static final int X_OFFSCREEN = -2;
 	
 	private static final int SINGLE_Y = 3;

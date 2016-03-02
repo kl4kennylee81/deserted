@@ -69,7 +69,6 @@ public class GameplayController {
 		//TODO EVERYTHING
 		board.occupy(characters);
 		if (selected != null){
-			//System.out.println("why wtf\n");
 			//Do that dudes actions
 			ActionNode action = selected.popCast();
 			selected.needsAttack = false;
@@ -83,7 +82,6 @@ public class GameplayController {
 			//these characters should be presorted in the initial loading
 			for (Character c : characters){
 				if (c.needsAttack){
-					//System.out.println("setting to selected");
 					isDone = false;
 					selected = c;
 					i = 0;
@@ -97,13 +95,14 @@ public class GameplayController {
 		//switch between types of actions
 		switch(a_node.action.pattern){
 			case MOVE:
+				selected.popLastShadow();
 				executeMovement(a_node);
 				break;
 			case SHIELD:
 				executeShield(a_node);
 				break;
 			case STRAIGHT:
-				executeStraight(a_node);
+				executeInstantStraight(a_node);
 				break;
 			case DIAGONAL:
 				executeDiagonal(a_node);
@@ -111,7 +110,102 @@ public class GameplayController {
 			case SINGLE:
 				executeSingle(a_node);
 				break;
+			case NOP:
+				break;
+			default:
+				break;
 		}
+	}
+	
+	private int actionWidthEndpoint(ActionNode a_node,int xPosition){
+		if (selected.leftside){
+			return Math.min(board.width-1, xPosition+a_node.action.range);			
+		}
+		else{
+			return Math.max(0, xPosition-a_node.action.range);
+		}
+	}
+	
+	private int actionWidthRange(ActionNode a_node,int xPosition){
+		int endpoint = actionWidthEndpoint(a_node,xPosition);
+		return Math.abs(endpoint - xPosition);
+	}
+	
+	private int actionHeightEndpoint(ActionNode a_node,int yPosition){
+		if (isDiagonalUp(a_node)){
+			return Math.min(board.height-1,yPosition+a_node.action.range);			
+		}
+		else if (isDiagonalDown(a_node)){
+			return Math.max(0,yPosition - a_node.action.range);
+		}
+		return 0;
+	}
+	
+	private int actionHeightRange(ActionNode a_node,int yPosition){
+		int endpoint = actionHeightEndpoint(a_node,yPosition);
+		return Math.abs(endpoint - yPosition);
+	}
+	
+	private boolean isDiagonalUp(ActionNode a_node){
+		return a_node.yPosition == SelectionMenuController.DIAGONAL_UP;
+	}
+	
+	private boolean isDiagonalDown(ActionNode a_node){
+		return a_node.yPosition == SelectionMenuController.DIAGONAL_DOWN;		
+	}
+	
+	private Coordinate[] diagonalHitPath(ActionNode a_node){
+		int projectileX = (selected.leftside) ? selected.xPosition+1:selected.xPosition-1;
+		if (!board.isInBounds(projectileX, selected.yPosition)){
+			return null;
+		}
+		int heightRange = actionHeightRange(a_node,selected.yPosition);
+		int widthRange = actionWidthRange(a_node,projectileX);
+		int trueRange = Math.min(heightRange,widthRange);
+		Coordinate[] path = new Coordinate[trueRange+1];
+		path[0] = new Coordinate(projectileX,selected.yPosition);
+		if (selected.leftside && isDiagonalUp(a_node)){
+			for (int i=0;i<trueRange;i++){
+				path[i+1] = new Coordinate(projectileX+i+1,selected.yPosition+i+1);
+			}
+		}
+		else if (selected.leftside && isDiagonalDown(a_node)){
+			for (int i=0;i<trueRange;i++){
+				path[i+1] = new Coordinate(projectileX+i+1,selected.yPosition-i-1);
+			}			
+		}
+		else if (!selected.leftside && isDiagonalUp(a_node)){
+			for (int i=0;i<trueRange;i++){
+				path[i+1] = new Coordinate(projectileX-i-1,selected.yPosition+i+1);
+			}				
+		}
+		else if (!selected.leftside && isDiagonalDown(a_node)){
+			for (int i=0;i<trueRange;i++){
+				path[i+1] = new Coordinate(projectileX-i-1,selected.yPosition-i-1);
+			}
+		}
+		return path;
+	}
+	
+	private Coordinate[] straightHitPath(ActionNode a_node){
+		int j = selected.yPosition;
+		int numTiles;
+		if (selected.leftside){
+			numTiles = Math.min(board.width-1,selected.xPosition + a_node.action.range) - selected.xPosition;
+		}
+		else{
+			numTiles = Math.max(0, selected.xPosition - a_node.action.range);
+		}
+		Coordinate[] path = new Coordinate[numTiles];
+		for (int i=0;i<numTiles;i++){
+			if (selected.leftside){
+				path[i] = new Coordinate(selected.xPosition+i+1,j);
+			}
+			else{
+				path[i] = new Coordinate(selected.xPosition-i-1,j);
+			}
+		}
+		return path;
 	}
 	
 	private void executeMovement(ActionNode a_node){
@@ -125,78 +219,57 @@ public class GameplayController {
 	}
 	
 	private void executeShield(ActionNode a_node){
-		
+		// TODO
 	}
 	
-	private void executeStraight(ActionNode a_node){
-		int selected_yPos = selected.yPosition;
-		// the leftmost x index that it can hit
-		int xHitrange;
-		if (selected.leftside){
-			xHitrange = Math.min(selected.xPosition+a_node.action.range,board.width);
-		}
-		else{
-		// the rightmost x index that it can hit
-			xHitrange = Math.max(0,selected.xPosition-a_node.action.range);
-		}
-		Character closest_enemy = null;
-		for (Character c:characters){
-			// same players unit thus skip it
-			if (c.leftside==selected.leftside){
-				continue;
-			}
-			if (c.yPosition == selected_yPos){
-				// you're on left enemy on right
-				if (selected.leftside){
-					// enemy has to be within range
-					if (c.xPosition <= xHitrange){
-						if (closest_enemy!=null){
-							// enemy is on right side 4 5 6 want to hit 4 first
-							if (closest_enemy.xPosition>c.xPosition){
-								closest_enemy = c;
-							}
-						}
-						else{
-							closest_enemy = c;
-						}
-					}
-				}
-				// you're on right enemy on left
-				else{
-					//enemy has to be within range
-					if (c.xPosition >= xHitrange){
-						if (closest_enemy!=null){
-							// enemy is on left side 1 2 3 so want to hit 3 first
-							if (closest_enemy.xPosition < c.xPosition){
-								closest_enemy = c;
-							}
-						}
-						else{
-							closest_enemy = c;
-						}
-					}
-				}
-			}
-		}	
+	private void executeInstantStraight(ActionNode a_node){
+		Coordinate[] path = straightHitPath(a_node);
 		// execute the hit interrupt and do damage to closest enemy
-		applyDamage(a_node,closest_enemy);
-	}
-	
-	private void applyDamage(ActionNode a_node,Character target){
-		System.out.println(target.getName());
-		target.health = Math.max(target.health-a_node.action.damage, 0);
+		processHitPath(a_node,path);
 	}
 	
 	private void executeDiagonal(ActionNode a_node){
-		
+		Coordinate[] path = diagonalHitPath(a_node);
+		// check along path and apply damage to first person hit
+		processHitPath(a_node,path);
+	}
+	
+	private void processHitPath(ActionNode a_node, Coordinate[] path){
+		boolean hasHit = false;
+		for (int i=0;i<path.length;i++){
+			for (Character c:characters){
+				if (c.xPosition == path[i].x && c.yPosition == path[i].y){
+					processHit(a_node,c);
+					hasHit = true;
+					break;
+				}
+				if (hasHit){
+					break;
+				}
+			}
+		}
 	}
 	
 	private void executeSingle(ActionNode a_node){
-		
+		for (Character c:characters){
+			if (c.xPosition == a_node.xPosition && c.yPosition == a_node.yPosition){
+				processHit(a_node,c);
+				break;
+			}
+		}
 	}
 	
-	private void processHit(Character c, ActionNode action){
+	private void processHit(ActionNode a_node,Character target){
+		applyDamage(a_node,target);
 		
+		//handle interruption
+		if (target.queuedActions.peek() != null &&!target.queuedActions.peek().isInterrupted){
+			target.queuedActions.peek().isInterrupted = true;
+		}
+	}
+	
+	private void applyDamage(ActionNode a_node,Character target){
+		target.health = Math.max(target.health-a_node.action.damage, 0);
 	}
 	
 	// make isDone true when every character who needs to attack has attacked
