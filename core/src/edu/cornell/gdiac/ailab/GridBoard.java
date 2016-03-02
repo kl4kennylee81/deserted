@@ -184,5 +184,9 @@ public class GridBoard {
 		
 	}
 	
+	public boolean isInBounds(int x,int y){
+		return x<width && x>=0 && y<height && y>=0;
+	}
+	
 	
 }
