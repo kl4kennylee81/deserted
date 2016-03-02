@@ -81,7 +81,7 @@ public class GameplayController {
 			//Sort characters by speed then check their attacks
 			//these characters should be presorted in the initial loading
 			for (Character c : characters){
-				if (c.needsAttack){
+				if (c.needsAttack && c.isAlive()){
 					isDone = false;
 					selected = c;
 					i = 0;

@@ -43,7 +43,6 @@ public class Character {
 	boolean needsSelection;
 	boolean isSelecting;
 	boolean needsAttack;
-	boolean isAlive;
 	
 	boolean needsShadow;
 	
@@ -219,6 +218,9 @@ public class Character {
 	}
 	
 	public void draw(GameCanvas canvas){
+		if (!isAlive()){
+			return;
+		}
 		drawShip(canvas);
 		drawHealth(canvas);
 		drawToken(canvas);

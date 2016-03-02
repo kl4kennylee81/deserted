@@ -242,7 +242,6 @@ public class GameEngine implements Screen {
         actionBarController = new ActionBarController(board,characters,bar);
         aiController = new AIController(board,characters,bar);
         
-        
         //physicsController = new CollisionController(board, ships, photons);
 	}
 		
@@ -345,6 +344,35 @@ public class GameEngine implements Screen {
     		}
     		break;	
     	}
+    	
+    	if (gameOver()){
+    		inGameState = InGameState.NORMAL;
+    		gameState = GameState.AFTER;
+    	}
+    }
+    
+    public boolean leftsideDead(){
+    	boolean dead = true;
+    	for (Character c : characters){
+    		if (c.leftside && c.isAlive()){
+    			dead = false;
+    		}
+    	}
+    	return dead;
+    }
+    
+    public boolean rightsideDead(){
+    	boolean dead = true;
+    	for (Character c : characters){
+    		if (!c.leftside && c.isAlive()){
+    			dead = false;
+    		}
+    	}
+    	return dead;
+    }
+    
+    public boolean gameOver(){
+    	return leftsideDead() || rightsideDead();
     }
     
     /**
@@ -362,11 +390,15 @@ public class GameEngine implements Screen {
     		break;
         case FINISH:
         case AFTER:
-        	/*if (!ships.getPlayer().isActive()) {
-        		canvas.drawMessage(MESSG_LOST, MESSG_RESTART, Color.WHITE);
+        	if (leftsideDead() && rightsideDead()){
+        		canvas.drawText("A tie?", 400, 400, Color.BLACK);
+        	} else if (leftsideDead()){
+        		canvas.drawText("Hah you lost", 400, 400, Color.BLACK);
+        	} else if (rightsideDead()){
+        		canvas.drawText("Yay you beat an easy bot", 400, 400, Color.BLACK);
         	} else {
-        		canvas.drawMessage(MESSG_WON, MESSG_RESTART, Color.WHITE);
-        	}*/
+        		System.out.println("SHOULD NEVER GET HERE");
+        	}
         	break;
         case LOAD:
     		canvas.drawMessage(MESSG_LOAD);
