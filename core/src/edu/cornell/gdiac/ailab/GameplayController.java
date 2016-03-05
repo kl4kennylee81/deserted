@@ -97,13 +97,14 @@ public class GameplayController {
 	}	
 	
 	private void executeAction(ActionNode a_node){
+		if (a_node.action instanceof PersistingAction){
+			selected.addPersisting(a_node);
+			return;
+		}
 		//switch between types of actions
 		switch(a_node.action.pattern){
 			case MOVE:
 				executeMovement(a_node);
-				break;
-			case SHIELD:
-				executeShield(a_node);
 				break;
 			case STRAIGHT:
 				executeInstantStraight(a_node);
@@ -239,10 +240,6 @@ public class GameplayController {
 			selected.xPosition = a_node.xPosition;
 			selected.yPosition = a_node.yPosition;			
 		}
-	}
-	
-	private void executeShield(ActionNode a_node){
-		selected.addPersisting(a_node);
 	}
 	
 	private void executeInstantStraight(ActionNode a_node){

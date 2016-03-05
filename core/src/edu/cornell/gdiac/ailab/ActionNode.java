@@ -9,8 +9,8 @@ public class ActionNode {
 	int yPosition;
 	
 	int castPoint;
-	int curX;
-	int curY;
+	float curX;
+	float curY;
 	
 	boolean isInterrupted;
 	
@@ -26,6 +26,15 @@ public class ActionNode {
 		this.castPoint = castPoint;
 		this.curX = curX;
 		this.curY = curY;
+	}
+	
+	public int getCurrentX(){
+		return Math.round(curX);
+	}
+	
+	public int getCurrentY(){
+		return Math.round(curY);
+		
 	}
 	
 }

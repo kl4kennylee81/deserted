@@ -94,6 +94,10 @@ public class Character {
 			PersistingAction shield = new PersistingAction("Shield",2,0,0,Pattern.SHIELD,Effect.REGULAR,"shield",100,0);
 			availableActions[2] = shield;
 		}
+		if (i%2 == 1){
+			PersistingAction straightProj = new PersistingAction("Projectile Straight",2,2,5,Pattern.STRAIGHT,Effect.REGULAR,"projectile straight",100,0.1f);
+			availableActions[3] = straightProj;
+		}
 		selectionMenu = new SelectionMenu(availableActions);
 		switch(i) {
 		case 0:
@@ -206,8 +210,10 @@ public class Character {
 		shieldedCoordinates.clear();
 		for (ActionNode an : persistingActions){
 			if (an.action.pattern == Pattern.SHIELD){
-				shieldedCoordinates.add(new Coordinate(an.curX, an.curY));
-				shieldedCoordinates.add(new Coordinate(an.curX, an.yPosition == 0 ? an.curY-1 : an.curY+1));
+				int tempX = an.getCurrentX();
+				int tempY = an.getCurrentY();
+				shieldedCoordinates.add(new Coordinate(tempX,tempY));
+				shieldedCoordinates.add(new Coordinate(tempX, an.yPosition == 0 ? tempY-1 : tempY+1));
 			}
 		}
 	}
@@ -322,7 +328,8 @@ public class Character {
 	
 	private void drawPersisting(GameCanvas canvas){
 		for (ActionNode an : persistingActions){
-			if (an.action.pattern == Pattern.SHIELD){
+			switch (an.action.pattern){
+			case SHIELD:
 				if (leftside){
 					if (an.yPosition==3){
 						canvas.drawBox(195+100*an.curX, 100*yPosition, 10, 200, Color.BROWN);
@@ -336,6 +343,12 @@ public class Character {
 						canvas.drawBox(95+100*an.curX, 100*yPosition-100, 10, 200, Color.BROWN);
 					}
 				}
+				break;
+			case STRAIGHT:
+				canvas.drawBox(140+100*an.curX, 40+100*yPosition, 20, 20, Color.GRAY);
+				break;
+			default:
+				break;
 			}
 		}
 	}
