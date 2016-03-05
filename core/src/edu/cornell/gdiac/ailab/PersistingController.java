@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
@@ -10,6 +11,7 @@ public class PersistingController {
 	Character selected;
 	ActionBar bar;
 	ActionNode selectedActionNode;
+	List<Coordinate> shieldedPaths;
 	
 	public PersistingController(GridBoard board, List<Character> chars, ActionBar bar) {
 		this.board = board;
@@ -18,6 +20,7 @@ public class PersistingController {
 		
 		this.selected = null;
 		this.selectedActionNode = null;
+		this.shieldedPaths = new LinkedList<Coordinate>();
 	}
 	
 	public void update(){
@@ -25,6 +28,7 @@ public class PersistingController {
 		for (Character c : characters){
 			if (c.hasPersisting()){
 				selected = c;
+				updateShieldedPath();
 				List<ActionNode> actionNodes = c.getPersistingActions();
 				for (ActionNode an : actionNodes){
 					selectedActionNode = an;
@@ -36,6 +40,24 @@ public class PersistingController {
 				}
 			}
 		}
+	}
+	
+	private void updateShieldedPath(){
+		shieldedPaths.clear();
+		for (Character c : characters){
+			if (c.leftside != selected.leftside && c.hasShield()) {
+				shieldedPaths.addAll(c.getShieldedCoords());
+			}
+		}
+	}
+	
+	private boolean isBlocked(int coordX, int coordY){
+		for (Coordinate c : shieldedPaths){
+			if (c.x==coordX && c.y==coordY){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void executeAction(){
@@ -56,8 +78,10 @@ public class PersistingController {
 		}
 		int curIntX = selectedActionNode.getCurrentX();
 		int curIntY = selectedActionNode.getCurrentY();
-		if (!board.isInBounds(curIntX, curIntY)){
+		
+		if (!board.isInBounds(curIntX, curIntY) || isBlocked(curIntX, curIntY)){
 			selected.popPersistingCast(selectedActionNode);
+			return;
 		}
 		
 		for (Character c:characters){
