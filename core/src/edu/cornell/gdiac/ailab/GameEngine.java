@@ -321,6 +321,7 @@ public class GameEngine implements Screen {
     	switch(inGameState){
     	case NORMAL:
     		actionBarController.update();
+    		persistingController.update();
     		if (actionBarController.isAttack){
     			inGameState = InGameState.ATTACK;
     		} else if (actionBarController.isPlayerSelection) {
@@ -347,8 +348,6 @@ public class GameEngine implements Screen {
     		}
     		break;	
     	}
-    	
-    	persistingController.update();
     	
     	if (gameOver()){
     		inGameState = InGameState.NORMAL;

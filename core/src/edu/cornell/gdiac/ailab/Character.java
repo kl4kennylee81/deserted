@@ -91,7 +91,7 @@ public class Character {
 		availableActions[2]=diag;
 		availableActions[3]=single;
 		if (i % 2 == 0){
-			PersistingAction shield = new PersistingAction("Shield",2,0,0,Pattern.SHIELD,Effect.REGULAR,"shield",150,0);
+			PersistingAction shield = new PersistingAction("Shield",2,0,0,Pattern.SHIELD,Effect.REGULAR,"shield",100,0);
 			availableActions[2] = shield;
 		}
 		selectionMenu = new SelectionMenu(availableActions);
