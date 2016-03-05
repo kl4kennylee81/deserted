@@ -64,6 +64,10 @@ public class PersistingController {
 		switch (selectedActionNode.action.pattern){
 		case STRAIGHT:
 			executeStraight();
+			break;
+		case DIAGONAL:
+			executeDiagonal();
+			break;
 		default:
 			break;
 		}
@@ -76,6 +80,36 @@ public class PersistingController {
 		} else {
 			selectedActionNode.curX -= selectedAction.moveSpeed;
 		}
+		int curIntX = selectedActionNode.getCurrentX();
+		int curIntY = selectedActionNode.getCurrentY();
+		
+		if (!board.isInBounds(curIntX, curIntY) || isBlocked(curIntX, curIntY)){
+			selected.popPersistingCast(selectedActionNode);
+			return;
+		}
+		
+		for (Character c:characters){
+			if (!c.equals(selected) && c.xPosition == curIntX && c.yPosition == curIntY){
+				processHit(selectedActionNode,c);
+				selected.popPersistingCast(selectedActionNode);
+				break;
+			}
+		}
+	}
+	
+	public void executeDiagonal(){
+		PersistingAction selectedAction = (PersistingAction) selectedActionNode.action;
+		if (selected.leftside){
+			selectedActionNode.curX += selectedAction.moveSpeed;
+		} else {
+			selectedActionNode.curX -= selectedAction.moveSpeed;
+		}
+		if (selectedActionNode.yPosition == 0){
+			selectedActionNode.curY -= selectedAction.moveSpeed;
+		} else {
+			selectedActionNode.curY += selectedAction.moveSpeed;
+		}
+		
 		int curIntX = selectedActionNode.getCurrentX();
 		int curIntY = selectedActionNode.getCurrentY();
 		

@@ -93,6 +93,8 @@ public class Character {
 		if (i % 2 == 0){
 			PersistingAction shield = new PersistingAction("Shield",2,0,0,Pattern.SHIELD,Effect.REGULAR,"shield",100,0);
 			availableActions[2] = shield;
+			PersistingAction diagProj = new PersistingAction("Projectile Diagonal",2,2,5,Pattern.DIAGONAL,Effect.REGULAR,"projectile diagonal",100,0.06f);
+			availableActions[1] = diagProj;
 		}
 		if (i%2 == 1){
 			PersistingAction straightProj = new PersistingAction("Projectile Straight",2,2,5,Pattern.STRAIGHT,Effect.REGULAR,"projectile straight",100,0.1f);
@@ -219,11 +221,17 @@ public class Character {
 	}
 	
 	void addPersisting(ActionNode an){
-		an.setPersisting(0, xPosition, yPosition);
-		persistingActions.add(an);
 		if (an.action.pattern == Pattern.SHIELD){
+			an.setPersisting(0, xPosition, yPosition);
 			resetShieldedCoordinates();
+		} else if (an.action.pattern == Pattern.DIAGONAL || an.action.pattern == Pattern.STRAIGHT){
+			if (leftside){
+				an.setPersisting(0, xPosition+1, yPosition);
+			} else {
+				an.setPersisting(0, xPosition-1, yPosition);
+			}
 		}
+		persistingActions.add(an);
 	}
 	
 	void popPersistingCast(ActionNode an){
@@ -345,7 +353,8 @@ public class Character {
 				}
 				break;
 			case STRAIGHT:
-				canvas.drawBox(140+100*an.curX, 40+100*yPosition, 20, 20, Color.GRAY);
+			case DIAGONAL:
+				canvas.drawBox(140+100*an.curX, 40+100*an.curY, 20, 20, Color.GRAY);
 				break;
 			default:
 				break;
