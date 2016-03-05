@@ -123,6 +123,8 @@ public class GameEngine implements Screen {
     private SelectionMenuController selectionMenuController;
     /** Subcontroller for action bar (CONTROLLER CLASS) */
     private ActionBarController actionBarController;
+    /** Subcontroller for persisting actions (CONTROLLER CLASS) */
+    private PersistingController persistingController;
     /** Subcontroller for ai selection (CONTROLLER CLASS) */
     private AIController aiController;
     /** Used to draw the game onto the screen (VIEW CLASS) */
@@ -241,6 +243,7 @@ public class GameEngine implements Screen {
         selectionMenuController = new SelectionMenuController(board,characters,bar);
         actionBarController = new ActionBarController(board,characters,bar);
         aiController = new AIController(board,characters,bar);
+        persistingController = new PersistingController(board,characters,bar);
         
         //physicsController = new CollisionController(board, ships, photons);
 	}
@@ -344,6 +347,8 @@ public class GameEngine implements Screen {
     		}
     		break;	
     	}
+    	
+    	persistingController.update();
     	
     	if (gameOver()){
     		inGameState = InGameState.NORMAL;

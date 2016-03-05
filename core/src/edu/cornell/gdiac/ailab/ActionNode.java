@@ -8,6 +8,10 @@ public class ActionNode {
 	int xPosition;
 	int yPosition;
 	
+	int castPoint;
+	int curX;
+	int curY;
+	
 	boolean isInterrupted;
 	
 	public ActionNode(Action action, float executePoint, int xPos, int yPos){
@@ -16,6 +20,12 @@ public class ActionNode {
 		this.xPosition = xPos;
 		this.yPosition = yPos;
 		this.isInterrupted = false;
+	}
+	
+	public void setPersisting(int castPoint, int curX, int curY){
+		this.castPoint = castPoint;
+		this.curX = curX;
+		this.curY = curY;
 	}
 	
 }

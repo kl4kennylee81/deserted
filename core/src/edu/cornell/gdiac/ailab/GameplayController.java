@@ -16,6 +16,7 @@
  */
 package edu.cornell.gdiac.ailab;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import com.badlogic.gdx.math.*;
@@ -39,6 +40,8 @@ public class GameplayController {
 
 	/** Random number generator for state initialization */
 	private Random random;
+	
+	List<Coordinate> shieldedPaths;
 
 	/**
 	 * Creates a GameplayController for the given models.
@@ -54,6 +57,7 @@ public class GameplayController {
 		this.isDone = false;
 		
 		selected = null;
+		shieldedPaths = new LinkedList<Coordinate>();
 	}
 	
 	int i;
@@ -85,6 +89,7 @@ public class GameplayController {
 					isDone = false;
 					selected = c;
 					i = 0;
+					updateShieldedPath();
 					break;
 				}
 			}
@@ -208,6 +213,24 @@ public class GameplayController {
 		return path;
 	}
 	
+	private void updateShieldedPath(){
+		shieldedPaths.clear();
+		for (Character c : characters){
+			if (c.leftside != selected.leftside && c.hasShield()) {
+				shieldedPaths.addAll(c.getShieldedCoords());
+			}
+		}
+	}
+	
+	private boolean isBlocked(Coordinate coord){
+		for (Coordinate c : shieldedPaths){
+			if (c.x==coord.x && c.y==coord.y){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	private void executeMovement(ActionNode a_node){
 		selected.popLastShadow();
 		int total_moves = (Math.abs(selected.xPosition-a_node.xPosition)
@@ -219,7 +242,7 @@ public class GameplayController {
 	}
 	
 	private void executeShield(ActionNode a_node){
-		// TODO
+		selected.addPersisting(a_node);
 	}
 	
 	private void executeInstantStraight(ActionNode a_node){
@@ -237,6 +260,9 @@ public class GameplayController {
 	private void processHitPath(ActionNode a_node, Coordinate[] path){
 		boolean hasHit = false;
 		for (int i=0;i<path.length;i++){
+			if (isBlocked(path[i])){
+				break;
+			}
 			for (Character c:characters){
 				if (selected.leftside ==c.leftside){
 					continue;

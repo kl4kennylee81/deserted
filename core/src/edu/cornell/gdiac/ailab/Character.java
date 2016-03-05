@@ -61,6 +61,8 @@ public class Character {
 	//PersistingActions: add persisting actions for things like shield or projectiles
 			
 	LinkedList<ActionNode> queuedActions;
+	LinkedList<ActionNode> persistingActions;
+	List<Coordinate> shieldedCoordinates;
 	
 	public Character (int i, Texture texture, Color color) {
 		// this is temporary we will pass in hp afterwards
@@ -70,6 +72,8 @@ public class Character {
 		this.color = color;
 		castPosition = 0;
 		queuedActions = new LinkedList<ActionNode>();
+		persistingActions = new LinkedList<ActionNode>();
+		shieldedCoordinates = new LinkedList<Coordinate>();
 		availableActions = new Action[4];
 		
 		oldShadowX = new LinkedList<Integer>();
@@ -86,6 +90,10 @@ public class Character {
 		availableActions[1]=straight;
 		availableActions[2]=diag;
 		availableActions[3]=single;
+		if (i % 2 == 0){
+			PersistingAction shield = new PersistingAction("Shield",2,0,0,Pattern.SHIELD,Effect.REGULAR,"shield",150,0);
+			availableActions[2] = shield;
+		}
 		selectionMenu = new SelectionMenu(availableActions);
 		switch(i) {
 		case 0:
@@ -190,6 +198,47 @@ public class Character {
 		return queuedActions.peek() != null;
 	}
 	
+	boolean hasPersisting() {
+		return persistingActions.peek() != null;
+	}
+	
+	private void resetShieldedCoordinates(){
+		shieldedCoordinates.clear();
+		for (ActionNode an : persistingActions){
+			if (an.action.pattern == Pattern.SHIELD){
+				shieldedCoordinates.add(new Coordinate(an.curX, an.curY));
+				shieldedCoordinates.add(new Coordinate(an.curX, an.yPosition == 0 ? an.curY-1 : an.curY+1));
+			}
+		}
+	}
+	
+	void addPersisting(ActionNode an){
+		an.setPersisting(0, xPosition, yPosition);
+		persistingActions.add(an);
+		if (an.action.pattern == Pattern.SHIELD){
+			resetShieldedCoordinates();
+		}
+	}
+	
+	void popPersistingCast(ActionNode an){
+		persistingActions.remove(an);
+		if (an.action.pattern == Pattern.SHIELD){
+			resetShieldedCoordinates();
+		}
+	}
+	
+	List<ActionNode> getPersistingActions(){
+		return persistingActions;
+	}
+	
+	boolean hasShield() {
+		return !shieldedCoordinates.isEmpty();
+	}
+	
+	List<Coordinate> getShieldedCoords(){
+		return shieldedCoordinates;
+	}
+	
 	float getNextCast() {
 		ActionNode an = queuedActions.peek();
 		if (an != null){
@@ -231,6 +280,9 @@ public class Character {
 		if(needShadow()){
 			drawShadowShip(canvas);
 		}
+		if(hasPersisting()){
+			drawPersisting(canvas);
+		}
 	}
 	
 	public void drawShip(GameCanvas canvas){
@@ -265,6 +317,26 @@ public class Character {
 			
 			tempX = nowX;
 			tempY = nowY;
+		}
+	}
+	
+	private void drawPersisting(GameCanvas canvas){
+		for (ActionNode an : persistingActions){
+			if (an.action.pattern == Pattern.SHIELD){
+				if (leftside){
+					if (an.yPosition==3){
+						canvas.drawBox(195+100*an.curX, 100*yPosition, 10, 200, Color.BROWN);
+					} else {
+						canvas.drawBox(195+100*an.curX, 100*yPosition-100, 10, 200, Color.BROWN);
+					}
+				} else {
+					if (an.yPosition==3){
+						canvas.drawBox(95+100*an.curX, 100*yPosition, 10, 200, Color.BROWN);
+					} else {
+						canvas.drawBox(95+100*an.curX, 100*yPosition-100, 10, 200, Color.BROWN);
+					}
+				}
+			}
 		}
 	}
 	
