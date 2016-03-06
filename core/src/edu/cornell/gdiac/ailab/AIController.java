@@ -28,6 +28,7 @@ public class AIController {
 	private int yOffset;
 	private float interval;
 	private int curSlot;
+	private boolean shield;
 	
 	public AIController(GridBoard board, List<Character> chars, ActionBar bar) {
 		this.board = board;
@@ -43,9 +44,10 @@ public class AIController {
 				selected = c;
 				xOffset = 0;
 				yOffset = 0;
+				shield = false;
 				interval = (1f-bar.castPoint) / selected.selectionMenu.TOTAL_SLOTS;
 				curSlot = 1;
-				selected.setQueuedActions(getActions(0.8f, 0.33f));
+				selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f));
 			}
 		}
 	}
@@ -74,10 +76,10 @@ public class AIController {
 	 *  - Work with teammate somehow
 	 *  - Dodge incoming projectiles
 	 */
-	private List<ActionNode> getActions(float aggression, float risk){
+	private List<ActionNode> getActions(float aggression, float risk, float defensiveness){
 		LinkedList<ActionNode> actions = new LinkedList<ActionNode>();
 		while(curSlot <= 4){
-			ActionNode a = getAction(aggression, risk);
+			ActionNode a = getAction(aggression, risk, defensiveness);
 			curSlot += a.action.cost;
 			if(a.action.pattern == Pattern.MOVE){
 				xOffset = a.xPosition - selected.xPosition;
@@ -317,7 +319,7 @@ public class AIController {
 				case STRAIGHT:
 					return new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0);
 				case DIAGONAL:
-					int dir = (selected.yPosition + yOffset < board.height / 2) ? 0 : 3;
+					int dir = (selected.yPosition + yOffset < board.height / 2) ? 3 : 0;
 					return new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, dir);
 				default:
 					break;
@@ -403,11 +405,31 @@ public class AIController {
 	}
 	
 	/**
+	 * Returns a shield action node if available. Otherwise, returns a movement.
+	 */
+	public ActionNode getShield(){
+		for(Action a: selected.availableActions){
+			switch (a.pattern){
+				case SHIELD:
+					int dir = (selected.yPosition + yOffset < board.height / 2) ? 3 : 0;
+					return new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost -1)), 0, dir);
+				default:
+					break;
+			}
+		}
+		return getMovement();
+	}
+	
+	/**
 	 * Returns either a movement, projectile, or single square attack based on the 
 	 * aggression and risk parameters.
 	 */
-	public ActionNode getAction(float aggression, float risk){
+	public ActionNode getAction(float aggression, float risk, float defensiveness){
 		if(curSlot == 4){
+			float r = (float) Math.random();
+			if(r < defensiveness){
+				return getShield();
+			}
 			return getMovement();
 		}
 		if(curSlot == 3){
@@ -419,6 +441,9 @@ public class AIController {
 		}
 		else{
 			float r = (float) Math.random();
+			if(r < defensiveness && !isSafe(selected.xPosition + xOffset, selected.yPosition + yOffset)){
+				return getShield();
+			}
 			if(r < aggression){
 				return getAttack(risk);
 			}
