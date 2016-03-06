@@ -750,6 +750,17 @@ public class GameCanvas {
 		displayFont.draw(spriteBatch, msg, 400,400);
 	}
 	
+	public void draw(TextureRegion region, float x, float y, float width, float height) {
+		if (!active) {
+			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
+			return;
+		}
+		
+		// Unlike Lab 1, we can shortcut without a master drawing method
+    	spriteBatch.setColor(Color.WHITE);
+		spriteBatch.draw(region, x,  y, width, height);
+	}
+	
 	public void drawMessage(String msg1, String msg2){
 		displayFont.draw(spriteBatch, msg1, 400,300);
 		displayFont.draw(spriteBatch, msg2, 400,500);
@@ -766,6 +777,15 @@ public class GameCanvas {
 		spriteBatch.setColor(tint);
 		spriteBatch.draw(mesh,x,y,size,size);
 	}
+	
+	public void drawOption(float x, float y, Texture button, int size, Color tint, String msg1, String msg2){
+		System.out.println("in gc draw op");
+		spriteBatch.setColor(tint);
+		spriteBatch.draw(button,x,y,size,size);
+		displayFont.draw(spriteBatch, msg1, x,y+size);
+		displayFont.draw(spriteBatch, msg2, x,y+size/4);
+		
+	}	
 	
 	/**
 	 * Draws a ship model to the screen.
@@ -840,3 +860,4 @@ public class GameCanvas {
 		OPAQUE
 	}	
 }
+//TODO: make draw message take positions rather than hardcoding
