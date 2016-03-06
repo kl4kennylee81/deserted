@@ -56,7 +56,7 @@ public class SelectionMenuController {
 			board.reset();
 			//TODO: change it to just send characters selected and then find shadows from selected
 			board.occupy(characters, selected, selected.shadowX, selected.shadowY);
-			if (menu.canDoAction()){
+			if (menu.canAct()){
 				drawHighlights(selected, action, choosingTarget, selectedX, selectedY, shadowX, shadowY);
 			}
 			if (!choosingTarget){
@@ -65,7 +65,7 @@ public class SelectionMenuController {
 					selected.setQueuedActions(menu.getQueuedActions());
 					selected = null;
 					resetNeedsShadow();
-				} else if (controls.pressedA() && menu.canDoAction()){
+				} else if (controls.pressedA() && menu.canAct()){
 					if (action.pattern == Pattern.STRAIGHT){
 						menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*0.075f,0,0));
 						menu.resetPointer();
@@ -99,14 +99,20 @@ public class SelectionMenuController {
 						}
 						menu.setChoosingTarget(true);
 					} else if (action.pattern == Pattern.SHIELD){
-						//FILL IN SHIELD
+						selectedX = X_OFFSCREEN;
+						if (shadowY < boardHeight/2){
+							selectedY = DIAGONAL_UP;
+						} else {
+							selectedY = DIAGONAL_DOWN;
+						}
+						menu.setChoosingTarget(true);
 					}
 				} else if (controls.pressedS()){
 					ActionNode old = menu.removeLast();
 					if (old != null && old.action.pattern == Pattern.MOVE){
 						selected.rewindShadow();
 					}
-				} else if (controls.pressedD() && menu.canDoAction()){
+				} else if (controls.pressedD() && menu.canNop()){
 					menu.add(new ActionNode(nop,bar.castPoint+(action.cost+menu.takenSlots)*0.075f,0,0));
 					menu.resetPointer();
 				} else if (controls.pressedUp() && !controls.pressedDown()){
@@ -169,6 +175,13 @@ public class SelectionMenuController {
 					}
 					break;
 				case DIAGONAL:
+					if (controls.pressedUp() && !controls.pressedDown()){
+						selectedY = DIAGONAL_UP;
+					} else if (controls.pressedDown() && !controls.pressedUp()){
+						selectedY = DIAGONAL_DOWN;
+					} 
+					break;
+				case SHIELD:
 					if (controls.pressedUp() && !controls.pressedDown()){
 						selectedY = DIAGONAL_UP;
 					} else if (controls.pressedDown() && !controls.pressedUp()){
@@ -245,6 +258,9 @@ public class SelectionMenuController {
 		}
 		if (action.pattern == Pattern.DIAGONAL){
 			drawDiagonal(shadX, shadY,selected.leftside, choosingTarget, yPos);
+		}
+		if (action.pattern == Pattern.SHIELD){
+			drawShield(shadX, shadY, selected.leftside, choosingTarget, yPos);
 		}
 	}
 	
@@ -356,6 +372,25 @@ public class SelectionMenuController {
 				}
 				
 			}
+		}
+	}
+	
+	public void drawShield(int xPos, int yPos, boolean leftside, boolean choosingTarget, int yTarget){
+		if (!choosingTarget){
+			if (yPos < boardHeight/2){
+				yTarget = 3;
+			} else {
+				yTarget = 0;
+			}
+		}
+		if (yTarget == 3){
+			board.setHighlighted(xPos, yPos+1);
+			board.setHighlighted(xPos, yPos);
+			board.setCanTarget(xPos, yPos-1);
+		} else {
+			board.setCanTarget(xPos, yPos+1);
+			board.setHighlighted(xPos, yPos);
+			board.setHighlighted(xPos, yPos-1);
 		}
 	}
 	

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 
+import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.mesh.TexturedMesh;
 
 public class SelectionMenu {
@@ -50,6 +51,15 @@ public class SelectionMenu {
 		takenSlots += actionNode.action.cost;
 	}
 	
+	public boolean canMove(){
+		for (ActionNode an : selectedActions){
+			if (an.action.pattern == Pattern.SHIELD){
+				return false;
+			}
+		}
+		return true;
+	}
+	
 	public ActionNode removeLast(){
 		ActionNode an = selectedActions.pollLast();
 		if (an != null) {
@@ -90,7 +100,20 @@ public class SelectionMenu {
 		selectedY = y;
 	}
 	
-	public boolean canDoAction(){
+	public boolean canDoAction(Action a){
+		return takenSlots+a.cost <= TOTAL_SLOTS && (canMove() || a.pattern != Pattern.MOVE);
+	}
+	
+	public boolean canAct(){
+		for (Action a : actions){
+			if (canDoAction(a)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean canNop(){
 		return takenSlots < TOTAL_SLOTS;
 	}
 	
@@ -99,7 +122,7 @@ public class SelectionMenu {
 			for (int i = 0; i < TOTAL_SLOTS; i++){
 				selectedAction += 1;
 				selectedAction %= TOTAL_SLOTS;
-				if (actions[selectedAction].cost <= TOTAL_SLOTS - takenSlots){
+				if (canDoAction(actions[selectedAction])){
 					return true;
 				}
 			}
@@ -109,7 +132,7 @@ public class SelectionMenu {
 				if (selectedAction < 0){
 					selectedAction += TOTAL_SLOTS;
 				}
-				if (actions[selectedAction].cost <= TOTAL_SLOTS - takenSlots){
+				if (canDoAction(actions[selectedAction])){
 					return true;
 				}
 			}
@@ -117,15 +140,16 @@ public class SelectionMenu {
 		return false;
 	}
 	
-	public void resetPointer(){
+	public boolean resetPointer(){
 		if (actions[selectedAction].cost > TOTAL_SLOTS - takenSlots && takenSlots < TOTAL_SLOTS){
 			for (int i = 0; i < TOTAL_SLOTS; i++){
 				selectedAction = i;
-				if (actions[selectedAction].cost <= TOTAL_SLOTS - takenSlots){
-					return;
+				if (canDoAction(actions[selectedAction])){
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 	
 	public void reset(){
@@ -150,7 +174,7 @@ public class SelectionMenu {
 		//Draw action names
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
-			if (action.cost > TOTAL_SLOTS - takenSlots){
+			if (action.cost > TOTAL_SLOTS - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
 				canvas.drawText(action.name, 200, 630-50*i, new Color(1f, 1f, 1f, 0.5f));
 			} else {
 				canvas.drawText(action.name, 200, 630-50*i, Color.BLACK);
@@ -160,7 +184,7 @@ public class SelectionMenu {
 		if (choosingTarget){
 			//draws grid target
 			canvas.drawPointer(145+selectedX*100, 45+selectedY*100, Color.BLACK);
-		} else if (canDoAction()){
+		} else if (canAct()){
 			//draws action name pointers
 			canvas.drawPointer(180,620-50*selectedAction, Color.CORAL);
 		}
