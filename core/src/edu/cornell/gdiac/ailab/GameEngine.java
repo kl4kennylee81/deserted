@@ -19,8 +19,17 @@ package edu.cornell.gdiac.ailab;
 import static com.badlogic.gdx.Gdx.gl20;
 import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.yaml.snakeyaml.Yaml;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.Input.Keys;
@@ -31,12 +40,15 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.VertexAttributes.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.*;
+import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.assets.*;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.*;
 import com.badlogic.gdx.utils.*;
 
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
+import edu.cornell.gdiac.ailab.Action.Effect;
+import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.mesh.*;
 import edu.cornell.gdiac.util.*;
 
@@ -131,6 +143,9 @@ public class GameEngine implements Screen {
     private GameCanvas canvas;
     
     //Current Models
+    private HashMap<Integer, Character> availableCharacters;
+    private HashMap<Integer, Action> availableActions;
+    
     private GridBoard board;
     private List<Character> characters;
     private ActionBar bar;
@@ -441,7 +456,66 @@ public class GameEngine implements Screen {
 	 */
 	public void resume() {}
 
+	@SuppressWarnings("unchecked")
+	private void loadFromYaml(){
+		Yaml yaml = new Yaml();
+		try (InputStream is = new FileInputStream( new File("actions.yml"))){
+			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) yaml.load(is);
+			for (HashMap<String, Object> action : actions){
+				Integer id = (Integer) action.get("id");
+				String name = (String) action.get("name");
+				Integer cost = (Integer) action.get("cost");
+				Integer damage = (Integer) action.get("damage");
+				Integer range = (Integer) action.get("range");
+				String pattern = (String) action.get("pattern");
+				String effect = (String) action.get("effect");
+				String description = (String) action.get("description");
+				
+				Action actionToAdd = new Action(name, cost, damage, range, Pattern.valueOf(pattern),
+												Effect.valueOf(effect), description);
+				availableActions.put(id, actionToAdd);
+			}	
+		} 
+		catch (IOException ex){
+			
+		}
 
+		try (InputStream is = new FileInputStream( new File("characters.yml"))){
+			ArrayList<HashMap<String, Object>> characters = (ArrayList<HashMap<String, Object>>) yaml.load(is);
+			for (HashMap<String, Object> character : characters){
+				Integer id = (Integer) character.get("id");
+				String name = (String) character.get("name");
+				Integer health = (Integer) character.get("health");
+				Integer maxHealth = (Integer) character.get("maxHealth");
+				String hexColor = (String) character.get("hexColor");
+				Float speed = (Float) character.get("speed");
+				Float castSpeed = (Float) character.get("castSpeed");
+				Integer xPosition = (Integer) character.get("xPosition");
+				Integer yPosition = (Integer) character.get("yPosition");
+				Boolean leftSide = (Boolean) character.get("leftSide");
+				ArrayList<Integer> actions = (ArrayList<Integer>) character.get("availableActions");
+				Action[] actionArray = new Action[actions.size()];
+				int i=0;
+				for (Integer actionId : actions){
+					actionArray[i] = availableActions.get(actionId);
+					i++;
+				}
+				
+				Texture enemyTexture = manager.get(ENEMY_TEXTURE,Texture.class);
+				Character characterToAdd = new Character(enemyTexture, name, 
+						health, maxHealth, Color.valueOf(hexColor), speed, 
+						castSpeed, xPosition, yPosition, leftSide, actionArray); 
+									
+				availableCharacters.put(id, characterToAdd);
+			}	
+		} catch (IOException e) {
+
+		}
+		
+		
+	}
+	
+	
 	// HELPER FUNCTIONS
 	
 	/**

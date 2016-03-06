@@ -1,0 +1,65 @@
+- id: 0
+  name: kyle
+  health: 6
+  maxHealth: 6
+  hexColor: 00EE0011
+  speed: 0.007f
+  castSpeed: 0.003f
+  xPosition: 0
+  yPosition: 0
+  leftSide: true
+  availableActions: 
+    - 0
+    - 1
+    - 2
+    - 3
+
+- id: 1
+  name: jon
+  health: 6
+  maxHealth: 6
+  hexColor: FFFF0011
+  speed: 0.004f
+  castSpeed: 0.006f
+  xPosition: 0
+  yPosition: 3
+  leftSide: true
+  availableActions: 
+    - 0
+    - 1
+    - 2
+    - 3
+
+- id: 2
+  name: cameron
+  health: 6
+  maxHealth: 6
+  hexColor: CD262611
+  speed: 0.005f
+  castSpeed: 0.005f
+  xPosition: 5
+  yPosition: 0
+  leftSide: false
+  availableActions: 
+    - 0
+    - 1
+    - 2
+    - 3
+
+- id: 3
+  name: ishaan
+  health: 6
+  maxHealth: 6
+  hexColor: 8B451311
+  speed: 0.006f
+  castSpeed: 0.004f
+  xPosition: 5
+  yPosition: 3
+  leftSide: false
+  availableActions: 
+    - 0
+    - 1
+    - 2
+    - 3
+
+...
