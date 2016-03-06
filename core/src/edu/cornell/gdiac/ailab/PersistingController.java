@@ -12,8 +12,10 @@ public class PersistingController {
 	ActionBar bar;
 	ActionNode selectedActionNode;
 	List<Coordinate> shieldedPaths;
+	List<textMessage> textMessages;
 	
-	public PersistingController(GridBoard board, List<Character> chars, ActionBar bar) {
+	
+	public PersistingController(GridBoard board, List<Character> chars, ActionBar bar,List<textMessage> textMsgs) {
 		this.board = board;
 		this.characters = chars;
 		this.bar = bar;
@@ -21,6 +23,7 @@ public class PersistingController {
 		this.selected = null;
 		this.selectedActionNode = null;
 		this.shieldedPaths = new LinkedList<Coordinate>();
+		this.textMessages = textMsgs;
 	}
 	
 	public void update(){
@@ -129,6 +132,9 @@ public class PersistingController {
 	
 	private void processHit(ActionNode a_node,Character target){
 		applyDamage(a_node,target);
+		
+		String attack_damage = Integer.toString(a_node.action.damage);
+		textMessages.add(new textMessage(attack_damage,5*textMessage.SECOND,target));
 		
 		//handle interruption
 		if (target.queuedActions.peek() != null &&!target.queuedActions.peek().isInterrupted){
