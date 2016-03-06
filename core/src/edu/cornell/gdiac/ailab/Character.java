@@ -114,7 +114,7 @@ public class Character {
 		selectionMenu = new SelectionMenu(availableActions);
 		switch(i) {
 		case 0:
-			name = "kyle";
+			name = "GREEN";
 			xPosition = 0;
 			yPosition = 0;
 			angle = 180;
@@ -123,7 +123,7 @@ public class Character {
 			castSpeed = 0.003f;
 			break;
 		case 1:
-			name = "jon";
+			name = "YELLOW";
 			xPosition = 0;
 			yPosition = 3;
 			angle = 180;
@@ -132,7 +132,7 @@ public class Character {
 			castSpeed = 0.006f;
 			break;
 		case 2:
-			name = "cameron";
+			name = "RED";
 			xPosition = 5;
 			yPosition = 0;
 			angle = 0;
@@ -141,7 +141,7 @@ public class Character {
 			castSpeed = 0.005f;
 			break;
 		case 3:
-			name = "ishaan";
+			name = "BROWN";
 			xPosition = 5;
 			yPosition = 3;
 			angle = 0;
@@ -234,6 +234,7 @@ public class Character {
 	void addPersisting(ActionNode an){
 		if (an.action.pattern == Pattern.SHIELD){
 			an.setPersisting(0, xPosition, yPosition);
+			persistingActions.add(an);
 			resetShieldedCoordinates();
 		} else if (an.action.pattern == Pattern.DIAGONAL || an.action.pattern == Pattern.STRAIGHT){
 			if (leftside){
@@ -241,8 +242,8 @@ public class Character {
 			} else {
 				an.setPersisting(0, xPosition-1, yPosition);
 			}
+			persistingActions.add(an);
 		}
-		persistingActions.add(an);
 	}
 	
 	void popPersistingCast(ActionNode an){
