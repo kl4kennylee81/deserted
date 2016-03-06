@@ -82,15 +82,12 @@ public class Character {
 		maxHealth = health = 6;
 		
 		//We will preload moves in actual game, that way we don't need Pattern and Effect from Action
-		Action move = new Action("Move", 1, 0, 1, Pattern.MOVE, Effect.REGULAR, "move your dude");
-		Action straight = new Action("Straight",2,2,5,Pattern.STRAIGHT, Effect.REGULAR, "straight attack");
-		Action diag = new Action("Diagonal",2,2,5,Pattern.DIAGONAL,Effect.REGULAR,"diagonal attack");
-		Action single = new Action("Single",3,4,10,Pattern.SINGLE,Effect.REGULAR,"single target attack");
+		/*
 		availableActions[0]=move;
 		availableActions[1]=straight;
 		availableActions[2]=diag;
 		availableActions[3]=single;
-		if (i % 2 == 0){
+		/if (i % 2 == 0){
 			PersistingAction shield = new PersistingAction("Shield",2,0,0,Pattern.SHIELD,Effect.REGULAR,"shield",100,0);
 			availableActions[2] = shield;
 			PersistingAction diagProj = new PersistingAction("Projectile Diagonal",2,2,5,Pattern.DIAGONAL,Effect.REGULAR,"projectile diagonal",100,0.06f);
@@ -99,7 +96,21 @@ public class Character {
 		if (i%2 == 1){
 			PersistingAction straightProj = new PersistingAction("Projectile Straight",2,2,5,Pattern.STRAIGHT,Effect.REGULAR,"projectile straight",100,0.1f);
 			availableActions[3] = straightProj;
-		}
+		}*/
+		
+		Action move = new Action("Move", 1, 0, 1, Pattern.MOVE, Effect.REGULAR, "move your dude");
+		PersistingAction straightProj = new PersistingAction("Projectile Straight",2,2,5,Pattern.STRAIGHT,Effect.REGULAR,"projectile straight",100,0.1f);
+		PersistingAction diagProj = new PersistingAction("Projectile Diagonal",2,2,5,Pattern.DIAGONAL,Effect.REGULAR,"projectile diagonal",100,0.06f);
+		PersistingAction shield = new PersistingAction("Shield",2,0,0,Pattern.SHIELD,Effect.REGULAR,"shield",100,0);
+		//Action straight = new Action("Straight",2,2,5,Pattern.STRAIGHT, Effect.REGULAR, "straight attack");
+		//Action diag = new Action("Diagonal",2,2,5,Pattern.DIAGONAL,Effect.REGULAR,"diagonal attack");
+		//Action single = new Action("Single",3,4,10,Pattern.SINGLE,Effect.REGULAR,"single target attack");
+		
+		availableActions[0]=move;
+		availableActions[1]=straightProj;
+		availableActions[2]=diagProj;
+		availableActions[3]=shield;
+		
 		selectionMenu = new SelectionMenu(availableActions);
 		switch(i) {
 		case 0:
