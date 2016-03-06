@@ -167,6 +167,10 @@ public class GameEngine implements Screen {
     	inGameState = inGameState.NORMAL;
     	gameLoad  = 0.0f;
 		canvas = new GameCanvas();
+		
+		availableActions = new HashMap<Integer, Action>();
+		availableCharacters = new HashMap<Integer, Character>();
+		
 	}
 
     
@@ -235,20 +239,34 @@ public class GameEngine implements Screen {
         int MAX_SHIPS    = 20;
         int MAX_PHOTONS  = 1024;
 
+        try {
+			loadFromYaml();
+			System.out.println(availableActions);
+			System.out.println(availableCharacters);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
         gameState = GameState.PLAY;
 
         // Create the models.
         board = new GridBoard(BOARD_WIDTH,BOARD_HEIGHT);
         board.setTileTexture(manager.get(TILE_TEXTURE,Texture.class));
         characters = new LinkedList<Character>();
+        characters.add(availableCharacters.get(0));
+        characters.add(availableCharacters.get(1));
+        characters.add(availableCharacters.get(2));
+        characters.add(availableCharacters.get(3));
+        
         //Texture playerTexture = manager.get(PLAYER_TEXTURE,Texture.class);
         Texture enemyTexture = manager.get(ENEMY_TEXTURE,Texture.class);
         
-        characters.add(new Character(0,enemyTexture,Color.GREEN));
-        characters.add(new Character(1,enemyTexture,Color.YELLOW));
-        characters.add(new Character(2,enemyTexture,Color.RED));
-//        characters.get(2).setAI(Difficulty.EASY);
-        characters.add(new Character(3,enemyTexture,Color.BROWN));
+//        characters.add(new Character(0,enemyTexture,Color.GREEN));
+//        characters.add(new Character(1,enemyTexture,Color.YELLOW));
+//        characters.add(new Character(2,enemyTexture,Color.RED));
+////        characters.get(2).setAI(Difficulty.EASY);
+//        characters.add(new Character(3,enemyTexture,Color.BROWN));
 //        characters.get(3).setAI(Difficulty.EASY);
         
         bar = new ActionBar();
@@ -457,9 +475,9 @@ public class GameEngine implements Screen {
 	public void resume() {}
 
 	@SuppressWarnings("unchecked")
-	private void loadFromYaml(){
+	private void loadFromYaml() throws IOException{
 		Yaml yaml = new Yaml();
-		try (InputStream is = new FileInputStream( new File("actions.yml"))){
+		try (InputStream is = new FileInputStream( new File("../actions.yml"))){
 			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) yaml.load(is);
 			for (HashMap<String, Object> action : actions){
 				Integer id = (Integer) action.get("id");
@@ -476,11 +494,8 @@ public class GameEngine implements Screen {
 				availableActions.put(id, actionToAdd);
 			}	
 		} 
-		catch (IOException ex){
-			
-		}
 
-		try (InputStream is = new FileInputStream( new File("characters.yml"))){
+		try (InputStream is = new FileInputStream( new File("../characters.yml"))){
 			ArrayList<HashMap<String, Object>> characters = (ArrayList<HashMap<String, Object>>) yaml.load(is);
 			for (HashMap<String, Object> character : characters){
 				Integer id = (Integer) character.get("id");
@@ -488,8 +503,8 @@ public class GameEngine implements Screen {
 				Integer health = (Integer) character.get("health");
 				Integer maxHealth = (Integer) character.get("maxHealth");
 				String hexColor = (String) character.get("hexColor");
-				Float speed = (Float) character.get("speed");
-				Float castSpeed = (Float) character.get("castSpeed");
+				Float speed = (Float) ((Double) character.get("speed")).floatValue();
+				Float castSpeed = (Float) ((Double) character.get("castSpeed")).floatValue();
 				Integer xPosition = (Integer) character.get("xPosition");
 				Integer yPosition = (Integer) character.get("yPosition");
 				Boolean leftSide = (Boolean) character.get("leftSide");
@@ -507,9 +522,7 @@ public class GameEngine implements Screen {
 						castSpeed, xPosition, yPosition, leftSide, actionArray); 
 									
 				availableCharacters.put(id, characterToAdd);
-			}	
-		} catch (IOException e) {
-
+			}
 		}
 		
 		
