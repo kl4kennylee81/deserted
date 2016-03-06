@@ -76,8 +76,15 @@ public class PersistingController {
 		}
 	}
 	
+	private boolean isHit(Character c, int curX, int curY){
+		return c.isAlive() && !c.equals(selected) && c.leftside != selected.leftside && c.xPosition == curX && c.yPosition == curY;
+	}
+	
 	public void executeStraight(){
 		PersistingAction selectedAction = (PersistingAction) selectedActionNode.action;
+		
+		int prevIntX = selectedActionNode.getCurrentX();
+		int prevIntY = selectedActionNode.getCurrentY();
 		if (selected.leftside){
 			selectedActionNode.curX += selectedAction.moveSpeed;
 		} else {
@@ -92,7 +99,7 @@ public class PersistingController {
 		}
 		
 		for (Character c:characters){
-			if (!c.equals(selected) && c.xPosition == curIntX && c.yPosition == curIntY){
+			if (isHit(c,curIntX,curIntY) || isHit(c,prevIntX,prevIntY)){
 				processHit(selectedActionNode,c);
 				selected.popPersistingCast(selectedActionNode);
 				break;
@@ -102,6 +109,9 @@ public class PersistingController {
 	
 	public void executeDiagonal(){
 		PersistingAction selectedAction = (PersistingAction) selectedActionNode.action;
+		
+		int prevIntX = selectedActionNode.getCurrentX();
+		int prevIntY = selectedActionNode.getCurrentY();
 		if (selected.leftside){
 			selectedActionNode.curX += selectedAction.moveSpeed;
 		} else {
@@ -122,7 +132,7 @@ public class PersistingController {
 		}
 		
 		for (Character c:characters){
-			if (!c.equals(selected) && c.xPosition == curIntX && c.yPosition == curIntY){
+			if (isHit(c,curIntX,curIntY) || isHit(c,prevIntX,prevIntY)){
 				processHit(selectedActionNode,c);
 				selected.popPersistingCast(selectedActionNode);
 				break;

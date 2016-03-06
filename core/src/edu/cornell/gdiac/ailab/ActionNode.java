@@ -28,6 +28,7 @@ public class ActionNode {
 		this.curY = curY;
 	}
 	
+
 	public int getCurrentX(){
 		return Math.round(curX);
 	}
