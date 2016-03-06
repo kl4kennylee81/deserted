@@ -334,7 +334,7 @@ public class GameEngine implements Screen {
         if (gameState == GameState.PLAY || gameState == GameState.FINISH || gameState == GameState.AFTER) {
             // If the player presses 'R', reset the game.
             if (Gdx.input.isKeyPressed(Keys.R)) {
-                gameState = GameState.PLAY;
+                gameState = GameState.BEFORE;
                 return true;
             }
         }
@@ -474,7 +474,7 @@ public class GameEngine implements Screen {
 	private void drawOption(float sx, float sy, int size, String msg1, String msg2) {
 		// Compute drawing coordinates
 		//Option option = new Option();
-		System.out.println("" + sx + " " + sy);
+		//System.out.println("" + sx + " " + sy);
 
 		// You can modify the following to change a tile's highlight color.
 		// BASIC_COLOR corresponds to no highlight.
