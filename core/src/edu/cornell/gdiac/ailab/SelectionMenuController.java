@@ -53,7 +53,6 @@ public class SelectionMenuController {
 			int selectedX = menu.getSelectedX();
 			int selectedY = menu.getSelectedY();
 			boolean leftside = selected.leftside;
-			board.reset();
 			board.occupy(characters, selected);
 			if (menu.canAct()){
 				drawHighlights(selected, action, choosingTarget, selectedX, selectedY, shadowX, shadowY);

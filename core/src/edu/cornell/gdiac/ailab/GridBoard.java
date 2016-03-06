@@ -156,6 +156,7 @@ public class GridBoard {
 	}
 	
 	public void occupy(List<Character> chars, Character selected){
+		reset();
 		for (Character c : chars){
 			if (c.equals(selected)){
 				tiles[c.shadowX][c.shadowY].isOccupied = true;
@@ -166,6 +167,7 @@ public class GridBoard {
 	}
 
 	public void occupy(List<Character> chars){
+		reset();
 		for (Character c : chars){
 			tiles[c.xPosition][c.yPosition].isOccupied = true;
 		}
