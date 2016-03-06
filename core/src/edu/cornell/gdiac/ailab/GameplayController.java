@@ -77,6 +77,7 @@ public class GameplayController {
 	 */
 	public void update() {
 		//TODO EVERYTHING
+		board.reset();
 		board.occupy(characters);
 		if (selected != null){
 			//Do that dudes actions

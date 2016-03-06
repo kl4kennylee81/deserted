@@ -155,10 +155,10 @@ public class GridBoard {
 		}
 	}
 	
-	public void occupy(List<Character> chars, Character selected, int x, int y){
+	public void occupy(List<Character> chars, Character selected){
 		for (Character c : chars){
 			if (c.equals(selected)){
-				tiles[x][y].isOccupied = true;
+				tiles[c.shadowX][c.shadowY].isOccupied = true;
 			} else {
 				tiles[c.xPosition][c.yPosition].isOccupied = true;
 			}
@@ -167,7 +167,7 @@ public class GridBoard {
 
 	public void occupy(List<Character> chars){
 		for (Character c : chars){
-				tiles[c.xPosition][c.yPosition].isOccupied = true;
+			tiles[c.xPosition][c.yPosition].isOccupied = true;
 		}
 	}
 	

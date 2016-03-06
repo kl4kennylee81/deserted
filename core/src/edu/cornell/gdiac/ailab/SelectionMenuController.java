@@ -54,8 +54,7 @@ public class SelectionMenuController {
 			int selectedY = menu.getSelectedY();
 			boolean leftside = selected.leftside;
 			board.reset();
-			//TODO: change it to just send characters selected and then find shadows from selected
-			board.occupy(characters, selected, selected.shadowX, selected.shadowY);
+			board.occupy(characters, selected);
 			if (menu.canAct()){
 				drawHighlights(selected, action, choosingTarget, selectedX, selectedY, shadowX, shadowY);
 			}
