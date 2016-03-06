@@ -409,8 +409,8 @@ public class GameEngine implements Screen {
     	switch(inGameState){
     	case NORMAL:
     		actionBarController.update();
-    		updateTextMessages();
     		persistingController.update();
+    		updateTextMessages();
     		if (actionBarController.isAISelection) {
     			aiController.update();
     		}
