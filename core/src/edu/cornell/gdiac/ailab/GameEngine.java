@@ -50,6 +50,7 @@ import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.ailab.Action.Effect;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.mesh.*;
+import edu.cornell.gdiac.ailab.GameCanvas;
 import edu.cornell.gdiac.util.*;
 
 /**
@@ -106,8 +107,32 @@ public class GameEngine implements Screen {
 	/** Background image for the canvas */
 	private static final String BCKGD_TEXTURE = "images/desert_sand.jpg";
 	
+	/** Background image for the canvas */
+	private static final String LOADING_TEXTURE = "images/loading.png";
+	
+	/** image for the loading bar  */
+	private static final String PRGRSBR_TEXTURE = "images/progressbar.png";
+	/** Texture for loading status bar  */
+	private static Texture statusBar;
+	// statusBar is a "texture atlas." Break it up into parts.
+	/** Left cap to the status background (grey region) */
+	private TextureRegion statusBkgLeft;
+	/** Middle portion of the status background (grey region) */
+	private TextureRegion statusBkgMiddle;
+	/** Right cap to the status background (grey region) */
+	private TextureRegion statusBkgRight;
+	/** Left cap to the status forground (colored region) */
+	private TextureRegion statusFrgLeft;
+	/** Middle portion of the status forground (colored region) */
+	private TextureRegion statusFrgMiddle;
+	/** Right cap to the status forground (colored region) */
+	private TextureRegion statusFrgRight;	
+	
 	/** File storing the texture for a board tile */
 	private static final String TILE_TEXTURE = "models/Tile.png";
+	
+	/** File storing the texture for an option tile */
+	private static final String OPTION_TEXTURE = "images/white.png";
 
 	/** File storing the enemy texture for a ship */
 	private static final String PLAYER_TEXTURE  = "models/Ship.png";
@@ -115,6 +140,17 @@ public class GameEngine implements Screen {
 	private static final String ENEMY_TEXTURE = "models/ShipPlayer.png";
 	
 	private static final String WHITE_BOX = "images/white.png";
+	
+	/** The width of the progress bar */	
+	private int width;
+	/** The y-coordinate of the center of the progress bar */
+	private int centerY;
+	/** The x-coordinate of the center of the progress bar */
+	private int centerX;
+	/** The height of the canvas window (necessary since sprite origin != screen origin) */
+	private int heightY;
+	/** Scaling factor for when the student changes the resolution. */
+	private float scale;
 
 	// We keep sound information in the sound controller, as it belongs there
 	
@@ -142,6 +178,24 @@ public class GameEngine implements Screen {
     /** Used to draw the game onto the screen (VIEW CLASS) */
     private GameCanvas canvas;
     
+	/** Default budget for asset loader (do nothing but load 60 fps) */
+	private static int DEFAULT_BUDGET = 15;
+	/** Standard window size (for scaling) */
+	private static int STANDARD_WIDTH  = 800;
+	/** Standard window height (for scaling) */
+	private static int STANDARD_HEIGHT = 700;
+	/** Ratio of the bar width to the screen */
+	private static float BAR_WIDTH_RATIO  = 0.66f;
+	/** Ration of the bar height to the screen */
+	private static float BAR_HEIGHT_RATIO = 0.25f;	
+	/** Height of the progress bar */
+	private static int PROGRESS_HEIGHT = 30;
+	/** Width of the rounded cap on left or right */
+	private static int PROGRESS_CAP    = 15;
+	/** Width of the middle portion in texture atlas */
+	private static int PROGRESS_MIDDLE = 200;
+	private static float BUTTON_SCALE  = 0.75f;
+    
     //Current Models
     private HashMap<Integer, Character> availableCharacters;
     private HashMap<Integer, Action> availableActions;
@@ -149,6 +203,7 @@ public class GameEngine implements Screen {
     private GridBoard board;
     private List<Character> characters;
     private ActionBar bar;
+    private List<textMessage> textMessages;
 
     /** The current game state (SIMPLE FIELD) */
     private GameState gameState;
@@ -167,10 +222,20 @@ public class GameEngine implements Screen {
     	inGameState = inGameState.NORMAL;
     	gameLoad  = 0.0f;
 		canvas = new GameCanvas();
+
 		
 		availableActions = new HashMap<Integer, Action>();
 		availableCharacters = new HashMap<Integer, Character>();
 		
+
+		width = (int)(BAR_WIDTH_RATIO*canvas.getWidth());
+		centerY = (int)(BAR_HEIGHT_RATIO*canvas.getHeight());
+		centerX = canvas.getWidth()/2;
+		heightY = canvas.getHeight();
+		float sx = ((float)canvas.getWidth())/STANDARD_WIDTH;
+		float sy = ((float)canvas.getHeight())/STANDARD_HEIGHT;
+		scale = (sx < sy ? sx : sy);
+
 	}
 
     
@@ -258,25 +323,22 @@ public class GameEngine implements Screen {
         characters.add(availableCharacters.get(1));
         characters.add(availableCharacters.get(2));
         characters.add(availableCharacters.get(3));
+        characters.get(2).setAI(Difficulty.EASY);
+        characters.get(3).setAI(Difficulty.EASY);
+        
+        textMessages = new LinkedList<textMessage>();
         
         //Texture playerTexture = manager.get(PLAYER_TEXTURE,Texture.class);
         Texture enemyTexture = manager.get(ENEMY_TEXTURE,Texture.class);
         
-//        characters.add(new Character(0,enemyTexture,Color.GREEN));
-//        characters.add(new Character(1,enemyTexture,Color.YELLOW));
-//        characters.add(new Character(2,enemyTexture,Color.RED));
-////        characters.get(2).setAI(Difficulty.EASY);
-//        characters.add(new Character(3,enemyTexture,Color.BROWN));
-//        characters.get(3).setAI(Difficulty.EASY);
-        
         bar = new ActionBar();
         
 		// Create the three subcontrollers
-        gameplayController = new GameplayController(board,characters,bar);
+        gameplayController = new GameplayController(board,characters,bar,textMessages);
         selectionMenuController = new SelectionMenuController(board,characters,bar);
         actionBarController = new ActionBarController(board,characters,bar);
         aiController = new AIController(board,characters,bar);
-        persistingController = new PersistingController(board,characters,bar);
+        persistingController = new PersistingController(board,characters,bar,textMessages);
         
         //physicsController = new CollisionController(board, ships, photons);
 	}
@@ -306,7 +368,7 @@ public class GameEngine implements Screen {
         if (gameState == GameState.PLAY || gameState == GameState.FINISH || gameState == GameState.AFTER) {
             // If the player presses 'R', reset the game.
             if (Gdx.input.isKeyPressed(Keys.R)) {
-                gameState = GameState.PLAY;
+                gameState = GameState.BEFORE;
                 return true;
             }
         }
@@ -336,6 +398,30 @@ public class GameEngine implements Screen {
 	}
 	
 	/**
+	 * Updates the progress bar according to loading progress
+	 *
+	 * The progress bar is composed of parts: two rounded caps on the end, 
+	 * and a rectangle in a middle.  We adjust the size of the rectangle in
+	 * the middle to represent the amount of progress.
+	 *
+	 * @param canvas The drawing context
+	 */	
+	private void drawProgress(GameCanvas canvas) {
+		canvas.draw(statusBkgLeft,   centerX-width/2, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
+		canvas.draw(statusBkgRight,  centerX+width/2-scale*PROGRESS_CAP, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
+		canvas.draw(statusBkgMiddle, centerX-width/2+scale*PROGRESS_CAP, centerY, width-2*scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
+
+		canvas.draw(statusFrgLeft,   centerX-width/2, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
+		if (gameLoad > 0) {
+			float span = gameLoad*(width-2*scale*PROGRESS_CAP)/1.0f;
+			canvas.draw(statusFrgRight,  centerX-width/2+scale*PROGRESS_CAP+span, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
+			canvas.draw(statusFrgMiddle, centerX-width/2+scale*PROGRESS_CAP, centerY, span, scale*PROGRESS_HEIGHT);
+		} else {
+			canvas.draw(statusFrgRight,  centerX-width/2+scale*PROGRESS_CAP, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
+		}
+	}
+	
+	/**
 	 * Draws the game board while we are still loading
 	 */
 	public void drawLoad() {
@@ -343,7 +429,7 @@ public class GameEngine implements Screen {
 		Gdx.gl.glClearColor(0.39f, 0.58f, 0.93f, 1.0f);  // Homage to the XNA years
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         canvas.begin();
-		canvas.drawMessage(MESSG_LOAD);
+        drawProgress(canvas);
         canvas.end();
     }
 	
@@ -354,13 +440,15 @@ public class GameEngine implements Screen {
     	switch(inGameState){
     	case NORMAL:
     		actionBarController.update();
+    		updateTextMessages();
     		persistingController.update();
+    		if (actionBarController.isAISelection) {
+    			aiController.update();
+    		}
     		if (actionBarController.isAttack){
     			inGameState = InGameState.ATTACK;
     		} else if (actionBarController.isPlayerSelection) {
     			inGameState = InGameState.SELECTION;
-    		} else if (actionBarController.isAISelection) {
-    			aiController.update();
     		}
     		break;
     	case SELECTION:
@@ -412,6 +500,46 @@ public class GameEngine implements Screen {
     	return leftsideDead() || rightsideDead();
     }
     
+    public void updateTextMessages(){
+//		List<textMessage> tempMsg = new LinkedList<textMessage>();
+		for (textMessage m: textMessages){
+			if (m.duration > 0){
+				m.duration--;
+				m.y_pos+=0.4;
+//				tempMsg.add(m);
+			}
+		}
+//		textMessages = tempMsg;
+    }
+    
+    /**
+	 * Draws an option for the start screen at position (x,y). 
+	 *
+	 *
+	 * @param x The x index for the Option cell
+	 * @param y The y index for the Option cell
+	 */
+	private void drawOption(float sx, float sy, int size, String msg1, String msg2) {
+		// Compute drawing coordinates
+		//Option option = new Option();
+		//System.out.println("" + sx + " " + sy);
+
+		// You can modify the following to change a tile's highlight color.
+		// BASIC_COLOR corresponds to no highlight.
+		///////////////////////////////////////////////////////
+		Color color = Color.WHITE;
+		//if (option.isHighlighted){
+			//System.out.println("dude");
+			//color.lerp(HIGHLIGHT_COLOR,lerpVal);
+		//} 
+
+		///////////////////////////////////////////////////////
+
+		// Draw
+		canvas.drawOption(sx,sy,new Texture(OPTION_TEXTURE),size,color, msg1, msg2);
+	}
+
+    
     /**
      * Called to draw when we are playing the game.
      */
@@ -423,7 +551,13 @@ public class GameEngine implements Screen {
 		
 		switch (gameState) {
         case BEFORE:
-    		canvas.drawMessage(MESSG_BEFORE_1, MESSG_BEFORE_2);
+        	initializeCanvas(BCKGD_TEXTURE);
+//    		canvas.drawMessage(MESSG_BEFORE_1, MESSG_BEFORE_2);
+    		drawOption(canvas.getWidth()/4,canvas.getHeight()/4,100,"HARD MODE","(or press 'h')");
+    		drawOption(canvas.getWidth()/4,3*canvas.getHeight()/4,100,"EASY MODE","(or press 'e')");
+    		drawOption(3*canvas.getWidth()/4,canvas.getHeight()/4,100,"MEDIUM MODE","(or press 'm')");
+    		drawOption(3*canvas.getWidth()/4,3*canvas.getHeight()/4,100,"PvP MODE","(or press 'p')");
+    		
     		break;
         case FINISH:
         case AFTER:
@@ -446,6 +580,10 @@ public class GameEngine implements Screen {
             	c.draw(canvas);
             }
             bar.draw(canvas);
+            
+            for (textMessage m : textMessages){
+            	m.draw(canvas);
+            }
         	break;
         }
         canvas.end();
@@ -488,9 +626,22 @@ public class GameEngine implements Screen {
 				String pattern = (String) action.get("pattern");
 				String effect = (String) action.get("effect");
 				String description = (String) action.get("description");
+				HashMap<String,Object> persisting = 
+							(HashMap<String, Object>) action.get("persisting_action"); 
 				
-				Action actionToAdd = new Action(name, cost, damage, range, Pattern.valueOf(pattern),
-												Effect.valueOf(effect), description);
+				Action actionToAdd;
+				if (persisting != null){
+					Integer castLength = (Integer) persisting.get("castLength");
+					Float moveSpeed = (Float) ((Double) persisting.get("moveSpeed")).floatValue();
+					actionToAdd = new PersistingAction(name, cost, damage, range,
+							Pattern.valueOf(pattern), Effect.valueOf(effect), description, 
+							castLength, moveSpeed);
+				}else{
+					actionToAdd = new Action(name, cost, damage, range, Pattern.valueOf(pattern),
+							Effect.valueOf(effect), description);
+				}
+				
+				
 				availableActions.put(id, actionToAdd);
 			}	
 		} 
@@ -546,6 +697,22 @@ public class GameEngine implements Screen {
 		manager.load(BCKGD_TEXTURE,Texture.class);
 		assets.add(BCKGD_TEXTURE);
 		
+		manager.load(LOADING_TEXTURE,Texture.class);
+		assets.add(LOADING_TEXTURE);
+		
+		manager.load(PRGRSBR_TEXTURE, Texture.class);
+		assets.add(PRGRSBR_TEXTURE);
+		statusBar = new Texture(PRGRSBR_TEXTURE);
+		statusBkgLeft   = new TextureRegion(statusBar,0,0,PROGRESS_CAP,PROGRESS_HEIGHT);
+		statusBkgRight  = new TextureRegion(statusBar,statusBar.getWidth()-PROGRESS_CAP,0,PROGRESS_CAP,PROGRESS_HEIGHT);
+		statusBkgMiddle = new TextureRegion(statusBar,PROGRESS_CAP,0,PROGRESS_MIDDLE,PROGRESS_HEIGHT);
+
+		int offset = statusBar.getHeight()-PROGRESS_HEIGHT;
+		statusFrgLeft   = new TextureRegion(statusBar,0,offset,PROGRESS_CAP,PROGRESS_HEIGHT);
+		statusFrgRight  = new TextureRegion(statusBar,statusBar.getWidth()-PROGRESS_CAP,offset,PROGRESS_CAP,PROGRESS_HEIGHT);
+		statusFrgMiddle = new TextureRegion(statusBar,PROGRESS_CAP,offset,PROGRESS_MIDDLE,PROGRESS_HEIGHT);
+
+		
 		MeshLoader.MeshParameter parameter = new MeshLoader.MeshParameter();
 		parameter.attribs = new VertexAttribute[2];
 		parameter.attribs[0] = new VertexAttribute(Usage.Position, 3, "vPosition");
@@ -565,7 +732,7 @@ public class GameEngine implements Screen {
 		manager.finishLoading();
 		
 		// We have to force the canvas to fully load (so we can draw something)
-		initializeCanvas();
+		initializeCanvas(LOADING_TEXTURE);
 		
         // Sound controller manages its own material
         SoundController.PreLoadContent(manager);
@@ -578,9 +745,9 @@ public class GameEngine implements Screen {
 	 * needed to draw anything at all, we block until the assets have finished
 	 * loading.
 	 */
-    private void initializeCanvas() {    	
+    private void initializeCanvas(String texture_msg) { 
     	canvas.setFont(new BitmapFont());
-		Texture texture = manager.get(BCKGD_TEXTURE, Texture.class);
+		Texture texture = manager.get(texture_msg, Texture.class);
 		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		canvas.setBackground(texture);
 		canvas.setWhite(manager.get(WHITE_BOX, Texture.class));
@@ -604,3 +771,4 @@ public class GameEngine implements Screen {
     }
 }
 
+//TODO: Resize for statusBar
