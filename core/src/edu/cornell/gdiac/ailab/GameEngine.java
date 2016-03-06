@@ -307,7 +307,7 @@ public class GameEngine implements Screen {
         selectionMenuController = new SelectionMenuController(board,characters,bar);
         actionBarController = new ActionBarController(board,characters,bar);
         aiController = new AIController(board,characters,bar);
-        persistingController = new PersistingController(board,characters,bar);
+        persistingController = new PersistingController(board,characters,bar,textMessages);
         
         //physicsController = new CollisionController(board, ships, photons);
 	}
@@ -472,7 +472,6 @@ public class GameEngine implements Screen {
     public void updateTextMessages(){
 //		List<textMessage> tempMsg = new LinkedList<textMessage>();
 		for (textMessage m: textMessages){
-	    	System.out.println("updating the textMessages");
 			if (m.duration > 0){
 				m.duration--;
 				m.y_pos+=0.4;

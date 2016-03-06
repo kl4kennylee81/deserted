@@ -293,8 +293,8 @@ public class GameplayController {
 		
 		//add text bubble for amount of damage in front of target
 		String attack_damage = Integer.toString(a_node.action.damage);
-		textMessages.add(new textMessage(attack_damage,4*textMessage.SECOND,target));
-		
+		textMessages.add(new textMessage(attack_damage,10*textMessage.SECOND,target));
+
 		//handle interruption
 		if (target.queuedActions.peek() != null &&!target.queuedActions.peek().isInterrupted){
 			target.queuedActions.peek().isInterrupted = true;

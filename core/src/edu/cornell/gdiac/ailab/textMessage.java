@@ -56,8 +56,6 @@ public class textMessage {
 		this.x_pos = 150 + 100*this.character.xPosition;
 		this.y_pos = 120 + 100*this.character.yPosition;
 		
-		System.out.println("drawing here\n");
-		
 		canvas.drawText(text,this.x_pos,this.y_pos,Color.BLACK);
 	}
 }
