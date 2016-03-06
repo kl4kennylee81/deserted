@@ -218,7 +218,7 @@ public class SelectionMenuController {
 		} else {
 			isDone = true;
 			for (Character c : characters){
-				if (c.needsSelection && c.isAlive()){
+				if (c.needsSelection && c.isAlive() && !c.isAI){
 					isDone = false;
 					selected = c;
 					SelectionMenu menu = c.getSelectionMenu();

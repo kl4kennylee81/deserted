@@ -409,10 +409,10 @@ public class GameEngine implements Screen {
     		persistingController.update();
     		if (actionBarController.isAttack){
     			inGameState = InGameState.ATTACK;
-    		} else if (actionBarController.isPlayerSelection) {
-    			inGameState = InGameState.SELECTION;
     		} else if (actionBarController.isAISelection) {
     			aiController.update();
+    		} else if (actionBarController.isPlayerSelection) {
+    			inGameState = InGameState.SELECTION;
     		}
     		break;
     	case SELECTION:
