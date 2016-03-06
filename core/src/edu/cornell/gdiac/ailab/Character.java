@@ -64,6 +64,37 @@ public class Character {
 	LinkedList<ActionNode> persistingActions;
 	List<Coordinate> shieldedCoordinates;
 	
+	/**Constructor used by GameEngine to create characters from yaml input. */
+	public Character (Texture texture, String name, int health, int maxHealth, Color color, 
+						float speed, float castSpeed, int xPosition, int yPosition,
+						boolean leftSide, Action[] actions){
+		this.texture = texture;
+		this.name = name;
+		this.health = health;
+		this.maxHealth = maxHealth;
+		this.color = color;
+		this.speed = speed;
+		this.castSpeed = castSpeed;
+		this.xPosition = xPosition;
+		this.yPosition = yPosition;
+		this.leftside = leftSide;
+		
+		castPosition = 0;
+		queuedActions = new LinkedList<ActionNode>();
+		persistingActions = new LinkedList<ActionNode>();
+		shieldedCoordinates = new LinkedList<Coordinate>();
+		
+		oldShadowX = new LinkedList<Integer>();
+		oldShadowY = new LinkedList<Integer>();
+		setShadow(xPosition,yPosition);
+		
+		this.availableActions = actions;
+		selectionMenu = new SelectionMenu(availableActions);
+		
+	}
+	
+	
+	
 	public Character (int i, Texture texture, Color color) {
 		// this is temporary we will pass in hp afterwards
 		this.health = 10;
