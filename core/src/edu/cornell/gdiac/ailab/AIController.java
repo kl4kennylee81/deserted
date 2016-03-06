@@ -401,6 +401,9 @@ public class AIController {
 		if(canHitSomeone(selected.xPosition + xOffset, selected.yPosition + yOffset)) {
 			return getProjectile();
 		}
+		if(shield){
+			return new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0);
+		}
 		return getMovement();
 	}
 	
@@ -411,11 +414,15 @@ public class AIController {
 		for(Action a: selected.availableActions){
 			switch (a.pattern){
 				case SHIELD:
+					shield = true;
 					int dir = (selected.yPosition + yOffset < board.height / 2) ? 3 : 0;
 					return new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost -1)), 0, dir);
 				default:
 					break;
 			}
+		}
+		if(shield){
+			return new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0);
 		}
 		return getMovement();
 	}
@@ -430,11 +437,14 @@ public class AIController {
 			if(r < defensiveness){
 				return getShield();
 			}
+			if(shield){
+				return new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0);
+			}
 			return getMovement();
 		}
 		if(curSlot == 3){
 			float r = (float) Math.random();
-			if(r < aggression && canHitSomeone(selected.xPosition + xOffset, selected.yPosition + yOffset)){
+			if((r < aggression && canHitSomeone(selected.xPosition + xOffset, selected.yPosition + yOffset)) || shield){
 				return getProjectile();
 			}
 			return getMovement();
@@ -444,7 +454,7 @@ public class AIController {
 			if(r < defensiveness && !isSafe(selected.xPosition + xOffset, selected.yPosition + yOffset)){
 				return getShield();
 			}
-			if(r < aggression){
+			if(r < aggression || shield){
 				return getAttack(risk);
 			}
 			return getMovement();
