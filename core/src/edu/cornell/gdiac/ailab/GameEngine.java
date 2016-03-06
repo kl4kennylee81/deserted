@@ -293,9 +293,9 @@ public class GameEngine implements Screen {
         characters.add(new Character(0,enemyTexture,Color.GREEN));
         characters.add(new Character(1,enemyTexture,Color.YELLOW));
         characters.add(new Character(2,enemyTexture,Color.RED));
-//        characters.get(2).setAI(Difficulty.EASY);
+        characters.get(2).setAI(Difficulty.EASY);
         characters.add(new Character(3,enemyTexture,Color.BROWN));
-//        characters.get(3).setAI(Difficulty.EASY);
+        characters.get(3).setAI(Difficulty.EASY);
         
         bar = new ActionBar();
         
