@@ -20,6 +20,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import com.badlogic.gdx.math.*;
+
+import edu.cornell.gdiac.ailab.Action.Pattern;
+
 import com.badlogic.gdx.graphics.*;
 
 /**
@@ -79,7 +82,7 @@ public class GameplayController {
 			//Do that dudes actions
 			ActionNode action = selected.popCast();
 			selected.needsAttack = false;
-			if (!action.isInterrupted){
+			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
 				executeAction(action);
 			}
 			selected = null;
