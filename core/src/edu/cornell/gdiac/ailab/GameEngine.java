@@ -93,10 +93,10 @@ public class GameEngine implements Screen {
 	private static final String MESSG_RESTART = "Press \"R\" to Restart";
 
 	/** Background image for the canvas */
-	private static final String BCKGD_TEXTURE = "images/desert_sand.jpg";
+	private static final String BCKGD_TEXTURE = "images/bg.png";
 	
 	/** Background image for the canvas */
-	private static final String LOADING_TEXTURE = "images/loading.png";
+	private static final String LOADING_TEXTURE = "images/loading2.png";
 	
 	/** image for the loading bar  */
 	private static final String PRGRSBR_TEXTURE = "images/progressbar.png";
