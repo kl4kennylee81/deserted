@@ -47,7 +47,17 @@ public class AIController {
 				shield = false;
 				interval = (1f-bar.castPoint) / selected.selectionMenu.TOTAL_SLOTS;
 				curSlot = 1;
-				selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f));
+				switch (c.diff){
+					case EASY:
+						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.1f));
+						break;
+					case MEDIUM:
+						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.7f));
+						break;
+					default:
+						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 1.0f));
+						break;
+				}
 			}
 		}
 	}
@@ -66,7 +76,6 @@ public class AIController {
 	 * 	 move to a square from which an enemy can be hit. 
 	 * 
 	 * random ideas for improvement:
-	 *  - Add shield logic
 	 *  - Move more than one square to get into an attacking position
 	 * 	- Take into account opponents position in cast bar 
 	 * 		- be more aggressive if they are in their waiting phase, more
@@ -76,10 +85,10 @@ public class AIController {
 	 *  - Work with teammate somehow
 	 *  - Dodge incoming projectiles
 	 */
-	private List<ActionNode> getActions(float aggression, float risk, float defensiveness){
+	private List<ActionNode> getActions(float aggression, float risk, float defensiveness, float intelligence){
 		LinkedList<ActionNode> actions = new LinkedList<ActionNode>();
 		while(curSlot <= 4){
-			ActionNode a = getAction(aggression, risk, defensiveness);
+			ActionNode a = getAction(aggression, risk, defensiveness, intelligence);
 			curSlot += a.action.cost;
 			if(a.action.pattern == Pattern.MOVE){
 				xOffset = a.xPosition - selected.xPosition;
@@ -427,37 +436,83 @@ public class AIController {
 		return getMovement();
 	}
 	
+	public ActionNode randomAction(){
+		ArrayList<ActionNode> actions = new ArrayList<ActionNode>();
+		for(Action a: selected.availableActions){
+			switch (a.pattern){
+				case MOVE:
+					if(!shield){
+						actions.add(randomMovement(a));
+						actions.add(randomMovement(a));
+					}
+					break;
+				case SHIELD:
+					if(curSlot <= 3)
+						actions.add(getShield());
+					break;
+				case STRAIGHT:
+					if(curSlot <= 3)
+						actions.add(new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0));
+					break;
+				case DIAGONAL:
+					int dir = (selected.yPosition + yOffset < board.height / 2) ? 3 : 0;
+					if(curSlot <= 3)
+						actions.add(new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, dir));
+					break;
+				default:
+					break;
+			}
+		}
+		Random r = new Random();
+		return actions.get(r.nextInt(actions.size()));  
+	}
+	
+	
 	/**
 	 * Returns either a movement, projectile, or single square attack based on the 
 	 * aggression and risk parameters.
 	 */
-	public ActionNode getAction(float aggression, float risk, float defensiveness){
+	public ActionNode getAction(float aggression, float risk, float defensiveness, float intelligence){
+		ActionNode action;
 		if(curSlot == 4){
 			float r = (float) Math.random();
 			if(r < defensiveness){
-				return getShield();
+				action = getShield();
 			}
-			if(shield){
-				return new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0);
+			else if(shield){
+				action = new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0);
 			}
-			return getMovement();
+			else{
+				action = getMovement();
+			}
 		}
-		if(curSlot == 3){
+		else if(curSlot == 3){
 			float r = (float) Math.random();
 			if((r < aggression && canHitSomeone(selected.xPosition + xOffset, selected.yPosition + yOffset)) || shield){
-				return getProjectile();
+				action = getProjectile();
 			}
-			return getMovement();
+			else{
+				action = getMovement();
+			}
 		}
 		else{
 			float r = (float) Math.random();
 			if(r < defensiveness && !isSafe(selected.xPosition + xOffset, selected.yPosition + yOffset)){
-				return getShield();
+				action = getShield();
 			}
-			if(r < aggression || shield){
-				return getAttack(risk);
+			else if(r < aggression || shield){
+				action = getAttack(risk);
 			}
-			return getMovement();
+			else{
+				action = getMovement();
+			}
+		}
+		float dumb = (float) Math.random();
+		if(dumb > intelligence){
+			return randomAction();
+		}
+		else{
+			return action;
 		}
 	}
 }
