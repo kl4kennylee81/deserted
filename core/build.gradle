@@ -1,9 +1,13 @@
 apply plugin: "java"
 
-sourceCompatibility = 1.6
+sourceCompatibility = 1.7
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]
+
+dependencies {
+   compile fileTree(dir: '../Library', include: '*.jar') 
+}
 
 
 eclipse.project {
