@@ -40,7 +40,7 @@
 
 
 - id: 4
-  name: Straight
+  name: Projectile Straight
   cost: 2
   damage: 2
   range: 5
@@ -52,7 +52,7 @@
     moveSpeed: 0.1
 
 - id: 5
-  name: Diagonal
+  name: Projectile Diagonal
   cost: 2
   damage: 2
   range: 5

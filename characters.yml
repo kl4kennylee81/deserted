@@ -11,8 +11,8 @@
   availableActions: 
     - 0
     - 4
-    - 5
     - 3
+    - 6
 
 - id: 1
   name: jon
@@ -26,9 +26,9 @@
   leftSide: true
   availableActions: 
     - 0
-    - 4
     - 5
     - 3
+    - 6
 
 - id: 2
   name: cameron

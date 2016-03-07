@@ -18,7 +18,7 @@ public class Character {
 	int maxHealth;
 	/** Speed when moving through normal part of bar */
 	float speed;
-	/** Speed when omving through cast par of bar */
+	/** Speed when moving through cast par of bar */
 	float castSpeed;
 	
 	/** Current x position */
@@ -308,7 +308,7 @@ public class Character {
 				int minY = Math.min(nowY, tempY);
 				canvas.drawBox(147+100*nowX, 47+100*minY, 6, 106, Color.BLACK);
 			} else {
-				System.out.println("UNEXPECTED BEHAVIOR AS OF 3/1");
+				System.out.println("PLEASE CHECK Character");
 			}
 			
 			tempX = nowX;

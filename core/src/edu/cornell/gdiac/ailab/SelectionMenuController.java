@@ -423,7 +423,7 @@ public class SelectionMenuController {
 	
 	public void drawShield(){
 		if (!choosingTarget){
-			if (selectedY < boardHeight/2){
+			if (shadowY < boardHeight/2){
 				selectedY = 3;
 			} else {
 				selectedY = 0;
