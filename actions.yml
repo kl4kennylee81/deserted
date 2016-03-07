@@ -5,7 +5,7 @@
   range: 1
   pattern: MOVE
   effect: REGULAR
-  description: Move your dude
+  description: Move your character one unit
 
 
 - id: 1
@@ -15,7 +15,7 @@
   range: 5
   pattern: STRAIGHT
   effect: REGULAR
-  description: Straight attack
+  description: Instant straight attack
 
 
 - id: 2
@@ -25,7 +25,7 @@
   range: 5
   pattern: DIAGONAL
   effect: REGULAR
-  description: Diagonal attack
+  description: Instnat diagonal attack
 
 
 - id: 3
@@ -35,7 +35,7 @@
   range: 10
   pattern: SINGLE
   effect: REGULAR
-  description: Single target attack
+  description: Target a single square for 4 damage
 
 
 
@@ -46,7 +46,7 @@
   range: 5
   pattern: STRAIGHT
   effect: REGULAR
-  description: Straight attack
+  description: Launch a projectile straight ahead for 2 damage
   persisting_action: 
     castLength: 100
     moveSpeed: 0.1
@@ -58,7 +58,7 @@
   range: 5
   pattern: DIAGONAL
   effect: REGULAR
-  description: Diagonal attack
+  description: Launch a projectile diagonally up or down for 2 damage
   persisting_action: 
     castLength: 100
     moveSpeed: 0.06
@@ -71,7 +71,7 @@
   range: 0
   pattern: SHIELD
   effect: REGULAR
-  description: Shield
+  description: Creates a 2-tile wide shield (Cannot move after)
   persisting_action: 
     castLength: 100
     moveSpeed: 0.0

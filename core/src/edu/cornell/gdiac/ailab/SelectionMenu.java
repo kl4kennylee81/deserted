@@ -234,5 +234,8 @@ public class SelectionMenu {
 			canvas.drawCenteredText(an.action.name, 400+offset+75*an.action.cost/2, 580, Color.BLACK);
 			offset+=75*an.action.cost;
 		}
+		
+		//Write description
+		canvas.drawCenteredText(actions[selectedAction].description, 550, 520, Color.BLACK);
 	}
 }
