@@ -38,8 +38,4 @@ public class Action {
 		this.effect = effect;
 		this.description = description;
 	}
-	
-	//TODO Selection menu draw for menu and bar tokens, pass in offsets
-	
-	
 }

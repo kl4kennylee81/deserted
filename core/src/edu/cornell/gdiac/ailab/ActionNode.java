@@ -3,16 +3,17 @@ package edu.cornell.gdiac.ailab;
 public class ActionNode {
 	Action action;
 	float executePoint;
+	boolean isInterrupted;
 	
+	//TODO: enums? so that we can distinguish UP DOWN LEFT RIGHT for moves
 	//target tile
 	int xPosition;
 	int yPosition;
 	
+	//current info for persisting actions
 	int castPoint;
 	float curX;
 	float curY;
-	
-	boolean isInterrupted;
 	
 	public ActionNode(Action action, float executePoint, int xPos, int yPos){
 		this.action = action;
@@ -27,7 +28,6 @@ public class ActionNode {
 		this.curX = curX;
 		this.curY = curY;
 	}
-	
 
 	public int getCurrentX(){
 		return Math.round(curX);

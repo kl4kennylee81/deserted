@@ -71,19 +71,13 @@ public class GameEngine implements Screen {
 		/** While we are still loading assets */
 		LOAD,
 		/** After loading, but before we start the game */
-		BEFORE,
+		MENU,
 		/** While we are playing the game */
 		PLAY,
 		/** When the game has ended, but we are still waiting on animation */
 		FINISH,
 		/** When the game is over */
 		AFTER
-	}
-	
-	public static enum InGameState {
-		NORMAL,
-		SELECTION,
-		ATTACK
 	}
 	
 	// ASSET LOADING INFORMATION
@@ -129,7 +123,7 @@ public class GameEngine implements Screen {
 	private TextureRegion statusFrgRight;	
 	
 	/** File storing the texture for a board tile */
-	private static final String TILE_TEXTURE = "models/Tile.png";
+	public static final String TILE_TEXTURE = "models/Tile.png";
 	
 	/** File storing the texture for an option tile */
 	private static final String OPTION_TEXTURE = "images/white.png";
@@ -159,16 +153,8 @@ public class GameEngine implements Screen {
 	/** Container to track the assets loaded so far */
 	private Array<String> assets;
     
-	/** Subcontroller for gameplay (CONTROLLER CLASS) */
-    private ActionController actionController;
-    /** Subcontroller for selection menu (CONTROLLER CLASS) */
-    private SelectionMenuController selectionMenuController;
-    /** Subcontroller for action bar (CONTROLLER CLASS) */
-    private ActionBarController actionBarController;
-    /** Subcontroller for persisting actions (CONTROLLER CLASS) */
-    private PersistingController persistingController;
-    /** Subcontroller for ai selection (CONTROLLER CLASS) */
-    private AIController aiController;
+	/**Subcontroller for gameplay (CONTROLLER CLASS) */
+	private GameplayController gameplayController;
     /** Used to draw the game onto the screen (VIEW CLASS) */
     private GameCanvas canvas;
     
@@ -194,15 +180,8 @@ public class GameEngine implements Screen {
     private HashMap<Integer, Character> availableCharacters;
     private HashMap<Integer, Action> availableActions;
     
-    private GridBoard board;
-    private List<Character> characters;
-    private ActionBar bar;
-    private List<textMessage> textMessages;
-
     /** The current game state (SIMPLE FIELD) */
     private GameState gameState;
-    /** The current in game state */
-    private InGameState inGameState;
     /** How far along (0 to 1) we are in loading process */
 	private float  gameLoad;
 	
@@ -213,15 +192,13 @@ public class GameEngine implements Screen {
 	 */
     public GameEngine() {
     	gameState = GameState.LOAD;
-    	inGameState = inGameState.NORMAL;
     	gameLoad  = 0.0f;
 		canvas = new GameCanvas();
+		gameplayController = new GameplayController();
 
-		
 		availableActions = new HashMap<Integer, Action>();
 		availableCharacters = new HashMap<Integer, Character>();
 		
-
 		width = (int)(BAR_WIDTH_RATIO*canvas.getWidth());
 		centerY = (int)(BAR_HEIGHT_RATIO*canvas.getHeight());
 		centerX = canvas.getWidth()/2;
@@ -231,6 +208,53 @@ public class GameEngine implements Screen {
 		scale = (sx < sy ? sx : sy);
 
 	}
+    
+    /**
+     * Probably want a separate Level class later
+     * 
+     * Types:
+     * 0 - Easy
+     * 1 - Medium
+     * 2 - Hard
+     * 3 - PVP
+     * 
+     */
+    public void startGame(int type) {
+    	List<Character> chars = new LinkedList<Character>();
+    	
+    	availableCharacters.get(0).reset();
+		availableCharacters.get(1).reset();
+    	
+		Character enemy1 = availableCharacters.get(2);
+		Character enemy2 = availableCharacters.get(3);
+		enemy1.reset();
+		enemy2.reset();
+		
+    	switch (type) {
+    	case 0:
+    		enemy1.setAI(Difficulty.EASY);
+    		enemy2.setAI(Difficulty.EASY);
+    		break;
+    	case 1:
+    		enemy1.setAI(Difficulty.MEDIUM);
+    		enemy2.setAI(Difficulty.MEDIUM);
+    		break;
+    	case 2:
+    		enemy1.setAI(Difficulty.HARD);
+    		enemy2.setAI(Difficulty.HARD);
+    		break;
+    	default:
+    		enemy1.setHuman();
+    		enemy2.setHuman();
+    		break;
+    	}
+    	chars.add(availableCharacters.get(0));
+    	chars.add(availableCharacters.get(1));
+    	chars.add(availableCharacters.get(2));
+    	chars.add(availableCharacters.get(3));
+    	gameplayController.resetGame(chars,6,4,manager.get(TILE_TEXTURE,Texture.class));
+    	gameState = GameState.PLAY;
+    }
 
     
 	/**
@@ -268,9 +292,8 @@ public class GameEngine implements Screen {
 	 */
 	public void render(float delta) {
 		// Allow the user to reset by pressing "R"
-		if (didReset()) {
-			resetGame();
-		}
+		checkReset();
+        canvas.begin();
 		
 		// What we do depends on the game state
 		switch (gameState) {
@@ -278,63 +301,24 @@ public class GameEngine implements Screen {
 			updateLoad();
 			drawLoad();
 			break;
+		case MENU:
+			updateMenu();
+			drawMenu();
+			break;
 		case PLAY:
+			updatePlay();
+			drawPlay();
+			break;
 		case FINISH:
-			updateGame();
-		case BEFORE:
+			//Graphics after play is over?
+			break;
 		case AFTER:
-			drawGame();
+			//updateAfter();
+			drawAfter();
 			break;
 		}
-	}
-	
-	/**
-	 * Restart the game, laying out all the ships and tiles
-	 */
-	public void resetGame() {
-		// Local constants
-        int BOARD_WIDTH  = 6; 
-        int BOARD_HEIGHT = 4;
-        int MAX_SHIPS    = 20;
-        int MAX_PHOTONS  = 1024;
-
-        try {
-			loadFromYaml();
-			System.out.println(availableActions);
-			System.out.println(availableCharacters);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        gameState = GameState.PLAY;
-
-        // Create the models.
-        board = new GridBoard(BOARD_WIDTH,BOARD_HEIGHT);
-        board.setTileTexture(manager.get(TILE_TEXTURE,Texture.class));
-        characters = new LinkedList<Character>();
-        characters.add(availableCharacters.get(0));
-        characters.add(availableCharacters.get(1));
-        characters.add(availableCharacters.get(2));
-        characters.add(availableCharacters.get(3));
-        characters.get(2).setAI(Difficulty.EASY);
-        characters.get(3).setAI(Difficulty.EASY);
-        
-        textMessages = new LinkedList<textMessage>();
-        
-        //Texture playerTexture = manager.get(PLAYER_TEXTURE,Texture.class);
-        Texture enemyTexture = manager.get(ENEMY_TEXTURE,Texture.class);
-        
-        bar = new ActionBar();
-        
-		// Create the three subcontrollers
-        actionController = new ActionController(board,characters,bar,textMessages);
-        selectionMenuController = new SelectionMenuController(board,characters,bar);
-        actionBarController = new ActionBarController(board,characters,bar);
-        aiController = new AIController(board,characters,bar);
-        persistingController = new PersistingController(board,characters,bar,textMessages);
-        
-        //physicsController = new CollisionController(board, ships, photons);
+		
+		canvas.end();
 	}
 		
 	/** 
@@ -344,27 +328,15 @@ public class GameEngine implements Screen {
 	 *
 	 * @return true if the user reset the game.
 	 */
-	private boolean didReset() {
-		if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+	private boolean checkReset() {
+		if (InputController.pressedESC()) {
         	Gdx.app.exit();
         }
-
-        if (gameState == GameState.BEFORE) {
-            // start the game when the player hits 'the any key' 
-        	for(int i = 0;i < 255;i++) {
-        		if (Gdx.input.isKeyPressed(i)) {
-        			gameState = GameState.PLAY;
-        			return true;
-        		}
-        	}
-        }
-
-        if (gameState == GameState.PLAY || gameState == GameState.FINISH || gameState == GameState.AFTER) {
-            // If the player presses 'R', reset the game.
-            if (Gdx.input.isKeyPressed(Keys.R)) {
-                gameState = GameState.BEFORE;
-                return true;
-            }
+		
+		// If the player presses 'R', reset the game.
+        if (gameState != GameState.LOAD && InputController.pressedR()) {
+            gameState = GameState.MENU;
+            return true;
         }
         return false;
     }
@@ -377,30 +349,44 @@ public class GameEngine implements Screen {
 	public void updateLoad() {
 		if (manager.update()) {
         	// we are done loading, let's move to another screen!
-        	if (board == null) {
-                SoundController.LoadContent(manager);
-                // Reset but still loading
-        		resetGame();
-        		gameState = GameState.LOAD;
-        	}
         	if (gameLoad < 1.0f) {
         		gameLoad += 0.01f;
         	} else {
-        		gameState = GameState.BEFORE;
+        		gameState = GameState.MENU;
         	}
       	}
 	}
 	
 	/**
-	 * Updates the progress bar according to loading progress
-	 *
-	 * The progress bar is composed of parts: two rounded caps on the end, 
-	 * and a rectangle in a middle.  We adjust the size of the rectangle in
-	 * the middle to represent the amount of progress.
-	 *
-	 * @param canvas The drawing context
-	 */	
-	private void drawProgress(GameCanvas canvas) {
+	 * Updates the state of the menu screen.
+	 */
+	private void updateMenu() {
+		if (InputController.pressedE()){
+			startGame(0);
+		} else if (InputController.pressedM()){
+			startGame(1);
+		} else if (InputController.pressedH()){
+			startGame(2);
+		} else if (InputController.pressedP()){
+			startGame(3);
+		}
+	}
+	
+	/**
+     * The primary update loop of the game; called while it is running.
+     */
+    public void updatePlay() {
+    	gameplayController.update();
+    	if (gameplayController.isDone()){
+    		gameState = GameState.AFTER;
+    	}
+    }
+	
+	/**
+	 * Draws the game board while we are still loading
+	 */
+	public void drawLoad() {
+		//canvas.drawMessage(MESSG_LOAD);
 		canvas.draw(statusBkgLeft,   centerX-width/2, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
 		canvas.draw(statusBkgRight,  centerX+width/2-scale*PROGRESS_CAP, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
 		canvas.draw(statusBkgMiddle, centerX-width/2+scale*PROGRESS_CAP, centerY, width-2*scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
@@ -413,98 +399,22 @@ public class GameEngine implements Screen {
 		} else {
 			canvas.draw(statusFrgRight,  centerX-width/2+scale*PROGRESS_CAP, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
 		}
+    }
+	
+	public void drawMenu() {
+		drawOption(canvas.getWidth()/4,canvas.getHeight()/4,100,"HARD MODE","(or press 'h')");
+		drawOption(canvas.getWidth()/4,3*canvas.getHeight()/4,100,"EASY MODE","(or press 'e')");
+		drawOption(3*canvas.getWidth()/4,canvas.getHeight()/4,100,"MEDIUM MODE","(or press 'm')");
+		drawOption(3*canvas.getWidth()/4,3*canvas.getHeight()/4,100,"PvP MODE","(or press 'p')");
 	}
 	
-	/**
-	 * Draws the game board while we are still loading
-	 */
-	public void drawLoad() {
-		// Draw the game
-		Gdx.gl.glClearColor(0.39f, 0.58f, 0.93f, 1.0f);  // Homage to the XNA years
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        canvas.begin();
-        drawProgress(canvas);
-        canvas.end();
-    }
+	public void drawPlay() {
+		gameplayController.drawPlay(canvas); 
+	}
 	
-    /**
-     * The primary update loop of the game; called while it is running.
-     */
-    public void updateGame() {
-    	switch(inGameState){
-    	case NORMAL:
-    		actionBarController.update();
-    		persistingController.update();
-    		updateTextMessages();
-    		if (actionBarController.isAISelection) {
-    			aiController.update();
-    		}
-    		if (actionBarController.isAttack){
-    			inGameState = InGameState.ATTACK;
-    		} else if (actionBarController.isPlayerSelection) {
-    			inGameState = InGameState.SELECTION;
-    		}
-    		break;
-    	case SELECTION:
-    		selectionMenuController.update();
-    		if (selectionMenuController.isDone()){
-    			inGameState = InGameState.NORMAL;
-    			board.reset();
-    		}
-    		break;
-    	case ATTACK:
-    		actionController.update();
-    		if (actionController.isDone()){
-    			if (actionBarController.isPlayerSelection){
-    				inGameState = InGameState.SELECTION;
-    			} else {
-    				inGameState = InGameState.NORMAL;
-    			}
-    		}
-    		break;	
-    	}
-    	
-    	if (gameOver()){
-    		inGameState = InGameState.NORMAL;
-    		gameState = GameState.AFTER;
-    	}
-    }
-    
-    public boolean leftsideDead(){
-    	boolean dead = true;
-    	for (Character c : characters){
-    		if (c.leftside && c.isAlive()){
-    			dead = false;
-    		}
-    	}
-    	return dead;
-    }
-    
-    public boolean rightsideDead(){
-    	boolean dead = true;
-    	for (Character c : characters){
-    		if (!c.leftside && c.isAlive()){
-    			dead = false;
-    		}
-    	}
-    	return dead;
-    }
-    
-    public boolean gameOver(){
-    	return leftsideDead() || rightsideDead();
-    }
-    
-    public void updateTextMessages(){
-//		List<textMessage> tempMsg = new LinkedList<textMessage>();
-		for (textMessage m: textMessages){
-			if (m.duration > 0){
-				m.duration--;
-				m.y_pos+=0.4;
-//				tempMsg.add(m);
-			}
-		}
-//		textMessages = tempMsg;
-    }
+	public void drawAfter() {
+		gameplayController.drawAfter(canvas);
+	}
     
     /**
 	 * Draws an option for the start screen at position (x,y). 
@@ -531,56 +441,6 @@ public class GameEngine implements Screen {
 
 		// Draw
 		canvas.drawOption(sx,sy,new Texture(OPTION_TEXTURE),size,color, msg1, msg2);
-	}
-
-    
-    /**
-     * Called to draw when we are playing the game.
-     */
-    public void drawGame() {
-    	// Draw the game
-		Gdx.gl.glClearColor(0.39f, 0.58f, 0.93f, 1.0f);  // Homage to the XNA years
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		canvas.begin();
-		
-		switch (gameState) {
-        case BEFORE:
-        	initializeCanvas(BCKGD_TEXTURE);
-//    		canvas.drawMessage(MESSG_BEFORE_1, MESSG_BEFORE_2);
-    		drawOption(canvas.getWidth()/4,canvas.getHeight()/4,100,"HARD MODE","(or press 'h')");
-    		drawOption(canvas.getWidth()/4,3*canvas.getHeight()/4,100,"EASY MODE","(or press 'e')");
-    		drawOption(3*canvas.getWidth()/4,canvas.getHeight()/4,100,"MEDIUM MODE","(or press 'm')");
-    		drawOption(3*canvas.getWidth()/4,3*canvas.getHeight()/4,100,"PvP MODE","(or press 'p')");
-    		
-    		break;
-        case FINISH:
-        case AFTER:
-        	if (leftsideDead() && rightsideDead()){
-        		canvas.drawText("A tie?", 400, 400, Color.BLACK);
-        	} else if (leftsideDead()){
-        		canvas.drawText("Hah you lost", 400, 400, Color.BLACK);
-        	} else if (rightsideDead()){
-        		canvas.drawText("Yay you beat an easy bot", 400, 400, Color.BLACK);
-        	} else {
-        		System.out.println("SHOULD NEVER GET HERE");
-        	}
-        	break;
-        case LOAD:
-    		canvas.drawMessage(MESSG_LOAD);
-    		break;
-        case PLAY:
-        	board.draw(canvas);
-            for (Character c : characters){
-            	c.draw(canvas);
-            }
-            bar.draw(canvas);
-            
-            for (textMessage m : textMessages){
-            	m.draw(canvas);
-            }
-        	break;
-        }
-        canvas.end();
 	}
 	
 	/**
@@ -724,6 +584,13 @@ public class GameEngine implements Screen {
 		assets.add(WHITE_BOX);
 		
 		manager.finishLoading();
+		
+		try {
+			loadFromYaml();
+		} catch (IOException e) {
+			System.out.println("ERROR LOADING FROM YAML");
+			e.printStackTrace();
+		}
 		
 		// We have to force the canvas to fully load (so we can draw something)
 		initializeCanvas(LOADING_TEXTURE);

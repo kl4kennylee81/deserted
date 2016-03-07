@@ -9,32 +9,32 @@ import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.mesh.TexturedMesh;
 
 public class SelectionMenu {
-	int height;
-	int width;
-	String font;
-	float spacing;
+	/** Available actions to use */
 	Action[] actions;
+	/** Index of current action */
 	int selectedAction;
+	/** List of already selected actions */
 	LinkedList<ActionNode> selectedActions;
+	
+	/** Total number of available slots */
 	final int TOTAL_SLOTS = 4;
+	/** Currently used up slots */
 	int takenSlots;
+	
+	/** If player is currently choosing target for a selected action */
+	private boolean choosingTarget;
+	/** X position of target */
+	private int selectedX;
+	/** Y position of target */
+	private int selectedY;
+	
+	/** Lerp value for highlighting */
+	private float lerpVal;
+	/** Lerp value increasing or decreasing */
+	private boolean increasing;
+	
 	TexturedMesh menuMesh;
 	TexturedMesh menuBar;
-	private boolean choosingTarget;
-	private int selectedX;
-	private int selectedY;
-	private float lerpVal;
-	private boolean increasing;
-
-	//Initialized with character
-	//draw menu
-	//draw action selection bar
-	
-	// in selection screen controller
-	// interval = (ActionBar.length-ActionBar.castPoint)/SelectionMenu.totalSlots
-	// actionNode.executePoint = ActionBar.castPoint + interval * (selectedAction.cost + takenSlots)
-	
-	//Currently under the impression that there will always be a one cost skill
 	
 	public SelectionMenu(Action[] actions){
 		this.actions = actions;
@@ -46,11 +46,20 @@ public class SelectionMenu {
 		increasing = true;
 	}
 	
+	/**
+	 * Adds an action node to current queue
+	 */
 	public void add(ActionNode actionNode){
 		selectedActions.addLast(actionNode);
 		takenSlots += actionNode.action.cost;
+		if (takenSlots > TOTAL_SLOTS){
+			System.out.println("Please check SelectionMenu");
+		}
 	}
 	
+	/**
+	 * Checks if character has used shield, and thus cannot move
+	 */
 	public boolean canMove(){
 		for (ActionNode an : selectedActions){
 			if (an.action.pattern == Pattern.SHIELD){
@@ -60,6 +69,9 @@ public class SelectionMenu {
 		return true;
 	}
 	
+	/**
+	 * Removes last queued action;
+	 */
 	public ActionNode removeLast(){
 		ActionNode an = selectedActions.pollLast();
 		if (an != null) {
@@ -100,10 +112,16 @@ public class SelectionMenu {
 		selectedY = y;
 	}
 	
+	/**
+	 * Checks if character can do the given action
+	 */
 	public boolean canDoAction(Action a){
 		return takenSlots+a.cost <= TOTAL_SLOTS && (canMove() || a.pattern != Pattern.MOVE);
 	}
 	
+	/**
+	 * Checks if character has any available actions
+	 */
 	public boolean canAct(){
 		for (Action a : actions){
 			if (canDoAction(a)){
@@ -113,10 +131,16 @@ public class SelectionMenu {
 		return false;
 	}
 	
+	/**
+	 * Checks if character can at least NOP
+	 */
 	public boolean canNop(){
 		return takenSlots < TOTAL_SLOTS;
 	}
 	
+	/**
+	 * Change selected action to the next available either up or down
+	 */
 	public boolean changeSelected(boolean up){
 		if (up){
 			for (int i = 0; i < TOTAL_SLOTS; i++){
@@ -140,6 +164,10 @@ public class SelectionMenu {
 		return false;
 	}
 	
+	/**
+	 * Resets selected action index and returns true if a possible action is found
+	 * @return
+	 */
 	public boolean resetPointer(){
 		if (actions[selectedAction].cost > TOTAL_SLOTS - takenSlots && takenSlots < TOTAL_SLOTS){
 			for (int i = 0; i < TOTAL_SLOTS; i++){
@@ -206,8 +234,5 @@ public class SelectionMenu {
 			canvas.drawCenteredText(an.action.name, 400+offset+75*an.action.cost/2, 580, Color.BLACK);
 			offset+=75*an.action.cost;
 		}
-		
-		//TODO: add color to used up boxes and a lighter color to highlight what the current selected action would add
-		
 	}
 }

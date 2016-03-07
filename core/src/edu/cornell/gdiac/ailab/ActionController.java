@@ -30,22 +30,17 @@ import com.badlogic.gdx.graphics.*;
  */
 public class ActionController {
 
-	/** Reference to the game board */
+	/** Models */
 	public GridBoard board; 
-	
 	public List<Character> characters;
-	
 	public ActionBar bar;
-	
 	public List<textMessage> textMessages;
 	
+	/** Done executing actions */
 	boolean isDone;
-	
+	/** Current character that is executing */
 	Character selected;
-
-	/** Random number generator for state initialization */
-	private Random random;
-	
+	/** Shielded coordinates against the selected character */
 	List<Coordinate> shieldedPaths;
 
 	/**
@@ -60,8 +55,8 @@ public class ActionController {
 		this.characters = chars;
 		this.bar = bar;
 		this.textMessages = textMsgs;
-		this.isDone = false;
 		
+		isDone = false;
 		selected = null;
 		shieldedPaths = new LinkedList<Coordinate>();
 	}
@@ -76,10 +71,9 @@ public class ActionController {
 	 * but photon collisions are not.
 	 */
 	public void update() {
-		//TODO EVERYTHING
 		board.occupy(characters);
 		if (selected != null){
-			//Do that dudes actions
+			// Execute character's action;
 			ActionNode action = selected.popCast();
 			selected.needsAttack = false;
 			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
@@ -90,6 +84,7 @@ public class ActionController {
 			isDone = true;
 			//Sort characters by speed then check their attacks
 			//these characters should be presorted in the initial loading
+			//But things like slows should affect it right? -jon
 			for (Character c : characters){
 				if (c.needsAttack && c.isAlive()){
 					isDone = false;
@@ -103,6 +98,7 @@ public class ActionController {
 	}	
 	
 	private void executeAction(ActionNode a_node){
+		// If persisting, then add to character 
 		if (a_node.action instanceof PersistingAction){
 			selected.addPersisting(a_node);
 			return;

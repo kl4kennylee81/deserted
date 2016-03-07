@@ -3,9 +3,11 @@ package edu.cornell.gdiac.ailab;
 import com.badlogic.gdx.graphics.Color;
 
 public class ActionBar {
-	//conversion from length to pixels
-	private float CONVERSION = 2.3f;
-	float castPoint = 0.7f;
+	public float castPoint;
+	
+	public ActionBar(){
+		this.castPoint = 0.7f;
+	}
 	
 	public void draw(GameCanvas canvas){
 		canvas.drawActionBar(100,700,castPoint);
@@ -13,9 +15,4 @@ public class ActionBar {
 			canvas.drawBox(563 + i*45, 700, 4, 20, Color.BLACK);
 		}
 	}
-	
-	public void update(){
-		
-	}
-	
 }

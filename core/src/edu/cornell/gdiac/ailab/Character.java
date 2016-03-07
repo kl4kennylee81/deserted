@@ -8,60 +8,70 @@ import com.badlogic.gdx.graphics.Texture;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
-import edu.cornell.gdiac.ailab.Action.Effect;
-import edu.cornell.gdiac.mesh.TexturedMesh;
-
-
-//TODO remove last element in oldShadowXY when move is done
-
-/*
-
-oldShadowX.clear();
-oldShadowY.clear();
-
-*/
-
 
 public class Character {
+	/** Name of character */
 	String name;
+	/** Current health of character */
 	int health;
+	/** Maximum health */
 	int maxHealth;
+	/** Speed when moving through normal part of bar */
 	float speed;
+	/** Speed when omving through cast par of bar */
 	float castSpeed;
-	//Highlight during selection screen
-	boolean isHighlighted;
+	
+	/** Current x position */
 	int xPosition;
+	/** Current y position */
 	int yPosition;
-	//Cast bar position
+	/** Current cast position */
 	float castPosition;
-	//Color for boxes in prototype
 	Color color;
 	Texture texture;
 	SelectionMenu selectionMenu;
-	int angle;
 	boolean leftside;
+	
+	/** Do I need to select my actions */
 	boolean needsSelection;
-	boolean isSelecting;
+	/** Do I need to use an attack on my queue */
 	boolean needsAttack;
-	
+	/** Do I need to draw my shadow */
 	boolean needsShadow;
+	/** Am I currently selecting my actions */
+	boolean isSelecting;
+	/** Do I have a persisting action currently in play */
+	boolean isPersisting;
 	
+	//Change to pass this in from GameEngine
+	/** Starting x and y positions */
+	int startingXPosition;
+	int startingYPosition;
+	
+	/** Position of shadow for depicting future move path */
 	int shadowX;
 	int shadowY;
 	
+	//TODO: Use Coordinates
+	/** 
+	 * List of path, in the front is current position and at the end
+	 * is shadowX and shadowY
+	 */
 	LinkedList<Integer> oldShadowX;
 	LinkedList<Integer> oldShadowY;
 	
-	boolean isPersisting;
+	/** AI info */
 	boolean isAI;
 	Difficulty diff;
 	
+	/** List of available actions */
 	Action[] availableActions; 
-	
-	//PersistingActions: add persisting actions for things like shield or projectiles
-			
+		
+	/** Lists of queued and persisting actions */
 	LinkedList<ActionNode> queuedActions;
 	LinkedList<ActionNode> persistingActions;
+	
+	/** List of coordinates blocked by my shield */
 	List<Coordinate> shieldedCoordinates;
 	
 	/**Constructor used by GameEngine to create characters from yaml input. */
@@ -75,8 +85,8 @@ public class Character {
 		this.color = color;
 		this.speed = speed;
 		this.castSpeed = castSpeed;
-		this.xPosition = xPosition;
-		this.yPosition = yPosition;
+		this.startingXPosition = this.xPosition = xPosition;
+		this.startingYPosition = this.yPosition = yPosition;
 		this.leftside = leftSide;
 		
 		castPosition = 0;
@@ -93,146 +103,67 @@ public class Character {
 		
 	}
 	
-	
-	
-	public Character (int i, Texture texture, Color color) {
-		// this is temporary we will pass in hp afterwards
-		this.health = 10;
-		this.maxHealth = 10;
-		this.texture = texture;
-		this.color = color;
-		castPosition = 0;
-		queuedActions = new LinkedList<ActionNode>();
-		persistingActions = new LinkedList<ActionNode>();
-		shieldedCoordinates = new LinkedList<Coordinate>();
-		availableActions = new Action[4];
+	/**
+	 * Resets a character back to starting data
+	 */
+	public void reset(){
+		this.health = this.maxHealth;
+		this.xPosition = this.startingXPosition;
+		this.yPosition = this.startingYPosition;
 		
-		oldShadowX = new LinkedList<Integer>();
-		oldShadowY = new LinkedList<Integer>();
+		this.castPosition = 0;
+		queuedActions.clear();
+		persistingActions.clear();
+		shieldedCoordinates.clear();
 		
-		maxHealth = health = 6;
+		oldShadowX.clear();
+		oldShadowY.clear();
+		setShadow(this.xPosition,this.yPosition);
 		
-		//We will preload moves in actual game, that way we don't need Pattern and Effect from Action
-		/*
-		availableActions[0]=move;
-		availableActions[1]=straight;
-		availableActions[2]=diag;
-		availableActions[3]=single;
-		/if (i % 2 == 0){
-			PersistingAction shield = new PersistingAction("Shield",2,0,0,Pattern.SHIELD,Effect.REGULAR,"shield",100,0);
-			availableActions[2] = shield;
-			PersistingAction diagProj = new PersistingAction("Projectile Diagonal",2,2,5,Pattern.DIAGONAL,Effect.REGULAR,"projectile diagonal",100,0.06f);
-			availableActions[1] = diagProj;
-		}
-		if (i%2 == 1){
-			PersistingAction straightProj = new PersistingAction("Projectile Straight",2,2,5,Pattern.STRAIGHT,Effect.REGULAR,"projectile straight",100,0.1f);
-			availableActions[3] = straightProj;
-		}*/
-		
-		Action move = new Action("Move", 1, 0, 1, Pattern.MOVE, Effect.REGULAR, "move your dude");
-		PersistingAction straightProj = new PersistingAction("Projectile Straight",2,2,5,Pattern.STRAIGHT,Effect.REGULAR,"projectile straight",100,0.1f);
-		PersistingAction diagProj = new PersistingAction("Projectile Diagonal",2,2,5,Pattern.DIAGONAL,Effect.REGULAR,"projectile diagonal",100,0.06f);
-		PersistingAction shield = new PersistingAction("Shield",2,0,0,Pattern.SHIELD,Effect.REGULAR,"shield",100,0);
-		//Action straight = new Action("Straight",2,2,5,Pattern.STRAIGHT, Effect.REGULAR, "straight attack");
-		//Action diag = new Action("Diagonal",2,2,5,Pattern.DIAGONAL,Effect.REGULAR,"diagonal attack");
-		//Action single = new Action("Single",3,4,10,Pattern.SINGLE,Effect.REGULAR,"single target attack");
-		
-		availableActions[0]=move;
-		availableActions[1]=straightProj;
-		availableActions[2]=diagProj;
-		availableActions[3]=shield;
-		
-		selectionMenu = new SelectionMenu(availableActions);
-		switch(i) {
-		case 0:
-			name = "GREEN";
-			xPosition = 0;
-			yPosition = 0;
-			angle = 180;
-			leftside = true;
-			speed = 0.007f;
-			castSpeed = 0.003f;
-			break;
-		case 1:
-			name = "YELLOW";
-			xPosition = 0;
-			yPosition = 3;
-			angle = 180;
-			leftside = true;
-			speed = 0.004f;
-			castSpeed = 0.006f;
-			break;
-		case 2:
-			name = "RED";
-			xPosition = 5;
-			yPosition = 0;
-			angle = 0;
-			leftside = false;
-			speed = 0.005f;
-			castSpeed = 0.005f;
-			break;
-		case 3:
-			name = "BROWN";
-			xPosition = 5;
-			yPosition = 3;
-			angle = 0;
-			leftside = false;
-			speed = 0.006f;
-			castSpeed = 0.004f;
-			break;
-		}
-		setShadow(xPosition,yPosition);
+		selectionMenu.reset();
 	}
 	
-	boolean isAlive() {
+	public boolean isAlive() {
 		return health > 0;
 	}
 	
-	boolean isSelecting() {
-		return isSelecting;
-	}
-	
-	float getCastPosition() {
-		return castPosition;
-	}
-	
-	boolean isHighlighted() {
-		return isHighlighted;
-	}
-	
-	float getSpeed() {
-		return speed;
-	}
-	
-	String getName() {
-		return name;
-	}
-	
-	SelectionMenu getSelectionMenu() {
+	public SelectionMenu getSelectionMenu() {
 		return selectionMenu;
 	}
 	
-	void setSelecting(boolean isSelecting) {
+	/**
+	 * Is currently selecting a move in the selection menu
+	 */
+	public boolean isSelecting() {
+		return isSelecting;
+	}
+	
+	public void setSelecting(boolean isSelecting) {
 		this.isSelecting = isSelecting;
-	}
-	
-	void setCastPosition(float castPosition) {
-		this.castPosition = castPosition;
-	}
-	
-	void setMesh(Texture texture) {
-		this.texture = texture;
 	}
 	
 	public void setQueuedActions(List<ActionNode> actions){
 		this.queuedActions = (LinkedList<ActionNode>) actions;
 	}
 	
+	/**
+	 * Make an AI with the given difficulty
+	 */
 	public void setAI(Difficulty diff){
 		this.diff = diff;
 		this.isAI = true;
 	}
 	
+	/**
+	 * Make a human
+	 */
+	public void setHuman(){
+		this.isAI = false;
+	}
+	
+	/**
+	 * Check if character needs to display shadow
+	 */
 	boolean needShadow() {
 		return (oldShadowX.size()>1) && needsShadow;
 	}
@@ -250,6 +181,9 @@ public class Character {
 		return persistingActions.peek() != null;
 	}
 	
+	/**
+	 * Reset coordinates that are shielded by this character 
+	 */
 	private void resetShieldedCoordinates(){
 		shieldedCoordinates.clear();
 		for (ActionNode an : persistingActions){
@@ -262,6 +196,9 @@ public class Character {
 		}
 	}
 	
+	/**
+	 * Add a persisting action to draw/be checked in the future
+	 */
 	void addPersisting(ActionNode an){
 		if (an.action.pattern == Pattern.SHIELD){
 			an.setPersisting(0, xPosition, yPosition);
@@ -349,8 +286,10 @@ public class Character {
 		canvas.drawShip(texture, canvasX,canvasY,color,angle);
 	}
 	
+	/**
+	 * Draws future position of ship with lines depicting path
+	 */
 	public void drawShadowShip(GameCanvas canvas){
-		//DRAW LINES TO OUTLINE SHIP MOVEMENT
 		float canvasX = 100 + 100*shadowX;
 		float canvasY = 100*shadowY;
 		int angle = leftside ? 270 : 90;
@@ -377,6 +316,9 @@ public class Character {
 		}
 	}
 	
+	/**
+	 * Draws persisting objects
+	 */
 	private void drawPersisting(GameCanvas canvas){
 		for (ActionNode an : persistingActions){
 			switch (an.action.pattern){
@@ -405,27 +347,31 @@ public class Character {
 		}
 	}
 	
+	/**
+	 * Draws health bar 
+	 */
 	private void drawHealth(GameCanvas canvas){
 		float canvasX = 100 + 100*xPosition;
 		float canvasY = 90 + 100*yPosition;
 		canvas.drawHealthBars(canvasX,canvasY,((float)health)/maxHealth);
 	}
 	
+	/**
+	 * Draws token on action bar
+	 * @param canvas
+	 */
 	private void drawToken(GameCanvas canvas){
 		float canvasX = 100+600*castPosition;
 		float canvasY = leftside ? 720 : 680;
 		canvas.drawToken(canvasX,canvasY, color);
 	}
 	
+	/**
+	 * Draws red box over ship if currently selecting
+	 */
 	private void drawSelection(GameCanvas canvas){
 		float canvasX = 150 + 100*xPosition;
 		float canvasY = 100 + 100*yPosition;
 		canvas.drawSelection(canvasX,canvasY);
 	}
-	
-	public void update(){
-		
-	}
-	
-	
 }

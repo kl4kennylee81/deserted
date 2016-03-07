@@ -135,6 +135,9 @@ public class GridBoard {
 		canvas.drawTile(sx,sy,tileMesh,size,color);
 	}
 	
+	/**
+	 * Reset all tiles
+	 */
 	public void reset(){
 		for (int i = 0; i < width; i++){
 			for (int j = 0; j < height; j++){
@@ -155,35 +158,40 @@ public class GridBoard {
 		}
 	}
 	
-	public void occupy(List<Character> chars, Character selected){
+	/**
+	 * Occupy the board with active characters.
+	 */
+	public void occupy(List<Character> chars){
 		reset();
 		for (Character c : chars){
-			if (c.equals(selected)){
-				tiles[c.shadowX][c.shadowY].isOccupied = true;
-			} else {
+			if (c.isAlive()){
 				tiles[c.xPosition][c.yPosition].isOccupied = true;
 			}
 		}
 	}
-
-	public void occupy(List<Character> chars){
+	
+	/**
+	 * Occupy the board with active characters. If a character is 
+	 * selected, occupy his shadow's position instead of his own.
+	 */
+	public void occupy(List<Character> chars, Character selected){
 		reset();
 		for (Character c : chars){
-			tiles[c.xPosition][c.yPosition].isOccupied = true;
+			if (c.isAlive()){
+				if (c.equals(selected)){
+					tiles[c.shadowX][c.shadowY].isOccupied = true;
+				} else {
+					tiles[c.xPosition][c.yPosition].isOccupied = true;
+				}
+			}
 		}
 	}
-	
-	
 	
 	public boolean isOccupied(int x, int y){
 		if (x>=0 && x<width && y>=0 && y<height){
 			return tiles[x][y].isOccupied;
 		}
 		return true;
-	}
-	
-	public void update(){
-		
 	}
 	
 	public boolean isInBounds(int x,int y){

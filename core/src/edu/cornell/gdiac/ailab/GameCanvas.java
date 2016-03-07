@@ -63,11 +63,6 @@ public class GameCanvas {
 	private Affine2 global;
 	/** Cache object to unify everything under a master draw method */
 	private TextureRegion holder;
-		
-	public void test(){
-		begin();
-		end();
-	}
 	
 	/**
 	 * Creates a new GameCanvas determined by the application configuration.

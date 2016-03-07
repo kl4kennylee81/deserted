@@ -3,16 +3,17 @@ package edu.cornell.gdiac.ailab;
 import java.util.List;
 
 public class ActionBarController {
-	//TEMP
-	GridBoard board;
+	
+	/** Models */
 	List<Character> characters;
 	ActionBar bar;
+	
+	/** State variables */
 	boolean isPlayerSelection;
 	boolean isAISelection;
 	boolean isAttack;
 	
-	public ActionBarController(GridBoard board, List<Character> chars, ActionBar bar) {
-		this.board = board;
+	public ActionBarController(List<Character> chars, ActionBar bar) {
 		this.characters = chars;
 		this.bar = bar;
 	}
@@ -27,6 +28,8 @@ public class ActionBarController {
 			}
 			c.castPosition %= 1;
 			float oldCast = c.castPosition;
+			
+			// Increase characters cast position by their normal speed or cast speed
 			if (c.castPosition > bar.castPoint){
 				c.castPosition += c.castSpeed;
 			} else {
@@ -34,6 +37,7 @@ public class ActionBarController {
 			}
 			
 			if (c.castPosition >= bar.castPoint && oldCast < bar.castPoint) {
+				// Let characters select their attacks
 				c.needsSelection = true;
 				if (c.isAI){
 					this.isAISelection = true;
@@ -41,11 +45,12 @@ public class ActionBarController {
 					this.isPlayerSelection = true;
 				}
 			} else if (c.hasAttacks() && c.castPosition >= c.getNextCast()){
+				// Character uses action
 				c.needsAttack = true;
 				this.isAttack = true;
 			} else if (!c.hasAttacks() && c.castPosition >= bar.castPoint) {
-				//reset once done with attacks
-				c.castPosition %= bar.castPoint;
+				// Reset once done with attacks
+				c.castPosition = 0;
 			}
 		}
 	}
