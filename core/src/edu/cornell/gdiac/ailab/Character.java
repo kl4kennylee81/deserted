@@ -2,6 +2,7 @@ package edu.cornell.gdiac.ailab;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -83,8 +84,14 @@ public class Character {
 		this.health = health;
 		this.maxHealth = maxHealth;
 		this.color = color;
+		/*
 		this.speed = speed;
 		this.castSpeed = castSpeed;
+		*/
+		/* Randomize for now so that its not always the same thing */
+		this.speed = (float) (Math.random()*0.003 + 0.003);
+		this.castSpeed = (float) (Math.random()*0.004 + 0.002);
+		
 		this.startingXPosition = this.xPosition = xPosition;
 		this.startingYPosition = this.yPosition = yPosition;
 		this.leftside = leftSide;
@@ -110,6 +117,10 @@ public class Character {
 		this.health = this.maxHealth;
 		this.xPosition = this.startingXPosition;
 		this.yPosition = this.startingYPosition;
+		
+		/* Randomize for now so that its not always the same thing */
+		this.speed = (float) (Math.random()*0.003 + 0.003);
+		this.castSpeed = (float) (Math.random()*0.004 + 0.002);
 		
 		this.castPosition = 0;
 		queuedActions.clear();
