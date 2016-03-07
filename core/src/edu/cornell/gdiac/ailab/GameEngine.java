@@ -146,15 +146,9 @@ public class GameEngine implements Screen {
 	private AssetManager manager;
 	/** Container to track the assets loaded so far */
 	private Array<String> assets;
-	
-	//OLD
-	/** Subcontroller for physics (CONTROLLER CLASS) */
-    //private CollisionController physicsController;
-    //OLD
-    
     
 	/** Subcontroller for gameplay (CONTROLLER CLASS) */
-    private GameplayController gameplayController;
+    private ActionController actionController;
     /** Subcontroller for selection menu (CONTROLLER CLASS) */
     private SelectionMenuController selectionMenuController;
     /** Subcontroller for action bar (CONTROLLER CLASS) */
@@ -303,7 +297,7 @@ public class GameEngine implements Screen {
         bar = new ActionBar();
         
 		// Create the three subcontrollers
-        gameplayController = new GameplayController(board,characters,bar,textMessages);
+        actionController = new ActionController(board,characters,bar,textMessages);
         selectionMenuController = new SelectionMenuController(board,characters,bar);
         actionBarController = new ActionBarController(board,characters,bar);
         aiController = new AIController(board,characters,bar);
@@ -428,8 +422,8 @@ public class GameEngine implements Screen {
     		}
     		break;
     	case ATTACK:
-    		gameplayController.update();
-    		if (gameplayController.isDone()){
+    		actionController.update();
+    		if (actionController.isDone()){
     			if (actionBarController.isPlayerSelection){
     				inGameState = InGameState.SELECTION;
     			} else {

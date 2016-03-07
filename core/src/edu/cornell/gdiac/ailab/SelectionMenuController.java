@@ -43,7 +43,6 @@ public class SelectionMenuController {
 	}
 	
 	public void update(){
-		controls.getAction();
 		if (selected != null){
 			SelectionMenu menu = selected.getSelectionMenu();
 			Action action = menu.getSelectedAction();
