@@ -402,6 +402,7 @@ public class GameEngine implements Screen {
     }
 	
 	public void drawMenu() {
+		initializeCanvas(BCKGD_TEXTURE);
 		drawOption(canvas.getWidth()/4,canvas.getHeight()/4,100,"HARD MODE","(or press 'h')");
 		drawOption(canvas.getWidth()/4,3*canvas.getHeight()/4,100,"EASY MODE","(or press 'e')");
 		drawOption(3*canvas.getWidth()/4,canvas.getHeight()/4,100,"MEDIUM MODE","(or press 'm')");
