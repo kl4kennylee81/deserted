@@ -29,6 +29,7 @@ public class AIController {
 	private float interval;
 	private int curSlot;
 	private boolean shield;
+	private boolean hasSingle;
 	
 	public AIController(GridBoard board, List<Character> chars, ActionBar bar) {
 		this.board = board;
@@ -45,6 +46,7 @@ public class AIController {
 				xOffset = 0;
 				yOffset = 0;
 				shield = false;
+				hasSingle = hasSingle();
 				interval = (1f-bar.castPoint) / selected.selectionMenu.TOTAL_SLOTS;
 				curSlot = 1;
 				switch (c.diff){
@@ -97,6 +99,17 @@ public class AIController {
 			actions.add(a);
 		}
 		return actions;
+	}
+	/**
+	 * Returns true if the selected character has a single square attack
+	 */
+	private boolean hasSingle(){
+		for(Action a: selected.availableActions){
+			if(a.pattern == Pattern.SINGLE){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -401,13 +414,10 @@ public class AIController {
 	 */
 	public ActionNode getAttack(float risk){
 		float f = (float) Math.random();
-//		if(f < risk ){
-//			return getSingle();
-//		}
-//		else if(canHitSomeone(selected.xPosition + xOffset, selected.yPosition + yOffset)) {
-//			return getProjectile();
-//		}
-		if(canHitSomeone(selected.xPosition + xOffset, selected.yPosition + yOffset)) {
+		if(f < risk && hasSingle){
+			return getSingle();
+		}
+		else if(canHitSomeone(selected.xPosition + xOffset, selected.yPosition + yOffset)) {
 			return getProjectile();
 		}
 		if(shield){
