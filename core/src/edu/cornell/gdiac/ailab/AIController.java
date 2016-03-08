@@ -464,10 +464,6 @@ public class AIController {
 						actions.add(randomMovement(a));
 					}
 					break;
-				case SHIELD:
-					if(curSlot <= 3)
-						actions.add(getShield());
-					break;
 				case STRAIGHT:
 					if(curSlot <= 3)
 						actions.add(new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0));
@@ -489,7 +485,7 @@ public class AIController {
 			return actions.get(r.nextInt(actions.size())); 
 		}
 		else{
-			return null;
+			return new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0);
 		}
 	}
 	
