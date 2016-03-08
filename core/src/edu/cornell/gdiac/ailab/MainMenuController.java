@@ -1,9 +1,14 @@
 package edu.cornell.gdiac.ailab;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
+import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
 
@@ -18,6 +23,10 @@ public class MainMenuController {
 	/** File storing the texture for an option tile */
 	private static final String OPTION_TEXTURE = "models/Tile.png";
 	private static final String WHITE_BOX = "images/white.png";
+	/** The message font to use */
+	private static final String FONT_FILE  = "fonts/Amyn.ttf";
+	/** The size of the messages */
+	private static final int FONT_SIZE = 70;
 	private AssetManager manager;
 	private MainMenu mainMenu;
 	
@@ -82,6 +91,10 @@ public class MainMenuController {
 		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		canvas.setBackground(texture);
 		canvas.setWhite(manager.get(WHITE_BOX, Texture.class));
+		
+		if (manager.isLoaded(FONT_FILE)) {
+			canvas.setFont(manager.get(FONT_FILE,BitmapFont.class));
+		}
     }
     
     /**

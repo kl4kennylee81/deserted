@@ -83,10 +83,6 @@ public class GameEngine implements Screen {
 	
 	// ASSET LOADING INFORMATION
 	// Messages to display to the player
-	/** The message font to use */
-	private static final String FONT_FILE  = "fonts/Amyn.ttf";
-	/** The size of the messages */
-	private static final int FONT_SIZE = 70;
 	/** Message while assets are loading */
 	private static final String MESSG_LOAD = "Loading...";
 	/** Message before the game has started */
@@ -132,6 +128,10 @@ public class GameEngine implements Screen {
 	private static final String ENEMY_TEXTURE = "models/ShipPlayer.png";
 	
 	private static final String WHITE_BOX = "images/white.png";
+	/** The message font to use */
+	private static final String FONT_FILE  = "fonts/Amyn.ttf";
+	/** The size of the messages */
+	private static final int FONT_SIZE = 20;
 	
 	/** The width of the progress bar */	
 	private int width;
@@ -576,6 +576,18 @@ public class GameEngine implements Screen {
 		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		canvas.setBackground(texture);
 		canvas.setWhite(manager.get(WHITE_BOX, Texture.class));
+		
+		//Font support
+		FileHandleResolver resolver = new InternalFileHandleResolver();
+		manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+		manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
+		
+		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+		size2Params.fontFileName = FONT_FILE;
+		size2Params.fontParameters.size = FONT_SIZE;
+		size2Params.fontParameters.color = Color.BLACK;
+		manager.load(FONT_FILE, BitmapFont.class, size2Params);
+		assets.add(FONT_FILE);
     }
     
     /**
