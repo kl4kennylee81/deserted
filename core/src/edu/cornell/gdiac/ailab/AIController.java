@@ -91,7 +91,15 @@ public class AIController {
 		LinkedList<ActionNode> actions = new LinkedList<ActionNode>();
 		while(curSlot <= 4){
 			ActionNode a = getAction(aggression, risk, defensiveness, intelligence);
-			curSlot += a.action.cost;
+			// kyle this is a hotfix for the showcase im not sure what you want
+			// check if it fails to return i just have it as a NOP;
+			if (a == null){
+				curSlot+=1;
+				continue;
+			}
+			else{
+				curSlot += a.action.cost;
+			}
 			if(a.action.pattern == Pattern.MOVE){
 				xOffset = a.xPosition - selected.xPosition;
 				yOffset = a.yPosition - selected.yPosition;
@@ -474,7 +482,15 @@ public class AIController {
 			}
 		}
 		Random r = new Random();
-		return actions.get(r.nextInt(actions.size()));  
+		// nextInt can only work with positive numbers (aka size 0 doesn't work)
+		// this is the case when number of actions is equal to 4 and he tries to select
+		// some move.
+		if (actions.size() > 0 ){
+			return actions.get(r.nextInt(actions.size())); 
+		}
+		else{
+			return null;
+		}
 	}
 	
 	
