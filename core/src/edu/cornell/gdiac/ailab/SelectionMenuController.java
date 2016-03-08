@@ -252,6 +252,10 @@ public class SelectionMenuController {
 	}
 	
 	private void updateChoosingMove(){
+		
+		//Find out why moving is weird on right side
+		//System.out.println("choosing");
+		
 		//Need to check in all of these if its a valid move;
 		if (InputController.pressedUp() && !InputController.pressedDown()){
 			if (!board.isOccupied(shadowX, shadowY+1)){

@@ -5,12 +5,14 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 
+import edu.cornell.gdiac.ailab.Action.Pattern;
+
 public class PersistingController {
 	/** Models */
 	GridBoard board;
 	List<Character> characters;
 	ActionBar bar;
-	List<textMessage> textMessages;
+	TextMessage textMessages;
 	
 	/** Controller Variables */
 	Character selected;
@@ -18,7 +20,7 @@ public class PersistingController {
 	List<Coordinate> shieldedPaths;
 	
 	
-	public PersistingController(GridBoard board, List<Character> chars, ActionBar bar,List<textMessage> textMsgs) {
+	public PersistingController(GridBoard board, List<Character> chars, ActionBar bar,TextMessage textMsgs) {
 		this.board = board;
 		this.characters = chars;
 		this.bar = bar;
@@ -161,12 +163,17 @@ public class PersistingController {
 	private void processHit(ActionNode a_node,Character target){
 		applyDamage(a_node,target);
 		
+		//add text bubble for amount of damage in front of target
 		String attack_damage = Integer.toString(a_node.action.damage);
-		textMessages.add(new textMessage(attack_damage,5*textMessage.SECOND,target));
-		
+		textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
+
+		ActionNode nextAttack = target.queuedActions.peek();
 		//handle interruption
-		if (target.queuedActions.peek() != null &&!target.queuedActions.peek().isInterrupted){
-			target.queuedActions.peek().isInterrupted = true;
+		if (nextAttack != null && !nextAttack.isInterrupted){
+			nextAttack.isInterrupted = true;
+			if (nextAttack.action.pattern != Pattern.MOVE){
+				textMessages.addOtherMessage("INTERRUPTED", target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.RED);
+			}
 		}
 	}
 	

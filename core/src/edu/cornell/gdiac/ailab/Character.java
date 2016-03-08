@@ -44,7 +44,7 @@ public class Character {
 	/** Do I have a persisting action currently in play */
 	boolean isPersisting;
 	
-	//Change to pass this in from GameEngine
+	//TODO: Change to pass this in from GameEngine
 	/** Starting x and y positions */
 	int startingXPosition;
 	int startingYPosition;
@@ -84,13 +84,12 @@ public class Character {
 		this.health = health;
 		this.maxHealth = maxHealth;
 		this.color = color;
-		/*
 		this.speed = speed;
 		this.castSpeed = castSpeed;
-		*/
-		/* Randomize for now so that its not always the same thing */
-		this.speed = (float) (Math.random()*0.003 + 0.003);
-		this.castSpeed = (float) (Math.random()*0.004 + 0.002);
+		
+		/* Randomize so that its not always the same thing */
+		//this.speed = (float) (Math.random()*0.003 + 0.003);
+		//this.castSpeed = (float) (Math.random()*0.004 + 0.005);
 		
 		this.startingXPosition = this.xPosition = xPosition;
 		this.startingYPosition = this.yPosition = yPosition;
@@ -132,6 +131,8 @@ public class Character {
 		setShadow(this.xPosition,this.yPosition);
 		
 		selectionMenu.reset();
+		
+		needsSelection = needsAttack = needsShadow = isSelecting = isPersisting = false;
 	}
 	
 	public boolean isAlive() {

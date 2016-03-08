@@ -6,6 +6,8 @@ import java.util.List;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
+import edu.cornell.gdiac.ailab.TextMessage.Message;
+
 public class GameplayController {
 	/** Subcontroller for actions (CONTROLLER CLASS) */
     private ActionController actionController;
@@ -15,14 +17,14 @@ public class GameplayController {
     private ActionBarController actionBarController;
     /** Subcontroller for persisting actions (CONTROLLER CLASS) */
     private PersistingController persistingController;
-    /** Subcontroller for ai selection (CONTROLLER CLASS) */
+    /** Subcontroller for AI selection (CONTROLLER CLASS) */
     private AIController aiController;
 	
 	/** Current Models */
     private GridBoard board;
     private List<Character> characters;
     private ActionBar bar;
-    private List<textMessage> textMessages;
+    private TextMessage textMessages;
     
     /** Current state of game */
     private InGameState inGameState;
@@ -49,7 +51,7 @@ public class GameplayController {
         board.setTileTexture(boardMesh);
         this.characters = characters;
         
-        textMessages = new LinkedList<textMessage>();
+        textMessages = new TextMessage();
         
         bar = new ActionBar();
         
@@ -67,7 +69,6 @@ public class GameplayController {
     	case NORMAL:
     		actionBarController.update();
     		persistingController.update();
-    		updateTextMessages();
     		if (actionBarController.isAISelection) {
     			aiController.update();
     		}
@@ -97,6 +98,7 @@ public class GameplayController {
 		default:
 			break;	
     	}
+    	updateTextMessages();
     	
     	if (gameOver()){
     		inGameState = InGameState.DONE;
@@ -109,10 +111,7 @@ public class GameplayController {
         	c.draw(canvas);
         }
         bar.draw(canvas);
-        
-        for (textMessage m : textMessages){
-        	m.draw(canvas);
-        }
+        textMessages.draw(canvas);
     }
     
     public void drawAfter(GameCanvas canvas){
@@ -158,15 +157,18 @@ public class GameplayController {
     }
     
     public void updateTextMessages(){
-//		List<textMessage> tempMsg = new LinkedList<textMessage>();
-		for (textMessage m: textMessages){
-			if (m.duration > 0){
-				m.duration--;
-				m.y_pos+=0.4;
-//				tempMsg.add(m);
+		for (TextMessage.Message m: textMessages.damageMessages){
+			m.current++;
+			if (m.current > m.duration){
+				textMessages.damageMessages.remove(m);
 			}
 		}
-//		textMessages = tempMsg;
+		for (TextMessage.Message m: textMessages.otherMessages){
+			m.current++;
+			if (m.current > m.duration){
+				textMessages.otherMessages.remove(m);
+			}
+		}
     }
 	
 }

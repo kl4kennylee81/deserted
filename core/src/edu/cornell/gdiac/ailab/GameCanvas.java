@@ -826,11 +826,21 @@ public class GameCanvas {
 	}
 	
 	public void drawText(String msg, float x, float y, Color color) {
+		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
 		displayFont.draw(spriteBatch, msg, x,y);
 	}
 	
 	public void drawCenteredText(String msg, float x, float y, Color color) {
+		displayFont.getData().setScale(1);
+		layout.setText(displayFont, msg);
+		float width = layout.width;
+		displayFont.setColor(color);
+		displayFont.draw(spriteBatch, msg, x-width/2, y);
+	}
+	
+	public void drawCenteredText(String msg, float x, float y, Color color, float scale) {
+		displayFont.getData().setScale(scale);
 		layout.setText(displayFont, msg);
 		float width = layout.width;
 		displayFont.setColor(color);

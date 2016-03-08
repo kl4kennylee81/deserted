@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Random;
 import com.badlogic.gdx.math.*;
 
+import edu.cornell.gdiac.ailab.Character;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 
 import com.badlogic.gdx.graphics.*;
@@ -34,7 +35,7 @@ public class ActionController {
 	public GridBoard board; 
 	public List<Character> characters;
 	public ActionBar bar;
-	public List<textMessage> textMessages;
+	public TextMessage textMessages;
 	
 	/** Done executing actions */
 	boolean isDone;
@@ -50,7 +51,7 @@ public class ActionController {
 	 * @param chars The list of characters
 	 * @param bar The action bar
 	 */
-	public ActionController(GridBoard board, List<Character> chars, ActionBar bar, List<textMessage> textMsgs) {
+	public ActionController(GridBoard board, List<Character> chars, ActionBar bar, TextMessage textMsgs) {
 		this.board = board;
 		this.characters = chars;
 		this.bar = bar;
@@ -60,8 +61,6 @@ public class ActionController {
 		selected = null;
 		shieldedPaths = new LinkedList<Coordinate>();
 	}
-	
-	int i;
 	 
 	/** 
 	 * Invokes the controller for this ship.
@@ -89,7 +88,6 @@ public class ActionController {
 				if (c.needsAttack && c.isAlive()){
 					isDone = false;
 					selected = c;
-					i = 0;
 					updateShieldedPath();
 					break;
 				}
@@ -292,11 +290,15 @@ public class ActionController {
 		
 		//add text bubble for amount of damage in front of target
 		String attack_damage = Integer.toString(a_node.action.damage);
-		textMessages.add(new textMessage(attack_damage,10*textMessage.SECOND,target));
+		textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
 
+		ActionNode nextAttack = target.queuedActions.peek();
 		//handle interruption
-		if (target.queuedActions.peek() != null &&!target.queuedActions.peek().isInterrupted){
-			target.queuedActions.peek().isInterrupted = true;
+		if (nextAttack != null && !nextAttack.isInterrupted){
+			nextAttack.isInterrupted = true;
+			if (nextAttack.action.pattern != Pattern.MOVE){
+				textMessages.addOtherMessage("INTERRUPTED", target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.RED);
+			}
 		}
 	}
 	

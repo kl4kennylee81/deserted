@@ -1,5 +1,5 @@
 - id: 0
-  name: kyle
+  name: green
   health: 6
   maxHealth: 6
   hexColor: 00EE00FF
@@ -15,7 +15,7 @@
     - 6
 
 - id: 1
-  name: jon
+  name: yellow
   health: 6
   maxHealth: 6
   hexColor: FFFF00FF
@@ -31,7 +31,7 @@
     - 6
 
 - id: 2
-  name: cameron
+  name: red
   health: 6
   maxHealth: 6
   hexColor: CD2626FF
@@ -43,11 +43,11 @@
   availableActions: 
     - 0
     - 4
-    - 5
     - 3
+    - 6
 
 - id: 3
-  name: ishaan
+  name: brown
   health: 6
   maxHealth: 6
   hexColor: 8B4513FF
@@ -58,8 +58,8 @@
   leftSide: false
   availableActions: 
     - 0
-    - 4
     - 5
     - 3
+    - 6
 
 ...
