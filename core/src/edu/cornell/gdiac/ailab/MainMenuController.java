@@ -28,8 +28,13 @@ public class MainMenuController {
 	
 	private Option[] makeDefaultOptions() {
 		// TODO Auto-generated method stub
-		return null;
+		Option [] default_options = new Option[4];
 		
+		default_options[0] = new Option(canvas.getWidth()/4,canvas.getHeight()/4,100,200,"HARD",OPTION_TEXTURE);
+		default_options[1] = new Option(canvas.getWidth()/4,3*canvas.getHeight()/4,100,200,"EASY",OPTION_TEXTURE);
+		default_options[2] = new Option(3*canvas.getWidth()/4,canvas.getHeight()/4,100,200,"MEDIUM",OPTION_TEXTURE);
+		default_options[3] = new Option(3*canvas.getWidth()/4,3*canvas.getHeight()/4,100,200,"PvP",OPTION_TEXTURE);
+		return default_options;
 	}
 
 	public void drawMenu() {
