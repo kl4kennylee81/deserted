@@ -773,12 +773,12 @@ public class GameCanvas {
 		spriteBatch.draw(mesh,x,y,size,size);
 	}
 	
-	public void drawOption(float x, float y, Texture button, int size, Color tint, String msg1, String msg2){
+	public void drawOption(float sx, float sy, Texture button,int x_size, int y_size, 
+			Color tint, String text){
 		//System.out.println("in gc draw op");
 		spriteBatch.setColor(tint);
-		spriteBatch.draw(button,x,y,size,size);
-		displayFont.draw(spriteBatch, msg1, x,y+size);
-		displayFont.draw(spriteBatch, msg2, x,y+size/4);
+		spriteBatch.draw(button,sx,sy,x_size,y_size);
+		displayFont.draw(spriteBatch, text, sx + x_size/2,sy + y_size/2);
 		
 	}	
 	
