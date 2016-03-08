@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -157,18 +158,32 @@ public class GameplayController {
     }
     
     public void updateTextMessages(){
-		for (TextMessage.Message m: textMessages.damageMessages){
-			m.current++;
+    	Iterator<Message> iter = textMessages.damageMessages.iterator();
+    	while (iter.hasNext()) {
+    	    Message m = iter.next();
+    	    m.current++;
 			if (m.current > m.duration){
-				textMessages.damageMessages.remove(m);
+				iter.remove();
 			}
-		}
-		for (TextMessage.Message m: textMessages.otherMessages){
-			m.current++;
+    	}
+    	
+    	iter = textMessages.otherMessages.iterator();
+    	while (iter.hasNext()) {
+    	    Message m = iter.next();
+    	    m.current++;
 			if (m.current > m.duration){
-				textMessages.otherMessages.remove(m);
+				iter.remove();
 			}
-		}
+    	}
+    	
+    	iter = textMessages.tempSingles.iterator();
+    	while (iter.hasNext()) {
+    	    Message m = iter.next();
+    	    m.current++;
+			if (m.current > m.duration){
+				iter.remove();
+			}
+    	}
     }
 	
 }

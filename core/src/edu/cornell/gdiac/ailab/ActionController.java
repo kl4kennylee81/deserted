@@ -277,6 +277,7 @@ public class ActionController {
 	}
 	
 	private void executeSingle(ActionNode a_node){
+		textMessages.addSingleTemp(a_node.xPosition,a_node.yPosition);
 		for (Character c:characters){
 			if (c.xPosition == a_node.xPosition && c.yPosition == a_node.yPosition){
 				processHit(a_node,c);
