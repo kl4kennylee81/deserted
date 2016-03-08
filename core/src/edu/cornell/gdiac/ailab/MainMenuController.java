@@ -92,9 +92,9 @@ public class MainMenuController {
 		canvas.setBackground(texture);
 		canvas.setWhite(manager.get(WHITE_BOX, Texture.class));
 		
-		if (manager.isLoaded(FONT_FILE)) {
-			canvas.setFont(manager.get(FONT_FILE,BitmapFont.class));
-		}
+//		if (manager.isLoaded(FONT_FILE)) {
+//			canvas.setFont(manager.get(FONT_FILE,BitmapFont.class));
+//		}
     }
     
     /**

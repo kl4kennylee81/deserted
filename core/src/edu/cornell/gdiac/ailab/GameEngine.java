@@ -582,12 +582,12 @@ public class GameEngine implements Screen {
 		manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
 		manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 		
-		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-		size2Params.fontFileName = FONT_FILE;
-		size2Params.fontParameters.size = FONT_SIZE;
-		size2Params.fontParameters.color = Color.BLACK;
-		manager.load(FONT_FILE, BitmapFont.class, size2Params);
-		assets.add(FONT_FILE);
+//		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+//		size2Params.fontFileName = FONT_FILE;
+//		size2Params.fontParameters.size = FONT_SIZE;
+//		size2Params.fontParameters.color = Color.BLACK;
+//		manager.load(FONT_FILE, BitmapFont.class, size2Params);
+//		assets.add(FONT_FILE);
     }
     
     /**
