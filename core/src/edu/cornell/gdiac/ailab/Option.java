@@ -12,7 +12,7 @@ public class Option {
 	float y_min;
 	Color regularColor = Color.FIREBRICK;
 	String text;
-	Color highlightedColor = Color.GOLD;
+	Color highlightedColor = new Color(1.0f, 0.7f, 0.0f, 1.0f);
 	String image;
 	
 	public boolean isSelected(){
@@ -31,6 +31,22 @@ public class Option {
 		this.text = text;
 		this.image = image;
 		this.srNo = srNo;
+	}
+	
+	public Option(float sx, float sy, int x_size, int y_size, int srNo){
+		x_min = sx;
+		y_min = sy;
+		this.x_size = x_size;
+		this.y_size = y_size;
+		this.srNo = srNo;
+	}
+	
+	public void setImage(String image){
+		this.image = image;
+	}
+	
+	public void setText(String text){
+		this.text = text;
 	}
 	/**
 	 * Draws an option for the start screen at position (x,y). 

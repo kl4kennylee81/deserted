@@ -18,13 +18,13 @@ public class MainMenuController {
 	public int gameNo;
 	private boolean isDone;
 	private GameCanvas canvas;
-	/** Background image for the canvas */
-	private static final String BCKGD_TEXTURE = "images/bg.png";
+	/** Background image for the menu */
+	private static final String MENU_BCKGD_TEXTURE = "images/menubg.png";
 	/** File storing the texture for an option tile */
 	private static final String OPTION_TEXTURE = "models/Tile.png";
 	private static final String WHITE_BOX = "images/white.png";
 	/** The message font to use */
-	private static final String FONT_FILE  = "fonts/Amyn.ttf";
+	private static final String FONT_FILE  = "fonts/Milonga-Regular.ttf";
 	/** The size of the messages */
 	private static final int FONT_SIZE = 70;
 	private AssetManager manager;
@@ -40,19 +40,28 @@ public class MainMenuController {
 	private Option[] makeDefaultOptions() {
 		// TODO Auto-generated method stub
 		Option [] default_options = new Option[4];
-		default_options[0] = new Option(canvas.getWidth()/4-150,3*canvas.getHeight()/4-150,300,150,"     EASY \n  Or Press 'E'",OPTION_TEXTURE,0);
-		default_options[1] = new Option(3*canvas.getWidth()/4-150,3*canvas.getHeight()/4-150,300,150,"       PvP \n  Or Press 'P'",OPTION_TEXTURE,1);
-		default_options[2] = new Option(canvas.getWidth()/4-150,canvas.getHeight()/4-50,300,150,"   MEDIUM \n  Or Press 'M'",OPTION_TEXTURE,2);
-		default_options[3] = new Option(3*canvas.getWidth()/4-150,canvas.getHeight()/4-50,300,150,"   HARD \n Or Press 'H'",OPTION_TEXTURE,3);
-//		default_options[0] = new Option(canvas.getWidth()/2-150,3*canvas.getHeight()/4+50,280,130,"     EASY \n  Or Press 'E'",OPTION_TEXTURE,0);
-//		default_options[1] = new Option(canvas.getWidth()/2-150,canvas.getHeight()/2+50,280,130,"       PvP \n  Or Press 'P'",OPTION_TEXTURE,1);
-//		default_options[2] = new Option(canvas.getWidth()/2-150,canvas.getHeight()/4+50,280,130,"   MEDIUM \n  Or Press 'M'",OPTION_TEXTURE,2);
-//		default_options[3] = new Option(canvas.getWidth()/2-150,50,280,130,"   HARD \n Or Press 'H'",OPTION_TEXTURE,3);
+//		default_options[0] = new Option(canvas.getWidth()/4-150,3*canvas.getHeight()/4-150,300,150,"     EASY \n  Or Press 'E'",OPTION_TEXTURE,0);
+//		default_options[1] = new Option(3*canvas.getWidth()/4-150,3*canvas.getHeight()/4-150,300,150,"       PvP \n  Or Press 'P'",OPTION_TEXTURE,1);
+//		default_options[2] = new Option(canvas.getWidth()/4-150,canvas.getHeight()/4-50,300,150,"   MEDIUM \n  Or Press 'M'",OPTION_TEXTURE,2);
+//		default_options[3] = new Option(3*canvas.getWidth()/4-150,canvas.getHeight()/4-50,300,150,"   HARD \n Or Press 'H'",OPTION_TEXTURE,3);
+		default_options[0] = new Option(canvas.getWidth()/2-140,50,270,110,"     EASY \n  Or Press 'E'",OPTION_TEXTURE,0);
+		default_options[1] = new Option(canvas.getWidth()/2-140,180,270,110,"   MEDIUM \n  Or Press 'M'",OPTION_TEXTURE,1);
+		default_options[2] = new Option(canvas.getWidth()/2-140,310,270,110,"   HARD \n Or Press 'H'",OPTION_TEXTURE,2);
+		default_options[3] = new Option(canvas.getWidth()/2-140,440,270,110,"       PvP \n  Or Press 'P'",OPTION_TEXTURE,3);
 		return default_options;
+		//make a method that sizes and positions them according to the number of options
+	}
+	
+	private Option[] spaceOptions(int numOptions){
+		return null;
+	}
+	
+	private Option[] spaceOptions(Option[] options){
+		return null;
 	}
 
 	public void drawMenu() {
-		initializeCanvas(BCKGD_TEXTURE);
+		initializeCanvas(MENU_BCKGD_TEXTURE);
 		mainMenu.draw(canvas);
 	}
 	
@@ -92,9 +101,10 @@ public class MainMenuController {
 		canvas.setBackground(texture);
 		canvas.setWhite(manager.get(WHITE_BOX, Texture.class));
 		
-//		if (manager.isLoaded(FONT_FILE)) {
-//			canvas.setFont(manager.get(FONT_FILE,BitmapFont.class));
-//		}
+		if (manager.isLoaded(FONT_FILE)) {
+			canvas.setFont(manager.get(FONT_FILE,BitmapFont.class));
+		}
+		//This method shouldn't be in two places as it currently is, only one
     }
     
     /**
@@ -102,25 +112,29 @@ public class MainMenuController {
 	 */
 	private void updateSelection(){
 		if (InputController.pressedA() || InputController.pressedEnter()){
+			System.out.println("Current option is " + mainMenu.getOptions()[mainMenu.selectedOption].text);
 			gameNo = mainMenu.selectedOption;
 			isDone = true;
-		}  else if ((InputController.pressedUp() && !InputController.pressedDown()) || 
-				(InputController.pressedDown() && !InputController.pressedUp())){
+		}  else if ((InputController.pressedUp() && !InputController.pressedDown())){
+	         //newSelection % length
+	         //(n < 0) ? (m - (abs(n) % m) ) %m : (n % m);
+	         //taken from http://stackoverflow.com/questions/5385024/mod-in-java-produces-negative-numbers
+	         int newSelection = mainMenu.selectedOption+1;
+	         int length = mainMenu.getOptions().length;
+	         int toSelect = (newSelection < 0) ? (length - 
+						(Math.abs(newSelection) % length) ) 
+						%length : (newSelection % 
+								length);
+			mainMenu.selectOption(toSelect);
+		}   else if ((InputController.pressedDown() && !InputController.pressedUp())){
 			//Actions go from up down, so we need to flip
-			switch(mainMenu.selectedOption){
-			case 0: mainMenu.selectOption(2); break;
-			case 1: mainMenu.selectOption(3); break;
-			case 2: mainMenu.selectOption(0); break;
-			case 3: mainMenu.selectOption(1); break;
-			}
-		}  else if ((InputController.pressedLeft() && !InputController.pressedRight()) || 
-				(InputController.pressedRight() && !InputController.pressedLeft())){
-			switch(mainMenu.selectedOption){
-			case 0: mainMenu.selectOption(1); break;
-			case 1: mainMenu.selectOption(0); break;
-			case 2: mainMenu.selectOption(3); break;
-			case 3: mainMenu.selectOption(2); break;
-			}
+			int newSelection = mainMenu.selectedOption-1;
+	        int length = mainMenu.getOptions().length;
+	        int toSelect = (newSelection < 0) ? (length - 
+						(Math.abs(newSelection) % length) ) 
+						%length : (newSelection % 
+								length);
+	        mainMenu.selectOption(toSelect);
 		}
 	}
 	

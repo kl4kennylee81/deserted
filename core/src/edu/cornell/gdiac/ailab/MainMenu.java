@@ -31,4 +31,9 @@ public class MainMenu {
 		}
 	}
 
+	public Option[] getOptions() {
+		// TODO Auto-generated method stub
+		return options;
+	}
+
 }	

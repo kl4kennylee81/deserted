@@ -97,9 +97,11 @@ public class GameEngine implements Screen {
 
 	/** Background image for the canvas */
 	private static final String BCKGD_TEXTURE = "images/bg.png";
+	/** Background image for the menu */
+	private static final String MENU_BCKGD_TEXTURE = "images/menubg.png";
 	
 	/** Background image for the canvas */
-	private static final String LOADING_TEXTURE = "images/loading2.png";
+	private static final String LOADING_TEXTURE = "images/loading1.png";
 	
 	/** image for the loading bar  */
 	private static final String PRGRSBR_TEXTURE = "images/progressbar.png";
@@ -129,9 +131,13 @@ public class GameEngine implements Screen {
 	
 	private static final String WHITE_BOX = "images/white.png";
 	/** The message font to use */
-	private static final String FONT_FILE  = "fonts/Amyn.ttf";
+	private static final String MENU_FONT_FILE  = "fonts/Milonga-Regular.ttf";
 	/** The size of the messages */
-	private static final int FONT_SIZE = 20;
+	private static final int MENU_FONT_SIZE = 20;
+	
+	private static final String SELECT_FONT_FILE  = "fonts/LondrinaSolid-Regular.ttf";
+	/** The size of the messages */
+	private static final int SELECT_FONT_SIZE = 18;
 	
 	/** The width of the progress bar */	
 	private int width;
@@ -220,6 +226,7 @@ public class GameEngine implements Screen {
      * 
      */
     public void startGame(int type) {
+    	initializeCanvas(BCKGD_TEXTURE, SELECT_FONT_FILE);
     	List<Character> chars = new LinkedList<Character>();
     	
     	availableCharacters.get(0).reset();
@@ -254,9 +261,12 @@ public class GameEngine implements Screen {
     	chars.add(availableCharacters.get(3));
     	gameplayController.resetGame(chars,6,4,manager.get(TILE_TEXTURE,Texture.class));
     	gameState = GameState.PLAY;
+    	//font support
+    	//here load up the font for the selection menu
+    	
     }
 
-    
+
 	/**
 	 * Called when this screen should release all resources.
 	 */
@@ -382,17 +392,17 @@ public class GameEngine implements Screen {
 	 */
 	public void drawLoad() {
 		//canvas.drawMessage(MESSG_LOAD);
-		canvas.draw(statusBkgLeft,   centerX-width/2, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
-		canvas.draw(statusBkgRight,  centerX+width/2-scale*PROGRESS_CAP, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
-		canvas.draw(statusBkgMiddle, centerX-width/2+scale*PROGRESS_CAP, centerY, width-2*scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
+		canvas.draw(statusBkgLeft, Color.GOLD, centerX-width/2, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
+		canvas.draw(statusBkgRight,  Color.GOLD, centerX+width/2-scale*PROGRESS_CAP, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
+		canvas.draw(statusBkgMiddle, Color.GOLD, centerX-width/2+scale*PROGRESS_CAP, centerY, width-2*scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
 
-		canvas.draw(statusFrgLeft,   centerX-width/2, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
+		canvas.draw(statusFrgLeft,   Color.RED, centerX-width/2, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
 		if (gameLoad > 0) {
 			float span = gameLoad*(width-2*scale*PROGRESS_CAP)/1.0f;
-			canvas.draw(statusFrgRight,  centerX-width/2+scale*PROGRESS_CAP+span, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
-			canvas.draw(statusFrgMiddle, centerX-width/2+scale*PROGRESS_CAP, centerY, span, scale*PROGRESS_HEIGHT);
+			canvas.draw(statusFrgRight,  Color.RED, centerX-width/2+scale*PROGRESS_CAP+span, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
+			canvas.draw(statusFrgMiddle, Color.RED, centerX-width/2+scale*PROGRESS_CAP, centerY, span, scale*PROGRESS_HEIGHT);
 		} else {
-			canvas.draw(statusFrgRight,  centerX-width/2+scale*PROGRESS_CAP, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
+			canvas.draw(statusFrgRight, Color.RED, centerX-width/2+scale*PROGRESS_CAP, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
 		}
     }
 	
@@ -513,6 +523,9 @@ public class GameEngine implements Screen {
 		manager.load(BCKGD_TEXTURE,Texture.class);
 		assets.add(BCKGD_TEXTURE);
 		
+		manager.load(MENU_BCKGD_TEXTURE,Texture.class);
+		assets.add(MENU_BCKGD_TEXTURE);
+		
 		manager.load(LOADING_TEXTURE,Texture.class);
 		assets.add(LOADING_TEXTURE);
 		
@@ -547,7 +560,21 @@ public class GameEngine implements Screen {
 		
 		mainMenuController = new MainMenuController(canvas, manager);
 		
+		
 		manager.finishLoading();
+		//for some reason the font loading has to be after the call to manager.finishLoading();
+		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+		size2Params.fontFileName = MENU_FONT_FILE;
+		size2Params.fontParameters.size = MENU_FONT_SIZE;
+		size2Params.fontParameters.color = Color.BLACK;
+		manager.load(MENU_FONT_FILE, BitmapFont.class, size2Params);
+		assets.add(MENU_FONT_FILE);
+		size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+		size2Params.fontFileName = SELECT_FONT_FILE;
+		size2Params.fontParameters.size = SELECT_FONT_SIZE;
+		size2Params.fontParameters.color = Color.BLACK;
+		manager.load(SELECT_FONT_FILE, BitmapFont.class, size2Params);
+		assets.add(SELECT_FONT_FILE);
 		
 		try {
 			loadFromYaml();
@@ -557,7 +584,7 @@ public class GameEngine implements Screen {
 		}
 		
 		// We have to force the canvas to fully load (so we can draw something)
-		initializeCanvas(LOADING_TEXTURE);
+		initializeCanvas(LOADING_TEXTURE, MENU_FONT_FILE);
 		
         // Sound controller manages its own material
         SoundController.PreLoadContent(manager);
@@ -570,7 +597,7 @@ public class GameEngine implements Screen {
 	 * needed to draw anything at all, we block until the assets have finished
 	 * loading.
 	 */
-    private void initializeCanvas(String texture_msg) { 
+    private void initializeCanvas(String texture_msg, String fontFile) { 
     	canvas.setFont(new BitmapFont());
 		Texture texture = manager.get(texture_msg, Texture.class);
 		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -582,12 +609,9 @@ public class GameEngine implements Screen {
 		manager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
 		manager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 		
-//		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-//		size2Params.fontFileName = FONT_FILE;
-//		size2Params.fontParameters.size = FONT_SIZE;
-//		size2Params.fontParameters.color = Color.BLACK;
-//		manager.load(FONT_FILE, BitmapFont.class, size2Params);
-//		assets.add(FONT_FILE);
+		if (manager.isLoaded(fontFile)) {
+			canvas.setFont(manager.get(fontFile,BitmapFont.class));
+		}
     }
     
     /**

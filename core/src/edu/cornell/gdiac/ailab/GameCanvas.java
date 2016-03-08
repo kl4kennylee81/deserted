@@ -746,14 +746,14 @@ public class GameCanvas {
 		displayFont.draw(spriteBatch, msg, 400,400);
 	}
 	
-	public void draw(TextureRegion region, float x, float y, float width, float height) {
+	public void draw(TextureRegion region, Color tint, float x, float y, float width, float height) {
 		if (!active) {
 			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
 			return;
 		}
 		
 		// Unlike Lab 1, we can shortcut without a master drawing method
-    	spriteBatch.setColor(Color.WHITE);
+    	spriteBatch.setColor(tint);
 		spriteBatch.draw(region, x,  y, width, height);
 	}
 	
@@ -776,13 +776,10 @@ public class GameCanvas {
 	
 	public void drawOption(float sx, float sy, Texture button,int x_size, int y_size, 
 			Color tint, String text){
-		//System.out.println("in gc draw op");
 		spriteBatch.setColor(tint);
 		spriteBatch.draw(button,sx,sy,x_size,y_size);
-//		BitmapFont newDisplay = new BitmapFont(new FileHandle("assets/fonts/Amyn.ttf"));
-//		System.out.println(displayFont.getData().getFontFile().toString());
 		displayFont.draw(spriteBatch, text, sx + x_size/2-50,sy + y_size/2);
-		
+		//figure out how to resize
 	}	
 	
 	/**
