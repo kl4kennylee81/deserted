@@ -110,5 +110,9 @@ public class MainMenuController {
 			}
 		}
 	}
+	
+	public void resetMenu(){
+		isDone = false;
+	}
 
 }

@@ -334,7 +334,7 @@ public class GameEngine implements Screen {
 		
 		// If the player presses 'R', reset the game.
         if (gameState != GameState.LOAD && InputController.pressedR()) {
-        	mainMenuController = new MainMenuController(canvas, manager);
+        	mainMenuController.resetMenu();
             gameState = GameState.MENU;
             return true;
         }
