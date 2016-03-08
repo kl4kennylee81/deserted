@@ -5,7 +5,7 @@ public class MainMenu {
 	Option[] options;
 
 	/** Index of current option */
-	int selectedOption;
+	public int selectedOption;
 
 	/** Lerp value for highlighting */
 	private float lerpVal;
@@ -15,12 +15,14 @@ public class MainMenu {
 
 	public MainMenu(Option[] options){
 		this.options = options;
-		selectedOption = 0;
+		selectOption(0);
 		lerpVal = 0;
 	}
 	
-	public int getSelectedOption(){
-		return options[selectedOption].srNo;
+	public void selectOption(int optionNo){
+		options[selectedOption].isSelected = false;
+		options[optionNo].isSelected = true;
+		selectedOption = optionNo;
 	}
 	
 	public void draw(GameCanvas canvas){

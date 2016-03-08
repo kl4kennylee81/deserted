@@ -18,6 +18,7 @@
 package edu.cornell.gdiac.ailab;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -778,7 +779,9 @@ public class GameCanvas {
 		//System.out.println("in gc draw op");
 		spriteBatch.setColor(tint);
 		spriteBatch.draw(button,sx,sy,x_size,y_size);
-		displayFont.draw(spriteBatch, text, sx + x_size/2,sy + y_size/2);
+//		BitmapFont newDisplay = new BitmapFont(new FileHandle("assets/fonts/Amyn.ttf"));
+//		System.out.println(displayFont.getData().getFontFile().toString());
+		displayFont.draw(spriteBatch, text, sx + x_size/2-50,sy + y_size/2);
 		
 	}	
 	
