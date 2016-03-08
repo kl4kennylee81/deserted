@@ -258,23 +258,27 @@ public class SelectionMenuController {
 		
 		//Need to check in all of these if its a valid move;
 		if (InputController.pressedUp() && !InputController.pressedDown()){
+			System.out.println(1);
 			if (!board.isOccupied(shadowX, shadowY+1)){
 				selectedX = shadowX;
 				selectedY = shadowY+1;
 			}
 			
 		} else if (InputController.pressedDown() && !InputController.pressedUp()){
+			System.out.println(2);
 			if (!board.isOccupied(shadowX, shadowY-1)){
 				selectedX = shadowX;
 				selectedY = shadowY-1;
 			}
 		} else if (InputController.pressedLeft() && !InputController.pressedRight()){
+			System.out.println(3);
 			//if (not occupied) and (not rightside at x=3)
 			if (!board.isOccupied(shadowX-1, shadowY) && !(!leftside && shadowX == boardWidth/2)){
 				selectedX = shadowX-1;
 				selectedY = shadowY;
 			}
 		} else if (InputController.pressedRight() && !InputController.pressedLeft()){
+			System.out.println(4);
 			if (!board.isOccupied(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
 				selectedX = shadowX+1;
 				selectedY = shadowY;

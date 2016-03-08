@@ -49,6 +49,7 @@ import com.badlogic.gdx.utils.*;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.ailab.Action.Effect;
 import edu.cornell.gdiac.ailab.Action.Pattern;
+import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.mesh.*;
 import edu.cornell.gdiac.ailab.GameCanvas;
 import edu.cornell.gdiac.util.*;
@@ -124,9 +125,6 @@ public class GameEngine implements Screen {
 	
 	/** File storing the texture for a board tile */
 	public static final String TILE_TEXTURE = "models/Tile.png";
-	
-	/** File storing the texture for an option tile */
-	private static final String OPTION_TEXTURE = "images/white.png";
 
 	/** File storing the enemy texture for a ship */
 	private static final String PLAYER_TEXTURE  = "models/Ship.png";
@@ -157,6 +155,8 @@ public class GameEngine implements Screen {
 	private GameplayController gameplayController;
     /** Used to draw the game onto the screen (VIEW CLASS) */
     private GameCanvas canvas;
+    /** Subcontroller for main menu (CONTROLLER CLASS) */
+    private MainMenuController mainMenuController;
     
 	/** Default budget for asset loader (do nothing but load 60 fps) */
 	private static int DEFAULT_BUDGET = 15;
@@ -303,7 +303,6 @@ public class GameEngine implements Screen {
 			break;
 		case MENU:
 			updateMenu();
-			drawMenu();
 			break;
 		case PLAY:
 			updatePlay();
@@ -361,14 +360,9 @@ public class GameEngine implements Screen {
 	 * Updates the state of the menu screen.
 	 */
 	private void updateMenu() {
-		if (InputController.pressedE()){
-			startGame(0);
-		} else if (InputController.pressedM()){
-			startGame(1);
-		} else if (InputController.pressedH()){
-			startGame(2);
-		} else if (InputController.pressedP()){
-			startGame(3);
+		mainMenuController.update();
+		if (mainMenuController.isDone()){
+			startGame(mainMenuController.gameNo);
 		}
 	}
 	
@@ -401,14 +395,6 @@ public class GameEngine implements Screen {
 		}
     }
 	
-	public void drawMenu() {
-		initializeCanvas(BCKGD_TEXTURE);
-		drawOption(canvas.getWidth()/4,canvas.getHeight()/4,100,"HARD MODE","(or press 'h')");
-		drawOption(canvas.getWidth()/4,3*canvas.getHeight()/4,100,"EASY MODE","(or press 'e')");
-		drawOption(3*canvas.getWidth()/4,canvas.getHeight()/4,100,"MEDIUM MODE","(or press 'm')");
-		drawOption(3*canvas.getWidth()/4,3*canvas.getHeight()/4,100,"PvP MODE","(or press 'p')");
-	}
-	
 	public void drawPlay() {
 		gameplayController.drawPlay(canvas); 
 	}
@@ -417,32 +403,6 @@ public class GameEngine implements Screen {
 		gameplayController.drawAfter(canvas);
 	}
     
-    /**
-	 * Draws an option for the start screen at position (x,y). 
-	 *
-	 *
-	 * @param x The x index for the Option cell
-	 * @param y The y index for the Option cell
-	 */
-	private void drawOption(float sx, float sy, int size, String msg1, String msg2) {
-		// Compute drawing coordinates
-		//Option option = new Option();
-		//System.out.println("" + sx + " " + sy);
-
-		// You can modify the following to change a tile's highlight color.
-		// BASIC_COLOR corresponds to no highlight.
-		///////////////////////////////////////////////////////
-		Color color = Color.WHITE;
-		//if (option.isHighlighted){
-			//System.out.println("dude");
-			//color.lerp(HIGHLIGHT_COLOR,lerpVal);
-		//} 
-
-		///////////////////////////////////////////////////////
-
-		// Draw
-		canvas.drawOption(sx,sy,new Texture(OPTION_TEXTURE),size,color, msg1, msg2);
-	}
 	
 	/**
 	 * Called when the Application is resized. 
@@ -583,6 +543,8 @@ public class GameEngine implements Screen {
 		
 		manager.load(WHITE_BOX,Texture.class);
 		assets.add(WHITE_BOX);
+		
+		mainMenuController = new MainMenuController(canvas, manager);
 		
 		manager.finishLoading();
 		
