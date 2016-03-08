@@ -35,6 +35,10 @@ public class MainMenuController {
 		default_options[1] = new Option(3*canvas.getWidth()/4-150,3*canvas.getHeight()/4-150,300,150,"       PvP \n  Or Press 'P'",OPTION_TEXTURE,1);
 		default_options[2] = new Option(canvas.getWidth()/4-150,canvas.getHeight()/4-50,300,150,"   MEDIUM \n  Or Press 'M'",OPTION_TEXTURE,2);
 		default_options[3] = new Option(3*canvas.getWidth()/4-150,canvas.getHeight()/4-50,300,150,"   HARD \n Or Press 'H'",OPTION_TEXTURE,3);
+//		default_options[0] = new Option(canvas.getWidth()/2-150,3*canvas.getHeight()/4+50,280,130,"     EASY \n  Or Press 'E'",OPTION_TEXTURE,0);
+//		default_options[1] = new Option(canvas.getWidth()/2-150,canvas.getHeight()/2+50,280,130,"       PvP \n  Or Press 'P'",OPTION_TEXTURE,1);
+//		default_options[2] = new Option(canvas.getWidth()/2-150,canvas.getHeight()/4+50,280,130,"   MEDIUM \n  Or Press 'M'",OPTION_TEXTURE,2);
+//		default_options[3] = new Option(canvas.getWidth()/2-150,50,280,130,"   HARD \n Or Press 'H'",OPTION_TEXTURE,3);
 		return default_options;
 	}
 
