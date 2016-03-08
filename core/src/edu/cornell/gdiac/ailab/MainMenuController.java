@@ -84,7 +84,7 @@ public class MainMenuController {
 	 * Update when an action is not targeting yet
 	 */
 	private void updateSelection(){
-		if (InputController.pressedA()){
+		if (InputController.pressedA() || InputController.pressedEnter()){
 			gameNo = mainMenu.selectedOption;
 			isDone = true;
 		}  else if ((InputController.pressedUp() && !InputController.pressedDown()) || 
