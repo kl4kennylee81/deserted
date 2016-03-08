@@ -778,7 +778,7 @@ public class GameCanvas {
 			Color tint, String text){
 		spriteBatch.setColor(tint);
 		spriteBatch.draw(button,sx,sy,x_size,y_size);
-		displayFont.draw(spriteBatch, text, sx + x_size/2-50,sy + y_size/2);
+		displayFont.draw(spriteBatch, text, sx + x_size/2-65,sy + y_size/2+20);
 		//figure out how to resize
 	}	
 	
