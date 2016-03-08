@@ -119,9 +119,9 @@ public class GameplayController {
 	    if (leftsideDead() && rightsideDead()){
 			canvas.drawText("A tie?", 400, 400, Color.BLACK);
 		} else if (leftsideDead()){
-			canvas.drawText("Hah you lost", 400, 400, Color.BLACK);
+			canvas.drawText("RED SIDE WINS", 400, 400, Color.BLACK);
 		} else if (rightsideDead()){
-			canvas.drawText("Yay you beat an easy bot", 400, 400, Color.BLACK);
+			canvas.drawText("BLUE SIDE WINS", 400, 400, Color.BLACK);
 		} else {
 			System.out.println("SHOULD NEVER GET HERE");
 		}
