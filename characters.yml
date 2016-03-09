@@ -11,6 +11,7 @@
   availableActions: 
     - 0
     - 4
+    - 5
     - 3
     - 6
 
@@ -26,6 +27,7 @@
   leftSide: true
   availableActions: 
     - 0
+    - 4
     - 5
     - 3
     - 6
@@ -43,7 +45,6 @@
   availableActions: 
     - 0
     - 4
-    - 5
     - 3
     - 6
 
@@ -59,7 +60,6 @@
   leftSide: false
   availableActions: 
     - 0
-    - 4
     - 5
     - 3
     - 6

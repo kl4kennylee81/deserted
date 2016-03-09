@@ -143,18 +143,18 @@ public class SelectionMenu {
 	 */
 	public boolean changeSelected(boolean up){
 		if (up){
-			for (int i = 0; i < TOTAL_SLOTS; i++){
+			for (int i = 0; i < actions.length; i++){
 				selectedAction += 1;
-				selectedAction %= TOTAL_SLOTS;
+				selectedAction %= actions.length;
 				if (canDoAction(actions[selectedAction])){
 					return true;
 				}
 			}
 		} else {
-			for (int i = 0; i < TOTAL_SLOTS; i++){
+			for (int i = 0; i < actions.length; i++){
 				selectedAction -= 1;
 				if (selectedAction < 0){
-					selectedAction += TOTAL_SLOTS;
+					selectedAction += actions.length;
 				}
 				if (canDoAction(actions[selectedAction])){
 					return true;
@@ -170,7 +170,7 @@ public class SelectionMenu {
 	 */
 	public boolean resetPointer(){
 		if (actions[selectedAction].cost > TOTAL_SLOTS - takenSlots && takenSlots < TOTAL_SLOTS){
-			for (int i = 0; i < TOTAL_SLOTS; i++){
+			for (int i = 0; i < actions.length; i++){
 				selectedAction = i;
 				if (canDoAction(actions[selectedAction])){
 					return true;
