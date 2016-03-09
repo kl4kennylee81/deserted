@@ -774,6 +774,10 @@ public class GameCanvas {
 		spriteBatch.draw(mesh,x,y,size,size);
 	}
 	
+	public void drawTile2(float x, float y, Texture mesh, int widht, int height){
+		spriteBatch.draw(mesh,x,y,width,height);
+	}
+	
 	public void drawOption(float sx, float sy, Texture button,int x_size, int y_size, 
 			Color tint, String text){
 		spriteBatch.setColor(tint);
