@@ -39,6 +39,12 @@ public class ActionBarController {
 			if (c.castPosition >= bar.castPoint && oldCast < bar.castPoint) {
 				// Let characters select their attacks
 				c.needsSelection = true;
+				
+				// this is for when a unit tries to move into another units square
+				// we have this flag which stops all future movements (temporary)	
+				// when he starts his next round this flag is switched to false.
+				c.isBlocked = false;
+				
 				if (c.isAI){
 					this.isAISelection = true;
 				} else {

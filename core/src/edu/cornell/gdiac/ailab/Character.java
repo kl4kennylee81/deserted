@@ -54,6 +54,9 @@ public class Character {
 	int shadowX;
 	int shadowY;
 	
+	/** movement is block afterwards if bump into */
+	boolean isBlocked;
+	
 	//TODO: Use Coordinates
 	/** 
 	 * List of path, in the front is current position and at the end
@@ -264,6 +267,11 @@ public class Character {
 	
 	public ActionNode popCast(){
 		return queuedActions.poll();
+	}
+	
+	public void resetShadow(){
+		oldShadowX.clear();
+		oldShadowY.clear();
 	}
 	
 	public void setShadow(int shadX, int shadY){

@@ -234,11 +234,18 @@ public class ActionController {
 	
 	private void executeMovement(ActionNode a_node){
 		selected.popLastShadow();
-		int total_moves = (Math.abs(selected.xPosition-a_node.xPosition)
-				+Math.abs(selected.yPosition-a_node.yPosition));
-		if (total_moves==1 && !board.isOccupied(a_node.xPosition, a_node.yPosition)){
+//		int total_moves = (Math.abs(selected.xPosition-a_node.xPosition)
+//				+Math.abs(selected.yPosition-a_node.yPosition));
+//		if (total_moves==1 && !board.isOccupied(a_node.xPosition, a_node.yPosition)){
+		if (!selected.isBlocked && !board.isOccupied(a_node.xPosition, a_node.yPosition)){
 			selected.xPosition = a_node.xPosition;
 			selected.yPosition = a_node.yPosition;			
+		}
+//		else if (board.isOccupied(a_node.xPosition, a_node.yPosition)){
+		else{
+			selected.resetShadow();
+			selected.setShadow(selected.xPosition, selected.yPosition);
+			selected.isBlocked = true;
 		}
 	}
 	
