@@ -135,8 +135,7 @@ public class SelectionMenuController {
 	 */
 	private void updateTargetedAction(){
 		if (action.pattern == Pattern.STRAIGHT){
-			menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*0.075f,0,0));
-			menu.resetPointer();
+			menu.setChoosingTarget(true);
 		} else if (action.pattern == Pattern.SINGLE){
 			selectedX = leftside ? SINGLE_X_LEFT : SINGLE_X_RIGHT;
 			selectedY = SINGLE_Y;
@@ -258,27 +257,23 @@ public class SelectionMenuController {
 		
 		//Need to check in all of these if its a valid move;
 		if (InputController.pressedUp() && !InputController.pressedDown()){
-			System.out.println(1);
 			if (!board.isOccupied(shadowX, shadowY+1)){
 				selectedX = shadowX;
 				selectedY = shadowY+1;
 			}
 			
 		} else if (InputController.pressedDown() && !InputController.pressedUp()){
-			System.out.println(2);
 			if (!board.isOccupied(shadowX, shadowY-1)){
 				selectedX = shadowX;
 				selectedY = shadowY-1;
 			}
 		} else if (InputController.pressedLeft() && !InputController.pressedRight()){
-			System.out.println(3);
 			//if (not occupied) and (not rightside at x=3)
 			if (!board.isOccupied(shadowX-1, shadowY) && !(!leftside && shadowX == boardWidth/2)){
 				selectedX = shadowX-1;
 				selectedY = shadowY;
 			}
 		} else if (InputController.pressedRight() && !InputController.pressedLeft()){
-			System.out.println(4);
 			if (!board.isOccupied(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
 				selectedX = shadowX+1;
 				selectedY = shadowY;
@@ -321,11 +316,19 @@ public class SelectionMenuController {
 	public void drawStraight(){
 		if (leftside) {
 			for (int i = shadowX+1; i < boardWidth; i++){
-				board.setHighlighted(i,shadowY);
+				if (choosingTarget){
+					board.setHighlighted(i,shadowY);
+				} else {
+					board.setCanTarget(i, shadowY);
+				}
 			}
 		} else {
 			for (int i = shadowX-1; i >= 0; i--){
-				board.setHighlighted(i,shadowY);
+				if (choosingTarget){
+					board.setHighlighted(i,shadowY);
+				} else {
+					board.setCanTarget(i, shadowY);
+				}
 			}
 		}
 	}
@@ -333,11 +336,7 @@ public class SelectionMenuController {
 		if (choosingTarget){
 			board.setHighlighted(selectedX, selectedY);
 		} else {
-			if (leftside) {
-				board.setHighlighted(SINGLE_X_LEFT,SINGLE_Y);
-			} else {
-				board.setHighlighted(SINGLE_X_RIGHT,SINGLE_Y);
-			}
+			board.setCanTargetSide(leftside);
 		}
 	}
 	
@@ -353,98 +352,55 @@ public class SelectionMenuController {
 		board.setCanTarget(shadowX, shadowY+1);
 		if (choosingTarget){
 			board.setHighlighted(selectedX, selectedY);
-		} else {
-			if (!board.isOccupied(shadowX, shadowY+1)){
-				board.setHighlighted(shadowX, shadowY+1);
-			} else if (!board.isOccupied(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
-				board.setHighlighted(shadowX+1, shadowY);
-			} else if (!board.isOccupied(shadowX-1, shadowY) && !(!leftside && shadowX == boardWidth/2)){
-				board.setHighlighted(shadowX-1, shadowY);
-			} else if (!board.isOccupied(shadowX, shadowY-1)){
-				board.setHighlighted(shadowX, shadowY-1);
-			} else {
-				//should never get here
-				//this means we let them move when every space was occupied
-				System.out.println("UHOHHHH");
-			}
 		}
 	}
 	
 	public void drawDiagonal(){
 		if (leftside){
 			shadowX++;
-			if (!choosingTarget){
-				if (shadowY < boardHeight/2){
-					for (int i = 0; i < boardHeight; i++){
+			for (int i = 0; i < boardHeight; i++){
+				board.setCanTarget(shadowX+i, shadowY+i);
+				board.setCanTarget(shadowX+i, shadowY-i);
+			}
+			if (choosingTarget){
+				for (int i = 0; i < boardHeight; i++){
+					if (selectedY == DIAGONAL_UP){
 						board.setHighlighted(shadowX+i, shadowY+i);
-						board.setCanTarget(shadowX+i, shadowY-i);
-					}
-				} else {
-					for (int i = 0; i < boardHeight; i++){
+					} else {
 						board.setHighlighted(shadowX+i, shadowY-i);
-						board.setCanTarget(shadowX+i, shadowY+i);
-					}
-				}
-			} else {
-				if (selectedY == DIAGONAL_UP){
-					for (int i = 0; i < boardHeight; i++){
-						board.setHighlighted(shadowX+i, shadowY+i);
-						board.setCanTarget(shadowX+i, shadowY-i);
-					}
-				} else {
-					for (int i = 0; i < boardHeight; i++){
-						board.setHighlighted(shadowX+i, shadowY-i);
-						board.setCanTarget(shadowX+i, shadowY+i);
 					}
 				}
 			}
 		} else {
 			shadowX--;
-			if (!choosingTarget){
-				if (shadowY < boardHeight/2){
-					for (int i = 0; i < boardHeight; i++){
+			for (int i = 0; i < boardHeight; i++){
+				board.setCanTarget(shadowX-i, shadowY+i);
+				board.setCanTarget(shadowX-i, shadowY-i);
+			}
+			if (choosingTarget){
+				for (int i = 0; i < boardHeight; i++){
+					if (selectedY == DIAGONAL_UP){
 						board.setHighlighted(shadowX-i, shadowY+i);
-						board.setCanTarget(shadowX-i, shadowY-i);
-					}
-				} else {
-					for (int i = 0; i < boardHeight; i++){
+					} else {
 						board.setHighlighted(shadowX-i, shadowY-i);
-						board.setCanTarget(shadowX-i, shadowY+i);
 					}
 				}
-			} else {
-				if (selectedY == DIAGONAL_UP){
-					for (int i = 0; i < boardHeight; i++){
-						board.setHighlighted(shadowX-i, shadowY+i);
-						board.setCanTarget(shadowX-i, shadowY-i);
-					}
-				} else {
-					for (int i = 0; i < boardHeight; i++){
-						board.setHighlighted(shadowX-i, shadowY-i);
-						board.setCanTarget(shadowX-i, shadowY+i);
-					}
-				}
-				
 			}
 		}
 	}
 	
 	public void drawShield(){
-		if (!choosingTarget){
-			if (shadowY < boardHeight/2){
-				selectedY = 3;
+		board.setCanTarget(shadowX, shadowY+1);
+		board.setCanTarget(shadowX, shadowY);
+		board.setCanTarget(shadowX, shadowY-1);
+		if (choosingTarget){
+			if (selectedY == 3){
+				board.setHighlighted(shadowX, shadowY+1);
+				board.setHighlighted(shadowX, shadowY);
 			} else {
-				selectedY = 0;
+				board.setHighlighted(shadowX, shadowY);
+				board.setHighlighted(shadowX, shadowY-1);
 			}
-		}
-		if (selectedY == 3){
-			board.setHighlighted(shadowX, shadowY+1);
-			board.setHighlighted(shadowX, shadowY);
-			board.setCanTarget(shadowX, shadowY-1);
-		} else {
-			board.setCanTarget(shadowX, shadowY+1);
-			board.setHighlighted(shadowX, shadowY);
-			board.setHighlighted(shadowX, shadowY-1);
 		}
 	}
 	

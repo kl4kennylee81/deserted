@@ -203,18 +203,18 @@ public class SelectionMenu {
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
 			if (action.cost > TOTAL_SLOTS - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
-				canvas.drawText(action.name, 200, 630-50*i, new Color(1f, 1f, 1f, 0.5f));
+				canvas.drawText(action.name, 200, 650-50*i, new Color(1f, 1f, 1f, 0.5f));
 			} else {
-				canvas.drawText(action.name, 200, 630-50*i, Color.BLACK);
+				canvas.drawText(action.name, 200, 650-50*i, Color.BLACK);
 			}
 		}
 		
 		if (choosingTarget){
 			//draws grid target
-			canvas.drawPointer(145+selectedX*100, 45+selectedY*100, Color.BLACK);
+			//canvas.drawPointer(145+selectedX*100, 45+selectedY*100, Color.BLACK);
 		} else if (canAct()){
 			//draws action name pointers
-			canvas.drawPointer(180,620-50*selectedAction, Color.CORAL);
+			canvas.drawPointer(180,638-50*selectedAction, Color.CORAL);
 		}
 		
 		//Draw action bar with 3 black boxes to show 4 slots
