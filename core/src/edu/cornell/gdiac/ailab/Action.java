@@ -23,11 +23,6 @@ public class Action {
 		NOP
 	}
 	
-	/* TODO: Make separate effect class for values */
-	public static enum Effect {
-		REGULAR,
-		SLOW
-	}
 	
 	public Action(String name, int cost, int damage, int range, Pattern pattern, Effect effect, String description){
 		this.name = name;

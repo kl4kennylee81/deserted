@@ -20,6 +20,8 @@ public class GameplayController {
     private PersistingController persistingController;
     /** Subcontroller for AI selection (CONTROLLER CLASS) */
     private AIController aiController;
+    /** Subcontroller for managing effects */
+    private EffectController effectController;
 	
 	/** Current Models */
     private GridBoard board;
@@ -62,12 +64,14 @@ public class GameplayController {
         actionBarController = new ActionBarController(characters,bar);
         aiController = new AIController(board,characters,bar);
         persistingController = new PersistingController(board,characters,bar,textMessages);
+        effectController = new EffectController(characters);
         
 	}
     
     public void update(){
     	switch(inGameState){
     	case NORMAL:
+    		effectController.update();
     		actionBarController.update();
     		persistingController.update();
     		if (actionBarController.isAISelection) {

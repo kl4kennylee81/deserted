@@ -12,7 +12,7 @@
     - 0
     - 4
     - 5
-    - 3
+    - 7
     - 6
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"
@@ -31,7 +31,7 @@
     - 0
     - 4
     - 5
-    - 3
+    - 7
     - 6
   texture: "models/CHARA_2.png"
   icon: "models/CASTICON_2.png"
