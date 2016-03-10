@@ -201,7 +201,6 @@ public class GameCanvas {
 	 * @param width the canvas width
 	 */
 	public void setWidth(int width) {
-		System.out.println("Resizing width");
 		if (active) {
 			Gdx.app.error("GameCanvas", "Cannot alter property while drawing active", new IllegalStateException());
 			return;
@@ -237,7 +236,6 @@ public class GameCanvas {
 	 * @param height the canvas height
 	 */
 	public void setHeight(int height) {
-		System.out.println("Resizing height");
 		if (active) {
 			Gdx.app.error("GameCanvas", "Cannot alter property while drawing active", new IllegalStateException());
 			return;
@@ -272,7 +270,6 @@ public class GameCanvas {
 	 * @param height the canvas height
 	 */
 	public void setSize(int width, int height) {
-		System.out.println("Resizing size");
 		if (active) {
 			Gdx.app.error("GameCanvas", "Cannot alter property while drawing active", new IllegalStateException());
 			return;

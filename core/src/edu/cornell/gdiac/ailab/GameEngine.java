@@ -243,6 +243,7 @@ public class GameEngine implements Screen {
      * 
      */
     public void startGame(int type) {
+    	System.out.println(type);
     	initializeCanvas(BCKGD_TEXTURE, SELECT_FONT_FILE);
     	List<Character> chars = new LinkedList<Character>();
     	
