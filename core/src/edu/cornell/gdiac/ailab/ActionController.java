@@ -18,8 +18,8 @@ package edu.cornell.gdiac.ailab;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
-import com.badlogic.gdx.math.*;
+//import java.util.Random;
+//import com.badlogic.gdx.math.*;
 
 import edu.cornell.gdiac.ailab.Character;
 import edu.cornell.gdiac.ailab.Action.Pattern;

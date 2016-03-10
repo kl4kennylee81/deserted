@@ -16,12 +16,12 @@
  */
 package edu.cornell.gdiac.ailab;
 
-import static com.badlogic.gdx.Gdx.gl20;
-import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
+//import static com.badlogic.gdx.Gdx.gl20;
+//import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -32,15 +32,15 @@ import java.util.List;
 import org.yaml.snakeyaml.Yaml;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.audio.*;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.Controllers;
+//import com.badlogic.gdx.Input.Keys;
+//import com.badlogic.gdx.audio.*;
+//import com.badlogic.gdx.controllers.Controller;
+//import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.VertexAttributes.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.*;
-import com.badlogic.gdx.maps.Map;
+//import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.assets.*;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.*;
@@ -49,10 +49,10 @@ import com.badlogic.gdx.utils.*;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.ailab.Action.Effect;
 import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.GameplayController.InGameState;
+//import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.mesh.*;
 import edu.cornell.gdiac.ailab.GameCanvas;
-import edu.cornell.gdiac.util.*;
+//import edu.cornell.gdiac.util.*;
 
 /**
  * Primary class for controlling the game.
@@ -83,17 +83,17 @@ public class GameEngine implements Screen {
 	
 	// ASSET LOADING INFORMATION
 	// Messages to display to the player
-	/** Message while assets are loading */
-	private static final String MESSG_LOAD = "Loading...";
-	/** Message before the game has started */
-	private static final String MESSG_BEFORE_1 = "Press any Key";
-	private static final String MESSG_BEFORE_2 = "To Begin";
-	/** Message when the player has lost */
-	private static final String MESSG_LOST = "Game Over";
-	/** Message when the player has won */
-	private static final String MESSG_WON = "You Won!";
-	/** Message telling the user how to restart */
-	private static final String MESSG_RESTART = "Press \"R\" to Restart";
+//	/** Message while assets are loading */
+//	private static final String MESSG_LOAD = "Loading...";
+//	/** Message before the game has started */
+//	private static final String MESSG_BEFORE_1 = "Press any Key";
+//	private static final String MESSG_BEFORE_2 = "To Begin";
+//	/** Message when the player has lost */
+//	private static final String MESSG_LOST = "Game Over";
+//	/** Message when the player has won */
+//	private static final String MESSG_WON = "You Won!";
+//	/** Message telling the user how to restart */
+//	private static final String MESSG_RESTART = "Press \"R\" to Restart";
 
 	/** Background image for the canvas */
 	private static final String BCKGD_TEXTURE = "images/bg.png";
@@ -125,9 +125,26 @@ public class GameEngine implements Screen {
 	public static final String TILE_TEXTURE = "models/Tile.png";
 
 	/** File storing the enemy texture for a ship */
-	private static final String PLAYER_TEXTURE  = "models/Ship.png";
+	private static final String CHAR_1_TEXTURE = "models/CHARA_1.png";
 	/** File storing the player texture for a ship */
-	private static final String ENEMY_TEXTURE = "models/ShipPlayer.png";
+	private static final String CHAR_2_TEXTURE = "models/CHARA_2.png";
+	/** File storing the enemy texture for a ship */
+	private static final String CHAR_3_TEXTURE = "models/CHARA_3.png";
+	/** File storing the player texture for a ship */
+	private static final String CHAR_4_TEXTURE = "models/CHARA_4.png";
+	/** File storing the enemy texture for a ship */
+	private static final String CHAR_5_TEXTURE = "models/CHARA_5.png";
+	
+	/** File storing the enemy texture for a ship */
+	private static final String ICON_1_TEXTURE = "models/CASTICON_1.png";
+	/** File storing the player texture for a ship */
+	private static final String ICON_2_TEXTURE = "models/CASTICON_2.png";
+	/** File storing the enemy texture for a ship */
+	private static final String ICON_3_TEXTURE = "models/CASTICON_3.png";
+	/** File storing the player texture for a ship */
+	private static final String ICON_4_TEXTURE = "models/CASTICON_4.png";
+	/** File storing the enemy texture for a ship */
+	private static final String ICON_5_TEXTURE = "models/CASTICON_5.png";
 	
 	private static final String WHITE_BOX = "images/white.png";
 	/** The message font to use */
@@ -145,8 +162,8 @@ public class GameEngine implements Screen {
 	private int centerY;
 	/** The x-coordinate of the center of the progress bar */
 	private int centerX;
-	/** The height of the canvas window (necessary since sprite origin != screen origin) */
-	private int heightY;
+//	/** The height of the canvas window (necessary since sprite origin != screen origin) */
+//	private int heightY;
 	/** Scaling factor for when the student changes the resolution. */
 	private float scale;
 
@@ -164,8 +181,8 @@ public class GameEngine implements Screen {
     /** Subcontroller for main menu (CONTROLLER CLASS) */
     private MainMenuController mainMenuController;
     
-	/** Default budget for asset loader (do nothing but load 60 fps) */
-	private static int DEFAULT_BUDGET = 15;
+//	/** Default budget for asset loader (do nothing but load 60 fps) */
+//	private static int DEFAULT_BUDGET = 15;
 	/** Standard window size (for scaling) */
 	private static int STANDARD_WIDTH  = 800;
 	/** Standard window height (for scaling) */
@@ -180,7 +197,7 @@ public class GameEngine implements Screen {
 	private static int PROGRESS_CAP    = 15;
 	/** Width of the middle portion in texture atlas */
 	private static int PROGRESS_MIDDLE = 200;
-	private static float BUTTON_SCALE  = 0.75f;
+//	private static float BUTTON_SCALE  = 0.75f;
     
     //Current Models
     private HashMap<Integer, Character> availableCharacters;
@@ -208,7 +225,7 @@ public class GameEngine implements Screen {
 		width = (int)(BAR_WIDTH_RATIO*canvas.getWidth());
 		centerY = (int)(BAR_HEIGHT_RATIO*canvas.getHeight());
 		centerX = canvas.getWidth()/2;
-		heightY = canvas.getHeight();
+//		heightY = canvas.getHeight();
 		float sx = ((float)canvas.getWidth())/STANDARD_WIDTH;
 		float sy = ((float)canvas.getHeight())/STANDARD_HEIGHT;
 		scale = (sx < sy ? sx : sy);
@@ -492,9 +509,12 @@ public class GameEngine implements Screen {
 					actionArray[i] = availableActions.get(actionId);
 					i++;
 				}
+				String charTextureName = (String) character.get("texture");
+				String iconTextureName = (String) character.get("icon");
 				
-				Texture enemyTexture = manager.get(ENEMY_TEXTURE,Texture.class);
-				Character characterToAdd = new Character(enemyTexture, name, 
+				Texture charTexture = manager.get(charTextureName,Texture.class);
+				Texture iconTexture = manager.get(iconTextureName,Texture.class);
+				Character characterToAdd = new Character(charTexture, iconTexture, name, 
 						health, maxHealth, Color.valueOf(hexColor), speed, 
 						castSpeed, xPosition, yPosition, leftSide, actionArray); 
 									
@@ -550,10 +570,27 @@ public class GameEngine implements Screen {
 		manager.load(TILE_TEXTURE,Texture.class);
 		assets.add(TILE_TEXTURE);
 		
-		manager.load(ENEMY_TEXTURE,Texture.class);
-		assets.add(ENEMY_TEXTURE);
-		manager.load(PLAYER_TEXTURE,Texture.class);
-		assets.add(PLAYER_TEXTURE);
+		manager.load(CHAR_1_TEXTURE,Texture.class);
+		assets.add(CHAR_1_TEXTURE);
+		manager.load(CHAR_2_TEXTURE,Texture.class);
+		assets.add(CHAR_2_TEXTURE);
+		manager.load(CHAR_3_TEXTURE,Texture.class);
+		assets.add(CHAR_3_TEXTURE);
+		manager.load(CHAR_4_TEXTURE,Texture.class);
+		assets.add(CHAR_4_TEXTURE);
+		manager.load(CHAR_5_TEXTURE,Texture.class);
+		assets.add(CHAR_5_TEXTURE);
+		
+		manager.load(ICON_1_TEXTURE,Texture.class);
+		assets.add(ICON_1_TEXTURE);
+		manager.load(ICON_2_TEXTURE,Texture.class);
+		assets.add(ICON_2_TEXTURE);
+		manager.load(ICON_3_TEXTURE,Texture.class);
+		assets.add(ICON_3_TEXTURE);
+		manager.load(ICON_4_TEXTURE,Texture.class);
+		assets.add(ICON_4_TEXTURE);
+		manager.load(ICON_5_TEXTURE,Texture.class);
+		assets.add(ICON_5_TEXTURE);
 		
 		manager.load(WHITE_BOX,Texture.class);
 		assets.add(WHITE_BOX);

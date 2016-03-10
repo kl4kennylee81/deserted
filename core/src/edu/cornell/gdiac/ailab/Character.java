@@ -2,7 +2,7 @@ package edu.cornell.gdiac.ailab;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
+//import java.util.Random;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -30,6 +30,7 @@ public class Character {
 	float castPosition;
 	Color color;
 	Texture texture;
+	Texture icon;
 	SelectionMenu selectionMenu;
 	boolean leftside;
 	
@@ -75,17 +76,23 @@ public class Character {
 	/** List of coordinates blocked by my shield */
 	List<Coordinate> shieldedCoordinates;
 	
+	/** For highlighting character */
+	float lerpVal = 0;
+	boolean increasing;
+	
 	/**Constructor used by GameEngine to create characters from yaml input. */
-	public Character (Texture texture, String name, int health, int maxHealth, Color color, 
+	public Character (Texture texture, Texture icon, String name, int health, int maxHealth, Color color, 
 						float speed, float castSpeed, int xPosition, int yPosition,
 						boolean leftSide, Action[] actions){
 		this.texture = texture;
+		this.icon = icon;
 		this.name = name;
 		this.health = health;
 		this.maxHealth = maxHealth;
-		this.color = color;
 		this.speed = speed;
 		this.castSpeed = castSpeed;
+
+		this.color = color;
 		
 		/* Randomize so that its not always the same thing */
 		//this.speed = (float) (Math.random()*0.003 + 0.003);
@@ -106,7 +113,6 @@ public class Character {
 		
 		this.availableActions = actions;
 		selectionMenu = new SelectionMenu(availableActions);
-		
 	}
 	
 	/**
@@ -152,6 +158,8 @@ public class Character {
 	
 	public void setSelecting(boolean isSelecting) {
 		this.isSelecting = isSelecting;
+		lerpVal = 0;
+		increasing = true;
 	}
 	
 	public void setQueuedActions(List<ActionNode> actions){
@@ -276,36 +284,47 @@ public class Character {
 		if (!isAlive()){
 			return;
 		}
-		drawShip(canvas);
 		drawHealth(canvas);
 		drawToken(canvas);
-		if (isSelecting){
-			drawSelection(canvas);
-			selectionMenu.draw(canvas);
-		}
-		if(needShadow()){
-			drawShadowShip(canvas);
-		}
 		if(hasPersisting()){
 			drawPersisting(canvas);
 		}
 	}
 	
-	public void drawShip(GameCanvas canvas){
-		float canvasX = 100 + 100*xPosition;
+	/** temporary while menu is blocked by characters */
+	public void drawSelection(GameCanvas canvas){
+		if (isSelecting && isAlive()){
+			selectionMenu.draw(canvas);
+		}
+	}
+	
+	public void drawCharacter(GameCanvas canvas){
+		if (increasing){
+			lerpVal+=0.01;
+			if (lerpVal >= 0.5){
+				increasing = false;
+			}
+		} else {
+			lerpVal -= 0.01;
+			if (lerpVal <= 0){
+				increasing = true;
+			}
+		}
+		float canvasX = 150*xPosition;
 		float canvasY = 100*yPosition;
-		int angle = leftside ? 270 : 90;
-		canvas.drawShip(texture, canvasX,canvasY,color,angle);
+		
+		/** maybe highlight character? */
+		Color col = isSelecting ? Color.WHITE.cpy().lerp(Color.GREEN, lerpVal) : Color.WHITE;
+		canvas.drawCharacter(texture, canvasX, canvasY, col, leftside);
 	}
 	
 	/**
 	 * Draws future position of ship with lines depicting path
 	 */
-	public void drawShadowShip(GameCanvas canvas){
-		float canvasX = 100 + 100*shadowX;
+	public void drawShadowCharacter(GameCanvas canvas){
+		float canvasX = 150*shadowX;
 		float canvasY = 100*shadowY;
-		int angle = leftside ? 270 : 90;
-		canvas.drawShip(texture, canvasX,canvasY,color.cpy().lerp(Color.CLEAR, 0.3f),angle);
+		canvas.drawCharacter(texture, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside);
 		int tempX = shadowX;
 		int tempY = shadowY;
 		int nowX;
@@ -315,10 +334,10 @@ public class Character {
 			nowY = oldShadowY.get(i);
 			if (nowX != tempX && nowY == tempY){
 				int minX = Math.min(nowX, tempX);
-				canvas.drawBox(147 + 100*minX, 47 + 100*nowY, 106, 6, Color.BLACK);
+				canvas.drawBox(72 + 150*minX, 47 + 100*nowY, 156, 6, Color.BLACK);
 			} else if (nowY != tempY && nowX == tempX){
 				int minY = Math.min(nowY, tempY);
-				canvas.drawBox(147+100*nowX, 47+100*minY, 6, 106, Color.BLACK);
+				canvas.drawBox(72+150*nowX, 47+100*minY, 6, 106, Color.BLACK);
 			} else {
 				System.out.println("PLEASE CHECK Character");
 			}
@@ -337,21 +356,21 @@ public class Character {
 			case SHIELD:
 				if (leftside){
 					if (an.yPosition==3){
-						canvas.drawBox(195+100*an.curX, 100*yPosition, 10, 200, Color.BROWN);
+						canvas.drawBox(145+150*an.curX, 100*yPosition, 10, 200, Color.GRAY);
 					} else {
-						canvas.drawBox(195+100*an.curX, 100*yPosition-100, 10, 200, Color.BROWN);
+						canvas.drawBox(145+150*an.curX, 100*yPosition-100, 10, 200, Color.GRAY);
 					}
 				} else {
 					if (an.yPosition==3){
-						canvas.drawBox(95+100*an.curX, 100*yPosition, 10, 200, Color.BROWN);
+						canvas.drawBox(-5+150*an.curX, 100*yPosition, 10, 200, Color.GRAY);
 					} else {
-						canvas.drawBox(95+100*an.curX, 100*yPosition-100, 10, 200, Color.BROWN);
+						canvas.drawBox(-5+150*an.curX, 100*yPosition-100, 10, 200, Color.GRAY);
 					}
 				}
 				break;
 			case STRAIGHT:
 			case DIAGONAL:
-				canvas.drawBox(140+100*an.curX, 40+100*an.curY, 20, 20, Color.GRAY);
+				canvas.drawBox(65+150*an.curX, 40+100*an.curY, 20, 20, Color.GRAY);
 				break;
 			default:
 				break;
@@ -363,9 +382,10 @@ public class Character {
 	 * Draws health bar 
 	 */
 	private void drawHealth(GameCanvas canvas){
-		float canvasX = 100 + 100*xPosition;
-		float canvasY = 90 + 100*yPosition;
-		canvas.drawHealthBars(canvasX,canvasY,((float)health)/maxHealth);
+		float canvasX = 150*xPosition;
+		float canvasY = 270 + 100*yPosition;
+		canvas.drawBox(canvasX, canvasY, 150, 10, Color.WHITE);
+		canvas.drawBox(canvasX, canvasY, (int) (150.*health/maxHealth), 10, Color.GREEN);
 	}
 	
 	/**
@@ -373,17 +393,8 @@ public class Character {
 	 * @param canvas
 	 */
 	private void drawToken(GameCanvas canvas){
-		float canvasX = 100+600*castPosition;
-		float canvasY = leftside ? 720 : 680;
-		canvas.drawToken(canvasX,canvasY, color);
-	}
-	
-	/**
-	 * Draws red box over ship if currently selecting
-	 */
-	private void drawSelection(GameCanvas canvas){
-		float canvasX = 150 + 100*xPosition;
-		float canvasY = 100 + 100*yPosition;
-		canvas.drawSelection(canvasX,canvasY);
+		float canvasX = 35 + 800*castPosition;
+		float canvasY = leftside ? 720 : 670;
+		canvas.drawTexture(icon, canvasX, canvasY, Color.WHITE);
 	}
 }

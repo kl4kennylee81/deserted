@@ -18,14 +18,9 @@
 package edu.cornell.gdiac.ailab;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.*;
-
-import edu.cornell.gdiac.mesh.TexturedMesh;
 
 /**
  * Primary view class for the game, abstracting the basic graphics calls.
@@ -65,6 +60,9 @@ public class GameCanvas {
 	/** Cache object to unify everything under a master draw method */
 	private TextureRegion holder;
 	
+	/** Orthographic camera for the SpriteBatch layer */
+	private OrthographicCamera spriteCam;
+	
 	/**
 	 * Creates a new GameCanvas determined by the application configuration.
 	 * 
@@ -87,6 +85,9 @@ public class GameCanvas {
 		holder = new TextureRegion();
 		local  = new Affine2();
 		global = new Affine2();
+		spriteCam = new OrthographicCamera(getWidth(),getHeight());
+		spriteCam.setToOrtho(false);
+		spriteBatch.setProjectionMatrix(spriteCam.combined);
 	}
 	
 	/**
@@ -327,6 +328,8 @@ public class GameCanvas {
 	 public void resize() {
 		// Resizing screws up the spriteBatch projection matrix
 		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
+		spriteCam.setToOrtho(false,getWidth(),getHeight());
+		spriteBatch.setProjectionMatrix(spriteCam.combined);
 	}
 	
 	/**
@@ -769,18 +772,38 @@ public class GameCanvas {
 		spriteBatch.draw(white, x, y, 600*ratio, 20);
 	}
 	
-	public void drawTile(float x, float y, Texture mesh, int size, Color tint){
+	public void drawTile(float x, float y, Texture mesh, int width, int height, Color tint){
 		spriteBatch.setColor(tint);
-		spriteBatch.draw(mesh,x,y,size,size);
+		spriteBatch.draw(mesh,x,y,width,height);
 	}
 	
-	public void drawOption(float sx, float sy, Texture button,int x_size, int y_size, 
+	public void drawOption(float sx, float sy, Texture button,float x_size, float y_size, 
 			Color tint, String text){
 		spriteBatch.setColor(tint);
 		spriteBatch.draw(button,sx,sy,x_size,y_size);
 		displayFont.draw(spriteBatch, text, sx + x_size/2-65,sy + y_size/2+20);
-		//figure out how to resize
+		//make positions in Option just multipliers of canvas.getWidth and Height for now
+		//TODO: change resizing in the long run
 	}	
+	
+	
+	public void drawTexture(Texture texture, float x, float y, Color color){
+		spriteBatch.setColor(color);
+		spriteBatch.draw(texture, x, y);
+	}
+	
+	public void drawTexture(Texture texture, float x, float y, float width, float height, Color color){
+		spriteBatch.setColor(color);
+		spriteBatch.draw(texture, x, y, width, height);
+	}
+	
+	public void drawCharacter(Texture texture, float x, float y, Color color, boolean leftside){
+		spriteBatch.setColor(color);
+		int tWidth = texture.getWidth();
+		int tHeight = texture.getHeight();
+		spriteBatch.draw(texture, x, y, tWidth, tHeight, 0, 0, tWidth, tHeight, leftside, false);
+	}
+	
 	
 	/**
 	 * Draws a ship model to the screen.
@@ -803,16 +826,6 @@ public class GameCanvas {
 		spriteBatch.draw(white, x, y, 100,10);
 		spriteBatch.setColor(Color.GREEN);
 		spriteBatch.draw(white, x, y, 100*ratio,10);
-	}
-	
-	public void drawToken(float x, float y, Color color) {
-		spriteBatch.setColor(color);
-		spriteBatch.draw(white,x-10,y,20,20);
-	}
-	
-	public void drawSelection(float x, float y){
-		spriteBatch.setColor(Color.RED);
-		spriteBatch.draw(white, x-5, y, 10, 10);
 	}
 	
 	public void drawPointer(float x, float y, Color color){
@@ -866,3 +879,4 @@ public class GameCanvas {
 	}	
 }
 //TODO: make draw message take positions rather than hardcoding
+//TODO: in the long run use GlyphLabels to put text in 

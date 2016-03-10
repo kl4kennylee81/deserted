@@ -16,6 +16,9 @@ public class GridBoard {
 	float lerpVal = 0;
 	boolean increasing;
 	
+	int xwidth;
+	int yheight;
+	
 	/** Color of a regular tile */
 	private static final Color BASIC_COLOR1 = new Color(0.2f, 0.2f, 1.0f, 1.0f);
 	private static final Color BASIC_COLOR2 = new Color(1.0f, 0.6f, 0.2f, 1.0f);
@@ -58,6 +61,10 @@ public class GridBoard {
 				tiles[x][y] = new Tile();
 			}
 		}
+		
+		//change to 150 later
+		xwidth = 150;
+		yheight = 100;
 	}
 	
 	public void setTileTexture(Texture mesh) {
@@ -104,8 +111,8 @@ public class GridBoard {
 
 		// Compute drawing coordinates
 		
-		float sx = size*x+100;
-		float sy = size*y;
+		float sx = xwidth*x;
+		float sy = yheight*y;
 
 		// You can modify the following to change a tile's highlight color.
 		// BASIC_COLOR corresponds to no highlight.
@@ -132,7 +139,7 @@ public class GridBoard {
 		///////////////////////////////////////////////////////
 
 		// Draw
-		canvas.drawTile(sx,sy,tileMesh,size,color);
+		canvas.drawTile(sx, sy, tileMesh, xwidth, yheight,color);
 	}
 	
 	/**
@@ -155,6 +162,15 @@ public class GridBoard {
 	public void setCanTarget(int x, int y){
 		if (x>=0 && x<width && y>=0 && y<height){
 			tiles[x][y].canTarget = true;
+		}
+	}
+	
+	public void setCanTargetSide(boolean leftside){
+		int addX = leftside ? width/2 : 0;
+		for (int i = 0; i < width/2; i++){
+			for (int j = 0; j < height; j++){
+				tiles[i+addX][j].canTarget = true;
+			}
 		}
 	}
 	

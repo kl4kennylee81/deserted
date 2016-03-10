@@ -14,6 +14,8 @@
     - 5
     - 3
     - 6
+  texture: "models/CHARA_1.png"
+  icon: "models/CASTICON_1.png"
 
 - id: 1
   name: yellow
@@ -31,6 +33,8 @@
     - 5
     - 3
     - 6
+  texture: "models/CHARA_2.png"
+  icon: "models/CASTICON_2.png"
 
 - id: 2
   name: red
@@ -45,8 +49,11 @@
   availableActions: 
     - 0
     - 4
+    - 5
     - 3
     - 6
+  texture: "models/CHARA_3.png"
+  icon: "models/CASTICON_3.png"
 
 - id: 3
   name: brown
@@ -60,8 +67,11 @@
   leftSide: false
   availableActions: 
     - 0
+    - 4
     - 5
     - 3
     - 6
+  texture: "models/CHARA_5.png"
+  icon: "models/CASTICON_5.png"
 
 ...
