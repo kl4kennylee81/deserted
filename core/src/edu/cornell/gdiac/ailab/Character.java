@@ -300,12 +300,12 @@ public class Character {
 	
 	public void drawCharacter(GameCanvas canvas){
 		if (increasing){
-			lerpVal+=0.015;
-			if (lerpVal >= 0.6){
+			lerpVal+=0.01;
+			if (lerpVal >= 0.5){
 				increasing = false;
 			}
 		} else {
-			lerpVal -= 0.015;
+			lerpVal -= 0.01;
 			if (lerpVal <= 0){
 				increasing = true;
 			}
