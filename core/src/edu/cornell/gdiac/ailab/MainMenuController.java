@@ -13,7 +13,7 @@ public class MainMenuController {
 	/** Background image for the menu */
 	private static final String MENU_BCKGD_TEXTURE = "images/menubg.png";
 	/** File storing the texture for an option tile */
-	private static final String OPTION_TEXTURE = "models/Tile.png";
+	private static final String OPTION_TEXTURE = "models/Menu_Option.png";
 	private static final String WHITE_BOX = "images/white.png";
 	/** The message font to use */
 	private static final String FONT_FILE  = "fonts/Milonga-Regular.ttf";
@@ -28,12 +28,11 @@ public class MainMenuController {
 	}
 	
 	private Option[] makeDefaultOptions() {
-		Option [] default_options = new Option[1];
-		default_options[0] = new Option(canvas.getWidth()/2,50,270,110,"     EASY \n  Or Press 'E'",OPTION_TEXTURE,0);
-		System.out.println(canvas.getWidth()/2);
-//		default_options[1] = new Option(canvas.getWidth()/2-140,180,270,110,"   MEDIUM \n  Or Press 'M'",OPTION_TEXTURE,1);
-//		default_options[2] = new Option(canvas.getWidth()/2-140,310,270,110,"   HARD \n Or Press 'H'",OPTION_TEXTURE,2);
-//		default_options[3] = new Option(canvas.getWidth()/2-140,440,270,110,"       PvP \n  Or Press 'P'",OPTION_TEXTURE,3);
+		Option [] default_options = new Option[4];
+		default_options[0] = new Option(0.5f,0.7f,270,110,"     EASY \n  Or Press 'E'",OPTION_TEXTURE,0);
+		default_options[1] = new Option(0.5f,0.5f,270,110,"   MEDIUM \n  Or Press 'M'",OPTION_TEXTURE,1);
+		default_options[2] = new Option(0.5f,0.3f,270,110,"   HARD \n Or Press 'H'",OPTION_TEXTURE,2);
+		default_options[3] = new Option(0.5f,0.1f,270,110,"       PvP \n  Or Press 'P'",OPTION_TEXTURE,3);
 		return default_options;
 		//make a method that sizes and positions them according to the number of options
 		//resize isn't affecting this

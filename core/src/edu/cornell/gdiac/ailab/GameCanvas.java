@@ -777,12 +777,13 @@ public class GameCanvas {
 		spriteBatch.draw(mesh,x,y,width,height);
 	}
 	
-	public void drawOption(float sx, float sy, Texture button,int x_size, int y_size, 
+	public void drawOption(float sx, float sy, Texture button,float x_size, float y_size, 
 			Color tint, String text){
 		spriteBatch.setColor(tint);
 		spriteBatch.draw(button,sx,sy,x_size,y_size);
 		displayFont.draw(spriteBatch, text, sx + x_size/2-65,sy + y_size/2+20);
-		//figure out how to resize
+		//make positions in Option just multipliers of canvas.getWidth and Height for now
+		//TODO: change resizing in the long run
 	}	
 	
 	
