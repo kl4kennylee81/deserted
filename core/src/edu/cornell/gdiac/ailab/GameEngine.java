@@ -16,12 +16,12 @@
  */
 package edu.cornell.gdiac.ailab;
 
-import static com.badlogic.gdx.Gdx.gl20;
-import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
+//import static com.badlogic.gdx.Gdx.gl20;
+//import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -32,15 +32,15 @@ import java.util.List;
 import org.yaml.snakeyaml.Yaml;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.audio.*;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.Controllers;
+//import com.badlogic.gdx.Input.Keys;
+//import com.badlogic.gdx.audio.*;
+//import com.badlogic.gdx.controllers.Controller;
+//import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.VertexAttributes.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.*;
-import com.badlogic.gdx.maps.Map;
+//import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.assets.*;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.*;
@@ -49,10 +49,10 @@ import com.badlogic.gdx.utils.*;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.ailab.Action.Effect;
 import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.GameplayController.InGameState;
+//import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.mesh.*;
 import edu.cornell.gdiac.ailab.GameCanvas;
-import edu.cornell.gdiac.util.*;
+//import edu.cornell.gdiac.util.*;
 
 /**
  * Primary class for controlling the game.
@@ -83,17 +83,17 @@ public class GameEngine implements Screen {
 	
 	// ASSET LOADING INFORMATION
 	// Messages to display to the player
-	/** Message while assets are loading */
-	private static final String MESSG_LOAD = "Loading...";
-	/** Message before the game has started */
-	private static final String MESSG_BEFORE_1 = "Press any Key";
-	private static final String MESSG_BEFORE_2 = "To Begin";
-	/** Message when the player has lost */
-	private static final String MESSG_LOST = "Game Over";
-	/** Message when the player has won */
-	private static final String MESSG_WON = "You Won!";
-	/** Message telling the user how to restart */
-	private static final String MESSG_RESTART = "Press \"R\" to Restart";
+//	/** Message while assets are loading */
+//	private static final String MESSG_LOAD = "Loading...";
+//	/** Message before the game has started */
+//	private static final String MESSG_BEFORE_1 = "Press any Key";
+//	private static final String MESSG_BEFORE_2 = "To Begin";
+//	/** Message when the player has lost */
+//	private static final String MESSG_LOST = "Game Over";
+//	/** Message when the player has won */
+//	private static final String MESSG_WON = "You Won!";
+//	/** Message telling the user how to restart */
+//	private static final String MESSG_RESTART = "Press \"R\" to Restart";
 
 	/** Background image for the canvas */
 	private static final String BCKGD_TEXTURE = "images/bg.png";
@@ -145,8 +145,8 @@ public class GameEngine implements Screen {
 	private int centerY;
 	/** The x-coordinate of the center of the progress bar */
 	private int centerX;
-	/** The height of the canvas window (necessary since sprite origin != screen origin) */
-	private int heightY;
+//	/** The height of the canvas window (necessary since sprite origin != screen origin) */
+//	private int heightY;
 	/** Scaling factor for when the student changes the resolution. */
 	private float scale;
 
@@ -164,8 +164,8 @@ public class GameEngine implements Screen {
     /** Subcontroller for main menu (CONTROLLER CLASS) */
     private MainMenuController mainMenuController;
     
-	/** Default budget for asset loader (do nothing but load 60 fps) */
-	private static int DEFAULT_BUDGET = 15;
+//	/** Default budget for asset loader (do nothing but load 60 fps) */
+//	private static int DEFAULT_BUDGET = 15;
 	/** Standard window size (for scaling) */
 	private static int STANDARD_WIDTH  = 800;
 	/** Standard window height (for scaling) */
@@ -180,7 +180,7 @@ public class GameEngine implements Screen {
 	private static int PROGRESS_CAP    = 15;
 	/** Width of the middle portion in texture atlas */
 	private static int PROGRESS_MIDDLE = 200;
-	private static float BUTTON_SCALE  = 0.75f;
+//	private static float BUTTON_SCALE  = 0.75f;
     
     //Current Models
     private HashMap<Integer, Character> availableCharacters;
@@ -208,7 +208,7 @@ public class GameEngine implements Screen {
 		width = (int)(BAR_WIDTH_RATIO*canvas.getWidth());
 		centerY = (int)(BAR_HEIGHT_RATIO*canvas.getHeight());
 		centerX = canvas.getWidth()/2;
-		heightY = canvas.getHeight();
+//		heightY = canvas.getHeight();
 		float sx = ((float)canvas.getWidth())/STANDARD_WIDTH;
 		float sy = ((float)canvas.getHeight())/STANDARD_HEIGHT;
 		scale = (sx < sy ? sx : sy);

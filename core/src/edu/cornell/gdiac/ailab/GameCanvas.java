@@ -18,14 +18,9 @@
 package edu.cornell.gdiac.ailab;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.*;
-
-import edu.cornell.gdiac.mesh.TexturedMesh;
 
 /**
  * Primary view class for the game, abstracting the basic graphics calls.
@@ -65,6 +60,9 @@ public class GameCanvas {
 	/** Cache object to unify everything under a master draw method */
 	private TextureRegion holder;
 	
+	/** Orthographic camera for the SpriteBatch layer */
+	private OrthographicCamera spriteCam;
+	
 	/**
 	 * Creates a new GameCanvas determined by the application configuration.
 	 * 
@@ -87,6 +85,9 @@ public class GameCanvas {
 		holder = new TextureRegion();
 		local  = new Affine2();
 		global = new Affine2();
+		spriteCam = new OrthographicCamera(getWidth(),getHeight());
+		spriteCam.setToOrtho(false);
+		spriteBatch.setProjectionMatrix(spriteCam.combined);
 	}
 	
 	/**
@@ -327,6 +328,8 @@ public class GameCanvas {
 	 public void resize() {
 		// Resizing screws up the spriteBatch projection matrix
 		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
+		spriteCam.setToOrtho(false,getWidth(),getHeight());
+		spriteBatch.setProjectionMatrix(spriteCam.combined);
 	}
 	
 	/**
@@ -866,3 +869,4 @@ public class GameCanvas {
 	}	
 }
 //TODO: make draw message take positions rather than hardcoding
+//TODO: in the long run use GlyphLabels to put text in 

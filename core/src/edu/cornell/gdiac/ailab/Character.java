@@ -2,7 +2,7 @@ package edu.cornell.gdiac.ailab;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
+//import java.util.Random;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
