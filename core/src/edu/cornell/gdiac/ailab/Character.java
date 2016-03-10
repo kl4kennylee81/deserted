@@ -293,7 +293,7 @@ public class Character {
 	
 	/** temporary while menu is blocked by characters */
 	public void drawSelection(GameCanvas canvas){
-		if (isSelecting){
+		if (isSelecting && isAlive()){
 			selectionMenu.draw(canvas);
 		}
 	}
