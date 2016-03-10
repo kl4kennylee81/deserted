@@ -113,16 +113,20 @@ public class GameplayController {
         textMessages.draw(canvas);
     }
     
+    
+    //Change how i do this.
+    //This needs to be done so characters below show over characters above and selection menu
+    //shows over characters.
     private void drawCharacters(GameCanvas canvas){
     	for (Character c : characters){
         	c.draw(canvas);
         }
     	for (int i = board.height-1; i >= 0; i--){
     		for (Character c : characters){
-    			if (c.yPosition == i){
+    			if (c.yPosition == i && c.isAlive()){
     				c.drawCharacter(canvas);
     			}
-    			if (c.shadowY == i && c.needShadow()){
+    			if (c.shadowY == i && c.needShadow() && c.isAlive()){
     				c.drawShadowCharacter(canvas);
     			}
             }

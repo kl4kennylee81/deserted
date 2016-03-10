@@ -83,7 +83,7 @@ public class SelectionMenuController {
 					SelectionMenu menu = c.getSelectionMenu();
 					menu.reset();
 					c.needsSelection = false;
-					c.isSelecting = true;
+					c.setSelecting(true);
 					setNeedsShadow();
 					break;
 				}

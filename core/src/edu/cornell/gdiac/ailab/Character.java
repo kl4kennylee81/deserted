@@ -76,6 +76,10 @@ public class Character {
 	/** List of coordinates blocked by my shield */
 	List<Coordinate> shieldedCoordinates;
 	
+	/** For highlighting character */
+	float lerpVal = 0;
+	boolean increasing;
+	
 	/**Constructor used by GameEngine to create characters from yaml input. */
 	public Character (Texture texture, Texture icon, String name, int health, int maxHealth, Color color, 
 						float speed, float castSpeed, int xPosition, int yPosition,
@@ -154,6 +158,8 @@ public class Character {
 	
 	public void setSelecting(boolean isSelecting) {
 		this.isSelecting = isSelecting;
+		lerpVal = 0;
+		increasing = true;
 	}
 	
 	public void setQueuedActions(List<ActionNode> actions){
@@ -287,18 +293,29 @@ public class Character {
 	
 	/** temporary while menu is blocked by characters */
 	public void drawSelection(GameCanvas canvas){
-		if (isSelecting){
+		if (isSelecting && isAlive()){
 			selectionMenu.draw(canvas);
 		}
 	}
 	
 	public void drawCharacter(GameCanvas canvas){
+		if (increasing){
+			lerpVal+=0.01;
+			if (lerpVal >= 0.5){
+				increasing = false;
+			}
+		} else {
+			lerpVal -= 0.01;
+			if (lerpVal <= 0){
+				increasing = true;
+			}
+		}
 		float canvasX = 150*xPosition;
 		float canvasY = 100*yPosition;
 		
 		/** maybe highlight character? */
-		//Color col = isSelecting ? Color.WHITE.cpy().lerp(Color.BLUE, 0.5f) : Color.WHITE;
-		canvas.drawCharacter(texture, canvasX, canvasY, Color.WHITE, leftside);
+		Color col = isSelecting ? Color.WHITE.cpy().lerp(Color.GREEN, lerpVal) : Color.WHITE;
+		canvas.drawCharacter(texture, canvasX, canvasY, col, leftside);
 	}
 	
 	/**
