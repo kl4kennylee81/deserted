@@ -107,6 +107,7 @@ public class ActionController {
 				executeMovement(a_node);
 				break;
 			case STRAIGHT:
+				System.out.println("straignt");
 				executeStraight(a_node);
 				break;
 			case DIAGONAL:
@@ -214,7 +215,7 @@ public class ActionController {
 		return path;
 	}
 	
-	private void updateShieldedPath(){
+	protected void updateShieldedPath(){
 		shieldedPaths.clear();
 		for (Character c : characters){
 			if (c.leftside != selected.leftside && c.hasShield()) {
@@ -223,9 +224,9 @@ public class ActionController {
 		}
 	}
 	
-	private boolean isBlocked(Coordinate coord){
+	protected boolean isBlocked(int coordX, int coordY){
 		for (Coordinate c : shieldedPaths){
-			if (c.x==coord.x && c.y==coord.y){
+			if (c.x==coordX && c.y==coordY){
 				return true;
 			}
 		}
@@ -243,6 +244,7 @@ public class ActionController {
 	}
 	
 	private void executeStraight(ActionNode a_node){
+		System.out.println("execute straight");
 		Coordinate[] path = straightHitPath(a_node);
 		// execute the hit interrupt and do damage to closest enemy
 		processHitPath(a_node,path);
@@ -257,7 +259,7 @@ public class ActionController {
 	private void processHitPath(ActionNode a_node, Coordinate[] path){
 		boolean hasHit = false;
 		for (int i=0;i<path.length;i++){
-			if (isBlocked(path[i])){
+			if (isBlocked(path[i].x, path[i].y)){
 				break;
 			}
 			for (Character c:characters){
@@ -286,7 +288,7 @@ public class ActionController {
 		}
 	}
 	
-	private void processHit(ActionNode a_node,Character target){
+	protected void processHit(ActionNode a_node,Character target){
 		applyDamage(a_node,target);
 		
 		//add text bubble for amount of damage in front of target
@@ -303,7 +305,7 @@ public class ActionController {
 		}
 	}
 	
-	private void applyDamage(ActionNode a_node,Character target){
+	protected void applyDamage(ActionNode a_node,Character target){
 		target.health = Math.max(target.health-a_node.action.damage, 0);
 	}
 	
