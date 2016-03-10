@@ -66,14 +66,14 @@ public class TextMessage {
 
 	public void draw(GameCanvas canvas){
 		for (Message m : damageMessages){
-			canvas.drawCenteredText(m.text, 150+100*m.xPos, 120+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
+			canvas.drawCenteredText(m.text, 75+150*m.xPos, 300+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 2f);
 		}
 		for (Message m : otherMessages){
-			canvas.drawCenteredText(m.text, 150+100*m.xPos, 135+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
+			canvas.drawCenteredText(m.text, 75+150*m.xPos, 320+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
 		}
 		for (Message m : tempSingles){
 			
-			float xPos = 105+100*m.xPos;
+			float xPos = 5+150*m.xPos;
 			float yPos = 5+m.yPos*100;
 			float ratio = m.getRatio();
 			if (ratio < 0.25 || (ratio > 0.5 && ratio < 0.75)){
@@ -82,9 +82,11 @@ public class TextMessage {
 						canvas.drawBox(xPos, yPos+i*20, 10, 10, Color.RED);
 						canvas.drawBox(xPos+40, yPos+i*20, 10, 10, Color.RED);
 						canvas.drawBox(xPos+80, yPos+i*20, 10, 10, Color.RED);
+						canvas.drawBox(xPos+120, yPos+i*20, 10, 10, Color.RED);
 					} else {
 						canvas.drawBox(xPos+20, yPos+i*20, 10, 10, Color.RED);
 						canvas.drawBox(xPos+60, yPos+i*20, 10, 10, Color.RED);
+						canvas.drawBox(xPos+100, yPos+i*20, 10, 10, Color.RED);
 					}
 				}
 			} else {
@@ -92,10 +94,12 @@ public class TextMessage {
 					if (i%2==1){
 						canvas.drawBox(xPos+20, yPos+i*20, 10, 10, Color.RED);
 						canvas.drawBox(xPos+60, yPos+i*20, 10, 10, Color.RED);
+						canvas.drawBox(xPos+100, yPos+i*20, 10, 10, Color.RED);
 					} else {
 						canvas.drawBox(xPos, yPos+i*20, 10, 10, Color.RED);
 						canvas.drawBox(xPos+40, yPos+i*20, 10, 10, Color.RED);
 						canvas.drawBox(xPos+80, yPos+i*20, 10, 10, Color.RED);
+						canvas.drawBox(xPos+120, yPos+i*20, 10, 10, Color.RED);
 					}
 				}
 			}
