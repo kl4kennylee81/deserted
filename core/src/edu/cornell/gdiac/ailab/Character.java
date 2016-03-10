@@ -169,6 +169,18 @@ public class Character {
 		this.queuedActions = (LinkedList<ActionNode>) actions;
 	}
 	
+	/** 
+	 * prompts the players selection screen to pop up next frame
+	 * resets any variables used in the last round selection screen
+	 * this is for when a unit tries to move into another units square
+	 * we have this flag which stops all future movements (temporary)	
+	 * when he starts his next round this flag is switched to false.
+	 */
+	public void needsSelection(){
+		this.needsSelection = true;
+		this.isBlocked = false;
+	}
+	
 	/**
 	 * Make an AI with the given difficulty
 	 */
