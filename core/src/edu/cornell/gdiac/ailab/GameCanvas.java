@@ -824,11 +824,6 @@ public class GameCanvas {
 		spriteBatch.draw(white, x, y, 100*ratio,10);
 	}
 	
-	public void drawToken(float x, float y, Color color) {
-		spriteBatch.setColor(color);
-		spriteBatch.draw(white,x-10,y,20,20);
-	}
-	
 	public void drawPointer(float x, float y, Color color){
 		spriteBatch.setColor(color);
 		spriteBatch.draw(white,x,y,10,10);

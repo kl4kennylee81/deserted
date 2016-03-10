@@ -30,6 +30,7 @@ public class Character {
 	float castPosition;
 	Color color;
 	Texture texture;
+	Texture icon;
 	SelectionMenu selectionMenu;
 	boolean leftside;
 	
@@ -76,10 +77,11 @@ public class Character {
 	List<Coordinate> shieldedCoordinates;
 	
 	/**Constructor used by GameEngine to create characters from yaml input. */
-	public Character (Texture texture, String name, int health, int maxHealth, Color color, 
+	public Character (Texture texture, Texture icon, String name, int health, int maxHealth, Color color, 
 						float speed, float castSpeed, int xPosition, int yPosition,
 						boolean leftSide, Action[] actions){
 		this.texture = texture;
+		this.icon = icon;
 		this.name = name;
 		this.health = health;
 		this.maxHealth = maxHealth;
@@ -374,8 +376,8 @@ public class Character {
 	 * @param canvas
 	 */
 	private void drawToken(GameCanvas canvas){
-		float canvasX = 50+800*castPosition;
-		float canvasY = leftside ? 720 : 680;
-		canvas.drawToken(canvasX,canvasY, color);
+		float canvasX = 35 + 800*castPosition;
+		float canvasY = leftside ? 720 : 670;
+		canvas.drawTexture(icon, canvasX, canvasY, Color.WHITE);
 	}
 }

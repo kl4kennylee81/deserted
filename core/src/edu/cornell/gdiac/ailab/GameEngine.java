@@ -135,6 +135,17 @@ public class GameEngine implements Screen {
 	/** File storing the enemy texture for a ship */
 	private static final String CHAR_5_TEXTURE = "models/CHARA_5.png";
 	
+	/** File storing the enemy texture for a ship */
+	private static final String ICON_1_TEXTURE = "models/CASTICON_1.png";
+	/** File storing the player texture for a ship */
+	private static final String ICON_2_TEXTURE = "models/CASTICON_2.png";
+	/** File storing the enemy texture for a ship */
+	private static final String ICON_3_TEXTURE = "models/CASTICON_3.png";
+	/** File storing the player texture for a ship */
+	private static final String ICON_4_TEXTURE = "models/CASTICON_4.png";
+	/** File storing the enemy texture for a ship */
+	private static final String ICON_5_TEXTURE = "models/CASTICON_5.png";
+	
 	private static final String WHITE_BOX = "images/white.png";
 	/** The message font to use */
 	private static final String MENU_FONT_FILE  = "fonts/Milonga-Regular.ttf";
@@ -498,10 +509,12 @@ public class GameEngine implements Screen {
 					actionArray[i] = availableActions.get(actionId);
 					i++;
 				}
-				String textureName = (String) character.get("texture");
+				String charTextureName = (String) character.get("texture");
+				String iconTextureName = (String) character.get("icon");
 				
-				Texture enemyTexture = manager.get(textureName,Texture.class);
-				Character characterToAdd = new Character(enemyTexture, name, 
+				Texture charTexture = manager.get(charTextureName,Texture.class);
+				Texture iconTexture = manager.get(iconTextureName,Texture.class);
+				Character characterToAdd = new Character(charTexture, iconTexture, name, 
 						health, maxHealth, Color.valueOf(hexColor), speed, 
 						castSpeed, xPosition, yPosition, leftSide, actionArray); 
 									
@@ -567,6 +580,17 @@ public class GameEngine implements Screen {
 		assets.add(CHAR_4_TEXTURE);
 		manager.load(CHAR_5_TEXTURE,Texture.class);
 		assets.add(CHAR_5_TEXTURE);
+		
+		manager.load(ICON_1_TEXTURE,Texture.class);
+		assets.add(ICON_1_TEXTURE);
+		manager.load(ICON_2_TEXTURE,Texture.class);
+		assets.add(ICON_2_TEXTURE);
+		manager.load(ICON_3_TEXTURE,Texture.class);
+		assets.add(ICON_3_TEXTURE);
+		manager.load(ICON_4_TEXTURE,Texture.class);
+		assets.add(ICON_4_TEXTURE);
+		manager.load(ICON_5_TEXTURE,Texture.class);
+		assets.add(ICON_5_TEXTURE);
 		
 		manager.load(WHITE_BOX,Texture.class);
 		assets.add(WHITE_BOX);
