@@ -108,11 +108,28 @@ public class GameplayController {
     
     public void drawPlay(GameCanvas canvas){
     	board.draw(canvas);
-        for (Character c : characters){
-        	c.draw(canvas);
-        }
+        drawCharacters(canvas);
         bar.draw(canvas);
         textMessages.draw(canvas);
+    }
+    
+    private void drawCharacters(GameCanvas canvas){
+    	for (Character c : characters){
+        	c.draw(canvas);
+        }
+    	for (int i = board.height-1; i >= 0; i--){
+    		for (Character c : characters){
+    			if (c.yPosition == i){
+    				c.drawCharacter(canvas);
+    			}
+    			if (c.shadowY == i && c.needShadow()){
+    				c.drawShadowCharacter(canvas);
+    			}
+            }
+    	}
+        for (Character c : characters){
+        	c.drawSelection(canvas);
+        }
     }
     
     public void drawAfter(GameCanvas canvas){

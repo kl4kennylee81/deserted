@@ -14,6 +14,7 @@
     - 5
     - 3
     - 6
+  texture: "models/CHARA_1.png"
 
 - id: 1
   name: yellow
@@ -31,6 +32,7 @@
     - 5
     - 3
     - 6
+  texture: "models/CHARA_2.png"
 
 - id: 2
   name: red
@@ -45,8 +47,10 @@
   availableActions: 
     - 0
     - 4
+    - 5
     - 3
     - 6
+  texture: "models/CHARA_3.png"
 
 - id: 3
   name: brown
@@ -60,8 +64,10 @@
   leftSide: false
   availableActions: 
     - 0
+    - 4
     - 5
     - 3
     - 6
+  texture: "models/CHARA_4.png"
 
 ...

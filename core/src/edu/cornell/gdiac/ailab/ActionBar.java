@@ -10,9 +10,10 @@ public class ActionBar {
 	}
 	
 	public void draw(GameCanvas canvas){
-		canvas.drawActionBar(100,700,castPoint);
-		for (int i = 0; i < 3; i++){
-			canvas.drawBox(563 + i*45, 700, 4, 20, Color.BLACK);
+		canvas.drawBox(50, 700, 800, 20, Color.RED);
+		canvas.drawBox(50, 700, 800*castPoint, 20, Color.GREEN);
+		for (int i = 0; i < 4; i++){
+			canvas.drawBox(668 + i*60, 700, 4, 20, Color.BLACK);
 		}
 	}
 }

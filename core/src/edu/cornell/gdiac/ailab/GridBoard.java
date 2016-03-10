@@ -62,6 +62,7 @@ public class GridBoard {
 			}
 		}
 		
+		//change to 150 later
 		xwidth = 150;
 		yheight = 100;
 	}
@@ -138,7 +139,7 @@ public class GridBoard {
 		///////////////////////////////////////////////////////
 
 		// Draw
-		canvas.drawTile(sx,sy,tileMesh,size,color);
+		canvas.drawTile(sx, sy, tileMesh, xwidth, yheight,color);
 	}
 	
 	/**
@@ -161,6 +162,15 @@ public class GridBoard {
 	public void setCanTarget(int x, int y){
 		if (x>=0 && x<width && y>=0 && y<height){
 			tiles[x][y].canTarget = true;
+		}
+	}
+	
+	public void setCanTargetSide(boolean leftside){
+		int addX = leftside ? width/2 : 0;
+		for (int i = 0; i < width/2; i++){
+			for (int j = 0; j < height; j++){
+				tiles[i+addX][j].canTarget = true;
+			}
 		}
 	}
 	

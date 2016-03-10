@@ -769,12 +769,8 @@ public class GameCanvas {
 		spriteBatch.draw(white, x, y, 600*ratio, 20);
 	}
 	
-	public void drawTile(float x, float y, Texture mesh, int size, Color tint){
+	public void drawTile(float x, float y, Texture mesh, int width, int height, Color tint){
 		spriteBatch.setColor(tint);
-		spriteBatch.draw(mesh,x,y,size,size);
-	}
-	
-	public void drawTile2(float x, float y, Texture mesh, int widht, int height){
 		spriteBatch.draw(mesh,x,y,width,height);
 	}
 	
@@ -785,6 +781,25 @@ public class GameCanvas {
 		displayFont.draw(spriteBatch, text, sx + x_size/2-65,sy + y_size/2+20);
 		//figure out how to resize
 	}	
+	
+	
+	public void drawTexture(Texture texture, float x, float y, Color color){
+		spriteBatch.setColor(color);
+		spriteBatch.draw(texture, x, y);
+	}
+	
+	public void drawTexture(Texture texture, float x, float y, float width, float height, Color color){
+		spriteBatch.setColor(color);
+		spriteBatch.draw(texture, x, y, width, height);
+	}
+	
+	public void drawCharacter(Texture texture, float x, float y, Color color, boolean leftside){
+		spriteBatch.setColor(color);
+		int tWidth = texture.getWidth();
+		int tHeight = texture.getHeight();
+		spriteBatch.draw(texture, x, y, tWidth, tHeight, 0, 0, tWidth, tHeight, leftside, false);
+	}
+	
 	
 	/**
 	 * Draws a ship model to the screen.
@@ -812,11 +827,6 @@ public class GameCanvas {
 	public void drawToken(float x, float y, Color color) {
 		spriteBatch.setColor(color);
 		spriteBatch.draw(white,x-10,y,20,20);
-	}
-	
-	public void drawSelection(float x, float y){
-		spriteBatch.setColor(Color.RED);
-		spriteBatch.draw(white, x-5, y, 10, 10);
 	}
 	
 	public void drawPointer(float x, float y, Color color){

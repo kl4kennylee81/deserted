@@ -125,9 +125,15 @@ public class GameEngine implements Screen {
 	public static final String TILE_TEXTURE = "models/Tile.png";
 
 	/** File storing the enemy texture for a ship */
-	private static final String PLAYER_TEXTURE  = "models/Ship.png";
+	private static final String CHAR_1_TEXTURE = "models/CHARA_1.png";
 	/** File storing the player texture for a ship */
-	private static final String ENEMY_TEXTURE = "models/ShipPlayer.png";
+	private static final String CHAR_2_TEXTURE = "models/CHARA_2.png";
+	/** File storing the enemy texture for a ship */
+	private static final String CHAR_3_TEXTURE = "models/CHARA_3.png";
+	/** File storing the player texture for a ship */
+	private static final String CHAR_4_TEXTURE = "models/CHARA_4.png";
+	/** File storing the enemy texture for a ship */
+	private static final String CHAR_5_TEXTURE = "models/CHARA_5.png";
 	
 	private static final String WHITE_BOX = "images/white.png";
 	/** The message font to use */
@@ -492,8 +498,9 @@ public class GameEngine implements Screen {
 					actionArray[i] = availableActions.get(actionId);
 					i++;
 				}
+				String textureName = (String) character.get("texture");
 				
-				Texture enemyTexture = manager.get(ENEMY_TEXTURE,Texture.class);
+				Texture enemyTexture = manager.get(textureName,Texture.class);
 				Character characterToAdd = new Character(enemyTexture, name, 
 						health, maxHealth, Color.valueOf(hexColor), speed, 
 						castSpeed, xPosition, yPosition, leftSide, actionArray); 
@@ -550,10 +557,16 @@ public class GameEngine implements Screen {
 		manager.load(TILE_TEXTURE,Texture.class);
 		assets.add(TILE_TEXTURE);
 		
-		manager.load(ENEMY_TEXTURE,Texture.class);
-		assets.add(ENEMY_TEXTURE);
-		manager.load(PLAYER_TEXTURE,Texture.class);
-		assets.add(PLAYER_TEXTURE);
+		manager.load(CHAR_1_TEXTURE,Texture.class);
+		assets.add(CHAR_1_TEXTURE);
+		manager.load(CHAR_2_TEXTURE,Texture.class);
+		assets.add(CHAR_2_TEXTURE);
+		manager.load(CHAR_3_TEXTURE,Texture.class);
+		assets.add(CHAR_3_TEXTURE);
+		manager.load(CHAR_4_TEXTURE,Texture.class);
+		assets.add(CHAR_4_TEXTURE);
+		manager.load(CHAR_5_TEXTURE,Texture.class);
+		assets.add(CHAR_5_TEXTURE);
 		
 		manager.load(WHITE_BOX,Texture.class);
 		assets.add(WHITE_BOX);
