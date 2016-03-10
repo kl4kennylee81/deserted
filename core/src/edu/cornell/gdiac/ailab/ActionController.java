@@ -22,6 +22,7 @@ import java.util.List;
 //import com.badlogic.gdx.math.*;
 
 import edu.cornell.gdiac.ailab.Character;
+import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 
 import com.badlogic.gdx.graphics.*;
@@ -297,6 +298,7 @@ public class ActionController {
 	
 	protected void processHit(ActionNode a_node,Character target){
 		applyDamage(a_node,target);
+		applyEffect(a_node,target);
 		
 		//add text bubble for amount of damage in front of target
 		String attack_damage = Integer.toString(a_node.action.damage);
@@ -314,6 +316,13 @@ public class ActionController {
 	
 	protected void applyDamage(ActionNode a_node,Character target){
 		target.health = Math.max(target.health-a_node.action.damage, 0);
+	}
+	
+	protected void applyEffect(ActionNode a_node, Character target){
+		if(a_node.action.effect.type == Type.REGULAR){
+			return;
+		}
+		target.addEffect(a_node.action.effect.clone());
 	}
 	
 	// make isDone true when every character who needs to attack has attacked

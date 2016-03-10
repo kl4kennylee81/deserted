@@ -2,8 +2,8 @@ package edu.cornell.gdiac.ailab;
 
 import java.util.List;
 
-import edu.cornell.gdiac.ailab.Action.Effect;
 import edu.cornell.gdiac.ailab.Action.Pattern;
+import edu.cornell.gdiac.ailab.Effect.Type;
 
 public class SelectionMenuController {
 	/** Models */
@@ -58,7 +58,7 @@ public class SelectionMenuController {
 		
 		boardWidth = board.width;
 		boardHeight = board.height;
-		nop = new Action("NOP", 1, 0, 0, Pattern.NOP, Effect.REGULAR, "no action");
+		nop = new Action("NOP", 1, 0, 0, Pattern.NOP, new Effect(0, Type.REGULAR, 0), "no action");
 	}
 	
 	public void update(){

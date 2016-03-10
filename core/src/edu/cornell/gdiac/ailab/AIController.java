@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import edu.cornell.gdiac.ailab.Action.Effect;
 import edu.cornell.gdiac.ailab.Action.Pattern;
+import edu.cornell.gdiac.ailab.Effect.Type;
 
 public class AIController {
 	public static enum Difficulty {
@@ -35,7 +35,7 @@ public class AIController {
 		this.board = board;
 		this.chars = chars;
 		this.bar = bar;
-		nop = new Action("NOP", 1, 0, 0, Pattern.NOP, Effect.REGULAR, "no action");
+		nop = new Action("NOP", 1, 0, 0, Pattern.NOP, new Effect(0, Type.REGULAR, 0), "no action");
 	}
 	
 	public void update(){

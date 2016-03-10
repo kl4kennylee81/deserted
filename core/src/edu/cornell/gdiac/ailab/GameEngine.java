@@ -46,8 +46,8 @@ import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.*;
 import com.badlogic.gdx.utils.*;
 
+import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
-import edu.cornell.gdiac.ailab.Action.Effect;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 //import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.mesh.*;
@@ -468,21 +468,25 @@ public class GameEngine implements Screen {
 				Integer damage = (Integer) action.get("damage");
 				Integer range = (Integer) action.get("range");
 				String pattern = (String) action.get("pattern");
-				String effect = (String) action.get("effect");
 				String description = (String) action.get("description");
 				HashMap<String,Object> persisting = 
 							(HashMap<String, Object>) action.get("persisting_action"); 
+				HashMap<String, Object> effect = 
+						(HashMap<String, Object>) action.get("effect");
+				String eff = (String) effect.get("type");
+				Integer duration = (Integer) effect.get("duration");
+				Float magnitude = ((Double) effect.get("magnitude")).floatValue();
 				
 				Action actionToAdd;
 				if (persisting != null){
 					Integer castLength = (Integer) persisting.get("castLength");
 					Float moveSpeed = (Float) ((Double) persisting.get("moveSpeed")).floatValue();
-					actionToAdd = new PersistingAction(name, cost, damage, range,
-							Pattern.valueOf(pattern), Effect.valueOf(effect), description, 
-							castLength, moveSpeed);
+					actionToAdd = new PersistingAction(name, cost, damage, range, 
+							Pattern.valueOf(pattern), new Effect(duration, Type.valueOf(eff), magnitude), 
+							description, castLength, moveSpeed);
 				}else{
 					actionToAdd = new Action(name, cost, damage, range, Pattern.valueOf(pattern),
-							Effect.valueOf(effect), description);
+							new Effect(duration, Type.valueOf(eff), magnitude), description);
 				}
 				
 				

@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 //import java.util.Random;
@@ -44,6 +45,8 @@ public class Character {
 	boolean isSelecting;
 	/** Do I have a persisting action currently in play */
 	boolean isPersisting;
+	/** Am I currently being affected by an effect? */
+	boolean isAffected;
 	
 	//TODO: Change to pass this in from GameEngine
 	/** Starting x and y positions */
@@ -75,6 +78,7 @@ public class Character {
 	/** Lists of queued and persisting actions */
 	LinkedList<ActionNode> queuedActions;
 	LinkedList<ActionNode> persistingActions;
+	ArrayList<Effect> effects;
 	
 	/** List of coordinates blocked by my shield */
 	List<Coordinate> shieldedCoordinates;
@@ -108,6 +112,7 @@ public class Character {
 		castPosition = 0;
 		queuedActions = new LinkedList<ActionNode>();
 		persistingActions = new LinkedList<ActionNode>();
+		effects = new ArrayList<Effect>();
 		shieldedCoordinates = new LinkedList<Coordinate>();
 		
 		oldShadowX = new LinkedList<Integer>();
@@ -229,6 +234,18 @@ public class Character {
 				shieldedCoordinates.add(new Coordinate(tempX, an.yPosition == 0 ? tempY-1 : tempY+1));
 			}
 		}
+	}
+	
+	void addEffect(Effect e){
+		effects.add(e);
+	}
+	
+	ArrayList<Effect> getEffects(){
+		return effects;
+	}
+	
+	void removeEffect(int i){
+		effects.remove(i);
 	}
 	
 	/**
