@@ -130,7 +130,7 @@ public class GameplayController {
     			if (c.yPosition == i && c.isAlive()){
     				c.drawCharacter(canvas);
     			}
-    			if (c.shadowY == i && c.needShadow() && c.isAlive()){
+    			if (c.getShadowY() == i && c.needShadow() && c.isAlive()){
     				c.drawShadowCharacter(canvas);
     			}
             }

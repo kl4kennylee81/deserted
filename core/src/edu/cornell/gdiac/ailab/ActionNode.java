@@ -5,8 +5,7 @@ public class ActionNode {
 	float executePoint;
 	boolean isInterrupted;
 	
-	//TODO: enums? so that we can distinguish UP DOWN LEFT RIGHT for moves
-	//target tile
+	//target tile for single attacks
 	int xPosition;
 	int yPosition;
 	
@@ -15,12 +14,33 @@ public class ActionNode {
 	float curX;
 	float curY;
 	
+	//direction for move, diagonal, shield
+	Direction direction;
+	
+	public static enum Direction {
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT,
+		NONE
+	}
+	
+	//Get rid of this and use the bottom constructor.
 	public ActionNode(Action action, float executePoint, int xPos, int yPos){
 		this.action = action;
 		this.executePoint = executePoint;
 		this.xPosition = xPos;
 		this.yPosition = yPos;
 		this.isInterrupted = false;
+	}
+	
+	public ActionNode(Action action, float executePoint, int xPos, int yPos, Direction direction){
+		this.action = action;
+		this.executePoint = executePoint;
+		this.xPosition = xPos;
+		this.yPosition = yPos;
+		this.isInterrupted = false;
+		this.direction = direction;
 	}
 	
 	public void setPersisting(int castPoint, int curX, int curY){

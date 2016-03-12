@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
+import edu.cornell.gdiac.ailab.ActionNode.Direction;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 
 public class Character {
@@ -53,20 +54,8 @@ public class Character {
 	int startingXPosition;
 	int startingYPosition;
 	
-	/** Position of shadow for depicting future move path */
-	int shadowX;
-	int shadowY;
-	
 	/** movement is block afterwards if bump into */
 	boolean isBlocked;
-	
-	//TODO: Use Coordinates
-	/** 
-	 * List of path, in the front is current position and at the end
-	 * is shadowX and shadowY
-	 */
-	LinkedList<Integer> oldShadowX;
-	LinkedList<Integer> oldShadowY;
 	
 	/** AI info */
 	boolean isAI;
@@ -115,10 +104,6 @@ public class Character {
 		effects = new ArrayList<Effect>();
 		shieldedCoordinates = new LinkedList<Coordinate>();
 		
-		oldShadowX = new LinkedList<Integer>();
-		oldShadowY = new LinkedList<Integer>();
-		setShadow(xPosition,yPosition);
-		
 		this.availableActions = actions;
 		selectionMenu = new SelectionMenu(availableActions);
 	}
@@ -139,10 +124,6 @@ public class Character {
 		queuedActions.clear();
 		persistingActions.clear();
 		shieldedCoordinates.clear();
-		
-		oldShadowX.clear();
-		oldShadowY.clear();
-		setShadow(this.xPosition,this.yPosition);
 		
 		selectionMenu.reset();
 		
@@ -205,12 +186,13 @@ public class Character {
 	 * Check if character needs to display shadow
 	 */
 	boolean needShadow() {
-		return (oldShadowX.size()>1) && needsShadow;
-	}
-	
-	public void popLastShadow(){
-		oldShadowX.pollLast();
-		oldShadowY.pollLast();
+		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
+		for (ActionNode an : actions){
+			if (an.action.pattern == Pattern.MOVE){
+				return needsShadow;
+			}
+		}
+		return false;
 	}
 	
 	boolean hasAttacks() {
@@ -231,7 +213,7 @@ public class Character {
 				int tempX = an.getCurrentX();
 				int tempY = an.getCurrentY();
 				shieldedCoordinates.add(new Coordinate(tempX,tempY));
-				shieldedCoordinates.add(new Coordinate(tempX, an.yPosition == 0 ? tempY-1 : tempY+1));
+				shieldedCoordinates.add(new Coordinate(tempX, an.direction == Direction.DOWN ? tempY-1 : tempY+1));
 			}
 		}
 	}
@@ -298,23 +280,34 @@ public class Character {
 		return queuedActions.poll();
 	}
 	
-	public void resetShadow(){
-		oldShadowX.clear();
-		oldShadowY.clear();
+	public int getShadowX(){
+		int shadX = xPosition;
+		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
+		for (ActionNode an : actions){
+			if (an.action.pattern == Pattern.MOVE){
+				if (an.direction == Direction.LEFT){
+					shadX--;
+				} else if (an.direction == Direction.RIGHT){
+					shadX++;
+				}
+			}
+		}
+		return shadX;
 	}
 	
-	public void setShadow(int shadX, int shadY){
-		shadowX = shadX;
-		shadowY = shadY;
-		oldShadowX.push(shadX);
-		oldShadowY.push(shadY);
-	}
-	
-	public void rewindShadow(){
-		oldShadowX.pop();
-		oldShadowY.pop();
-		shadowX = oldShadowX.peek();
-		shadowY = oldShadowY.peek();
+	public int getShadowY(){
+		int shadY = yPosition;
+		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
+		for (ActionNode an : actions){
+			if (an.action.pattern == Pattern.MOVE){
+				if (an.direction == Direction.UP){
+					shadY++;
+				} else if (an.direction == Direction.DOWN){
+					shadY--;
+				}
+			}
+		}
+		return shadY;
 	}
 	
 	public void draw(GameCanvas canvas){
@@ -359,16 +352,31 @@ public class Character {
 	 * Draws future position of ship with lines depicting path
 	 */
 	public void drawShadowCharacter(GameCanvas canvas){
-		float canvasX = 150*shadowX;
-		float canvasY = 100*shadowY;
+		float canvasX = 150*getShadowX();
+		float canvasY = 100*getShadowY();
 		canvas.drawCharacter(texture, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside);
-		int tempX = shadowX;
-		int tempY = shadowY;
-		int nowX;
-		int nowY;
-		for (int i = 1; i < oldShadowX.size(); i++){
-			nowX = oldShadowX.get(i);
-			nowY = oldShadowY.get(i);
+		int tempX = xPosition;
+		int tempY = yPosition;
+		int nowX = tempX;
+		int nowY = tempY;
+		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
+		for (ActionNode an : actions){
+			switch (an.direction){
+			case UP:
+				nowY++;
+				break;
+			case DOWN:
+				nowY--;
+				break;
+			case LEFT:
+				nowX--;
+				break;
+			case RIGHT:
+				nowX++;
+				break;
+			default:
+				break;
+			}
 			if (nowX != tempX && nowY == tempY){
 				int minX = Math.min(nowX, tempX);
 				canvas.drawBox(72 + 150*minX, 47 + 100*nowY, 156, 6, Color.BLACK);
@@ -378,7 +386,6 @@ public class Character {
 			} else {
 				System.out.println("PLEASE CHECK Character");
 			}
-			
 			tempX = nowX;
 			tempY = nowY;
 		}
@@ -392,13 +399,13 @@ public class Character {
 			switch (an.action.pattern){
 			case SHIELD:
 				if (leftside){
-					if (an.yPosition==3){
+					if (an.direction == Direction.UP){
 						canvas.drawBox(145+150*an.curX, 100*yPosition, 10, 200, Color.GRAY);
 					} else {
 						canvas.drawBox(145+150*an.curX, 100*yPosition-100, 10, 200, Color.GRAY);
 					}
 				} else {
-					if (an.yPosition==3){
+					if (an.direction == Direction.UP){
 						canvas.drawBox(-5+150*an.curX, 100*yPosition, 10, 200, Color.GRAY);
 					} else {
 						canvas.drawBox(-5+150*an.curX, 100*yPosition-100, 10, 200, Color.GRAY);

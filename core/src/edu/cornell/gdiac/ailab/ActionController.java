@@ -24,6 +24,7 @@ import java.util.List;
 import edu.cornell.gdiac.ailab.Character;
 import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.ailab.Action.Pattern;
+import edu.cornell.gdiac.ailab.ActionNode.Direction;
 
 import com.badlogic.gdx.graphics.*;
 
@@ -108,7 +109,6 @@ public class ActionController {
 				executeMovement(a_node);
 				break;
 			case STRAIGHT:
-				System.out.println("straignt");
 				executeStraight(a_node);
 				break;
 			case DIAGONAL:
@@ -154,11 +154,11 @@ public class ActionController {
 	}
 	
 	private boolean isDiagonalUp(ActionNode a_node){
-		return a_node.yPosition == SelectionMenuController.DIAGONAL_UP;
+		return a_node.direction == Direction.UP;
 	}
 	
 	private boolean isDiagonalDown(ActionNode a_node){
-		return a_node.yPosition == SelectionMenuController.DIAGONAL_DOWN;		
+		return a_node.direction == Direction.DOWN;	
 	}
 	
 	private Coordinate[] diagonalHitPath(ActionNode a_node){
@@ -235,24 +235,31 @@ public class ActionController {
 	}
 	
 	private void executeMovement(ActionNode a_node){
-		selected.popLastShadow();
-//		int total_moves = (Math.abs(selected.xPosition-a_node.xPosition)
-//				+Math.abs(selected.yPosition-a_node.yPosition));
-//		if (total_moves==1 && !board.isOccupied(a_node.xPosition, a_node.yPosition)){
-		if (!selected.isBlocked && !board.isOccupied(a_node.xPosition, a_node.yPosition)){
-			selected.xPosition = a_node.xPosition;
-			selected.yPosition = a_node.yPosition;			
+		int nextX = selected.xPosition;
+		int nextY = selected.yPosition;
+		switch (a_node.direction){
+		case UP:
+			nextY++;
+			break;
+		case DOWN:
+			nextY--;
+			break;
+		case LEFT:
+			nextX--;
+			break;
+		case RIGHT:
+			nextX++;
+			break;
+		default:
+			break;
 		}
-//		else if (board.isOccupied(a_node.xPosition, a_node.yPosition)){
-		else{
-			selected.resetShadow();
-			selected.setShadow(selected.xPosition, selected.yPosition);
-			selected.isBlocked = true;
+		if (!board.isOccupied(nextX, nextY)){
+			selected.xPosition = nextX;
+			selected.yPosition = nextY;		
 		}
 	}
 	
 	private void executeStraight(ActionNode a_node){
-		System.out.println("execute straight");
 		Coordinate[] path = straightHitPath(a_node);
 		// execute the hit interrupt and do damage to closest enemy
 		processHitPath(a_node,path);

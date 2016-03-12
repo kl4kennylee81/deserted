@@ -6,6 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.graphics.Color;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
+import edu.cornell.gdiac.ailab.ActionNode.Direction;
 
 public class PersistingController extends ActionController{
 	
@@ -103,7 +104,7 @@ public class PersistingController extends ActionController{
 		} else {
 			selectedActionNode.curX -= selectedAction.moveSpeed;
 		}
-		if (selectedActionNode.yPosition == 0){
+		if (selectedActionNode.direction == Direction.DOWN){
 			selectedActionNode.curY -= selectedAction.moveSpeed;
 		} else {
 			selectedActionNode.curY += selectedAction.moveSpeed;

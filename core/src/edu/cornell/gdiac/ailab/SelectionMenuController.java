@@ -3,6 +3,7 @@ package edu.cornell.gdiac.ailab;
 import java.util.List;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
+import edu.cornell.gdiac.ailab.ActionNode.Direction;
 import edu.cornell.gdiac.ailab.Effect.Type;
 
 public class SelectionMenuController {
@@ -41,9 +42,7 @@ public class SelectionMenuController {
 	
 	//TODO: Change to be 0 for down and anything else is up
 	/** Attack direction values */
-	public static final int DIAGONAL_UP = 3;
-	public static final int DIAGONAL_DOWN = 0;
-	private static final int X_OFFSCREEN = -2;
+	Direction direction;
 	
 	public SelectionMenuController(GridBoard board, List<Character> chars, ActionBar bar) {
 		this.board = board;
@@ -95,8 +94,8 @@ public class SelectionMenuController {
 		menu = selected.getSelectionMenu();
 		action = menu.getSelectedAction();
 		choosingTarget =  menu.getChoosingTarget();
-		shadowX = selected.shadowX;
-		shadowY = selected.shadowY;
+		shadowX = selected.getShadowX();
+		shadowY = selected.getShadowY();
 		selectedX = menu.getSelectedX();
 		selectedY = menu.getSelectedY();
 		leftside = selected.leftside;
@@ -115,12 +114,9 @@ public class SelectionMenuController {
 		} else if (InputController.pressedA() && menu.canAct()){
 			updateTargetedAction();
 		} else if (InputController.pressedS()){
-			ActionNode old = menu.removeLast();
-			if (old != null && old.action.pattern == Pattern.MOVE){
-				selected.rewindShadow();
-			}
+			menu.removeLast();
 		} else if (InputController.pressedD() && menu.canNop()){
-			menu.add(new ActionNode(nop,bar.castPoint+(action.cost+menu.takenSlots)*0.075f,0,0));
+			menu.add(new ActionNode(nop,bar.castPoint+(action.cost+menu.takenSlots)*0.075f,0,0,Direction.NONE));
 			menu.resetPointer();
 		} else if (InputController.pressedUp() && !InputController.pressedDown()){
 			//Actions go from up down, so we need to flip
@@ -142,35 +138,29 @@ public class SelectionMenuController {
 			menu.setChoosingTarget(true);
 		} else if (action.pattern == Pattern.MOVE){
 			if (!board.isOccupied(shadowX, shadowY+1)){
-				selectedX = shadowX;
-				selectedY = shadowY+1;
+				direction = Direction.UP;
 			} else if (!board.isOccupied(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
-				selectedX = shadowX+1;
-				selectedY = shadowY;
+				direction = Direction.RIGHT;
 			} else if (!board.isOccupied(shadowX-1, shadowY) && !(!leftside && shadowY == boardWidth/2)){
-				selectedX = shadowX-1;
-				selectedY = shadowY;
+				direction = Direction.LEFT;
 			} else if (!board.isOccupied(shadowX, shadowY-1)){
-				selectedX = shadowX;
-				selectedY = shadowY-1;
+				direction = Direction.DOWN;
 			} else {
-				//do something to tell them they cant move
+				System.out.println("do something to tell them they cant move");
 			}
 			menu.setChoosingTarget(true);
 		} else if (action.pattern == Pattern.DIAGONAL){
-			selectedX = X_OFFSCREEN;
 			if (shadowY < boardHeight/2){
-				selectedY = DIAGONAL_UP;
+				direction = Direction.UP;
 			} else {
-				selectedY = DIAGONAL_DOWN;
+				direction = Direction.DOWN;
 			}
 			menu.setChoosingTarget(true);
 		} else if (action.pattern == Pattern.SHIELD){
-			selectedX = X_OFFSCREEN;
 			if (shadowY < boardHeight/2){
-				selectedY = DIAGONAL_UP;
+				direction = Direction.UP;
 			} else {
-				selectedY = DIAGONAL_DOWN;
+				direction = Direction.DOWN;
 			}
 			menu.setChoosingTarget(true);
 		}
@@ -186,39 +176,33 @@ public class SelectionMenuController {
 			break;
 		case DIAGONAL:
 			if (InputController.pressedUp() && !InputController.pressedDown()){
-				selectedY = DIAGONAL_UP;
+				direction = Direction.UP;
 			} else if (InputController.pressedDown() && !InputController.pressedUp()){
-				selectedY = DIAGONAL_DOWN;
+				direction = Direction.DOWN;
 			} 
 			break;
 		case SHIELD:
 			if (InputController.pressedUp() && !InputController.pressedDown()){
-				selectedY = DIAGONAL_UP;
+				direction = Direction.UP;
 			} else if (InputController.pressedDown() && !InputController.pressedUp()){
-				selectedY = DIAGONAL_DOWN;
+				direction = Direction.DOWN;
 			} 
 			break;
 		default:
 			break;
 		}
 		if (InputController.pressedEnter()){
-			menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/menu.TOTAL_SLOTS),selectedX,selectedY));
+			menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/menu.TOTAL_SLOTS),selectedX,selectedY,direction));
 			menu.setChoosingTarget(false);
-			if (action.pattern == Pattern.MOVE){
-				selected.setShadow(selectedX,selectedY);
-			}
 			selected.setSelecting(false);
 			selected.setQueuedActions(menu.getQueuedActions());
 			selected = null;
 			resetNeedsShadow();
 		}
 		if (InputController.pressedA()){
-			menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/menu.TOTAL_SLOTS),selectedX,selectedY));
+			menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/menu.TOTAL_SLOTS),selectedX,selectedY,direction));
 			menu.setChoosingTarget(false);
 			menu.resetPointer();
-			if (action.pattern == Pattern.MOVE){
-				selected.setShadow(selectedX,selectedY);
-			}
 		} else if (InputController.pressedS()){
 			menu.setChoosingTarget(false);
 		}
@@ -258,25 +242,21 @@ public class SelectionMenuController {
 		//Need to check in all of these if its a valid move;
 		if (InputController.pressedUp() && !InputController.pressedDown()){
 			if (!board.isOccupied(shadowX, shadowY+1)){
-				selectedX = shadowX;
-				selectedY = shadowY+1;
+				direction = Direction.UP;
 			}
 			
 		} else if (InputController.pressedDown() && !InputController.pressedUp()){
 			if (!board.isOccupied(shadowX, shadowY-1)){
-				selectedX = shadowX;
-				selectedY = shadowY-1;
+				direction = Direction.DOWN;
 			}
 		} else if (InputController.pressedLeft() && !InputController.pressedRight()){
 			//if (not occupied) and (not rightside at x=3)
 			if (!board.isOccupied(shadowX-1, shadowY) && !(!leftside && shadowX == boardWidth/2)){
-				selectedX = shadowX-1;
-				selectedY = shadowY;
+				direction = Direction.LEFT;
 			}
 		} else if (InputController.pressedRight() && !InputController.pressedLeft()){
 			if (!board.isOccupied(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
-				selectedX = shadowX+1;
-				selectedY = shadowY;
+				direction = Direction.RIGHT;
 			}
 		}
 	}
@@ -351,7 +331,22 @@ public class SelectionMenuController {
 		board.setCanTarget(shadowX, shadowY-1);
 		board.setCanTarget(shadowX, shadowY+1);
 		if (choosingTarget){
-			board.setHighlighted(selectedX, selectedY);
+			switch (direction){
+			case UP:
+				board.setHighlighted(shadowX, shadowY+1);
+				break;
+			case DOWN:
+				board.setHighlighted(shadowX, shadowY-1);
+				break;
+			case LEFT:
+				board.setHighlighted(shadowX-1, shadowY);
+				break;
+			case RIGHT:
+				board.setHighlighted(shadowX+1, shadowY);
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	
@@ -364,7 +359,7 @@ public class SelectionMenuController {
 			}
 			if (choosingTarget){
 				for (int i = 0; i < boardHeight; i++){
-					if (selectedY == DIAGONAL_UP){
+					if (direction == Direction.UP){
 						board.setHighlighted(shadowX+i, shadowY+i);
 					} else {
 						board.setHighlighted(shadowX+i, shadowY-i);
@@ -379,7 +374,7 @@ public class SelectionMenuController {
 			}
 			if (choosingTarget){
 				for (int i = 0; i < boardHeight; i++){
-					if (selectedY == DIAGONAL_UP){
+					if (direction == Direction.UP){
 						board.setHighlighted(shadowX-i, shadowY+i);
 					} else {
 						board.setHighlighted(shadowX-i, shadowY-i);
@@ -394,7 +389,7 @@ public class SelectionMenuController {
 		board.setCanTarget(shadowX, shadowY);
 		board.setCanTarget(shadowX, shadowY-1);
 		if (choosingTarget){
-			if (selectedY == 3){
+			if (direction == Direction.UP){
 				board.setHighlighted(shadowX, shadowY+1);
 				board.setHighlighted(shadowX, shadowY);
 			} else {
