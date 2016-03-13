@@ -13,6 +13,9 @@ import edu.cornell.gdiac.ailab.ActionNode.Direction;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 
 public class Character {
+	float TOKEN_OFFSET_UP = 20;
+	float TOKEN_OFFSET_DOWN = 30;
+	
 	/** Name of character */
 	String name;
 	/** Current health of character */
@@ -437,8 +440,10 @@ public class Character {
 	 * @param canvas
 	 */
 	private void drawToken(GameCanvas canvas){
-		float canvasX = 35 + 800*castPosition;
-		float canvasY = leftside ? 720 : 670;
+		float canvasX = ActionBar.getBarX(canvas) + ActionBar.getBarWidth(canvas)*castPosition;
+		float upBar = ActionBar.getBarY(canvas) + TOKEN_OFFSET_UP;
+		float downBar = ActionBar.getBarY(canvas) - TOKEN_OFFSET_DOWN;
+		float canvasY = leftside ? upBar : downBar;
 		canvas.drawTexture(icon, canvasX, canvasY, Color.WHITE);
 	}
 }

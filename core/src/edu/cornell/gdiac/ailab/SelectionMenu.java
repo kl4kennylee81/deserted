@@ -29,9 +29,7 @@ public class SelectionMenu {
 
 	private static float ACTION_POINTER_OFFSET_Y = 15;
 
-	private static float TEXT_ACTION_OFFSET = 20f;
-
-	private static float RELATIVE_DESCRIPTION_X_POS = 0.6875f;
+	private static float TEXT_ACTION_OFFSET = 30f;
 
 	private static float RELATIVE_DESCRIPTION_Y_POS = 0.80f;
 
