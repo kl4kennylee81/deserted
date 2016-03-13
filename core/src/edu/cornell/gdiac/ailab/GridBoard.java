@@ -216,5 +216,10 @@ public class GridBoard {
 		return x<width && x>=0 && y<height && y>=0;
 	}
 	
+	public boolean isOnSide(boolean leftside, int x,int y){
+		boolean isLeft = leftside && (this.width/2 > x) && isInBounds(x, y);
+		boolean isRight = !leftside && (this.width/2 <= x) && isInBounds(x,y);
+		return isLeft||isRight;
+	}
 	
 }

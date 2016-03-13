@@ -4,20 +4,20 @@ import com.badlogic.gdx.graphics.Color;
 
 public class ActionBar {
 	/** Ratio of the bar width to the screen */
-	private static float BAR_WIDTH_RATIO  = 0.66f;
+	private static final float BAR_WIDTH_RATIO  = 0.66f;
 	/** Ration of the bar height to the screen */
-	private static float BAR_HEIGHT_RATIO = 0.025f;	
+	private static final float BAR_HEIGHT_RATIO = 0.025f;	
 	
 	/** the x position of the bar should start at the top 7/8 of the screen **/
-	private static float BAR_RELATIVE_Y_POS = 0.875f;
+	private static final float BAR_RELATIVE_Y_POS = 0.875f;
 	
-	private static float BAR_RELATIVE_X_POS = 0.0625f;
+	private static final float BAR_RELATIVE_X_POS = 0.0625f;
 	
-	private static float BAR_DIVIDER_WIDTH = 4f;
+	private static final float BAR_DIVIDER_WIDTH = 4f;
 	
-	private static float CAST_POINT = 0.6f;
+	private static final float CAST_POINT = 0.6f;
 
-	private static float ACTION_SLOTS = 4f;
+	private static final int TOTAL_SLOTS = 4;
 	
 	public float castPoint;
 	
@@ -25,6 +25,10 @@ public class ActionBar {
 		this.castPoint = CAST_POINT;
 	}
 
+	public static int getTotalSlots(){
+		return TOTAL_SLOTS;
+	}
+	
 	public static float getBarWidthRatio(){
 		return BAR_WIDTH_RATIO;
 	}
@@ -57,7 +61,7 @@ public class ActionBar {
 
 	public static float getSlotWidth(GameCanvas canvas){
 		float castWidth = getCastWidth(canvas);
-		return castWidth/ACTION_SLOTS;
+		return castWidth/TOTAL_SLOTS;
 	}
 
 	public static float getSpacing(){
@@ -81,8 +85,8 @@ public class ActionBar {
 		
 		// non casting is green we draw width up to the casting point
 		canvas.drawBox(xPosBar, yPosBar, nonActWidth, heightBar, Color.GREEN);
-		for (int i = 0; i < ACTION_SLOTS; i++){
-			float intervalSize = (widthBar*(1-castPoint))/ACTION_SLOTS;
+		for (int i = 0; i < TOTAL_SLOTS; i++){
+			float intervalSize = (widthBar*(1-castPoint))/TOTAL_SLOTS;
 			float startCastX = xPosBar + nonActWidth;
 			canvas.drawBox(startCastX + i*intervalSize, yPosBar, BAR_DIVIDER_WIDTH, heightBar, Color.BLACK);
 		}

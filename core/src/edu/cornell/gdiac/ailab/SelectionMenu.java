@@ -17,21 +17,20 @@ public class SelectionMenu {
 	LinkedList<ActionNode> selectedActions;
 	
 	/** Total number of available slots */
-	final int TOTAL_SLOTS = 4;
 
-	private static float RELATIVE_TEXT_X_POS = 0.2f;
+	private static final float RELATIVE_TEXT_X_POS = 0.2f;
 
-	private static float RELATIVE_TEXT_Y_POS = 0.80f;
+	private static final float RELATIVE_TEXT_Y_POS = 0.80f;
 
-	private static float RELATIVE_TEXT_SPACING = 0.0625f;
+	private static final float RELATIVE_TEXT_SPACING = 0.0625f;
 
-	private static float ACTION_POINTER_OFFSET_X = 20;
+	private static final float ACTION_POINTER_OFFSET_X = 20;
 
-	private static float ACTION_POINTER_OFFSET_Y = 15;
+	private static final float ACTION_POINTER_OFFSET_Y = 15;
 
-	private static float TEXT_ACTION_OFFSET = 30f;
+	private static final float TEXT_ACTION_OFFSET = 30f;
 
-	private static float RELATIVE_DESCRIPTION_Y_POS = 0.80f;
+	private static final float RELATIVE_DESCRIPTION_Y_POS = 0.80f;
 
 	/** Currently used up slots */
 	int takenSlots;
@@ -67,7 +66,7 @@ public class SelectionMenu {
 	public void add(ActionNode actionNode){
 		selectedActions.addLast(actionNode);
 		takenSlots += actionNode.action.cost;
-		if (takenSlots > TOTAL_SLOTS){
+		if (takenSlots > ActionBar.getTotalSlots()){
 			System.out.println("Please check SelectionMenu");
 		}
 	}
@@ -131,7 +130,7 @@ public class SelectionMenu {
 	 * Checks if character can do the given action
 	 */
 	public boolean canDoAction(Action a){
-		return takenSlots+a.cost <= TOTAL_SLOTS && (canMove() || a.pattern != Pattern.MOVE);
+		return takenSlots+a.cost <= ActionBar.getTotalSlots() && (canMove() || a.pattern != Pattern.MOVE);
 	}
 	
 	/**
@@ -150,7 +149,7 @@ public class SelectionMenu {
 	 * Checks if character can at least NOP
 	 */
 	public boolean canNop(){
-		return takenSlots < TOTAL_SLOTS;
+		return takenSlots < ActionBar.getTotalSlots();
 	}
 	
 	/**
@@ -184,7 +183,7 @@ public class SelectionMenu {
 	 * @return
 	 */
 	public boolean resetPointer(){
-		if (actions[selectedAction].cost > TOTAL_SLOTS - takenSlots && takenSlots < TOTAL_SLOTS){
+		if (actions[selectedAction].cost > ActionBar.getTotalSlots() - takenSlots && takenSlots < ActionBar.getTotalSlots()){
 			for (int i = 0; i < actions.length; i++){
 				selectedAction = i;
 				if (canDoAction(actions[selectedAction])){
@@ -224,7 +223,7 @@ public class SelectionMenu {
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
 			float offset_y = spacing_h * i;
-			if (action.cost > TOTAL_SLOTS - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
+			if (action.cost > ActionBar.getTotalSlots() - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
 				canvas.drawText(action.name, text_x, text_y - offset_y, new Color(1f, 1f, 1f, 0.5f));
 			} else {
 				canvas.drawText(action.name, text_x, text_y - offset_y, Color.BLACK);

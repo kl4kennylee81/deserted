@@ -48,7 +48,7 @@ public class AIController {
 				yOffset = 0;
 				shield = false;
 				hasSingle = hasSingle();
-				interval = (1f-bar.castPoint) / selected.selectionMenu.TOTAL_SLOTS;
+				interval = (1f-bar.castPoint) / ActionBar.getTotalSlots();
 				curSlot = 1;
 				switch (c.diff){
 					case EASY:

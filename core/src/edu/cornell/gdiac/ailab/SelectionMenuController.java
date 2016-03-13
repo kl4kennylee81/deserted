@@ -192,7 +192,7 @@ public class SelectionMenuController {
 			break;
 		}
 		if (InputController.pressedEnter()){
-			menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/menu.TOTAL_SLOTS),selectedX,selectedY,direction));
+			menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/ActionBar.getTotalSlots()),selectedX,selectedY,direction));
 			menu.setChoosingTarget(false);
 			selected.setSelecting(false);
 			selected.setQueuedActions(menu.getQueuedActions());
@@ -200,7 +200,7 @@ public class SelectionMenuController {
 			resetNeedsShadow();
 		}
 		if (InputController.pressedA()){
-			menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/menu.TOTAL_SLOTS),selectedX,selectedY,direction));
+			menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/ActionBar.getTotalSlots()),selectedX,selectedY,direction));
 			menu.setChoosingTarget(false);
 			menu.resetPointer();
 		} else if (InputController.pressedS()){
