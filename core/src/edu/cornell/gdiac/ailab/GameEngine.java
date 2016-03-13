@@ -44,6 +44,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.*;
 import com.badlogic.gdx.assets.*;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.*;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.*;
 
 import edu.cornell.gdiac.ailab.Effect.Type;
@@ -458,7 +459,8 @@ public class GameEngine implements Screen {
 	@SuppressWarnings("unchecked")
 	private void loadFromYaml() throws IOException{
 		Yaml yaml = new Yaml();
-		try (InputStream is = new FileInputStream( new File("../actions.yml"))){
+		FileHandle actionFile = Gdx.files.internal("yaml/actions.yml");
+		try (InputStream is = actionFile.read()){
 			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) yaml.load(is);
 			for (HashMap<String, Object> action : actions){
 				Integer id = (Integer) action.get("id");
@@ -492,8 +494,8 @@ public class GameEngine implements Screen {
 				availableActions.put(id, actionToAdd);
 			}	
 		} 
-
-		try (InputStream is = new FileInputStream( new File("../characters.yml"))){
+		FileHandle charFile = Gdx.files.internal("yaml/characters.yml");
+		try (InputStream is = charFile.read()){
 			ArrayList<HashMap<String, Object>> characters = (ArrayList<HashMap<String, Object>>) yaml.load(is);
 			for (HashMap<String, Object> character : characters){
 				Integer id = (Integer) character.get("id");

@@ -384,7 +384,7 @@ public class Character {
 				int minY = Math.min(nowY, tempY);
 				canvas.drawBox(72+150*nowX, 47+100*minY, 6, 106, Color.BLACK);
 			} else {
-				System.out.println("PLEASE CHECK Character");
+//				System.out.println("PLEASE CHECK Character");
 			}
 			tempX = nowX;
 			tempY = nowY;

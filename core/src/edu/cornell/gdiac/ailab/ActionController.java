@@ -312,6 +312,13 @@ public class ActionController {
 		textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
 
 		ActionNode nextAttack = target.queuedActions.peek();
+		// handle breaking of shield
+		for (ActionNode an:target.persistingActions){
+			if (an.action.pattern == Pattern.SHIELD){
+				target.popPersistingCast(an);
+			}
+		}
+		
 		//handle interruption
 		if (nextAttack != null && !nextAttack.isInterrupted){
 			nextAttack.isInterrupted = true;

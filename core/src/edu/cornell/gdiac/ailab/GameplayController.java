@@ -112,8 +112,8 @@ public class GameplayController {
     
     public void drawPlay(GameCanvas canvas){
     	board.draw(canvas);
-        drawCharacters(canvas);
         bar.draw(canvas);
+        drawCharacters(canvas);
         textMessages.draw(canvas);
     }
     
