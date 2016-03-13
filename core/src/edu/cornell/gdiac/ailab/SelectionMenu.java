@@ -19,7 +19,7 @@ public class SelectionMenu {
 	/** Total number of available slots */
 	final int TOTAL_SLOTS = 4;
 
-	private static float RELATIVE_TEXT_X_POS = 0.25f;
+	private static float RELATIVE_TEXT_X_POS = 0.2f;
 
 	private static float RELATIVE_TEXT_Y_POS = 0.80f;
 
