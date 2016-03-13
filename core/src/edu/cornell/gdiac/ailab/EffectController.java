@@ -53,13 +53,13 @@ public class EffectController {
 	 */
 	public void processSlow(Effect e, Character c){
 		if(e.isNew){
-			c.castSpeed = c.castSpeed * e.magnitude;
+//			c.castSpeed = c.castSpeed * e.magnitude;
 			c.speed = c.speed * e.magnitude;
 			e.isNew = false;
 		}
 		e.framesLeft -= 1;
 		if(e.framesLeft == 0){
-			c.castSpeed = c.castSpeed / e.magnitude;
+//			c.castSpeed = c.castSpeed / e.magnitude;
 			c.speed = c.speed / e.magnitude;
 			e.isDone = true;
 		}

@@ -364,21 +364,23 @@ public class Character {
 		int nowY = tempY;
 		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
 		for (ActionNode an : actions){
-			switch (an.direction){
-			case UP:
-				nowY++;
-				break;
-			case DOWN:
-				nowY--;
-				break;
-			case LEFT:
-				nowX--;
-				break;
-			case RIGHT:
-				nowX++;
-				break;
-			default:
-				break;
+			if (an.action.pattern == Action.Pattern.MOVE){
+				switch (an.direction){
+				case UP:
+					nowY++;
+					break;
+				case DOWN:
+					nowY--;
+					break;
+				case LEFT:
+					nowX--;
+					break;
+				case RIGHT:
+					nowX++;
+					break;
+				default:
+					break;
+				}
 			}
 			if (nowX != tempX && nowY == tempY){
 				int minX = Math.min(nowX, tempX);

@@ -248,7 +248,7 @@ public class SelectionMenu {
 		float slot_height = ActionBar.getBarHeight(canvas);
 		
 		int offset = 0;
-		for (int i = 0; i < 4; i++){
+		for (int i = 0; i < ActionBar.getTotalSlots(); i++){
 			float curSlot_x = actionSlot_x + ((slot_width) * i) + ActionBar.getSpacing();
 			float slot_w_space = slot_width-ActionBar.getSpacing();
 			if (i < takenSlots) {

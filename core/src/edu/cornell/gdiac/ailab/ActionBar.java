@@ -17,7 +17,7 @@ public class ActionBar {
 	
 	private static final float CAST_POINT = 0.6f;
 
-	private static final int TOTAL_SLOTS = 4;
+	private static final int TOTAL_SLOTS = 5;
 	
 	public float castPoint;
 	
