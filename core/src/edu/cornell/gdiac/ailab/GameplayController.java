@@ -122,9 +122,6 @@ public class GameplayController {
     //This needs to be done so characters below show over characters above and selection menu
     //shows over characters.
     private void drawCharacters(GameCanvas canvas){
-        for (Character c : characters){
-        	c.drawSelection(canvas);
-        }
     	for (Character c : characters){
         	c.draw(canvas);
         }
@@ -138,6 +135,9 @@ public class GameplayController {
     			}
             }
     	}
+        for (Character c : characters){
+        	c.drawSelection(canvas);
+        }
     }
     
     public void drawAfter(GameCanvas canvas){

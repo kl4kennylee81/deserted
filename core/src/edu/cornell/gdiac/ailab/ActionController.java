@@ -311,10 +311,13 @@ public class ActionController {
 		applyEffect(a_node,target);
 		
 		//add text bubble for amount of damage in front of target
-		String attack_damage = Integer.toString(a_node.action.damage);
-		textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
-
+		// only add the text damage if any damage has been done
+		if (a_node.action.damage > 0){
+			String attack_damage = Integer.toString(a_node.action.damage);
+			textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
+		}
 		ActionNode nextAttack = target.queuedActions.peek();
+		
 		// handle breaking of shield
 		for (ActionNode an:target.persistingActions){
 			if (an.action.pattern == Pattern.SHIELD){
@@ -323,7 +326,8 @@ public class ActionController {
 		}
 		
 		//handle interruption
-		if (nextAttack != null && !nextAttack.isInterrupted){
+		// if an attack does 0 damage it doesn't interrupt for example slows
+		if (a_node.action.damage > 0 && nextAttack != null && !nextAttack.isInterrupted){
 			nextAttack.isInterrupted = true;
 			if (nextAttack.action.pattern != Pattern.MOVE){
 				textMessages.addOtherMessage("INTERRUPTED", target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.RED);
@@ -336,9 +340,11 @@ public class ActionController {
 	}
 	
 	protected void applyEffect(ActionNode a_node, Character target){
-		if(a_node.action.effect.type == Type.REGULAR){
+		Effect eff = a_node.action.effect;
+		if(eff.type == Type.REGULAR){
 			return;
 		}
+		textMessages.addOtherMessage(eff.toString(),target.xPosition,target.yPosition,2*TextMessage.SECOND, Color.RED);
 		target.addEffect(a_node.action.effect.clone());
 	}
 	

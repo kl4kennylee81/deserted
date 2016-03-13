@@ -43,4 +43,13 @@ public class Effect {
 		return new Effect(framesLeft, type, magnitude);
 	}
 	
+	public String toString(){
+		switch(this.type){
+			case SLOW:
+				return "Slowed";
+			default:
+				return "";
+		}
+	}
+	
 }
