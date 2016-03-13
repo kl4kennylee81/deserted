@@ -315,22 +315,24 @@ public class ActionController {
 		if (a_node.action.damage > 0){
 			String attack_damage = Integer.toString(a_node.action.damage);
 			textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
-		}
-		ActionNode nextAttack = target.queuedActions.peek();
 		
-		// handle breaking of shield
-		for (ActionNode an:target.persistingActions){
-			if (an.action.pattern == Pattern.SHIELD){
-				target.popPersistingCast(an);
+			ActionNode nextAttack = target.queuedActions.peek();
+		
+			// handle breaking of shield
+			// only if damage was greater than 0
+			for (ActionNode an:target.persistingActions){
+				if (an.action.pattern == Pattern.SHIELD){
+					target.popPersistingCast(an);
+				}
 			}
-		}
 		
-		//handle interruption
-		// if an attack does 0 damage it doesn't interrupt for example slows
-		if (a_node.action.damage > 0 && nextAttack != null && !nextAttack.isInterrupted){
-			nextAttack.isInterrupted = true;
-			if (nextAttack.action.pattern != Pattern.MOVE){
-				textMessages.addOtherMessage("INTERRUPTED", target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.RED);
+			//handle interruption
+			// if an attack does 0 damage it doesn't interrupt for example slows
+			if (nextAttack != null && !nextAttack.isInterrupted){
+				nextAttack.isInterrupted = true;
+				if (nextAttack.action.pattern != Pattern.MOVE){
+					textMessages.addOtherMessage("INTERRUPTED", target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.RED);
+				}
 			}
 		}
 	}
