@@ -209,6 +209,7 @@ public class SelectionMenuController {
 	}
 	
 	private void updateChoosingSingle(){
+		direction = Direction.NONE;
 		if (InputController.pressedUp() && !InputController.pressedDown()){
 			selectedY+=1;
 			selectedY %= boardHeight;
