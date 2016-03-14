@@ -45,6 +45,9 @@ public class ActionController {
 	Character selected;
 	/** Shielded coordinates against the selected character */
 	List<Coordinate> shieldedPaths;
+	
+	/** temp for pausing */
+	int i = 110;;
 
 	/**
 	 * Creates a GameplayController for the given models.
@@ -77,6 +80,7 @@ public class ActionController {
 			// Execute character's action;
 			ActionNode action = selected.popCast();
 			selected.needsAttack = false;
+			i = Math.min(110, i);
 			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
 				executeAction(action);
 			}
@@ -312,6 +316,7 @@ public class ActionController {
 		//add text bubble for amount of damage in front of target
 		// only add the text damage if any damage has been done
 		if (a_node.action.damage > 0){
+			i = 0;
 			String attack_damage = Integer.toString(a_node.action.damage);
 			textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
 			textMessages.addSingleTemp(target.xPosition,target.yPosition);
@@ -351,6 +356,7 @@ public class ActionController {
 	
 	// make isDone true when every character who needs to attack has attacked
 	public boolean isDone() {
-		return isDone;
+		i++;
+		return i==120 && isDone;
 	}
 }
