@@ -30,8 +30,8 @@
     - 0
     - 3
     - 7
-  texture: "models/CHARA_2.png"
-  icon: "models/CASTICON_2.png"
+  texture: "models/CHARA_4.png"
+  icon: "models/CASTICON_4.png"
 
 - id: 2
   name: red
