@@ -297,7 +297,6 @@ public class ActionController {
 	}
 	
 	private void executeSingle(ActionNode a_node){
-		textMessages.addSingleTemp(a_node.xPosition,a_node.yPosition);
 		for (Character c:characters){
 			if (c.xPosition == a_node.xPosition && c.yPosition == a_node.yPosition){
 				processHit(a_node,c);
@@ -315,7 +314,7 @@ public class ActionController {
 		if (a_node.action.damage > 0){
 			String attack_damage = Integer.toString(a_node.action.damage);
 			textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
-		
+			textMessages.addSingleTemp(target.xPosition,target.yPosition);
 			ActionNode nextAttack = target.queuedActions.peek();
 		
 			// handle breaking of shield
