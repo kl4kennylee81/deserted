@@ -133,8 +133,8 @@ public class Character {
 		this.yPosition = this.startingYPosition;
 		
 		/* Randomize for now so that its not always the same thing */
-		this.speed = (float) (Math.random()*0.0015 + 0.0015);
-		this.castSpeed = (float) (Math.random()*0.002 + 0.001);
+		this.speed = (float) (Math.random()*0.003 + 0.003);
+		this.castSpeed = (float) (Math.random()*0.004 + 0.002);
 		
 		this.castPosition = 0;
 		queuedActions.clear();
@@ -467,7 +467,7 @@ public class Character {
 				break;
 			case STRAIGHT:
 			case DIAGONAL:
-				float diagX = tileW/2 - DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX);
+				float diagX = board.offsetBoard(canvas,(tileW/2 - DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX)));;
 				float diagY = tileH/2 - DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY);
 				canvas.drawBox(diagX,diagY, DIAGONAL_SIZE, DIAGONAL_SIZE, color);
 				break;
