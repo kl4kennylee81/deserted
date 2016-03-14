@@ -24,7 +24,7 @@ public class GridBoard {
 	private static final Color ATTACK_COLOR = new Color( 1f, 0f, 0f, 1f);
 	
 	
-	private static final float BOARD_WIDTH = 0.8f;
+	private static final float BOARD_WIDTH = 0.75f;
 	
 	private static final float BOARD_HEIGHT = 0.45f;
 

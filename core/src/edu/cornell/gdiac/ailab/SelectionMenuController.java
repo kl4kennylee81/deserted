@@ -295,7 +295,6 @@ public class SelectionMenuController {
 	}
 	
 	public void drawStraight(){
-		System.out.println(action.range);
 		if (leftside) {
 			for (int i = 1; i <= action.range; i++){
 				if (choosingTarget){
