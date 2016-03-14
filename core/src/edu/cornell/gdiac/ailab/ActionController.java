@@ -80,6 +80,7 @@ public class ActionController {
 			// Execute character's action;
 			ActionNode action = selected.popCast();
 			selected.needsAttack = false;
+			i = Math.min(110, i);
 			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
 				executeAction(action);
 			}
@@ -104,14 +105,12 @@ public class ActionController {
 		// If persisting, then add to character 
 		if (a_node.action instanceof PersistingAction){
 			selected.addPersisting(a_node);
-			i = 0;
 			return;
 		}
 		//switch between types of actions
 		switch(a_node.action.pattern){
 			case MOVE:
 				executeMovement(a_node);
-				i = Math.min(110, i);
 				break;
 			case STRAIGHT:
 				executeStraight(a_node);
