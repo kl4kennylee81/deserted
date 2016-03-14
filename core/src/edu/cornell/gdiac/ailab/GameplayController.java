@@ -104,9 +104,19 @@ public class GameplayController {
 			break;	
     	}
     	updateTextMessages();
-    	
+    	removeDead();
     	if (gameOver()){
     		inGameState = InGameState.DONE;
+    	}
+    }
+    
+    public void removeDead(){
+    	Iterator<Character> iter = characters.iterator();
+    	while (iter.hasNext()) {
+    	    Character c = iter.next();
+			if (!c.isAlive()){
+				iter.remove();
+			}
     	}
     }
     
