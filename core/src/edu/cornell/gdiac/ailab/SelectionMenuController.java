@@ -99,7 +99,7 @@ public class SelectionMenuController {
 		selectedX = menu.getSelectedX();
 		selectedY = menu.getSelectedY();
 		leftside = selected.leftside;
-		board.occupy(characters, selected);
+		board.reset();
 	}
 	
 	/**
@@ -137,13 +137,13 @@ public class SelectionMenuController {
 			selectedY = SINGLE_Y;
 			menu.setChoosingTarget(true);
 		} else if (action.pattern == Pattern.MOVE){
-			if (!board.isOccupied(shadowX, shadowY+1)){
+			if (board.isInBounds(shadowX, shadowY+1)){
 				direction = Direction.UP;
-			} else if (!board.isOccupied(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
+			} else if (board.isInBounds(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
 				direction = Direction.RIGHT;
-			} else if (!board.isOccupied(shadowX-1, shadowY) && !(!leftside && shadowY == boardWidth/2)){
+			} else if (board.isInBounds(shadowX-1, shadowY) && !(!leftside && shadowY == boardWidth/2)){
 				direction = Direction.LEFT;
-			} else if (!board.isOccupied(shadowX, shadowY-1)){
+			} else if (board.isInBounds(shadowX, shadowY-1)){
 				direction = Direction.DOWN;
 			} else {
 				System.out.println("do something to tell them they cant move");
@@ -242,21 +242,21 @@ public class SelectionMenuController {
 		
 		//Need to check in all of these if its a valid move;
 		if (InputController.pressedUp() && !InputController.pressedDown()){
-			if (!board.isOccupied(shadowX, shadowY+1)){
+			if (board.isInBounds(shadowX, shadowY+1)){
 				direction = Direction.UP;
 			}
 			
 		} else if (InputController.pressedDown() && !InputController.pressedUp()){
-			if (!board.isOccupied(shadowX, shadowY-1)){
+			if (board.isInBounds(shadowX, shadowY-1)){
 				direction = Direction.DOWN;
 			}
 		} else if (InputController.pressedLeft() && !InputController.pressedRight()){
 			//if (not occupied) and (not rightside at x=3)
-			if (!board.isOccupied(shadowX-1, shadowY) && !(!leftside && shadowX == boardWidth/2)){
+			if (board.isInBounds(shadowX-1, shadowY) && !(!leftside && shadowX == boardWidth/2)){
 				direction = Direction.LEFT;
 			}
 		} else if (InputController.pressedRight() && !InputController.pressedLeft()){
-			if (!board.isOccupied(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
+			if (board.isInBounds(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
 				direction = Direction.RIGHT;
 			}
 		}

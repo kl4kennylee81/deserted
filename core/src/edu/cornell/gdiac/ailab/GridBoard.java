@@ -185,26 +185,7 @@ public class GridBoard {
 			}
 		}
 	}
-	
-	/**
-	 * Occupy the board with active characters. If a character is 
-	 * selected, occupy his shadow's position instead of his own.
-	 */
-	
-	//TODO: What do we occupy now? do we let characters try to move wherever?
-	public void occupy(List<Character> chars, Character selected){
-		reset();
-		for (Character c : chars){
-			if (c.isAlive()){
-				if (c.equals(selected)){
-					//tiles[c.shadowX][c.shadowY].isOccupied = true;
-				} else {
-					tiles[c.xPosition][c.yPosition].isOccupied = true;
-				}
-			}
-		}
-	}
-	
+
 	public boolean isOccupied(int x, int y){
 		if (x>=0 && x<width && y>=0 && y<height){
 			return tiles[x][y].isOccupied;

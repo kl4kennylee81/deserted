@@ -257,12 +257,9 @@ public class ActionController {
 		default:
 			break;
 		}
-		if (!board.isOccupied(nextX, nextY)){
-			// can't move off your side of the board
-			if (board.isOnSide(selected.leftside,nextX,nextY)){
-				selected.xPosition = nextX;
-				selected.yPosition = nextY;
-			}
+		if (board.isOnSide(selected.leftside,nextX,nextY) && !board.isOccupied(nextX, nextY)){
+			selected.xPosition = nextX;
+			selected.yPosition = nextY;
 		}
 	}
 	
