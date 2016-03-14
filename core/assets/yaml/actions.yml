@@ -64,7 +64,7 @@
   description: Launch a projectile straight ahead for 2 damage
   persisting_action: 
     castLength: 100
-    moveSpeed: 0.1
+    moveSpeed: 0.05
 
 - id: 5
   name: Projectile Diagonal
@@ -79,7 +79,7 @@
   description: Launch a projectile diagonally up or down for 2 damage
   persisting_action: 
     castLength: 100
-    moveSpeed: 0.06
+    moveSpeed: 0.025
 
 
 - id: 6
