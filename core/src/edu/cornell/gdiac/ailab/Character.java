@@ -15,7 +15,19 @@ import edu.cornell.gdiac.ailab.AIController.Difficulty;
 public class Character {
 	float TOKEN_OFFSET_UP = 20;
 	float TOKEN_OFFSET_DOWN = 30;
+	float SHADOW_ARROW_WIDTH = 0.0075f; // 6 pixel of 800
+	float SHIELD_OFFSET = 5;
+	float SHIELD_WIDTH = 0.0125f;
+	int DIAGONAL_SIZE = 20;
+	int HEALTH_HEIGHT = 10;
 	
+	// currently it takes 2 squares not definite might be utilizing range
+	float SHIELD_LENGTH = 2;
+	
+	// character width is 120 and at tile size 150 proportion of current tile size
+	//
+	float CHARACTER_PROPORTION = 0.8f;
+
 	/** Name of character */
 	String name;
 	/** Current health of character */
@@ -314,14 +326,14 @@ public class Character {
 		return shadY;
 	}
 	
-	public void draw(GameCanvas canvas){
+	public void draw(GameCanvas canvas,GridBoard board){
 		if (!isAlive()){
 			return;
 		}
-		drawHealth(canvas);
+		drawHealth(canvas,board);
 		drawToken(canvas);
 		if(hasPersisting()){
-			drawPersisting(canvas);
+			drawPersisting(canvas,board);
 		}
 	}
 	
@@ -332,7 +344,12 @@ public class Character {
 		}
 	}
 	
-	public void drawCharacter(GameCanvas canvas){
+	public float getCharScale(GameCanvas canvas, Texture texture,GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		return (tileW*CHARACTER_PROPORTION)/texture.getWidth();
+	}
+	
+	public void drawCharacter(GameCanvas canvas,GridBoard board){
 		if (increasing){
 			lerpVal+=0.01;
 			if (lerpVal >= 0.5){
@@ -344,21 +361,29 @@ public class Character {
 				increasing = true;
 			}
 		}
-		float canvasX = 150*xPosition;
-		float canvasY = 100*yPosition;
+		float tileW = board.getTileWidth(canvas);
+		float tileH = board.getTileHeight(canvas);
+		float canvasX = tileW*xPosition;
+		float canvasY = tileH*yPosition;
 		
 		/** maybe highlight character? */
 		Color col = isSelecting ? Color.WHITE.cpy().lerp(Color.GREEN, lerpVal) : Color.WHITE;
-		canvas.drawCharacter(texture, canvasX, canvasY, col, leftside);
+		
+		float charScale = getCharScale(canvas,texture,board);
+		canvas.drawCharacter(texture, canvasX, canvasY, col, leftside,charScale);
 	}
 	
 	/**
 	 * Draws future position of ship with lines depicting path
 	 */
-	public void drawShadowCharacter(GameCanvas canvas){
-		float canvasX = 150*getShadowX();
-		float canvasY = 100*getShadowY();
-		canvas.drawCharacter(texture, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside);
+	public void drawShadowCharacter(GameCanvas canvas,GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		float tileH = board.getTileHeight(canvas);
+		float canvasX = tileW*getShadowX();
+		float canvasY = tileH*getShadowY();
+		
+		float charScale = getCharScale(canvas,texture,board);
+		canvas.drawCharacter(texture, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside,charScale);
 		int tempX = xPosition;
 		int tempY = yPosition;
 		int nowX = tempX;
@@ -383,12 +408,25 @@ public class Character {
 					break;
 				}
 			}
+			//72
+			float arrowOffX = (tileW - SHADOW_ARROW_WIDTH)/2;
+			float arrowOffY = (tileH - SHADOW_ARROW_WIDTH)/2;
 			if (nowX != tempX && nowY == tempY){
 				int minX = Math.min(nowX, tempX);
-				canvas.drawBox(72 + 150*minX, 47 + 100*nowY, 156, 6, Color.BLACK);
+				float arrowX = arrowOffX + (tileW *minX);
+				float arrowY = arrowOffY + (tileH *nowY);
+				float arrowWidth = tileW + SHADOW_ARROW_WIDTH;
+				float arrowHeight = SHADOW_ARROW_WIDTH;
+				canvas.drawBox(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
+				//canvas.drawBox(72 + 150*minX, 47 + 100*nowY, 156, 6, Color.BLACK);
 			} else if (nowY != tempY && nowX == tempX){
 				int minY = Math.min(nowY, tempY);
-				canvas.drawBox(72+150*nowX, 47+100*minY, 6, 106, Color.BLACK);
+				float arrowX = arrowOffX + (tileW *nowX);
+				float arrowY = arrowOffY + (tileH *minY);
+				float arrowWidth = SHADOW_ARROW_WIDTH;
+				float arrowHeight = tileH + SHADOW_ARROW_WIDTH;
+				canvas.drawBox(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
+				//canvas.drawBox(72+150*nowX, 47+100*minY, 6, 106, Color.BLACK);
 			} else {
 //				System.out.println("PLEASE CHECK Character");
 			}
@@ -400,27 +438,38 @@ public class Character {
 	/**
 	 * Draws persisting objects
 	 */
-	private void drawPersisting(GameCanvas canvas){
+	private void drawPersisting(GameCanvas canvas,GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		float tileH = board.getTileHeight(canvas);
 		for (ActionNode an : persistingActions){
 			switch (an.action.pattern){
 			case SHIELD:
+				int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
+				int shieldH = (int)(tileH * SHIELD_LENGTH);
 				if (leftside){
+					int shieldX = (int)(tileW - SHIELD_OFFSET + (tileW*an.curX));
+					int shieldY = (int)(tileH *an.curY);
 					if (an.direction == Direction.UP){
-						canvas.drawBox(145+150*an.curX, 100*an.curY, 10, 200, Color.GRAY);
+						canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
 					} else {
-						canvas.drawBox(145+150*an.curX, 100*an.curY-100, 10, 200, Color.GRAY);
+						canvas.drawBox(shieldX,shieldY - tileH, shieldW, shieldH, Color.GRAY);
+						//canvas.drawBox(145+150*an.curX, 100*an.curY-100, 10, 200, Color.GRAY);
 					}
 				} else {
+					int shieldX = (int)(-SHIELD_OFFSET + (tileW*an.curX));
+					int shieldY = (int)(tileH *an.curY);
 					if (an.direction == Direction.UP){
-						canvas.drawBox(-5+150*an.curX, 100*an.curY, 10, 200, Color.GRAY);
+						canvas.drawBox(shieldX, shieldY,shieldW,shieldH, Color.GRAY);
 					} else {
-						canvas.drawBox(-5+150*an.curX, 100*an.curY-100, 10, 200, Color.GRAY);
+						canvas.drawBox(shieldX, shieldY - tileH,shieldW,shieldH, Color.GRAY);
 					}
 				}
 				break;
 			case STRAIGHT:
 			case DIAGONAL:
-				canvas.drawBox(65+150*an.curX, 40+100*an.curY, 20, 20, color);
+				float diagX = tileW/2 - DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX);
+				float diagY = tileH/2 - DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY);
+				canvas.drawBox(diagX,diagY, DIAGONAL_SIZE, DIAGONAL_SIZE, color);
 				break;
 			default:
 				break;
@@ -431,11 +480,16 @@ public class Character {
 	/**
 	 * Draws health bar 
 	 */
-	private void drawHealth(GameCanvas canvas){
-		float canvasX = 150*xPosition;
-		float canvasY = 270 + 100*yPosition;
-		canvas.drawBox(canvasX, canvasY, 150, 10, Color.WHITE);
-		canvas.drawBox(canvasX, canvasY, (int) (150.*health/maxHealth), 10, color);
+	private void drawHealth(GameCanvas canvas,GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		float tileH = board.getTileHeight(canvas);
+		
+		float charScale = getCharScale(canvas,texture,board);
+		
+		float canvasX = tileW*xPosition;
+		float canvasY = texture.getHeight()*charScale + tileH*yPosition;
+		canvas.drawBox(canvasX, canvasY, tileW, 10, Color.WHITE);
+		canvas.drawBox(canvasX, canvasY, (int) (tileW*health/maxHealth), HEALTH_HEIGHT, color);
 	}
 	
 	/**
