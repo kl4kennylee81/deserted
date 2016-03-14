@@ -45,6 +45,9 @@ public class ActionController {
 	Character selected;
 	/** Shielded coordinates against the selected character */
 	List<Coordinate> shieldedPaths;
+	
+	/** temp for pausing */
+	int i = 110;;
 
 	/**
 	 * Creates a GameplayController for the given models.
@@ -101,21 +104,26 @@ public class ActionController {
 		// If persisting, then add to character 
 		if (a_node.action instanceof PersistingAction){
 			selected.addPersisting(a_node);
+			i = 0;
 			return;
 		}
 		//switch between types of actions
 		switch(a_node.action.pattern){
 			case MOVE:
 				executeMovement(a_node);
+				i = Math.min(110, i);
 				break;
 			case STRAIGHT:
 				executeStraight(a_node);
+				i = 0;
 				break;
 			case DIAGONAL:
 				executeDiagonal(a_node);
+				i = 0;
 				break;
 			case SINGLE:
 				executeSingle(a_node);
+				i = 0;
 				break;
 			case NOP:
 				break;
@@ -351,6 +359,7 @@ public class ActionController {
 	
 	// make isDone true when every character who needs to attack has attacked
 	public boolean isDone() {
-		return isDone;
+		i++;
+		return i==120 && isDone;
 	}
 }

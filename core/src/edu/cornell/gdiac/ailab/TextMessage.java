@@ -61,7 +61,7 @@ public class TextMessage {
 	}
 	
 	public void addSingleTemp(int xPos, int yPos){
-		tempSingles.add(new Message("lol",xPos,yPos,60));
+		tempSingles.add(new Message("lol",xPos,yPos,120));
 	}
 
 	public void draw(GameCanvas canvas){
