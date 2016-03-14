@@ -109,6 +109,7 @@ public class Character {
 		
 		this.availableActions = actions;
 		selectionMenu = new SelectionMenu(availableActions);
+		
 	}
 	
 	/**
@@ -419,7 +420,7 @@ public class Character {
 				break;
 			case STRAIGHT:
 			case DIAGONAL:
-				canvas.drawBox(65+150*an.curX, 40+100*an.curY, 20, 20, Color.GRAY);
+				canvas.drawBox(65+150*an.curX, 40+100*an.curY, 20, 20, color);
 				break;
 			default:
 				break;
@@ -434,7 +435,7 @@ public class Character {
 		float canvasX = 150*xPosition;
 		float canvasY = 270 + 100*yPosition;
 		canvas.drawBox(canvasX, canvasY, 150, 10, Color.WHITE);
-		canvas.drawBox(canvasX, canvasY, (int) (150.*health/maxHealth), 10, Color.GREEN);
+		canvas.drawBox(canvasX, canvasY, (int) (150.*health/maxHealth), 10, color);
 	}
 	
 	/**
@@ -446,6 +447,6 @@ public class Character {
 		float upBar = ActionBar.getBarY(canvas) + TOKEN_OFFSET_UP;
 		float downBar = ActionBar.getBarY(canvas) - TOKEN_OFFSET_DOWN;
 		float canvasY = leftside ? upBar : downBar;
-		canvas.drawTexture(icon, canvasX, canvasY, Color.WHITE);
+		canvas.drawTexture(icon, canvasX, canvasY, color);
 	}
 }

@@ -21,7 +21,7 @@
   name: yellow
   health: 10
   maxHealth: 10
-  hexColor: FFFF00FF
+  hexColor: 3299FFFF
   speed: 0.003
   castSpeed: 0.002
   xPosition: 0
