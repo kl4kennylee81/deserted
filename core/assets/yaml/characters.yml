@@ -3,7 +3,7 @@
   health: 10
   maxHealth: 10
   hexColor: 00EE00FF
-  speed: 0.003
+  speed: 0.002
   castSpeed: 0.003
   xPosition: 0
   yPosition: 0
@@ -22,8 +22,8 @@
   health: 10
   maxHealth: 10
   hexColor: FFFF00FF
-  speed: 0.0025
-  castSpeed: 0.0035
+  speed: 0.003
+  castSpeed: 0.002
   xPosition: 0
   yPosition: 3
   leftSide: true
@@ -32,7 +32,7 @@
     - 1
     - 2
     - 3
-    - 7
+    - 6
   texture: "models/CHARA_2.png"
   icon: "models/CASTICON_2.png"
 
@@ -41,7 +41,7 @@
   health: 10
   maxHealth: 10
   hexColor: CD2626FF
-  speed: 0.0035
+  speed: 0.0025
   castSpeed: 0.0025
   xPosition: 5
   yPosition: 0
@@ -60,8 +60,8 @@
   health: 10
   maxHealth: 10
   hexColor: 8B4513FF
-  speed: 0.002
-  castSpeed: 0.004
+  speed: 0.00275
+  castSpeed: 0.00225
   xPosition: 5
   yPosition: 3
   leftSide: false
@@ -69,7 +69,7 @@
     - 0
     - 1
     - 2
-    - 3
+    - 7
     - 6
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"

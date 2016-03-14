@@ -15,7 +15,7 @@ public class ActionBar {
 	
 	private static final float BAR_DIVIDER_WIDTH = 4f;
 	
-	private static final float CAST_POINT = 0.6f;
+	private static final float CAST_POINT = 0.5f;
 
 	private static final int TOTAL_SLOTS = 4;
 	
