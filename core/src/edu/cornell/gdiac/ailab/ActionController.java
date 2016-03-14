@@ -114,15 +114,12 @@ public class ActionController {
 				break;
 			case STRAIGHT:
 				executeStraight(a_node);
-				i = 0;
 				break;
 			case DIAGONAL:
 				executeDiagonal(a_node);
-				i = 0;
 				break;
 			case SINGLE:
 				executeSingle(a_node);
-				i = 0;
 				break;
 			case NOP:
 				break;
@@ -319,6 +316,7 @@ public class ActionController {
 		//add text bubble for amount of damage in front of target
 		// only add the text damage if any damage has been done
 		if (a_node.action.damage > 0){
+			i = 0;
 			String attack_damage = Integer.toString(a_node.action.damage);
 			textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
 			textMessages.addSingleTemp(target.xPosition,target.yPosition);
