@@ -36,6 +36,12 @@ public class TextMessage {
 			return ((float) current)/duration;
 		}
 	}
+
+	private static final int DAMAGE_OFFSET = 300;
+
+	private static final int OTHER_OFFSET = 320;
+
+	private static final int TIME_TRANSLATION_OFFSET = 25;
 	
 	/** List of messages */
 	List<Message> damageMessages;
@@ -64,17 +70,25 @@ public class TextMessage {
 		tempSingles.add(new Message("lol",xPos,yPos,120));
 	}
 
-	public void draw(GameCanvas canvas){
+	public void draw(GameCanvas canvas,GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		float tileH = board.getTileHeight(canvas);
 		for (Message m : damageMessages){
-			canvas.drawCenteredText(m.text, 75+150*m.xPos, 300+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 2f);
+			float messageX = tileW/2 + tileW*m.xPos;
+			float messageY = tileH*m.yPos + DAMAGE_OFFSET + m.getRatio()*TIME_TRANSLATION_OFFSET;
+			canvas.drawCenteredText(m.text, messageX, messageY, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 2f);
+			//canvas.drawCenteredText(m.text, 75+150*m.xPos, 300+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 2f);
 		}
 		for (Message m : otherMessages){
-			canvas.drawCenteredText(m.text, 75+150*m.xPos, 320+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
+			float messageX = tileW/2 + tileW*m.xPos;
+			float messageY = tileH*m.yPos + OTHER_OFFSET + m.getRatio()*TIME_TRANSLATION_OFFSET;
+			canvas.drawCenteredText(m.text, messageX, messageY, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
+			//canvas.drawCenteredText(m.text, 75+150*m.xPos, 320+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
 		}
 		for (Message m : tempSingles){
 			
-			float xPos = 5+150*m.xPos;
-			float yPos = 5+m.yPos*100;
+			float xPos = 5+m.xPos*tileW;
+			float yPos = 5+m.yPos*tileH;
 			float ratio = m.getRatio();
 			if (ratio < 0.25 || (ratio > 0.5 && ratio < 0.75)){
 				for (int i = 0; i < 5; i++){

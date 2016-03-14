@@ -124,7 +124,7 @@ public class GameplayController {
     	board.draw(canvas);
         bar.draw(canvas);
         drawCharacters(canvas);
-        textMessages.draw(canvas);
+        textMessages.draw(canvas,board);
     }
     
     
@@ -132,19 +132,19 @@ public class GameplayController {
     //This needs to be done so characters below show over characters above and selection menu
     //shows over characters.
     private void drawCharacters(GameCanvas canvas){
-    	for (Character c : characters){
-        	c.draw(canvas);
-        }
     	for (int i = board.height-1; i >= 0; i--){
     		for (Character c : characters){
     			if (c.yPosition == i && c.isAlive()){
-    				c.drawCharacter(canvas);
+    				c.drawCharacter(canvas,board);
     			}
     			if (c.getShadowY() == i && c.needShadow() && c.isAlive()){
-    				c.drawShadowCharacter(canvas);
+    				c.drawShadowCharacter(canvas,board);
     			}
             }
     	}
+    	for (Character c : characters){
+        	c.draw(canvas,board);
+        }
         for (Character c : characters){
         	c.drawSelection(canvas);
         }

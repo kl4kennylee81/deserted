@@ -1,7 +1,7 @@
 - id: 0
   name: green
-  health: 10
-  maxHealth: 10
+  health: 12
+  maxHealth: 12
   hexColor: 00EE00FF
   speed: 0.002
   castSpeed: 0.003
@@ -10,10 +10,9 @@
   leftSide: true
   availableActions: 
     - 0
-    - 4
-    - 5
-    - 7
+    - 2
     - 6
+    - 8
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"
 
@@ -29,12 +28,10 @@
   leftSide: true
   availableActions: 
     - 0
-    - 4
-    - 5
     - 3
-    - 6
-  texture: "models/CHARA_2.png"
-  icon: "models/CASTICON_2.png"
+    - 7
+  texture: "models/CHARA_4.png"
+  icon: "models/CASTICON_4.png"
 
 - id: 2
   name: red

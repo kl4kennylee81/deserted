@@ -12,12 +12,8 @@ public class GridBoard {
 	// In number of tiles
 	int width;
 	int height;
-	int size;
 	float lerpVal = 0;
 	boolean increasing;
-	
-	int xwidth;
-	int yheight;
 	
 	/** Color of a regular tile */
 	private static final Color BASIC_COLOR1 = new Color(0.2f, 0.2f, 1.0f, 1.0f);
@@ -26,6 +22,29 @@ public class GridBoard {
 	private static final Color CAN_TARGET_COLOR = new Color( 1f,  1.0f,  0f, 1.0f);
 	private static final Color HIGHLIGHT_COLOR = new Color( 0.0f,  1.0f,  1.0f, 1.0f);
 	private static final Color ATTACK_COLOR = new Color( 1f, 0f, 0f, 1f);
+	
+	
+	private static final float BOARD_WIDTH = 0.75f;
+	
+	private static final float BOARD_HEIGHT = 0.45f;
+
+	private static final float BOARD_OFFSET = (1-BOARD_WIDTH)/2;
+	
+	public float getTileWidth(GameCanvas canvas){
+		return (canvas.getWidth() * BOARD_WIDTH)/width;
+	}
+	
+	public float getTileHeight(GameCanvas canvas){
+		return (canvas.getHeight() * BOARD_HEIGHT)/height;
+	}
+	
+	public float getBoardOffset(GameCanvas canvas){
+		return BOARD_OFFSET * canvas.getWidth();
+	}
+	
+	public float offsetBoard(GameCanvas canvas,float xPos){
+		return getBoardOffset(canvas) + xPos;
+	}
 	
 	private class Tile {
 		//Currently targeting
@@ -54,17 +73,12 @@ public class GridBoard {
 		this.width = width;
 		this.height = height;
 		lerpVal = 0;
-		size = 100;
 		tiles = new Tile[width][height];
 		for (int x = 0; x < width; x++){
 			for (int y = 0; y < height; y++){
 				tiles[x][y] = new Tile();
 			}
 		}
-		
-		//change to 150 later
-		xwidth = 150;
-		yheight = 100;
 	}
 	
 	public void setTileTexture(Texture mesh) {
@@ -108,11 +122,13 @@ public class GridBoard {
 	 */
 	private void drawTile(int x, int y, GameCanvas canvas) {
 		Tile tile = tiles[x][y];
-
-		// Compute drawing coordinates
 		
-		float sx = xwidth*x;
-		float sy = yheight*y;
+		// Compute drawing coordinates
+		int tileW = (int) getTileWidth(canvas);
+		int tileH = (int) getTileHeight(canvas);
+		
+		float sx = tileW*x + getBoardOffset(canvas);
+		float sy = tileH*y;
 
 		// You can modify the following to change a tile's highlight color.
 		// BASIC_COLOR corresponds to no highlight.
@@ -128,7 +144,6 @@ public class GridBoard {
 		}*/
 		Color color = x<width/2 ? BASIC_COLOR1.cpy() : BASIC_COLOR2.cpy();
 		if (tile.isHighlighted){
-			//System.out.println("dude");
 			color.lerp(HIGHLIGHT_COLOR,lerpVal);
 		} else if (tile.canTarget){
 			color = CAN_TARGET_COLOR;
@@ -139,7 +154,7 @@ public class GridBoard {
 		///////////////////////////////////////////////////////
 
 		// Draw
-		canvas.drawTile(sx, sy, tileMesh, xwidth, yheight,color);
+		canvas.drawTile(sx, sy, tileMesh, tileW, tileH,color);
 	}
 	
 	/**

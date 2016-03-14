@@ -4,14 +4,14 @@ import com.badlogic.gdx.graphics.Color;
 
 public class ActionBar {
 	/** Ratio of the bar width to the screen */
-	private static final float BAR_WIDTH_RATIO  = 0.66f;
+	private static final float BAR_WIDTH_RATIO  = 0.6f;
 	/** Ration of the bar height to the screen */
 	private static final float BAR_HEIGHT_RATIO = 0.025f;	
 	
 	/** the x position of the bar should start at the top 7/8 of the screen **/
-	private static final float BAR_RELATIVE_Y_POS = 0.875f;
+	private static final float BAR_RELATIVE_Y_POS = 0.85f;
 	
-	private static final float BAR_RELATIVE_X_POS = 0.0625f;
+	private static final float BAR_RELATIVE_X_POS = (1-BAR_WIDTH_RATIO)/2;
 	
 	private static final float BAR_DIVIDER_WIDTH = 4f;
 	
@@ -50,6 +50,10 @@ public class ActionBar {
 		float bar_width = getBarWidth(canvas);
 		float cast_point = bar_width * CAST_POINT;
 		return start_x + cast_point;
+	}
+	
+	public static float getRelativeY(){
+		return BAR_RELATIVE_Y_POS;
 	}
 
 	public static float getBarY(GameCanvas canvas){

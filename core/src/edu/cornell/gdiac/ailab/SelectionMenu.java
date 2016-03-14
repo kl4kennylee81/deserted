@@ -18,19 +18,21 @@ public class SelectionMenu {
 	
 	/** Total number of available slots */
 
-	private static final float RELATIVE_TEXT_X_POS = 0.2f;
+	private static final float RELATIVE_TEXT_X_POS = 0.0125f;
 
-	private static final float RELATIVE_TEXT_Y_POS = 0.80f;
+	private static final float RELATIVE_TEXT_Y_POS = 0.45f;
 
 	private static final float RELATIVE_TEXT_SPACING = 0.0625f;
 
-	private static final float ACTION_POINTER_OFFSET_X = 20;
+	private static final float ACTION_POINTER_OFFSET_X = 15;
 
 	private static final float ACTION_POINTER_OFFSET_Y = 15;
 
 	private static final float TEXT_ACTION_OFFSET = 30f;
 
-	private static final float RELATIVE_DESCRIPTION_Y_POS = 0.80f;
+	private static final float RELATIVE_DESCRIPTION_Y_POS = ActionBar.getRelativeY() - 0.1f;
+	
+	private static final float RELATIVE_DESCRIPTION_X_POS = 0.5f;
 
 	/** Currently used up slots */
 	int takenSlots;
@@ -269,8 +271,8 @@ public class SelectionMenu {
 		}
 		
 		//Write description
-		float descript_x = ActionBar.getBarCastPoint(canvas);
+		float descript_x = RELATIVE_DESCRIPTION_X_POS *w;
 		float descript_y = RELATIVE_DESCRIPTION_Y_POS * h;
-		canvas.drawText(actions[selectedAction].description, descript_x,descript_y, Color.BLACK);
+		canvas.drawCenteredText(actions[selectedAction].description, descript_x,descript_y, Color.BLACK);
 	}
 }
