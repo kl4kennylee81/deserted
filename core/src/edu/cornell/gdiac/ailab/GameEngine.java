@@ -163,8 +163,6 @@ public class GameEngine implements Screen {
 	private int centerY;
 	/** The x-coordinate of the center of the progress bar */
 	private int centerX;
-//	/** The height of the canvas window (necessary since sprite origin != screen origin) */
-//	private int heightY;
 	/** Scaling factor for when the student changes the resolution. */
 	private float scale;
 
@@ -223,15 +221,18 @@ public class GameEngine implements Screen {
 		availableActions = new HashMap<Integer, Action>();
 		availableCharacters = new HashMap<Integer, Character>();
 		
+		updateMeasures();
+
+	}
+    
+    public void updateMeasures(){
 		width = (int)(BAR_WIDTH_RATIO*canvas.getWidth());
 		centerY = (int)(BAR_HEIGHT_RATIO*canvas.getHeight());
 		centerX = canvas.getWidth()/2;
-//		heightY = canvas.getHeight();
 		float sx = ((float)canvas.getWidth())/STANDARD_WIDTH;
 		float sy = ((float)canvas.getHeight())/STANDARD_HEIGHT;
 		scale = (sx < sy ? sx : sy);
-
-	}
+    }
     
     /**
      * Probably want a separate Level class later
@@ -440,6 +441,7 @@ public class GameEngine implements Screen {
 	 */
 	public void resize(int width, int height) {
 		canvas.resize();
+		updateMeasures();
 	}
 	
 	/** 

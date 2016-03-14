@@ -21,7 +21,7 @@ public class GridBoard {
 	
 	/** Color of a regular tile */
 	private static final Color BASIC_COLOR1 = new Color(0.2f, 0.2f, 1.0f, 1.0f);
-	private static final Color BASIC_COLOR2 = new Color(1.0f, 0.6f, 0.2f, 1.0f);
+	private static final Color BASIC_COLOR2 = new Color(237f/255f, 92f/255f, 92f/255f, 1.0f);//new Color(1.0f, 0.6f, 0.2f, 1.0f);
 	/** Highlight color for power tiles */
 	private static final Color CAN_TARGET_COLOR = new Color( 1f,  1.0f,  0f, 1.0f);
 	private static final Color HIGHLIGHT_COLOR = new Color( 0.0f,  1.0f,  1.0f, 1.0f);
