@@ -47,7 +47,7 @@ public class ActionController {
 	List<Coordinate> shieldedPaths;
 	
 	/** temp for pausing */
-	int i = 110;;
+	int i = 119;;
 
 	/**
 	 * Creates a GameplayController for the given models.
@@ -80,7 +80,7 @@ public class ActionController {
 			// Execute character's action;
 			ActionNode action = selected.popCast();
 			selected.needsAttack = false;
-			i = Math.min(110, i);
+			i = Math.min(119, i);
 			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
 				executeAction(action);
 			}
@@ -357,6 +357,6 @@ public class ActionController {
 	// make isDone true when every character who needs to attack has attacked
 	public boolean isDone() {
 		i++;
-		return i==120 && isDone;
+		return i>=120 && isDone;
 	}
 }

@@ -121,8 +121,8 @@ public class Character {
 		this.yPosition = this.startingYPosition;
 		
 		/* Randomize for now so that its not always the same thing */
-		this.speed = (float) (Math.random()*0.003 + 0.003);
-		this.castSpeed = (float) (Math.random()*0.004 + 0.002);
+		this.speed = (float) (Math.random()*0.0015 + 0.0015);
+		this.castSpeed = (float) (Math.random()*0.002 + 0.001);
 		
 		this.castPosition = 0;
 		queuedActions.clear();
@@ -406,21 +406,21 @@ public class Character {
 			case SHIELD:
 				if (leftside){
 					if (an.direction == Direction.UP){
-						canvas.drawBox(145+150*an.curX, 100*yPosition, 10, 200, Color.GRAY);
+						canvas.drawBox(145+150*an.curX, 100*an.curY, 10, 200, Color.GRAY);
 					} else {
-						canvas.drawBox(145+150*an.curX, 100*yPosition-100, 10, 200, Color.GRAY);
+						canvas.drawBox(145+150*an.curX, 100*an.curY-100, 10, 200, Color.GRAY);
 					}
 				} else {
 					if (an.direction == Direction.UP){
-						canvas.drawBox(-5+150*an.curX, 100*yPosition, 10, 200, Color.GRAY);
+						canvas.drawBox(-5+150*an.curX, 100*an.curY, 10, 200, Color.GRAY);
 					} else {
-						canvas.drawBox(-5+150*an.curX, 100*yPosition-100, 10, 200, Color.GRAY);
+						canvas.drawBox(-5+150*an.curX, 100*an.curY-100, 10, 200, Color.GRAY);
 					}
 				}
 				break;
 			case STRAIGHT:
 			case DIAGONAL:
-				canvas.drawBox(65+150*an.curX, 40+100*an.curY, 20, 20, Color.GRAY);
+				canvas.drawBox(65+150*an.curX, 40+100*an.curY, 20, 20, color);
 				break;
 			default:
 				break;
