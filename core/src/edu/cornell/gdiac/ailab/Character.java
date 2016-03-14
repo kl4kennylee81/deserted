@@ -405,15 +405,15 @@ public class Character {
 			case SHIELD:
 				if (leftside){
 					if (an.direction == Direction.UP){
-						canvas.drawBox(145+150*an.curX, 100*yPosition, 10, 200, Color.GRAY);
+						canvas.drawBox(145+150*an.curX, 100*an.curY, 10, 200, Color.GRAY);
 					} else {
-						canvas.drawBox(145+150*an.curX, 100*yPosition-100, 10, 200, Color.GRAY);
+						canvas.drawBox(145+150*an.curX, 100*an.curY-100, 10, 200, Color.GRAY);
 					}
 				} else {
 					if (an.direction == Direction.UP){
-						canvas.drawBox(-5+150*an.curX, 100*yPosition, 10, 200, Color.GRAY);
+						canvas.drawBox(-5+150*an.curX, 100*an.curY, 10, 200, Color.GRAY);
 					} else {
-						canvas.drawBox(-5+150*an.curX, 100*yPosition-100, 10, 200, Color.GRAY);
+						canvas.drawBox(-5+150*an.curX, 100*an.curY-100, 10, 200, Color.GRAY);
 					}
 				}
 				break;
