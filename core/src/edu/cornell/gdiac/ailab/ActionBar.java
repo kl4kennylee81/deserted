@@ -17,7 +17,7 @@ public class ActionBar {
 	
 	private static final float CAST_POINT = 0.6f;
 
-	private static final int TOTAL_SLOTS = 5;
+	private static final int TOTAL_SLOTS = 4;
 	
 	public float castPoint;
 	
@@ -89,6 +89,7 @@ public class ActionBar {
 			float intervalSize = (widthBar*(1-castPoint))/TOTAL_SLOTS;
 			float startCastX = xPosBar + nonActWidth;
 			canvas.drawBox(startCastX + i*intervalSize, yPosBar, BAR_DIVIDER_WIDTH, heightBar, Color.BLACK);
-		}
+		}	
+		
 	}
 }

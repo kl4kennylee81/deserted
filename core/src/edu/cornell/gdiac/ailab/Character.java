@@ -442,7 +442,7 @@ public class Character {
 	 * @param canvas
 	 */
 	private void drawToken(GameCanvas canvas){
-		float canvasX = ActionBar.getBarX(canvas) + ActionBar.getBarWidth(canvas)*castPosition;
+		float canvasX = ActionBar.getBarX(canvas) + ActionBar.getBarWidth(canvas)*castPosition - icon.getWidth()/2;
 		float upBar = ActionBar.getBarY(canvas) + TOKEN_OFFSET_UP;
 		float downBar = ActionBar.getBarY(canvas) - TOKEN_OFFSET_DOWN;
 		float canvasY = leftside ? upBar : downBar;
