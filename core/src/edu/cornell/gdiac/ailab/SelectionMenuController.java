@@ -296,19 +296,19 @@ public class SelectionMenuController {
 	
 	public void drawStraight(){
 		if (leftside) {
-			for (int i = shadowX+1; i < boardWidth; i++){
+			for (int i = 1; i <= action.range; i++){
 				if (choosingTarget){
-					board.setHighlighted(i,shadowY);
+					board.setHighlighted(shadowX+i,shadowY);
 				} else {
-					board.setCanTarget(i, shadowY);
+					board.setCanTarget(shadowX+i, shadowY);
 				}
 			}
 		} else {
-			for (int i = shadowX-1; i >= 0; i--){
+			for (int i = 1; i <= action.range; i++){
 				if (choosingTarget){
-					board.setHighlighted(i,shadowY);
+					board.setHighlighted(shadowX-i,shadowY);
 				} else {
-					board.setCanTarget(i, shadowY);
+					board.setCanTarget(shadowX-i, shadowY);
 				}
 			}
 		}
@@ -354,12 +354,12 @@ public class SelectionMenuController {
 	public void drawDiagonal(){
 		if (leftside){
 			shadowX++;
-			for (int i = 0; i < boardHeight; i++){
+			for (int i = 0; i < action.range; i++){
 				board.setCanTarget(shadowX+i, shadowY+i);
 				board.setCanTarget(shadowX+i, shadowY-i);
 			}
 			if (choosingTarget){
-				for (int i = 0; i < boardHeight; i++){
+				for (int i = 0; i < action.range; i++){
 					if (direction == Direction.UP){
 						board.setHighlighted(shadowX+i, shadowY+i);
 					} else {
@@ -369,12 +369,12 @@ public class SelectionMenuController {
 			}
 		} else {
 			shadowX--;
-			for (int i = 0; i < boardHeight; i++){
+			for (int i = 0; i < action.range; i++){
 				board.setCanTarget(shadowX-i, shadowY+i);
 				board.setCanTarget(shadowX-i, shadowY-i);
 			}
 			if (choosingTarget){
-				for (int i = 0; i < boardHeight; i++){
+				for (int i = 0; i < action.range; i++){
 					if (direction == Direction.UP){
 						board.setHighlighted(shadowX-i, shadowY+i);
 					} else {
