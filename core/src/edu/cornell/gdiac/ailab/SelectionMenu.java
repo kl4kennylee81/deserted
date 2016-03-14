@@ -18,13 +18,13 @@ public class SelectionMenu {
 	
 	/** Total number of available slots */
 
-	private static final float RELATIVE_TEXT_X_POS = 0.01f;
+	private static final float RELATIVE_TEXT_X_POS = 0.0125f;
 
 	private static final float RELATIVE_TEXT_Y_POS = 0.45f;
 
 	private static final float RELATIVE_TEXT_SPACING = 0.0625f;
 
-	private static final float ACTION_POINTER_OFFSET_X = 20;
+	private static final float ACTION_POINTER_OFFSET_X = 15;
 
 	private static final float ACTION_POINTER_OFFSET_Y = 15;
 
