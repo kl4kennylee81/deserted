@@ -27,6 +27,8 @@ public class GridBoard {
 	private static final float BOARD_WIDTH = 0.8f;
 	
 	private static final float BOARD_HEIGHT = 0.45f;
+
+	private static final float BOARD_OFFSET = (1-BOARD_WIDTH)/2;
 	
 	public float getTileWidth(GameCanvas canvas){
 		return (canvas.getWidth() * BOARD_WIDTH)/width;
@@ -36,6 +38,13 @@ public class GridBoard {
 		return (canvas.getHeight() * BOARD_HEIGHT)/height;
 	}
 	
+	public float getBoardOffset(GameCanvas canvas){
+		return BOARD_OFFSET * canvas.getWidth();
+	}
+	
+	public float offsetBoard(GameCanvas canvas,float xPos){
+		return getBoardOffset(canvas) + xPos;
+	}
 	
 	private class Tile {
 		//Currently targeting
@@ -113,12 +122,12 @@ public class GridBoard {
 	 */
 	private void drawTile(int x, int y, GameCanvas canvas) {
 		Tile tile = tiles[x][y];
-
+		
 		// Compute drawing coordinates
 		int tileW = (int) getTileWidth(canvas);
 		int tileH = (int) getTileHeight(canvas);
 		
-		float sx = tileW*x;
+		float sx = tileW*x + getBoardOffset(canvas);
 		float sy = tileH*y;
 
 		// You can modify the following to change a tile's highlight color.

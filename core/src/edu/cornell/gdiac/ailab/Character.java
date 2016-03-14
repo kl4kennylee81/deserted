@@ -363,7 +363,7 @@ public class Character {
 		}
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
-		float canvasX = tileW*xPosition;
+		float canvasX = board.offsetBoard(canvas,tileW*xPosition);
 		float canvasY = tileH*yPosition;
 		
 		/** maybe highlight character? */
@@ -379,7 +379,7 @@ public class Character {
 	public void drawShadowCharacter(GameCanvas canvas,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
-		float canvasX = tileW*getShadowX();
+		float canvasX = board.offsetBoard(canvas,tileW*getShadowX());
 		float canvasY = tileH*getShadowY();
 		
 		float charScale = getCharScale(canvas,texture,board);
@@ -413,7 +413,7 @@ public class Character {
 			float arrowOffY = (tileH - SHADOW_ARROW_WIDTH)/2;
 			if (nowX != tempX && nowY == tempY){
 				int minX = Math.min(nowX, tempX);
-				float arrowX = arrowOffX + (tileW *minX);
+				float arrowX = board.offsetBoard(canvas,arrowOffX + (tileW *minX));
 				float arrowY = arrowOffY + (tileH *nowY);
 				float arrowWidth = tileW + SHADOW_ARROW_WIDTH;
 				float arrowHeight = SHADOW_ARROW_WIDTH;
@@ -421,7 +421,7 @@ public class Character {
 				//canvas.drawBox(72 + 150*minX, 47 + 100*nowY, 156, 6, Color.BLACK);
 			} else if (nowY != tempY && nowX == tempX){
 				int minY = Math.min(nowY, tempY);
-				float arrowX = arrowOffX + (tileW *nowX);
+				float arrowX = board.offsetBoard(canvas,arrowOffX + (tileW *nowX));
 				float arrowY = arrowOffY + (tileH *minY);
 				float arrowWidth = SHADOW_ARROW_WIDTH;
 				float arrowHeight = tileH + SHADOW_ARROW_WIDTH;
@@ -447,7 +447,7 @@ public class Character {
 				int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
 				int shieldH = (int)(tileH * SHIELD_LENGTH);
 				if (leftside){
-					int shieldX = (int)(tileW - SHIELD_OFFSET + (tileW*an.curX));
+					int shieldX = (int)board.offsetBoard(canvas,tileW - SHIELD_OFFSET + (tileW*an.curX));
 					int shieldY = (int)(tileH *an.curY);
 					if (an.direction == Direction.UP){
 						canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
@@ -456,7 +456,7 @@ public class Character {
 						//canvas.drawBox(145+150*an.curX, 100*an.curY-100, 10, 200, Color.GRAY);
 					}
 				} else {
-					int shieldX = (int)(-SHIELD_OFFSET + (tileW*an.curX));
+					int shieldX = (int)board.offsetBoard(canvas,-SHIELD_OFFSET + (tileW*an.curX));
 					int shieldY = (int)(tileH *an.curY);
 					if (an.direction == Direction.UP){
 						canvas.drawBox(shieldX, shieldY,shieldW,shieldH, Color.GRAY);
@@ -486,7 +486,7 @@ public class Character {
 		
 		float charScale = getCharScale(canvas,texture,board);
 		
-		float canvasX = tileW*xPosition;
+		float canvasX = board.offsetBoard(canvas,tileW*xPosition);
 		float canvasY = texture.getHeight()*charScale + tileH*yPosition;
 		canvas.drawBox(canvasX, canvasY, tileW, 10, Color.WHITE);
 		canvas.drawBox(canvasX, canvasY, (int) (tileW*health/maxHealth), HEALTH_HEIGHT, color);
