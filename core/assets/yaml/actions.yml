@@ -113,7 +113,7 @@
 
 - id: 8
   name : Slash
-  cost: 3
+  cost: 4
   damage: 4
   range: 3
   pattern: STRAIGHT

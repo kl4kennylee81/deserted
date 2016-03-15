@@ -31,11 +31,13 @@ public class PersistingController extends ActionController{
 				selected = c;
 				updateShieldedPath();
 				List<ActionNode> actionNodes = c.getPersistingActions();
-				for (ActionNode an : actionNodes){
+				for (int i=0;i<actionNodes.size();i++){
+					ActionNode an = actionNodes.get(i);
 					selectedActionNode = an;
 					executeAction();
 					an.castPoint += 1;
 					if (an.castPoint >= ((PersistingAction) an.action).castLength){
+						System.out.println("no problems?");
 						c.popPersistingCast(an);
 					}
 				}
@@ -88,6 +90,7 @@ public class PersistingController extends ActionController{
 			if (isHit(c,curIntX,curIntY) || isHit(c,prevIntX,prevIntY)){
 				processHit(selectedActionNode,c);
 				selected.popPersistingCast(selectedActionNode);
+				System.out.println("no problems2?");
 				break;
 			}
 		}
