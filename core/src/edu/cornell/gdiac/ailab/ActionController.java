@@ -24,7 +24,8 @@ import java.util.List;
 import edu.cornell.gdiac.ailab.Character;
 import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.ActionNode.Direction;
+import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 
 import com.badlogic.gdx.graphics.*;
 
@@ -87,7 +88,11 @@ public class ActionController {
 			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
 				executeAction(action);
 			}
+			else{
+				action.free();
+			}
 			selected = null;
+
 		} else {
 			isDone = true;
 			//Sort characters by speed then check their attacks
@@ -264,6 +269,7 @@ public class ActionController {
 			selected.xPosition = nextX;
 			selected.yPosition = nextY;
 		}
+		a_node.free();
 	}
 	
 	private void executeStraight(ActionNode a_node){
@@ -298,6 +304,9 @@ public class ActionController {
 				}
 			}
 		}
+		if (!hasHit){
+			a_node.free();
+		}
 	}
 	
 	private void executeSingle(ActionNode a_node){
@@ -307,6 +316,7 @@ public class ActionController {
 				break;
 			}
 		}
+		a_node.free();
 	}
 	
 	protected void processHit(ActionNode a_node,Character target){
@@ -338,12 +348,14 @@ public class ActionController {
 			//handle interruption
 			// if an attack does 0 damage it doesn't interrupt for example slows
 			if (nextAttack != null && !nextAttack.isInterrupted){
+				System.out.println("interrupted");
 				nextAttack.isInterrupted = true;
 				if (nextAttack.action.pattern != Pattern.MOVE){
 					textMessages.addOtherMessage("INTERRUPTED", target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.RED);
 				}
 			}
 		}
+		a_node.free();
 	}
 	
 	protected void applyDamage(ActionNode a_node,Character target){

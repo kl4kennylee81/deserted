@@ -9,7 +9,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.ActionNode.Direction;
+import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 
 public class Character {
@@ -204,7 +205,7 @@ public class Character {
 	boolean needShadow() {
 		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
 		for (ActionNode an : actions){
-			if (an.action.pattern == Pattern.MOVE){
+			if (an.action!= null && an.action.pattern == Pattern.MOVE){
 				return needsShadow;
 			}
 		}
@@ -266,9 +267,10 @@ public class Character {
 	
 	void popPersistingCast(ActionNode an){
 		persistingActions.remove(an);
-		if (an.action.pattern == Pattern.SHIELD){
+		if (an.action != null && an.action.pattern == Pattern.SHIELD){
 			resetShieldedCoordinates();
 		}
+		an.free();
 	}
 	
 	List<ActionNode> getPersistingActions(){
@@ -315,7 +317,7 @@ public class Character {
 		int shadY = yPosition;
 		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
 		for (ActionNode an : actions){
-			if (an.action.pattern == Pattern.MOVE){
+			if (an.action != null && an.action.pattern == Pattern.MOVE){
 				if (an.direction == Direction.UP){
 					shadY++;
 				} else if (an.direction == Direction.DOWN){

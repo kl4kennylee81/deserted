@@ -7,6 +7,7 @@ import java.util.List;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
+import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.TextMessage.Message;
 
 public class GameplayController {
@@ -31,6 +32,13 @@ public class GameplayController {
     
     /** Current state of game */
     private InGameState inGameState;
+    
+    /** pool of action Nodes **/
+    public static ActionNodes PoolActionNodes = new ActionNodes();
+    
+    public static ActionNodes getActionNodePool(){
+    	return PoolActionNodes;
+    }
     
     public static enum InGameState {
 		NORMAL,

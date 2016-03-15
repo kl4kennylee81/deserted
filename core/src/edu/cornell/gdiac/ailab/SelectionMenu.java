@@ -6,6 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.graphics.Color;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
+import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.mesh.TexturedMesh;
 
 public class SelectionMenu {
@@ -92,6 +93,7 @@ public class SelectionMenu {
 		ActionNode an = selectedActions.pollLast();
 		if (an != null) {
 			takenSlots -= an.action.cost;
+			an.free();
 		}
 		return an;
 	}
@@ -200,7 +202,10 @@ public class SelectionMenu {
 		selectedAction = 0;
 		takenSlots = 0;
 		choosingTarget = false;
-		selectedActions.clear();
+		while(selectedActions.peek() != null){
+			ActionNode freeAction = selectedActions.poll();
+			freeAction.free();
+		}
 	}
 	
 	public void draw(GameCanvas canvas){
