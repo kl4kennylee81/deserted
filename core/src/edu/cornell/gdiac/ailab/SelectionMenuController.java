@@ -106,7 +106,7 @@ public class SelectionMenuController {
 	 * Update when an action is not targeting yet
 	 */
 	private void updateNotChoosingTarget(){
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		if (InputController.pressedEnter()){
 			selected.setSelecting(false);
 			selected.setQueuedActions(menu.getQueuedActions());
@@ -168,7 +168,7 @@ public class SelectionMenuController {
 	}
 	
 	private void updateChoosingTarget(){
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		switch (action.pattern){
 		case SINGLE:
 			updateChoosingSingle();

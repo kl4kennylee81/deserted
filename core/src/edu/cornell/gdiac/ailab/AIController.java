@@ -215,7 +215,7 @@ public class AIController {
 		ArrayList<ActionNode> nodes = new ArrayList<ActionNode>();
 		int curX = selected.xPosition + xOffset;
 		int curY = selected.yPosition + yOffset;
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		if(isSafe(curX + 1, curY)){
 			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
 		}
@@ -243,7 +243,7 @@ public class AIController {
 		ArrayList<ActionNode> nodes = new ArrayList<ActionNode>();
 		int curX = selected.xPosition + xOffset;
 		int curY = selected.yPosition + yOffset;
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		if(canHitSomeone(curX + 1, curY) && ownSide(curX + 1)){
 			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
 		}
@@ -269,7 +269,7 @@ public class AIController {
 		ArrayList<ActionNode> nodes = new ArrayList<ActionNode>();
 		int curX = selected.xPosition + xOffset;
 		int curY = selected.yPosition + yOffset;
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		if(board.isInBounds(curX + 1, curY) && ownSide(curX + 1) ){
 			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
 		}
@@ -319,7 +319,7 @@ public class AIController {
 	 * a straight attack from the AI's current position.
 	 */
 	public void addStraight(Action a, ArrayList<ActionNode> attacks){
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		//attacks.add(new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0));
 		for(Character c: chars){
 			if(!c.isAI && c.yPosition == selected.yPosition + yOffset && c.isAlive()){
@@ -333,7 +333,7 @@ public class AIController {
 	 * a diagonal attack from the AI's current position.
 	 */
 	public void addDiagonal(Action a, ArrayList<ActionNode> attacks){
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		for(Character c: chars){
 			if(!c.isAI & c.isAlive() && canHitDiagonal(
 					selected.xPosition + xOffset, 
@@ -351,7 +351,7 @@ public class AIController {
 	 * available projectile attacks
 	 */
 	public ActionNode randomProjectile(){
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		for(Action a: selected.availableActions){
 			switch (a.pattern){
 				case STRAIGHT:
@@ -395,7 +395,7 @@ public class AIController {
 	 * Adds a single attack ActionNode to attacks for every enemy.
 	 */
 	public void addSingle(Action a, ArrayList<ActionNode> attacks){
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		for(Character c: chars){
 			if(!c.isAI && c.isAlive()){
 				attacks.add(anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost -1)), c.xPosition, c.yPosition, Direction.NONE));
@@ -407,7 +407,7 @@ public class AIController {
 	 * Returns an ActionNode which does a single square attack on a randomly selected enemy.
 	 */
 	public ActionNode getSingle(){
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		ArrayList<ActionNode> attacks = new ArrayList<ActionNode>();
 		for(Action a: selected.availableActions){
 			switch (a.pattern){
@@ -431,7 +431,7 @@ public class AIController {
 	 * Returns either a single square attack or a projectile based on the risk parameter
 	 */
 	public ActionNode getAttack(float risk){
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		float f = (float) Math.random();
 		if(f < risk && hasSingle){
 			return getSingle();
@@ -449,7 +449,7 @@ public class AIController {
 	 * Returns a shield action node if available. Otherwise, returns a movement.
 	 */
 	public ActionNode getShield(){
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		for(Action a: selected.availableActions){
 			switch (a.pattern){
 				case SHIELD:
@@ -467,7 +467,7 @@ public class AIController {
 	}
 	
 	public ActionNode randomAction(){
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		ArrayList<ActionNode> actions = new ArrayList<ActionNode>();
 		for(Action a: selected.availableActions){
 			switch (a.pattern){
@@ -508,7 +508,7 @@ public class AIController {
 	 * aggression and risk parameters.
 	 */
 	public ActionNode getAction(float aggression, float risk, float defensiveness, float intelligence){
-		ActionNodes anPool = GameplayController.getActionNodePool();
+		ActionNodes anPool = ActionNodes.getInstance();
 		ActionNode action;
 		if(curSlot == 4){
 			float r = (float) Math.random();

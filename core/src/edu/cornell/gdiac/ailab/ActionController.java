@@ -348,7 +348,6 @@ public class ActionController {
 			//handle interruption
 			// if an attack does 0 damage it doesn't interrupt for example slows
 			if (nextAttack != null && !nextAttack.isInterrupted){
-				System.out.println("interrupted");
 				nextAttack.isInterrupted = true;
 				if (nextAttack.action.pattern != Pattern.MOVE){
 					textMessages.addOtherMessage("INTERRUPTED", target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.RED);

@@ -113,7 +113,6 @@ public class ActionNodes{
 		public void free() {
 			if (!this.isFreed){
 				memory.free(this);
-				System.out.println("freed size "+memory.getFree());
 			}
 		}
 	}
@@ -132,17 +131,23 @@ public class ActionNodes{
 		}
 	}
 	
+	/** this makes the actionNodes into a singleton **/
+	private static ActionNodes PoolActionNodes = null;
+	
 	private Pool<ActionNode> memory;
 	
-	private int size;
+	public static ActionNodes getInstance() {
+		if (PoolActionNodes == null) {
+			PoolActionNodes = new ActionNodes();
+		}
+		return PoolActionNodes;
+	}
 	
 	public ActionNodes(){
 		memory = new ActionNodePool();
-		size = 0;
 	}
 	
 	public ActionNode obtain(){
-		System.out.println(memory.getFree());
 		return memory.obtain();
 	}
 	
