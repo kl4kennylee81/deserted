@@ -46,6 +46,9 @@ public class ActionController {
 	/** Shielded coordinates against the selected character */
 	List<Coordinate> shieldedPaths;
 	
+	/** pooled supply of actionNodes that are now reuseable **/
+	
+	
 	/** temp for pausing */
 	int i = 119;;
 
@@ -318,13 +321,18 @@ public class ActionController {
 			textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
 			textMessages.addSingleTemp(target.xPosition,target.yPosition);
 			ActionNode nextAttack = target.queuedActions.peek();
-		
+			
+			LinkedList<ActionNode> temp = new LinkedList<ActionNode>();
 			// handle breaking of shield
 			// only if damage was greater than 0
 			for (ActionNode an:target.persistingActions){
 				if (an.action.pattern == Pattern.SHIELD){
-					target.popPersistingCast(an);
+					temp.add(an);
 				}
+			}
+			// have to avoid concurrent modification exception can't remove while iterating
+			for (ActionNode an: temp){
+				target.popPersistingCast(an);
 			}
 		
 			//handle interruption

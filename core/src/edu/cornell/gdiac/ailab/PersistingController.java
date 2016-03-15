@@ -37,7 +37,6 @@ public class PersistingController extends ActionController{
 					executeAction();
 					an.castPoint += 1;
 					if (an.castPoint >= ((PersistingAction) an.action).castLength){
-						System.out.println("no problems?");
 						c.popPersistingCast(an);
 					}
 				}
@@ -90,7 +89,6 @@ public class PersistingController extends ActionController{
 			if (isHit(c,curIntX,curIntY) || isHit(c,prevIntX,prevIntY)){
 				processHit(selectedActionNode,c);
 				selected.popPersistingCast(selectedActionNode);
-				System.out.println("no problems2?");
 				break;
 			}
 		}
