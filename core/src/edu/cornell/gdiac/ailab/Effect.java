@@ -30,6 +30,8 @@ public class Effect {
 		REGULAR
 	}
 	
+	public static float FRAMES_PER_SECOND = 60;
+	
 	public Effect(int d, Type t, float mag){
 		framesLeft = d;
 		type = t;
@@ -41,6 +43,10 @@ public class Effect {
 	/** Always use this when adding an effect to a character from an actionNode */
 	public Effect clone(){
 		return new Effect(framesLeft, type, magnitude);
+	}
+	
+	public static float getSecondtoFrames(float sec){
+		return sec*FRAMES_PER_SECOND;
 	}
 	
 	public String toString(){

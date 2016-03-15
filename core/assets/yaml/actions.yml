@@ -6,7 +6,7 @@
   pattern: MOVE
   effect: 
     type: REGULAR
-    duration: 0
+    duration: 0.0
     magnitude: 0.0
   description: Move your character one unit
 
@@ -19,7 +19,7 @@
   pattern: STRAIGHT
   effect: 
     type: REGULAR
-    duration: 0
+    duration: 0.0
     magnitude: 0.0
   description: Instant straight attack
 
@@ -32,7 +32,7 @@
   pattern: DIAGONAL
   effect: 
     type: REGULAR
-    duration: 0
+    duration: 0.0
     magnitude: 0.0
   description: Instnat diagonal attack
 
@@ -45,7 +45,7 @@
   pattern: SINGLE
   effect: 
     type: REGULAR
-    duration: 0
+    duration: 0.0
     magnitude: 0.0
   description: Target a single square for 4 damage
 
@@ -59,11 +59,11 @@
   pattern: STRAIGHT
   effect: 
     type: REGULAR
-    duration: 0
+    duration: 0.0
     magnitude: 0.0
   description: Launch a projectile straight ahead for 2 damage
   persisting_action: 
-    castLength: 100
+    castLength: 3.0
     moveSpeed: 0.05
 
 - id: 5
@@ -74,11 +74,11 @@
   pattern: DIAGONAL
   effect: 
     type: REGULAR
-    duration: 0
+    duration: 0.0
     magnitude: 0.0
   description: Launch a projectile diagonally up or down for 2 damage
   persisting_action: 
-    castLength: 100
+    castLength: 3.0
     moveSpeed: 0.025
 
 
@@ -90,11 +90,11 @@
   pattern: SHIELD
   effect: 
     type: REGULAR
-    duration: 0
+    duration: 0.0
     magnitude: 0.0
   description: Creates a 2-tile wide shield (Cannot move after)
   persisting_action: 
-    castLength: 360
+    castLength: 6.0
     moveSpeed: 0.0
     
 - id: 7
@@ -105,7 +105,7 @@
   pattern: SINGLE
   effect:
     type: SLOW
-    duration: 360
+    duration: 6.0
     magnitude: 0.5
   description: Target a single square to slow down enemy
 
@@ -117,7 +117,7 @@
   pattern: STRAIGHT
   effect:
     type: SLOW
-    duration: 360
+    duration: 4.0
     magnitude: 0.25
   description: Target a single square to slow down enemy
 ...

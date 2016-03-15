@@ -76,7 +76,6 @@ public class Coordinates {
 	}
 	
 	public Coordinate obtain(){
-		System.out.println("obtain "+ memory.getFree());
 		return memory.obtain();
 	}
 	
