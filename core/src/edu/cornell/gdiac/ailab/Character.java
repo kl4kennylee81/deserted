@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 
@@ -140,6 +141,10 @@ public class Character {
 		this.castPosition = 0;
 		queuedActions.clear();
 		persistingActions.clear();
+
+		for (Coordinate c:shieldedCoordinates){
+			c.free();
+		}
 		shieldedCoordinates.clear();
 		
 		selectionMenu.reset();
@@ -224,13 +229,19 @@ public class Character {
 	 * Reset coordinates that are shielded by this character 
 	 */
 	private void resetShieldedCoordinates(){
+		Coordinates coordPool = Coordinates.getInstance();
+		// add coordinates back to the pool
+		for (Coordinate c: shieldedCoordinates){
+			c.free();
+		}
 		shieldedCoordinates.clear();
+
 		for (ActionNode an : persistingActions){
 			if (an.action.pattern == Pattern.SHIELD){
 				int tempX = an.getCurrentX();
 				int tempY = an.getCurrentY();
-				shieldedCoordinates.add(new Coordinate(tempX,tempY));
-				shieldedCoordinates.add(new Coordinate(tempX, an.direction == Direction.DOWN ? tempY-1 : tempY+1));
+				shieldedCoordinates.add(coordPool.newCoordinate(tempX,tempY));
+				shieldedCoordinates.add(coordPool.newCoordinate(tempX, an.direction == Direction.DOWN ? tempY-1 : tempY+1));
 			}
 		}
 	}
