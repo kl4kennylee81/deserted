@@ -22,6 +22,8 @@ import edu.cornell.gdiac.util.*;
  * An input controller for the human player
  */
 public class InputController {
+	
+	public static GameCanvas canvas;
     
     public static boolean pressedEnter() {
     	return Gdx.input.isKeyJustPressed(Input.Keys.ENTER);
@@ -83,4 +85,17 @@ public class InputController {
     public static boolean pressedRight() {
     	return Gdx.input.isKeyJustPressed(Input.Keys.RIGHT);
     }
+
+	public static void setCanvas(GameCanvas canvas) {
+		InputController.canvas = canvas;
+		
+	}
+
+	public static float getMouseX() {
+		return Gdx.input.getX();
+	}
+
+	public static float getMouseY() {
+		return canvas.getHeight() - Gdx.input.getY();
+	}
 }

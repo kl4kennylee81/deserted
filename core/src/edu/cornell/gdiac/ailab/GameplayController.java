@@ -21,12 +21,15 @@ public class GameplayController {
     private AIController aiController;
     /** Subcontroller for managing effects */
     private EffectController effectController;
+    /** Subcontroller for managing mouse over highlighting */
+    private MouseOverController mouseOverController;
 	
 	/** Current Models */
     private GridBoard board;
     private List<Character> characters;
     private ActionBar bar;
     private TextMessage textMessages;
+    private HighlightScreen screen;
     
     /** Current state of game */
     private InGameState inGameState;
@@ -52,6 +55,7 @@ public class GameplayController {
         board = new GridBoard(boardWidth,boardHeight);
         board.setTileTexture(boardMesh);
         this.characters = characters;
+        screen = new HighlightScreen();
         
         textMessages = new TextMessage();
         
@@ -64,15 +68,18 @@ public class GameplayController {
         aiController = new AIController(board,characters,bar);
         persistingController = new PersistingController(board,characters,bar,textMessages);
         effectController = new EffectController(characters);
+        mouseOverController = new MouseOverController(characters, screen);
         
 	}
     
     public void update(){
+    	screen.noScreen();
     	switch(inGameState){
     	case NORMAL:
     		effectController.update();
     		actionBarController.update();
     		persistingController.update();
+    		mouseOverController.update();
     		if (actionBarController.isAISelection) {
     			aiController.update();
     		}
@@ -83,6 +90,8 @@ public class GameplayController {
     		}
     		break;
     	case SELECTION:
+//    		screen.setJustScreen();
+    		mouseOverController.clearAll();
     		selectionMenuController.update();
     		if (selectionMenuController.isDone()){
     			inGameState = InGameState.NORMAL;
@@ -124,6 +133,9 @@ public class GameplayController {
         bar.draw(canvas);
         drawCharacters(canvas);
         textMessages.draw(canvas,board);
+        //screen should be drawn after greyed out characters
+        //but before selected characters
+        screen.draw(canvas);
     }
     
     
@@ -134,7 +146,8 @@ public class GameplayController {
     	for (int i = board.height-1; i >= 0; i--){
     		for (Character c : characters){
     			if (c.yPosition == i && c.isAlive()){
-    				c.drawCharacter(canvas,board);
+    				c.drawCharacter(canvas,board,  inGameState == InGameState.SELECTION || 
+    						mouseOverController.isCharacterHighlighted());
     			}
     			if (c.getShadowY() == i && c.needShadow() && c.isAlive()){
     				c.drawShadowCharacter(canvas,board);

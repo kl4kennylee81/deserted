@@ -40,6 +40,8 @@ public class Character {
 	float speed;
 	/** Speed when moving through cast par of bar */
 	float castSpeed;
+	private final int CANVAS_X_MULTIPLIER = 150;
+	private final int CANVAS_Y_MULTIPLIER = 100;
 	
 	/** Current x position */
 	int xPosition;
@@ -92,6 +94,7 @@ public class Character {
 	/** For highlighting character */
 	float lerpVal = 0;
 	boolean increasing;
+	private boolean isHovering;
 	
 	/**Constructor used by GameEngine to create characters from yaml input. */
 	public Character (Texture texture, Texture icon, String name, int health, int maxHealth, Color color, 
@@ -125,6 +128,23 @@ public class Character {
 		selectionMenu = new SelectionMenu(availableActions);
 		
 	}
+	
+	public float getXMin(){
+		return CANVAS_X_MULTIPLIER*xPosition;
+	}
+	
+	public float getYMin(){
+		return CANVAS_Y_MULTIPLIER*yPosition;
+	}
+	
+	public float getXMax(){
+		return CANVAS_X_MULTIPLIER*xPosition + texture.getWidth();
+	}
+	
+	public float getYMax(){
+		return CANVAS_Y_MULTIPLIER*yPosition + texture.getHeight();
+	}
+	
 	
 	/**
 	 * Resets a character back to starting data
@@ -362,7 +382,7 @@ public class Character {
 		return (tileW*CHARACTER_PROPORTION)/texture.getWidth();
 	}
 	
-	public void drawCharacter(GameCanvas canvas,GridBoard board){
+	public void drawCharacter(GameCanvas canvas,GridBoard board, boolean shouldDim){
 		if (increasing){
 			lerpVal+=0.01;
 			if (lerpVal >= 0.5){
@@ -376,14 +396,19 @@ public class Character {
 		}
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
-		float canvasX = board.offsetBoard(canvas,tileW*xPosition);
-		float canvasY = tileH*yPosition;
+//		float canvasX = board.offsetBoard(canvas,tileW*xPosition);
+//		float canvasY = tileH*yPosition;
+		float canvasX = CANVAS_X_MULTIPLIER*xPosition;
+		float canvasY = CANVAS_Y_MULTIPLIER*yPosition;
 		
 		/** maybe highlight character? */
-		Color col = isSelecting ? Color.WHITE.cpy().lerp(Color.GREEN, lerpVal) : Color.WHITE;
-		
-		float charScale = getCharScale(canvas,texture,board);
-		canvas.drawCharacter(texture, canvasX, canvasY, col, leftside,charScale);
+		Color newColor = new Color(Color.WHITE);
+		if (shouldDim) {
+			newColor.set(newColor.r, newColor.g, newColor.b, 0.5f);
+		}
+		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
+		col = isHovering ? color : col;
+		canvas.drawCharacter(texture, canvasX, canvasY, col, leftside);
 	}
 	
 	/**
@@ -514,6 +539,19 @@ public class Character {
 		float upBar = ActionBar.getBarY(canvas) + TOKEN_OFFSET_UP;
 		float downBar = ActionBar.getBarY(canvas) - TOKEN_OFFSET_DOWN;
 		float canvasY = leftside ? upBar : downBar;
-		canvas.drawTexture(icon, canvasX, canvasY, color);
+		boolean selecting = isSelecting || isHovering;
+		canvasY = selecting && !leftside ? canvasY-icon.getHeight() : canvasY;//change to bar.getHeight
+		canvas.drawTexture(icon, canvasX, canvasY, selecting? new Color(color.r,color.g,color.b,0.8f) : 
+			Color.WHITE, selecting);
+	}
+
+	public void removeHovering() {
+		isHovering = false;
+		
+	}
+
+	public void setHovering() {
+		isHovering = true;
+		
 	}
 }

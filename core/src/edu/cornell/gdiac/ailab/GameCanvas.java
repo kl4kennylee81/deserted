@@ -783,10 +783,19 @@ public class GameCanvas {
 		//TODO: change resizing in the long run
 	}	
 	
+	public void drawScreen(float sx, float sy, Texture screen,float x_size, float y_size, 
+			Color tint){
+		spriteBatch.setColor(tint);
+		spriteBatch.draw(screen,sx,sy,x_size,y_size);
+	}
 	
-	public void drawTexture(Texture texture, float x, float y, Color color){
+	public void drawTexture(Texture texture, float x, float y, Color color, boolean selecting){
 		spriteBatch.setColor(color);
-		spriteBatch.draw(texture, x, y);
+		if (selecting){
+			spriteBatch.draw(texture, x, y, 60, 60);	
+		} else {
+			spriteBatch.draw(texture, x, y);	
+		}	
 	}
 	
 	public void drawTexture(Texture texture, float x, float y, float width, float height, Color color){
@@ -800,6 +809,13 @@ public class GameCanvas {
 		int tHeight = texture.getHeight();
 		spriteBatch.draw(texture,x,y,0,0,tWidth,tHeight,scale,scale,0,0,0,tWidth,tHeight, leftside, false);
 		//spriteBatch.draw(texture, x, y, tWidth, tHeight, 0, 0, tWidth, tHeight, leftside, false);
+	}
+	
+	public void drawCharacter(Texture texture, float x, float y, Color color, boolean leftside){
+		spriteBatch.setColor(color);
+		int tWidth = texture.getWidth();
+		int tHeight = texture.getHeight();
+		spriteBatch.draw(texture, x, y, tWidth, tHeight, 0, 0, tWidth, tHeight, leftside, false);
 	}
 	
 	

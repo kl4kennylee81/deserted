@@ -443,6 +443,7 @@ public class GameEngine implements Screen {
 	public void resize(int width, int height) {
 		canvas.resize();
 		updateMeasures();
+		InputController.setCanvas(canvas);
 	}
 	
 	/** 
