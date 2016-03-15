@@ -1,5 +1,7 @@
 package edu.cornell.gdiac.ailab;
 
+import com.badlogic.gdx.graphics.Texture;
+
 import edu.cornell.gdiac.mesh.TexturedMesh;
 
 public class Action {
@@ -10,9 +12,8 @@ public class Action {
 	Pattern pattern;
 	Effect effect;
 	String description;
-	TexturedMesh menuToken;
-	TexturedMesh barToken;
-	TexturedMesh actionEffects;
+	FilmStrip animation;
+	
 
 	public static enum Pattern {
 		MOVE,
@@ -32,5 +33,13 @@ public class Action {
 		this.pattern = pattern;
 		this.effect = effect;
 		this.description = description;
+	}
+	
+	public void setAnimation(Texture texture, int rows, int cols){
+		this.animation = new FilmStrip(texture, rows, cols);
+	}
+	
+	public FilmStrip getFilmStrip(){
+		return this.animation;
 	}
 }

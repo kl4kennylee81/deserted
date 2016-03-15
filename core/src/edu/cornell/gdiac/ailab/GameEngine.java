@@ -147,6 +147,9 @@ public class GameEngine implements Screen {
 	/** File storing the enemy texture for a ship */
 	private static final String ICON_5_TEXTURE = "models/CASTICON_5.png";
 	
+	/** File storing the single lightning film strip */
+	private static final String LIGHTNING_TEXTURE = "actions/lightningstrip.png";
+	
 	private static final String WHITE_BOX = "images/white.png";
 	/** The message font to use */
 	private static final String MENU_FONT_FILE  = "fonts/Milonga-Regular.ttf";
@@ -492,6 +495,13 @@ public class GameEngine implements Screen {
 							new Effect(duration, Type.valueOf(eff), magnitude), description);
 				}
 				
+				String actionStripName = (String) action.get("texture");
+				if (actionStripName != null){
+					Texture actionTexture = manager.get(actionStripName,Texture.class);
+					Integer rows = (Integer) action.get("rows");
+					Integer cols = (Integer) action.get("cols");
+					actionToAdd.setAnimation(actionTexture, rows, cols);
+				}
 				
 				availableActions.put(id, actionToAdd);
 			}	
@@ -599,6 +609,9 @@ public class GameEngine implements Screen {
 		assets.add(ICON_4_TEXTURE);
 		manager.load(ICON_5_TEXTURE,Texture.class);
 		assets.add(ICON_5_TEXTURE);
+		
+		manager.load(LIGHTNING_TEXTURE,Texture.class);
+		assets.add(LIGHTNING_TEXTURE);
 		
 		manager.load(WHITE_BOX,Texture.class);
 		assets.add(WHITE_BOX);

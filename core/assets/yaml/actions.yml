@@ -48,7 +48,9 @@
     duration: 0
     magnitude: 0.0
   description: Target a single square for 4 damage
-
+  texture: "actions/lightningstrip.png"
+  rows: 1
+  cols: 2
 
 
 - id: 4

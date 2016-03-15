@@ -13,14 +13,16 @@ public class TextMessage {
 		int current;
 		int duration;
 		Color color;
+		Action action;
 		
-		public Message(String text, int xPos, int yPos, int duration){
+		public Message(String text, int xPos, int yPos, int duration, Action action){
 			this.text = text;
 			this.xPos = xPos;
 			this.yPos = yPos;
 			this.current = 0;
 			this.duration = duration;
 			this.color = Color.BLACK;
+			this.action = action;
 		}
 		
 		public Message(String text, int xPos, int yPos, int duration, Color color){
@@ -66,56 +68,65 @@ public class TextMessage {
 		otherMessages.add(new Message(text,xPos,yPos,duration,color));
 	}
 	
-	public void addSingleTemp(int xPos, int yPos){
-		tempSingles.add(new Message("lol",xPos,yPos,120));
+	public void addSingleTemp(int xPos, int yPos, Action action){
+		tempSingles.add(new Message("lol",xPos,yPos,60, action));
 	}
 
 	public void draw(GameCanvas canvas,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
+		float offset = board.getBoardOffset(canvas);
 		for (Message m : damageMessages){
-			float messageX = tileW/2 + tileW*m.xPos;
+			float messageX = tileW/2 + tileW*m.xPos + offset;
 			float messageY = tileH*m.yPos + DAMAGE_OFFSET + m.getRatio()*TIME_TRANSLATION_OFFSET;
 			canvas.drawCenteredText(m.text, messageX, messageY, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 2f);
 			//canvas.drawCenteredText(m.text, 75+150*m.xPos, 300+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 2f);
 		}
 		for (Message m : otherMessages){
-			float messageX = tileW/2 + tileW*m.xPos;
+			float messageX = tileW/2 + tileW*m.xPos + offset;
 			float messageY = tileH*m.yPos + OTHER_OFFSET + m.getRatio()*TIME_TRANSLATION_OFFSET;
 			canvas.drawCenteredText(m.text, messageX, messageY, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
 			//canvas.drawCenteredText(m.text, 75+150*m.xPos, 320+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
 		}
 		for (Message m : tempSingles){
-			
-			float xPos = 5+m.xPos*tileW;
-			float yPos = 5+m.yPos*tileH;
-			float ratio = m.getRatio();
-			if (ratio < 0.25 || (ratio > 0.5 && ratio < 0.75)){
-				for (int i = 0; i < 5; i++){
-					if (i%2==1){
-						canvas.drawBox(xPos, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+40, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+80, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+120, yPos+i*20, 10, 10, Color.RED);
-					} else {
-						canvas.drawBox(xPos+20, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+60, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+100, yPos+i*20, 10, 10, Color.RED);
+			if (m.action.animation == null){
+				float xPos = 5+m.xPos*tileW;
+				float yPos = 5+m.yPos*tileH;
+				float ratio = m.getRatio();
+				if (ratio < 0.25 || (ratio > 0.5 && ratio < 0.75)){
+					for (int i = 0; i < 5; i++){
+						if (i%2==1){
+							canvas.drawBox(xPos, yPos+i*20, 10, 10, Color.RED);
+							canvas.drawBox(xPos+40, yPos+i*20, 10, 10, Color.RED);
+							canvas.drawBox(xPos+80, yPos+i*20, 10, 10, Color.RED);
+							canvas.drawBox(xPos+120, yPos+i*20, 10, 10, Color.RED);
+						} else {
+							canvas.drawBox(xPos+20, yPos+i*20, 10, 10, Color.RED);
+							canvas.drawBox(xPos+60, yPos+i*20, 10, 10, Color.RED);
+							canvas.drawBox(xPos+100, yPos+i*20, 10, 10, Color.RED);
+						}
+					}
+				} else {
+					for (int i = 0; i < 5; i++){
+						if (i%2==1){
+							canvas.drawBox(xPos+20, yPos+i*20, 10, 10, Color.RED);
+							canvas.drawBox(xPos+60, yPos+i*20, 10, 10, Color.RED);
+							canvas.drawBox(xPos+100, yPos+i*20, 10, 10, Color.RED);
+						} else {
+							canvas.drawBox(xPos, yPos+i*20, 10, 10, Color.RED);
+							canvas.drawBox(xPos+40, yPos+i*20, 10, 10, Color.RED);
+							canvas.drawBox(xPos+80, yPos+i*20, 10, 10, Color.RED);
+							canvas.drawBox(xPos+120, yPos+i*20, 10, 10, Color.RED);
+						}
 					}
 				}
 			} else {
-				for (int i = 0; i < 5; i++){
-					if (i%2==1){
-						canvas.drawBox(xPos+20, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+60, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+100, yPos+i*20, 10, 10, Color.RED);
-					} else {
-						canvas.drawBox(xPos, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+40, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+80, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+120, yPos+i*20, 10, 10, Color.RED);
-					}
-				}
+				//drawAnimation
+				float ratio = m.getRatio();
+				float messageX = tileW*m.xPos + offset;
+				float messageY = tileH*m.yPos;
+				m.action.animation.setFrame(ratio%0.4<0.2 ? 0 : 1);
+				canvas.draw(m.action.animation, messageX,messageY);
 			}
 			
 		}

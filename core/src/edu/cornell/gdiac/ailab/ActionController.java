@@ -316,7 +316,7 @@ public class ActionController {
 			i = 0;
 			String attack_damage = Integer.toString(a_node.action.damage);
 			textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
-			textMessages.addSingleTemp(target.xPosition,target.yPosition);
+			textMessages.addSingleTemp(target.xPosition,target.yPosition,a_node.action);
 			ActionNode nextAttack = target.queuedActions.peek();
 		
 			// handle breaking of shield
@@ -354,6 +354,6 @@ public class ActionController {
 	// make isDone true when every character who needs to attack has attacked
 	public boolean isDone() {
 		i++;
-		return i>=120 && isDone;
+		return i>=60 && isDone;
 	}
 }

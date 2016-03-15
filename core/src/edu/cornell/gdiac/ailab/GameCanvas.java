@@ -510,7 +510,7 @@ public class GameCanvas {
 			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
 			return;
 		}
-		// Call the master drawing method		
+		// Call the master drawing method	
 		draw(region,Color.WHITE,0,0,x,y,0,1.0f,1.0f);
 	}
 
@@ -577,7 +577,7 @@ public class GameCanvas {
 		}
 		for (float tx = x - this.width; tx < this.width + ox/2  ; tx += this.width){
 			for (float ty = y - this.height; ty < this.height + oy/2 ; ty += this.height){
-				if (tx + ox/2 > 0 && ty + oy/2 > 0){
+				if (tx + ox/2 >= 0 && ty + oy/2 >= 0){
 					computeTransform(ox,oy,tx,ty,angle,sx,sy);
 					spriteBatch.setColor(tint);
 					spriteBatch.draw(region,region.getRegionWidth(),region.getRegionHeight(),local);
