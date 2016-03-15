@@ -126,6 +126,31 @@ public class Character {
 		
 	}
 	
+	public Character(Character c){
+		this.texture = c.texture;
+		this.icon = c.icon;
+		this.name = c.name;
+		this.health = c.health;
+		this.maxHealth = c.maxHealth;
+		this.speed = c.speed;
+		this.castSpeed = c.castSpeed;
+
+		this.color = c.color;	
+		
+		this.startingXPosition = this.xPosition = c.xPosition;
+		this.startingYPosition = this.yPosition = c.yPosition;
+		this.leftside = c.leftside;
+		
+		castPosition = 0;
+		queuedActions = new LinkedList<ActionNode>();
+		persistingActions = new LinkedList<ActionNode>();
+		effects = new ArrayList<Effect>();
+		shieldedCoordinates = new LinkedList<Coordinate>();
+		
+		this.availableActions = c.availableActions;
+		selectionMenu = new SelectionMenu(availableActions);
+	}
+	
 	/**
 	 * Resets a character back to starting data
 	 */
@@ -150,6 +175,11 @@ public class Character {
 		selectionMenu.reset();
 		
 		needsSelection = needsAttack = needsShadow = isSelecting = isPersisting = false;
+	}
+	
+	/**  copy the static attributes of the character into a new object **/
+	public Character copy(){
+		return new Character(this);
 	}
 	
 	public boolean isAlive() {
