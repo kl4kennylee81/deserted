@@ -22,9 +22,11 @@ import java.util.List;
 //import com.badlogic.gdx.math.*;
 
 import edu.cornell.gdiac.ailab.Character;
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.ActionNode.Direction;
+import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 
 import com.badlogic.gdx.graphics.*;
 
@@ -87,7 +89,11 @@ public class ActionController {
 					selected.setExecuting();
 				}
 			}
+			else{
+				action.free();
+			}
 			selected = null;
+
 		} else {
 			isDone = true;
 			//Sort characters by speed then check their attacks
@@ -169,6 +175,7 @@ public class ActionController {
 	}
 	
 	private Coordinate[] diagonalHitPath(ActionNode a_node){
+		Coordinates coordPool = Coordinates.getInstance();
 		int projectileX = (selected.leftside) ? selected.xPosition+1:selected.xPosition-1;
 		if (!board.isInBounds(projectileX, selected.yPosition)){
 			return null;
@@ -177,31 +184,32 @@ public class ActionController {
 		int widthRange = actionWidthRange(a_node,projectileX);
 		int trueRange = Math.min(heightRange,widthRange);
 		Coordinate[] path = new Coordinate[trueRange+1];
-		path[0] = new Coordinate(projectileX,selected.yPosition);
+		path[0] = coordPool.newCoordinate(projectileX,selected.yPosition);
 		if (selected.leftside && isDiagonalUp(a_node)){
 			for (int i=0;i<trueRange;i++){
-				path[i+1] = new Coordinate(projectileX+i+1,selected.yPosition+i+1);
+				path[i+1] = coordPool.newCoordinate(projectileX+i+1,selected.yPosition+i+1);
 			}
 		}
 		else if (selected.leftside && isDiagonalDown(a_node)){
 			for (int i=0;i<trueRange;i++){
-				path[i+1] = new Coordinate(projectileX+i+1,selected.yPosition-i-1);
+				path[i+1] = coordPool.newCoordinate(projectileX+i+1,selected.yPosition-i-1);
 			}			
 		}
 		else if (!selected.leftside && isDiagonalUp(a_node)){
 			for (int i=0;i<trueRange;i++){
-				path[i+1] = new Coordinate(projectileX-i-1,selected.yPosition+i+1);
+				path[i+1] = coordPool.newCoordinate(projectileX-i-1,selected.yPosition+i+1);
 			}				
 		}
 		else if (!selected.leftside && isDiagonalDown(a_node)){
 			for (int i=0;i<trueRange;i++){
-				path[i+1] = new Coordinate(projectileX-i-1,selected.yPosition-i-1);
+				path[i+1] = coordPool.newCoordinate(projectileX-i-1,selected.yPosition-i-1);
 			}
 		}
 		return path;
 	}
 	
 	private Coordinate[] straightHitPath(ActionNode a_node){
+		Coordinates coordPool = Coordinates.getInstance();
 		int j = selected.yPosition;
 		int numTiles;
 		if (selected.leftside){
@@ -214,10 +222,10 @@ public class ActionController {
 		Coordinate[] path = new Coordinate[numTiles];
 		for (int i=0;i<numTiles;i++){
 			if (selected.leftside){
-				path[i] = new Coordinate(selected.xPosition+i+1,j);
+				path[i] = coordPool.newCoordinate(selected.xPosition+i+1,j);
 			}
 			else{
-				path[i] = new Coordinate(selected.xPosition-i-1,j);
+				path[i] = coordPool.newCoordinate(selected.xPosition-i-1,j);
 			}
 		}
 		return path;
@@ -264,6 +272,7 @@ public class ActionController {
 			selected.xPosition = nextX;
 			selected.yPosition = nextY;
 		}
+		a_node.free();
 	}
 	
 	private void executeStraight(ActionNode a_node){
@@ -298,6 +307,13 @@ public class ActionController {
 				}
 			}
 		}
+		if (!hasHit){
+			a_node.free();
+		}
+		// free Coordinates back into the Pool
+		for (int j = 0;j<path.length;j++){
+			path[j].free();
+		}
 	}
 	
 	private void executeSingle(ActionNode a_node){
@@ -307,6 +323,7 @@ public class ActionController {
 				break;
 			}
 		}
+		a_node.free();
 	}
 	
 	protected void processHit(ActionNode a_node,Character target){
@@ -321,13 +338,18 @@ public class ActionController {
 			animations.add(a_node.action.animation,target.xPosition, target.yPosition);
 			target.setHurt();
 			ActionNode nextAttack = target.queuedActions.peek();
-		
+			
+			LinkedList<ActionNode> temp = new LinkedList<ActionNode>();
 			// handle breaking of shield
 			// only if damage was greater than 0
 			for (ActionNode an:target.persistingActions){
 				if (an.action.pattern == Pattern.SHIELD){
-					target.popPersistingCast(an);
+					temp.add(an);
 				}
+			}
+			// have to avoid concurrent modification exception can't remove while iterating
+			for (ActionNode an: temp){
+				target.popPersistingCast(an);
 			}
 		
 			//handle interruption
@@ -339,6 +361,7 @@ public class ActionController {
 				}
 			}
 		}
+		a_node.free();
 	}
 	
 	protected void applyDamage(ActionNode a_node,Character target){

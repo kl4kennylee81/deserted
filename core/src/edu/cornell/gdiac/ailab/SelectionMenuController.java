@@ -3,7 +3,7 @@ package edu.cornell.gdiac.ailab;
 import java.util.List;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.ActionNode.Direction;
+import edu.cornell.gdiac.ailab.ActionNodes.Direction;
 import edu.cornell.gdiac.ailab.Effect.Type;
 
 public class SelectionMenuController {
@@ -106,6 +106,7 @@ public class SelectionMenuController {
 	 * Update when an action is not targeting yet
 	 */
 	private void updateNotChoosingTarget(){
+		ActionNodes anPool = ActionNodes.getInstance();
 		if (InputController.pressedEnter()){
 			selected.setSelecting(false);
 			selected.setQueuedActions(menu.getQueuedActions());
@@ -116,7 +117,7 @@ public class SelectionMenuController {
 		} else if (InputController.pressedS()){
 			menu.removeLast();
 		} else if (InputController.pressedD() && menu.canNop()){
-			menu.add(new ActionNode(nop,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/ActionBar.getTotalSlots()),0,0,Direction.NONE));
+			menu.add(anPool.newActionNode(nop,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/ActionBar.getTotalSlots()),0,0,Direction.NONE));
 			menu.resetPointer();
 		} else if (InputController.pressedUp() && !InputController.pressedDown()){
 			//Actions go from up down, so we need to flip
@@ -167,6 +168,7 @@ public class SelectionMenuController {
 	}
 	
 	private void updateChoosingTarget(){
+		ActionNodes anPool = ActionNodes.getInstance();
 		switch (action.pattern){
 		case SINGLE:
 			updateChoosingSingle();
@@ -192,7 +194,7 @@ public class SelectionMenuController {
 			break;
 		}
 		if (InputController.pressedEnter()){
-			menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/ActionBar.getTotalSlots()),selectedX,selectedY,direction));
+			menu.add(anPool.newActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/ActionBar.getTotalSlots()),selectedX,selectedY,direction));
 			menu.setChoosingTarget(false);
 			selected.setSelecting(false);
 			selected.setQueuedActions(menu.getQueuedActions());
@@ -200,7 +202,7 @@ public class SelectionMenuController {
 			resetNeedsShadow();
 		}
 		if (InputController.pressedA()){
-			menu.add(new ActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/ActionBar.getTotalSlots()),selectedX,selectedY,direction));
+			menu.add(anPool.newActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/ActionBar.getTotalSlots()),selectedX,selectedY,direction));
 			menu.setChoosingTarget(false);
 			menu.resetPointer();
 		} else if (InputController.pressedS()){

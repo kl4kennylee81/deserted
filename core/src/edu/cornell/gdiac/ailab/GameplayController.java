@@ -1,7 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;

@@ -6,7 +6,9 @@ import java.util.List;
 import com.badlogic.gdx.graphics.Color;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.ActionNode.Direction;
+import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 
 public class PersistingController extends ActionController{
 	
@@ -36,8 +38,7 @@ public class PersistingController extends ActionController{
 					selectedActionNode = an;
 					executeAction();
 					an.castPoint += 1;
-					if (an.castPoint >= ((PersistingAction) an.action).castLength){
-						System.out.println("no problems?");
+					if (an.action != null && an.castPoint >= ((PersistingAction) an.action).castLength){
 						c.popPersistingCast(an);
 					}
 				}
@@ -90,7 +91,6 @@ public class PersistingController extends ActionController{
 			if (isHit(c,curIntX,curIntY) || isHit(c,prevIntX,prevIntY)){
 				processHit(selectedActionNode,c);
 				selected.popPersistingCast(selectedActionNode);
-				System.out.println("no problems2?");
 				break;
 			}
 		}

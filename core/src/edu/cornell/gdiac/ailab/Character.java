@@ -10,8 +10,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.ActionNode.Direction;
+import edu.cornell.gdiac.ailab.ActionNodes.Direction;
 import edu.cornell.gdiac.ailab.AnimationNode.CharacterState;
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
+import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 
 public class Character {
@@ -136,6 +138,31 @@ public class Character {
 		
 	}
 	
+	public Character(Character c){
+		this.texture = c.texture;
+		this.icon = c.icon;
+		this.name = c.name;
+		this.health = c.health;
+		this.maxHealth = c.maxHealth;
+		this.speed = c.speed;
+		this.castSpeed = c.castSpeed;
+
+		this.color = c.color;	
+		
+		this.startingXPosition = this.xPosition = c.xPosition;
+		this.startingYPosition = this.yPosition = c.yPosition;
+		this.leftside = c.leftside;
+		
+		castPosition = 0;
+		queuedActions = new LinkedList<ActionNode>();
+		persistingActions = new LinkedList<ActionNode>();
+		effects = new ArrayList<Effect>();
+		shieldedCoordinates = new LinkedList<Coordinate>();
+		
+		this.availableActions = c.availableActions;
+		selectionMenu = new SelectionMenu(availableActions);
+	}
+	
 	/**
 	 * Resets a character back to starting data
 	 */
@@ -152,12 +179,21 @@ public class Character {
 		castPosition = 0;
 		queuedActions.clear();
 		persistingActions.clear();
+
+		for (Coordinate c:shieldedCoordinates){
+			c.free();
+		}
 		shieldedCoordinates.clear();
 
 		selectionMenu.reset();
 		
 		needsSelection = needsAttack = needsShadow = isSelecting = isPersisting = false;
 		isExecuting = isHurt = false;
+	}
+	
+	/**  copy the static attributes of the character into a new object **/
+	public Character copy(){
+		return new Character(this);
 	}
 	
 	public boolean isAlive() {
@@ -218,7 +254,7 @@ public class Character {
 	boolean needShadow() {
 		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
 		for (ActionNode an : actions){
-			if (an.action.pattern == Pattern.MOVE){
+			if (an.action!= null && an.action.pattern == Pattern.MOVE){
 				return needsShadow;
 			}
 		}
@@ -237,13 +273,19 @@ public class Character {
 	 * Reset coordinates that are shielded by this character 
 	 */
 	private void resetShieldedCoordinates(){
+		Coordinates coordPool = Coordinates.getInstance();
+		// add coordinates back to the pool
+		for (Coordinate c: shieldedCoordinates){
+			c.free();
+		}
 		shieldedCoordinates.clear();
+
 		for (ActionNode an : persistingActions){
 			if (an.action.pattern == Pattern.SHIELD){
 				int tempX = an.getCurrentX();
 				int tempY = an.getCurrentY();
-				shieldedCoordinates.add(new Coordinate(tempX,tempY));
-				shieldedCoordinates.add(new Coordinate(tempX, an.direction == Direction.DOWN ? tempY-1 : tempY+1));
+				shieldedCoordinates.add(coordPool.newCoordinate(tempX,tempY));
+				shieldedCoordinates.add(coordPool.newCoordinate(tempX, an.direction == Direction.DOWN ? tempY-1 : tempY+1));
 			}
 		}
 	}
@@ -280,9 +322,10 @@ public class Character {
 	
 	void popPersistingCast(ActionNode an){
 		persistingActions.remove(an);
-		if (an.action.pattern == Pattern.SHIELD){
+		if (an.action != null && an.action.pattern == Pattern.SHIELD){
 			resetShieldedCoordinates();
 		}
+		an.free();
 	}
 	
 	List<ActionNode> getPersistingActions(){
@@ -333,7 +376,7 @@ public class Character {
 		int shadY = yPosition;
 		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
 		for (ActionNode an : actions){
-			if (an.action.pattern == Pattern.MOVE){
+			if (an.action != null && an.action.pattern == Pattern.MOVE){
 				if (an.direction == Direction.UP){
 					shadY++;
 				} else if (an.direction == Direction.DOWN){

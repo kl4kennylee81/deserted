@@ -37,8 +37,8 @@
 
 - id: 2
   name: red
-  health: 10
-  maxHealth: 10
+  health: 20
+  maxHealth: 20
   hexColor: CD2626FF
   speed: 0.0025
   castSpeed: 0.0025
@@ -57,8 +57,8 @@
 
 - id: 3
   name: brown
-  health: 10
-  maxHealth: 10
+  health: 20
+  maxHealth: 20
   hexColor: 8B4513FF
   speed: 0.00275
   castSpeed: 0.00225

@@ -312,6 +312,7 @@ public class GameEngine implements Screen {
 	 * @param delta The time in seconds since the last render.
 	 */
 	public void render(float delta) {
+		System.out.println(delta);
 		// Allow the user to reset by pressing "R"
 		checkReset();
         canvas.begin();
@@ -495,12 +496,12 @@ public class GameEngine implements Screen {
 				HashMap<String, Object> effect = 
 						(HashMap<String, Object>) action.get("effect");
 				String eff = (String) effect.get("type");
-				Integer duration = (Integer) effect.get("duration");
+				Integer duration = Math.round(Effect.getSecondtoFrames((((Double) effect.get("duration")).floatValue())));
 				Float magnitude = ((Double) effect.get("magnitude")).floatValue();
 				
 				Action actionToAdd;
 				if (persisting != null){
-					Integer castLength = (Integer) persisting.get("castLength");
+					Integer castLength =  Math.round(Effect.getSecondtoFrames((((Double) persisting.get("castLength")).floatValue())));
 					Float moveSpeed = (Float) ((Double) persisting.get("moveSpeed")).floatValue();
 					actionToAdd = new PersistingAction(name, cost, damage, range, 
 							Pattern.valueOf(pattern), new Effect(duration, Type.valueOf(eff), magnitude), 
