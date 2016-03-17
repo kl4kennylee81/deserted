@@ -19,10 +19,10 @@ public class ActionBar {
 
 	private static final int TOTAL_SLOTS = 4;
 	
-	public float castPoint;
+	public static float castPoint;
 	
 	public ActionBar(){
-		this.castPoint = CAST_POINT;
+		ActionBar.castPoint = CAST_POINT;
 	}
 
 	public static int getTotalSlots(){

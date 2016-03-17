@@ -7,9 +7,11 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNode.Direction;
+import edu.cornell.gdiac.ailab.AnimationNode.CharacterState;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 
 public class Character {
@@ -48,6 +50,7 @@ public class Character {
 	Color color;
 	Texture texture;
 	Texture icon;
+	AnimationNode animation;
 	SelectionMenu selectionMenu;
 	boolean leftside;
 	
@@ -63,6 +66,10 @@ public class Character {
 	boolean isPersisting;
 	/** Am I currently being affected by an effect? */
 	boolean isAffected;
+	/** Did I just execute an attack? */
+	boolean isExecuting;
+	/** Did I just get hit? */
+	boolean isHurt;
 	
 	//TODO: Change to pass this in from GameEngine
 	/** Starting x and y positions */
@@ -91,12 +98,16 @@ public class Character {
 	float lerpVal = 0;
 	boolean increasing;
 	
+	float lastCastStart;
+	
 	/**Constructor used by GameEngine to create characters from yaml input. */
-	public Character (Texture texture, Texture icon, String name, int health, int maxHealth, Color color, 
+	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
+						int health, int maxHealth, Color color, 
 						float speed, float castSpeed, int xPosition, int yPosition,
 						boolean leftSide, Action[] actions){
 		this.texture = texture;
 		this.icon = icon;
+		this.animation = animation;
 		this.name = name;
 		this.health = health;
 		this.maxHealth = maxHealth;
@@ -113,6 +124,7 @@ public class Character {
 		this.startingYPosition = this.yPosition = yPosition;
 		this.leftside = leftSide;
 		
+		lastCastStart = 0;
 		castPosition = 0;
 		queuedActions = new LinkedList<ActionNode>();
 		persistingActions = new LinkedList<ActionNode>();
@@ -136,14 +148,16 @@ public class Character {
 		this.speed = (float) (Math.random()*0.003 + 0.003);
 		this.castSpeed = (float) (Math.random()*0.004 + 0.002);
 		
-		this.castPosition = 0;
+		lastCastStart = 0;
+		castPosition = 0;
 		queuedActions.clear();
 		persistingActions.clear();
 		shieldedCoordinates.clear();
-		
+
 		selectionMenu.reset();
 		
 		needsSelection = needsAttack = needsShadow = isSelecting = isPersisting = false;
+		isExecuting = isHurt = false;
 	}
 	
 	public boolean isAlive() {
@@ -296,6 +310,10 @@ public class Character {
 		return queuedActions.poll();
 	}
 	
+	public void startingCast(){
+		lastCastStart = castPosition;
+	}
+	
 	public int getShadowX(){
 		int shadX = xPosition;
 		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
@@ -349,6 +367,51 @@ public class Character {
 		return (tileW*CHARACTER_PROPORTION)/texture.getWidth();
 	}
 	
+	public float getCharScale(GameCanvas canvas, TextureRegion region,GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		return (tileW*CHARACTER_PROPORTION)/region.getRegionWidth();
+	}
+	
+	public void setExecuting(){
+		isExecuting = true;
+		isHurt = false;
+	}
+	
+	public void setHurt(){
+		isHurt = true;
+		isExecuting = false;
+	}
+	
+	/**
+	 * Return FilmStrip with animation set as frame
+	 * @return
+	 */
+	public FilmStrip getFilmStrip(){
+		if (isHurt){
+			FilmStrip fs = animation.getTexture(CharacterState.HURT);
+			if (fs == null){
+				isHurt = false;
+			}
+			return fs;
+		} 
+		if (isExecuting){
+			FilmStrip fs = animation.getTexture(CharacterState.EXECUTING);
+			if (fs == null){
+				isExecuting = false;
+			}
+			return fs;
+		}
+		if (queuedActions.isEmpty()){
+			return animation.getTexture(CharacterState.IDLE);
+		} else {
+			if (castPosition - lastCastStart >= ((1-ActionBar.castPoint)/ActionBar.getTotalSlots())){
+				return animation.getTexture(CharacterState.CASTING);
+			} else {
+				return animation.getTexture(CharacterState.ACTIVE);
+			}
+		}
+	}
+	
 	public void drawCharacter(GameCanvas canvas,GridBoard board){
 		if (increasing){
 			lerpVal+=0.01;
@@ -369,8 +432,22 @@ public class Character {
 		/** maybe highlight character? */
 		Color col = isSelecting ? Color.WHITE.cpy().lerp(Color.GREEN, lerpVal) : Color.WHITE;
 		
-		float charScale = getCharScale(canvas,texture,board);
-		canvas.drawCharacter(texture, canvasX, canvasY, col, leftside,charScale);
+		//Decide what animation to draw
+		//Will sometimes be null when current animation is done, we just need to call again
+		FilmStrip toDraw = getFilmStrip();
+		if (toDraw == null) {
+			toDraw = getFilmStrip();
+		}
+		
+		//For now, if still not found (shouldnt happen when animation sheet is full) 
+		//go back to initial texture (current idle texture)
+		if (toDraw != null){
+			float charScale = getCharScale(canvas,toDraw,board);
+			canvas.drawCharacter(toDraw, canvasX, canvasY, col, leftside,charScale);
+		} else {
+			float charScale = getCharScale(canvas,texture,board);
+			canvas.drawCharacter(texture, canvasX, canvasY, col, leftside,charScale);
+		}
 	}
 	
 	/**

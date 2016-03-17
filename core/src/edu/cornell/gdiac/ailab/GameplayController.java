@@ -28,6 +28,7 @@ public class GameplayController {
     private List<Character> characters;
     private ActionBar bar;
     private TextMessage textMessages;
+    private AnimationPool animations;
     
     /** Current state of game */
     private InGameState inGameState;
@@ -55,17 +56,16 @@ public class GameplayController {
         this.characters = characters;
         
         textMessages = new TextMessage();
-        
+        animations = new AnimationPool();
         bar = new ActionBar();
         
 		// Create the subcontrollers
-        actionController = new ActionController(board,characters,bar,textMessages);
+        actionController = new ActionController(board,characters,bar,textMessages,animations);
         selectionMenuController = new SelectionMenuController(board,characters,bar);
         actionBarController = new ActionBarController(characters,bar);
         aiController = new AIController(board,characters,bar);
-        persistingController = new PersistingController(board,characters,bar,textMessages);
+        persistingController = new PersistingController(board,characters,bar,textMessages,animations);
         effectController = new EffectController(characters);
-        
 	}
     
     public void update(){
@@ -124,6 +124,7 @@ public class GameplayController {
     	board.draw(canvas);
         bar.draw(canvas);
         drawCharacters(canvas);
+        animations.draw(canvas,board);
         textMessages.draw(canvas,board);
     }
     

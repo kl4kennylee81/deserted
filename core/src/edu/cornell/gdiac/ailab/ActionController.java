@@ -38,6 +38,7 @@ public class ActionController {
 	public List<Character> characters;
 	public ActionBar bar;
 	public TextMessage textMessages;
+	public AnimationPool animations;
 	
 	/** Done executing actions */
 	boolean isDone;
@@ -45,9 +46,6 @@ public class ActionController {
 	Character selected;
 	/** Shielded coordinates against the selected character */
 	List<Coordinate> shieldedPaths;
-	
-	/** temp for pausing */
-	int i = 119;;
 
 	/**
 	 * Creates a GameplayController for the given models.
@@ -56,11 +54,13 @@ public class ActionController {
 	 * @param chars The list of characters
 	 * @param bar The action bar
 	 */
-	public ActionController(GridBoard board, List<Character> chars, ActionBar bar, TextMessage textMsgs) {
+	public ActionController(GridBoard board, List<Character> chars, ActionBar bar, 
+			TextMessage textMsgs, AnimationPool animations) {
 		this.board = board;
 		this.characters = chars;
 		this.bar = bar;
 		this.textMessages = textMsgs;
+		this.animations = animations;
 		
 		isDone = false;
 		selected = null;
@@ -80,9 +80,12 @@ public class ActionController {
 			// Execute character's action;
 			ActionNode action = selected.popCast();
 			selected.needsAttack = false;
-			i = Math.min(119, i);
 			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
 				executeAction(action);
+				//If actual move show executing animation
+				if (action.action.pattern != Pattern.MOVE){
+					selected.setExecuting();
+				}
 			}
 			selected = null;
 		} else {
@@ -313,10 +316,10 @@ public class ActionController {
 		//add text bubble for amount of damage in front of target
 		// only add the text damage if any damage has been done
 		if (a_node.action.damage > 0){
-			i = 0;
 			String attack_damage = Integer.toString(a_node.action.damage);
 			textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
-			textMessages.addSingleTemp(target.xPosition,target.yPosition,a_node.action);
+			animations.add(a_node.action.animation,target.xPosition, target.yPosition);
+			target.setHurt();
 			ActionNode nextAttack = target.queuedActions.peek();
 		
 			// handle breaking of shield
@@ -353,7 +356,6 @@ public class ActionController {
 	
 	// make isDone true when every character who needs to attack has attacked
 	public boolean isDone() {
-		i++;
-		return i>=60 && isDone;
+		return isDone;
 	}
 }

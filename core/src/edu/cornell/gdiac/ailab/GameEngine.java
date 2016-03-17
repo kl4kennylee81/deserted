@@ -19,8 +19,6 @@ package edu.cornell.gdiac.ailab;
 //import static com.badlogic.gdx.Gdx.gl20;
 //import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
 
-import java.io.File;
-import java.io.FileInputStream;
 //import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -81,20 +79,6 @@ public class GameEngine implements Screen {
 		/** When the game is over */
 		AFTER
 	}
-	
-	// ASSET LOADING INFORMATION
-	// Messages to display to the player
-//	/** Message while assets are loading */
-//	private static final String MESSG_LOAD = "Loading...";
-//	/** Message before the game has started */
-//	private static final String MESSG_BEFORE_1 = "Press any Key";
-//	private static final String MESSG_BEFORE_2 = "To Begin";
-//	/** Message when the player has lost */
-//	private static final String MESSG_LOST = "Game Over";
-//	/** Message when the player has won */
-//	private static final String MESSG_WON = "You Won!";
-//	/** Message telling the user how to restart */
-//	private static final String MESSG_RESTART = "Press \"R\" to Restart";
 
 	/** Background image for the canvas */
 	private static final String BCKGD_TEXTURE = "images/bg.png";
@@ -146,6 +130,9 @@ public class GameEngine implements Screen {
 	private static final String ICON_4_TEXTURE = "models/CASTICON_4.png";
 	/** File storing the enemy texture for a ship */
 	private static final String ICON_5_TEXTURE = "models/CASTICON_5.png";
+	
+	/** Temprorary Character Animation */
+	private static final String CAST_ANIMATION_SHEET = "models/castanimation_spritesheet.png";
 	
 	/** File storing the single lightning film strip */
 	private static final String LIGHTNING_TEXTURE = "actions/lightningstrip.png";
@@ -204,6 +191,7 @@ public class GameEngine implements Screen {
     //Current Models
     private HashMap<Integer, Character> availableCharacters;
     private HashMap<Integer, Action> availableActions;
+    private HashMap<Integer, Animation> availableAnimations;
     
     /** The current game state (SIMPLE FIELD) */
     private GameState gameState;
@@ -223,6 +211,7 @@ public class GameEngine implements Screen {
 
 		availableActions = new HashMap<Integer, Action>();
 		availableCharacters = new HashMap<Integer, Character>();
+		availableAnimations = new HashMap<Integer, Animation>();
 		
 		updateMeasures();
 
@@ -464,6 +453,32 @@ public class GameEngine implements Screen {
 	@SuppressWarnings("unchecked")
 	private void loadFromYaml() throws IOException{
 		Yaml yaml = new Yaml();
+		//Import Animations
+		FileHandle animationFile = Gdx.files.internal("yaml/animations.yml");
+		try (InputStream is = animationFile.read()){
+			ArrayList<HashMap<String, Object>> animations = (ArrayList<HashMap<String, Object>>) yaml.load(is);
+			for (HashMap<String, Object> animation : animations){
+				Integer id = (Integer) animation.get("id");
+				String name = (String) animation.get("name");
+				String textureName = (String) animation.get("texture");
+				Integer rows = (Integer) animation.get("rows");
+				Integer cols = (Integer) animation.get("cols");
+				Integer size = (Integer) animation.get("size");
+				
+				Texture animationTexture = manager.get(textureName,Texture.class);
+				Animation animationToAdd = new Animation(name,animationTexture,rows,cols,size);
+				
+				ArrayList<HashMap<String, Object>> segments = (ArrayList<HashMap<String, Object>>) animation.get("segments");
+				for (HashMap<String, Object> frameData : segments){
+					int startingIndex = (int) frameData.keySet().toArray()[0];
+					List<Integer> frameLengths = (List<Integer>) frameData.get(startingIndex);
+					
+					animationToAdd.addSegment(startingIndex,frameLengths);
+				}
+				availableAnimations.put(id, animationToAdd);
+			}	
+		} 
+		//Import Actions
 		FileHandle actionFile = Gdx.files.internal("yaml/actions.yml");
 		try (InputStream is = actionFile.read()){
 			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) yaml.load(is);
@@ -495,17 +510,15 @@ public class GameEngine implements Screen {
 							new Effect(duration, Type.valueOf(eff), magnitude), description);
 				}
 				
-				String actionStripName = (String) action.get("texture");
-				if (actionStripName != null){
-					Texture actionTexture = manager.get(actionStripName,Texture.class);
-					Integer rows = (Integer) action.get("rows");
-					Integer cols = (Integer) action.get("cols");
-					actionToAdd.setAnimation(actionTexture, rows, cols);
+				Integer animationId = (Integer) action.get("animationId");
+				if (animationId != null){
+					actionToAdd.setAnimation(availableAnimations.get(animationId));
 				}
 				
 				availableActions.put(id, actionToAdd);
 			}	
 		} 
+		//Import Characters
 		FileHandle charFile = Gdx.files.internal("yaml/characters.yml");
 		try (InputStream is = charFile.read()){
 			ArrayList<HashMap<String, Object>> characters = (ArrayList<HashMap<String, Object>>) yaml.load(is);
@@ -529,11 +542,14 @@ public class GameEngine implements Screen {
 				}
 				String charTextureName = (String) character.get("texture");
 				String iconTextureName = (String) character.get("icon");
-				
 				Texture charTexture = manager.get(charTextureName,Texture.class);
 				Texture iconTexture = manager.get(iconTextureName,Texture.class);
-				Character characterToAdd = new Character(charTexture, iconTexture, name, 
-						health, maxHealth, Color.valueOf(hexColor), speed, 
+				Integer animationId = (Integer) character.get("animationId");
+				Animation anim = availableAnimations.get(animationId);
+				AnimationNode animNode = new AnimationNode(anim);
+				
+				Character characterToAdd = new Character(charTexture, iconTexture, animNode,
+						name, health, maxHealth, Color.valueOf(hexColor), speed, 
 						castSpeed, xPosition, yPosition, leftSide, actionArray); 
 									
 				availableCharacters.put(id, characterToAdd);
@@ -612,6 +628,8 @@ public class GameEngine implements Screen {
 		
 		manager.load(LIGHTNING_TEXTURE,Texture.class);
 		assets.add(LIGHTNING_TEXTURE);
+		manager.load(CAST_ANIMATION_SHEET,Texture.class);
+		assets.add(CAST_ANIMATION_SHEET);
 		
 		manager.load(WHITE_BOX,Texture.class);
 		assets.add(WHITE_BOX);

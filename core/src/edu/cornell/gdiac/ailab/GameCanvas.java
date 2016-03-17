@@ -799,9 +799,20 @@ public class GameCanvas {
 		int tWidth = texture.getWidth();
 		int tHeight = texture.getHeight();
 		spriteBatch.draw(texture,x,y,0,0,tWidth,tHeight,scale,scale,0,0,0,tWidth,tHeight, leftside, false);
-		//spriteBatch.draw(texture, x, y, tWidth, tHeight, 0, 0, tWidth, tHeight, leftside, false);
 	}
 	
+	public void drawCharacter(TextureRegion texture, float x, float y, Color color, boolean leftside,float scale){
+		spriteBatch.setColor(color);
+		if (leftside){
+			texture.flip(true, false);
+		}
+		int tWidth = texture.getRegionWidth();
+		int tHeight = texture.getRegionHeight();
+		spriteBatch.draw(texture, x, y, 0, 0, tWidth, tHeight, scale, scale, 0);
+		if (leftside){
+			texture.flip(true, false);
+		}
+	}
 	
 	/**
 	 * Draws a ship model to the screen.

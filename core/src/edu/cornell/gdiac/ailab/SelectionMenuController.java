@@ -116,7 +116,7 @@ public class SelectionMenuController {
 		} else if (InputController.pressedS()){
 			menu.removeLast();
 		} else if (InputController.pressedD() && menu.canNop()){
-			menu.add(new ActionNode(nop,bar.castPoint+(action.cost+menu.takenSlots)*0.075f,0,0,Direction.NONE));
+			menu.add(new ActionNode(nop,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/ActionBar.getTotalSlots()),0,0,Direction.NONE));
 			menu.resetPointer();
 		} else if (InputController.pressedUp() && !InputController.pressedDown()){
 			//Actions go from up down, so we need to flip

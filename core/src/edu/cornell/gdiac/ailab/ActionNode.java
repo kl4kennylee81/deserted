@@ -55,7 +55,6 @@ public class ActionNode {
 	
 	public int getCurrentY(){
 		return Math.round(curY);
-		
 	}
 	
 }

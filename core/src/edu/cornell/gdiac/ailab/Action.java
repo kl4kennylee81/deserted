@@ -12,9 +12,8 @@ public class Action {
 	Pattern pattern;
 	Effect effect;
 	String description;
-	FilmStrip animation;
+	Animation animation;
 	
-
 	public static enum Pattern {
 		MOVE,
 		SHIELD,
@@ -35,11 +34,7 @@ public class Action {
 		this.description = description;
 	}
 	
-	public void setAnimation(Texture texture, int rows, int cols){
-		this.animation = new FilmStrip(texture, rows, cols);
-	}
-	
-	public FilmStrip getFilmStrip(){
-		return this.animation;
+	public void setAnimation(Animation animation){
+		this.animation = animation;
 	}
 }

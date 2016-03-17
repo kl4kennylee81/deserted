@@ -9,7 +9,7 @@
     duration: 0
     magnitude: 0.0
   description: Move your character one unit
-
+  animationId: 0
 
 - id: 1
   name: Straight
@@ -22,7 +22,7 @@
     duration: 0
     magnitude: 0.0
   description: Instant straight attack
-
+  animationId: 0
 
 - id: 2
   name: Diagonal
@@ -35,6 +35,7 @@
     duration: 0
     magnitude: 0.0
   description: Instnat diagonal attack
+  animationId: 0
 
 
 - id: 3
@@ -48,9 +49,7 @@
     duration: 0
     magnitude: 0.0
   description: Target a single square for 4 damage
-  texture: "actions/lightningstrip.png"
-  rows: 1
-  cols: 2
+  animationId: 0
 
 
 - id: 4
@@ -67,6 +66,7 @@
   persisting_action: 
     castLength: 100
     moveSpeed: 0.05
+  animationId: 0
 
 - id: 5
   name: Projectile Diagonal
@@ -82,7 +82,7 @@
   persisting_action: 
     castLength: 100
     moveSpeed: 0.025
-
+  animationId: 0
 
 - id: 6
   name: Shield
@@ -98,7 +98,8 @@
   persisting_action: 
     castLength: 360
     moveSpeed: 0.0
-    
+  animationId: 0
+
 - id: 7
   name : Slow
   cost: 3
@@ -110,6 +111,7 @@
     duration: 360
     magnitude: 0.5
   description: Target a single square to slow down enemy
+  animationId: 0
 
 - id: 8
   name : Slash
@@ -122,4 +124,5 @@
     duration: 360
     magnitude: 0.25
   description: Target a single square to slow down enemy
+  animationId: 0
 ...
