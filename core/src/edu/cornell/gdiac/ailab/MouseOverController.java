@@ -8,6 +8,7 @@ public class MouseOverController {
 	Character highlighted;
 	GameCanvas canvas;
 	HighlightScreen screen;
+	GridBoard board;
 	
 	public void update(){
 		if (highlighted != null){
@@ -18,20 +19,31 @@ public class MouseOverController {
 		float x = InputController.getMouseX();
 		float y = InputController.getMouseY();
 		for(Character c: characters){
-			float x_min = c.getXMin();
-			float x_max = c.getXMax();
-			float y_min = c.getYMin();
-			float y_max = c.getYMax();
-			if (x <= x_max && x >= x_min && y <= y_max && y >= y_min){
+			float x_min = c.getXMin(canvas, board);
+			float x_max = c.getXMax(canvas, board);
+			float y_min = c.getYMin(canvas, board);
+			float y_max = c.getYMax(canvas, board);
+			float x_token_min = c.getTokenXMin(canvas, board);
+			float x_token_max = c.getTokenXMax(canvas, board);
+			float y_token_min = c.getTokenYMin(canvas, board);
+			float y_token_max = c.getTokenYMax(canvas, board);
+			
+			if (x <= x_max && x >= x_min && y <= y_max && y >= y_min
+					|| x <= x_token_max && x >= x_token_min && y <= y_token_max && y >= y_token_min){
 				highlighted = c;
 			}
 		}
 		draw(x, y);
 	}
 	
-	public MouseOverController(List<Character> chars, HighlightScreen screen){
+	public void init(List<Character> chars, HighlightScreen screen, GridBoard board){
 		this.characters = chars;
 		this.screen = screen;
+		this.board = board;
+	}
+	
+	public MouseOverController(GameCanvas canvas){
+		this.canvas = canvas;
 	}
 	
 	public void draw(float x, float y){
@@ -46,10 +58,10 @@ public class MouseOverController {
 	}
 	
 	public void updateScreen(){
-		int x = (int)highlighted.getXMin();
-		int y = (int)highlighted.getYMin();
-		int x_width = (int)(highlighted.getXMax() - highlighted.getXMin());
-		int y_width = (int)(highlighted.getYMax() - highlighted.getYMin());
+		int x = (int)highlighted.getXMin(canvas, board);
+		int y = (int)highlighted.getYMin(canvas, board);
+		int x_width = (int)(highlighted.getXMax(canvas, board) - highlighted.getXMin(canvas, board));
+		int y_width = (int)(highlighted.getYMax(canvas, board) - highlighted.getYMin(canvas, board));
 		screen.setCurrentHighlight(x, y, x_width, y_width);
 	}
 
@@ -63,6 +75,11 @@ public class MouseOverController {
 	
 	public boolean isCharacterHighlighted(){
 		return highlighted != null;
+	}
+	
+	public static void setCanvas(GameCanvas canvas) {
+		InputController.canvas = canvas;
+		
 	}
 
 }

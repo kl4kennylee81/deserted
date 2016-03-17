@@ -129,20 +129,62 @@ public class Character {
 		
 	}
 	
-	public float getXMin(){
-		return CANVAS_X_MULTIPLIER*xPosition;
+	public float getXMin(GameCanvas canvas, GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		float canvasX = board.offsetBoard(canvas,tileW*xPosition);
+		return canvasX;
 	}
 	
-	public float getYMin(){
-		return CANVAS_Y_MULTIPLIER*yPosition;
+	public float getYMin(GameCanvas canvas, GridBoard board){
+		float tileH = board.getTileHeight(canvas);
+		float canvasY = tileH*yPosition;
+		return canvasY;
+//		return CANVAS_Y_MULTIPLIER*yPosition;
 	}
 	
-	public float getXMax(){
-		return CANVAS_X_MULTIPLIER*xPosition + texture.getWidth();
+	public float getXMax(GameCanvas canvas, GridBoard board){
+		float charScale = getCharScale(canvas,texture,board);
+		return getXMin(canvas, board) + texture.getWidth()*charScale;
+//		return CANVAS_X_MULTIPLIER*xPosition + texture.getWidth();
 	}
 	
-	public float getYMax(){
-		return CANVAS_Y_MULTIPLIER*yPosition + texture.getHeight();
+	public float getYMax(GameCanvas canvas, GridBoard board){
+		float charScale = getCharScale(canvas,texture,board);
+		return getYMin(canvas, board) + texture.getHeight()*charScale;
+//		return CANVAS_Y_MULTIPLIER*yPosition + texture.getHeight();
+	}
+	
+	public float getTokenX(GameCanvas canvas){
+		return ActionBar.getBarX(canvas) + ActionBar.getBarWidth(canvas)*castPosition - icon.getWidth()/2;
+	}
+	
+	public float getTokenY(GameCanvas canvas){
+		float upBar = ActionBar.getBarY(canvas) + TOKEN_OFFSET_UP;
+		float downBar = ActionBar.getBarY(canvas) - TOKEN_OFFSET_DOWN;
+		return leftside ? upBar : downBar;
+		
+	}
+	
+	public float getTokenXMin(GameCanvas canvas, GridBoard board){
+		float tokenX = getTokenX(canvas);
+		return tokenX;
+	}
+	
+	public float getTokenYMin(GameCanvas canvas, GridBoard board){
+		float tokenY = getTokenY(canvas);
+		return tokenY;
+	}
+	
+	public float getTokenXMax(GameCanvas canvas, GridBoard board){
+		float tokenX = getTokenX(canvas);
+		float charScale = getCharScale(canvas,texture,board);
+		return tokenX + icon.getWidth()*charScale;
+	}
+	
+	public float getTokenYMax(GameCanvas canvas, GridBoard board){
+		float tokenY = getTokenY(canvas);
+		float charScale = getCharScale(canvas,texture,board);
+		return tokenY + icon.getHeight()*charScale;
 	}
 	
 	
@@ -155,8 +197,8 @@ public class Character {
 		this.yPosition = this.startingYPosition;
 		
 		/* Randomize for now so that its not always the same thing */
-		this.speed = (float) (Math.random()*0.003 + 0.003);
-		this.castSpeed = (float) (Math.random()*0.004 + 0.002);
+		this.speed = (float) (Math.random()*0.003 + 0.003)/4;
+		this.castSpeed = (float) (Math.random()*0.004 + 0.002)/4;
 		
 		this.castPosition = 0;
 		queuedActions.clear();
@@ -359,12 +401,12 @@ public class Character {
 		return shadY;
 	}
 	
-	public void draw(GameCanvas canvas,GridBoard board){
+	public void draw(GameCanvas canvas,GridBoard board, boolean shouldDim){
 		if (!isAlive()){
 			return;
 		}
-		drawHealth(canvas,board);
-		drawToken(canvas);
+		drawHealth(canvas,board, shouldDim);
+		drawToken(canvas, shouldDim);
 		if(hasPersisting()){
 			drawPersisting(canvas,board);
 		}
@@ -396,20 +438,19 @@ public class Character {
 		}
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
-//		float canvasX = board.offsetBoard(canvas,tileW*xPosition);
-//		float canvasY = tileH*yPosition;
-		float canvasX = CANVAS_X_MULTIPLIER*xPosition;
-		float canvasY = CANVAS_Y_MULTIPLIER*yPosition;
+		float canvasX = board.offsetBoard(canvas,tileW*xPosition);
+		float canvasY = tileH*yPosition;
+		float charScale = getCharScale(canvas,texture,board);
 		
-		/** maybe highlight character? */
 		Color newColor = new Color(Color.WHITE);
 		if (shouldDim) {
 			newColor.set(newColor.r, newColor.g, newColor.b, 0.5f);
 		}
 		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
 		col = isHovering ? color : col;
-		canvas.drawCharacter(texture, canvasX, canvasY, col, leftside);
+		canvas.drawCharacter(texture, canvasX, canvasY, col, leftside, charScale);
 	}
+	
 	
 	/**
 	 * Draws future position of ship with lines depicting path
@@ -518,7 +559,7 @@ public class Character {
 	/**
 	 * Draws health bar 
 	 */
-	private void drawHealth(GameCanvas canvas,GridBoard board){
+	private void drawHealth(GameCanvas canvas,GridBoard board, boolean shouldDim){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
 		
@@ -526,7 +567,14 @@ public class Character {
 		
 		float canvasX = board.offsetBoard(canvas,tileW*xPosition);
 		float canvasY = texture.getHeight()*charScale + tileH*yPosition;
-		canvas.drawBox(canvasX, canvasY, tileW, 10, Color.WHITE);
+		
+		Color newColor = new Color(Color.WHITE);
+		if (shouldDim) {
+			newColor.set(newColor.r, newColor.g, newColor.b, 0.4f);
+		}
+		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
+		col = isHovering ? color : col;
+		canvas.drawBox(canvasX, canvasY, tileW, 10, newColor);
 		canvas.drawBox(canvasX, canvasY, (int) (tileW*health/maxHealth), HEALTH_HEIGHT, color);
 	}
 	
@@ -534,15 +582,19 @@ public class Character {
 	 * Draws token on action bar
 	 * @param canvas
 	 */
-	private void drawToken(GameCanvas canvas){
-		float canvasX = ActionBar.getBarX(canvas) + ActionBar.getBarWidth(canvas)*castPosition - icon.getWidth()/2;
-		float upBar = ActionBar.getBarY(canvas) + TOKEN_OFFSET_UP;
-		float downBar = ActionBar.getBarY(canvas) - TOKEN_OFFSET_DOWN;
-		float canvasY = leftside ? upBar : downBar;
+	private void drawToken(GameCanvas canvas, boolean shouldDim){
+		float tokenX = getTokenX(canvas);
+		float tokenY = getTokenY(canvas);
 		boolean selecting = isSelecting || isHovering;
-		canvasY = selecting && !leftside ? canvasY-icon.getHeight() : canvasY;//change to bar.getHeight
-		canvas.drawTexture(icon, canvasX, canvasY, selecting? new Color(color.r,color.g,color.b,0.8f) : 
-			Color.WHITE, selecting);
+		tokenY = selecting && !leftside ? tokenY-10 : tokenY;//change to bar.getHeight
+		Color newColor = new Color(Color.WHITE);
+		if (shouldDim) {
+			newColor.set(newColor.r, newColor.g, newColor.b, 0.3f);
+		}
+		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
+		col = isHovering ? color : col;
+		canvas.drawTexture(icon, tokenX, tokenY, selecting? col : 
+			newColor, selecting);
 	}
 
 	public void removeHovering() {

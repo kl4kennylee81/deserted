@@ -792,7 +792,7 @@ public class GameCanvas {
 	public void drawTexture(Texture texture, float x, float y, Color color, boolean selecting){
 		spriteBatch.setColor(color);
 		if (selecting){
-			spriteBatch.draw(texture, x, y, 60, 60);	
+			spriteBatch.draw(texture, x, y, 40, 40);	
 		} else {
 			spriteBatch.draw(texture, x, y);	
 		}	
@@ -803,19 +803,13 @@ public class GameCanvas {
 		spriteBatch.draw(texture, x, y, width, height);
 	}
 	
-	public void drawCharacter(Texture texture, float x, float y, Color color, boolean leftside,float scale){
+	
+	public void drawCharacter(Texture texture, float x, float y, Color color, boolean leftside, float scale){
 		spriteBatch.setColor(color);
 		int tWidth = texture.getWidth();
 		int tHeight = texture.getHeight();
 		spriteBatch.draw(texture,x,y,0,0,tWidth,tHeight,scale,scale,0,0,0,tWidth,tHeight, leftside, false);
-		//spriteBatch.draw(texture, x, y, tWidth, tHeight, 0, 0, tWidth, tHeight, leftside, false);
-	}
-	
-	public void drawCharacter(Texture texture, float x, float y, Color color, boolean leftside){
-		spriteBatch.setColor(color);
-		int tWidth = texture.getWidth();
-		int tHeight = texture.getHeight();
-		spriteBatch.draw(texture, x, y, tWidth, tHeight, 0, 0, tWidth, tHeight, leftside, false);
+//		spriteBatch.draw(texture, x, y, tWidth, tHeight, 0, 0, tWidth, tHeight, leftside, false);
 	}
 	
 	

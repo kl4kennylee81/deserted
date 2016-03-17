@@ -179,6 +179,8 @@ public class GameEngine implements Screen {
     private GameCanvas canvas;
     /** Subcontroller for main menu (CONTROLLER CLASS) */
     private MainMenuController mainMenuController;
+    /** Subcontroller for mouse controls (CONTROLLER CLASS) */
+    private MouseOverController mouseOverController;
     
 //	/** Default budget for asset loader (do nothing but load 60 fps) */
 //	private static int DEFAULT_BUDGET = 15;
@@ -216,7 +218,8 @@ public class GameEngine implements Screen {
     	gameState = GameState.LOAD;
     	gameLoad  = 0.0f;
 		canvas = new GameCanvas();
-		gameplayController = new GameplayController();
+		mouseOverController = new MouseOverController(canvas);
+		gameplayController = new GameplayController(mouseOverController);
 
 		availableActions = new HashMap<Integer, Action>();
 		availableCharacters = new HashMap<Integer, Character>();
@@ -320,7 +323,7 @@ public class GameEngine implements Screen {
 	 * @param delta The time in seconds since the last render.
 	 */
 	public void render(float delta) {
-		System.out.println(delta);
+//		System.out.println(delta);
 		// Allow the user to reset by pressing "R"
 		checkReset();
         canvas.begin();
@@ -444,6 +447,8 @@ public class GameEngine implements Screen {
 		canvas.resize();
 		updateMeasures();
 		InputController.setCanvas(canvas);
+		mouseOverController.setCanvas(canvas);
+		//do we need all this?^
 	}
 	
 	/** 
