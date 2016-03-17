@@ -83,11 +83,10 @@ public class ActionController {
 			ActionNode action = selected.popCast();
 			selected.needsAttack = false;
 			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
-				executeAction(action);
-				//If actual move show executing animation
 				if (action.action.pattern != Pattern.MOVE){
 					selected.setExecuting();
 				}
+				executeAction(action);
 			}
 			else{
 				action.free();

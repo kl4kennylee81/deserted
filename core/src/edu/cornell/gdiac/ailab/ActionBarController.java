@@ -30,13 +30,13 @@ public class ActionBarController {
 			float oldCast = c.castPosition;
 			
 			// Increase characters cast position by their normal speed or cast speed
-			if (c.castPosition > bar.castPoint){
+			if (c.castPosition > ActionBar.castPoint){
 				c.castPosition += c.castSpeed;
 			} else {
 				c.castPosition += c.speed;
 			}
 			
-			if (c.castPosition >= bar.castPoint && oldCast < bar.castPoint) {
+			if (c.castPosition >= ActionBar.castPoint && oldCast < ActionBar.castPoint) {
 				// Let characters select their attacks
 				c.needsSelection();
 				c.startingCast();
@@ -51,7 +51,7 @@ public class ActionBarController {
 				c.startingCast();
 				c.needsAttack = true;
 				this.isAttack = true;
-			} else if (!c.hasAttacks() && c.castPosition >= bar.castPoint) {
+			} else if (!c.hasAttacks() && c.castPosition >= ActionBar.castPoint) {
 				// Reset once done with attacks
 				c.castPosition = 0;
 			}

@@ -312,7 +312,6 @@ public class GameEngine implements Screen {
 	 * @param delta The time in seconds since the last render.
 	 */
 	public void render(float delta) {
-		System.out.println(delta);
 		// Allow the user to reset by pressing "R"
 		checkReset();
         canvas.begin();

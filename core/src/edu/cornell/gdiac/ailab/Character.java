@@ -447,6 +447,10 @@ public class Character {
 		if (queuedActions.isEmpty()){
 			return animation.getTexture(CharacterState.IDLE);
 		} else {
+			if (queuedActions.peek().isInterrupted){
+				//change to interrupted later maybe?
+				return animation.getTexture(CharacterState.IDLE);
+			}
 			if (castPosition - lastCastStart >= ((1-ActionBar.castPoint)/ActionBar.getTotalSlots())){
 				return animation.getTexture(CharacterState.CASTING);
 			} else {

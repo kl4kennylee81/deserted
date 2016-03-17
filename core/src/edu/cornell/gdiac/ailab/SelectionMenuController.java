@@ -117,7 +117,7 @@ public class SelectionMenuController {
 		} else if (InputController.pressedS()){
 			menu.removeLast();
 		} else if (InputController.pressedD() && menu.canNop()){
-			menu.add(anPool.newActionNode(nop,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/ActionBar.getTotalSlots()),0,0,Direction.NONE));
+			menu.add(anPool.newActionNode(nop,ActionBar.castPoint+(action.cost+menu.takenSlots)*((1-ActionBar.castPoint)/ActionBar.getTotalSlots()),0,0,Direction.NONE));
 			menu.resetPointer();
 		} else if (InputController.pressedUp() && !InputController.pressedDown()){
 			//Actions go from up down, so we need to flip
@@ -194,7 +194,7 @@ public class SelectionMenuController {
 			break;
 		}
 		if (InputController.pressedEnter()){
-			menu.add(anPool.newActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/ActionBar.getTotalSlots()),selectedX,selectedY,direction));
+			menu.add(anPool.newActionNode(action,ActionBar.castPoint+(action.cost+menu.takenSlots)*((1-ActionBar.castPoint)/ActionBar.getTotalSlots()),selectedX,selectedY,direction));
 			menu.setChoosingTarget(false);
 			selected.setSelecting(false);
 			selected.setQueuedActions(menu.getQueuedActions());
@@ -202,7 +202,7 @@ public class SelectionMenuController {
 			resetNeedsShadow();
 		}
 		if (InputController.pressedA()){
-			menu.add(anPool.newActionNode(action,bar.castPoint+(action.cost+menu.takenSlots)*((1-bar.castPoint)/ActionBar.getTotalSlots()),selectedX,selectedY,direction));
+			menu.add(anPool.newActionNode(action,ActionBar.castPoint+(action.cost+menu.takenSlots)*((1-ActionBar.castPoint)/ActionBar.getTotalSlots()),selectedX,selectedY,direction));
 			menu.setChoosingTarget(false);
 			menu.resetPointer();
 		} else if (InputController.pressedS()){
