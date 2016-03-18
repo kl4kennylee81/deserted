@@ -438,7 +438,7 @@ public class Character {
 			return fs;
 		} 
 		if (isExecuting){
-			FilmStrip fs = animation.getTexture(CharacterState.EXECUTING);
+			FilmStrip fs = animation.getTexture(CharacterState.EXECUTE);
 			if (fs == null){
 				isExecuting = false;
 			}
@@ -452,7 +452,7 @@ public class Character {
 				return animation.getTexture(CharacterState.IDLE);
 			}
 			if (castPosition - lastCastStart >= ((1-ActionBar.castPoint)/ActionBar.getTotalSlots())){
-				return animation.getTexture(CharacterState.CASTING);
+				return animation.getTexture(CharacterState.CAST);
 			} else {
 				return animation.getTexture(CharacterState.ACTIVE);
 			}

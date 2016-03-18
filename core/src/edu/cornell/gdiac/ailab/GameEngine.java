@@ -469,11 +469,12 @@ public class GameEngine implements Screen {
 				Animation animationToAdd = new Animation(name,animationTexture,rows,cols,size);
 				
 				ArrayList<HashMap<String, Object>> segments = (ArrayList<HashMap<String, Object>>) animation.get("segments");
-				for (HashMap<String, Object> frameData : segments){
-					int startingIndex = (int) frameData.keySet().toArray()[0];
-					List<Integer> frameLengths = (List<Integer>) frameData.get(startingIndex);
+				for (HashMap<String, Object> segmentData : segments){
+					Integer segmentId = (Integer) segmentData.get("segmentId");
+					Integer startingIndex = (Integer) segmentData.get("startingIndex");
+					List<Integer> frameLengths = (List<Integer>) segmentData.get("frameData");
 					
-					animationToAdd.addSegment(startingIndex,frameLengths);
+					animationToAdd.addSegment(segmentId,startingIndex,frameLengths);
 				}
 				availableAnimations.put(id, animationToAdd);
 			}	

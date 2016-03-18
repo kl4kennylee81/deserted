@@ -5,7 +5,11 @@
   cols: 2
   size: 2
   segments:
-    - 0:
+    - segmentName: IDLE
+      segmentId: 0 
+      startingIndex: 0
+      length: 2
+      frameData:
       - 50
       - 50
 
@@ -16,16 +20,35 @@
   cols: 5
   size: 5
   segments:
-    - 0:
-    - 0:
+    - segmentName: IDLE
+      segmentId: 0 
+      startingIndex: 0
+      length: 0
+      frameData:
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 1
+      frameData:
       - 10
-    - 1:
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 1
+      length: 2
+      frameData:
       - 20
       - 20
-    - 3:
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 3
+      length: 1
+      frameData:
       - 15
-    - 4:
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 4
+      length: 1
+      frameData:
       - 10
-
 
 ...

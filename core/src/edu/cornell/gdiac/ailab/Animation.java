@@ -1,7 +1,9 @@
 package edu.cornell.gdiac.ailab;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.graphics.Texture;
 
@@ -11,7 +13,7 @@ public class Animation {
 	/** Film strip for animation */
 	FilmStrip filmStrip;
 	/** List of segments that divide animation */
-	List<Segment> segments;
+	Map<Integer,Segment> segments;
 	
 	/** A section of the film strip for an individual animation */
 	public class Segment {
@@ -38,11 +40,11 @@ public class Animation {
 		this.name = name;
 		this.filmStrip = new FilmStrip(texture, rows, cols, size);
 		
-		segments = new ArrayList<Segment>();
+		segments = new HashMap<Integer,Segment>();
 	}	
 	
 	/** Add a new segment with a given starting index and frame data */
-	public void addSegment(int startingIndex, List<Integer> frameLengths){
-		segments.add(new Segment(startingIndex, frameLengths));
+	public void addSegment(int segmentId, int startingIndex, List<Integer> frameLengths){
+		segments.put(segmentId,new Segment(startingIndex, frameLengths));
 	}
 }

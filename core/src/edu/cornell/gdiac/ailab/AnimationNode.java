@@ -14,7 +14,7 @@ public class AnimationNode {
 	int yPos;
 	
 	public enum CharacterState {
-		IDLE (0), ACTIVE (1), CASTING (2), EXECUTING (3), HURT (4);
+		IDLE (0), ACTIVE (1), CAST (2), EXECUTE (3), HURT (4);
 		
 		public final int id;
 		CharacterState(int id) { 
@@ -59,7 +59,7 @@ public class AnimationNode {
 	 */
 	public FilmStrip getTextureHelper(int segmentNum){
 		Segment s = animation.segments.get(segmentNum);
-		if (s.frameLengths == null){
+		if (s == null || s.frameLengths == null){
 			return null;
 		}
 		curFrameDuration++;
