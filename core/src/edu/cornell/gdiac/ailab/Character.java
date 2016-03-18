@@ -539,16 +539,16 @@ public class Character {
 				int minX = Math.min(nowX, tempX);
 				float arrowX = board.offsetBoard(canvas,arrowOffX + (tileW *minX));
 				float arrowY = arrowOffY + (tileH *nowY);
-				float arrowWidth = tileW + SHADOW_ARROW_WIDTH;
-				float arrowHeight = SHADOW_ARROW_WIDTH;
+				float arrowWidth = tileW + (SHADOW_ARROW_WIDTH)*canvas.getWidth() ;
+				float arrowHeight = SHADOW_ARROW_WIDTH*canvas.getWidth();
 				canvas.drawBox(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
 				//canvas.drawBox(72 + 150*minX, 47 + 100*nowY, 156, 6, Color.BLACK);
 			} else if (nowY != tempY && nowX == tempX){
 				int minY = Math.min(nowY, tempY);
 				float arrowX = board.offsetBoard(canvas,arrowOffX + (tileW *nowX));
 				float arrowY = arrowOffY + (tileH *minY);
-				float arrowWidth = SHADOW_ARROW_WIDTH;
-				float arrowHeight = tileH + SHADOW_ARROW_WIDTH;
+				float arrowWidth = SHADOW_ARROW_WIDTH*canvas.getWidth();
+				float arrowHeight = tileH + SHADOW_ARROW_WIDTH*canvas.getWidth();
 				canvas.drawBox(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
 				//canvas.drawBox(72+150*nowX, 47+100*minY, 6, 106, Color.BLACK);
 			} else {
