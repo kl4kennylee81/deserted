@@ -48,10 +48,10 @@ public class PersistingController extends ActionController{
 	public void executeAction(){
 		switch (selectedActionNode.action.pattern){
 		case STRAIGHT:
-			executeStraight();
+			executePath();
 			break;
 		case DIAGONAL:
-			executeDiagonal();
+			executePath();
 			break;
 		default:
 			break;
@@ -65,59 +65,11 @@ public class PersistingController extends ActionController{
 		return c.isAlive() && !c.equals(selected) && c.leftside != selected.leftside && c.xPosition == curX && c.yPosition == curY;
 	}
 	
-	public void executeStraight(){
+	public void moveAlongPath(){
 		PersistingAction selectedAction = (PersistingAction) selectedActionNode.action;
-		
-		// Keep track of current and next x/y positions
-		int prevIntX = selectedActionNode.getCurrentX();
-		int prevIntY = selectedActionNode.getCurrentY();
-		if (selected.leftside){
-			selectedActionNode.curX += selectedAction.moveSpeed;
-		} else {
-			selectedActionNode.curX -= selectedAction.moveSpeed;
-		}
-		int curIntX = selectedActionNode.getCurrentX();
-		int curIntY = selectedActionNode.getCurrentY();
-		
-		// Check if next position is out of bounds or blocked
-		if (!board.isInBounds(curIntX, curIntY) || isBlocked(curIntX, curIntY)){
-			selected.popPersistingCast(selectedActionNode);
-			return;
-		}
-		
-		// Check if attack hit any characters
-		for (Character c:characters){
-			if (isHit(c,curIntX,curIntY) || isHit(c,prevIntX,prevIntY)){
-				processHit(selectedActionNode,c);
-				selected.popPersistingCast(selectedActionNode);
-				break;
-			}
-		}
-	}
-	
-	public void executeDiagonal(){
-		PersistingAction selectedAction = (PersistingAction) selectedActionNode.action;
-		
-		// Keep track of current and next x/y positions
-		int prevIntX = selectedActionNode.getCurrentX();
-		int prevIntY = selectedActionNode.getCurrentY();
-//		if (selected.leftside){
-//			selectedActionNode.curX += selectedAction.moveSpeed;
-//		} else {
-//			selectedActionNode.curX -= selectedAction.moveSpeed;
-//		}
-//		if (selectedActionNode.direction == Direction.DOWN){
-//			selectedActionNode.curY -= selectedAction.moveSpeed;
-//		} else {
-//			selectedActionNode.curY += selectedAction.moveSpeed;
-//		}
 		
 		Coordinate cur_pos = selectedActionNode.getCurInPath();
 		Coordinate next_pos = selectedActionNode.getNextInPath();
-		if (next_pos == null){
-			selected.popPersistingCast(selectedActionNode);
-			return;
-		}
 		
 		float angleTo = cur_pos.angleTo(next_pos);
 		
@@ -125,9 +77,6 @@ public class PersistingController extends ActionController{
 		double sinA = Math.sin(Math.toRadians(angleTo));
 		selectedActionNode.curX += selectedAction.moveSpeed * cosA;
 		selectedActionNode.curY += selectedAction.moveSpeed * sinA;
-		
-		int curIntX = selectedActionNode.getCurrentX();
-		int curIntY = selectedActionNode.getCurrentY();
 		
 		// get the middle of the board tile
 		float midNextX = (float) ((float) Math.signum(cosA) * 0.5 + next_pos.x);
@@ -142,19 +91,33 @@ public class PersistingController extends ActionController{
 		if (dist <= selectedAction.moveSpeed){
 			selectedActionNode.pathIndex+=1;
 		}
-		
-		// Check if next position is out of bounds or blocked
-		if (!board.isInBounds(curIntX, curIntY) || isBlocked(curIntX, curIntY)){
+	}
+	
+	public void executePath(){
+		if (selectedActionNode.getNextInPath() == null){
 			selected.popPersistingCast(selectedActionNode);
 			return;
 		}
-		
-		// Check if attack hit any characters
-		for (Character c:characters){
-			if (isHit(c,curIntX,curIntY) || isHit(c,prevIntX,prevIntY)){
-				processHit(selectedActionNode,c);
+		else {
+			moveAlongPath();
+			
+			// check based on a rounding of the current X and current Y
+			int curIntX = selectedActionNode.getCurrentX();
+			int curIntY = selectedActionNode.getCurrentY();
+			
+			// Check if next position is out of bounds or blocked
+			if (!board.isInBounds(curIntX, curIntY) || isBlocked(curIntX, curIntY)){
 				selected.popPersistingCast(selectedActionNode);
-				break;
+				return;
+			}
+			
+			// Check if attack hit any characters
+			for (Character c:characters){
+				if (isHit(c,curIntX,curIntY)){
+					processHit(selectedActionNode,c);
+					selected.popPersistingCast(selectedActionNode);
+					break;
+				}
 			}
 		}
 	}
