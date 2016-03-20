@@ -55,6 +55,7 @@ public class SelectionMenu {
 	
 	public SelectionMenu(Action[] actions){
 		this.actions = actions;
+//		System.out.println("Selection action set to 0");
 		selectedAction = 0;
 		takenSlots = 0;
 		choosingTarget = false;
@@ -104,6 +105,10 @@ public class SelectionMenu {
 	
 	public Action getSelectedAction(){
 		return actions[selectedAction];
+	}
+	
+	public Action[] getActions(){
+		return actions;
 	}
 	
 	public boolean getChoosingTarget(){
@@ -162,8 +167,10 @@ public class SelectionMenu {
 	public boolean changeSelected(boolean up){
 		if (up){
 			for (int i = 0; i < actions.length; i++){
+//				System.out.println("Selection action set to " + selectedAction);
 				selectedAction += 1;
 				selectedAction %= actions.length;
+//				System.out.println("Selection action set to " + selectedAction);
 				if (canDoAction(actions[selectedAction])){
 					return true;
 				}
@@ -174,6 +181,7 @@ public class SelectionMenu {
 				if (selectedAction < 0){
 					selectedAction += actions.length;
 				}
+//				System.out.println("Selection action set to " + selectedAction);
 				if (canDoAction(actions[selectedAction])){
 					return true;
 				}
@@ -190,6 +198,7 @@ public class SelectionMenu {
 		if (actions[selectedAction].cost > ActionBar.getTotalSlots() - takenSlots && takenSlots < ActionBar.getTotalSlots()){
 			for (int i = 0; i < actions.length; i++){
 				selectedAction = i;
+//				System.out.println("Selection action set to " + selectedAction);
 				if (canDoAction(actions[selectedAction])){
 					return true;
 				}
@@ -200,6 +209,7 @@ public class SelectionMenu {
 	
 	public void reset(){
 		selectedAction = 0;
+//		System.out.println("Selection action set to " + selectedAction);
 		takenSlots = 0;
 		choosingTarget = false;
 		while(selectedActions.peek() != null){
@@ -210,12 +220,12 @@ public class SelectionMenu {
 	
 	public void draw(GameCanvas canvas){
 		if (increasing){
-			lerpVal+=0.03;
+			lerpVal+=0.02;
 			if (lerpVal >= 1){
 				increasing = false;
 			}
 		} else {
-			lerpVal -= 0.03;
+			lerpVal -= 0.02;
 			if (lerpVal <= 0){
 				increasing = true;
 			}
@@ -230,6 +240,7 @@ public class SelectionMenu {
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
 			float offset_y = spacing_h * i;
+//			System.out.println(action.name + " is at " + i);
 			if (action.cost > ActionBar.getTotalSlots() - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
 				canvas.drawText(action.name, text_x, text_y - offset_y, new Color(1f, 1f, 1f, 0.5f));
 			} else {
@@ -244,6 +255,7 @@ public class SelectionMenu {
 			float pointer_x = text_x - ACTION_POINTER_OFFSET_X;
 			float pointer_y = text_y - spacing_h*selectedAction - ACTION_POINTER_OFFSET_Y;
 			//draws action name pointers
+//			System.out.println("Pointer is at " + selectedAction);
 			canvas.drawPointer(pointer_x,pointer_y, Color.CORAL);
 		}
 		
@@ -270,7 +282,7 @@ public class SelectionMenu {
 		//Write the names of selected action
 		for (ActionNode an : selectedActions){
 			float x_pos = actionSlot_x + offset + (slot_width*an.action.cost/2);
-			float y_pos = actionSlot_y - TEXT_ACTION_OFFSET;
+			float y_pos = actionSlot_y;
 			canvas.drawCenteredText(an.action.name, x_pos, y_pos, Color.BLACK);
 			offset+=slot_width*an.action.cost;
 		}
@@ -280,4 +292,27 @@ public class SelectionMenu {
 		float descript_y = RELATIVE_DESCRIPTION_Y_POS * h;
 		canvas.drawCenteredText(actions[selectedAction].description, descript_x,descript_y, Color.BLACK);
 	}
+	
+	public void setSelectedAction(int num){
+//		System.out.println("Selected action set to " + num);
+		selectedAction = num;
+	}
+
+	public void updateActionInfo(GameCanvas canvas) {
+		int w = canvas.getWidth();
+		int h = canvas.getHeight();
+		float text_x = RELATIVE_TEXT_X_POS * w;
+		float text_y = RELATIVE_TEXT_Y_POS * h;
+		float spacing_h = RELATIVE_TEXT_SPACING * h;
+		for (int i = 0; i < actions.length; i++){
+			Action action = actions[i];
+			float offset_y = spacing_h * i;
+			action.setHeight(15);//TODO change
+			action.setPosition(i);
+			action.setWidth(80);//TODO change
+			action.setX(text_x);
+			action.setY(text_y-offset_y);
+		}
+	}
+	
 }

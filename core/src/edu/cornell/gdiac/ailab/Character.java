@@ -14,7 +14,7 @@ import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 
-public class Character {
+public class Character implements GUIElement {
 	float TOKEN_OFFSET_UP = 20;
 	float TOKEN_OFFSET_DOWN = 30;
 	float SHADOW_ARROW_WIDTH = 0.0075f; // 6 pixel of 800
@@ -40,8 +40,6 @@ public class Character {
 	float speed;
 	/** Speed when moving through cast par of bar */
 	float castSpeed;
-	private final int CANVAS_X_MULTIPLIER = 150;
-	private final int CANVAS_Y_MULTIPLIER = 100;
 	
 	/** Current x position */
 	int xPosition;
@@ -197,8 +195,8 @@ public class Character {
 		this.yPosition = this.startingYPosition;
 		
 		/* Randomize for now so that its not always the same thing */
-		this.speed = (float) (Math.random()*0.003 + 0.003)/4;
-		this.castSpeed = (float) (Math.random()*0.004 + 0.002)/4;
+		this.speed = (float) (Math.random()*0.003 + 0.003);
+		this.castSpeed = (float) (Math.random()*0.004 + 0.002);
 		
 		this.castPosition = 0;
 		queuedActions.clear();
@@ -407,6 +405,7 @@ public class Character {
 		}
 		drawHealth(canvas,board, shouldDim);
 		drawToken(canvas, shouldDim);
+		drawHealthToken(canvas, shouldDim);
 		if(hasPersisting()){
 			drawPersisting(canvas,board);
 		}
@@ -426,12 +425,12 @@ public class Character {
 	
 	public void drawCharacter(GameCanvas canvas,GridBoard board, boolean shouldDim){
 		if (increasing){
-			lerpVal+=0.01;
+			lerpVal+=0.02;
 			if (lerpVal >= 0.5){
 				increasing = false;
 			}
 		} else {
-			lerpVal -= 0.01;
+			lerpVal -= 0.02;
 			if (lerpVal <= 0){
 				increasing = true;
 			}
@@ -596,6 +595,43 @@ public class Character {
 		canvas.drawTexture(icon, tokenX, tokenY, selecting? col : 
 			newColor, selecting);
 	}
+	
+	/**
+	 * Draws health token
+	 * @param canvas
+	 */
+	private void drawHealthToken(GameCanvas canvas, boolean shouldDim){
+		boolean selecting = isSelecting || isHovering;
+		Color newColor = new Color(Color.WHITE);
+		if (shouldDim) {
+			newColor.set(newColor.r, newColor.g, newColor.b, 0.3f);
+		}
+		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
+		col = isHovering ? color : col;
+		float tokenX = 0f;
+		float tokenY = 0f;
+		switch (name){
+		case "green":
+			tokenX = 0;
+			tokenY = 650;
+			break;
+		case "orange":
+			tokenX = 0;
+			tokenY = 580;
+			break;
+		case "red":
+			tokenX = canvas.getWidth()-60;
+			tokenY = 650;
+			break;
+		case "blue":
+			tokenX = canvas.getWidth()-60;
+			tokenY = 580;
+			break;
+			
+		}
+		canvas.drawTexture(icon, tokenX, tokenY, 60, 60, selecting? col : 
+			newColor);
+	}
 
 	public void removeHovering() {
 		isHovering = false;
@@ -605,5 +641,20 @@ public class Character {
 	public void setHovering() {
 		isHovering = true;
 		
+	}
+
+	@Override
+	public boolean contains(float x, float y, GameCanvas canvas, GridBoard board) {
+		float x_min = getXMin(canvas, board);
+		float x_max = getXMax(canvas, board);
+		float y_min = getYMin(canvas, board);
+		float y_max = getYMax(canvas, board);
+		float x_token_min = getTokenXMin(canvas, board);
+		float x_token_max = getTokenXMax(canvas, board);
+		float y_token_min = getTokenYMin(canvas, board);
+		float y_token_max = getTokenYMax(canvas, board);
+		
+		return (x <= x_max && x >= x_min && y <= y_max && y >= y_min
+				|| x <= x_token_max && x >= x_token_min && y <= y_token_max && y >= y_token_min);
 	}
 }

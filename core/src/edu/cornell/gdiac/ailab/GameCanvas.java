@@ -18,6 +18,7 @@
 package edu.cornell.gdiac.ailab;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.*;
@@ -849,7 +850,7 @@ public class GameCanvas {
 	public void drawText(String msg, float x, float y, Color color) {
 		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
-		displayFont.draw(spriteBatch, msg, x,y);
+		displayFont.draw(spriteBatch, msg, x,y, 80, Align.left, true);
 	}
 	
 	public void drawCenteredText(String msg, float x, float y, Color color) {

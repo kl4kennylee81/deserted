@@ -28,7 +28,7 @@ public class GridBoard {
 	
 	private static final float BOARD_HEIGHT = 0.45f;
 
-	private static final float BOARD_OFFSET = (1-BOARD_WIDTH)/2;
+	private static final float BOARD_OFFSET = 7*((1-BOARD_WIDTH)/8);
 	
 	public float getTileWidth(GameCanvas canvas){
 		return (canvas.getWidth() * BOARD_WIDTH)/width;
@@ -128,7 +128,7 @@ public class GridBoard {
 		int tileH = (int) getTileHeight(canvas);
 		
 		float sx = tileW*x + getBoardOffset(canvas);
-		float sy = tileH*y;
+		float sy = tileH*y;// + bottomOffset(canvas);
 
 		// You can modify the following to change a tile's highlight color.
 		// BASIC_COLOR corresponds to no highlight.
@@ -157,6 +157,10 @@ public class GridBoard {
 		canvas.drawTile(sx, sy, tileMesh, tileW, tileH,color);
 	}
 	
+	public float bottomOffset(GameCanvas canvas) {
+		return canvas.getHeight()*((1-BOARD_WIDTH)/8);
+	}
+
 	/**
 	 * Reset all tiles
 	 */

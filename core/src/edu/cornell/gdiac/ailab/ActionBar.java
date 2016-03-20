@@ -6,10 +6,10 @@ public class ActionBar {
 	/** Ratio of the bar width to the screen */
 	private static final float BAR_WIDTH_RATIO  = 0.6f;
 	/** Ration of the bar height to the screen */
-	private static final float BAR_HEIGHT_RATIO = 0.025f;	
+	private static final float BAR_HEIGHT_RATIO = 0.035f;	
 	
 	/** the x position of the bar should start at the top 7/8 of the screen **/
-	private static final float BAR_RELATIVE_Y_POS = 0.85f;
+	private static final float BAR_RELATIVE_Y_POS = (7f/8f);
 	
 	private static final float BAR_RELATIVE_X_POS = (1-BAR_WIDTH_RATIO)/2;
 	

@@ -31,6 +31,8 @@ public class GameplayController {
     private TextMessage textMessages;
     private HighlightScreen screen;
     
+    private String prompt;
+    
     /** Current state of game */
     private InGameState inGameState;
     
@@ -79,7 +81,7 @@ public class GameplayController {
     		effectController.update();
     		actionBarController.update();
     		persistingController.update();
-    		mouseOverController.update();
+    		mouseOverController.update(selectionMenuController.getMenu());
     		if (actionBarController.isAISelection) {
     			aiController.update();
     		}
@@ -93,9 +95,12 @@ public class GameplayController {
     		screen.setJustScreen();
     		mouseOverController.clearAll();
     		selectionMenuController.update();
-    		mouseOverController.update();
+    		mouseOverController.update(selectionMenuController.getMenu());
+    		prompt = "Choose an Action";
+    		selectionMenuController.setPrompt(prompt);
     		if (selectionMenuController.isDone()){
     			inGameState = InGameState.NORMAL;
+    			prompt = null;
     			board.reset();
     		}
     		break;
@@ -136,6 +141,9 @@ public class GameplayController {
         bar.draw(canvas);
         textMessages.draw(canvas,board);
         drawHighlightedCharacterInSelectionState(canvas);
+        if (prompt != null){
+        	canvas.drawText(prompt, 50, 530, Color.BLACK);
+        }
         //screen should be drawn after greyed out characters
         //but before selected characters
     }

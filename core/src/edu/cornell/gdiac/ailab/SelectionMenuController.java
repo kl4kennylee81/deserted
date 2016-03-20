@@ -39,6 +39,7 @@ public class SelectionMenuController {
 	private static final int SINGLE_X_LEFT = 3;
 	private static final int SINGLE_X_RIGHT = 2;
 	private static final int SINGLE_Y = 3;
+	private String prompt;
 	
 	//TODO: Change to be 0 for down and anything else is up
 	/** Attack direction values */
@@ -106,14 +107,17 @@ public class SelectionMenuController {
 	 * Update when an action is not targeting yet
 	 */
 	private void updateNotChoosingTarget(){
+		boolean mouseCondition = InputController.pressedLeftMouse();// && 
+//				action.contains(InputController.getMouseX(), InputController.getMouseX(), InputController.getCanvas(), board);
 		ActionNodes anPool = ActionNodes.getInstance();
 		if (InputController.pressedEnter()){
 			selected.setSelecting(false);
 			selected.setQueuedActions(menu.getQueuedActions());
 			selected = null;
 			resetNeedsShadow();
-		} else if (InputController.pressedA() && menu.canAct()){
+		} else if ((InputController.pressedA() || mouseCondition) && menu.canAct()){
 			updateTargetedAction();
+			prompt = "Choose a Target";
 		} else if (InputController.pressedS()){
 			menu.removeLast();
 		} else if (InputController.pressedD() && menu.canNop()){
@@ -404,6 +408,14 @@ public class SelectionMenuController {
 	
 	public boolean isDone(){
 		return isDone;
+	}
+
+	public SelectionMenu getMenu() {
+		return menu;
+	}
+
+	public void setPrompt(String prompt) {
+		this.prompt = prompt;
 	}
 	
 }
