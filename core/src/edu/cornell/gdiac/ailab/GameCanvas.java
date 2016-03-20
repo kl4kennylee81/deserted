@@ -327,6 +327,8 @@ public class GameCanvas {
 		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
 		spriteCam.setToOrtho(false,getWidth(),getHeight());
 		spriteBatch.setProjectionMatrix(spriteCam.combined);
+		this.width = Gdx.graphics.getWidth();
+		this.height = Gdx.graphics.getHeight();
 	}
 	
 	/**
