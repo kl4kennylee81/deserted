@@ -1,4 +1,4 @@
-- id: 0
+0:
   name: green
   health: 12
   maxHealth: 12
@@ -17,7 +17,7 @@
   icon: "models/CASTICON_1.png"
   animationId: 1
 
-- id: 1
+1:
   name: yellow
   health: 10
   maxHealth: 10
@@ -35,7 +35,7 @@
   icon: "models/CASTICON_4.png"
   animationId: 1
 
-- id: 2
+2:
   name: red
   health: 20
   maxHealth: 20
@@ -55,7 +55,7 @@
   icon: "models/CASTICON_3.png"
   animationId: 1
 
-- id: 3
+3:
   name: brown
   health: 20
   maxHealth: 20

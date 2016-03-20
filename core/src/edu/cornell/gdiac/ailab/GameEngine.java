@@ -192,6 +192,7 @@ public class GameEngine implements Screen {
     private HashMap<Integer, Character> availableCharacters;
     private HashMap<Integer, Action> availableActions;
     private HashMap<Integer, Animation> availableAnimations;
+    private HashMap<String, HashMap<String, Object>> levelDefs;
     
     /** The current game state (SIMPLE FIELD) */
     private GameState gameState;
@@ -277,6 +278,10 @@ public class GameEngine implements Screen {
     	
     }
 
+    public void startGame(Level level) {
+    	initializeCanvas(BCKGD_TEXTURE, SELECT_FONT_FILE);
+    	
+    }
 
 	/**
 	 * Called when this screen should release all resources.
@@ -450,6 +455,19 @@ public class GameEngine implements Screen {
 	 */
 	public void resume() {}
 
+	@SuppressWarnings("unchecked")
+	private Level getLevel(String levelId) throws IOException{
+		Yaml yaml = new Yaml();
+		FileHandle levelFile = Gdx.files.internal("yaml/levels.yml");
+		HashMap<String, Object> targetLevelDef;
+		try (InputStream iS = levelFile.read()){
+			levelDefs = (HashMap<String, HashMap<String, Object>>) yaml.load(iS);
+			targetLevelDef= levelDefs.get(levelId);	
+			
+		}
+		return ObjectLoader.getInstance().createLevel(targetLevelDef);
+	}
+	
 	@SuppressWarnings("unchecked")
 	private void loadFromYaml() throws IOException{
 		Yaml yaml = new Yaml();

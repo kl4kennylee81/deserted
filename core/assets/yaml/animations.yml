@@ -1,4 +1,4 @@
-- id: 0
+0:
   name: LightningStrip
   texture: "actions/lightningstrip.png"
   rows: 1
@@ -13,7 +13,7 @@
       - 50
       - 50
 
-- id: 1
+1:
   name: Character1Strip
   texture: "models/castanimation_spritesheet.png"
   rows: 1
