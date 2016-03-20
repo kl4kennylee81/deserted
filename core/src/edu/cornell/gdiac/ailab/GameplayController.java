@@ -26,7 +26,7 @@ public class GameplayController {
 	
 	/** Current Models */
     private GridBoard board;
-    private List<Character> characters;
+    private Characters characters;
     private ActionBar bar;
     private TextMessage textMessages;
     private HighlightScreen screen;
@@ -50,7 +50,7 @@ public class GameplayController {
     /**
 	 * Restart the game, laying out all the ships and tiles
 	 */
-	public void resetGame(List<Character> characters, int boardWidth, int boardHeight, Texture boardMesh) {
+	public void resetGame(Characters characters, int boardWidth, int boardHeight, Texture boardMesh) {
 		inGameState = InGameState.NORMAL;
 		
         // Create the models.
@@ -167,13 +167,12 @@ public class GameplayController {
     			}
             }
     	}
-    	for (Character c : characters){
+        for (Character c : characters){
         	c.draw(canvas,board, inGameState == InGameState.SELECTION || 
 					mouseOverController.isCharacterHighlighted());
-        }
-        for (Character c : characters){
         	c.drawSelection(canvas);
         }
+        characters.drawHealthBars(canvas);
     }
     
     //temporary method - change name and integrate with above method

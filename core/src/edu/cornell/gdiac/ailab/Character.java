@@ -28,7 +28,7 @@ public class Character implements GUIElement {
 	
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
-	float CHARACTER_PROPORTION = 0.8f;
+	float CHARACTER_PROPORTION = 0.7f;
 
 	/** Name of character */
 	String name;
@@ -129,15 +129,14 @@ public class Character implements GUIElement {
 	
 	public float getXMin(GameCanvas canvas, GridBoard board){
 		float tileW = board.getTileWidth(canvas);
-		float canvasX = board.offsetBoard(canvas,tileW*xPosition);
+		float canvasX = board.offsetBoard(canvas,tileW*xPosition,0).x;
 		return canvasX;
 	}
 	
 	public float getYMin(GameCanvas canvas, GridBoard board){
 		float tileH = board.getTileHeight(canvas);
-		float canvasY = tileH*yPosition;
+		float canvasY = board.offsetBoard(canvas,0,tileH*yPosition).y;
 		return canvasY;
-//		return CANVAS_Y_MULTIPLIER*yPosition;
 	}
 	
 	public float getXMax(GameCanvas canvas, GridBoard board){
@@ -149,7 +148,6 @@ public class Character implements GUIElement {
 	public float getYMax(GameCanvas canvas, GridBoard board){
 		float charScale = getCharScale(canvas,texture,board);
 		return getYMin(canvas, board) + texture.getHeight()*charScale;
-//		return CANVAS_Y_MULTIPLIER*yPosition + texture.getHeight();
 	}
 	
 	public float getTokenX(GameCanvas canvas){
@@ -403,9 +401,7 @@ public class Character implements GUIElement {
 		if (!isAlive()){
 			return;
 		}
-		drawHealth(canvas,board, shouldDim);
 		drawToken(canvas, shouldDim);
-		drawHealthToken(canvas, shouldDim);
 		if(hasPersisting()){
 			drawPersisting(canvas,board);
 		}
@@ -437,8 +433,10 @@ public class Character implements GUIElement {
 		}
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
-		float canvasX = board.offsetBoard(canvas,tileW*xPosition);
-		float canvasY = tileH*yPosition;
+		Coordinate canvasC = board.offsetBoard(canvas, tileW*xPosition, tileH*yPosition);
+		float canvasX = canvasC.x;
+		float canvasY = canvasC.y;
+		canvasC.free();
 		float charScale = getCharScale(canvas,texture,board);
 		
 		Color newColor = new Color(Color.WHITE);
@@ -457,8 +455,10 @@ public class Character implements GUIElement {
 	public void drawShadowCharacter(GameCanvas canvas,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
-		float canvasX = board.offsetBoard(canvas,tileW*getShadowX());
-		float canvasY = tileH*getShadowY();
+		Coordinate canvasC = board.offsetBoard(canvas, tileW*getShadowX(), tileH*getShadowY());
+		float canvasX = canvasC.x;
+		float canvasY = canvasC.y;
+		canvasC.free();
 		
 		float charScale = getCharScale(canvas,texture,board);
 		canvas.drawCharacter(texture, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside,charScale);
@@ -491,16 +491,24 @@ public class Character implements GUIElement {
 			float arrowOffY = (tileH - SHADOW_ARROW_WIDTH)/2;
 			if (nowX != tempX && nowY == tempY){
 				int minX = Math.min(nowX, tempX);
-				float arrowX = board.offsetBoard(canvas,arrowOffX + (tileW *minX));
+				float arrowX = arrowOffX + (tileW *minX);
 				float arrowY = arrowOffY + (tileH *nowY);
+				Coordinate c = board.offsetBoard(canvas, arrowX, arrowY);
+				arrowX = c.x;
+				arrowY = c.y;
+				c.free();
 				float arrowWidth = tileW + SHADOW_ARROW_WIDTH;
 				float arrowHeight = SHADOW_ARROW_WIDTH;
 				canvas.drawBox(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
 				//canvas.drawBox(72 + 150*minX, 47 + 100*nowY, 156, 6, Color.BLACK);
 			} else if (nowY != tempY && nowX == tempX){
 				int minY = Math.min(nowY, tempY);
-				float arrowX = board.offsetBoard(canvas,arrowOffX + (tileW *nowX));
+				float arrowX = arrowOffX + (tileW *nowX);
 				float arrowY = arrowOffY + (tileH *minY);
+				Coordinate c = board.offsetBoard(canvas, arrowX, arrowY);
+				arrowX = c.x;
+				arrowY = c.y;
+				c.free();
 				float arrowWidth = SHADOW_ARROW_WIDTH;
 				float arrowHeight = tileH + SHADOW_ARROW_WIDTH;
 				canvas.drawBox(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
@@ -525,8 +533,12 @@ public class Character implements GUIElement {
 				int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
 				int shieldH = (int)(tileH * SHIELD_LENGTH);
 				if (leftside){
-					int shieldX = (int)board.offsetBoard(canvas,tileW - SHIELD_OFFSET + (tileW*an.curX));
+					int shieldX = (int)(tileW - SHIELD_OFFSET + (tileW*an.curX));
 					int shieldY = (int)(tileH *an.curY);
+					Coordinate c = board.offsetBoard(canvas, shieldX, shieldY);
+					shieldX = c.x;
+					shieldY = c.y;
+					c.free();
 					if (an.direction == Direction.UP){
 						canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
 					} else {
@@ -534,8 +546,12 @@ public class Character implements GUIElement {
 						//canvas.drawBox(145+150*an.curX, 100*an.curY-100, 10, 200, Color.GRAY);
 					}
 				} else {
-					int shieldX = (int)board.offsetBoard(canvas,-SHIELD_OFFSET + (tileW*an.curX));
+					int shieldX = (int)(-SHIELD_OFFSET + (tileW*an.curX));
 					int shieldY = (int)(tileH *an.curY);
+					Coordinate c = board.offsetBoard(canvas, shieldX, shieldY);
+					shieldX = c.x;
+					shieldY = c.y;
+					c.free();
 					if (an.direction == Direction.UP){
 						canvas.drawBox(shieldX, shieldY,shieldW,shieldH, Color.GRAY);
 					} else {
@@ -545,36 +561,18 @@ public class Character implements GUIElement {
 				break;
 			case STRAIGHT:
 			case DIAGONAL:
-				float diagX = board.offsetBoard(canvas,(tileW/2 - DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX)));;
+				float diagX = (tileW/2 - DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX));
 				float diagY = tileH/2 - DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY);
+				Coordinate c = board.offsetBoard(canvas, diagX, diagY);
+				diagX = c.x;
+				diagY = c.y;
+				c.free();
 				canvas.drawBox(diagX,diagY, DIAGONAL_SIZE, DIAGONAL_SIZE, color);
 				break;
 			default:
 				break;
 			}
 		}
-	}
-	
-	/**
-	 * Draws health bar 
-	 */
-	private void drawHealth(GameCanvas canvas,GridBoard board, boolean shouldDim){
-		float tileW = board.getTileWidth(canvas);
-		float tileH = board.getTileHeight(canvas);
-		
-		float charScale = getCharScale(canvas,texture,board);
-		
-		float canvasX = board.offsetBoard(canvas,tileW*xPosition);
-		float canvasY = texture.getHeight()*charScale + tileH*yPosition;
-		
-		Color newColor = new Color(Color.WHITE);
-		if (shouldDim) {
-			newColor.set(newColor.r, newColor.g, newColor.b, 0.4f);
-		}
-		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
-		col = isHovering ? color : col;
-		canvas.drawBox(canvasX, canvasY, tileW, 10, newColor);
-		canvas.drawBox(canvasX, canvasY, (int) (tileW*health/maxHealth), HEALTH_HEIGHT, color);
 	}
 	
 	/**
@@ -595,44 +593,11 @@ public class Character implements GUIElement {
 		canvas.drawTexture(icon, tokenX, tokenY, selecting? col : 
 			newColor, selecting);
 	}
-	
-	/**
-	 * Draws health token
-	 * @param canvas
-	 */
-	private void drawHealthToken(GameCanvas canvas, boolean shouldDim){
-		boolean selecting = isSelecting || isHovering;
-		Color newColor = new Color(Color.WHITE);
-		if (shouldDim) {
-			newColor.set(newColor.r, newColor.g, newColor.b, 0.3f);
-		}
-		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
-		col = isHovering ? color : col;
-		float tokenX = 0f;
-		float tokenY = 0f;
-		switch (name){
-		case "green":
-			tokenX = 0;
-			tokenY = 650;
-			break;
-		case "orange":
-			tokenX = 0;
-			tokenY = 580;
-			break;
-		case "red":
-			tokenX = canvas.getWidth()-60;
-			tokenY = 650;
-			break;
-		case "blue":
-			tokenX = canvas.getWidth()-60;
-			tokenY = 580;
-			break;
-			
-		}
-		canvas.drawTexture(icon, tokenX, tokenY, 60, 60, selecting? col : 
-			newColor);
-	}
 
+	public boolean getHovering(){
+		return isHovering;
+	}
+	
 	public void removeHovering() {
 		isHovering = false;
 		

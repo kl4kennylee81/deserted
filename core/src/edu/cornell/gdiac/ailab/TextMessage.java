@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
+
 public class TextMessage {
 	class Message {
 		String text;
@@ -74,21 +76,33 @@ public class TextMessage {
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
 		for (Message m : damageMessages){
-			float messageX = board.offsetBoard(canvas,tileW/2 + tileW*m.xPos);
+			float messageX = tileW/2 + tileW*m.xPos;
 			float messageY = tileH*m.yPos + DAMAGE_OFFSET + m.getRatio()*TIME_TRANSLATION_OFFSET;
+			Coordinate c = board.offsetBoard(canvas, messageX, messageY);
+			messageX = c.x;
+			messageY = c.y;
+			c.free();
 			canvas.drawCenteredText(m.text, messageX, messageY, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 2f);
 			//canvas.drawCenteredText(m.text, 75+150*m.xPos, 300+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 2f);
 		}
 		for (Message m : otherMessages){
-			float messageX = board.offsetBoard(canvas,tileW/2 + tileW*m.xPos);
+			float messageX = tileW/2 + tileW*m.xPos;
 			float messageY = tileH*m.yPos + OTHER_OFFSET + m.getRatio()*TIME_TRANSLATION_OFFSET;
+			Coordinate c = board.offsetBoard(canvas, messageX, messageY);
+			messageX = c.x;
+			messageY = c.y;
+			c.free();
 			canvas.drawCenteredText(m.text, messageX, messageY, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
 			//canvas.drawCenteredText(m.text, 75+150*m.xPos, 320+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
 		}
 		for (Message m : tempSingles){
 			
-			float xPos = board.offsetBoard(canvas, 5+m.xPos*tileW);
+			float xPos = 5+m.xPos*tileW;
 			float yPos = 5+m.yPos*tileH;
+			Coordinate c = board.offsetBoard(canvas, xPos, yPos);
+			xPos = c.x;
+			yPos = c.y;
+			c.free();
 			float ratio = m.getRatio();
 			if (ratio < 0.25 || (ratio > 0.5 && ratio < 0.75)){
 				for (int i = 0; i < 5; i++){

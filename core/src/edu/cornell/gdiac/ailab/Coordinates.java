@@ -41,7 +41,6 @@ public class Coordinates {
 		public void free(){
 			if (!this.isFreed){
 				memory.free(this);
-				System.out.println("free"+ memory.getFree());
 			}
 		}
 	}

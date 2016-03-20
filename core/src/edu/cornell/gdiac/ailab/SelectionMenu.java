@@ -21,7 +21,7 @@ public class SelectionMenu {
 
 	private static final float RELATIVE_TEXT_X_POS = 0.0125f;
 
-	private static final float RELATIVE_TEXT_Y_POS = 0.45f;
+	private static final float RELATIVE_TEXT_Y_POS = 0.6f;
 
 	private static final float RELATIVE_TEXT_SPACING = 0.0625f;
 
@@ -31,7 +31,7 @@ public class SelectionMenu {
 
 	private static final float TEXT_ACTION_OFFSET = 30f;
 
-	private static final float RELATIVE_DESCRIPTION_Y_POS = ActionBar.getRelativeY() - 0.1f;
+	private static final float RELATIVE_DESCRIPTION_Y_POS = 0.8f;
 	
 	private static final float RELATIVE_DESCRIPTION_X_POS = 0.5f;
 
