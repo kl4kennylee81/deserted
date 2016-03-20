@@ -320,6 +320,21 @@ public class Character {
 		}
 	}
 	
+	void addPersisting(ActionNode an,Coordinate[] path){
+		if (an.action.pattern == Pattern.SHIELD){
+			an.setPersisting(0, xPosition, yPosition);
+			persistingActions.add(an);
+			resetShieldedCoordinates();
+		} else if (an.action.pattern == Pattern.DIAGONAL || an.action.pattern == Pattern.STRAIGHT){
+			if (leftside){
+				an.setPersisting(0, xPosition+1, yPosition,path);
+			} else {
+				an.setPersisting(0, xPosition-1, yPosition,path);
+			}
+			persistingActions.add(an);
+		}
+	}
+	
 	void popPersistingCast(ActionNode an){
 		persistingActions.remove(an);
 		if (an.action != null && an.action.pattern == Pattern.SHIELD){

@@ -3,6 +3,8 @@ package edu.cornell.gdiac.ailab;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.badlogic.gdx.math.Vector2;
+
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
@@ -99,18 +101,47 @@ public class PersistingController extends ActionController{
 		// Keep track of current and next x/y positions
 		int prevIntX = selectedActionNode.getCurrentX();
 		int prevIntY = selectedActionNode.getCurrentY();
-		if (selected.leftside){
-			selectedActionNode.curX += selectedAction.moveSpeed;
-		} else {
-			selectedActionNode.curX -= selectedAction.moveSpeed;
+//		if (selected.leftside){
+//			selectedActionNode.curX += selectedAction.moveSpeed;
+//		} else {
+//			selectedActionNode.curX -= selectedAction.moveSpeed;
+//		}
+//		if (selectedActionNode.direction == Direction.DOWN){
+//			selectedActionNode.curY -= selectedAction.moveSpeed;
+//		} else {
+//			selectedActionNode.curY += selectedAction.moveSpeed;
+//		}
+		
+		Coordinate cur_pos = selectedActionNode.getCurInPath();
+		Coordinate next_pos = selectedActionNode.getNextInPath();
+		if (next_pos == null){
+			selected.popPersistingCast(selectedActionNode);
+			return;
 		}
-		if (selectedActionNode.direction == Direction.DOWN){
-			selectedActionNode.curY -= selectedAction.moveSpeed;
-		} else {
-			selectedActionNode.curY += selectedAction.moveSpeed;
-		}
+		
+		float angleTo = cur_pos.angleTo(next_pos);
+		
+		double cosA = Math.cos(Math.toRadians(angleTo));
+		double sinA = Math.sin(Math.toRadians(angleTo));
+		selectedActionNode.curX += selectedAction.moveSpeed * cosA;
+		selectedActionNode.curY += selectedAction.moveSpeed * sinA;
+		
 		int curIntX = selectedActionNode.getCurrentX();
 		int curIntY = selectedActionNode.getCurrentY();
+		
+		// get the middle of the board tile
+		float midNextX = (float) ((float) Math.signum(cosA) * 0.5 + next_pos.x);
+		float midNextY = (float) ((float) Math.signum(sinA) * 0.5 + next_pos.y);
+
+		// compute current distance from middle
+		float diffX = (midNextX - selectedActionNode.curX);
+		float diffY = (midNextY - selectedActionNode.curY);
+		float dist = diffX*diffX + diffY*diffY;
+		
+		// when its past the middle you increment to next path
+		if (dist <= selectedAction.moveSpeed){
+			selectedActionNode.pathIndex+=1;
+		}
 		
 		// Check if next position is out of bounds or blocked
 		if (!board.isInBounds(curIntX, curIntY) || isBlocked(curIntX, curIntY)){

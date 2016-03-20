@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Pool;
 
 public class Coordinates {
@@ -43,6 +44,32 @@ public class Coordinates {
 				memory.free(this);
 			}
 		}
+		/** angle needed to move from this coordinate to pos **/
+		public float angleTo(Coordinate pos){
+			float x = pos.x - this.x;
+			float y = pos.y - this.y;
+			float angle = (float)Math.atan2(y, x) * MathUtils.radiansToDegrees;
+			if (angle < 0) angle += 360;
+			return angle;
+		}
+		
+		public float dist(float x,float y){
+				final float x_d = x - this.x;
+				final float y_d = y - this.y;
+				return x_d * x_d + y_d * y_d;
+		}
+		
+		/** point (x,y) is distance to this coordinate is within this radius **/
+		public boolean inRadius(float radius,float x,float y){
+			float dist = this.dist(x, y);
+			if (dist <= radius){
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		
 	}
 	
 	public class CoordinatePool extends Pool<Coordinate>{

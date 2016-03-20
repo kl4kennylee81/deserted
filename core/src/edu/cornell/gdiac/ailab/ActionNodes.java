@@ -1,8 +1,9 @@
 package edu.cornell.gdiac.ailab;
 
-import java.util.AbstractSequentialList;
 
 import com.badlogic.gdx.utils.Pool;
+
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 
 public class ActionNodes{
 	
@@ -35,7 +36,9 @@ public class ActionNodes{
 		boolean isFreed;
 		
 		// a path of the trajectory
-		//TODO
+		Coordinate[] path;
+		int pathIndex = 0;
+		
 		public ActionNode(){
 			reset();
 		}
@@ -47,6 +50,7 @@ public class ActionNodes{
 			this.xPosition = xPos;
 			this.yPosition = yPos;
 			this.isInterrupted = false;
+			this.pathIndex = 0;
 		}
 		
 		public ActionNode(Action action, float executePoint, int xPos, int yPos, Direction direction){
@@ -56,6 +60,7 @@ public class ActionNodes{
 			this.yPosition = yPos;
 			this.isInterrupted = false;
 			this.direction = direction;
+			this.pathIndex = 0;
 		}
 		
 		public void setActionNode(Action action, float executePoint, int xPos, int yPos){
@@ -65,6 +70,7 @@ public class ActionNodes{
 			this.yPosition = yPos;
 			this.isInterrupted = false;
 			this.isFreed = false;
+			this.pathIndex = 0;
 		}
 		
 		public void setActionNode(Action action, float executePoint, int xPos, int yPos, Direction direction){
@@ -75,12 +81,20 @@ public class ActionNodes{
 			this.isInterrupted = false;
 			this.direction = direction;
 			this.isFreed = false;
+			this.pathIndex = 0;
 		}
 		
 		public void setPersisting(int castPoint, int curX, int curY){
 			this.castPoint = castPoint;
 			this.curX = curX;
 			this.curY = curY;
+		}
+		
+		public void setPersisting(int castPoint,int curX,int curY,Coordinate[] path){
+			this.castPoint = castPoint;
+			this.curX = curX;
+			this.curY = curY;
+			this.path = path;
 		}
 
 		public int getCurrentX(){
@@ -108,11 +122,31 @@ public class ActionNodes{
 			curY = 0;
 			direction = Direction.NONE;
 			this.isFreed = true;
+			this.path = null;
+			this.pathIndex = 0;
 		}
 		
 		public void free() {
 			if (!this.isFreed){
 				memory.free(this);
+			}
+		}
+		
+		public Coordinate getCurInPath(){
+			if (this.path != null&&this.path.length > pathIndex){
+				return this.path[pathIndex];
+			}
+			else{
+				return null;
+			}
+		}
+		
+		public Coordinate getNextInPath(){
+			if (this.path != null && this.path.length > pathIndex+1){
+				return this.path[pathIndex+1];
+			}
+			else{
+				return null;
 			}
 		}
 	}
