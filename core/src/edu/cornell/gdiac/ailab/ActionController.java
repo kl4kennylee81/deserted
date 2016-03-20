@@ -112,7 +112,13 @@ public class ActionController {
 	private void executeAction(ActionNode a_node){
 		// If persisting, then add to character 
 		if (a_node.action instanceof PersistingAction){
-			selected.addPersisting(a_node);
+			Coordinate[] path = getPath(a_node);
+			if (path != null){
+				selected.addPersisting(a_node,path);
+			}
+			else{
+				selected.addPersisting(a_node);	
+			}
 			return;
 		}
 		//switch between types of actions
@@ -134,6 +140,23 @@ public class ActionController {
 			default:
 				break;
 		}
+	}
+	
+	private Coordinate[] getPath(ActionNode a_node){
+		Coordinate[] path = null;
+		switch(a_node.action.pattern){
+			case MOVE:
+				break;
+			case STRAIGHT:
+				path = straightHitPath(a_node);
+				break;
+			case DIAGONAL:
+				path = diagonalHitPath(a_node);
+				break;
+			default:
+				break;
+		}
+		return path;
 	}
 	
 	private int actionWidthEndpoint(ActionNode a_node,int xPosition){

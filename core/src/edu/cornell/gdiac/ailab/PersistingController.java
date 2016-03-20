@@ -3,6 +3,8 @@ package edu.cornell.gdiac.ailab;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.badlogic.gdx.math.Vector2;
+
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
@@ -46,10 +48,10 @@ public class PersistingController extends ActionController{
 	public void executeAction(){
 		switch (selectedActionNode.action.pattern){
 		case STRAIGHT:
-			executeStraight();
+			executePath();
 			break;
 		case DIAGONAL:
-			executeDiagonal();
+			executePath();
 			break;
 		default:
 			break;
@@ -63,67 +65,59 @@ public class PersistingController extends ActionController{
 		return c.isAlive() && !c.equals(selected) && c.leftside != selected.leftside && c.xPosition == curX && c.yPosition == curY;
 	}
 	
-	public void executeStraight(){
+	public void moveAlongPath(){
 		PersistingAction selectedAction = (PersistingAction) selectedActionNode.action;
 		
-		// Keep track of current and next x/y positions
-		int prevIntX = selectedActionNode.getCurrentX();
-		int prevIntY = selectedActionNode.getCurrentY();
-		if (selected.leftside){
-			selectedActionNode.curX += selectedAction.moveSpeed;
-		} else {
-			selectedActionNode.curX -= selectedAction.moveSpeed;
-		}
-		int curIntX = selectedActionNode.getCurrentX();
-		int curIntY = selectedActionNode.getCurrentY();
+		Coordinate cur_pos = selectedActionNode.getCurInPath();
+		Coordinate next_pos = selectedActionNode.getNextInPath();
 		
-		// Check if next position is out of bounds or blocked
-		if (!board.isInBounds(curIntX, curIntY) || isBlocked(curIntX, curIntY)){
-			selected.popPersistingCast(selectedActionNode);
-			return;
-		}
+		float angleTo = cur_pos.angleTo(next_pos);
 		
-		// Check if attack hit any characters
-		for (Character c:characters){
-			if (isHit(c,curIntX,curIntY) || isHit(c,prevIntX,prevIntY)){
-				processHit(selectedActionNode,c);
-				selected.popPersistingCast(selectedActionNode);
-				break;
-			}
+		double cosA = Math.cos(Math.toRadians(angleTo));
+		double sinA = Math.sin(Math.toRadians(angleTo));
+		selectedActionNode.curX += selectedAction.moveSpeed * cosA;
+		selectedActionNode.curY += selectedAction.moveSpeed * sinA;
+		
+		// get the middle of the board tile
+		float midNextX = (float) ((float) Math.signum(cosA) * 0.5 + next_pos.x);
+		float midNextY = (float) ((float) Math.signum(sinA) * 0.5 + next_pos.y);
+
+		// compute current distance from middle
+		float diffX = (midNextX - selectedActionNode.curX);
+		float diffY = (midNextY - selectedActionNode.curY);
+		float dist = diffX*diffX + diffY*diffY;
+		
+		// when its past the middle you increment to next path
+		if (dist <= selectedAction.moveSpeed){
+			selectedActionNode.pathIndex+=1;
 		}
 	}
 	
-	public void executeDiagonal(){
-		PersistingAction selectedAction = (PersistingAction) selectedActionNode.action;
-		
-		// Keep track of current and next x/y positions
-		int prevIntX = selectedActionNode.getCurrentX();
-		int prevIntY = selectedActionNode.getCurrentY();
-		if (selected.leftside){
-			selectedActionNode.curX += selectedAction.moveSpeed;
-		} else {
-			selectedActionNode.curX -= selectedAction.moveSpeed;
-		}
-		if (selectedActionNode.direction == Direction.DOWN){
-			selectedActionNode.curY -= selectedAction.moveSpeed;
-		} else {
-			selectedActionNode.curY += selectedAction.moveSpeed;
-		}
-		int curIntX = selectedActionNode.getCurrentX();
-		int curIntY = selectedActionNode.getCurrentY();
-		
-		// Check if next position is out of bounds or blocked
-		if (!board.isInBounds(curIntX, curIntY) || isBlocked(curIntX, curIntY)){
+	public void executePath(){
+		if (selectedActionNode.getNextInPath() == null){
 			selected.popPersistingCast(selectedActionNode);
 			return;
 		}
-		
-		// Check if attack hit any characters
-		for (Character c:characters){
-			if (isHit(c,curIntX,curIntY) || isHit(c,prevIntX,prevIntY)){
-				processHit(selectedActionNode,c);
+		else {
+			moveAlongPath();
+			
+			// check based on a rounding of the current X and current Y
+			int curIntX = selectedActionNode.getCurrentX();
+			int curIntY = selectedActionNode.getCurrentY();
+			
+			// Check if next position is out of bounds or blocked
+			if (!board.isInBounds(curIntX, curIntY) || isBlocked(curIntX, curIntY)){
 				selected.popPersistingCast(selectedActionNode);
-				break;
+				return;
+			}
+			
+			// Check if attack hit any characters
+			for (Character c:characters){
+				if (isHit(c,curIntX,curIntY)){
+					processHit(selectedActionNode,c);
+					selected.popPersistingCast(selectedActionNode);
+					break;
+				}
 			}
 		}
 	}
