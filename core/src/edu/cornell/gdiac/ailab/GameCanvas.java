@@ -864,7 +864,6 @@ public class GameCanvas {
 		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
 		float width = GridBoard.BOARD_OFFSET_X *getWidth();
-		System.out.println("width is " + width);
 		displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
 	}
 	
