@@ -709,7 +709,7 @@ public class Character implements GUIElement {
 				int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
 				int shieldH = (int)(tileH * numWithin);
 				int shieldX = (int)(tileW - SHIELD_OFFSET + (tileW*xPosition));
-				int shieldY = (int)(tileH *botY);
+				int shieldY = (int)(leftside? tileH *botY:tileH *botY - tileW);
 				c = board.offsetBoard(canvas, shieldX, shieldY);
 				shieldX = c.x;
 				shieldY = c.y;
