@@ -22,11 +22,7 @@ package edu.cornell.gdiac.ailab;
 //import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.yaml.snakeyaml.Yaml;
 
 import com.badlogic.gdx.*;
@@ -45,9 +41,6 @@ import com.badlogic.gdx.assets.loaders.resolvers.*;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.*;
 
-import edu.cornell.gdiac.ailab.Effect.Type;
-import edu.cornell.gdiac.ailab.AIController.Difficulty;
-import edu.cornell.gdiac.ailab.Action.Pattern;
 //import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.mesh.*;
 import edu.cornell.gdiac.ailab.GameCanvas;
@@ -108,34 +101,6 @@ public class GameEngine implements Screen {
 	
 	/** File storing the texture for a board tile */
 	public static final String TILE_TEXTURE = "models/Tile.png";
-
-	/** File storing the enemy texture for a ship */
-	private static final String CHAR_1_TEXTURE = "models/CHARA_1.png";
-	/** File storing the player texture for a ship */
-	private static final String CHAR_2_TEXTURE = "models/CHARA_2.png";
-	/** File storing the enemy texture for a ship */
-	private static final String CHAR_3_TEXTURE = "models/CHARA_3.png";
-	/** File storing the player texture for a ship */
-	private static final String CHAR_4_TEXTURE = "models/CHARA_4.png";
-	/** File storing the enemy texture for a ship */
-	private static final String CHAR_5_TEXTURE = "models/CHARA_5.png";
-	
-	/** File storing the enemy texture for a ship */
-	private static final String ICON_1_TEXTURE = "models/CASTICON_1.png";
-	/** File storing the player texture for a ship */
-	private static final String ICON_2_TEXTURE = "models/CASTICON_2.png";
-	/** File storing the enemy texture for a ship */
-	private static final String ICON_3_TEXTURE = "models/CASTICON_3.png";
-	/** File storing the player texture for a ship */
-	private static final String ICON_4_TEXTURE = "models/CASTICON_4.png";
-	/** File storing the enemy texture for a ship */
-	private static final String ICON_5_TEXTURE = "models/CASTICON_5.png";
-	
-	/** Temprorary Character Animation */
-	private static final String CAST_ANIMATION_SHEET = "models/castanimation_spritesheet.png";
-	
-	/** File storing the single lightning film strip */
-	private static final String LIGHTNING_TEXTURE = "actions/lightningstrip.png";
 	
 	private static final String WHITE_BOX = "images/white.png";
 	/** The message font to use */
@@ -189,9 +154,6 @@ public class GameEngine implements Screen {
 //	private static float BUTTON_SCALE  = 0.75f;
     
     //Current Models
-    private HashMap<Integer, Character> availableCharacters;
-    private HashMap<Integer, Action> availableActions;
-    private HashMap<Integer, Animation> availableAnimations;
     private HashMap<String, HashMap<String, Object>> levelDefs;
     
     /** The current game state (SIMPLE FIELD) */
@@ -209,10 +171,6 @@ public class GameEngine implements Screen {
     	gameLoad  = 0.0f;
 		canvas = new GameCanvas();
 		gameplayController = new GameplayController();
-
-		availableActions = new HashMap<Integer, Action>();
-		availableCharacters = new HashMap<Integer, Character>();
-		availableAnimations = new HashMap<Integer, Animation>();
 		
 		updateMeasures();
 
@@ -227,59 +185,25 @@ public class GameEngine implements Screen {
 		scale = (sx < sy ? sx : sy);
     }
     
-    /**
-     * Probably want a separate Level class later
-     * 
-     * Types:
-     * 0 - Easy
-     * 1 - Medium
-     * 2 - Hard
-     * 3 - PVP
-     * 
-     */
-    public void startGame(int type) {
+    public void startGame(int type) throws IOException {
     	initializeCanvas(BCKGD_TEXTURE, SELECT_FONT_FILE);
-    	List<Character> chars = new LinkedList<Character>();
-    	
-    	availableCharacters.get(0).reset();
-		availableCharacters.get(1).reset();
-    	
-		Character enemy1 = availableCharacters.get(2);
-		Character enemy2 = availableCharacters.get(3);
-		enemy1.reset();
-		enemy2.reset();
-		
+    	Level level = null;
     	switch (type) {
     	case 0:
-    		enemy1.setAI(Difficulty.EASY);
-    		enemy2.setAI(Difficulty.EASY);
+    		level = getLevel("easy");
     		break;
     	case 1:
-    		enemy1.setAI(Difficulty.MEDIUM);
-    		enemy2.setAI(Difficulty.MEDIUM);
+    		level = getLevel("medium");
     		break;
     	case 2:
-    		enemy1.setAI(Difficulty.HARD);
-    		enemy2.setAI(Difficulty.HARD);
+    		level = getLevel("hard");
     		break;
     	default:
-    		enemy1.setHuman();
-    		enemy2.setHuman();
+    		level = getLevel("pvp");
     		break;
     	}
-    	chars.add(availableCharacters.get(0));
-    	chars.add(availableCharacters.get(1));
-    	chars.add(availableCharacters.get(2));
-    	chars.add(availableCharacters.get(3));
-    	gameplayController.resetGame(chars,6,4,manager.get(TILE_TEXTURE,Texture.class));
+    	gameplayController.resetGame(level, 6, 4, manager.get(TILE_TEXTURE, Texture.class));
     	gameState = GameState.PLAY;
-    	//font support
-    	//here load up the font for the selection menu
-    	
-    }
-
-    public void startGame(Level level) {
-    	initializeCanvas(BCKGD_TEXTURE, SELECT_FONT_FILE);
     	
     }
 
@@ -328,7 +252,12 @@ public class GameEngine implements Screen {
 			drawLoad();
 			break;
 		case MENU:
-			updateMenu();
+			try {
+				updateMenu();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		case PLAY:
 			updatePlay();
@@ -385,8 +314,9 @@ public class GameEngine implements Screen {
 	
 	/**
 	 * Updates the state of the menu screen.
+	 * @throws IOException 
 	 */
-	private void updateMenu() {
+	private void updateMenu() throws IOException {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
 			startGame(mainMenuController.gameNo);
@@ -468,116 +398,6 @@ public class GameEngine implements Screen {
 		return ObjectLoader.getInstance().createLevel(targetLevelDef);
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void loadFromYaml() throws IOException{
-		Yaml yaml = new Yaml();
-		//Import Animations
-		FileHandle animationFile = Gdx.files.internal("yaml/animations.yml");
-		try (InputStream is = animationFile.read()){
-			ArrayList<HashMap<String, Object>> animations = (ArrayList<HashMap<String, Object>>) yaml.load(is);
-			for (HashMap<String, Object> animation : animations){
-				Integer id = (Integer) animation.get("id");
-				String name = (String) animation.get("name");
-				String textureName = (String) animation.get("texture");
-				Integer rows = (Integer) animation.get("rows");
-				Integer cols = (Integer) animation.get("cols");
-				Integer size = (Integer) animation.get("size");
-				
-				Texture animationTexture = manager.get(textureName,Texture.class);
-				Animation animationToAdd = new Animation(name,animationTexture,rows,cols,size);
-				
-				ArrayList<HashMap<String, Object>> segments = (ArrayList<HashMap<String, Object>>) animation.get("segments");
-				for (HashMap<String, Object> segmentData : segments){
-					Integer segmentId = (Integer) segmentData.get("segmentId");
-					Integer startingIndex = (Integer) segmentData.get("startingIndex");
-					List<Integer> frameLengths = (List<Integer>) segmentData.get("frameData");
-					
-					animationToAdd.addSegment(segmentId,startingIndex,frameLengths);
-				}
-				availableAnimations.put(id, animationToAdd);
-			}	
-		} 
-		//Import Actions
-		FileHandle actionFile = Gdx.files.internal("yaml/actions.yml");
-		try (InputStream is = actionFile.read()){
-			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) yaml.load(is);
-			for (HashMap<String, Object> action : actions){
-				Integer id = (Integer) action.get("id");
-				String name = (String) action.get("name");
-				Integer cost = (Integer) action.get("cost");
-				Integer damage = (Integer) action.get("damage");
-				Integer range = (Integer) action.get("range");
-				String pattern = (String) action.get("pattern");
-				String description = (String) action.get("description");
-				HashMap<String,Object> persisting = 
-							(HashMap<String, Object>) action.get("persisting_action"); 
-				HashMap<String, Object> effect = 
-						(HashMap<String, Object>) action.get("effect");
-				String eff = (String) effect.get("type");
-				Integer duration = Math.round(Effect.getSecondtoFrames((((Double) effect.get("duration")).floatValue())));
-				Float magnitude = ((Double) effect.get("magnitude")).floatValue();
-				
-				Action actionToAdd;
-				if (persisting != null){
-					Integer castLength =  Math.round(Effect.getSecondtoFrames((((Double) persisting.get("castLength")).floatValue())));
-					Float moveSpeed = (Float) ((Double) persisting.get("moveSpeed")).floatValue();
-					actionToAdd = new PersistingAction(name, cost, damage, range, 
-							Pattern.valueOf(pattern), new Effect(duration, Type.valueOf(eff), magnitude), 
-							description, castLength, moveSpeed);
-				}else{
-					actionToAdd = new Action(name, cost, damage, range, Pattern.valueOf(pattern),
-							new Effect(duration, Type.valueOf(eff), magnitude), description);
-				}
-				
-				Integer animationId = (Integer) action.get("animationId");
-				if (animationId != null){
-					actionToAdd.setAnimation(availableAnimations.get(animationId));
-				}
-				
-				availableActions.put(id, actionToAdd);
-			}	
-		} 
-		//Import Characters
-		FileHandle charFile = Gdx.files.internal("yaml/characters.yml");
-		try (InputStream is = charFile.read()){
-			ArrayList<HashMap<String, Object>> characters = (ArrayList<HashMap<String, Object>>) yaml.load(is);
-			for (HashMap<String, Object> character : characters){
-				Integer id = (Integer) character.get("id");
-				String name = (String) character.get("name");
-				Integer health = (Integer) character.get("health");
-				Integer maxHealth = (Integer) character.get("maxHealth");
-				String hexColor = (String) character.get("hexColor");
-				Float speed = (Float) ((Double) character.get("speed")).floatValue();
-				Float castSpeed = (Float) ((Double) character.get("castSpeed")).floatValue();
-				Integer xPosition = (Integer) character.get("xPosition");
-				Integer yPosition = (Integer) character.get("yPosition");
-				Boolean leftSide = (Boolean) character.get("leftSide");
-				ArrayList<Integer> actions = (ArrayList<Integer>) character.get("availableActions");
-				Action[] actionArray = new Action[actions.size()];
-				int i=0;
-				for (Integer actionId : actions){
-					actionArray[i] = availableActions.get(actionId);
-					i++;
-				}
-				String charTextureName = (String) character.get("texture");
-				String iconTextureName = (String) character.get("icon");
-				Texture charTexture = manager.get(charTextureName,Texture.class);
-				Texture iconTexture = manager.get(iconTextureName,Texture.class);
-				Integer animationId = (Integer) character.get("animationId");
-				Animation anim = availableAnimations.get(animationId);
-				AnimationNode animNode = new AnimationNode(anim);
-				
-				Character characterToAdd = new Character(charTexture, iconTexture, animNode,
-						name, health, maxHealth, Color.valueOf(hexColor), speed, 
-						castSpeed, xPosition, yPosition, leftSide, actionArray); 
-									
-				availableCharacters.put(id, characterToAdd);
-			}
-		}
-		
-		
-	}
-	
 	
 	// HELPER FUNCTIONS
 	
@@ -623,33 +443,6 @@ public class GameEngine implements Screen {
 		manager.load(TILE_TEXTURE,Texture.class);
 		assets.add(TILE_TEXTURE);
 		
-		manager.load(CHAR_1_TEXTURE,Texture.class);
-		assets.add(CHAR_1_TEXTURE);
-		manager.load(CHAR_2_TEXTURE,Texture.class);
-		assets.add(CHAR_2_TEXTURE);
-		manager.load(CHAR_3_TEXTURE,Texture.class);
-		assets.add(CHAR_3_TEXTURE);
-		manager.load(CHAR_4_TEXTURE,Texture.class);
-		assets.add(CHAR_4_TEXTURE);
-		manager.load(CHAR_5_TEXTURE,Texture.class);
-		assets.add(CHAR_5_TEXTURE);
-		
-		manager.load(ICON_1_TEXTURE,Texture.class);
-		assets.add(ICON_1_TEXTURE);
-		manager.load(ICON_2_TEXTURE,Texture.class);
-		assets.add(ICON_2_TEXTURE);
-		manager.load(ICON_3_TEXTURE,Texture.class);
-		assets.add(ICON_3_TEXTURE);
-		manager.load(ICON_4_TEXTURE,Texture.class);
-		assets.add(ICON_4_TEXTURE);
-		manager.load(ICON_5_TEXTURE,Texture.class);
-		assets.add(ICON_5_TEXTURE);
-		
-		manager.load(LIGHTNING_TEXTURE,Texture.class);
-		assets.add(LIGHTNING_TEXTURE);
-		manager.load(CAST_ANIMATION_SHEET,Texture.class);
-		assets.add(CAST_ANIMATION_SHEET);
-		
 		manager.load(WHITE_BOX,Texture.class);
 		assets.add(WHITE_BOX);
 		
@@ -670,13 +463,6 @@ public class GameEngine implements Screen {
 		size2Params.fontParameters.color = Color.BLACK;
 		manager.load(SELECT_FONT_FILE, BitmapFont.class, size2Params);
 		assets.add(SELECT_FONT_FILE);
-		
-		try {
-			loadFromYaml();
-		} catch (IOException e) {
-			System.out.println("ERROR LOADING FROM YAML");
-			e.printStackTrace();
-		}
 		
 		// We have to force the canvas to fully load (so we can draw something)
 		initializeCanvas(LOADING_TEXTURE, MENU_FONT_FILE);

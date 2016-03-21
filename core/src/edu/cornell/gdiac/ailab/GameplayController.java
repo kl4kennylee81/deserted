@@ -44,7 +44,24 @@ public class GameplayController {
     }
     
     public void resetGame(Level level, int boardWidth, int boardHeight, Texture boardMesh){
-    	
+    	inGameState = InGameState.NORMAL;
+		
+        // Create the models.
+        board = new GridBoard(boardWidth,boardHeight);
+        board.setTileTexture(boardMesh);
+        this.characters = level.getCharacters();
+        
+        textMessages = new TextMessage();
+        animations = new AnimationPool();
+        bar = new ActionBar();
+        
+		// Create the subcontrollers
+        actionController = new ActionController(board,characters,bar,textMessages,animations);
+        selectionMenuController = new SelectionMenuController(board,characters,bar);
+        actionBarController = new ActionBarController(characters,bar);
+        aiController = new AIController(board,characters,bar);
+        persistingController = new PersistingController(board,characters,bar,textMessages,animations);
+        effectController = new EffectController(characters);
     }
     
     

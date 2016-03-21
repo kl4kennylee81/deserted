@@ -1,4 +1,4 @@
-level1: 
+easy: 
     allies:
         - id: 0
           xPosition: 0
@@ -16,6 +16,7 @@ level1:
           risk: 0.5
           defensiveness: 0.5
           intelligence: 0.3
+          difficulty: EASY
 
         - id: 3
           xPosition: 5
@@ -24,4 +25,87 @@ level1:
           risk: 0.5
           defensiveness: 0.5
           intelligence: 0.3
+          difficulty: EASY
+    nextLevel: medium
+
+
+medium: 
+    allies:
+        - id: 0
+          xPosition: 0
+          yPosition: 0
+
+        - id: 1
+          xPosition: 0
+          yPosition: 3
+
+    enemies:
+        - id: 2
+          xPosition: 5
+          yPosition: 0
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
+          difficulty: MEDIUM
+
+        - id: 3
+          xPosition: 5
+          yPosition: 3
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
+          difficulty: MEDIUM
+    nextLevel: hard
+
+hard: 
+    allies:
+        - id: 0
+          xPosition: 0
+          yPosition: 0
+
+        - id: 1
+          xPosition: 0
+          yPosition: 3
+
+    enemies:
+        - id: 2
+          xPosition: 5
+          yPosition: 0
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
+          difficulty: HARD
+
+        - id: 3
+          xPosition: 5
+          yPosition: 3
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
+          difficulty: HARD
+    nextLevel: 
+
+pvp:
+    allies:
+        - id: 0
+          xPosition: 0
+          yPosition: 0
+
+        - id: 1
+          xPosition: 0
+          yPosition: 3
+
+    enemies:
+        - id: 2
+          xPosition: 5
+          yPosition: 0
+
+        - id: 3
+          xPosition: 5
+          yPosition: 3
+
     nextLevel: 
