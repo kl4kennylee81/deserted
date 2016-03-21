@@ -124,7 +124,7 @@ public class ObjectLoader {
 		
 		Level loadedLevel = new Level();
 		
-		LinkedList<Character> chars = new LinkedList<Character>();
+		Characters chars = new Characters();
 		chars.addAll(availableCharacters.values());
 		loadedLevel.setCharacters(chars);
 		loadedLevel.setNextLevel(nextLevel);

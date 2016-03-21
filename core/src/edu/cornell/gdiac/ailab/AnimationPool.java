@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
+
 public class AnimationPool {
 	//List of AnimationNodes to draw
 	List<AnimationNode> pool;
@@ -25,8 +27,10 @@ public class AnimationPool {
 		Iterator<AnimationNode> iter = pool.iterator();
     	while (iter.hasNext()) {
     	    AnimationNode animNode = iter.next();
-    	    float messageX = board.offsetBoard(canvas, tileW*animNode.xPos);
-			float messageY = tileH*animNode.yPos;
+    	    Coordinate c =board.offsetBoard(canvas, tileW*animNode.xPos,tileH*animNode.yPos);
+    	    float messageX = c.x;
+			float messageY = c.y;
+			c.free();
     	    FilmStrip toDraw = animNode.getTexture();
     	    if (toDraw != null){
     	    	canvas.draw(toDraw, messageX,messageY);

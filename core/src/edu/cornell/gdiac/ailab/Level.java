@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Level {
 
-	private LinkedList<Character> characters;
+	private Characters characters;
     
     private String nextLevel;
     private Integer boardWidth;
@@ -29,13 +29,13 @@ public class Level {
 
 
 
-	public LinkedList<Character> getCharacters() {
+	public Characters getCharacters() {
 		return characters;
 	}
 
 
 
-	public void setCharacters(LinkedList<Character> characters) {
+	public void setCharacters(Characters characters) {
 		this.characters = characters;
 	}
 

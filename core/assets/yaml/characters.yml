@@ -2,7 +2,7 @@
   name: green
   health: 12
   maxHealth: 12
-  hexColor: 00EE00FF
+  hexColor: 00cc00FF
   speed: 0.002
   castSpeed: 0.003
   xPosition: 0
@@ -19,10 +19,10 @@
   animationId: 1
 
 1:
-  name: yellow
+  name: orange
   health: 10
   maxHealth: 10
-  hexColor: 3299FFFF
+  hexColor: FF9900FF
   speed: 0.003
   castSpeed: 0.002
   xPosition: 0
@@ -58,10 +58,10 @@
   animationId: 1
 
 3:
-  name: brown
+  name: blue
   health: 20
   maxHealth: 20
-  hexColor: 8B4513FF
+  hexColor: 3299FFFF
   speed: 0.00275
   castSpeed: 0.00225
   xPosition: 5

@@ -5,6 +5,8 @@ import java.util.List;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
+
 public class GridBoard {
 	float space;
 	Texture tileMesh;
@@ -24,11 +26,13 @@ public class GridBoard {
 	private static final Color ATTACK_COLOR = new Color( 1f, 0f, 0f, 1f);
 	
 	
-	private static final float BOARD_WIDTH = 0.75f;
+	public static final float BOARD_WIDTH = 0.75f;
 	
-	private static final float BOARD_HEIGHT = 0.45f;
+	public static final float BOARD_HEIGHT = 0.45f;
 
-	private static final float BOARD_OFFSET = (1-BOARD_WIDTH)/2;
+	public static final float BOARD_OFFSET_X = (1-BOARD_WIDTH)/2;
+	
+	public static final float BOARD_OFFSET_Y = 0.15f;
 	
 	public float getTileWidth(GameCanvas canvas){
 		return (canvas.getWidth() * BOARD_WIDTH)/width;
@@ -38,12 +42,21 @@ public class GridBoard {
 		return (canvas.getHeight() * BOARD_HEIGHT)/height;
 	}
 	
-	public float getBoardOffset(GameCanvas canvas){
-		return BOARD_OFFSET * canvas.getWidth();
+	public float getBoardOffsetX(GameCanvas canvas){
+		return BOARD_OFFSET_X * canvas.getWidth();
 	}
 	
-	public float offsetBoard(GameCanvas canvas,float xPos){
-		return getBoardOffset(canvas) + xPos;
+	public float getBoardOffsetY(GameCanvas canvas){
+		return BOARD_OFFSET_Y * canvas.getHeight();
+	}
+	
+	public Coordinate offsetBoard(GameCanvas canvas,float xPos,float yPos){
+		int newxPos = (int)(getBoardOffsetX(canvas) + xPos);
+		int newyPos = (int)(getBoardOffsetY(canvas) + yPos);
+		Coordinates coords = Coordinates.getInstance();
+		Coordinate c = coords.obtain();
+		c.set(newxPos, newyPos);
+		return c;
 	}
 	
 	private class Tile {
@@ -127,8 +140,8 @@ public class GridBoard {
 		int tileW = (int) getTileWidth(canvas);
 		int tileH = (int) getTileHeight(canvas);
 		
-		float sx = tileW*x + getBoardOffset(canvas);
-		float sy = tileH*y;
+		float sx = tileW*x + getBoardOffsetX(canvas);
+		float sy = tileH*y + getBoardOffsetY(canvas);
 
 		// You can modify the following to change a tile's highlight color.
 		// BASIC_COLOR corresponds to no highlight.
@@ -157,6 +170,10 @@ public class GridBoard {
 		canvas.drawTile(sx, sy, tileMesh, tileW, tileH,color);
 	}
 	
+	public float bottomOffset(GameCanvas canvas) {
+		return canvas.getHeight()*((1-BOARD_WIDTH)/8);
+	}
+
 	/**
 	 * Reset all tiles
 	 */

@@ -134,6 +134,8 @@ public class GameEngine implements Screen {
     private GameCanvas canvas;
     /** Subcontroller for main menu (CONTROLLER CLASS) */
     private MainMenuController mainMenuController;
+    /** Subcontroller for mouse controls (CONTROLLER CLASS) */
+    private MouseOverController mouseOverController;
     
 //	/** Default budget for asset loader (do nothing but load 60 fps) */
 //	private static int DEFAULT_BUDGET = 15;
@@ -170,8 +172,10 @@ public class GameEngine implements Screen {
     	gameState = GameState.LOAD;
     	gameLoad  = 0.0f;
 		canvas = new GameCanvas();
-		gameplayController = new GameplayController();
 		
+		mouseOverController = new MouseOverController(canvas);
+		gameplayController = new GameplayController(mouseOverController);
+
 		updateMeasures();
 
 	}
@@ -188,6 +192,7 @@ public class GameEngine implements Screen {
     public void startGame(int type) throws IOException {
     	initializeCanvas(BCKGD_TEXTURE, SELECT_FONT_FILE);
     	Level level = null;
+
     	switch (type) {
     	case 0:
     		level = getLevel("easy");
@@ -369,6 +374,9 @@ public class GameEngine implements Screen {
 	public void resize(int width, int height) {
 		canvas.resize();
 		updateMeasures();
+		InputController.setCanvas(canvas);
+		MouseOverController.setCanvas(canvas);
+		//do we need all this?^
 	}
 	
 	/** 
