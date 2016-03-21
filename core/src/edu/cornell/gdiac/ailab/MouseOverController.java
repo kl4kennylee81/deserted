@@ -35,8 +35,8 @@ public class MouseOverController {
 		for(Character c: characters){
 			for (Action a: c.getSelectionMenu().getActions()){
 				if (a.contains(x,y,canvas,board)){
-					hAction = a;
-					currMenu = currMenu1;
+//					hAction = a;
+//					currMenu = currMenu1;
 				}
 			}
 			if (c.contains(x,y,canvas,board)){

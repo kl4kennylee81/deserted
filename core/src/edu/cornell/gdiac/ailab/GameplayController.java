@@ -172,7 +172,7 @@ public class GameplayController {
 					mouseOverController.isCharacterHighlighted());
         	c.drawSelection(canvas);
         }
-        characters.drawHealthBars(canvas);
+        characters.drawHealthBars(canvas, true);
     }
     
     //temporary method - change name and integrate with above method
@@ -198,6 +198,7 @@ public class GameplayController {
         for (Character c : characters){
         	c.drawSelection(canvas);
         }
+        characters.drawHealthBars(canvas, false);
     }
     
     public void drawAfter(GameCanvas canvas){

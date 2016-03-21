@@ -26,13 +26,13 @@ public class GridBoard {
 	private static final Color ATTACK_COLOR = new Color( 1f, 0f, 0f, 1f);
 	
 	
-	private static final float BOARD_WIDTH = 0.75f;
+	public static final float BOARD_WIDTH = 0.75f;
 	
-	private static final float BOARD_HEIGHT = 0.45f;
+	public static final float BOARD_HEIGHT = 0.45f;
 
-	private static final float BOARD_OFFSET_X = (1-BOARD_WIDTH)/2;
+	public static final float BOARD_OFFSET_X = (1-BOARD_WIDTH)/2;
 	
-	private static final float BOARD_OFFSET_Y = 0.15f;
+	public static final float BOARD_OFFSET_Y = 0.15f;
 	
 	public float getTileWidth(GameCanvas canvas){
 		return (canvas.getWidth() * BOARD_WIDTH)/width;

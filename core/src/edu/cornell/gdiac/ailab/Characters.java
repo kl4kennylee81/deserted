@@ -51,16 +51,34 @@ public class Characters extends LinkedList<Character>{
 		canvas.drawBox(healthX, healthY, (int) (healthW*c.health/c.maxHealth), healthH, c.color);
 	}
 	
-	public void drawHealths(GameCanvas canvas,Characters cList){
+	public void drawHealths(GameCanvas canvas,Characters cList, boolean drawFirst){
 		int leftSideCount = 0;
 		int rightSideCount = 0;
 		for (Character c:cList){
 			if (c.leftside){
 				leftSideCount++;
+				if (drawFirst) {
+					if (c.isSelecting()){
+						continue;
+					}
+				} else {
+					if (!c.isSelecting()){
+						continue;
+					}
+				}
 				drawHealth(canvas,c,leftSideCount);
 			}
 			else{
 				rightSideCount++;
+				if (drawFirst) {
+					if (c.isSelecting()){
+						continue;
+					}
+				} else {
+					if (!c.isSelecting()){
+						continue;
+					}
+				}
 				drawHealth(canvas,c,rightSideCount);
 			}
 		}
@@ -71,7 +89,7 @@ public class Characters extends LinkedList<Character>{
 		super();
 	}
 	
-	public void drawHealthBars(GameCanvas canvas){
-		drawHealths(canvas,this);
+	public void drawHealthBars(GameCanvas canvas, boolean drawFirst){
+		drawHealths(canvas,this, drawFirst);
 	}
 }

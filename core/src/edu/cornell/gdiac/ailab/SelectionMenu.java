@@ -242,6 +242,7 @@ public class SelectionMenu {
 			float offset_y = spacing_h * i;
 //			System.out.println(action.name + " is at " + i);
 			if (action.cost > ActionBar.getTotalSlots() - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
+				//have an if action.name statement 
 				canvas.drawText(action.name, text_x, text_y - offset_y, new Color(1f, 1f, 1f, 0.5f));
 			} else {
 				canvas.drawText(action.name, text_x, text_y - offset_y, Color.BLACK);

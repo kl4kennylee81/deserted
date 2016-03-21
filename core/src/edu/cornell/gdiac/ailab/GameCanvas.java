@@ -850,7 +850,9 @@ public class GameCanvas {
 	public void drawText(String msg, float x, float y, Color color) {
 		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
-		displayFont.draw(spriteBatch, msg, x,y, 80, Align.left, true);
+		float width = GridBoard.BOARD_OFFSET_X *getWidth();
+		System.out.println("width is " + width);
+		displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
 	}
 	
 	public void drawCenteredText(String msg, float x, float y, Color color) {
