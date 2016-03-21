@@ -597,7 +597,7 @@ public class Character implements GUIElement {
 		
 		Color newColor = new Color(Color.WHITE);
 		if (shouldDim) {
-			newColor.set(newColor.r, newColor.g, newColor.b, 0.5f);
+			newColor.set(newColor.r, newColor.g, newColor.b, 1.0f);
 		}
 		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
 		col = isHovering ? color : col;

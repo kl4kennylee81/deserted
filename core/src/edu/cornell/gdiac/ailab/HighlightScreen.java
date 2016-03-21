@@ -13,10 +13,10 @@ public class HighlightScreen {
 	private static TextureRegion currentHighlight;
 	private static Color highlightColor = new Color(Color.WHITE);
 	private static boolean justScreen;
+	
 	public HighlightScreen(){
 		screen = new Texture(HIGHLIGHT_TEXTURE);
-		color.set(color.r, color.g, color.b, 0.4f);
-//		highlightColor = new Color((-1)*color.r, (-1)*color.g, (-1)*color.b, 1.0f);
+		color.set(color.r, color.g, color.b, 0.3f);
 		highlightColor.set(highlightColor.r, highlightColor.g, highlightColor.b, 0.4f);
 	}
 	
