@@ -79,7 +79,6 @@ public class Coordinates {
 				if (coords[i].y<min){
 					min = coords[i].y;
 				}
-				System.out.println(coords[i]);
 			}
 			return Math.max(min,0);
 		}

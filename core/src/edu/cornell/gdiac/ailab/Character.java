@@ -586,11 +586,7 @@ public class Character {
 				if (leftside){
 					int shieldX = (int)board.offsetBoard(canvas,tileW - SHIELD_OFFSET + (tileW*xPosition));
 					int shieldY = (int)(tileH *botY);
-					if (an.direction == Direction.UP){
-						canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
-					} else {
-						canvas.drawBox(shieldX,shieldY - tileH, shieldW, shieldH, Color.GRAY);
-					}
+					canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
 				} else {
 					int shieldX = (int)board.offsetBoard(canvas,-SHIELD_OFFSET + (tileW*an.curX));
 					int shieldY = (int)(tileH *an.curY);
