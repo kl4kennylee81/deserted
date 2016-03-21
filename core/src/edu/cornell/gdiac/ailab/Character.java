@@ -420,11 +420,7 @@ public class Character implements GUIElement {
 	
 	void addPersisting(ActionNode an,Coordinate[] path){
 		if (an.action.pattern == Pattern.SHIELD){
-<<<<<<< HEAD
-			an.setPersisting(0, xPosition, yPosition,path);
-=======
-			an.setPersisting(castPosition, xPosition, yPosition);
->>>>>>> 9471f76096fce887027d60c34162b6c9934f3e8c
+			an.setPersisting(castPosition, xPosition, yPosition,path);
 			persistingActions.add(an);
 			resetShieldedCoordinates();
 		} else if (an.action.pattern == Pattern.DIAGONAL || an.action.pattern == Pattern.STRAIGHT){
@@ -704,6 +700,7 @@ public class Character implements GUIElement {
 	private void drawPersisting(GameCanvas canvas,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
+		Coordinate c;
 		for (ActionNode an : persistingActions){
 			switch (an.action.pattern){
 			case SHIELD:
@@ -713,7 +710,7 @@ public class Character implements GUIElement {
 				int shieldH = (int)(tileH * numWithin);
 				int shieldX = (int)(tileW - SHIELD_OFFSET + (tileW*xPosition));
 				int shieldY = (int)(tileH *botY);
-				Coordinate c = board.offsetBoard(canvas, shieldX, shieldY);
+				c = board.offsetBoard(canvas, shieldX, shieldY);
 				shieldX = c.x;
 				shieldY = c.y;
 				c.free();
@@ -723,7 +720,7 @@ public class Character implements GUIElement {
 			case DIAGONAL:
 				float diagX = (tileW/2 - DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX));
 				float diagY = tileH/2 - DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY);
-				Coordinate c = board.offsetBoard(canvas, diagX, diagY);
+				c = board.offsetBoard(canvas, diagX, diagY);
 				diagX = c.x;
 				diagY = c.y;
 				c.free();
