@@ -202,7 +202,7 @@ public class GameEngine implements Screen {
     		level = getLevel("pvp");
     		break;
     	}
-    	gameplayController.resetGame(level, 6, 4, manager.get(TILE_TEXTURE, Texture.class));
+    	gameplayController.resetGame(level);
     	gameState = GameState.PLAY;
     	
     }
@@ -440,8 +440,8 @@ public class GameEngine implements Screen {
 		parameter.attribs[0] = new VertexAttribute(Usage.Position, 3, "vPosition");
 		parameter.attribs[1] = new VertexAttribute(Usage.TextureCoordinates, 2, "vUV");
 
-		manager.load(TILE_TEXTURE,Texture.class);
-		assets.add(TILE_TEXTURE);
+//		manager.load(TILE_TEXTURE,Texture.class);
+//		assets.add(TILE_TEXTURE);
 		
 		manager.load(WHITE_BOX,Texture.class);
 		assets.add(WHITE_BOX);

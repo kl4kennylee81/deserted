@@ -58,6 +58,19 @@ public class ObjectLoader {
 		return instance;
 	}
 	
+	
+	public void unloadCurrentLevel() {
+		for(String s : assets) {
+    		if (manager.isLoaded(s)) {
+    			manager.unload(s);
+    		}
+    	}
+		assets.clear();
+		availableCharacters=null;
+		availableActions = null;
+		availableAnimations = null;
+	}
+	
 	/**
 	 * Main method used to construct a level.
 	 * level definition hashmap passed in as argument.
@@ -76,6 +89,9 @@ public class ObjectLoader {
 		ArrayList<HashMap<String, Object>> allies =  (ArrayList<HashMap<String, Object>>) levelDef.get("allies");
 		ArrayList<HashMap<String, Object>> enemies = (ArrayList<HashMap<String, Object>>) levelDef.get("enemies");
 		String nextLevel = (String) levelDef.get("nextLevel");	
+		Integer boardWidth = (Integer) levelDef.get("boardWidth");
+		Integer boardHeight = (Integer) levelDef.get("boardHeight");
+		String boardTexture = (String) levelDef.get("boardTexture");
 		
 		Yaml yaml = new Yaml();
 		FileHandle animationFile = Gdx.files.internal("yaml/animations.yml");
@@ -112,8 +128,13 @@ public class ObjectLoader {
 		chars.addAll(availableCharacters.values());
 		loadedLevel.setCharacters(chars);
 		loadedLevel.setNextLevel(nextLevel);
-
+		loadedLevel.setBoardHeight(boardHeight);
+		loadedLevel.setBoardWidth(boardWidth);
 		
+		manager.load(boardTexture,Texture.class);
+		assets.add(boardTexture);
+		manager.finishLoading();
+		loadedLevel.setBoardTexture(manager.get(boardTexture,Texture.class));
 		return loadedLevel;
 	}
 	

@@ -29,6 +29,7 @@ public class GameplayController {
     private TextMessage textMessages;
     private AnimationPool animations;
     
+    
     /** Current state of game */
     private InGameState inGameState;
     
@@ -43,9 +44,13 @@ public class GameplayController {
     	
     }
     
-    public void resetGame(Level level, int boardWidth, int boardHeight, Texture boardMesh){
+    public void resetGame(Level level){
     	inGameState = InGameState.NORMAL;
 		
+    	int boardWidth = level.getBoardWidth();
+    	int boardHeight = level.getBoardHeight();
+    	Texture boardMesh = level.getBoardTexture();
+    	
         // Create the models.
         board = new GridBoard(boardWidth,boardHeight);
         board.setTileTexture(boardMesh);
@@ -128,6 +133,7 @@ public class GameplayController {
     	removeDead();
     	if (gameOver()){
     		inGameState = InGameState.DONE;
+    		ObjectLoader.getInstance().unloadCurrentLevel();
     	}
     }
     
