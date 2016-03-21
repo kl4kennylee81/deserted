@@ -1,0 +1,27 @@
+level1: 
+    allies:
+        - id: 0
+          xPosition: 0
+          yPosition: 0
+
+        - id: 1
+          xPosition: 0
+          yPosition: 3
+
+    enemies:
+        - id: 2
+          xPosition: 5
+          yPosition: 0
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
+
+        - id: 3
+          xPosition: 5
+          yPosition: 3
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
+    nextLevel: 

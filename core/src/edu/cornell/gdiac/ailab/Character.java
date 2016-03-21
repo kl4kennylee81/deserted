@@ -87,7 +87,7 @@ public class Character {
 	
 	/** List of available actions */
 	Action[] availableActions; 
-		
+	
 	/** Lists of queued and persisting actions */
 	LinkedList<ActionNode> queuedActions;
 	LinkedList<ActionNode> persistingActions;
@@ -101,6 +101,7 @@ public class Character {
 	boolean increasing;
 	
 	float lastCastStart;
+	
 	
 	/**Constructor used by GameEngine to create characters from yaml input. */
 	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 

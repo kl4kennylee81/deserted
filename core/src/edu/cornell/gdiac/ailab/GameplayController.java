@@ -43,6 +43,11 @@ public class GameplayController {
     	
     }
     
+    public void resetGame(Level level, int boardWidth, int boardHeight, Texture boardMesh){
+    	
+    }
+    
+    
     /**
 	 * Restart the game, laying out all the ships and tiles
 	 */
