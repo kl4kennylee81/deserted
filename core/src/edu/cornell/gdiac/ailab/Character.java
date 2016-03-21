@@ -362,7 +362,8 @@ public class Character implements GUIElement {
 	}
 	
 	float getCastSpeed() {
-		return this.castSpeed*getSpeedModifier();
+//		return this.castSpeed*getSpeedModifier();
+		return this.castSpeed;
 	}
 	
 	float getBarSpeed() {
@@ -708,8 +709,8 @@ public class Character implements GUIElement {
 				int numWithin = Coordinates.numWithinBounds(an.path, board);
 				int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
 				int shieldH = (int)(tileH * numWithin);
-				int shieldX = (int)(tileW - SHIELD_OFFSET + (tileW*xPosition));
-				int shieldY = (int)(leftside? tileH *botY:tileH *botY - tileW);
+				int shieldX = (int)(leftside ?(tileW + tileW*xPosition- SHIELD_OFFSET) :tileW*xPosition - SHIELD_OFFSET);
+				int shieldY = (int)(tileH *botY);
 				c = board.offsetBoard(canvas, shieldX, shieldY);
 				shieldX = c.x;
 				shieldY = c.y;

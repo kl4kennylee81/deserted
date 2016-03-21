@@ -21,7 +21,7 @@ public class Characters extends LinkedList<Character>{
 
 	public void drawHealth(GameCanvas canvas,Character c,int count){
 		Color col = c.isSelecting ? Color.WHITE.cpy().lerp(c.color, 0) : Color.WHITE;
-		col = c.getHovering() ? c.color : col;
+		Color colIcon = c.getHovering() ? c.color : col;
 		
 		float tokenX,tokenY;
 		if (c.leftside){
@@ -32,7 +32,7 @@ public class Characters extends LinkedList<Character>{
 			tokenX = ((1-X_START_POS)*canvas.getWidth()) - c.icon.getWidth();
 			tokenY = Y_START_POS*canvas.getHeight() - (Y_SPACING*canvas.getHeight()*count);
 		}
-		canvas.drawTexture(c.icon, tokenX, tokenY, c.icon.getWidth(),c.icon.getHeight(),col);
+		canvas.drawTexture(c.icon, tokenX, tokenY, c.icon.getWidth(),c.icon.getHeight(),colIcon);
 		
 		float healthW = HEALTH_WIDTH*canvas.getWidth();
 		float healthH = HEALTH_HEIGHT*canvas.getHeight();
