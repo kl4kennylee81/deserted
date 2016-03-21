@@ -18,9 +18,15 @@ import com.badlogic.gdx.Input;
  * An input controller for the human player
  */
 public class InputController {
+	
+	public static GameCanvas canvas;
     
     public static boolean pressedEnter() {
     	return Gdx.input.isKeyJustPressed(Input.Keys.ENTER);
+    }
+    
+    public static GameCanvas getCanvas() {
+    	return canvas;
     }
     
     public static boolean pressedESC() {
@@ -79,4 +85,21 @@ public class InputController {
     public static boolean pressedRight() {
     	return Gdx.input.isKeyJustPressed(Input.Keys.RIGHT);
     }
+
+	public static void setCanvas(GameCanvas canvas) {
+		InputController.canvas = canvas;
+		
+	}
+
+	public static float getMouseX() {
+		return Gdx.input.getX();
+	}
+
+	public static float getMouseY() {
+		return canvas.getHeight() - Gdx.input.getY();
+	}
+	
+	public static boolean pressedLeftMouse(){
+		return Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+	}
 }

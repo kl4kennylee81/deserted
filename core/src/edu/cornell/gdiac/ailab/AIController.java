@@ -37,7 +37,7 @@ public class AIController {
 		this.board = board;
 		this.chars = chars;
 		this.bar = bar;
-		nop = new Action("NOP", 1, 0, 0, Pattern.NOP, new Effect(0, Type.REGULAR, 0), "no action");
+		nop = new Action("NOP", 1, 0, 0, Pattern.NOP, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
 	}
 	
 	public void update(){

@@ -25,9 +25,10 @@ public class ActionNodes{
 		int yPosition;
 		
 		//current info for persisting actions
-		int castPoint;
+		float castPosition;
 		float curX;
 		float curY;
+		float curRound;
 		
 		//direction for move, diagonal, shield
 		Direction direction;
@@ -41,26 +42,6 @@ public class ActionNodes{
 		
 		public ActionNode(){
 			reset();
-		}
-		
-		//Get rid of this and use the bottom constructor.
-		public ActionNode(Action action, float executePoint, int xPos, int yPos){
-			this.action = action;
-			this.executePoint = executePoint;
-			this.xPosition = xPos;
-			this.yPosition = yPos;
-			this.isInterrupted = false;
-			this.pathIndex = 0;
-		}
-		
-		public ActionNode(Action action, float executePoint, int xPos, int yPos, Direction direction){
-			this.action = action;
-			this.executePoint = executePoint;
-			this.xPosition = xPos;
-			this.yPosition = yPos;
-			this.isInterrupted = false;
-			this.direction = direction;
-			this.pathIndex = 0;
 		}
 		
 		public void setActionNode(Action action, float executePoint, int xPos, int yPos){
@@ -84,17 +65,19 @@ public class ActionNodes{
 			this.pathIndex = 0;
 		}
 		
-		public void setPersisting(int castPoint, int curX, int curY){
-			this.castPoint = castPoint;
+		public void setPersisting(float castPosition, int curX, int curY){
+			this.castPosition = castPosition;
 			this.curX = curX;
 			this.curY = curY;
+			curRound = 0;
 		}
 		
-		public void setPersisting(int castPoint,int curX,int curY,Coordinate[] path){
-			this.castPoint = castPoint;
+		public void setPersisting(float castPosition,int curX,int curY,Coordinate[] path){
+			this.castPosition = castPosition;
 			this.curX = curX;
 			this.curY = curY;
 			this.path = path;
+			curRound = 0;
 		}
 
 		public int getCurrentX(){
@@ -117,9 +100,10 @@ public class ActionNodes{
 			yPosition = 0;
 			
 			//current info for persisting actions
-			castPoint = 0;
+			castPosition = 0;
 			curX = 0;
 			curY = 0;
+			curRound = 0;
 			direction = Direction.NONE;
 			this.isFreed = true;
 			this.path = null;

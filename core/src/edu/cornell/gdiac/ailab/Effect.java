@@ -9,12 +9,8 @@ package edu.cornell.gdiac.ailab;
  * the magnitude and framesLeft paramters. 
  */
 public class Effect {
-	/** Number of frames left for this effect */
-	int framesLeft;
-	
-	/** "size" of the effect. For example, a effect with magnitude
-	 * 0.5 will cut the affected character's speed in half. */
-	float magnitude;
+	/** "size" of the effect. */
+	int magnitude;
 	
 	/** Determines what the effect will actually do */
 	Type type;
@@ -25,24 +21,34 @@ public class Effect {
 	/** Flag so effect gets removed when it is finished */
 	boolean isDone;
 	
+	/** Number of rounds left for this effect */
+	float roundsLeft;
+	
+	/** Cast bar position when it was first applied */
+	float castPosition;
+	
+	/** Name of what happened */
+	String name;
+	
 	public static enum Type {
-		SLOW,
+		SPEED,
 		REGULAR
 	}
 	
 	public static float FRAMES_PER_SECOND = 60;
 	
-	public Effect(int d, Type t, float mag){
-		framesLeft = d;
+	public Effect(float d, Type t, int mag, String n){
+		roundsLeft = d;
 		type = t;
 		magnitude = mag;
+		name = n;
 		isNew = true;
 		isDone = false;
 	}
 	
 	/** Always use this when adding an effect to a character from an actionNode */
 	public Effect clone(){
-		return new Effect(framesLeft, type, magnitude);
+		return new Effect(roundsLeft, type, magnitude, name);
 	}
 	
 	public static float getSecondtoFrames(float sec){
@@ -50,12 +56,7 @@ public class Effect {
 	}
 	
 	public String toString(){
-		switch(this.type){
-			case SLOW:
-				return "Slowed";
-			default:
-				return "";
-		}
+		return name;
 	}
 	
 }

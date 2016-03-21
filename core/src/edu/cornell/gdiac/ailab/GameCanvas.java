@@ -18,6 +18,7 @@
 package edu.cornell.gdiac.ailab;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.*;
@@ -785,10 +786,19 @@ public class GameCanvas {
 		//TODO: change resizing in the long run
 	}	
 	
+	public void drawScreen(float sx, float sy, Texture screen,float x_size, float y_size, 
+			Color tint){
+		spriteBatch.setColor(tint);
+		spriteBatch.draw(screen,sx,sy,x_size,y_size);
+	}
 	
-	public void drawTexture(Texture texture, float x, float y, Color color){
+	public void drawTexture(Texture texture, float x, float y, Color color, boolean selecting){
 		spriteBatch.setColor(color);
-		spriteBatch.draw(texture, x, y);
+		if (selecting){
+			spriteBatch.draw(texture, x, y, 40, 40);	
+		} else {
+			spriteBatch.draw(texture, x, y);	
+		}	
 	}
 	
 	public void drawTexture(Texture texture, float x, float y, float width, float height, Color color){
@@ -796,7 +806,8 @@ public class GameCanvas {
 		spriteBatch.draw(texture, x, y, width, height);
 	}
 	
-	public void drawCharacter(Texture texture, float x, float y, Color color, boolean leftside,float scale){
+	
+	public void drawCharacter(Texture texture, float x, float y, Color color, boolean leftside, float scale){
 		spriteBatch.setColor(color);
 		int tWidth = texture.getWidth();
 		int tHeight = texture.getHeight();
@@ -852,7 +863,8 @@ public class GameCanvas {
 	public void drawText(String msg, float x, float y, Color color) {
 		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
-		displayFont.draw(spriteBatch, msg, x,y);
+		float width = GridBoard.BOARD_OFFSET_X *getWidth();
+		displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
 	}
 	
 	public void drawCenteredText(String msg, float x, float y, Color color) {
