@@ -231,8 +231,13 @@ public class SelectionMenu {
 			Action action = actions[i];
 			float offset_y = spacing_h * i;
 			if (action.cost > ActionBar.getTotalSlots() - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
-				canvas.drawText(action.name, text_x, text_y - offset_y, new Color(1f, 1f, 1f, 0.5f));
-			} else {
+				Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.4f);
+				canvas.drawText(action.name, text_x, text_y - offset_y,dimColor);
+			} 
+			else if (actions[selectedAction].name == action.name){
+				canvas.drawText(action.name, text_x, text_y - offset_y, Color.CORAL);				
+			}
+			else {
 				canvas.drawText(action.name, text_x, text_y - offset_y, Color.BLACK);
 			}
 		}
