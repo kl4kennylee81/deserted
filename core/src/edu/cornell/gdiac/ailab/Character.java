@@ -25,9 +25,6 @@ public class Character {
 	int DIAGONAL_SIZE = 20;
 	int HEALTH_HEIGHT = 10;
 	
-	// currently it takes 2 squares not definite might be utilizing range
-	float SHIELD_LENGTH = 2;
-	
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
 	float CHARACTER_PROPORTION = 0.8f;
@@ -274,7 +271,6 @@ public class Character {
 	 * Reset coordinates that are shielded by this character 
 	 */
 	private void resetShieldedCoordinates(){
-		Coordinates coordPool = Coordinates.getInstance();
 		// add coordinates back to the pool
 		for (Coordinate c: shieldedCoordinates){
 			c.free();
@@ -283,10 +279,9 @@ public class Character {
 
 		for (ActionNode an : persistingActions){
 			if (an.action.pattern == Pattern.SHIELD){
-				int tempX = an.getCurrentX();
-				int tempY = an.getCurrentY();
-				shieldedCoordinates.add(coordPool.newCoordinate(tempX,tempY));
-				shieldedCoordinates.add(coordPool.newCoordinate(tempX, an.direction == Direction.DOWN ? tempY-1 : tempY+1));
+				for (Coordinate c:an.path){
+					shieldedCoordinates.add(c);
+				}
 			}
 		}
 	}
@@ -323,7 +318,7 @@ public class Character {
 	
 	void addPersisting(ActionNode an,Coordinate[] path){
 		if (an.action.pattern == Pattern.SHIELD){
-			an.setPersisting(0, xPosition, yPosition);
+			an.setPersisting(0, xPosition, yPosition,path);
 			persistingActions.add(an);
 			resetShieldedCoordinates();
 		} else if (an.action.pattern == Pattern.DIAGONAL || an.action.pattern == Pattern.STRAIGHT){
@@ -584,16 +579,17 @@ public class Character {
 		for (ActionNode an : persistingActions){
 			switch (an.action.pattern){
 			case SHIELD:
+				int botY = Coordinates.minYCoordinate(an.path);
+				int numWithin = Coordinates.numWithinBounds(an.path, board);
 				int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
-				int shieldH = (int)(tileH * SHIELD_LENGTH);
+				int shieldH = (int)(tileH * numWithin);
 				if (leftside){
-					int shieldX = (int)board.offsetBoard(canvas,tileW - SHIELD_OFFSET + (tileW*an.curX));
-					int shieldY = (int)(tileH *an.curY);
+					int shieldX = (int)board.offsetBoard(canvas,tileW - SHIELD_OFFSET + (tileW*xPosition));
+					int shieldY = (int)(tileH *botY);
 					if (an.direction == Direction.UP){
 						canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
 					} else {
 						canvas.drawBox(shieldX,shieldY - tileH, shieldW, shieldH, Color.GRAY);
-						//canvas.drawBox(145+150*an.curX, 100*an.curY-100, 10, 200, Color.GRAY);
 					}
 				} else {
 					int shieldX = (int)board.offsetBoard(canvas,-SHIELD_OFFSET + (tileW*an.curX));

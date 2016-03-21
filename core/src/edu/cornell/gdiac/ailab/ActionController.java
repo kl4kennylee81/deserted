@@ -153,10 +153,40 @@ public class ActionController {
 			case DIAGONAL:
 				path = diagonalHitPath(a_node);
 				break;
+			case SHIELD:
+				path = shieldedPath(a_node);
 			default:
 				break;
 		}
 		return path;
+	}
+	
+	private Coordinate[] shieldedPath(ActionNode a_node){
+		Coordinates coords = Coordinates.getInstance();
+		int range = a_node.action.range;
+		Direction direction = a_node.direction;
+		Coordinate[] shieldedPath = new Coordinate[range];
+		// if odd center shield on person
+		if (range%2 == 1){
+			int tempX = selected.xPosition;
+			int tempY = selected.yPosition;
+			shieldedPath[range/2] = coords.newCoordinate(tempX, tempY);
+			for (int i =1;i<=range/2;i++){
+				shieldedPath[range/2+i] = coords.newCoordinate(tempX, tempY+i);
+				shieldedPath[range/2-i] = coords.newCoordinate(tempX,tempY-i);
+			}			
+		}
+		// choose by direction
+		else{
+			int tempX = selected.xPosition;
+			int tempY = selected.yPosition;
+			for (int i =0;i<range;i++){
+				Coordinate c = coords.newCoordinate(tempX, tempY);
+				shieldedPath[i] = c;
+				tempY = (direction == Direction.DOWN) ? tempY-1:tempY+1;
+			}			
+		}
+		return shieldedPath;
 	}
 	
 	private int actionWidthEndpoint(ActionNode a_node,int xPosition){

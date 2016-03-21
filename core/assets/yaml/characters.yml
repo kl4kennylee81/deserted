@@ -12,7 +12,7 @@
     - 0
     - 4
     - 2
-    - 5
+    - 6
     - 8
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"
@@ -31,8 +31,8 @@
   availableActions: 
     - 0
     - 4
-    - 5
-    - 7
+    - 6
+    - 9
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
   animationId: 1
@@ -72,7 +72,7 @@
     - 4
     - 5
     - 7
-    - 6
+    - 9
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
   animationId: 1
