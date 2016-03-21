@@ -514,19 +514,20 @@ public class GameEngine implements Screen {
 				HashMap<String, Object> effect = 
 						(HashMap<String, Object>) action.get("effect");
 				String eff = (String) effect.get("type");
-				Integer duration = Math.round(Effect.getSecondtoFrames((((Double) effect.get("duration")).floatValue())));
-				Float magnitude = ((Double) effect.get("magnitude")).floatValue();
+				String effectName = (String) effect.get("name");
+				Integer effectNumRounds = (Integer) effect.get("numRounds");
+				Integer magnitude = (Integer) effect.get("magnitude");
 				
 				Action actionToAdd;
 				if (persisting != null){
-					Integer castLength =  Math.round(Effect.getSecondtoFrames((((Double) persisting.get("castLength")).floatValue())));
+					Integer persistingNumRounds = (Integer) persisting.get("numRounds");
 					Float moveSpeed = (Float) ((Double) persisting.get("moveSpeed")).floatValue();
 					actionToAdd = new PersistingAction(name, cost, damage, range, 
-							Pattern.valueOf(pattern), new Effect(duration, Type.valueOf(eff), magnitude), 
-							description, castLength, moveSpeed);
+							Pattern.valueOf(pattern), new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), 
+							description, persistingNumRounds, moveSpeed);
 				}else{
 					actionToAdd = new Action(name, cost, damage, range, Pattern.valueOf(pattern),
-							new Effect(duration, Type.valueOf(eff), magnitude), description);
+							new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), description);
 				}
 				
 				Integer animationId = (Integer) action.get("animationId");

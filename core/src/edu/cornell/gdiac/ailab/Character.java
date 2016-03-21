@@ -39,9 +39,9 @@ public class Character {
 	/** Maximum health */
 	int maxHealth;
 	/** Speed when moving through normal part of bar */
-	float speed;
+	private float speed;
 	/** Speed when moving through cast par of bar */
-	float castSpeed;
+	private float castSpeed;
 	
 	/** Current x position */
 	int xPosition;
@@ -49,6 +49,8 @@ public class Character {
 	int yPosition;
 	/** Current cast position */
 	float castPosition;
+	/** How much cast moved in last frame  */
+	float castMoved;
 	Color color;
 	Texture texture;
 	Texture icon;
@@ -100,7 +102,11 @@ public class Character {
 	float lerpVal = 0;
 	boolean increasing;
 	
+	/** Cast bar position of last cast (Used for animating) */
 	float lastCastStart;
+	
+	/** Speed modifier */
+	int speedModifier;
 	
 	
 	/**Constructor used by GameEngine to create characters from yaml input. */
@@ -127,8 +133,10 @@ public class Character {
 		this.startingYPosition = this.yPosition = yPosition;
 		this.leftside = leftSide;
 		
+		speedModifier = 0;
 		lastCastStart = 0;
 		castPosition = 0;
+		castMoved = 0;
 		queuedActions = new LinkedList<ActionNode>();
 		persistingActions = new LinkedList<ActionNode>();
 		effects = new ArrayList<Effect>();
@@ -154,7 +162,10 @@ public class Character {
 		this.startingYPosition = this.yPosition = c.yPosition;
 		this.leftside = c.leftside;
 		
+		speedModifier = 0;
+		lastCastStart = 0;
 		castPosition = 0;
+		castMoved = 0;
 		queuedActions = new LinkedList<ActionNode>();
 		persistingActions = new LinkedList<ActionNode>();
 		effects = new ArrayList<Effect>();
@@ -270,6 +281,40 @@ public class Character {
 		return persistingActions.peek() != null;
 	}
 	
+	float getSpeedModifier() {
+		switch (speedModifier) {
+		case -3:
+			return 0.3f;
+		case -2:
+			return 0.6f;
+		case -1:
+			return 0.8f;
+		case 0:
+			return 1;
+		case 1:
+			return 1.2f;
+		case 2:
+			return 1.5f;
+		case 3:
+			return 1.7f;
+		default:
+			if (speedModifier < -3){
+				return 0.2f;
+			} else {
+				return 2f;
+			}
+		
+		}
+	}
+	
+	float getCastSpeed() {
+		return this.castSpeed*getSpeedModifier();
+	}
+	
+	float getBarSpeed() {
+		return this.speed*getSpeedModifier();
+	}
+	
 	/**
 	 * Reset coordinates that are shielded by this character 
 	 */
@@ -308,14 +353,14 @@ public class Character {
 	 */
 	void addPersisting(ActionNode an){
 		if (an.action.pattern == Pattern.SHIELD){
-			an.setPersisting(0, xPosition, yPosition);
+			an.setPersisting(castPosition, xPosition, yPosition);
 			persistingActions.add(an);
 			resetShieldedCoordinates();
 		} else if (an.action.pattern == Pattern.DIAGONAL || an.action.pattern == Pattern.STRAIGHT){
 			if (leftside){
-				an.setPersisting(0, xPosition+1, yPosition);
+				an.setPersisting(castPosition, xPosition+1, yPosition);
 			} else {
-				an.setPersisting(0, xPosition-1, yPosition);
+				an.setPersisting(castPosition, xPosition-1, yPosition);
 			}
 			persistingActions.add(an);
 		}
@@ -323,14 +368,14 @@ public class Character {
 	
 	void addPersisting(ActionNode an,Coordinate[] path){
 		if (an.action.pattern == Pattern.SHIELD){
-			an.setPersisting(0, xPosition, yPosition);
+			an.setPersisting(castPosition, xPosition, yPosition);
 			persistingActions.add(an);
 			resetShieldedCoordinates();
 		} else if (an.action.pattern == Pattern.DIAGONAL || an.action.pattern == Pattern.STRAIGHT){
 			if (leftside){
-				an.setPersisting(0, xPosition+1, yPosition,path);
+				an.setPersisting(castPosition, xPosition+1, yPosition,path);
 			} else {
-				an.setPersisting(0, xPosition-1, yPosition,path);
+				an.setPersisting(castPosition, xPosition-1, yPosition,path);
 			}
 			persistingActions.add(an);
 		}
@@ -367,6 +412,10 @@ public class Character {
 	
 	public ActionNode popCast(){
 		return queuedActions.poll();
+	}
+	
+	public void updateRoundLengths(){
+		
 	}
 	
 	public void startingCast(){

@@ -36,8 +36,8 @@ public class PersistingController extends ActionController{
 					ActionNode an = actionNodes.get(i);
 					selectedActionNode = an;
 					executeAction();
-					an.castPoint += 1;
-					if (an.action != null && an.castPoint >= ((PersistingAction) an.action).castLength){
+					an.curRound += c.castMoved;
+					if (an.curRound >= ((PersistingAction) an.action).totalNumRounds){
 						c.popPersistingCast(an);
 					}
 				}

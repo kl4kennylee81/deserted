@@ -6,8 +6,9 @@
   pattern: MOVE
   effect: 
     type: REGULAR
-    duration: 0.0
-    magnitude: 0.0
+    name: Regular
+    numRounds: 0
+    magnitude: 0
   description: Move your character one unit
   animationId: 0
 
@@ -19,8 +20,9 @@
   pattern: STRAIGHT
   effect: 
     type: REGULAR
-    duration: 0.0
-    magnitude: 0.0
+    name: Regular
+    numRounds: 0
+    magnitude: 0
   description: Instant straight attack
   animationId: 0
 
@@ -32,8 +34,9 @@
   pattern: DIAGONAL
   effect: 
     type: REGULAR
-    duration: 0.0
-    magnitude: 0.0
+    name: Regular
+    numRounds: 0
+    magnitude: 0
   description: Instant diagonal attack
   animationId: 0
 
@@ -46,8 +49,9 @@
   pattern: SINGLE
   effect: 
     type: REGULAR
-    duration: 0.0
-    magnitude: 0.0
+    name: Regular
+    numRounds: 0
+    magnitude: 0
   description: Target a single square for 4 damage
   animationId: 0
 
@@ -60,11 +64,12 @@
   pattern: STRAIGHT
   effect: 
     type: REGULAR
-    duration: 0.0
-    magnitude: 0.0
+    name: Regular
+    numRounds: 0
+    magnitude: 0
   description: Launch a projectile straight ahead for 2 damage
   persisting_action: 
-    castLength: 3.0
+    numRounds: 10 
     moveSpeed: 0.05
   animationId: 0
 
@@ -76,11 +81,12 @@
   pattern: DIAGONAL
   effect: 
     type: REGULAR
-    duration: 0.0
-    magnitude: 0.0
+    name: Regular
+    numRounds: 0
+    magnitude: 0
   description: Launch a projectile diagonally up or down for 2 damage
   persisting_action: 
-    castLength: 3.0
+    numRounds: 10
     moveSpeed: 0.025
   animationId: 0
 
@@ -92,11 +98,12 @@
   pattern: SHIELD
   effect: 
     type: REGULAR
-    duration: 0.0
-    magnitude: 0.0
+    name: Regular
+    numRounds: 0
+    magnitude: 0
   description: Creates a 2-tile wide shield (Cannot move after)
   persisting_action: 
-    castLength: 6.0
+    numRounds: 1
     moveSpeed: 0.0
   animationId: 0
 
@@ -107,9 +114,10 @@
   range: 10
   pattern: SINGLE
   effect:
-    type: SLOW
-    duration: 6.0
-    magnitude: 0.5
+    type: SPEED
+    name: Slowed
+    numRounds: 2
+    magnitude: -2
   description: Target a single square to slow down enemy
   animationId: 0
 
@@ -120,9 +128,10 @@
   range: 3
   pattern: STRAIGHT
   effect:
-    type: SLOW
-    duration: 4.0
-    magnitude: 0.25
+    type: SPEED
+    name: Slowed
+    numRounds: 1
+    magnitude: -1
   description: Target a single square to slow down enemy
   animationId: 0
 ...

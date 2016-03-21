@@ -26,8 +26,8 @@ public class EffectController {
 	
 	public void processEffect(Effect e, Character c){
 		switch(e.type){
-			case SLOW:
-				processSlow(e, c);
+			case SPEED:
+				processSpeed(e, c);
 				break;
 			default:
 				break;
@@ -51,16 +51,14 @@ public class EffectController {
 	 * Applies the slow effect to the character if it is new, reduces the "framesLeft" 
 	 * counter, and sets a flag, and reverses the effect, if the effect is done.
 	 */
-	public void processSlow(Effect e, Character c){
+	public void processSpeed(Effect e, Character c){
 		if(e.isNew){
-//			c.castSpeed = c.castSpeed * e.magnitude;
-			c.speed = c.speed * e.magnitude;
+			c.speedModifier += e.magnitude;
 			e.isNew = false;
 		}
-		e.framesLeft -= 1;
-		if(e.framesLeft == 0){
-//			c.castSpeed = c.castSpeed / e.magnitude;
-			c.speed = c.speed / e.magnitude;
+		e.roundsLeft -= c.castMoved;
+		if (e.roundsLeft <= 0){
+			c.speedModifier -= e.magnitude;
 			e.isDone = true;
 		}
 	}
