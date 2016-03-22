@@ -118,14 +118,14 @@ public class Character implements GUIElement {
 		this.name = name;
 		this.health = health;
 		this.maxHealth = maxHealth;
-		this.speed = speed;
-		this.castSpeed = castSpeed;
+//		this.speed = speed;
+//		this.castSpeed = castSpeed;
 
 		this.color = color;
 		
 		/* Randomize so that its not always the same thing */
-		//this.speed = (float) (Math.random()*0.003 + 0.003);
-		//this.castSpeed = (float) (Math.random()*0.004 + 0.005);
+		this.speed = (float) (Math.random()*0.003 + 0.003)/3;
+		this.castSpeed = (float) (Math.random()*0.003 + 0.0025)/3;
 		
 		this.startingXPosition = this.xPosition = xPosition;
 		this.startingYPosition = this.yPosition = yPosition;
@@ -709,7 +709,7 @@ public class Character implements GUIElement {
 				int numWithin = Coordinates.numWithinBounds(an.path, board);
 				int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
 				int shieldH = (int)(tileH * numWithin);
-				int shieldX = (int)(leftside ?(tileW + tileW*xPosition- SHIELD_OFFSET) :tileW*xPosition - SHIELD_OFFSET);
+				int shieldX = (int)(leftside ?(tileW + tileW*an.curX- SHIELD_OFFSET) :tileW*an.curX - SHIELD_OFFSET);
 				int shieldY = (int)(tileH *botY);
 				c = board.offsetBoard(canvas, shieldX, shieldY);
 				shieldX = c.x;
