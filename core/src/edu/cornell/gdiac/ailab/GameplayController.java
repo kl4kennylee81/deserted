@@ -147,7 +147,7 @@ public class GameplayController {
         textMessages.draw(canvas,board);
         drawHighlightedCharacterInSelectionState(canvas);
         if (prompt != null){
-        	canvas.drawText(prompt, 50, 530, Color.BLACK);
+        	canvas.drawText(prompt, 18, 530, Color.BLACK);
         }
         //screen should be drawn after greyed out characters
         //but before selected characters
