@@ -237,24 +237,14 @@ public class SelectionMenu {
 		float text_x = RELATIVE_TEXT_X_POS * w;
 		float text_y = RELATIVE_TEXT_Y_POS * h;
 		float spacing_h = RELATIVE_TEXT_SPACING * h;
-		boolean prevWrap = false;
 		GlyphLayout g = null;
 		float offset_y = 0f;
-		int num_offsets = 0;
 		float selectedPointerOffset = 0f;
 		
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
 			if (g != null) {
-				if (g.height > 14.0){
-					prevWrap = true;
-					num_offsets += 1;
-				}
-			}
-			if (prevWrap){
-				offset_y = spacing_h * i + (spacing_h/3)*num_offsets;
-			} else {
-				offset_y = spacing_h * i;
+				offset_y += spacing_h + g.height/2;
 			}
 			
 //			System.out.println(action.name + " is at " + i);
