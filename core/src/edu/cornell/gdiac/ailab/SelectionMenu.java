@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
@@ -236,20 +237,39 @@ public class SelectionMenu {
 		float text_x = RELATIVE_TEXT_X_POS * w;
 		float text_y = RELATIVE_TEXT_Y_POS * h;
 		float spacing_h = RELATIVE_TEXT_SPACING * h;
+		boolean prevWrap = false;
+		GlyphLayout g = null;
+		float offset_y = 0f;
+		int num_offsets = 0;
+		float selectedPointerOffset = 0f;
 		
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
-			float offset_y = spacing_h * i;
+			if (g != null) {
+				if (g.height > 14.0){
+					prevWrap = true;
+					num_offsets += 1;
+				}
+			}
+			if (prevWrap){
+				offset_y = spacing_h * i + (spacing_h/3)*num_offsets;
+			} else {
+				offset_y = spacing_h * i;
+			}
+			
 //			System.out.println(action.name + " is at " + i);
+			if (i == selectedAction){
+				selectedPointerOffset = offset_y;
+			}
 			if (action.cost > ActionBar.getTotalSlots() - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
 				Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.4f);
-				canvas.drawText(action.name, text_x, text_y - offset_y,dimColor);
+				 g = canvas.drawText(action.name, text_x, text_y - offset_y, dimColor);
 			} 
 			else if (actions[selectedAction].name == action.name){
-				canvas.drawText(action.name, text_x, text_y - offset_y, Color.CORAL);				
+				 g = canvas.drawText(action.name, text_x, text_y - offset_y, Color.CORAL);
 			}
 			else {
-				canvas.drawText(action.name, text_x, text_y - offset_y, Color.BLACK);
+				 g = canvas.drawText(action.name, text_x, text_y - offset_y, Color.BLACK);
 			}
 		}
 		
@@ -258,7 +278,7 @@ public class SelectionMenu {
 			//canvas.drawPointer(145+selectedX*100, 45+selectedY*100, Color.BLACK);
 		} else if (canAct()){
 			float pointer_x = text_x - ACTION_POINTER_OFFSET_X;
-			float pointer_y = text_y - spacing_h*selectedAction - ACTION_POINTER_OFFSET_Y;
+			float pointer_y = text_y - selectedPointerOffset -  ACTION_POINTER_OFFSET_Y;//spacing_h*selectedAction - ACTION_POINTER_OFFSET_Y;
 			//draws action name pointers
 //			System.out.println("Pointer is at " + selectedAction);
 			canvas.drawPointer(pointer_x,pointer_y, Color.CORAL);
