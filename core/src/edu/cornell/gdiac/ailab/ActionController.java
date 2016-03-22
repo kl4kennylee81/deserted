@@ -22,8 +22,11 @@ import java.util.List;
 //import com.badlogic.gdx.math.*;
 
 import edu.cornell.gdiac.ailab.Character;
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.ailab.Action.Pattern;
+import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 
 import com.badlogic.gdx.graphics.*;
 
@@ -37,6 +40,7 @@ public class ActionController {
 	public List<Character> characters;
 	public ActionBar bar;
 	public TextMessage textMessages;
+	public AnimationPool animations;
 	
 	/** Done executing actions */
 	boolean isDone;
@@ -52,11 +56,13 @@ public class ActionController {
 	 * @param chars The list of characters
 	 * @param bar The action bar
 	 */
-	public ActionController(GridBoard board, List<Character> chars, ActionBar bar, TextMessage textMsgs) {
+	public ActionController(GridBoard board, List<Character> chars, ActionBar bar, 
+			TextMessage textMsgs, AnimationPool animations) {
 		this.board = board;
 		this.characters = chars;
 		this.bar = bar;
 		this.textMessages = textMsgs;
+		this.animations = animations;
 		
 		isDone = false;
 		selected = null;
@@ -77,9 +83,16 @@ public class ActionController {
 			ActionNode action = selected.popCast();
 			selected.needsAttack = false;
 			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
+				if (action.action.pattern != Pattern.MOVE){
+					selected.setExecuting();
+				}
 				executeAction(action);
 			}
+			else{
+				action.free();
+			}
 			selected = null;
+
 		} else {
 			isDone = true;
 			//Sort characters by speed then check their attacks
@@ -99,7 +112,13 @@ public class ActionController {
 	private void executeAction(ActionNode a_node){
 		// If persisting, then add to character 
 		if (a_node.action instanceof PersistingAction){
-			selected.addPersisting(a_node);
+			Coordinate[] path = getPath(a_node);
+			if (path != null){
+				selected.addPersisting(a_node,path);
+			}
+			else{
+				selected.addPersisting(a_node);	
+			}
 			return;
 		}
 		//switch between types of actions
@@ -108,7 +127,6 @@ public class ActionController {
 				executeMovement(a_node);
 				break;
 			case STRAIGHT:
-				System.out.println("straignt");
 				executeStraight(a_node);
 				break;
 			case DIAGONAL:
@@ -122,6 +140,53 @@ public class ActionController {
 			default:
 				break;
 		}
+	}
+	
+	private Coordinate[] getPath(ActionNode a_node){
+		Coordinate[] path = null;
+		switch(a_node.action.pattern){
+			case MOVE:
+				break;
+			case STRAIGHT:
+				path = straightHitPath(a_node);
+				break;
+			case DIAGONAL:
+				path = diagonalHitPath(a_node);
+				break;
+			case SHIELD:
+				path = shieldedPath(a_node);
+			default:
+				break;
+		}
+		return path;
+	}
+	
+	private Coordinate[] shieldedPath(ActionNode a_node){
+		Coordinates coords = Coordinates.getInstance();
+		int range = a_node.action.range;
+		Direction direction = a_node.direction;
+		Coordinate[] shieldedPath = new Coordinate[range];
+		// if odd center shield on person
+		if (range%2 == 1){
+			int tempX = selected.xPosition;
+			int tempY = selected.yPosition;
+			shieldedPath[range/2] = coords.newCoordinate(tempX, tempY);
+			for (int i =1;i<=range/2;i++){
+				shieldedPath[range/2+i] = coords.newCoordinate(tempX, tempY+i);
+				shieldedPath[range/2-i] = coords.newCoordinate(tempX,tempY-i);
+			}			
+		}
+		// choose by direction
+		else{
+			int tempX = selected.xPosition;
+			int tempY = selected.yPosition;
+			for (int i =0;i<range;i++){
+				Coordinate c = coords.newCoordinate(tempX, tempY);
+				shieldedPath[i] = c;
+				tempY = (direction == Direction.DOWN) ? tempY-1:tempY+1;
+			}			
+		}
+		return shieldedPath;
 	}
 	
 	private int actionWidthEndpoint(ActionNode a_node,int xPosition){
@@ -154,14 +219,15 @@ public class ActionController {
 	}
 	
 	private boolean isDiagonalUp(ActionNode a_node){
-		return a_node.yPosition == SelectionMenuController.DIAGONAL_UP;
+		return a_node.direction == Direction.UP;
 	}
 	
 	private boolean isDiagonalDown(ActionNode a_node){
-		return a_node.yPosition == SelectionMenuController.DIAGONAL_DOWN;		
+		return a_node.direction == Direction.DOWN;	
 	}
 	
 	private Coordinate[] diagonalHitPath(ActionNode a_node){
+		Coordinates coordPool = Coordinates.getInstance();
 		int projectileX = (selected.leftside) ? selected.xPosition+1:selected.xPosition-1;
 		if (!board.isInBounds(projectileX, selected.yPosition)){
 			return null;
@@ -170,31 +236,32 @@ public class ActionController {
 		int widthRange = actionWidthRange(a_node,projectileX);
 		int trueRange = Math.min(heightRange,widthRange);
 		Coordinate[] path = new Coordinate[trueRange+1];
-		path[0] = new Coordinate(projectileX,selected.yPosition);
+		path[0] = coordPool.newCoordinate(projectileX,selected.yPosition);
 		if (selected.leftside && isDiagonalUp(a_node)){
 			for (int i=0;i<trueRange;i++){
-				path[i+1] = new Coordinate(projectileX+i+1,selected.yPosition+i+1);
+				path[i+1] = coordPool.newCoordinate(projectileX+i+1,selected.yPosition+i+1);
 			}
 		}
 		else if (selected.leftside && isDiagonalDown(a_node)){
 			for (int i=0;i<trueRange;i++){
-				path[i+1] = new Coordinate(projectileX+i+1,selected.yPosition-i-1);
+				path[i+1] = coordPool.newCoordinate(projectileX+i+1,selected.yPosition-i-1);
 			}			
 		}
 		else if (!selected.leftside && isDiagonalUp(a_node)){
 			for (int i=0;i<trueRange;i++){
-				path[i+1] = new Coordinate(projectileX-i-1,selected.yPosition+i+1);
+				path[i+1] = coordPool.newCoordinate(projectileX-i-1,selected.yPosition+i+1);
 			}				
 		}
 		else if (!selected.leftside && isDiagonalDown(a_node)){
 			for (int i=0;i<trueRange;i++){
-				path[i+1] = new Coordinate(projectileX-i-1,selected.yPosition-i-1);
+				path[i+1] = coordPool.newCoordinate(projectileX-i-1,selected.yPosition-i-1);
 			}
 		}
 		return path;
 	}
 	
 	private Coordinate[] straightHitPath(ActionNode a_node){
+		Coordinates coordPool = Coordinates.getInstance();
 		int j = selected.yPosition;
 		int numTiles;
 		if (selected.leftside){
@@ -207,10 +274,10 @@ public class ActionController {
 		Coordinate[] path = new Coordinate[numTiles];
 		for (int i=0;i<numTiles;i++){
 			if (selected.leftside){
-				path[i] = new Coordinate(selected.xPosition+i+1,j);
+				path[i] = coordPool.newCoordinate(selected.xPosition+i+1,j);
 			}
 			else{
-				path[i] = new Coordinate(selected.xPosition-i-1,j);
+				path[i] = coordPool.newCoordinate(selected.xPosition-i-1,j);
 			}
 		}
 		return path;
@@ -235,17 +302,32 @@ public class ActionController {
 	}
 	
 	private void executeMovement(ActionNode a_node){
-		selected.popLastShadow();
-		int total_moves = (Math.abs(selected.xPosition-a_node.xPosition)
-				+Math.abs(selected.yPosition-a_node.yPosition));
-		if (total_moves==1 && !board.isOccupied(a_node.xPosition, a_node.yPosition)){
-			selected.xPosition = a_node.xPosition;
-			selected.yPosition = a_node.yPosition;			
+		int nextX = selected.xPosition;
+		int nextY = selected.yPosition;
+		switch (a_node.direction){
+		case UP:
+			nextY++;
+			break;
+		case DOWN:
+			nextY--;
+			break;
+		case LEFT:
+			nextX--;
+			break;
+		case RIGHT:
+			nextX++;
+			break;
+		default:
+			break;
 		}
+		if (board.isOnSide(selected.leftside,nextX,nextY) && !board.isOccupied(nextX, nextY)){
+			selected.xPosition = nextX;
+			selected.yPosition = nextY;
+		}
+		a_node.free();
 	}
 	
 	private void executeStraight(ActionNode a_node){
-		System.out.println("execute straight");
 		Coordinate[] path = straightHitPath(a_node);
 		// execute the hit interrupt and do damage to closest enemy
 		processHitPath(a_node,path);
@@ -277,16 +359,23 @@ public class ActionController {
 				}
 			}
 		}
+		if (!hasHit){
+			a_node.free();
+		}
+		// free Coordinates back into the Pool
+		for (int j = 0;j<path.length;j++){
+			path[j].free();
+		}
 	}
 	
 	private void executeSingle(ActionNode a_node){
-		textMessages.addSingleTemp(a_node.xPosition,a_node.yPosition);
 		for (Character c:characters){
 			if (c.xPosition == a_node.xPosition && c.yPosition == a_node.yPosition){
 				processHit(a_node,c);
 				break;
 			}
 		}
+		a_node.free();
 	}
 	
 	protected void processHit(ActionNode a_node,Character target){
@@ -294,17 +383,37 @@ public class ActionController {
 		applyEffect(a_node,target);
 		
 		//add text bubble for amount of damage in front of target
-		String attack_damage = Integer.toString(a_node.action.damage);
-		textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
-
-		ActionNode nextAttack = target.queuedActions.peek();
-		//handle interruption
-		if (nextAttack != null && !nextAttack.isInterrupted){
-			nextAttack.isInterrupted = true;
-			if (nextAttack.action.pattern != Pattern.MOVE){
-				textMessages.addOtherMessage("INTERRUPTED", target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.RED);
+		// only add the text damage if any damage has been done
+		if (a_node.action.damage > 0){
+			String attack_damage = Integer.toString(a_node.action.damage);
+			textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
+			animations.add(a_node.action.animation,target.xPosition, target.yPosition);
+			target.setHurt();
+			ActionNode nextAttack = target.queuedActions.peek();
+			
+			LinkedList<ActionNode> temp = new LinkedList<ActionNode>();
+			// handle breaking of shield
+			// only if damage was greater than 0
+			for (ActionNode an:target.persistingActions){
+				if (an.action.pattern == Pattern.SHIELD){
+					temp.add(an);
+				}
+			}
+			// have to avoid concurrent modification exception can't remove while iterating
+			for (ActionNode an: temp){
+				target.popPersistingCast(an);
+			}
+		
+			//handle interruption
+			// if an attack does 0 damage it doesn't interrupt for example slows
+			if (nextAttack != null && !nextAttack.isInterrupted){
+				nextAttack.isInterrupted = true;
+				if (nextAttack.action.pattern != Pattern.MOVE){
+					textMessages.addOtherMessage("INTERRUPTED", target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.RED);
+				}
 			}
 		}
+		a_node.free();
 	}
 	
 	protected void applyDamage(ActionNode a_node,Character target){
@@ -312,9 +421,11 @@ public class ActionController {
 	}
 	
 	protected void applyEffect(ActionNode a_node, Character target){
-		if(a_node.action.effect.type == Type.REGULAR){
+		Effect eff = a_node.action.effect;
+		if(eff.type == Type.REGULAR){
 			return;
 		}
+		textMessages.addOtherMessage(eff.toString(),target.xPosition,target.yPosition,2*TextMessage.SECOND, Color.RED);
 		target.addEffect(a_node.action.effect.clone());
 	}
 	

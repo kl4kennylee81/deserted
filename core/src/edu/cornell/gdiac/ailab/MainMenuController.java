@@ -98,7 +98,6 @@ public class MainMenuController {
 	 */
 	private void updateSelection(){
 		if (InputController.pressedA() || InputController.pressedEnter()){
-			System.out.println("Current option is " + mainMenu.getOptions()[mainMenu.selectedOption].text);
 			gameNo = mainMenu.selectedOption;
 			isDone = true;
 		}  else if ((InputController.pressedUp() && !InputController.pressedDown())){

@@ -5,6 +5,8 @@ import java.util.List;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
+
 public class GridBoard {
 	float space;
 	Texture tileMesh;
@@ -12,20 +14,50 @@ public class GridBoard {
 	// In number of tiles
 	int width;
 	int height;
-	int size;
 	float lerpVal = 0;
 	boolean increasing;
 	
-	int xwidth;
-	int yheight;
-	
 	/** Color of a regular tile */
 	private static final Color BASIC_COLOR1 = new Color(0.2f, 0.2f, 1.0f, 1.0f);
-	private static final Color BASIC_COLOR2 = new Color(1.0f, 0.6f, 0.2f, 1.0f);
+	private static final Color BASIC_COLOR2 = new Color(237f/255f, 92f/255f, 92f/255f, 1.0f);//new Color(1.0f, 0.6f, 0.2f, 1.0f);
 	/** Highlight color for power tiles */
 	private static final Color CAN_TARGET_COLOR = new Color( 1f,  1.0f,  0f, 1.0f);
 	private static final Color HIGHLIGHT_COLOR = new Color( 0.0f,  1.0f,  1.0f, 1.0f);
 	private static final Color ATTACK_COLOR = new Color( 1f, 0f, 0f, 1f);
+	
+	
+	public static final float BOARD_WIDTH = 0.75f;
+	
+	public static final float BOARD_HEIGHT = 0.45f;
+
+	public static final float BOARD_OFFSET_X = (1-BOARD_WIDTH)/2;
+	
+	public static final float BOARD_OFFSET_Y = 0.15f;
+	
+	public float getTileWidth(GameCanvas canvas){
+		return (canvas.getWidth() * BOARD_WIDTH)/width;
+	}
+	
+	public float getTileHeight(GameCanvas canvas){
+		return (canvas.getHeight() * BOARD_HEIGHT)/height;
+	}
+	
+	public float getBoardOffsetX(GameCanvas canvas){
+		return BOARD_OFFSET_X * canvas.getWidth();
+	}
+	
+	public float getBoardOffsetY(GameCanvas canvas){
+		return BOARD_OFFSET_Y * canvas.getHeight();
+	}
+	
+	public Coordinate offsetBoard(GameCanvas canvas,float xPos,float yPos){
+		int newxPos = (int)(getBoardOffsetX(canvas) + xPos);
+		int newyPos = (int)(getBoardOffsetY(canvas) + yPos);
+		Coordinates coords = Coordinates.getInstance();
+		Coordinate c = coords.obtain();
+		c.set(newxPos, newyPos);
+		return c;
+	}
 	
 	private class Tile {
 		//Currently targeting
@@ -54,17 +86,12 @@ public class GridBoard {
 		this.width = width;
 		this.height = height;
 		lerpVal = 0;
-		size = 100;
 		tiles = new Tile[width][height];
 		for (int x = 0; x < width; x++){
 			for (int y = 0; y < height; y++){
 				tiles[x][y] = new Tile();
 			}
 		}
-		
-		//change to 150 later
-		xwidth = 150;
-		yheight = 100;
 	}
 	
 	public void setTileTexture(Texture mesh) {
@@ -108,11 +135,13 @@ public class GridBoard {
 	 */
 	private void drawTile(int x, int y, GameCanvas canvas) {
 		Tile tile = tiles[x][y];
-
-		// Compute drawing coordinates
 		
-		float sx = xwidth*x;
-		float sy = yheight*y;
+		// Compute drawing coordinates
+		int tileW = (int) getTileWidth(canvas);
+		int tileH = (int) getTileHeight(canvas);
+		
+		float sx = tileW*x + getBoardOffsetX(canvas);
+		float sy = tileH*y + getBoardOffsetY(canvas);
 
 		// You can modify the following to change a tile's highlight color.
 		// BASIC_COLOR corresponds to no highlight.
@@ -128,7 +157,6 @@ public class GridBoard {
 		}*/
 		Color color = x<width/2 ? BASIC_COLOR1.cpy() : BASIC_COLOR2.cpy();
 		if (tile.isHighlighted){
-			//System.out.println("dude");
 			color.lerp(HIGHLIGHT_COLOR,lerpVal);
 		} else if (tile.canTarget){
 			color = CAN_TARGET_COLOR;
@@ -139,9 +167,13 @@ public class GridBoard {
 		///////////////////////////////////////////////////////
 
 		// Draw
-		canvas.drawTile(sx, sy, tileMesh, xwidth, yheight,color);
+		canvas.drawTile(sx, sy, tileMesh, tileW, tileH,color);
 	}
 	
+	public float bottomOffset(GameCanvas canvas) {
+		return canvas.getHeight()*((1-BOARD_WIDTH)/8);
+	}
+
 	/**
 	 * Reset all tiles
 	 */
@@ -185,24 +217,7 @@ public class GridBoard {
 			}
 		}
 	}
-	
-	/**
-	 * Occupy the board with active characters. If a character is 
-	 * selected, occupy his shadow's position instead of his own.
-	 */
-	public void occupy(List<Character> chars, Character selected){
-		reset();
-		for (Character c : chars){
-			if (c.isAlive()){
-				if (c.equals(selected)){
-					tiles[c.shadowX][c.shadowY].isOccupied = true;
-				} else {
-					tiles[c.xPosition][c.yPosition].isOccupied = true;
-				}
-			}
-		}
-	}
-	
+
 	public boolean isOccupied(int x, int y){
 		if (x>=0 && x<width && y>=0 && y<height){
 			return tiles[x][y].isOccupied;
@@ -214,5 +229,10 @@ public class GridBoard {
 		return x<width && x>=0 && y<height && y>=0;
 	}
 	
+	public boolean isOnSide(boolean leftside, int x,int y){
+		boolean isLeft = leftside && (this.width/2 > x) && isInBounds(x, y);
+		boolean isRight = !leftside && (this.width/2 <= x) && isInBounds(x,y);
+		return isLeft||isRight;
+	}
 	
 }

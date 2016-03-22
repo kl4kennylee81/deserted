@@ -1,7 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
@@ -22,12 +21,19 @@ public class GameplayController {
     private AIController aiController;
     /** Subcontroller for managing effects */
     private EffectController effectController;
+    /** Subcontroller for managing mouse over highlighting */
+    private MouseOverController mouseOverController;
 	
 	/** Current Models */
     private GridBoard board;
-    private List<Character> characters;
+    private Characters characters;
     private ActionBar bar;
     private TextMessage textMessages;
+    private AnimationPool animations;
+    
+    private HighlightScreen screen;
+    
+    private String prompt;
     
     /** Current state of game */
     private InGameState inGameState;
@@ -39,41 +45,45 @@ public class GameplayController {
 		DONE
 	}
     
-    public GameplayController(){
-    	
+    public GameplayController(MouseOverController moc){
+    	mouseOverController = moc;
     }
     
-    /**
-	 * Restart the game, laying out all the ships and tiles
-	 */
-	public void resetGame(List<Character> characters, int boardWidth, int boardHeight, Texture boardMesh) {
-		inGameState = InGameState.NORMAL;
+    public void resetGame(Level level){
+    	inGameState = InGameState.NORMAL;
 		
+    	int boardWidth = level.getBoardWidth();
+    	int boardHeight = level.getBoardHeight();
+    	Texture boardMesh = level.getBoardTexture();
+    	
         // Create the models.
         board = new GridBoard(boardWidth,boardHeight);
         board.setTileTexture(boardMesh);
-        this.characters = characters;
+        this.characters = level.getCharacters();
+        screen = new HighlightScreen();
         
         textMessages = new TextMessage();
-        
+        animations = new AnimationPool();
         bar = new ActionBar();
         
 		// Create the subcontrollers
-        actionController = new ActionController(board,characters,bar,textMessages);
+        actionController = new ActionController(board,characters,bar,textMessages,animations);
         selectionMenuController = new SelectionMenuController(board,characters,bar);
         actionBarController = new ActionBarController(characters,bar);
         aiController = new AIController(board,characters,bar);
-        persistingController = new PersistingController(board,characters,bar,textMessages);
+        persistingController = new PersistingController(board,characters,bar,textMessages,animations);
         effectController = new EffectController(characters);
-        
-	}
+        mouseOverController.init(characters, screen, board);
+    }
     
     public void update(){
+    	screen.noScreen();
     	switch(inGameState){
     	case NORMAL:
     		effectController.update();
     		actionBarController.update();
     		persistingController.update();
+    		mouseOverController.update(selectionMenuController.getMenu());
     		if (actionBarController.isAISelection) {
     			aiController.update();
     		}
@@ -84,9 +94,15 @@ public class GameplayController {
     		}
     		break;
     	case SELECTION:
+    		screen.setJustScreen();
+    		mouseOverController.clearAll();
     		selectionMenuController.update();
+    		mouseOverController.update(selectionMenuController.getMenu());
+    		prompt = "Choose an Action";
+    		selectionMenuController.setPrompt(prompt);
     		if (selectionMenuController.isDone()){
     			inGameState = InGameState.NORMAL;
+    			prompt = null;
     			board.reset();
     		}
     		break;
@@ -104,17 +120,37 @@ public class GameplayController {
 			break;	
     	}
     	updateTextMessages();
-    	
+    	removeDead();
     	if (gameOver()){
     		inGameState = InGameState.DONE;
+    		ObjectLoader.getInstance().unloadCurrentLevel();
+    	}
+    }
+    
+    public void removeDead(){
+    	Iterator<Character> iter = characters.iterator();
+    	while (iter.hasNext()) {
+    	    Character c = iter.next();
+			if (!c.isAlive()){
+				iter.remove();
+			}
     	}
     }
     
     public void drawPlay(GameCanvas canvas){
     	board.draw(canvas);
-        drawCharacters(canvas);
+    	drawCharacters(canvas);
+        screen.draw(canvas);
         bar.draw(canvas);
-        textMessages.draw(canvas);
+        animations.draw(canvas,board);
+        
+        textMessages.draw(canvas,board);
+        drawHighlightedCharacterInSelectionState(canvas);
+        if (prompt != null){
+        	canvas.drawText(prompt, 50, 530, Color.BLACK);
+        }
+        //screen should be drawn after greyed out characters
+        //but before selected characters
     }
     
     
@@ -122,22 +158,52 @@ public class GameplayController {
     //This needs to be done so characters below show over characters above and selection menu
     //shows over characters.
     private void drawCharacters(GameCanvas canvas){
-    	for (Character c : characters){
-        	c.draw(canvas);
-        }
     	for (int i = board.height-1; i >= 0; i--){
     		for (Character c : characters){
+    			if (inGameState == InGameState.SELECTION && c.isSelecting){
+    	    		continue;
+    	    	}
     			if (c.yPosition == i && c.isAlive()){
-    				c.drawCharacter(canvas);
+    				c.drawCharacter(canvas,board,  inGameState == InGameState.SELECTION || 
+    						mouseOverController.isCharacterHighlighted());
     			}
-    			if (c.shadowY == i && c.needShadow() && c.isAlive()){
-    				c.drawShadowCharacter(canvas);
+    			if (c.getShadowY() == i && c.needShadow() && c.isAlive()){
+    				c.drawShadowCharacter(canvas,board);
     			}
             }
     	}
         for (Character c : characters){
+        	c.draw(canvas,board, inGameState == InGameState.SELECTION || 
+					mouseOverController.isCharacterHighlighted());
         	c.drawSelection(canvas);
         }
+        characters.drawHealthBars(canvas, true);
+    }
+    
+    //temporary method - change name and integrate with above method
+    private void drawHighlightedCharacterInSelectionState(GameCanvas canvas){
+    	for (int i = board.height-1; i >= 0; i--){
+    		for (Character c : characters){
+    			if (inGameState == InGameState.SELECTION && !c.isSelecting){
+    	    		continue;
+    	    	}
+    			if (c.yPosition == i && c.isAlive()){
+    				c.drawCharacter(canvas,board,  inGameState == InGameState.SELECTION || 
+    						mouseOverController.isCharacterHighlighted());
+    			}
+    			if (c.getShadowY() == i && c.needShadow() && c.isAlive()){
+    				c.drawShadowCharacter(canvas,board);
+    			}
+            }
+    	}
+    	for (Character c : characters){
+        	c.draw(canvas,board, inGameState == InGameState.SELECTION || 
+					mouseOverController.isCharacterHighlighted());
+        }
+        for (Character c : characters){
+        	c.drawSelection(canvas);
+        }
+        characters.drawHealthBars(canvas, false);
     }
     
     public void drawAfter(GameCanvas canvas){

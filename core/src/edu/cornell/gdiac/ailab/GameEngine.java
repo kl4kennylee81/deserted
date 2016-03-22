@@ -19,16 +19,10 @@ package edu.cornell.gdiac.ailab;
 //import static com.badlogic.gdx.Gdx.gl20;
 //import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
 
-import java.io.File;
-import java.io.FileInputStream;
 //import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.yaml.snakeyaml.Yaml;
 
 import com.badlogic.gdx.*;
@@ -44,11 +38,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.*;
 import com.badlogic.gdx.assets.*;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.*;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.*;
 
-import edu.cornell.gdiac.ailab.Effect.Type;
-import edu.cornell.gdiac.ailab.AIController.Difficulty;
-import edu.cornell.gdiac.ailab.Action.Pattern;
 //import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.mesh.*;
 import edu.cornell.gdiac.ailab.GameCanvas;
@@ -80,20 +72,6 @@ public class GameEngine implements Screen {
 		/** When the game is over */
 		AFTER
 	}
-	
-	// ASSET LOADING INFORMATION
-	// Messages to display to the player
-//	/** Message while assets are loading */
-//	private static final String MESSG_LOAD = "Loading...";
-//	/** Message before the game has started */
-//	private static final String MESSG_BEFORE_1 = "Press any Key";
-//	private static final String MESSG_BEFORE_2 = "To Begin";
-//	/** Message when the player has lost */
-//	private static final String MESSG_LOST = "Game Over";
-//	/** Message when the player has won */
-//	private static final String MESSG_WON = "You Won!";
-//	/** Message telling the user how to restart */
-//	private static final String MESSG_RESTART = "Press \"R\" to Restart";
 
 	/** Background image for the canvas */
 	private static final String BCKGD_TEXTURE = "images/bg.png";
@@ -123,28 +101,6 @@ public class GameEngine implements Screen {
 	
 	/** File storing the texture for a board tile */
 	public static final String TILE_TEXTURE = "models/Tile.png";
-
-	/** File storing the enemy texture for a ship */
-	private static final String CHAR_1_TEXTURE = "models/CHARA_1.png";
-	/** File storing the player texture for a ship */
-	private static final String CHAR_2_TEXTURE = "models/CHARA_2.png";
-	/** File storing the enemy texture for a ship */
-	private static final String CHAR_3_TEXTURE = "models/CHARA_3.png";
-	/** File storing the player texture for a ship */
-	private static final String CHAR_4_TEXTURE = "models/CHARA_4.png";
-	/** File storing the enemy texture for a ship */
-	private static final String CHAR_5_TEXTURE = "models/CHARA_5.png";
-	
-	/** File storing the enemy texture for a ship */
-	private static final String ICON_1_TEXTURE = "models/CASTICON_1.png";
-	/** File storing the player texture for a ship */
-	private static final String ICON_2_TEXTURE = "models/CASTICON_2.png";
-	/** File storing the enemy texture for a ship */
-	private static final String ICON_3_TEXTURE = "models/CASTICON_3.png";
-	/** File storing the player texture for a ship */
-	private static final String ICON_4_TEXTURE = "models/CASTICON_4.png";
-	/** File storing the enemy texture for a ship */
-	private static final String ICON_5_TEXTURE = "models/CASTICON_5.png";
 	
 	private static final String WHITE_BOX = "images/white.png";
 	/** The message font to use */
@@ -162,8 +118,6 @@ public class GameEngine implements Screen {
 	private int centerY;
 	/** The x-coordinate of the center of the progress bar */
 	private int centerX;
-//	/** The height of the canvas window (necessary since sprite origin != screen origin) */
-//	private int heightY;
 	/** Scaling factor for when the student changes the resolution. */
 	private float scale;
 
@@ -180,6 +134,8 @@ public class GameEngine implements Screen {
     private GameCanvas canvas;
     /** Subcontroller for main menu (CONTROLLER CLASS) */
     private MainMenuController mainMenuController;
+    /** Subcontroller for mouse controls (CONTROLLER CLASS) */
+    private MouseOverController mouseOverController;
     
 //	/** Default budget for asset loader (do nothing but load 60 fps) */
 //	private static int DEFAULT_BUDGET = 15;
@@ -200,8 +156,7 @@ public class GameEngine implements Screen {
 //	private static float BUTTON_SCALE  = 0.75f;
     
     //Current Models
-    private HashMap<Integer, Character> availableCharacters;
-    private HashMap<Integer, Action> availableActions;
+    private HashMap<String, HashMap<String, Object>> levelDefs;
     
     /** The current game state (SIMPLE FIELD) */
     private GameState gameState;
@@ -217,72 +172,45 @@ public class GameEngine implements Screen {
     	gameState = GameState.LOAD;
     	gameLoad  = 0.0f;
 		canvas = new GameCanvas();
-		gameplayController = new GameplayController();
-
-		availableActions = new HashMap<Integer, Action>();
-		availableCharacters = new HashMap<Integer, Character>();
 		
-		width = (int)(BAR_WIDTH_RATIO*canvas.getWidth());
-		centerY = (int)(BAR_HEIGHT_RATIO*canvas.getHeight());
-		centerX = canvas.getWidth()/2;
-//		heightY = canvas.getHeight();
-		float sx = ((float)canvas.getWidth())/STANDARD_WIDTH;
-		float sy = ((float)canvas.getHeight())/STANDARD_HEIGHT;
-		scale = (sx < sy ? sx : sy);
+		mouseOverController = new MouseOverController(canvas);
+		gameplayController = new GameplayController(mouseOverController);
+
+		updateMeasures();
 
 	}
     
-    /**
-     * Probably want a separate Level class later
-     * 
-     * Types:
-     * 0 - Easy
-     * 1 - Medium
-     * 2 - Hard
-     * 3 - PVP
-     * 
-     */
-    public void startGame(int type) {
+    public void updateMeasures(){
+		width = (int)(BAR_WIDTH_RATIO*canvas.getWidth());
+		centerY = (int)(BAR_HEIGHT_RATIO*canvas.getHeight());
+		centerX = canvas.getWidth()/2;
+		float sx = ((float)canvas.getWidth())/STANDARD_WIDTH;
+		float sy = ((float)canvas.getHeight())/STANDARD_HEIGHT;
+		scale = (sx < sy ? sx : sy);
+    }
+    
+    public void startGame(int type) throws IOException {
     	initializeCanvas(BCKGD_TEXTURE, SELECT_FONT_FILE);
-    	List<Character> chars = new LinkedList<Character>();
-    	
-    	availableCharacters.get(0).reset();
-		availableCharacters.get(1).reset();
-    	
-		Character enemy1 = availableCharacters.get(2);
-		Character enemy2 = availableCharacters.get(3);
-		enemy1.reset();
-		enemy2.reset();
-		
+    	Level level = null;
+
     	switch (type) {
     	case 0:
-    		enemy1.setAI(Difficulty.EASY);
-    		enemy2.setAI(Difficulty.EASY);
+    		level = getLevel("easy");
     		break;
     	case 1:
-    		enemy1.setAI(Difficulty.MEDIUM);
-    		enemy2.setAI(Difficulty.MEDIUM);
+    		level = getLevel("medium");
     		break;
     	case 2:
-    		enemy1.setAI(Difficulty.HARD);
-    		enemy2.setAI(Difficulty.HARD);
+    		level = getLevel("hard");
     		break;
     	default:
-    		enemy1.setHuman();
-    		enemy2.setHuman();
+    		level = getLevel("pvp");
     		break;
     	}
-    	chars.add(availableCharacters.get(0));
-    	chars.add(availableCharacters.get(1));
-    	chars.add(availableCharacters.get(2));
-    	chars.add(availableCharacters.get(3));
-    	gameplayController.resetGame(chars,6,4,manager.get(TILE_TEXTURE,Texture.class));
+    	gameplayController.resetGame(level);
     	gameState = GameState.PLAY;
-    	//font support
-    	//here load up the font for the selection menu
     	
     }
-
 
 	/**
 	 * Called when this screen should release all resources.
@@ -329,7 +257,12 @@ public class GameEngine implements Screen {
 			drawLoad();
 			break;
 		case MENU:
-			updateMenu();
+			try {
+				updateMenu();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			break;
 		case PLAY:
 			updatePlay();
@@ -386,8 +319,9 @@ public class GameEngine implements Screen {
 	
 	/**
 	 * Updates the state of the menu screen.
+	 * @throws IOException 
 	 */
-	private void updateMenu() {
+	private void updateMenu() throws IOException {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
 			startGame(mainMenuController.gameNo);
@@ -439,6 +373,10 @@ public class GameEngine implements Screen {
 	 */
 	public void resize(int width, int height) {
 		canvas.resize();
+		updateMeasures();
+		InputController.setCanvas(canvas);
+		MouseOverController.setCanvas(canvas);
+		//do we need all this?^
 	}
 	
 	/** 
@@ -456,77 +394,16 @@ public class GameEngine implements Screen {
 	public void resume() {}
 
 	@SuppressWarnings("unchecked")
-	private void loadFromYaml() throws IOException{
+	private Level getLevel(String levelId) throws IOException{
 		Yaml yaml = new Yaml();
-		try (InputStream is = new FileInputStream( new File("../actions.yml"))){
-			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) yaml.load(is);
-			for (HashMap<String, Object> action : actions){
-				Integer id = (Integer) action.get("id");
-				String name = (String) action.get("name");
-				Integer cost = (Integer) action.get("cost");
-				Integer damage = (Integer) action.get("damage");
-				Integer range = (Integer) action.get("range");
-				String pattern = (String) action.get("pattern");
-				String description = (String) action.get("description");
-				HashMap<String,Object> persisting = 
-							(HashMap<String, Object>) action.get("persisting_action"); 
-				HashMap<String, Object> effect = 
-						(HashMap<String, Object>) action.get("effect");
-				String eff = (String) effect.get("type");
-				Integer duration = (Integer) effect.get("duration");
-				Float magnitude = ((Double) effect.get("magnitude")).floatValue();
-				
-				Action actionToAdd;
-				if (persisting != null){
-					Integer castLength = (Integer) persisting.get("castLength");
-					Float moveSpeed = (Float) ((Double) persisting.get("moveSpeed")).floatValue();
-					actionToAdd = new PersistingAction(name, cost, damage, range, 
-							Pattern.valueOf(pattern), new Effect(duration, Type.valueOf(eff), magnitude), 
-							description, castLength, moveSpeed);
-				}else{
-					actionToAdd = new Action(name, cost, damage, range, Pattern.valueOf(pattern),
-							new Effect(duration, Type.valueOf(eff), magnitude), description);
-				}
-				
-				
-				availableActions.put(id, actionToAdd);
-			}	
-		} 
-
-		try (InputStream is = new FileInputStream( new File("../characters.yml"))){
-			ArrayList<HashMap<String, Object>> characters = (ArrayList<HashMap<String, Object>>) yaml.load(is);
-			for (HashMap<String, Object> character : characters){
-				Integer id = (Integer) character.get("id");
-				String name = (String) character.get("name");
-				Integer health = (Integer) character.get("health");
-				Integer maxHealth = (Integer) character.get("maxHealth");
-				String hexColor = (String) character.get("hexColor");
-				Float speed = (Float) ((Double) character.get("speed")).floatValue();
-				Float castSpeed = (Float) ((Double) character.get("castSpeed")).floatValue();
-				Integer xPosition = (Integer) character.get("xPosition");
-				Integer yPosition = (Integer) character.get("yPosition");
-				Boolean leftSide = (Boolean) character.get("leftSide");
-				ArrayList<Integer> actions = (ArrayList<Integer>) character.get("availableActions");
-				Action[] actionArray = new Action[actions.size()];
-				int i=0;
-				for (Integer actionId : actions){
-					actionArray[i] = availableActions.get(actionId);
-					i++;
-				}
-				String charTextureName = (String) character.get("texture");
-				String iconTextureName = (String) character.get("icon");
-				
-				Texture charTexture = manager.get(charTextureName,Texture.class);
-				Texture iconTexture = manager.get(iconTextureName,Texture.class);
-				Character characterToAdd = new Character(charTexture, iconTexture, name, 
-						health, maxHealth, Color.valueOf(hexColor), speed, 
-						castSpeed, xPosition, yPosition, leftSide, actionArray); 
-									
-				availableCharacters.put(id, characterToAdd);
-			}
+		FileHandle levelFile = Gdx.files.internal("yaml/levels.yml");
+		HashMap<String, Object> targetLevelDef;
+		try (InputStream iS = levelFile.read()){
+			levelDefs = (HashMap<String, HashMap<String, Object>>) yaml.load(iS);
+			targetLevelDef= levelDefs.get(levelId);	
+			
 		}
-		
-		
+		return ObjectLoader.getInstance().createLevel(targetLevelDef);
 	}
 	
 	
@@ -571,30 +448,8 @@ public class GameEngine implements Screen {
 		parameter.attribs[0] = new VertexAttribute(Usage.Position, 3, "vPosition");
 		parameter.attribs[1] = new VertexAttribute(Usage.TextureCoordinates, 2, "vUV");
 
-		manager.load(TILE_TEXTURE,Texture.class);
-		assets.add(TILE_TEXTURE);
-		
-		manager.load(CHAR_1_TEXTURE,Texture.class);
-		assets.add(CHAR_1_TEXTURE);
-		manager.load(CHAR_2_TEXTURE,Texture.class);
-		assets.add(CHAR_2_TEXTURE);
-		manager.load(CHAR_3_TEXTURE,Texture.class);
-		assets.add(CHAR_3_TEXTURE);
-		manager.load(CHAR_4_TEXTURE,Texture.class);
-		assets.add(CHAR_4_TEXTURE);
-		manager.load(CHAR_5_TEXTURE,Texture.class);
-		assets.add(CHAR_5_TEXTURE);
-		
-		manager.load(ICON_1_TEXTURE,Texture.class);
-		assets.add(ICON_1_TEXTURE);
-		manager.load(ICON_2_TEXTURE,Texture.class);
-		assets.add(ICON_2_TEXTURE);
-		manager.load(ICON_3_TEXTURE,Texture.class);
-		assets.add(ICON_3_TEXTURE);
-		manager.load(ICON_4_TEXTURE,Texture.class);
-		assets.add(ICON_4_TEXTURE);
-		manager.load(ICON_5_TEXTURE,Texture.class);
-		assets.add(ICON_5_TEXTURE);
+//		manager.load(TILE_TEXTURE,Texture.class);
+//		assets.add(TILE_TEXTURE);
 		
 		manager.load(WHITE_BOX,Texture.class);
 		assets.add(WHITE_BOX);
@@ -607,22 +462,15 @@ public class GameEngine implements Screen {
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
 		size2Params.fontFileName = MENU_FONT_FILE;
 		size2Params.fontParameters.size = MENU_FONT_SIZE;
-		size2Params.fontParameters.color = Color.BLACK;
+		size2Params.fontParameters.color = Color.WHITE;
 		manager.load(MENU_FONT_FILE, BitmapFont.class, size2Params);
 		assets.add(MENU_FONT_FILE);
 		size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
 		size2Params.fontFileName = SELECT_FONT_FILE;
 		size2Params.fontParameters.size = SELECT_FONT_SIZE;
-		size2Params.fontParameters.color = Color.BLACK;
+		size2Params.fontParameters.color = Color.WHITE;
 		manager.load(SELECT_FONT_FILE, BitmapFont.class, size2Params);
 		assets.add(SELECT_FONT_FILE);
-		
-		try {
-			loadFromYaml();
-		} catch (IOException e) {
-			System.out.println("ERROR LOADING FROM YAML");
-			e.printStackTrace();
-		}
 		
 		// We have to force the canvas to fully load (so we can draw something)
 		initializeCanvas(LOADING_TEXTURE, MENU_FONT_FILE);

@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Effect.Type;
 
@@ -35,7 +37,7 @@ public class AIController {
 		this.board = board;
 		this.chars = chars;
 		this.bar = bar;
-		nop = new Action("NOP", 1, 0, 0, Pattern.NOP, new Effect(0, Type.REGULAR, 0), "no action");
+		nop = new Action("NOP", 1, 0, 0, Pattern.NOP, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
 	}
 	
 	public void update(){
@@ -47,7 +49,7 @@ public class AIController {
 				yOffset = 0;
 				shield = false;
 				hasSingle = hasSingle();
-				interval = (1f-bar.castPoint) / selected.selectionMenu.TOTAL_SLOTS;
+				interval = (1f-bar.castPoint) / ActionBar.getTotalSlots();
 				curSlot = 1;
 				switch (c.diff){
 					case EASY:
@@ -213,20 +215,21 @@ public class AIController {
 		ArrayList<ActionNode> nodes = new ArrayList<ActionNode>();
 		int curX = selected.xPosition + xOffset;
 		int curY = selected.yPosition + yOffset;
+		ActionNodes anPool = ActionNodes.getInstance();
 		if(isSafe(curX + 1, curY)){
-			nodes.add(new ActionNode(movement, bar.castPoint + (interval * (curSlot)), curX + 1, curY));
+			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
 		}
 		if(isSafe(curX, curY + 1)){
-			nodes.add(new ActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY + 1));
+			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY + 1, Direction.UP));
 		}
 		if(isSafe(curX - 1, curY)){
-			nodes.add(new ActionNode(movement, bar.castPoint + (interval * (curSlot)), curX - 1, curY));
+			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX - 1, curY, Direction.LEFT));
 		}
 		if(isSafe(curX, curY - 1)){
-			nodes.add(new ActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY - 1));
+			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY - 1, Direction.DOWN));
 		}
-		if(isSafe(curX, curY)){
-			nodes.add(new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0));
+		if(isSafe(curX, curY)){			
+			nodes.add(anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE));		
 		}
 		return nodes;
 	}
@@ -240,20 +243,21 @@ public class AIController {
 		ArrayList<ActionNode> nodes = new ArrayList<ActionNode>();
 		int curX = selected.xPosition + xOffset;
 		int curY = selected.yPosition + yOffset;
+		ActionNodes anPool = ActionNodes.getInstance();
 		if(canHitSomeone(curX + 1, curY) && ownSide(curX + 1)){
-			nodes.add(new ActionNode(movement, bar.castPoint + (interval * (curSlot)), curX + 1, curY));
+			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
 		}
 		if(canHitSomeone(curX, curY + 1) && ownSide(curX)){
-			nodes.add(new ActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY + 1));
+			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY + 1, Direction.UP));
 		}
 		if(canHitSomeone(curX, curY - 1) && ownSide(curX)){
-			nodes.add(new ActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY - 1));
+			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY - 1, Direction.DOWN));
 		}
 		if(canHitSomeone(curX - 1, curY) && ownSide(curX - 1)){
-			nodes.add(new ActionNode(movement, bar.castPoint + (interval * (curSlot)), curX - 1, curY));
+			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX - 1, curY, Direction.LEFT));
 		}
-		if(canHitSomeone(curX, curY)){
-			nodes.add(new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0));
+		if(canHitSomeone(curX, curY)){	
+			nodes.add(anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE));
 		}
 		return nodes;
 	}
@@ -265,17 +269,18 @@ public class AIController {
 		ArrayList<ActionNode> nodes = new ArrayList<ActionNode>();
 		int curX = selected.xPosition + xOffset;
 		int curY = selected.yPosition + yOffset;
+		ActionNodes anPool = ActionNodes.getInstance();
 		if(board.isInBounds(curX + 1, curY) && ownSide(curX + 1) ){
-			nodes.add(new ActionNode(movement, bar.castPoint + (interval * (curSlot)), curX + 1, curY));
+			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
 		}
 		if(board.isInBounds(curX, curY + 1) && ownSide(curX)){
-			nodes.add(new ActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY + 1));
+			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY + 1, Direction.UP));
 		}
 		if(board.isInBounds(curX - 1, curY) && ownSide(curX - 1)){
-			nodes.add(new ActionNode(movement, bar.castPoint + (interval * (curSlot)), curX - 1, curY));
+			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX - 1, curY, Direction.LEFT));
 		}
 		if(board.isInBounds(curX, curY - 1) && ownSide(curX)){
-			nodes.add(new ActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY - 1));
+			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY - 1, Direction.DOWN));
 		}
 		Random r = new Random();
 		return nodes.get(r.nextInt(nodes.size()));	
@@ -314,10 +319,11 @@ public class AIController {
 	 * a straight attack from the AI's current position.
 	 */
 	public void addStraight(Action a, ArrayList<ActionNode> attacks){
+		ActionNodes anPool = ActionNodes.getInstance();
 		//attacks.add(new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0));
 		for(Character c: chars){
 			if(!c.isAI && c.yPosition == selected.yPosition + yOffset && c.isAlive()){
-				attacks.add(new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0));
+				attacks.add(anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0, Direction.NONE));
 			}
 		}
 	}
@@ -327,14 +333,15 @@ public class AIController {
 	 * a diagonal attack from the AI's current position.
 	 */
 	public void addDiagonal(Action a, ArrayList<ActionNode> attacks){
+		ActionNodes anPool = ActionNodes.getInstance();
 		for(Character c: chars){
 			if(!c.isAI & c.isAlive() && canHitDiagonal(
 					selected.xPosition + xOffset, 
 					selected.yPosition + yOffset, 
 					c.xPosition, 
 					c.yPosition)){
-				int y = c.yPosition < (selected.yPosition + yOffset) ? 0 : 3;
-				attacks.add(new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost -1)), 0, y));
+				Direction dir = c.yPosition < (selected.yPosition + yOffset) ? Direction.DOWN : Direction.UP;
+				attacks.add(anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost -1)), 0, 0, dir));
 			}
 		}
 	}
@@ -344,18 +351,19 @@ public class AIController {
 	 * available projectile attacks
 	 */
 	public ActionNode randomProjectile(){
+		ActionNodes anPool = ActionNodes.getInstance();
 		for(Action a: selected.availableActions){
 			switch (a.pattern){
 				case STRAIGHT:
-					return new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0);
+					return anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0, Direction.NONE);
 				case DIAGONAL:
-					int dir = (selected.yPosition + yOffset < board.height / 2) ? 3 : 0;
-					return new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, dir);
+					Direction dir = (selected.yPosition + yOffset < board.height / 2) ? Direction.UP : Direction.DOWN;
+					return anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0, dir);
 				default:
 					break;
 			}
 		}
-		return new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0);			
+		return anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE);			
 	}
 	
 	/**
@@ -387,9 +395,10 @@ public class AIController {
 	 * Adds a single attack ActionNode to attacks for every enemy.
 	 */
 	public void addSingle(Action a, ArrayList<ActionNode> attacks){
+		ActionNodes anPool = ActionNodes.getInstance();
 		for(Character c: chars){
 			if(!c.isAI && c.isAlive()){
-				attacks.add(new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost -1)), c.xPosition, c.yPosition));
+				attacks.add(anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost -1)), c.xPosition, c.yPosition, Direction.NONE));
 			}
 		}
 	}
@@ -398,6 +407,7 @@ public class AIController {
 	 * Returns an ActionNode which does a single square attack on a randomly selected enemy.
 	 */
 	public ActionNode getSingle(){
+		ActionNodes anPool = ActionNodes.getInstance();
 		ArrayList<ActionNode> attacks = new ArrayList<ActionNode>();
 		for(Action a: selected.availableActions){
 			switch (a.pattern){
@@ -409,7 +419,7 @@ public class AIController {
 			}
 		}
 		if(attacks.size() == 0){
-			return new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0);
+			return anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE);
 		}
 		else{
 			Random r = new Random();
@@ -421,6 +431,7 @@ public class AIController {
 	 * Returns either a single square attack or a projectile based on the risk parameter
 	 */
 	public ActionNode getAttack(float risk){
+		ActionNodes anPool = ActionNodes.getInstance();
 		float f = (float) Math.random();
 		if(f < risk && hasSingle){
 			return getSingle();
@@ -429,7 +440,7 @@ public class AIController {
 			return getProjectile();
 		}
 		if(shield){
-			return new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0);
+			return anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE);
 		}
 		return getMovement();
 	}
@@ -438,23 +449,25 @@ public class AIController {
 	 * Returns a shield action node if available. Otherwise, returns a movement.
 	 */
 	public ActionNode getShield(){
+		ActionNodes anPool = ActionNodes.getInstance();
 		for(Action a: selected.availableActions){
 			switch (a.pattern){
 				case SHIELD:
 					shield = true;
-					int dir = (selected.yPosition + yOffset < board.height / 2) ? 3 : 0;
-					return new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost -1)), 0, dir);
+					Direction dir = (selected.yPosition + yOffset < board.height / 2) ? Direction.UP : Direction.DOWN;
+					return anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost -1)), 0, 0, dir);
 				default:
 					break;
 			}
 		}
 		if(shield){
-			return new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0);
+			return anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE);
 		}
 		return getMovement();
 	}
 	
 	public ActionNode randomAction(){
+		ActionNodes anPool = ActionNodes.getInstance();
 		ArrayList<ActionNode> actions = new ArrayList<ActionNode>();
 		for(Action a: selected.availableActions){
 			switch (a.pattern){
@@ -466,12 +479,12 @@ public class AIController {
 					break;
 				case STRAIGHT:
 					if(curSlot <= 3)
-						actions.add(new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0));
+						actions.add(anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0, Direction.NONE));
 					break;
 				case DIAGONAL:
-					int dir = (selected.yPosition + yOffset < board.height / 2) ? 3 : 0;
+					Direction dir = (selected.yPosition + yOffset < board.height / 2) ? Direction.UP : Direction.DOWN;
 					if(curSlot <= 3)
-						actions.add(new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, dir));
+						actions.add(anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0, dir));
 					break;
 				default:
 					break;
@@ -485,7 +498,7 @@ public class AIController {
 			return actions.get(r.nextInt(actions.size())); 
 		}
 		else{
-			return new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0);
+			return anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE);
 		}
 	}
 	
@@ -495,6 +508,7 @@ public class AIController {
 	 * aggression and risk parameters.
 	 */
 	public ActionNode getAction(float aggression, float risk, float defensiveness, float intelligence){
+		ActionNodes anPool = ActionNodes.getInstance();
 		ActionNode action;
 		if(curSlot == 4){
 			float r = (float) Math.random();
@@ -502,7 +516,7 @@ public class AIController {
 				action = getShield();
 			}
 			else if(shield){
-				action = new ActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0);
+				action = anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE);
 			}
 			else{
 				action = getMovement();

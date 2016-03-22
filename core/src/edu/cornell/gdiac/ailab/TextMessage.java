@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
+
 public class TextMessage {
 	class Message {
 		String text;
@@ -13,14 +15,16 @@ public class TextMessage {
 		int current;
 		int duration;
 		Color color;
+		Action action;
 		
-		public Message(String text, int xPos, int yPos, int duration){
+		public Message(String text, int xPos, int yPos, int duration, Action action){
 			this.text = text;
 			this.xPos = xPos;
 			this.yPos = yPos;
 			this.current = 0;
 			this.duration = duration;
 			this.color = Color.BLACK;
+			this.action = action;
 		}
 		
 		public Message(String text, int xPos, int yPos, int duration, Color color){
@@ -36,6 +40,12 @@ public class TextMessage {
 			return ((float) current)/duration;
 		}
 	}
+
+	private static final int DAMAGE_OFFSET = 300;
+
+	private static final int OTHER_OFFSET = 320;
+
+	private static final int TIME_TRANSLATION_OFFSET = 25;
 	
 	/** List of messages */
 	List<Message> damageMessages;
@@ -59,51 +69,29 @@ public class TextMessage {
 	public void addOtherMessage(String text, int xPos, int yPos, int duration, Color color){
 		otherMessages.add(new Message(text,xPos,yPos,duration,color));
 	}
-	
-	public void addSingleTemp(int xPos, int yPos){
-		tempSingles.add(new Message("lol",xPos,yPos,60));
-	}
 
-	public void draw(GameCanvas canvas){
+	public void draw(GameCanvas canvas,GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		float tileH = board.getTileHeight(canvas);
 		for (Message m : damageMessages){
-			canvas.drawCenteredText(m.text, 75+150*m.xPos, 300+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 2f);
+			float messageX = tileW/2 + tileW*m.xPos;
+			float messageY = tileH*m.yPos + DAMAGE_OFFSET + m.getRatio()*TIME_TRANSLATION_OFFSET;
+			Coordinate c = board.offsetBoard(canvas, messageX, messageY);
+			messageX = c.x;
+			messageY = c.y;
+			c.free();
+			canvas.drawCenteredText(m.text, messageX, messageY, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 2f);
+			//canvas.drawCenteredText(m.text, 75+150*m.xPos, 300+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 2f);
 		}
 		for (Message m : otherMessages){
-			canvas.drawCenteredText(m.text, 75+150*m.xPos, 320+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
-		}
-		for (Message m : tempSingles){
-			
-			float xPos = 5+150*m.xPos;
-			float yPos = 5+m.yPos*100;
-			float ratio = m.getRatio();
-			if (ratio < 0.25 || (ratio > 0.5 && ratio < 0.75)){
-				for (int i = 0; i < 5; i++){
-					if (i%2==1){
-						canvas.drawBox(xPos, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+40, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+80, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+120, yPos+i*20, 10, 10, Color.RED);
-					} else {
-						canvas.drawBox(xPos+20, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+60, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+100, yPos+i*20, 10, 10, Color.RED);
-					}
-				}
-			} else {
-				for (int i = 0; i < 5; i++){
-					if (i%2==1){
-						canvas.drawBox(xPos+20, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+60, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+100, yPos+i*20, 10, 10, Color.RED);
-					} else {
-						canvas.drawBox(xPos, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+40, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+80, yPos+i*20, 10, 10, Color.RED);
-						canvas.drawBox(xPos+120, yPos+i*20, 10, 10, Color.RED);
-					}
-				}
-			}
-			
+			float messageX = tileW/2 + tileW*m.xPos;
+			float messageY = tileH*m.yPos + OTHER_OFFSET + m.getRatio()*TIME_TRANSLATION_OFFSET;
+			Coordinate c = board.offsetBoard(canvas, messageX, messageY);
+			messageX = c.x;
+			messageY = c.y;
+			c.free();
+			canvas.drawCenteredText(m.text, messageX, messageY, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
+			//canvas.drawCenteredText(m.text, 75+150*m.xPos, 320+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
 		}
 	}
 }

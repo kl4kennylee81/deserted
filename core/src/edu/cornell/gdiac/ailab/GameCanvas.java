@@ -18,6 +18,7 @@
 package edu.cornell.gdiac.ailab;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.*;
@@ -201,7 +202,6 @@ public class GameCanvas {
 	 * @param width the canvas width
 	 */
 	public void setWidth(int width) {
-		System.out.println("Resizing width");
 		if (active) {
 			Gdx.app.error("GameCanvas", "Cannot alter property while drawing active", new IllegalStateException());
 			return;
@@ -237,7 +237,6 @@ public class GameCanvas {
 	 * @param height the canvas height
 	 */
 	public void setHeight(int height) {
-		System.out.println("Resizing height");
 		if (active) {
 			Gdx.app.error("GameCanvas", "Cannot alter property while drawing active", new IllegalStateException());
 			return;
@@ -272,7 +271,6 @@ public class GameCanvas {
 	 * @param height the canvas height
 	 */
 	public void setSize(int width, int height) {
-		System.out.println("Resizing size");
 		if (active) {
 			Gdx.app.error("GameCanvas", "Cannot alter property while drawing active", new IllegalStateException());
 			return;
@@ -330,6 +328,8 @@ public class GameCanvas {
 		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
 		spriteCam.setToOrtho(false,getWidth(),getHeight());
 		spriteBatch.setProjectionMatrix(spriteCam.combined);
+		this.width = Gdx.graphics.getWidth();
+		this.height = Gdx.graphics.getHeight();
 	}
 	
 	/**
@@ -513,7 +513,7 @@ public class GameCanvas {
 			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
 			return;
 		}
-		// Call the master drawing method		
+		// Call the master drawing method	
 		draw(region,Color.WHITE,0,0,x,y,0,1.0f,1.0f);
 	}
 
@@ -580,7 +580,7 @@ public class GameCanvas {
 		}
 		for (float tx = x - this.width; tx < this.width + ox/2  ; tx += this.width){
 			for (float ty = y - this.height; ty < this.height + oy/2 ; ty += this.height){
-				if (tx + ox/2 > 0 && ty + oy/2 > 0){
+				if (tx + ox/2 >= 0 && ty + oy/2 >= 0){
 					computeTransform(ox,oy,tx,ty,angle,sx,sy);
 					spriteBatch.setColor(tint);
 					spriteBatch.draw(region,region.getRegionWidth(),region.getRegionHeight(),local);
@@ -786,10 +786,19 @@ public class GameCanvas {
 		//TODO: change resizing in the long run
 	}	
 	
+	public void drawScreen(float sx, float sy, Texture screen,float x_size, float y_size, 
+			Color tint){
+		spriteBatch.setColor(tint);
+		spriteBatch.draw(screen,sx,sy,x_size,y_size);
+	}
 	
-	public void drawTexture(Texture texture, float x, float y, Color color){
+	public void drawTexture(Texture texture, float x, float y, Color color, boolean selecting){
 		spriteBatch.setColor(color);
-		spriteBatch.draw(texture, x, y);
+		if (selecting){
+			spriteBatch.draw(texture, x, y, 40, 40);	
+		} else {
+			spriteBatch.draw(texture, x, y);	
+		}	
 	}
 	
 	public void drawTexture(Texture texture, float x, float y, float width, float height, Color color){
@@ -797,13 +806,26 @@ public class GameCanvas {
 		spriteBatch.draw(texture, x, y, width, height);
 	}
 	
-	public void drawCharacter(Texture texture, float x, float y, Color color, boolean leftside){
+	
+	public void drawCharacter(Texture texture, float x, float y, Color color, boolean leftside, float scale){
 		spriteBatch.setColor(color);
 		int tWidth = texture.getWidth();
 		int tHeight = texture.getHeight();
-		spriteBatch.draw(texture, x, y, tWidth, tHeight, 0, 0, tWidth, tHeight, leftside, false);
+		spriteBatch.draw(texture,x,y,0,0,tWidth,tHeight,scale,scale,0,0,0,tWidth,tHeight, leftside, false);
 	}
 	
+	public void drawCharacter(TextureRegion texture, float x, float y, Color color, boolean leftside,float scale){
+		spriteBatch.setColor(color);
+		if (leftside){
+			texture.flip(true, false);
+		}
+		int tWidth = texture.getRegionWidth();
+		int tHeight = texture.getRegionHeight();
+		spriteBatch.draw(texture, x, y, 0, 0, tWidth, tHeight, scale, scale, 0);
+		if (leftside){
+			texture.flip(true, false);
+		}
+	}
 	
 	/**
 	 * Draws a ship model to the screen.
@@ -841,7 +863,8 @@ public class GameCanvas {
 	public void drawText(String msg, float x, float y, Color color) {
 		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
-		displayFont.draw(spriteBatch, msg, x,y);
+		float width = GridBoard.BOARD_OFFSET_X *getWidth();
+		displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
 	}
 	
 	public void drawCenteredText(String msg, float x, float y, Color color) {

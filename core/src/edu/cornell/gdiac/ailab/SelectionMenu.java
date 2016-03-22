@@ -6,6 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.graphics.Color;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
+import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.mesh.TexturedMesh;
 
 public class SelectionMenu {
@@ -17,7 +18,23 @@ public class SelectionMenu {
 	LinkedList<ActionNode> selectedActions;
 	
 	/** Total number of available slots */
-	final int TOTAL_SLOTS = 4;
+
+	private static final float RELATIVE_TEXT_X_POS = 0.0125f;
+
+	private static final float RELATIVE_TEXT_Y_POS = 0.6f;
+
+	private static final float RELATIVE_TEXT_SPACING = 0.0625f;
+
+	private static final float ACTION_POINTER_OFFSET_X = 15;
+
+	private static final float ACTION_POINTER_OFFSET_Y = 15;
+
+	private static final float TEXT_ACTION_OFFSET = 30f;
+
+	private static final float RELATIVE_DESCRIPTION_Y_POS = 0.8f;
+	
+	private static final float RELATIVE_DESCRIPTION_X_POS = 0.5f;
+
 	/** Currently used up slots */
 	int takenSlots;
 	
@@ -38,6 +55,7 @@ public class SelectionMenu {
 	
 	public SelectionMenu(Action[] actions){
 		this.actions = actions;
+//		System.out.println("Selection action set to 0");
 		selectedAction = 0;
 		takenSlots = 0;
 		choosingTarget = false;
@@ -52,7 +70,7 @@ public class SelectionMenu {
 	public void add(ActionNode actionNode){
 		selectedActions.addLast(actionNode);
 		takenSlots += actionNode.action.cost;
-		if (takenSlots > TOTAL_SLOTS){
+		if (takenSlots > ActionBar.getTotalSlots()){
 			System.out.println("Please check SelectionMenu");
 		}
 	}
@@ -76,6 +94,7 @@ public class SelectionMenu {
 		ActionNode an = selectedActions.pollLast();
 		if (an != null) {
 			takenSlots -= an.action.cost;
+			an.free();
 		}
 		return an;
 	}
@@ -86,6 +105,10 @@ public class SelectionMenu {
 	
 	public Action getSelectedAction(){
 		return actions[selectedAction];
+	}
+	
+	public Action[] getActions(){
+		return actions;
 	}
 	
 	public boolean getChoosingTarget(){
@@ -116,7 +139,7 @@ public class SelectionMenu {
 	 * Checks if character can do the given action
 	 */
 	public boolean canDoAction(Action a){
-		return takenSlots+a.cost <= TOTAL_SLOTS && (canMove() || a.pattern != Pattern.MOVE);
+		return takenSlots+a.cost <= ActionBar.getTotalSlots() && (canMove() || a.pattern != Pattern.MOVE);
 	}
 	
 	/**
@@ -135,7 +158,7 @@ public class SelectionMenu {
 	 * Checks if character can at least NOP
 	 */
 	public boolean canNop(){
-		return takenSlots < TOTAL_SLOTS;
+		return takenSlots < ActionBar.getTotalSlots();
 	}
 	
 	/**
@@ -144,8 +167,10 @@ public class SelectionMenu {
 	public boolean changeSelected(boolean up){
 		if (up){
 			for (int i = 0; i < actions.length; i++){
+//				System.out.println("Selection action set to " + selectedAction);
 				selectedAction += 1;
 				selectedAction %= actions.length;
+//				System.out.println("Selection action set to " + selectedAction);
 				if (canDoAction(actions[selectedAction])){
 					return true;
 				}
@@ -156,6 +181,7 @@ public class SelectionMenu {
 				if (selectedAction < 0){
 					selectedAction += actions.length;
 				}
+//				System.out.println("Selection action set to " + selectedAction);
 				if (canDoAction(actions[selectedAction])){
 					return true;
 				}
@@ -169,9 +195,10 @@ public class SelectionMenu {
 	 * @return
 	 */
 	public boolean resetPointer(){
-		if (actions[selectedAction].cost > TOTAL_SLOTS - takenSlots && takenSlots < TOTAL_SLOTS){
+		if (actions[selectedAction].cost > ActionBar.getTotalSlots() - takenSlots && takenSlots < ActionBar.getTotalSlots()){
 			for (int i = 0; i < actions.length; i++){
 				selectedAction = i;
+//				System.out.println("Selection action set to " + selectedAction);
 				if (canDoAction(actions[selectedAction])){
 					return true;
 				}
@@ -182,30 +209,47 @@ public class SelectionMenu {
 	
 	public void reset(){
 		selectedAction = 0;
+//		System.out.println("Selection action set to " + selectedAction);
 		takenSlots = 0;
 		choosingTarget = false;
-		selectedActions.clear();
+		while(selectedActions.peek() != null){
+			ActionNode freeAction = selectedActions.poll();
+			freeAction.free();
+		}
 	}
 	
 	public void draw(GameCanvas canvas){
 		if (increasing){
-			lerpVal+=0.03;
+			lerpVal+=0.02;
 			if (lerpVal >= 1){
 				increasing = false;
 			}
 		} else {
-			lerpVal -= 0.03;
+			lerpVal -= 0.02;
 			if (lerpVal <= 0){
 				increasing = true;
 			}
 		}
 		//Draw action names
+		int w = canvas.getWidth();
+		int h = canvas.getHeight();
+		float text_x = RELATIVE_TEXT_X_POS * w;
+		float text_y = RELATIVE_TEXT_Y_POS * h;
+		float spacing_h = RELATIVE_TEXT_SPACING * h;
+		
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
-			if (action.cost > TOTAL_SLOTS - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
-				canvas.drawText(action.name, 200, 650-50*i, new Color(1f, 1f, 1f, 0.5f));
-			} else {
-				canvas.drawText(action.name, 200, 650-50*i, Color.BLACK);
+			float offset_y = spacing_h * i;
+//			System.out.println(action.name + " is at " + i);
+			if (action.cost > ActionBar.getTotalSlots() - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
+				Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.4f);
+				canvas.drawText(action.name, text_x, text_y - offset_y,dimColor);
+			} 
+			else if (actions[selectedAction].name == action.name){
+				canvas.drawText(action.name, text_x, text_y - offset_y, Color.CORAL);				
+			}
+			else {
+				canvas.drawText(action.name, text_x, text_y - offset_y, Color.BLACK);
 			}
 		}
 		
@@ -213,29 +257,67 @@ public class SelectionMenu {
 			//draws grid target
 			//canvas.drawPointer(145+selectedX*100, 45+selectedY*100, Color.BLACK);
 		} else if (canAct()){
+			float pointer_x = text_x - ACTION_POINTER_OFFSET_X;
+			float pointer_y = text_y - spacing_h*selectedAction - ACTION_POINTER_OFFSET_Y;
 			//draws action name pointers
-			canvas.drawPointer(180,638-50*selectedAction, Color.CORAL);
+//			System.out.println("Pointer is at " + selectedAction);
+			canvas.drawPointer(pointer_x,pointer_y, Color.CORAL);
 		}
 		
 		//Draw action bar with 3 black boxes to show 4 slots
+		float actionSlot_x = ActionBar.getBarCastPoint(canvas);
+		float actionSlot_y = ActionBar.getBarY(canvas);
+		
+		float slot_width = ActionBar.getSlotWidth(canvas);
+		float slot_height = ActionBar.getBarHeight(canvas);
+		
 		int offset = 0;
-		for (int i = 0; i < 4; i++){
+		for (int i = 0; i < ActionBar.getTotalSlots(); i++){
+			float curSlot_x = actionSlot_x + ((slot_width) * i) + ActionBar.getSpacing();
+			float slot_w_space = slot_width-ActionBar.getSpacing();
 			if (i < takenSlots) {
-				canvas.drawBox(400+80*i,600,75,30,Color.CORAL);
+				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.RED);
 			} else if (i < takenSlots+actions[selectedAction].cost){
-				canvas.drawBox(400+80*i,600,75,30,Color.WHITE.cpy().lerp(Color.RED,lerpVal));
+				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE.cpy().lerp(Color.RED,lerpVal));
 			} else {
-				canvas.drawBox(400+80*i,600,75,30,Color.WHITE);
+				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE);
 			}
 		}
 		
 		//Write the names of selected action
 		for (ActionNode an : selectedActions){
-			canvas.drawCenteredText(an.action.name, 400+offset+75*an.action.cost/2, 580, Color.BLACK);
-			offset+=75*an.action.cost;
+			float x_pos = actionSlot_x + offset + (slot_width*an.action.cost/2);
+			float y_pos = actionSlot_y;
+			canvas.drawCenteredText(an.action.name, x_pos, y_pos, Color.BLACK);
+			offset+=slot_width*an.action.cost;
 		}
 		
 		//Write description
-		canvas.drawCenteredText(actions[selectedAction].description, 550, 520, Color.BLACK);
+		float descript_x = RELATIVE_DESCRIPTION_X_POS *w;
+		float descript_y = RELATIVE_DESCRIPTION_Y_POS * h;
+		canvas.drawCenteredText(actions[selectedAction].description, descript_x,descript_y, Color.BLACK);
 	}
+	
+	public void setSelectedAction(int num){
+//		System.out.println("Selected action set to " + num);
+		selectedAction = num;
+	}
+
+	public void updateActionInfo(GameCanvas canvas) {
+		int w = canvas.getWidth();
+		int h = canvas.getHeight();
+		float text_x = RELATIVE_TEXT_X_POS * w;
+		float text_y = RELATIVE_TEXT_Y_POS * h;
+		float spacing_h = RELATIVE_TEXT_SPACING * h;
+		for (int i = 0; i < actions.length; i++){
+			Action action = actions[i];
+			float offset_y = spacing_h * i;
+			action.setHeight(15);//TODO change
+			action.setPosition(i);
+			action.setWidth(80);//TODO change
+			action.setX(text_x);
+			action.setY(text_y-offset_y);
+		}
+	}
+	
 }
