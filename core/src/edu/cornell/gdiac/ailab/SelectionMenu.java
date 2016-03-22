@@ -252,7 +252,7 @@ public class SelectionMenu {
 				}
 			}
 			if (prevWrap){
-				offset_y = spacing_h * i + (spacing_h/3)*num_offsets;
+				offset_y = spacing_h * i + (spacing_h/2)*num_offsets;
 			} else {
 				offset_y = spacing_h * i;
 			}
