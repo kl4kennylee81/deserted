@@ -32,6 +32,8 @@ public class GridBoard {
 
 	public static final float BOARD_OFFSET_X = (1-BOARD_WIDTH)/2;
 	
+	public static final float EXTRA_OFFSET = 0.02f;
+	
 	public static final float BOARD_OFFSET_Y = 0.15f;
 	
 	public float getTileWidth(GameCanvas canvas){
