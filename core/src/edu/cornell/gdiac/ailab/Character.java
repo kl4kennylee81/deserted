@@ -25,9 +25,6 @@ public class Character implements GUIElement {
 	int DIAGONAL_SIZE = 20;
 	int HEALTH_HEIGHT = 10;
 	
-	// currently it takes 2 squares not definite might be utilizing range
-	float SHIELD_LENGTH = 2;
-	
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
 	float CHARACTER_PROPORTION = 0.7f;
@@ -365,7 +362,8 @@ public class Character implements GUIElement {
 	}
 	
 	float getCastSpeed() {
-		return this.castSpeed*getSpeedModifier();
+//		return this.castSpeed*getSpeedModifier();
+		return this.castSpeed;
 	}
 	
 	float getBarSpeed() {
@@ -376,7 +374,6 @@ public class Character implements GUIElement {
 	 * Reset coordinates that are shielded by this character 
 	 */
 	private void resetShieldedCoordinates(){
-		Coordinates coordPool = Coordinates.getInstance();
 		// add coordinates back to the pool
 		for (Coordinate c: shieldedCoordinates){
 			c.free();
@@ -385,10 +382,9 @@ public class Character implements GUIElement {
 
 		for (ActionNode an : persistingActions){
 			if (an.action.pattern == Pattern.SHIELD){
-				int tempX = an.getCurrentX();
-				int tempY = an.getCurrentY();
-				shieldedCoordinates.add(coordPool.newCoordinate(tempX,tempY));
-				shieldedCoordinates.add(coordPool.newCoordinate(tempX, an.direction == Direction.DOWN ? tempY-1 : tempY+1));
+				for (Coordinate c:an.path){
+					shieldedCoordinates.add(c);
+				}
 			}
 		}
 	}
@@ -425,7 +421,7 @@ public class Character implements GUIElement {
 	
 	void addPersisting(ActionNode an,Coordinate[] path){
 		if (an.action.pattern == Pattern.SHIELD){
-			an.setPersisting(castPosition, xPosition, yPosition);
+			an.setPersisting(castPosition, xPosition, yPosition,path);
 			persistingActions.add(an);
 			resetShieldedCoordinates();
 		} else if (an.action.pattern == Pattern.DIAGONAL || an.action.pattern == Pattern.STRAIGHT){
@@ -601,7 +597,7 @@ public class Character implements GUIElement {
 		
 		Color newColor = new Color(Color.WHITE);
 		if (shouldDim) {
-			newColor.set(newColor.r, newColor.g, newColor.b, 0.5f);
+			newColor = Color.LIGHT_GRAY.cpy();
 		}
 		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
 		col = isHovering ? color : col;
@@ -705,43 +701,27 @@ public class Character implements GUIElement {
 	private void drawPersisting(GameCanvas canvas,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
+		Coordinate c;
 		for (ActionNode an : persistingActions){
 			switch (an.action.pattern){
 			case SHIELD:
+				int botY = Coordinates.minYCoordinate(an.path);
+				int numWithin = Coordinates.numWithinBounds(an.path, board);
 				int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
-				int shieldH = (int)(tileH * SHIELD_LENGTH);
-				if (leftside){
-					int shieldX = (int)(tileW - SHIELD_OFFSET + (tileW*an.curX));
-					int shieldY = (int)(tileH *an.curY);
-					Coordinate c = board.offsetBoard(canvas, shieldX, shieldY);
-					shieldX = c.x;
-					shieldY = c.y;
-					c.free();
-					if (an.direction == Direction.UP){
-						canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
-					} else {
-						canvas.drawBox(shieldX,shieldY - tileH, shieldW, shieldH, Color.GRAY);
-						//canvas.drawBox(145+150*an.curX, 100*an.curY-100, 10, 200, Color.GRAY);
-					}
-				} else {
-					int shieldX = (int)(-SHIELD_OFFSET + (tileW*an.curX));
-					int shieldY = (int)(tileH *an.curY);
-					Coordinate c = board.offsetBoard(canvas, shieldX, shieldY);
-					shieldX = c.x;
-					shieldY = c.y;
-					c.free();
-					if (an.direction == Direction.UP){
-						canvas.drawBox(shieldX, shieldY,shieldW,shieldH, Color.GRAY);
-					} else {
-						canvas.drawBox(shieldX, shieldY - tileH,shieldW,shieldH, Color.GRAY);
-					}
-				}
+				int shieldH = (int)(tileH * numWithin);
+				int shieldX = (int)(leftside ?(tileW + tileW*xPosition- SHIELD_OFFSET) :tileW*xPosition - SHIELD_OFFSET);
+				int shieldY = (int)(tileH *botY);
+				c = board.offsetBoard(canvas, shieldX, shieldY);
+				shieldX = c.x;
+				shieldY = c.y;
+				c.free();
+				canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
 				break;
 			case STRAIGHT:
 			case DIAGONAL:
 				float diagX = (tileW/2 - DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX));
 				float diagY = tileH/2 - DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY);
-				Coordinate c = board.offsetBoard(canvas, diagX, diagY);
+				c = board.offsetBoard(canvas, diagX, diagY);
 				diagX = c.x;
 				diagY = c.y;
 				c.free();

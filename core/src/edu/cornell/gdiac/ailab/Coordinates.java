@@ -72,6 +72,29 @@ public class Coordinates {
 		
 	}
 	
+	public static int minYCoordinate(Coordinate[] coords){
+		if (coords.length != 0){
+			int min = coords[0].y;
+			for (int i =0;i<coords.length;i++){
+				if (coords[i].y<min){
+					min = coords[i].y;
+				}
+			}
+			return Math.max(min,0);
+		}
+		return 0;
+	}
+	
+	public static int numWithinBounds(Coordinate[] coords,GridBoard board){
+		int num = 0;
+		for (int i =0;i<coords.length;i++){
+			if (board.isInBounds(coords[i].x, coords[i].y)){
+					num++;
+			}
+		}	
+		return num;
+	}
+	
 	public class CoordinatePool extends Pool<Coordinate>{
 		
 		public CoordinatePool(){

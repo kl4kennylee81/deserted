@@ -20,7 +20,7 @@ public class SelectionMenu {
 	
 	/** Total number of available slots */
 
-	private static final float RELATIVE_TEXT_X_POS = 0.0125f;
+	private static final float RELATIVE_TEXT_X_POS = 0.02f;
 
 	private static final float RELATIVE_TEXT_Y_POS = 0.6f;
 

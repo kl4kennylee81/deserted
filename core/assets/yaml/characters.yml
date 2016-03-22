@@ -10,13 +10,11 @@
   leftSide: true
   availableActions: 
     - 0
-    - 4
-    - 2
-    - 5
-    - 8
+    - 3
+    - 7
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"
-  animationId: 1
+  animationId: 4
 
 1:
   name: orange
@@ -30,12 +28,13 @@
   leftSide: true
   availableActions: 
     - 0
-    - 4
+    - 6
+    - 8
     - 5
-    - 7
+
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
-  animationId: 1
+  animationId: 2
 
 2:
   name: red
@@ -49,13 +48,13 @@
   leftSide: false
   availableActions: 
     - 0
-    - 4
     - 5
+    - 4
     - 3
-    - 6
+    - 9
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_3.png"
-  animationId: 1
+  animationId: 3
 
 3:
   name: blue
@@ -70,9 +69,8 @@
   availableActions: 
     - 0
     - 4
-    - 5
+    - 3
     - 7
-    - 6
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
   animationId: 1
