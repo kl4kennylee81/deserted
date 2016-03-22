@@ -41,9 +41,9 @@ public class TextMessage {
 		}
 	}
 
-	private static final int DAMAGE_OFFSET = 300;
+	private static final int DAMAGE_OFFSET = 200;
 
-	private static final int OTHER_OFFSET = 320;
+	private static final int OTHER_OFFSET = 220;
 
 	private static final int TIME_TRANSLATION_OFFSET = 25;
 	

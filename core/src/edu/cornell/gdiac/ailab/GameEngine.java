@@ -113,7 +113,7 @@ public class GameEngine implements Screen {
 	
 	private static final String SELECT_FONT_FILE  = "fonts/LondrinaSolid-Regular.ttf";
 	/** The size of the messages */
-	private static final int SELECT_FONT_SIZE = 18;
+	private static final int SELECT_FONT_SIZE = 20;
 	
 	/** The width of the progress bar */	
 	private int width;

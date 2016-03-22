@@ -14,7 +14,7 @@
     - 7
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"
-  animationId: 1
+  animationId: 4
 
 1:
   name: orange
@@ -34,7 +34,7 @@
 
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
-  animationId: 1
+  animationId: 2
 
 2:
   name: red
@@ -54,7 +54,7 @@
     - 9
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_3.png"
-  animationId: 1
+  animationId: 3
 
 3:
   name: blue

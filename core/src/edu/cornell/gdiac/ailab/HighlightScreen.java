@@ -16,7 +16,7 @@ public class HighlightScreen {
 	
 	public HighlightScreen(){
 		screen = new Texture(HIGHLIGHT_TEXTURE);
-		color.set(color.r, color.g, color.b, 0.0f);
+		color.set(color.r, color.g, color.b, 0.1f);
 		highlightColor.set(highlightColor.r, highlightColor.g, highlightColor.b, 0.4f);
 	}
 	
