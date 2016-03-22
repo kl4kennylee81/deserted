@@ -45,6 +45,7 @@ import com.badlogic.gdx.utils.*;
 import edu.cornell.gdiac.mesh.*;
 import edu.cornell.gdiac.ailab.GameCanvas;
 //import edu.cornell.gdiac.util.*;
+import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 
 /**
  * Primary class for controlling the game.
@@ -67,6 +68,8 @@ public class GameEngine implements Screen {
 		MENU,
 		/** While we are playing the game */
 		PLAY,
+		/** When the game is currently paused */
+		PAUSED,
 		/** When the game has ended, but we are still waiting on animation */
 		FINISH,
 		/** When the game is over */
@@ -271,6 +274,11 @@ public class GameEngine implements Screen {
 		case FINISH:
 			//Graphics after play is over?
 			break;
+		case PAUSED:
+			updatePaused();
+			drawPlay();
+			drawPaused();
+			break;
 		case AFTER:
 			//updateAfter();
 			drawAfter();
@@ -336,8 +344,20 @@ public class GameEngine implements Screen {
     	if (gameplayController.isDone()){
     		gameState = GameState.AFTER;
     	}
+    	if (InputController.pressedP()){
+    		gameState = GameState.PAUSED;
+    	}
     }
 	
+    
+    /**
+     * Update loop if we are in the paused state
+     */
+    public void updatePaused(){
+    	if(InputController.pressedP()){
+    		gameState = GameState.PLAY;
+    	}
+    }
 	/**
 	 * Draws the game board while we are still loading
 	 */
@@ -356,6 +376,10 @@ public class GameEngine implements Screen {
 			canvas.draw(statusFrgRight, Color.RED, centerX-width/2+scale*PROGRESS_CAP, centerY, scale*PROGRESS_CAP, scale*PROGRESS_HEIGHT);
 		}
     }
+	
+	public void drawPaused(){
+		canvas.drawCenteredText("PAUSED", canvas.getWidth()/2, canvas.getHeight()/2, Color.BLACK);
+	}
 	
 	public void drawPlay() {
 		gameplayController.drawPlay(canvas); 
