@@ -229,34 +229,6 @@ public class Character implements GUIElement {
 		return tokenY + icon.getHeight()*charScale;
 	}
 	
-	/**
-	 * Resets a character back to starting data
-	 */
-	public void reset(){
-		this.health = this.maxHealth;
-		this.xPosition = this.startingXPosition;
-		this.yPosition = this.startingYPosition;
-		
-		/* Randomize for now so that its not always the same thing */
-		this.speed = (float) (Math.random()*0.003 + 0.003);
-		this.castSpeed = (float) (Math.random()*0.004 + 0.002);
-		
-		lastCastStart = 0;
-		castPosition = 0;
-		queuedActions.clear();
-		persistingActions.clear();
-
-		for (Coordinate c:shieldedCoordinates){
-			c.free();
-		}
-		shieldedCoordinates.clear();
-
-		selectionMenu.reset();
-		
-		needsSelection = needsAttack = needsShadow = isSelecting = isPersisting = false;
-		isExecuting = isHurt = false;
-	}
-	
 	/**  copy the static attributes of the character into a new object **/
 	public Character copy(){
 		return new Character(this);
