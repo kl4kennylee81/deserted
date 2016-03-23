@@ -695,6 +695,23 @@ public class Character implements GUIElement {
 		}
 	}
 	
+	private void drawShield(GameCanvas canvas,GridBoard board,ActionNode an){
+		float tileW = board.getTileWidth(canvas);
+		float tileH = board.getTileHeight(canvas);
+		Coordinate c;	
+		int botY = Coordinates.minYCoordinate(an.path);
+		int numWithin = Coordinates.numWithinBounds(an.path, board);
+		int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
+		int shieldH = (int)(tileH * numWithin);
+		int shieldX = (int)(leftside ?(tileW + tileW*an.curX- SHIELD_OFFSET) :tileW*an.curX - SHIELD_OFFSET);
+		int shieldY = (int)(tileH *botY);
+		c = board.offsetBoard(canvas, shieldX, shieldY);
+		shieldX = c.x;
+		shieldY = c.y;
+		c.free();
+		canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
+	}
+	
 	/**
 	 * Draws persisting objects
 	 */
@@ -705,17 +722,7 @@ public class Character implements GUIElement {
 		for (ActionNode an : persistingActions){
 			switch (an.action.pattern){
 			case SHIELD:
-				int botY = Coordinates.minYCoordinate(an.path);
-				int numWithin = Coordinates.numWithinBounds(an.path, board);
-				int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
-				int shieldH = (int)(tileH * numWithin);
-				int shieldX = (int)(leftside ?(tileW + tileW*an.curX- SHIELD_OFFSET) :tileW*an.curX - SHIELD_OFFSET);
-				int shieldY = (int)(tileH *botY);
-				c = board.offsetBoard(canvas, shieldX, shieldY);
-				shieldX = c.x;
-				shieldY = c.y;
-				c.free();
-				canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
+				drawShield(canvas,board,an);
 				break;
 			case STRAIGHT:
 			case DIAGONAL:

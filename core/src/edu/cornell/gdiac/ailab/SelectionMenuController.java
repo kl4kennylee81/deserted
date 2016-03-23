@@ -392,16 +392,35 @@ public class SelectionMenuController {
 	}
 	
 	public void drawShield(){
-		board.setCanTarget(shadowX, shadowY+1);
-		board.setCanTarget(shadowX, shadowY);
-		board.setCanTarget(shadowX, shadowY-1);
+		// for even total target is dependent on up or down.
+		if (action.range % 2 == 0){
+			for (int i = 0; i< action.range;i++){
+				board.setCanTarget(shadowX, shadowY-i);
+				board.setCanTarget(shadowX, shadowY+i);
+			}
+		}
+		else{
+			for (int i =0; i<= action.range/2;i++){
+				board.setCanTarget(shadowX, shadowY+i);
+				board.setCanTarget(shadowX, shadowY-i);
+			}
+		}
 		if (choosingTarget){
-			if (direction == Direction.UP){
-				board.setHighlighted(shadowX, shadowY+1);
-				board.setHighlighted(shadowX, shadowY);
-			} else {
-				board.setHighlighted(shadowX, shadowY);
-				board.setHighlighted(shadowX, shadowY-1);
+			// for even you can choose where to position the shield
+			if (action.range % 2 == 0){
+				if (direction == Direction.UP){
+					board.setHighlighted(shadowX, shadowY+1);
+					board.setHighlighted(shadowX, shadowY);
+				} else {
+					board.setHighlighted(shadowX, shadowY);
+					board.setHighlighted(shadowX, shadowY-1);
+				}
+			}
+			else{
+				for (int i =0; i<= action.range/2;i++){
+					board.setHighlighted(shadowX, shadowY+i);
+					board.setHighlighted(shadowX, shadowY-i);
+				}				
 			}
 		}
 	}
