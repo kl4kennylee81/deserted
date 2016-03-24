@@ -265,7 +265,7 @@ public class SelectionMenu {
 				selectedPointerOffset = offset_y;
 			}
 			if (action.cost > ActionBar.getTotalSlots() - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
-				Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.4f);
+				Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.2f);
 				 g = canvas.drawText(action.name, text_x, text_y - offset_y, dimColor);
 			} 
 			else if (selectedAction < actions.length && actions[selectedAction].name == action.name){
