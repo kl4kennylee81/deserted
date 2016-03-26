@@ -118,14 +118,14 @@ public class Character implements GUIElement {
 		this.name = name;
 		this.health = health;
 		this.maxHealth = maxHealth;
-		this.speed = speed;
-		this.castSpeed = castSpeed;
+//		this.speed = speed;
+//		this.castSpeed = castSpeed;
 
 		this.color = color;
 		
 		/* Randomize so that its not always the same thing */
-		//this.speed = (float) (Math.random()*0.003 + 0.003);
-		//this.castSpeed = (float) (Math.random()*0.004 + 0.005);
+		this.speed = (float) (Math.random()*0.003 + 0.003)/3;
+		this.castSpeed = (float) (Math.random()*0.003 + 0.0025)/3;
 		
 		this.startingXPosition = this.xPosition = xPosition;
 		this.startingYPosition = this.yPosition = yPosition;
@@ -227,34 +227,6 @@ public class Character implements GUIElement {
 		float tokenY = getTokenY(canvas);
 		float charScale = getCharScale(canvas,texture,board);
 		return tokenY + icon.getHeight()*charScale;
-	}
-	
-	/**
-	 * Resets a character back to starting data
-	 */
-	public void reset(){
-		this.health = this.maxHealth;
-		this.xPosition = this.startingXPosition;
-		this.yPosition = this.startingYPosition;
-		
-		/* Randomize for now so that its not always the same thing */
-		this.speed = (float) (Math.random()*0.003 + 0.003);
-		this.castSpeed = (float) (Math.random()*0.004 + 0.002);
-		
-		lastCastStart = 0;
-		castPosition = 0;
-		queuedActions.clear();
-		persistingActions.clear();
-
-		for (Coordinate c:shieldedCoordinates){
-			c.free();
-		}
-		shieldedCoordinates.clear();
-
-		selectionMenu.reset();
-		
-		needsSelection = needsAttack = needsShadow = isSelecting = isPersisting = false;
-		isExecuting = isHurt = false;
 	}
 	
 	/**  copy the static attributes of the character into a new object **/
@@ -597,7 +569,7 @@ public class Character implements GUIElement {
 		
 		Color newColor = new Color(Color.WHITE);
 		if (shouldDim) {
-			newColor = Color.GRAY.cpy().mul(1.0f,1.0f,1.0f,0.8f);
+			newColor = Color.LIGHT_GRAY.cpy();
 		}
 		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
 		col = isHovering ? color : col;
@@ -695,6 +667,23 @@ public class Character implements GUIElement {
 		}
 	}
 	
+	private void drawShield(GameCanvas canvas,GridBoard board,ActionNode an){
+		float tileW = board.getTileWidth(canvas);
+		float tileH = board.getTileHeight(canvas);
+		Coordinate c;	
+		int botY = Coordinates.minYCoordinate(an.path);
+		int numWithin = Coordinates.numWithinBounds(an.path, board);
+		int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
+		int shieldH = (int)(tileH * numWithin);
+		int shieldX = (int)(leftside ?(tileW + tileW*an.curX- SHIELD_OFFSET) :tileW*an.curX - SHIELD_OFFSET);
+		int shieldY = (int)(tileH *botY);
+		c = board.offsetBoard(canvas, shieldX, shieldY);
+		shieldX = c.x;
+		shieldY = c.y;
+		c.free();
+		canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
+	}
+	
 	/**
 	 * Draws persisting objects
 	 */
@@ -705,17 +694,7 @@ public class Character implements GUIElement {
 		for (ActionNode an : persistingActions){
 			switch (an.action.pattern){
 			case SHIELD:
-				int botY = Coordinates.minYCoordinate(an.path);
-				int numWithin = Coordinates.numWithinBounds(an.path, board);
-				int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
-				int shieldH = (int)(tileH * numWithin);
-				int shieldX = (int)(leftside ?(tileW + tileW*xPosition- SHIELD_OFFSET) :tileW*xPosition - SHIELD_OFFSET);
-				int shieldY = (int)(tileH *botY);
-				c = board.offsetBoard(canvas, shieldX, shieldY);
-				shieldX = c.x;
-				shieldY = c.y;
-				c.free();
-				canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
+				drawShield(canvas,board,an);
 				break;
 			case STRAIGHT:
 			case DIAGONAL:

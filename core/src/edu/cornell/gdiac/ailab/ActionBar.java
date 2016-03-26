@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 
 public class ActionBar {
 	/** Ratio of the bar width to the screen */
-	private static final float BAR_WIDTH_RATIO  = 0.5f;
+	private static final float BAR_WIDTH_RATIO  = 0.7f;
 	/** Ration of the bar height to the screen */
 	private static final float BAR_HEIGHT_RATIO = 0.035f;	
 	

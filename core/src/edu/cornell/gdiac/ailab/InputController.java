@@ -33,6 +33,10 @@ public class InputController {
     	return Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE);
     }
     
+    public static boolean pressedBack() {
+    	return Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE);
+    }
+    
     //Easy mode
     public static boolean pressedE() {
     	return Gdx.input.isKeyJustPressed(Input.Keys.E);
@@ -51,6 +55,10 @@ public class InputController {
     //PVP mode
     public static boolean pressedP() {
     	return Gdx.input.isKeyJustPressed(Input.Keys.P);
+    }
+    
+    public static boolean pressedW() {
+    	return Gdx.input.isKeyJustPressed(Input.Keys.W);
     }
     
     public static boolean pressedA() {
