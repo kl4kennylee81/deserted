@@ -32,36 +32,43 @@ public class AIController {
 	private int curSlot;
 	private boolean shield;
 	private boolean hasSingle;
+	private TacticalManager tacticalManager;
 	
-	public AIController(GridBoard board, List<Character> chars, ActionBar bar) {
+	public AIController(GridBoard board, List<Character> chars, ActionBar bar, TacticalManager tm) {
 		this.board = board;
 		this.chars = chars;
 		this.bar = bar;
+		this.tacticalManager = tm;
+		tacticalManager.setState(board, chars, bar);
 		nop = new Action("NOP", 1, 0, 0, Pattern.NOP, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
 	}
 	
 	public void update(){
 		for (Character c : chars){
 			if (c.needsSelection && c.isAI){
-				c.needsSelection = false;
-				selected = c;
-				xOffset = 0;
-				yOffset = 0;
-				shield = false;
-				hasSingle = hasSingle();
-				interval = (1f-bar.castPoint) / ActionBar.getTotalSlots();
-				curSlot = 1;
-				switch (c.diff){
-					case EASY:
-						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.1f));
-						break;
-					case MEDIUM:
-						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.7f));
-						break;
-					default:
-						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 1.0f));
-						break;
-				}
+				//Update tactical manager
+				tacticalManager.updateConditions(c);
+				tacticalManager.selectActions(c);
+				
+//				c.needsSelection = false;
+//				selected = c;
+//				xOffset = 0;
+//				yOffset = 0;
+//				shield = false;
+//				hasSingle = hasSingle();
+//				interval = (1f-bar.castPoint) / ActionBar.getTotalSlots();
+//				curSlot = 1;
+//				switch (c.diff){
+//					case EASY:
+//						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.1f));
+//						break;
+//					case MEDIUM:
+//						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.7f));
+//						break;
+//					default:
+//						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 1.0f));
+//						break;
+//				}
 			}
 		}
 	}
