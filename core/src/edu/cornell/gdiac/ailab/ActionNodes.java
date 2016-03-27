@@ -78,6 +78,10 @@ public class ActionNodes{
 			this.curY = curY;
 			this.path = path;
 			curRound = 0;
+			
+			for (int i =0;i<path.length;i++){
+				System.out.println(path[i]);
+			}
 		}
 
 		public int getCurrentX(){

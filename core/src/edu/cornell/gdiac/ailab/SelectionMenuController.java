@@ -122,9 +122,9 @@ public class SelectionMenuController {
 			}
 		} else if (InputController.pressedBack()){
 			menu.removeLast();
-		} else if (InputController.pressedD() && menu.canNop()){
-			menu.add(anPool.newActionNode(nop,ActionBar.castPoint+(action.cost+menu.takenSlots)*((1-ActionBar.castPoint)/ActionBar.getTotalSlots()),0,0,Direction.NONE));
-			menu.resetPointer();
+//		} else if (InputController.pressedD() && menu.canNop()){
+//			menu.add(anPool.newActionNode(nop,ActionBar.castPoint+(action.cost+menu.takenSlots)*((1-ActionBar.castPoint)/ActionBar.getTotalSlots()),0,0,Direction.NONE));
+//			menu.resetPointer();
 		} else if (InputController.pressedW() && !InputController.pressedS()){
 			//Actions go from up down, so we need to flip
 			menu.changeSelected(false);
