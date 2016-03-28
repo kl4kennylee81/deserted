@@ -100,7 +100,7 @@ public class MainMenuController {
 		if (InputController.pressedA() || InputController.pressedEnter()){
 			gameNo = mainMenu.selectedOption;
 			isDone = true;
-		}  else if ((InputController.pressedUp() && !InputController.pressedDown())){
+		}  else if ((InputController.pressedW() && !InputController.pressedS())){
 	         //newSelection % length
 	         //(n < 0) ? (m - (abs(n) % m) ) %m : (n % m);
 	         //taken from http://stackoverflow.com/questions/5385024/mod-in-java-produces-negative-numbers
@@ -111,7 +111,7 @@ public class MainMenuController {
 						%length : (newSelection % 
 								length);
 			mainMenu.selectOption(toSelect);
-		}   else if ((InputController.pressedDown() && !InputController.pressedUp())){
+		}   else if ((InputController.pressedS() && !InputController.pressedW())){
 			//Actions go from up down, so we need to flip
 			int newSelection = mainMenu.selectedOption-1;
 	        int length = mainMenu.getOptions().length;
