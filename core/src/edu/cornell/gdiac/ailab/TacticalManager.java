@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
+import edu.cornell.gdiac.ailab.ActionNodes.Direction;
 import edu.cornell.gdiac.ailab.DecisionNode;
 import edu.cornell.gdiac.ailab.DecisionNode.IndexNode;
 import edu.cornell.gdiac.ailab.DecisionNode.LeafNode;
 import edu.cornell.gdiac.ailab.DecisionNode.MoveList;
 import edu.cornell.gdiac.ailab.DecisionNode.Specific;
 import edu.cornell.gdiac.ailab.DecisionNode.Tactic;
+import edu.cornell.gdiac.ailab.Effect.Type;
 
 
 public class TacticalManager {
@@ -22,7 +25,9 @@ public class TacticalManager {
 	private DecisionNode tacticalTree;
 	private HashMap<Character, LeafNode> preSelected;
 	private HashMap<Character, IndexNode> characterTrees;
-		
+	private List<Character> friends;
+	private List<Character> enemies;
+	private float interval;
 	
 	public TacticalManager(){
 		preSelected = new HashMap<Character, LeafNode>();
@@ -41,7 +46,18 @@ public class TacticalManager {
 	 * Update all the condition booleans in the Conditional Manager
 	 */
 	public void updateConditions(Character c){
-		conditions.update(board, chars, bar, c);
+		friends = new ArrayList<Character>();
+		enemies = new ArrayList<Character>();
+		interval  = (1f-ActionBar.castPoint) / ActionBar.getTotalSlots();
+		for(Character ch: chars){
+			if(ch.isAI && ch != c && ch.isAlive()){
+				friends.add(ch);
+			}
+			else if(ch != c && ch.isAlive()){
+				enemies.add(ch);
+			}
+		}
+		conditions.update(board, chars, friends, enemies, bar, c);
 	}
 	
 	
@@ -118,41 +134,6 @@ public class TacticalManager {
 	
 	
 	/**
-	 * Given a specific list of actions, convert them into ActionNodes.
-	 */
-	public List<ActionNode> getActionsFromSpecific(Character c, MoveList specific){
-		ArrayList<Specific> moves = specific.specificActions;
-		ArrayList<ActionNode> nodes = new ArrayList<ActionNode>();
-		for(Specific s: moves){
-			switch(s){
-				//IMPLEMENT
-				case SINGLE_OPTIMAL:
-					break;
-				case SINGLE_WEAKEST:
-					break;
-				case SINGLE_STRONGEST:
-					break;
-				case NORMAL_ATTACK:
-					break;
-				case QUICK_ATTACK:
-					break;
-				case SHIELD:
-					break; 
-				case MOVE_AGGRESSIVE:
-					break;
-				case MOVE_DEFENSIVE:
-					break;
-				case MOVE_PROTECT:
-					break;
-				default:
-					break;
-			}
-		}
-		return nodes;
-	}
-	
-	
-	/**
 	 * Find the leaf node given an IndexNode n as a start point
 	 */
 	public LeafNode traverse(DecisionNode n){
@@ -176,6 +157,133 @@ public class TacticalManager {
 		System.out.println("NO CONDITION MATCHED");
 		return null;
 	}
+	
+	
+	/**
+	 * Given a specific list of actions, convert them into ActionNodes.
+	 */
+	public List<ActionNode> getActionsFromSpecific(Character c, MoveList specific){
+		ArrayList<Specific> moves = specific.specificActions;
+		ArrayList<ActionNode> nodes = new ArrayList<ActionNode>();
+		int startSlot = 0;
+		for(Specific s: moves){
+			ActionNode a = nopNode(startSlot);
+			switch(s){
+				//IMPLEMENT
+				case SINGLE_OPTIMAL:
+					break;
+				case SINGLE_WEAKEST:
+					a = singleWeakest(c, startSlot);
+					break;
+				case SINGLE_STRONGEST:
+					a = singleStrongest(c, startSlot);
+					break;
+				case NORMAL_ATTACK:
+					break;
+				case QUICK_ATTACK:
+					break;
+				case SHIELD:
+					break; 
+				case MOVE_AGGRESSIVE:
+					break;
+				case MOVE_DEFENSIVE:
+					break;
+				case MOVE_PROTECT:
+					break;
+				default:
+					break;
+			}
+			startSlot+=a.action.cost;
+			nodes.add(a);
 
+		}
+		return nodes;
+	}
+	
+	
+	//=======================================================================//
+	//    +----------------------------+                                     //
+	//	  | ACTION SELECTION FUNCTIONS |									 //
+	//	  +----------------------------+									 //
+	//			             \   ^__^										 //
+	//			              \  (00)\_______							     //	
+	//			                 (__)\       )\/\							 //
+	//			                     ||----w |								 //
+	//			                     ||     ||								 //
+    //=======================================================================//
+	
+
+	/**
+	 * Returns a single square attack aimed at the enemy with the lowest health
+	 */
+	public ActionNode singleWeakest(Character attacker, int startPoint){
+		int minHealth = Integer.MAX_VALUE;
+		Character weakest = null;
+		for(Character c: enemies){
+			if(c.health < minHealth){
+				minHealth = c.health;
+				weakest = c;
+			}
+		}
+		return singleNode(attacker, startPoint, weakest.xPosition, weakest.yPosition);	
+	}
+	
+	
+	/**
+	 * Returns a single square attack aimed at the enemy with highest health
+	 */
+	public ActionNode singleStrongest(Character attacker, int startPoint){
+		int minHealth = Integer.MIN_VALUE;
+		Character strongest = null;
+		for(Character c: enemies){
+			if(c.health > minHealth){
+				minHealth = c.health;
+				strongest = c;
+			}
+		}
+		return singleNode(attacker, startPoint, strongest.xPosition, strongest.yPosition);	
+	}
+	
+	
+	/**
+	 * Returns a single-square Action object if c has one
+	 */
+	public Action single(Character c){
+		for(Action a: c.availableActions){
+			if(a.pattern == Pattern.SINGLE){
+				return a;
+			}
+		}
+		return nop();
+	}
+	
+	
+	/**
+	 * Returns a nop action object
+	 */
+	public Action nop(){
+		return new Action("NOP", 1, 0, 0, Pattern.NOP, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
+	}
+	
+	
+	/**
+	 * Returns an action node representing a nop action object
+	 */
+	public ActionNode nopNode(int startPoint){
+		ActionNodes anPool = ActionNodes.getInstance();
+		Action a = nop();
+		return anPool.newActionNode(a, ActionBar.castPoint + (interval * (startPoint + a.cost)), 0, 0, Direction.NONE);
+	}
+
+	
+	/**
+	 * Returns an ActionNode representing a single square attack by character c
+	 * targeted at (x,y), starting from slot "startPoint"
+	 */
+	public ActionNode singleNode(Character c, int startPoint, int xTarget, int yTarget){
+		ActionNodes anPool = ActionNodes.getInstance();
+		Action a = single(c);
+		return anPool.newActionNode(a, ActionBar.castPoint + (interval * (startPoint + a.cost)), xTarget, yTarget, Direction.NONE);
+	}
 }
  

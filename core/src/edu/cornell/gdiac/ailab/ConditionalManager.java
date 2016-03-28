@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 
 public class ConditionalManager extends TacticalManager {
 	public HashMap<String, Boolean> map;
@@ -18,31 +19,22 @@ public class ConditionalManager extends TacticalManager {
 	private ActionBar bar;
 	private GridBoard board;
 	private Character selected;
-	private ArrayList<Character> friends;
-	private ArrayList<Character> enemies;
+	public List<Character> friends;
+	public List<Character> enemies;
 
 	
     private float interval;
 
 	
-	public void update(GridBoard board, List<Character> chars, ActionBar bar, Character c){
+	public void update(GridBoard board, List<Character> chars, List<Character> friends, List<Character> enemies, ActionBar bar, Character c){
 		this.chars = chars;
 		this.bar = bar;
 		this.board = board;
 		selected = c;
 		interval  = (1f-ActionBar.castPoint) / ActionBar.getTotalSlots();
 		map = new HashMap<String, Boolean>();
-		friends = new ArrayList<Character>();
-		enemies = new ArrayList<Character>();
-
-		for(Character ch: chars){
-			if(ch.isAI && ch != c && ch.isAlive()){
-				friends.add(ch);
-			}
-			else if(ch != c && ch.isAlive()){
-				enemies.add(ch);
-			}
-		}
+		this.friends = friends;
+		this.enemies = enemies;
 	}
 	
 	
@@ -119,7 +111,17 @@ public class ConditionalManager extends TacticalManager {
 	}
 	
 	
-	public void friendIsCasting(){
+
+	/**
+	 * Returns true if one of my allies is in their casting phase
+	 */
+	public boolean friendIsCasting(){
+		for(Character c: friends){
+			if(c.castPosition >= c.lastCastStart){
+				return true;
+			}
+		}
+		return false;
 		
 	}
 	
@@ -264,33 +266,122 @@ public class ConditionalManager extends TacticalManager {
 		return enemies.size() == 1;
 	}
 	
-	
-	public void isProtected(){
+	/**
+	 * Returns true if the selected character is currently behind another
+	 * character's shield.
+	 */
+	public boolean isProtected(){
+		for(Character c: friends){
+			if(c.hasShield()){
+				List<Coordinate> list = c.getShieldedCoords();
+				for(Coordinate coord: list){
+					if(coord.y == selected.yPosition && coord.x <= selected.xPosition){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 		
 	}
 	
 	
 	/**
-	 * Returns true if there 
+	 * Returns true if the selected character can protect an ally with a shield
 	 */
-	public void canProtect(){
+	public boolean canProtect(){
+		for(Character c: friends){
+			if(selected.xPosition <= c.xPosition && 
+					Math.abs(selected.yPosition - c.yPosition) <= 1){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if there is ally which can protect the selected character 
+	 * with a shield
+	 */
+	public boolean canBeProtected(){
+		for(Character c: friends){
+			if(c.xPosition <= selected.xPosition && 
+					Math.abs(selected.yPosition - c.yPosition) <= 1){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if the selected character can be protected by an ally after a 
+	 * single move
+	 */
+	public boolean canBeProtectedWithMove(){
+		for(Character c: friends){
+			if(c.xPosition <= selected.xPosition+1 && Math.abs(c.yPosition - selected.yPosition) <= 1){
+				return true;
+			}
+			if(c.xPosition <= selected.xPosition && Math.abs(c.yPosition - selected.yPosition) <= 2){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * Returns true if an ally has a shield up such that the selected character
+	 * would be protected with a single move action
+	 */
+	public boolean wouldBeProtectedWithMove(){
+		for(Character c: friends){
+			if(c.hasShield()){
+				List<Coordinate> list = c.getShieldedCoords();
+				for(Coordinate coord: list){
+					if(coord.y == selected.yPosition && coord.x <= selected.xPosition+1){
+						return true;
+					}
+					if(Math.abs(coord.y - selected.yPosition) <= 1 && coord.x <= selected.xPosition){
+						return true;
+					}
+				}
+					
+			}
+		}
+		return false;
 		
 	}
 	
-	public void canBeProtected(){
-		
+	
+	/**
+	 * Returns true if a friend could move into a protected spot if I put a shield up
+	 */
+	public boolean canProtectFriendWithMove(){
+		for(Character c: friends){
+			if(selected.xPosition <= c.xPosition+1 && Math.abs(c.yPosition - selected.yPosition) <= 1){
+				return true;
+			}
+			if(selected.xPosition <= c.xPosition && Math.abs(c.yPosition - selected.yPosition) <= 2){
+				return true;
+			}
+		}
+		return false;
 	}
 	
-	public void canBeProtectedWithMove(){
-		
-	}
-	
-	public void canProtectFriendWithMove(){
-		
-	}
 	
 	
-	//----------- HELPER METHODS --------------------//
+	//=========================================================================//
+	//  	        +----------------+                                         //
+	//  	        | HELPER METHODS |                                         // 
+	//  	        +----------------+                                         //
+	//      	           \   ^__^                                            //
+	//          	        \  (OO)\_______                                    // 
+	//             	           (__)\       )\/\                                //
+	//                 	           ||----w |                                   //
+	//                             ||     ||                                   //
+	//=========================================================================//
+
 	
 	/**
 	 * Returns the number of frames until character c can cast an action that costs
