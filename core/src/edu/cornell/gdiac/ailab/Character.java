@@ -719,6 +719,7 @@ public class Character implements GUIElement {
 		}
 	}
 	
+	
 	public void drawHealth(GameCanvas canvas,int count,boolean shouldDim){
 		Color iconColor = this.getColor(shouldDim);
 		Color waitColor = this.getActionBarColor(shouldDim, this.color.cpy());
@@ -766,7 +767,28 @@ public class Character implements GUIElement {
 		return chosenColor;
 	}
 	
+	private Color actionBarTickColor(boolean shouldDim){
+		Color chosenColor = Color.WHITE.cpy();
+		if (isHovering){
+			return chosenColor;
+		}
+		else if (isSelecting){
+			chosenColor = chosenColor.lerp(this.color, lerpVal);
+		}
+		else if (shouldDim){
+			chosenColor = Color.LIGHT_GRAY.cpy().mul(1,1,1,0.8f);
+		}
+		return chosenColor;	
+	}
+	
 	public void drawToken(GameCanvas canvas, int count,boolean shouldDim){
+		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition;
+		float tokenY = this.actionBar.getY(canvas, count);
+		
+		float actionBarHeight = this.actionBar.getBarHeight(canvas);
+		Color c = actionBarTickColor(shouldDim);
+		canvas.drawBox(tokenX, tokenY, 4, actionBarHeight, c);
+		
 //		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - icon.getWidth()/2;
 //		float tokenY = this.actionBar.getY(canvas, count) - TOKEN_OFFSET_DOWN;
 //		Color c = getColor(shouldDim);
