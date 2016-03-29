@@ -720,35 +720,23 @@ public class Character implements GUIElement {
 	}
 	
 	public void drawHealth(GameCanvas canvas,int count,boolean shouldDim){
-		Color col = this.getColor(shouldDim);
-		Color colIcon = col;
+		Color iconColor = this.getColor(shouldDim);
+		Color waitColor = this.getActionBarColor(shouldDim, this.color.cpy());
 		
-		float tokenX,tokenY;
-		if (this.leftside){
-			tokenX = X_START_POS*canvas.getWidth();
-			tokenY = Y_START_POS*canvas.getHeight() - (Y_SPACING*canvas.getHeight()*count);
-		}
-		else{
-			tokenX = ((1-X_START_POS)*canvas.getWidth()) - this.icon.getWidth();
-			tokenY = Y_START_POS*canvas.getHeight() - (Y_SPACING*canvas.getHeight()*count);
-		}
-		canvas.drawTexture(this.icon, tokenX, tokenY, this.icon.getWidth(),this.icon.getHeight(),colIcon);
+		float tokenX = this.actionBar.getX(canvas) - this.icon.getWidth();
+		float tokenY = this.actionBar.getY(canvas, count);
 		
-		float healthW = HEALTH_WIDTH*canvas.getWidth();
-		float healthH = HEALTH_HEIGHT*canvas.getHeight();
+		canvas.drawTexture(this.icon, tokenX, tokenY, this.icon.getWidth(),this.icon.getHeight(),iconColor);
 		
-		float healthX,healthY;
-		if (this.leftside){
-			healthX = tokenX + this.icon.getWidth();
-			healthY = tokenY;
-		}
-		else{
-			healthX = tokenX - healthW;
-			healthY = tokenY;
-		}
+		float healthW = this.actionBar.getWaitWidth(canvas);
+		float healthH = this.actionBar.getBarHeight(canvas);
 		
-		canvas.drawBox(healthX, healthY, healthW, healthH,col);
-		canvas.drawBox(healthX, healthY, (int) (healthW*this.health/this.maxHealth), healthH, this.color);
+		float damagedWidth = (healthW*this.health/this.maxHealth);
+		float leftoverWidth = healthW - damagedWidth;
+		float healthX = tokenX + this.icon.getWidth() + leftoverWidth;
+		float healthY = tokenY;
+		
+		canvas.drawBox(healthX, healthY, (int) Math.ceil(damagedWidth), healthH, waitColor);
 	}
 	
 	public Color getActionBarColor(boolean shouldDim,Color c){
@@ -779,10 +767,10 @@ public class Character implements GUIElement {
 	}
 	
 	public void drawToken(GameCanvas canvas, int count,boolean shouldDim){
-		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - icon.getWidth()/2;
-		float tokenY = this.actionBar.getY(canvas, count) - TOKEN_OFFSET_DOWN;
-		Color c = getColor(shouldDim);
-		canvas.drawTexture(icon,tokenX,tokenY,c,false);
+//		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - icon.getWidth()/2;
+//		float tokenY = this.actionBar.getY(canvas, count) - TOKEN_OFFSET_DOWN;
+//		Color c = getColor(shouldDim);
+//		canvas.drawTexture(icon,tokenX,tokenY,c,false);
 	}
 
 	public boolean getHovering(){

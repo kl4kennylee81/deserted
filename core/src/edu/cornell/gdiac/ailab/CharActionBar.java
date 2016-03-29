@@ -123,6 +123,10 @@ public class CharActionBar {
 		return BAR_HEIGHT_RATIO * canvas.getHeight();
 	}
 	
+	public float getWaitWidth(GameCanvas canvas){
+		return castPoint * getWidth(canvas);
+	}
+	
 	public float actionExecutionTime(float takenSlots,float actionCost){
 		float totalSlots = takenSlots + actionCost;
 		float slotWidth = getSlotWidth();
