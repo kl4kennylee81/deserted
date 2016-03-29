@@ -230,7 +230,7 @@ public class SelectionMenu {
 		}
 	}
 	
-	public void draw(GameCanvas canvas,CharActionBar actionBar){
+	public void draw(GameCanvas canvas,CharActionBar actionBar,int count){
 		if (increasing){
 			lerpVal+=0.02;
 			if (lerpVal >= 1){
@@ -291,7 +291,7 @@ public class SelectionMenu {
 		
 		//Draw action bar with 3 black boxes to show 4 slots
 		float actionSlot_x = actionBar.getBarCastPoint(canvas);
-		float actionSlot_y = actionBar.getY(canvas,1);
+		float actionSlot_y = actionBar.getY(canvas,count);
 		
 		float slot_width = actionBar.getSlotWidth(canvas);
 		float slot_height = actionBar.getBarHeight(canvas);
@@ -326,7 +326,6 @@ public class SelectionMenu {
 	}
 	
 	public void setSelectedAction(int num){
-//		System.out.println("Selected action set to " + num);
 		selectedAction = num;
 	}
 

@@ -96,6 +96,14 @@ public class Characters extends LinkedList<Character>{
 		}
 	}
 	
+	public void drawSelectionMenu(GameCanvas canvas){
+		int count = 0;
+        for (Character c : this){
+        	count++;
+        	c.drawSelection(canvas,count);
+        }
+	}
+	
 	public Characters(){
 		super();
 	}
@@ -107,5 +115,7 @@ public class Characters extends LinkedList<Character>{
 	public void draw(GameCanvas canvas, boolean drawFirst){
 		drawHealthBars(canvas,drawFirst);
 		drawActionBars(canvas);
+		drawSelectionMenu(canvas);
+		
 	}
 }

@@ -176,7 +176,6 @@ public class GameplayController {
         for (Character c : characters){
         	c.draw(canvas,board, inGameState == InGameState.SELECTION || 
 					mouseOverController.isCharacterHighlighted());
-        	c.drawSelection(canvas);
         }
     }
     
@@ -200,9 +199,6 @@ public class GameplayController {
     	for (Character c : characters){
         	c.draw(canvas,board, inGameState == InGameState.SELECTION || 
 					mouseOverController.isCharacterHighlighted());
-        }
-        for (Character c : characters){
-        	c.drawSelection(canvas);
         }
     }
     
