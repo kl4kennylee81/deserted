@@ -23,18 +23,8 @@ public class Character implements GUIElement {
 	private static final float SHIELD_OFFSET = 5;
 	private static final float SHIELD_WIDTH = 0.0125f;
 	private static final int DIAGONAL_SIZE = 20;
-
-	private final float Y_START_POS = 0.975f;
 	
-	//ex. X_START_POS = 0.25 means left starts at position 25% of the canvasWidth
-	// right starts at position 75% of the canvas (1-X_START_POS)*canvasWidth
-	private final float X_START_POS = 0.020f;
-	
-	private final float Y_SPACING = 0.05f;
-	
-	private final float HEALTH_WIDTH = 0.175f;
-	
-	private final float HEALTH_HEIGHT = 0.03f;
+	private static final float ACTIONBAR_TICK_SIZE = 8f;
 	
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
@@ -759,7 +749,7 @@ public class Character implements GUIElement {
 			chosenColor = this.color;
 		}
 		else if (isSelecting){
-			chosenColor = chosenColor.lerp(this.color, lerpVal);
+			chosenColor = chosenColor.lerp(this.color.cpy(), lerpVal);
 		}
 		else if (shouldDim){
 			chosenColor = Color.LIGHT_GRAY.cpy().mul(1,1,1,0.8f);
@@ -768,26 +758,26 @@ public class Character implements GUIElement {
 	}
 	
 	private Color actionBarTickColor(boolean shouldDim){
-		Color chosenColor = Color.WHITE.cpy();
+		Color chosenColor = Color.DARK_GRAY.cpy();
 		if (isHovering){
-			return chosenColor;
+			chosenColor = chosenColor.lerp(Color.WHITE, lerpVal);
 		}
 		else if (isSelecting){
-			chosenColor = chosenColor.lerp(this.color, lerpVal);
+			chosenColor = chosenColor.lerp(Color.WHITE, lerpVal);
 		}
 		else if (shouldDim){
-			chosenColor = Color.LIGHT_GRAY.cpy().mul(1,1,1,0.8f);
+			chosenColor = Color.DARK_GRAY.cpy().mul(1,1,1,0.8f);
 		}
 		return chosenColor;	
 	}
 	
 	public void drawToken(GameCanvas canvas, int count,boolean shouldDim){
-		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition;
+		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - ACTIONBAR_TICK_SIZE/2;
 		float tokenY = this.actionBar.getY(canvas, count);
 		
 		float actionBarHeight = this.actionBar.getBarHeight(canvas);
 		Color c = actionBarTickColor(shouldDim);
-		canvas.drawBox(tokenX, tokenY, 4, actionBarHeight, c);
+		canvas.drawBox(tokenX, tokenY, ACTIONBAR_TICK_SIZE, actionBarHeight, c);
 		
 //		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - icon.getWidth()/2;
 //		float tokenY = this.actionBar.getY(canvas, count) - TOKEN_OFFSET_DOWN;
