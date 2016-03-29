@@ -115,8 +115,18 @@ public class CharActionBar {
 		return castWidth/numSlots;
 	}
 	
+	public float getSlotWidth(){
+		return (1-this.castPoint)/this.numSlots;
+	}
+	
 	public float getBarHeight(GameCanvas canvas){
 		return BAR_HEIGHT_RATIO * canvas.getHeight();
+	}
+	
+	public float actionExecutionTime(float takenSlots,float actionCost){
+		float totalSlots = takenSlots + actionCost;
+		float slotWidth = getSlotWidth();
+		return this.castPoint + totalSlots*slotWidth;
 	}
 	
 	public float getBarCastPoint(GameCanvas canvas){

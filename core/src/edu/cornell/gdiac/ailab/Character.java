@@ -145,7 +145,7 @@ public class Character implements GUIElement {
 		
 		float waitTime = (float) (Math.random()*4 + 3);
 		float castTime = (float) (Math.random()*4 + 3);
-		actionBar = new CharActionBar(4,waitTime,castTime);
+		actionBar = new CharActionBar(5,waitTime,castTime);
 		
 	}
 	

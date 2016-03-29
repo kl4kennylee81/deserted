@@ -66,10 +66,10 @@ public class SelectionMenu {
 	/**
 	 * Adds an action node to current queue
 	 */
-	public void add(ActionNode actionNode){
+	public void add(ActionNode actionNode,int numSlots){
 		selectedActions.addLast(actionNode);
 		takenSlots += actionNode.action.cost;
-		if (takenSlots > ActionBar.getTotalSlots()){
+		if (takenSlots > numSlots){
 			System.out.println("Please check SelectionMenu");
 		}
 	}
@@ -140,13 +140,13 @@ public class SelectionMenu {
 	/**
 	 * Checks if character can do the given action
 	 */
-	public boolean canDoAction(Action a){
-		return takenSlots+a.cost <= ActionBar.getTotalSlots() && (canMove() || a.pattern != Pattern.MOVE);
+	public boolean canDoAction(Action a,int numSlots){
+		return takenSlots+a.cost <= numSlots && (canMove() || a.pattern != Pattern.MOVE);
 	}
 	
-	public boolean canDoAction(int i){
+	public boolean canDoAction(int i,int numSlots){
 		if (i < actions.length) {
-			return canDoAction(actions[i]);
+			return canDoAction(actions[i],numSlots);
 		}
 		if (i == actions.length) {
 			return true;
@@ -157,9 +157,9 @@ public class SelectionMenu {
 	/**
 	 * Checks if character has any available actions
 	 */
-	public boolean canAct(){
+	public boolean canAct(int numSlots){
 		for (Action a : actions){
-			if (canDoAction(a)){
+			if (canDoAction(a,numSlots)){
 				return true;
 			}
 		}
@@ -169,21 +169,21 @@ public class SelectionMenu {
 	/**
 	 * Checks if character can at least NOP
 	 */
-	public boolean canNop(){
-		return takenSlots < ActionBar.getTotalSlots();
+	public boolean canNop(int numSlots){
+		return takenSlots < numSlots;
 	}
 	
 	/**
 	 * Change selected action to the next available either up or down
 	 */
-	public boolean changeSelected(boolean up){
+	public boolean changeSelected(boolean up,int numSlots){
 		if (up){
 			for (int i = 0; i <= actions.length; i++){
 //				System.out.println("Selection action set to " + selectedAction);
 				selectedAction += 1;
 				selectedAction %= actions.length+1;
 //				System.out.println("Selection action set to " + selectedAction);
-				if (canDoAction(selectedAction)){
+				if (canDoAction(selectedAction,numSlots)){
 					return true;
 				}
 			}
@@ -194,7 +194,7 @@ public class SelectionMenu {
 					selectedAction += actions.length+1;
 				}
 //				System.out.println("Selection action set to " + selectedAction);
-				if (canDoAction(selectedAction)){
+				if (canDoAction(selectedAction,numSlots)){
 					return true;
 				}
 			}
@@ -206,12 +206,12 @@ public class SelectionMenu {
 	 * Resets selected action index and returns true if a possible action is found
 	 * @return
 	 */
-	public boolean resetPointer(){
-		if (actions[selectedAction].cost > ActionBar.getTotalSlots() - takenSlots){
+	public boolean resetPointer(int numSlots){
+		if (actions[selectedAction].cost > numSlots - takenSlots){
 			for (int i = 0; i <= actions.length; i++){
 				selectedAction = i;
 //				System.out.println("Selection action set to " + selectedAction);
-				if (canDoAction(selectedAction)){
+				if (canDoAction(selectedAction,numSlots)){
 					return true;
 				}
 			}
@@ -231,6 +231,8 @@ public class SelectionMenu {
 	}
 	
 	public void draw(GameCanvas canvas,CharActionBar actionBar,int count){
+		int numSlots = actionBar.numSlots;
+		
 		if (increasing){
 			lerpVal+=0.02;
 			if (lerpVal >= 1){
@@ -262,7 +264,7 @@ public class SelectionMenu {
 			if (i == selectedAction){
 				selectedPointerOffset = offset_y;
 			}
-			if (action.cost > ActionBar.getTotalSlots() - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
+			if (action.cost > numSlots - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
 				Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.2f);
 				 g = canvas.drawText(action.name, text_x, text_y - offset_y, dimColor);
 			} 
@@ -297,7 +299,7 @@ public class SelectionMenu {
 		float slot_height = actionBar.getBarHeight(canvas);
 		
 		int offset = 0;
-		for (int i = 0; i < ActionBar.getTotalSlots(); i++){
+		for (int i = 0; i < numSlots; i++){
 			float curSlot_x = actionSlot_x + ((slot_width) * i) + ActionBar.getSpacing();
 			float slot_w_space = slot_width-ActionBar.getSpacing();
 			if (i < takenSlots) {
