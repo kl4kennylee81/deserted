@@ -22,7 +22,7 @@ public class SelectionMenu {
 
 	private static final float RELATIVE_TEXT_X_POS = 0.02f;
 
-	private static final float RELATIVE_TEXT_Y_POS = 0.7f;
+	private static final float RELATIVE_TEXT_Y_POS = 0.5f;
 
 	private static final float RELATIVE_TEXT_SPACING = 0.0625f;
 
@@ -30,7 +30,7 @@ public class SelectionMenu {
 
 	private static final float ACTION_POINTER_OFFSET_Y = 15;
 
-	private static final float RELATIVE_DESCRIPTION_Y_POS = 0.8f;
+	private static final float RELATIVE_DESCRIPTION_Y_POS = 0.65f;
 	
 	private static final float RELATIVE_DESCRIPTION_X_POS = 0.5f;
 

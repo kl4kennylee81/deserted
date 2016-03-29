@@ -14,7 +14,7 @@ public class CharActionBar {
 	private static final float BAR_HEIGHT_RATIO = 0.035f;	
 	
 	/** the x position of the bar should start at the top 7/8 of the screen **/
-	private static final float BAR_RELATIVE_Y_POS = 1.0f;
+	private static final float BAR_RELATIVE_Y_POS = 0.975f;
 	
 	private static final float BAR_DIVIDER_WIDTH = 4f;
 	
