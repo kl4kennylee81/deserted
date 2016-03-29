@@ -571,6 +571,7 @@ public class Character implements GUIElement {
 		c.free();
 		
 		Color color = getColor(shouldDim);
+		Color highlightColor = getHighlightColor(shouldDim);
 		//Decide what animation to draw
 		//Will sometimes be null when current animation is done, we just need to call again
 		FilmStrip toDraw = getFilmStrip();
@@ -582,10 +583,13 @@ public class Character implements GUIElement {
 		//go back to initial texture (current idle texture)
 		if (toDraw != null){
 			float charScale = getCharScale(canvas,toDraw,board);
+			// draw once character normally then draw character again with tint
 			canvas.drawCharacter(toDraw, canvasX, canvasY, color, leftside,charScale);
+			canvas.drawCharacter(toDraw, canvasX, canvasY, highlightColor, leftside,charScale);
 		} else {
 			float charScale = getCharScale(canvas,texture,board);
 			canvas.drawCharacter(texture, canvasX, canvasY, color, leftside,charScale);
+			canvas.drawCharacter(texture, canvasX, canvasY, highlightColor, leftside,charScale);
 		}
 		//use Jons logic for getting textures and then continue doing the same thing with the textures
 	}
@@ -746,13 +750,27 @@ public class Character implements GUIElement {
 	private Color getColor(boolean shouldDim){
 		Color chosenColor = Color.WHITE.cpy();
 		if (isHovering){
-			chosenColor = this.color;
+			return chosenColor;
 		}
 		else if (isSelecting){
 			chosenColor = chosenColor.lerp(this.color.cpy(), lerpVal);
 		}
 		else if (shouldDim){
 			chosenColor = Color.LIGHT_GRAY.cpy().mul(1,1,1,0.8f);
+		}
+		return chosenColor;
+	}
+	
+	private Color getHighlightColor(boolean shouldDim){
+		Color chosenColor = Color.DARK_GRAY.cpy().mul(1,1,1,0.0f);
+		if (isHovering){
+			chosenColor = this.color.cpy().mul(1,1,1,0.6f);
+		}
+		else if (isSelecting){
+			//
+		}
+		else if (shouldDim){
+			//
 		}
 		return chosenColor;
 	}

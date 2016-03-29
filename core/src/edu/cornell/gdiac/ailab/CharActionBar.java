@@ -18,7 +18,7 @@ public class CharActionBar {
 	
 	private static final float BAR_DIVIDER_WIDTH = 4f;
 	
-	private static final float Y_SPACING = 0.075f;
+	private static final float Y_SPACING = 0.065f;
 	
 	
 	
