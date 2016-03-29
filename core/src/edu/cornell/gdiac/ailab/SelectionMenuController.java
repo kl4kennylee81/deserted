@@ -64,7 +64,8 @@ public class SelectionMenuController {
 	public void update(){
 		if (selected != null){
 			updateVariables();
-			if (menu.canAct() && action != null){
+			int numSlots = selected.actionBar.numSlots;
+			if (menu.canAct(numSlots) && action != null){
 				drawHighlights();
 			}
 			if (!choosingTarget){
@@ -110,8 +111,9 @@ public class SelectionMenuController {
 		boolean mouseCondition = InputController.pressedLeftMouse();// && 
 //				action.contains(InputController.getMouseX(), InputController.getMouseX(), InputController.getCanvas(), board);
 		ActionNodes anPool = ActionNodes.getInstance();
+		int numSlots = selected.actionBar.numSlots;
 		if ((InputController.pressedEnter() || mouseCondition)){
-			if (action != null && menu.canAct()){
+			if (action != null && menu.canAct(numSlots)){
 				updateTargetedAction();
 				prompt = "Choose a Target";
 			} else {
@@ -122,14 +124,15 @@ public class SelectionMenuController {
 			}
 		} else if (InputController.pressedBack()){
 			menu.removeLast();
-//		} else if (InputController.pressedD() && menu.canNop()){
-//			menu.add(anPool.newActionNode(nop,ActionBar.castPoint+(action.cost+menu.takenSlots)*((1-ActionBar.castPoint)/ActionBar.getTotalSlots()),0,0,Direction.NONE));
-//			menu.resetPointer();
+		} else if (InputController.pressedD() && menu.canNop(numSlots)){
+			float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,0);
+			menu.add(anPool.newActionNode(nop,actionExecute,0,0,Direction.NONE),numSlots);
+			menu.resetPointer(numSlots);
 		} else if (InputController.pressedW() && !InputController.pressedS()){
 			//Actions go from up down, so we need to flip
-			menu.changeSelected(false);
+			menu.changeSelected(false,numSlots);
 		} else if (InputController.pressedS() && !InputController.pressedW()){
-			menu.changeSelected(true);
+			menu.changeSelected(true,numSlots);
 		}
 	}
 	
@@ -200,9 +203,11 @@ public class SelectionMenuController {
 			break;
 		}
 		if (InputController.pressedEnter()){
-			menu.add(anPool.newActionNode(action,ActionBar.castPoint+(action.cost+menu.takenSlots)*((1-ActionBar.castPoint)/ActionBar.getTotalSlots()),selectedX,selectedY,direction));
+			float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
+			int numSlots = selected.actionBar.numSlots;
+			menu.add(anPool.newActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 			menu.setChoosingTarget(false);
-			menu.resetPointer();
+			menu.resetPointer(numSlots);
 		} else if (InputController.pressedBack()){
 			menu.setChoosingTarget(false);
 		}

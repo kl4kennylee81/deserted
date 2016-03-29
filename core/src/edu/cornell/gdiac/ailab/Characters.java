@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Characters extends LinkedList<Character>{
 
-	private final float Y_START_POS = 0.95f;
+	private final float Y_START_POS = 0.975f;
 	
 	//ex. X_START_POS = 0.25 means left starts at position 25% of the canvasWidth
 	// right starts at position 75% of the canvas (1-X_START_POS)*canvasWidth
@@ -85,11 +85,37 @@ public class Characters extends LinkedList<Character>{
 		
 	}
 	
+	public void drawActionBars(GameCanvas canvas){
+		int count = 0;
+		for (Character c:this){
+			count++;
+			c.actionBar.draw(canvas,count);
+			c.drawToken(canvas,count);
+			
+			// handle all character drawing logic here
+		}
+	}
+	
+	public void drawSelectionMenu(GameCanvas canvas){
+		int count = 0;
+        for (Character c : this){
+        	count++;
+        	c.drawSelection(canvas,count);
+        }
+	}
+	
 	public Characters(){
 		super();
 	}
 	
 	public void drawHealthBars(GameCanvas canvas, boolean drawFirst){
 		drawHealths(canvas,this, drawFirst);
+	}
+	
+	public void draw(GameCanvas canvas, boolean drawFirst){
+		drawHealthBars(canvas,drawFirst);
+		drawActionBars(canvas);
+		drawSelectionMenu(canvas);
+		
 	}
 }

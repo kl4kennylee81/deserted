@@ -1,7 +1,7 @@
 package edu.cornell.gdiac.ailab;
 
 import java.util.Iterator;
-import java.util.List;
+import java.util.List; 
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -158,6 +158,7 @@ public class GameplayController {
     //This needs to be done so characters below show over characters above and selection menu
     //shows over characters.
     private void drawCharacters(GameCanvas canvas){
+        characters.draw(canvas,true);
     	for (int i = board.height-1; i >= 0; i--){
     		for (Character c : characters){
     			if (inGameState == InGameState.SELECTION && c.isSelecting){
@@ -175,13 +176,12 @@ public class GameplayController {
         for (Character c : characters){
         	c.draw(canvas,board, inGameState == InGameState.SELECTION || 
 					mouseOverController.isCharacterHighlighted());
-        	c.drawSelection(canvas);
         }
-        characters.drawHealthBars(canvas, true);
     }
     
     //temporary method - change name and integrate with above method
     private void drawHighlightedCharacterInSelectionState(GameCanvas canvas){
+        characters.draw(canvas, false);
     	for (int i = board.height-1; i >= 0; i--){
     		for (Character c : characters){
     			if (inGameState == InGameState.SELECTION && !c.isSelecting){
@@ -200,10 +200,6 @@ public class GameplayController {
         	c.draw(canvas,board, inGameState == InGameState.SELECTION || 
 					mouseOverController.isCharacterHighlighted());
         }
-        for (Character c : characters){
-        	c.drawSelection(canvas);
-        }
-        characters.drawHealthBars(canvas, false);
     }
     
     public void drawAfter(GameCanvas canvas){
