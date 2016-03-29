@@ -95,7 +95,6 @@ public class PersistingController extends ActionController{
 		float diffY = (midNextY - selectedActionNode.curY);
 		float dist = diffX*diffX + diffY*diffY;
 		
-		System.out.println(dist);
 		// when its past the middle you increment to next path
 		if (dist <= selectedAction.moveSpeed){
 			selectedActionNode.pathIndex+=1;
