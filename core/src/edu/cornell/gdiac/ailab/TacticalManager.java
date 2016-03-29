@@ -20,12 +20,14 @@ import edu.cornell.gdiac.ailab.Effect.Type;
 public class TacticalManager extends ConditionalManager{
 	
 	private DecisionNode tacticalTree;
+	private HashMap<String, DecisionNode> nodeMap;
 	private HashMap<Character, LeafNode> preSelected;
 	private HashMap<Character, IndexNode> characterTrees;
 	
 	public TacticalManager(){
 		preSelected = new HashMap<Character, LeafNode>();
 		characterTrees = new HashMap<Character, IndexNode>();
+		nodeMap = new HashMap<String, DecisionNode>();
 	}
 	
 	
@@ -105,7 +107,8 @@ public class TacticalManager extends ConditionalManager{
 	 * tactic.
 	 */
 	public DecisionNode getSubtreeFromTactic(IndexNode node, Tactic tactic){
-		for(DecisionNode n: node.decisions){
+		for(String s: node.decisions){
+			DecisionNode n = nodeMap.get(s); 
 			if(n.branchType == tactic){
 				return n;
 			}
@@ -145,7 +148,7 @@ public class TacticalManager extends ConditionalManager{
 				}
 			}
 			if(matched){
-				return traverse(index.decisions.get(i));
+				return traverse(nodeMap.get(index.decisions.get(i)));
 			}
 		}
 		System.out.println("NO CONDITION MATCHED");

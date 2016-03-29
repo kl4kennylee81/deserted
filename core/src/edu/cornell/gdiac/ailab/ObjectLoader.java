@@ -38,6 +38,8 @@ public class ObjectLoader {
     private HashMap<Integer, Action> availableActions;
     //hashmap used to load animations for level from yaml
     private HashMap<Integer, Animation> availableAnimations;
+    //TacticalManager to be loaded from yaml
+    private TacticalManager tacticalManager;
     
     //singleton pattern constructor
     //Instantiates assets array and asset manager
@@ -69,6 +71,7 @@ public class ObjectLoader {
 		availableCharacters=null;
 		availableActions = null;
 		availableAnimations = null;
+		tacticalManager = null;
 	}
 	
 	/**
@@ -84,6 +87,7 @@ public class ObjectLoader {
 		availableCharacters = new HashMap<Integer, Character>();
 	    availableActions = new HashMap<Integer, Action>();
 	    availableAnimations = new HashMap<Integer, Animation>();
+	    tacticalManager = new TacticalManager();
 		
 		
 		ArrayList<HashMap<String, Object>> allies =  (ArrayList<HashMap<String, Object>>) levelDef.get("allies");
@@ -92,6 +96,7 @@ public class ObjectLoader {
 		Integer boardWidth = (Integer) levelDef.get("boardWidth");
 		Integer boardHeight = (Integer) levelDef.get("boardHeight");
 		String boardTexture = (String) levelDef.get("boardTexture");
+		ArrayList<String> ai = (ArrayList<String>) levelDef.get("AI");
 		
 		Yaml yaml = new Yaml();
 		FileHandle animationFile = Gdx.files.internal("yaml/animations.yml");
@@ -121,6 +126,7 @@ public class ObjectLoader {
 		loadActions(actions);
 		loadCharacters(allies, characters, true);
 		loadCharacters(enemies, characters, false);
+		loadAI(ai);
 		
 		Level loadedLevel = new Level();
 		
@@ -130,6 +136,7 @@ public class ObjectLoader {
 		loadedLevel.setNextLevel(nextLevel);
 		loadedLevel.setBoardHeight(boardHeight);
 		loadedLevel.setBoardWidth(boardWidth);
+		loadedLevel.setTacticalManager(tacticalManager);
 		
 		manager.load(boardTexture,Texture.class);
 		assets.add(boardTexture);
@@ -278,6 +285,14 @@ public class ObjectLoader {
 			availableActions.put(actionId, actionToAdd);
 			
 		}
+		
+	}
+	
+	
+	/**
+	 * Loads all the AI's from their yaml specifications
+	 */
+	private void loadAI(ArrayList<String> ai){
 		
 	}
 	

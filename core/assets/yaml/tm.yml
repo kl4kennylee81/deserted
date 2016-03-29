@@ -1,0 +1,7 @@
+root:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, MOVE AGGRESSIVE]
+
+  
+  

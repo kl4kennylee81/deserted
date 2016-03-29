@@ -5,10 +5,11 @@ import java.util.List;
 
 public class DecisionNode {
 	
-	/** 
-	 * Used to determine which branch do go down if we are in an individual character AI
-	 */
+	/**  Used to determine which branch do go down if we are in an individual character AI */
 	public Tactic branchType;
+	
+	/** Label of this node, used for traversal */
+	public String label;
 		
 	
 	/**
@@ -58,14 +59,14 @@ public class DecisionNode {
 	 */
 	public static class IndexNode extends DecisionNode{
 		ArrayList<List<String>> conditions;
-		ArrayList<DecisionNode> decisions;
+		ArrayList<String> decisions;
 		
 		public IndexNode(){
 			conditions = new ArrayList<List<String>>();
-			decisions = new ArrayList<DecisionNode>();
+			decisions = new ArrayList<String>();
 		}
 		
-		public void addRule(List<String> conds, DecisionNode decision){
+		public void addRule(List<String> conds, String decision){
 			conditions.add(conds);
 			decisions.add(decision);
 		}

@@ -30,6 +30,7 @@ easy:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
+    AI: ["tm.yml"]
 
 medium: 
     allies:
@@ -63,6 +64,7 @@ medium:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
+    AI: ["tm.yml"]
 
 hard: 
     allies:
@@ -96,6 +98,7 @@ hard:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
+    AI: ["tm.yml"]
 
 pvp:
     allies:
@@ -119,3 +122,4 @@ pvp:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
+    AI: []
