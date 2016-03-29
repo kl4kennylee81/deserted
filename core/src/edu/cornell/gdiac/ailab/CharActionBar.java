@@ -136,7 +136,7 @@ public class CharActionBar {
 		return start_x + cast_point;
 	}
 	
-	public void draw(GameCanvas canvas,int count){
+	public void draw(GameCanvas canvas,int count,Color waitColor,Color castColor){
 		float w = canvas.getWidth();
 		float h = canvas.getHeight();
 		
@@ -147,12 +147,12 @@ public class CharActionBar {
 		float heightBar = BAR_HEIGHT_RATIO * h;
 		
 		// casting is red we draw red the full bar
-		canvas.drawBox(xPosBar,yPosBar, widthBar, heightBar, Color.RED);
+		canvas.drawBox(xPosBar,yPosBar, widthBar, heightBar, waitColor);
 		
 		float nonActWidth = widthBar * castPoint;
 		
 		// non casting is green we draw width up to the casting point
-		canvas.drawBox(xPosBar, yPosBar, nonActWidth, heightBar, Color.GREEN);
+		canvas.drawBox(xPosBar, yPosBar, nonActWidth, heightBar, castColor);
 		for (int i = 0; i < this.numSlots; i++){
 			float intervalSize = (widthBar*(1-this.castPoint))/this.numSlots;
 			float startCastX = xPosBar + nonActWidth;

@@ -17,13 +17,24 @@ import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 
 public class Character implements GUIElement {
-	float TOKEN_OFFSET_UP = 20;
-	float TOKEN_OFFSET_DOWN = 30;
-	float SHADOW_ARROW_WIDTH = 0.0075f; // 6 pixel of 800
-	float SHIELD_OFFSET = 5;
-	float SHIELD_WIDTH = 0.0125f;
-	int DIAGONAL_SIZE = 20;
-	int HEALTH_HEIGHT = 10;
+	private static final float TOKEN_OFFSET_UP = 20;
+	private static final float TOKEN_OFFSET_DOWN = 30;
+	private static final float SHADOW_ARROW_WIDTH = 0.0075f; // 6 pixel of 800
+	private static final float SHIELD_OFFSET = 5;
+	private static final float SHIELD_WIDTH = 0.0125f;
+	private static final int DIAGONAL_SIZE = 20;
+
+	private final float Y_START_POS = 0.975f;
+	
+	//ex. X_START_POS = 0.25 means left starts at position 25% of the canvasWidth
+	// right starts at position 75% of the canvas (1-X_START_POS)*canvasWidth
+	private final float X_START_POS = 0.020f;
+	
+	private final float Y_SPACING = 0.05f;
+	
+	private final float HEALTH_WIDTH = 0.175f;
+	
+	private final float HEALTH_HEIGHT = 0.03f;
 	
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
@@ -480,11 +491,10 @@ public class Character implements GUIElement {
 		return shadY;
 	}
 	
-	public void draw(GameCanvas canvas,GridBoard board, boolean shouldDim){
+	public void draw(GameCanvas canvas,GridBoard board){
 		if (!isAlive()){
 			return;
 		}
-		drawToken(canvas, shouldDim);
 		if(hasPersisting()){
 			drawPersisting(canvas,board);
 		}
@@ -570,13 +580,7 @@ public class Character implements GUIElement {
 		float canvasY = c.y;
 		c.free();
 		
-		Color newColor = new Color(Color.WHITE);
-		if (shouldDim) {
-			newColor = Color.LIGHT_GRAY.cpy();
-		}
-		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
-		col = isHovering ? color : col;
-		
+		Color color = getColor(shouldDim);
 		//Decide what animation to draw
 		//Will sometimes be null when current animation is done, we just need to call again
 		FilmStrip toDraw = getFilmStrip();
@@ -588,10 +592,10 @@ public class Character implements GUIElement {
 		//go back to initial texture (current idle texture)
 		if (toDraw != null){
 			float charScale = getCharScale(canvas,toDraw,board);
-			canvas.drawCharacter(toDraw, canvasX, canvasY, col, leftside,charScale);
+			canvas.drawCharacter(toDraw, canvasX, canvasY, color, leftside,charScale);
 		} else {
 			float charScale = getCharScale(canvas,texture,board);
-			canvas.drawCharacter(texture, canvasX, canvasY, col, leftside,charScale);
+			canvas.drawCharacter(texture, canvasX, canvasY, color, leftside,charScale);
 		}
 		//use Jons logic for getting textures and then continue doing the same thing with the textures
 	}
@@ -715,29 +719,70 @@ public class Character implements GUIElement {
 		}
 	}
 	
-	/**
-	 * Draws token on action bar
-	 * @param canvas
-	 */
-	private void drawToken(GameCanvas canvas, boolean shouldDim){
-//		float tokenX = getTokenX(canvas);
-//		float tokenY = getTokenY(canvas);
-//		boolean selecting = isSelecting || isHovering;
-//		tokenY = selecting && !leftside ? tokenY-10 : tokenY;//change to bar.getHeight
-//		Color newColor = new Color(Color.WHITE);
-//		if (shouldDim) {
-//			newColor.set(newColor.r, newColor.g, newColor.b, 0.3f);
-//		}
-//		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
-//		col = isHovering ? color : col;
-//		canvas.drawTexture(icon, tokenX, tokenY, selecting? col : 
-//			newColor, selecting);
+	public void drawHealth(GameCanvas canvas,int count,boolean shouldDim){
+		Color col = this.getColor(shouldDim);
+		Color colIcon = col;
+		
+		float tokenX,tokenY;
+		if (this.leftside){
+			tokenX = X_START_POS*canvas.getWidth();
+			tokenY = Y_START_POS*canvas.getHeight() - (Y_SPACING*canvas.getHeight()*count);
+		}
+		else{
+			tokenX = ((1-X_START_POS)*canvas.getWidth()) - this.icon.getWidth();
+			tokenY = Y_START_POS*canvas.getHeight() - (Y_SPACING*canvas.getHeight()*count);
+		}
+		canvas.drawTexture(this.icon, tokenX, tokenY, this.icon.getWidth(),this.icon.getHeight(),colIcon);
+		
+		float healthW = HEALTH_WIDTH*canvas.getWidth();
+		float healthH = HEALTH_HEIGHT*canvas.getHeight();
+		
+		float healthX,healthY;
+		if (this.leftside){
+			healthX = tokenX + this.icon.getWidth();
+			healthY = tokenY;
+		}
+		else{
+			healthX = tokenX - healthW;
+			healthY = tokenY;
+		}
+		
+		canvas.drawBox(healthX, healthY, healthW, healthH,col);
+		canvas.drawBox(healthX, healthY, (int) (healthW*this.health/this.maxHealth), healthH, this.color);
 	}
 	
-	public void drawToken(GameCanvas canvas, int count){
+	public Color getActionBarColor(boolean shouldDim,Color c){
+		if (isHovering){
+			return c;
+		}
+		else if (isSelecting){
+			c.mul(Color.LIGHT_GRAY);
+		}
+		else if (shouldDim){
+			c.mul(Color.LIGHT_GRAY);
+		}
+		return c;
+	}
+	
+	private Color getColor(boolean shouldDim){
+		Color chosenColor = Color.WHITE.cpy();
+		if (isHovering){
+			chosenColor = this.color;
+		}
+		else if (isSelecting){
+			chosenColor = chosenColor.lerp(this.color, lerpVal);
+		}
+		else if (shouldDim){
+			chosenColor = Color.LIGHT_GRAY.cpy().mul(1,1,1,0.8f);
+		}
+		return chosenColor;
+	}
+	
+	public void drawToken(GameCanvas canvas, int count,boolean shouldDim){
 		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - icon.getWidth()/2;
 		float tokenY = this.actionBar.getY(canvas, count) - TOKEN_OFFSET_DOWN;
-		canvas.drawTexture(icon,tokenX,tokenY,Color.WHITE,false);
+		Color c = getColor(shouldDim);
+		canvas.drawTexture(icon,tokenX,tokenY,c,false);
 	}
 
 	public boolean getHovering(){

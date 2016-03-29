@@ -138,14 +138,13 @@ public class GameplayController {
     }
     
     public void drawPlay(GameCanvas canvas){
+        screen.draw(canvas);
     	board.draw(canvas);
     	drawCharacters(canvas);
-        screen.draw(canvas);
         bar.draw(canvas);
         animations.draw(canvas,board);
         
         textMessages.draw(canvas,board);
-        drawHighlightedCharacterInSelectionState(canvas);
         if (prompt != null){
         	canvas.drawText(prompt, 18, 530, Color.BLACK);
         }
@@ -158,15 +157,14 @@ public class GameplayController {
     //This needs to be done so characters below show over characters above and selection menu
     //shows over characters.
     private void drawCharacters(GameCanvas canvas){
-        characters.draw(canvas,true);
+		boolean shouldDim = inGameState == InGameState.SELECTION || 
+				mouseOverController.isCharacterHighlighted();
+    	characters.draw(canvas,shouldDim);
     	for (int i = board.height-1; i >= 0; i--){
     		for (Character c : characters){
-    			if (inGameState == InGameState.SELECTION && c.isSelecting){
-    	    		continue;
-    	    	}
+    			
     			if (c.yPosition == i && c.isAlive()){
-    				c.drawCharacter(canvas,board,  inGameState == InGameState.SELECTION || 
-    						mouseOverController.isCharacterHighlighted());
+    				c.drawCharacter(canvas,board,shouldDim);
     			}
     			if (c.getShadowY() == i && c.needShadow() && c.isAlive()){
     				c.drawShadowCharacter(canvas,board);
@@ -174,31 +172,7 @@ public class GameplayController {
             }
     	}
         for (Character c : characters){
-        	c.draw(canvas,board, inGameState == InGameState.SELECTION || 
-					mouseOverController.isCharacterHighlighted());
-        }
-    }
-    
-    //temporary method - change name and integrate with above method
-    private void drawHighlightedCharacterInSelectionState(GameCanvas canvas){
-        characters.draw(canvas, false);
-    	for (int i = board.height-1; i >= 0; i--){
-    		for (Character c : characters){
-    			if (inGameState == InGameState.SELECTION && !c.isSelecting){
-    	    		continue;
-    	    	}
-    			if (c.yPosition == i && c.isAlive()){
-    				c.drawCharacter(canvas,board,  inGameState == InGameState.SELECTION || 
-    						mouseOverController.isCharacterHighlighted());
-    			}
-    			if (c.getShadowY() == i && c.needShadow() && c.isAlive()){
-    				c.drawShadowCharacter(canvas,board);
-    			}
-            }
-    	}
-    	for (Character c : characters){
-        	c.draw(canvas,board, inGameState == InGameState.SELECTION || 
-					mouseOverController.isCharacterHighlighted());
+        	c.draw(canvas,board);
         }
     }
     

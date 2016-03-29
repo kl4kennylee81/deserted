@@ -6,91 +6,33 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Characters extends LinkedList<Character>{
-
-	private final float Y_START_POS = 0.975f;
 	
-	//ex. X_START_POS = 0.25 means left starts at position 25% of the canvasWidth
-	// right starts at position 75% of the canvas (1-X_START_POS)*canvasWidth
-	private final float X_START_POS = 0.020f;
-	
-	private final float Y_SPACING = 0.05f;
-	
-	private final float HEALTH_WIDTH = 0.175f;
-	
-	private final float HEALTH_HEIGHT = 0.03f;
-
-	public void drawHealth(GameCanvas canvas,Character c,int count){
-		Color col = c.isSelecting ? Color.WHITE.cpy().lerp(c.color, 0) : Color.WHITE;
-		Color colIcon = c.getHovering() ? c.color : col;
-		
-		float tokenX,tokenY;
-		if (c.leftside){
-			tokenX = X_START_POS*canvas.getWidth();
-			tokenY = Y_START_POS*canvas.getHeight() - (Y_SPACING*canvas.getHeight()*count);
-		}
-		else{
-			tokenX = ((1-X_START_POS)*canvas.getWidth()) - c.icon.getWidth();
-			tokenY = Y_START_POS*canvas.getHeight() - (Y_SPACING*canvas.getHeight()*count);
-		}
-		canvas.drawTexture(c.icon, tokenX, tokenY, c.icon.getWidth(),c.icon.getHeight(),colIcon);
-		
-		float healthW = HEALTH_WIDTH*canvas.getWidth();
-		float healthH = HEALTH_HEIGHT*canvas.getHeight();
-		
-		float healthX,healthY;
-		if (c.leftside){
-			healthX = tokenX + c.icon.getWidth();
-			healthY = tokenY;
-		}
-		else{
-			healthX = tokenX - healthW;
-			healthY = tokenY;
-		}
-		
-		canvas.drawBox(healthX, healthY, healthW, healthH,col);
-		canvas.drawBox(healthX, healthY, (int) (healthW*c.health/c.maxHealth), healthH, c.color);
-	}
-	
-	public void drawHealths(GameCanvas canvas,Characters cList, boolean drawFirst){
+	public void drawHealths(GameCanvas canvas,Characters cList,boolean shouldDim){
 		int leftSideCount = 0;
 		int rightSideCount = 0;
 		for (Character c:cList){
 			if (c.leftside){
 				leftSideCount++;
-				if (drawFirst) {
-					if (c.isSelecting()){
-						continue;
-					}
-				} else {
-					if (!c.isSelecting()){
-						continue;
-					}
-				}
-				drawHealth(canvas,c,leftSideCount);
+				c.drawHealth(canvas,leftSideCount,shouldDim);
 			}
 			else{
 				rightSideCount++;
-				if (drawFirst) {
-					if (c.isSelecting()){
-						continue;
-					}
-				} else {
-					if (!c.isSelecting()){
-						continue;
-					}
-				}
-				drawHealth(canvas,c,rightSideCount);
+				c.drawHealth(canvas,rightSideCount,shouldDim);
 			}
 		}
 		
 	}
 	
-	public void drawActionBars(GameCanvas canvas){
+	public void drawActionBars(GameCanvas canvas,boolean shouldDim){
 		int count = 0;
 		for (Character c:this){
 			count++;
-			c.actionBar.draw(canvas,count);
-			c.drawToken(canvas,count);
+			
+			Color waitColor = c.getActionBarColor(shouldDim,Color.RED.cpy());
+			Color castColor = c.getActionBarColor(shouldDim, Color.GREEN.cpy());
+			
+			c.actionBar.draw(canvas,count,waitColor,castColor);
+			c.drawToken(canvas,count,shouldDim);
 			
 			// handle all character drawing logic here
 		}
@@ -108,13 +50,13 @@ public class Characters extends LinkedList<Character>{
 		super();
 	}
 	
-	public void drawHealthBars(GameCanvas canvas, boolean drawFirst){
-		drawHealths(canvas,this, drawFirst);
+	public void drawHealthBars(GameCanvas canvas,boolean shouldDim){
+		drawHealths(canvas,this,shouldDim);
 	}
 	
-	public void draw(GameCanvas canvas, boolean drawFirst){
-		drawHealthBars(canvas,drawFirst);
-		drawActionBars(canvas);
+	public void draw(GameCanvas canvas,boolean shouldDim){
+		drawHealthBars(canvas,shouldDim);
+		drawActionBars(canvas,shouldDim);
 		drawSelectionMenu(canvas);
 		
 	}
