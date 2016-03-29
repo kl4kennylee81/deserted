@@ -85,11 +85,27 @@ public class Characters extends LinkedList<Character>{
 		
 	}
 	
+	public void drawActionBars(GameCanvas canvas){
+		int count = 0;
+		for (Character c:this){
+			count++;
+			c.actionBar.draw(canvas,count);
+			c.drawToken(canvas,count);
+			
+			// handle all character drawing logic here
+		}
+	}
+	
 	public Characters(){
 		super();
 	}
 	
 	public void drawHealthBars(GameCanvas canvas, boolean drawFirst){
 		drawHealths(canvas,this, drawFirst);
+	}
+	
+	public void draw(GameCanvas canvas, boolean drawFirst){
+		drawHealthBars(canvas,drawFirst);
+		drawActionBars(canvas);
 	}
 }

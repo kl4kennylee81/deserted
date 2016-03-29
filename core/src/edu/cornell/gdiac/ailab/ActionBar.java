@@ -73,27 +73,27 @@ public class ActionBar {
 	}
 	
 	public void draw(GameCanvas canvas){
-		float w = canvas.getWidth();
-		float h = canvas.getHeight();
-		
-		float xPosBar = BAR_RELATIVE_X_POS *w;
-		float yPosBar = BAR_RELATIVE_Y_POS * h;
-		
-		float widthBar = BAR_WIDTH_RATIO * w;
-		float heightBar = BAR_HEIGHT_RATIO * h;
-		
-		// casting is red we draw red the full bar
-		canvas.drawBox(xPosBar,yPosBar, widthBar, heightBar, Color.RED);
-		
-		float nonActWidth = widthBar * castPoint;
-		
-		// non casting is green we draw width up to the casting point
-		canvas.drawBox(xPosBar, yPosBar, nonActWidth, heightBar, Color.GREEN);
-		for (int i = 0; i < TOTAL_SLOTS; i++){
-			float intervalSize = (widthBar*(1-castPoint))/TOTAL_SLOTS;
-			float startCastX = xPosBar + nonActWidth;
-			canvas.drawBox(startCastX + i*intervalSize, yPosBar, BAR_DIVIDER_WIDTH, heightBar, Color.BLACK);
-		}	
-		
+//		float w = canvas.getWidth();
+//		float h = canvas.getHeight();
+//		
+//		float xPosBar = BAR_RELATIVE_X_POS *w;
+//		float yPosBar = BAR_RELATIVE_Y_POS * h;
+//		
+//		float widthBar = BAR_WIDTH_RATIO * w;
+//		float heightBar = BAR_HEIGHT_RATIO * h;
+//		
+//		// casting is red we draw red the full bar
+//		canvas.drawBox(xPosBar,yPosBar, widthBar, heightBar, Color.RED);
+//		
+//		float nonActWidth = widthBar * castPoint;
+//		
+//		// non casting is green we draw width up to the casting point
+//		canvas.drawBox(xPosBar, yPosBar, nonActWidth, heightBar, Color.GREEN);
+//		for (int i = 0; i < TOTAL_SLOTS; i++){
+//			float intervalSize = (widthBar*(1-castPoint))/TOTAL_SLOTS;
+//			float startCastX = xPosBar + nonActWidth;
+//			canvas.drawBox(startCastX + i*intervalSize, yPosBar, BAR_DIVIDER_WIDTH, heightBar, Color.BLACK);
+//		}	
+//		
 	}
 }

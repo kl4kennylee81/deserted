@@ -53,6 +53,8 @@ public class Character implements GUIElement {
 	Texture icon;
 	AnimationNode animation;
 	SelectionMenu selectionMenu;
+	CharActionBar actionBar;
+	
 	boolean leftside;
 	
 	/** Do I need to select my actions */
@@ -118,8 +120,6 @@ public class Character implements GUIElement {
 		this.name = name;
 		this.health = health;
 		this.maxHealth = maxHealth;
-//		this.speed = speed;
-//		this.castSpeed = castSpeed;
 
 		this.color = color;
 		
@@ -142,6 +142,10 @@ public class Character implements GUIElement {
 		
 		this.availableActions = actions;
 		selectionMenu = new SelectionMenu(availableActions);
+		
+		float waitTime = (float) (Math.random()*4 + 3);
+		float castTime = (float) (Math.random()*4 + 3);
+		actionBar = new CharActionBar(4,waitTime,castTime);
 		
 	}
 	
@@ -310,36 +314,35 @@ public class Character implements GUIElement {
 	float getSpeedModifier() {
 		switch (speedModifier) {
 		case -3:
-			return 0.3f;
+			return 0.55f;
 		case -2:
-			return 0.6f;
+			return 0.7f;
 		case -1:
-			return 0.8f;
+			return 0.85f;
 		case 0:
 			return 1;
 		case 1:
-			return 1.2f;
+			return 1.15f;
 		case 2:
-			return 1.5f;
+			return 1.3f;
 		case 3:
-			return 1.7f;
+			return 1.45f;
 		default:
 			if (speedModifier < -3){
-				return 0.2f;
+				return 0.4f;
 			} else {
-				return 2f;
+				return 1.6f;
 			}
 		
 		}
 	}
 	
-	float getCastSpeed() {
-//		return this.castSpeed*getSpeedModifier();
-		return this.castSpeed;
+	public float getSpeed() {
+		return this.actionBar.getSpeed();
 	}
 	
-	float getBarSpeed() {
-		return this.speed*getSpeedModifier();
+	public float getCastPoint(){
+		return this.actionBar.castPoint;
 	}
 	
 	/**
@@ -717,18 +720,24 @@ public class Character implements GUIElement {
 	 * @param canvas
 	 */
 	private void drawToken(GameCanvas canvas, boolean shouldDim){
-		float tokenX = getTokenX(canvas);
-		float tokenY = getTokenY(canvas);
-		boolean selecting = isSelecting || isHovering;
-		tokenY = selecting && !leftside ? tokenY-10 : tokenY;//change to bar.getHeight
-		Color newColor = new Color(Color.WHITE);
-		if (shouldDim) {
-			newColor.set(newColor.r, newColor.g, newColor.b, 0.3f);
-		}
-		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
-		col = isHovering ? color : col;
-		canvas.drawTexture(icon, tokenX, tokenY, selecting? col : 
-			newColor, selecting);
+//		float tokenX = getTokenX(canvas);
+//		float tokenY = getTokenY(canvas);
+//		boolean selecting = isSelecting || isHovering;
+//		tokenY = selecting && !leftside ? tokenY-10 : tokenY;//change to bar.getHeight
+//		Color newColor = new Color(Color.WHITE);
+//		if (shouldDim) {
+//			newColor.set(newColor.r, newColor.g, newColor.b, 0.3f);
+//		}
+//		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
+//		col = isHovering ? color : col;
+//		canvas.drawTexture(icon, tokenX, tokenY, selecting? col : 
+//			newColor, selecting);
+	}
+	
+	public void drawToken(GameCanvas canvas, int count){
+		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - icon.getWidth()/2;
+		float tokenY = this.actionBar.getY(canvas, count) - TOKEN_OFFSET_DOWN;
+		canvas.drawTexture(icon,tokenX,tokenY,Color.WHITE,false);
 	}
 
 	public boolean getHovering(){

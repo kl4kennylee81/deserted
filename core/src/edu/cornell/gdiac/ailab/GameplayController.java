@@ -1,7 +1,7 @@
 package edu.cornell.gdiac.ailab;
 
 import java.util.Iterator;
-import java.util.List;
+import java.util.List; 
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -177,7 +177,7 @@ public class GameplayController {
 					mouseOverController.isCharacterHighlighted());
         	c.drawSelection(canvas);
         }
-        characters.drawHealthBars(canvas, true);
+        characters.draw(canvas,true);
     }
     
     //temporary method - change name and integrate with above method
@@ -203,7 +203,7 @@ public class GameplayController {
         for (Character c : characters){
         	c.drawSelection(canvas);
         }
-        characters.drawHealthBars(canvas, false);
+        characters.draw(canvas, false);
     }
     
     public void drawAfter(GameCanvas canvas){
