@@ -7,23 +7,17 @@ import java.util.List;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 
-public class ConditionalManager extends TacticalManager {
+public class ConditionalManager {
 	public HashMap<String, Boolean> map;
 	
-	public static final String[] strings = {
-		"IsSafe"
-	};
-
 	
-	private List<Character> chars;
-	private ActionBar bar;
-	private GridBoard board;
-	private Character selected;
-	public List<Character> friends;
-	public List<Character> enemies;
-
-	
-    private float interval;
+	protected List<Character> chars;
+	protected ActionBar bar;
+	protected GridBoard board;
+	protected Character selected;
+	protected List<Character> friends;
+	protected List<Character> enemies;
+    protected float interval;
 
 	
 	public void update(GridBoard board, List<Character> chars, List<Character> friends, List<Character> enemies, ActionBar bar, Character c){
@@ -35,6 +29,33 @@ public class ConditionalManager extends TacticalManager {
 		map = new HashMap<String, Boolean>();
 		this.friends = friends;
 		this.enemies = enemies;
+		
+		map.put("SAFE", isSafe());
+		map.put("NOT_SAFE", isNotSafe());
+		map.put("CAN_HIT_ENEMY", canHitOpponent());
+		map.put("ADJ_ATTACK_SQUARE", attackSquareAdjacent());
+		map.put("ADJ_SAFE_SQUARE", safeSquareAdjacent());
+		map.put("ADJ_SAFE_SQUARE", safeSquareAdjacent());
+		map.put("ALLY_CASTING", friendIsCasting());
+		map.put("ALLY_SHIELDING", friendIsShielding());
+		map.put("ENEMY_CASTING", opponentIsCasting());
+		map.put("HIGH_INT_CHANCE", highInterruptChance());
+		map.put("MED_INT_CHANCE", mediumInterruptChance());
+		map.put("LOW_INT_CHANCE", lowInterruptChance());
+		map.put("NO_INT_CHANCE", noInterruptChance());
+		map.put("LOW_HEALTH", hasLowHealth());
+		map.put("HIGH_HEALTH", isHealthy());
+		map.put("ALONE", isAlone());
+		map.put("ENEMY_HAS_WALL", opponentHasWall());
+		map.put("PROTECTED", isProtected());
+		map.put("CAN_PROTECT", canProtect());
+		map.put("PROTECT_WITH_MOVE", canProtectFriendWithMove());
+		map.put("PROTECTED_BY_MOVE", wouldBeProtectedWithMove());
+		map.put("MAYBE_PROTECTED_BY_MOVE", canBeProtectedWithMove());
+		map.put("COULD_BE_BLOCKED", projectileCouldBeBlocked());
+		map.put("ONE_ENEMY_LEFT", oneEnemyLeft());
+		map.put("HAS_SHIELD", hasShield());
+		map.put("HAS_SINGLE", hasSingle());
 	}
 	
 	
@@ -265,6 +286,33 @@ public class ConditionalManager extends TacticalManager {
 	public boolean oneEnemyLeft(){
 		return enemies.size() == 1;
 	}
+	
+	
+	/**
+	 * True if the selected character has a shield action
+	 */
+	public boolean hasShield(){
+		for(Action a: selected.availableActions){
+			if(a.pattern == Pattern.SHIELD){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
+	/**
+	 * True if the selected character has a single-square action
+	 */
+	public boolean hasSingle(){
+		for(Action a: selected.availableActions){
+			if(a.pattern == Pattern.SINGLE){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 	/**
 	 * Returns true if the selected character is currently behind another

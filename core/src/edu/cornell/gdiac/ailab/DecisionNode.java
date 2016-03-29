@@ -25,6 +25,8 @@ public class DecisionNode {
 		NORMAL_ATTACK,
 		/** Use attack with lowest cast time */
 		QUICK_ATTACK,
+		/** Use most powerful normal attack that can hit an opponent */
+		POWERFUL_ATTACK,
 		/** Intelligently put up a shield - will protect teammate if possible */
 		SHIELD,
 		/** Try to move to an attacking goal tile */
