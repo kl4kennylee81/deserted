@@ -80,14 +80,22 @@ public class PersistingController extends ActionController{
 		selectedActionNode.curY += selectedAction.moveSpeed * sinA;
 		
 		// get the middle of the board tile
-		float midNextX = (float) ((float) Math.signum(cosA) * 0.5 + next_pos.x);
-		float midNextY = (float) ((float) Math.signum(sinA) * 0.5 + next_pos.y);
+		float midNextX,midNextY;
+		if (cur_pos.y == cur_pos.y){
+			midNextX = (float) ((float) Math.signum(cosA) * 0.5 + next_pos.x);
+			midNextY = cur_pos.y;
+		}
+		else{
+			midNextX = (float) ((float) Math.signum(cosA) * 0.5 + next_pos.x);
+			midNextY = (float) ((float) Math.signum(sinA) * 0.5 + next_pos.y);
+		}
 
 		// compute current distance from middle
 		float diffX = (midNextX - selectedActionNode.curX);
 		float diffY = (midNextY - selectedActionNode.curY);
 		float dist = diffX*diffX + diffY*diffY;
 		
+		System.out.println(dist);
 		// when its past the middle you increment to next path
 		if (dist <= selectedAction.moveSpeed){
 			selectedActionNode.pathIndex+=1;
