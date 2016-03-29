@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 
 public class CharActionBar {
 
-	public static float CHAR_VELOCITY_SCREEN_RATIO = 0.001f;
+	public static float CHAR_VELOCITY_SCREEN_RATIO = 0.0005f;
 	
-	public static float MAX_BAR_SCREEN_RATIO = 0.6f;
+	public static float MAX_BAR_SCREEN_RATIO = 1.0f;
 	
 	public static float CAST_POINT_CENTERED = 0.5f;
 	
@@ -14,7 +14,7 @@ public class CharActionBar {
 	private static final float BAR_HEIGHT_RATIO = 0.035f;	
 	
 	/** the x position of the bar should start at the top 7/8 of the screen **/
-	private static final float BAR_RELATIVE_Y_POS = 1.0f;
+	private static final float BAR_RELATIVE_Y_POS = 0.35f;
 	
 	private static final float BAR_DIVIDER_WIDTH = 4f;
 	

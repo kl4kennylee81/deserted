@@ -50,7 +50,7 @@ public class ActionBarController {
 				c.startingCast();
 				c.needsAttack = true;
 				this.isAttack = true;
-			} else if (!c.hasAttacks() && c.castPosition >= ActionBar.castPoint) {
+			} else if (!c.hasAttacks() && c.castPosition >= c.getCastPoint()) {
 				// Reset once done with attacks
 				c.castPosition = 0;
 			}

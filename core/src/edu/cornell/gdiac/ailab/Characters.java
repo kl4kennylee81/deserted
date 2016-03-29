@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Characters extends LinkedList<Character>{
 
-	private final float Y_START_POS = 0.95f;
+	private final float Y_START_POS = 0.975f;
 	
 	//ex. X_START_POS = 0.25 means left starts at position 25% of the canvasWidth
 	// right starts at position 75% of the canvas (1-X_START_POS)*canvasWidth
