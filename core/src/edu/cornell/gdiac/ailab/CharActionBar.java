@@ -106,6 +106,26 @@ public class CharActionBar {
 		return MAX_BAR_SCREEN_RATIO * this.length * canvas.getWidth();
 	}
 	
+	public float getCastWidth(GameCanvas canvas){
+		return (1-castPoint) * getWidth(canvas);
+	}
+	
+	public float getSlotWidth(GameCanvas canvas){
+		float castWidth = getCastWidth(canvas);
+		return castWidth/numSlots;
+	}
+	
+	public float getBarHeight(GameCanvas canvas){
+		return BAR_HEIGHT_RATIO * canvas.getHeight();
+	}
+	
+	public float getBarCastPoint(GameCanvas canvas){
+		float start_x = getX(canvas);
+		float bar_width = getWidth(canvas);
+		float cast_point = bar_width * castPoint;
+		return start_x + cast_point;
+	}
+	
 	public void draw(GameCanvas canvas,int count){
 		float w = canvas.getWidth();
 		float h = canvas.getHeight();

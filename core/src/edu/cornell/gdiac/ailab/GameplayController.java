@@ -158,6 +158,7 @@ public class GameplayController {
     //This needs to be done so characters below show over characters above and selection menu
     //shows over characters.
     private void drawCharacters(GameCanvas canvas){
+        characters.draw(canvas,true);
     	for (int i = board.height-1; i >= 0; i--){
     		for (Character c : characters){
     			if (inGameState == InGameState.SELECTION && c.isSelecting){
@@ -177,11 +178,11 @@ public class GameplayController {
 					mouseOverController.isCharacterHighlighted());
         	c.drawSelection(canvas);
         }
-        characters.draw(canvas,true);
     }
     
     //temporary method - change name and integrate with above method
     private void drawHighlightedCharacterInSelectionState(GameCanvas canvas){
+        characters.draw(canvas, false);
     	for (int i = board.height-1; i >= 0; i--){
     		for (Character c : characters){
     			if (inGameState == InGameState.SELECTION && !c.isSelecting){
@@ -203,7 +204,6 @@ public class GameplayController {
         for (Character c : characters){
         	c.drawSelection(canvas);
         }
-        characters.draw(canvas, false);
     }
     
     public void drawAfter(GameCanvas canvas){

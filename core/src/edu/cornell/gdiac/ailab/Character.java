@@ -493,7 +493,7 @@ public class Character implements GUIElement {
 	/** temporary while menu is blocked by characters */
 	public void drawSelection(GameCanvas canvas){
 		if (isSelecting && isAlive()){
-			selectionMenu.draw(canvas);
+			selectionMenu.draw(canvas,this.actionBar);
 		}
 	}
 	

@@ -22,15 +22,13 @@ public class SelectionMenu {
 
 	private static final float RELATIVE_TEXT_X_POS = 0.02f;
 
-	private static final float RELATIVE_TEXT_Y_POS = 0.6f;
+	private static final float RELATIVE_TEXT_Y_POS = 0.7f;
 
 	private static final float RELATIVE_TEXT_SPACING = 0.0625f;
 
 	private static final float ACTION_POINTER_OFFSET_X = 15;
 
 	private static final float ACTION_POINTER_OFFSET_Y = 15;
-
-	private static final float TEXT_ACTION_OFFSET = 30f;
 
 	private static final float RELATIVE_DESCRIPTION_Y_POS = 0.8f;
 	
@@ -232,7 +230,7 @@ public class SelectionMenu {
 		}
 	}
 	
-	public void draw(GameCanvas canvas){
+	public void draw(GameCanvas canvas,CharActionBar actionBar){
 		if (increasing){
 			lerpVal+=0.02;
 			if (lerpVal >= 1){
@@ -292,11 +290,11 @@ public class SelectionMenu {
 		canvas.drawPointer(pointer_x,pointer_y, Color.CORAL);
 		
 		//Draw action bar with 3 black boxes to show 4 slots
-		float actionSlot_x = ActionBar.getBarCastPoint(canvas);
-		float actionSlot_y = ActionBar.getBarY(canvas);
+		float actionSlot_x = actionBar.getBarCastPoint(canvas);
+		float actionSlot_y = actionBar.getY(canvas,1);
 		
-		float slot_width = ActionBar.getSlotWidth(canvas);
-		float slot_height = ActionBar.getBarHeight(canvas);
+		float slot_width = actionBar.getSlotWidth(canvas);
+		float slot_height = actionBar.getBarHeight(canvas);
 		
 		int offset = 0;
 		for (int i = 0; i < ActionBar.getTotalSlots(); i++){
