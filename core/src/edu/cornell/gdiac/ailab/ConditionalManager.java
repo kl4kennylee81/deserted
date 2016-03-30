@@ -56,6 +56,7 @@ public class ConditionalManager {
 		map.put("ONE_ENEMY_LEFT", oneEnemyLeft());
 		map.put("HAS_SHIELD", hasShield());
 		map.put("HAS_SINGLE", hasSingle());
+		map.put("DEFAULT", true);
 	}
 	
 	

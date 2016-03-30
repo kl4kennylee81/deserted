@@ -149,7 +149,7 @@ public class TacticalManager extends ConditionalManager{
 			List<String> conds = index.conditions.get(i);
 			boolean matched = true;
 			for(String s: conds){
-				if(map.containsKey(s) || !map.get(s)){
+				if(!map.containsKey(s) || !map.get(s)){
 					matched = false;
 					break;
 				}
@@ -699,7 +699,13 @@ public class TacticalManager extends ConditionalManager{
 	 * Returns the number of frames until this character could potentially move
 	 */
 	private int minFramesToMove(Character c){
-		if(c.castPosition < ActionBar.castPoint){
+		if(c.hasShield() && c.castPosition > ActionBar.castPoint){
+			int waitFrames = (int) ((ActionBar.castPoint) / c.getBarSpeed());
+			int castFrames = (int) ((1f - c.castPosition) / c.getCastSpeed());
+			return waitFrames + castFrames;
+		}
+		
+		else if(c.castPosition <= ActionBar.castPoint){
 			int waitFrames = (int) ((ActionBar.castPoint - c.castPosition) / c.getBarSpeed());
 			int castFrames = (int) (interval / c.getCastSpeed());
 			return waitFrames + castFrames;

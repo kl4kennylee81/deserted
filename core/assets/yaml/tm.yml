@@ -1,5 +1,29 @@
 root:
+  type: index
+  HAS_SINGLE/HIGH_HEALTH: child1
+  DEFAULT: child2
+
+child1:
+  type: leaf
+  my_tactic: ATTACK
+
+child2:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_AGGRESSIVE, MOVE_AGGRESSIVE, MOVE_DEFENSIVE]
+  my_actions: [MOVE_DEFENSIVE, MOVE_DEFENSIVE, MOVE_DEFENSIVE, MOVE_DEFENSIVE]
+  
+red:
+  type: index
+  DEFAULT: child3
+
+child3:
+  type: leaf
+  branch_type: ATTACK
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_OPTIMAL]
+  
+  
+  
+  
+ 
   
