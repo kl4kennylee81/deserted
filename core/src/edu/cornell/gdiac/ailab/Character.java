@@ -104,11 +104,7 @@ public class Character implements GUIElement {
 	private boolean isHovering;
 	
 	/** Cast bar position of last cast (Used for animating) */
-	float lastCastStart;
-	
-	/** Speed modifier */
-	int speedModifier;
-	
+	float lastCastStart;	
 	
 	/**Constructor used by GameEngine to create characters from yaml input. */
 	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
@@ -131,8 +127,6 @@ public class Character implements GUIElement {
 		this.startingXPosition = this.xPosition = xPosition;
 		this.startingYPosition = this.yPosition = yPosition;
 		this.leftside = leftSide;
-		
-		speedModifier = 0;
 		lastCastStart = 0;
 		castPosition = 0;
 		castMoved = 0;
@@ -165,7 +159,6 @@ public class Character implements GUIElement {
 		this.startingYPosition = this.yPosition = c.yPosition;
 		this.leftside = c.leftside;
 		
-		speedModifier = 0;
 		lastCastStart = 0;
 		castPosition = 0;
 		castMoved = 0;
@@ -312,38 +305,21 @@ public class Character implements GUIElement {
 		return persistingActions.peek() != null;
 	}
 	
-	float getSpeedModifier() {
-		switch (speedModifier) {
-		case -3:
-			return 0.55f;
-		case -2:
-			return 0.7f;
-		case -1:
-			return 0.85f;
-		case 0:
-			return 1;
-		case 1:
-			return 1.15f;
-		case 2:
-			return 1.3f;
-		case 3:
-			return 1.45f;
-		default:
-			if (speedModifier < -3){
-				return 0.4f;
-			} else {
-				return 1.6f;
-			}
-		
-		}
-	}
-	
 	public float getSpeed() {
 		return this.actionBar.getSpeed();
 	}
 	
 	public float getCastPoint(){
-		return this.actionBar.castPoint;
+		return this.actionBar.getCastPoint();
+	}
+	
+	public void setSpeedModifier(int val){
+		//TODO if we have more modifier on stats have a bitmap of modifiers
+		this.actionBar.setSpeedModifier(val);
+	}
+	
+	public int getSpeedModifier(){
+		return this.actionBar.speedModifier;
 	}
 	
 	/**

@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.Color;
 
 public class CharActionBar {
 
-	public static float CHAR_VELOCITY_SCREEN_RATIO = 0.0005f;
+	public static final float CHAR_VELOCITY_SCREEN_RATIO = 0.001f;
 	
-	public static float MAX_BAR_SCREEN_RATIO = 1.0f;
+	public static final float MAX_BAR_SCREEN_RATIO = 1.0f;
 	
-	public static float CAST_POINT_CENTERED = 0.5f;
+	public static final float CAST_POINT_CENTERED = 0.5f;
 	
 	/** Ration of the bar height to the screen */
 	private static final float BAR_HEIGHT_RATIO = 0.035f;	
@@ -46,6 +46,11 @@ public class CharActionBar {
 		float totalTime = waitTime + castTime;
 		this.length = totalTime/MAX_TIME;
 		this.castPoint = waitTime/totalTime;
+		this.speedModifier = 0;
+	}
+	
+	public void setSpeedModifier(int val){
+		speedModifier = val;
 	}
 	
 	/** speed is in the percentage of that bar that is moved
@@ -55,7 +60,7 @@ public class CharActionBar {
 	 *  proportionally it will be CHAR_VELOCITY/ (ratio of bar to the canvas)
 	 */
 	public float getSpeed(){
-		float proportionLengthBar = MAX_BAR_SCREEN_RATIO * this.length;
+		float proportionLengthBar = MAX_BAR_SCREEN_RATIO * this.getLength();
 		return CHAR_VELOCITY_SCREEN_RATIO/proportionLengthBar;
 	}
 	
@@ -85,10 +90,30 @@ public class CharActionBar {
 		}
 	}
 	
+	/** length as a proportion of the max_length **/
+	public float getLength(){
+		float totalTime = this.length * MAX_TIME;
+		float waitTime = totalTime * this.castPoint;
+		float castTime = totalTime - waitTime;
+		float modifiedWaitTime = waitTime/this.getSpeedModifier();
+		
+		float newTotalTime = modifiedWaitTime + castTime;
+		return newTotalTime/MAX_TIME;
+	}
+	
+	public float getCastPoint(){
+		float totalTime = this.length * MAX_TIME;
+		float waitTime = totalTime * this.castPoint;
+		float castTime = totalTime - waitTime;
+		float modifiedWaitTime = waitTime/this.getSpeedModifier();
+		float newTotalTime = modifiedWaitTime + castTime;
+		return modifiedWaitTime/newTotalTime;
+	}
+	
 	// need to account for offsetting for the cast point
 	public float getX(GameCanvas canvas){
 		float w = canvas.getWidth();
-		float waitLength = this.length * this.castPoint * 2;
+		float waitLength = this.getLength() * this.getCastPoint() * 2;
 		float widthProportion = MAX_BAR_SCREEN_RATIO *waitLength;
 		float xOffsetProportion = (1-widthProportion)/2;
 		return xOffsetProportion * w;
@@ -103,11 +128,11 @@ public class CharActionBar {
 	
 	
 	public float getWidth(GameCanvas canvas){
-		return MAX_BAR_SCREEN_RATIO * this.length * canvas.getWidth();
+		return MAX_BAR_SCREEN_RATIO * this.getLength() * canvas.getWidth();
 	}
 	
 	public float getCastWidth(GameCanvas canvas){
-		return (1-castPoint) * getWidth(canvas);
+		return (1-this.getCastPoint()) * getWidth(canvas);
 	}
 	
 	public float getSlotWidth(GameCanvas canvas){
@@ -116,7 +141,7 @@ public class CharActionBar {
 	}
 	
 	public float getSlotWidth(){
-		return (1-this.castPoint)/this.numSlots;
+		return (1-this.getCastPoint())/this.numSlots;
 	}
 	
 	public float getBarHeight(GameCanvas canvas){
@@ -124,19 +149,19 @@ public class CharActionBar {
 	}
 	
 	public float getWaitWidth(GameCanvas canvas){
-		return castPoint * getWidth(canvas);
+		return this.getCastPoint() * getWidth(canvas);
 	}
 	
 	public float actionExecutionTime(float takenSlots,float actionCost){
 		float totalSlots = takenSlots + actionCost;
 		float slotWidth = getSlotWidth();
-		return this.castPoint + totalSlots*slotWidth;
+		return this.getCastPoint() + totalSlots*slotWidth;
 	}
 	
 	public float getBarCastPoint(GameCanvas canvas){
 		float start_x = getX(canvas);
 		float bar_width = getWidth(canvas);
-		float cast_point = bar_width * castPoint;
+		float cast_point = bar_width * this.getCastPoint();
 		return start_x + cast_point;
 	}
 	
@@ -147,18 +172,18 @@ public class CharActionBar {
 		float xPosBar =getX(canvas);
 		float yPosBar = getY(canvas,count);
 		
-		float widthBar = MAX_BAR_SCREEN_RATIO *this.length * w;
+		float widthBar = MAX_BAR_SCREEN_RATIO *this.getLength() * w;
 		float heightBar = BAR_HEIGHT_RATIO * h;
 		
 		// casting is red we draw red the full bar
 		canvas.drawBox(xPosBar,yPosBar, widthBar, heightBar, waitColor);
 		
-		float nonActWidth = widthBar * castPoint;
+		float nonActWidth = widthBar * this.getCastPoint();
 		
 		// non casting is green we draw width up to the casting point
 		canvas.drawBox(xPosBar, yPosBar, nonActWidth, heightBar, castColor);
 		for (int i = 0; i < this.numSlots; i++){
-			float intervalSize = (widthBar*(1-this.castPoint))/this.numSlots;
+			float intervalSize = (widthBar*(1-this.getCastPoint()))/this.numSlots;
 			float startCastX = xPosBar + nonActWidth;
 			canvas.drawBox(startCastX + i*intervalSize, yPosBar, BAR_DIVIDER_WIDTH, heightBar, Color.BLACK);
 		}	
