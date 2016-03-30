@@ -47,28 +47,27 @@ public class AIController {
 		for (Character c : chars){
 			if (c.needsSelection && c.isAI){
 				//Update tactical manager
-//				tacticalManager.updateConditions(c);
-//				tacticalManager.selectActions(c);
-//				
+				tacticalManager.updateConditions(c);
+				tacticalManager.selectActions(c);
 				c.needsSelection = false;
-				selected = c;
-				xOffset = 0;
-				yOffset = 0;
-				shield = false;
-				hasSingle = hasSingle();
-				interval = (1f-bar.castPoint) / ActionBar.getTotalSlots();
-				curSlot = 1;
-				switch (c.diff){
-					case EASY:
-						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.1f));
-						break;
-					case MEDIUM:
-						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.7f));
-						break;
-					default:
-						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 1.0f));
-						break;
-				}
+//				selected = c;
+//				xOffset = 0;
+//				yOffset = 0;
+//				shield = false;
+//				hasSingle = hasSingle();
+//				interval = (1f-bar.castPoint) / ActionBar.getTotalSlots();
+//				curSlot = 1;
+//				switch (c.diff){
+//					case EASY:
+//						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.1f));
+//						break;
+//					case MEDIUM:
+//						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.7f));
+//						break;
+//					default:
+//						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 1.0f));
+//						break;
+//				}
 			}
 		}
 	}

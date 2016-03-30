@@ -2,6 +2,7 @@ package edu.cornell.gdiac.ailab;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -22,12 +23,18 @@ public class TacticalManager extends ConditionalManager{
 	private DecisionNode tacticalTree;
 	private HashMap<String, DecisionNode> nodeMap;
 	private HashMap<String, LeafNode> preSelected;
-	private HashMap<String, IndexNode> characterTrees;
 	
 	public TacticalManager(){
 		preSelected = new HashMap<String, LeafNode>();
-		characterTrees = new HashMap<String, IndexNode>();
 		nodeMap = new HashMap<String, DecisionNode>();
+	}
+	
+	public void setRoot(DecisionNode n){
+		tacticalTree = n;
+	}
+	
+	public void addToMap(String s, DecisionNode n){
+		nodeMap.put(s, n);
 	}
 	
 	
@@ -58,7 +65,7 @@ public class TacticalManager extends ConditionalManager{
 	
 	
 	/**
-	 * Select and action for the character whose id is "id". First check if this
+	 * Select an action for the character whose id is "id". First check if this
 	 * character's specific actions have already been selected. If they have, 
 	 * then just use those. If a general course of action has been preselected
 	 * for this character, then traverse the character's tree for that general
@@ -77,9 +84,9 @@ public class TacticalManager extends ConditionalManager{
 		}
 		
 		//If the leaf has an action for a ally, add it to the preselected info
-		if(leaf.friendTactic != Tactic.NONE){
+		if(leaf.allyTactic != Tactic.NONE){
 			Character friend = findNextFriend(c);
-			LeafNode friendLeaf = new LeafNode(leaf.friendTactic, leaf.friendSpecific);
+			LeafNode friendLeaf = new LeafNode(Tactic.NONE, leaf.allyTactic, leaf.allySpecific);
 			preSelected.put(friend.name, friendLeaf);
 		}
 		
@@ -123,7 +130,7 @@ public class TacticalManager extends ConditionalManager{
 	 * decision tree to figure our what to do.
 	 */
 	public List<ActionNode> getActionsFromGeneral(Character c, Tactic general){
-		IndexNode node = characterTrees.get(c.name);
+		IndexNode node = (IndexNode) nodeMap.get(c.name);
 		DecisionNode subTree = getSubtreeFromTactic(node, general);
 		LeafNode charLeaf = traverse(subTree);
 		return getActionsFromSpecific(c, charLeaf.mySpecific);
@@ -161,7 +168,7 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	public List<ActionNode> getActionsFromSpecific(Character c, MoveList specific){
 		ArrayList<Specific> moves = specific.specificActions;
-		ArrayList<ActionNode> nodes = new ArrayList<ActionNode>();
+		LinkedList<ActionNode> nodes = new LinkedList<ActionNode>();
 		int startSlot = 0;
 		int x = c.xPosition;
 		int y = c.yPosition;
@@ -567,9 +574,10 @@ public class TacticalManager extends ConditionalManager{
 		}
 		d = attackingDirection(c, xPos, yPos);
 		if(d != Direction.NONE){
+			System.out.println(c.name + " " + d.toString());
 			return anPool.newActionNode(a, getCastTime(a, startPoint), 0, 0, d);
 		}
-		
+		System.out.println("no direction");
 		return anPool.newActionNode(a, getCastTime(a, startPoint), xPos, yPos, randomDirection(xPos, yPos));
 	}
 	
@@ -600,7 +608,7 @@ public class TacticalManager extends ConditionalManager{
 	 * Try to find a single movement that will put character in position to attack
 	 */
 	private Direction attackingDirection(Character c, int xPos, int yPos){
-		if(canHitEnemyFrom(xPos-1, yPos) && !board.isOccupied(xPos-1, yPos)){
+		if(canHitEnemyFrom(xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos-1)){
 			return Direction.LEFT;
 		}
 		if(canHitEnemyFrom(xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
@@ -629,7 +637,7 @@ public class TacticalManager extends ConditionalManager{
 		if(canHitEnemyFrom(xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
 			return Direction.DOWN;
 		}
-		if(canHitEnemyFrom(xPos-1, yPos) && !board.isOccupied(xPos-1, yPos)){
+		if(canHitEnemyFrom(xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos-1)){
 			return Direction.LEFT;
 		}
 		return Direction.NONE;
@@ -659,16 +667,10 @@ public class TacticalManager extends ConditionalManager{
 	
 	
 	/**
-	 * Returns true if a tile (x, _ ) would be on the selected character's own side
-	 * of the board.
+	 * Returns true if a tile (x, _ ) is on the right side of the board
 	 */
 	private boolean ownSide(int x){
-		if(selected.xPosition <= board.width/2){
-			return (x <= board.width/2) ? true : false;
-		}
-		else{
-			return (x > board.width/2) ? true : false;
-		}
+		return x >= board.width/2 ? true : false;
 	}
 	
 	

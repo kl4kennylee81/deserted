@@ -3,6 +3,7 @@ package edu.cornell.gdiac.ailab;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,6 +23,7 @@ import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.mesh.MeshLoader;
+import edu.cornell.gdiac.ailab.DecisionNode.*;
 
 public class ObjectLoader {
 	
@@ -310,11 +312,81 @@ public class ObjectLoader {
 	/**
 	 * Loads a specific AI file from the yaml HashMap
 	 */
+	@SuppressWarnings("unchecked")
 	private void processAIFile(HashMap<String, HashMap<String, Object>> nodes){
-		//Add these nodes to the tactical manager
-		//If the key is "root", then make it the root node of the tactical manager
-		//If the key is the name of a character, then add it to the individual character subtrees set
-		//Always add to the nodeMap map
+		for(String s: nodes.keySet()){
+			HashMap<String, Object> map = nodes.get(s);
+			String type = (String) map.get("type");
+			map.remove("type");
+
+			Tactic branchType = Tactic.NONE;
+			if(map.containsKey("branch_type")){
+				branchType = Tactic.valueOf((String) map.get("branch_type"));
+				map.remove("branch_type");
+			}
+			
+			DecisionNode node;
+			if(type.equals("index")){
+				node = new IndexNode(branchType);
+				for(String cond: map.keySet()){
+					String[] conds = cond.split("/");
+					String other = (String) map.get(cond);
+					((IndexNode) node).addRule(Arrays.asList(conds), other);
+				}
+			}
+			
+			else if(type.equals("leaf")){
+				node = new LeafNode(branchType);
+				Tactic myTactic = Tactic.valueOf((String) map.get("my_tactic"));
+				((LeafNode) node).myTactic = myTactic;
+				if(myTactic == Tactic.SPECIFIC){
+					ArrayList<String> s1 = (ArrayList<String>) map.get("my_actions");
+					((LeafNode) node).mySpecific = new MoveList(stringsToSpecific(s1));
+				}
+				
+				if(map.containsKey("ally_tactic")){
+					Tactic allyTactic = Tactic.valueOf((String) map.get("ally_tactic"));
+					((LeafNode) node).allyTactic = allyTactic;
+					if(allyTactic == Tactic.SPECIFIC){
+						ArrayList<String> s2 = (ArrayList<String>) map.get("ally_actions");
+						((LeafNode) node).allySpecific = new MoveList(stringsToSpecific(s2));
+					}
+				}
+			} else {
+				System.out.println("MUST SPECIFY INDEX OR LEAF");
+				return;
+			}
+			
+			if(s.equals("root")){
+				tacticalManager.setRoot(node);
+			}
+			tacticalManager.addToMap(s, node);
+		}
+	}
+	
+	
+	/**
+	 * Convert a list of strings into a list of specific actions
+	 */
+	private ArrayList<Specific> stringsToSpecific(ArrayList<String> strings){
+		ArrayList<Specific> moves = new ArrayList<Specific>();
+		for(String s: strings){
+			moves.add(Specific.valueOf(s));
+		}
+		return moves;
+	}
+	
+	
+	/**
+	 * Returns true if this string is the name of a character
+	 */
+	private boolean isCharacterName(String s){
+		for(Character c: availableCharacters.values()){
+			if(c.name.equals(s)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**Loads all target animations from their yaml specifications

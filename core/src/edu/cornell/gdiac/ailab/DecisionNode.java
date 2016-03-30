@@ -11,6 +11,9 @@ public class DecisionNode {
 	/** Label of this node, used for traversal */
 	public String label;
 		
+	public DecisionNode(Tactic b){
+		branchType = b;
+	}
 	
 	/**
 	 * Enumerates possible specific actions that an AI can take;
@@ -61,7 +64,8 @@ public class DecisionNode {
 		ArrayList<List<String>> conditions;
 		ArrayList<String> decisions;
 		
-		public IndexNode(){
+		public IndexNode(Tactic b){
+			super(b);
 			conditions = new ArrayList<List<String>>();
 			decisions = new ArrayList<String>();
 		}
@@ -81,18 +85,20 @@ public class DecisionNode {
 		Tactic myTactic;
 		MoveList mySpecific;
 		
-		Tactic friendTactic;
-		MoveList friendSpecific;
+		Tactic allyTactic;
+		MoveList allySpecific;
 		
-		public LeafNode(Tactic t, MoveList m){
-			friendTactic = Tactic.NONE;
+		public LeafNode(Tactic b, Tactic t, MoveList m){
+			super(b);
+			allyTactic = Tactic.NONE;
 			myTactic = t;
 			mySpecific = m;
 		}
 		
-		public LeafNode(){
+		public LeafNode(Tactic b){
+			super(b);
 			myTactic = Tactic.NONE;
-			friendTactic = Tactic.NONE;
+			allyTactic = Tactic.NONE;
 		}
 	}
 	
