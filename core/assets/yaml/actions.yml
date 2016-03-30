@@ -117,7 +117,7 @@
     type: SPEED
     name: Slowed
     numRounds: 1
-    magnitude: -1
+    magnitude: -4
   description: Target a single square to slow down enemy
   animationId: 0
 

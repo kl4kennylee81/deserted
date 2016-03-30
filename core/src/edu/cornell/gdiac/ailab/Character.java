@@ -138,7 +138,7 @@ public class Character implements GUIElement {
 		this.availableActions = actions;
 		selectionMenu = new SelectionMenu(availableActions);
 		
-		float waitTime = (float) (Math.random()*4 + 3);
+		float waitTime = (float) (Math.random()*4 + 2);
 		float castTime = (float) (Math.random()*4 + 3);
 		actionBar = new CharActionBar(5,waitTime,castTime);
 		

@@ -6,7 +6,7 @@ public class CharActionBar {
 
 	public static final float CHAR_VELOCITY_SCREEN_RATIO = 0.001f;
 	
-	public static final float MAX_BAR_SCREEN_RATIO = 1.0f;
+	public static final float MAX_BAR_SCREEN_RATIO = 0.9f;
 	
 	public static final float CAST_POINT_CENTERED = 0.5f;
 	
@@ -23,7 +23,7 @@ public class CharActionBar {
 	
 	
 	// make this in terms of the max speed after applying speed modifier
-	public static float MAX_TIME = 20;
+	public static float MAX_TIME = 24;
 	
 	// length of the cast bar in terms of the max bar length
 	// actual pixel length = MAX_BAR_SCREEN_RATIO * length * canvas.getWidth()
@@ -64,10 +64,14 @@ public class CharActionBar {
 		return CHAR_VELOCITY_SCREEN_RATIO/proportionLengthBar;
 	}
 	
+	public int getNumSlots(){
+		return this.numSlots;
+	}
+	
 	float getSpeedModifier() {
 		switch (speedModifier) {
 		case -3:
-			return 0.55f;
+			return 0.6f;
 		case -2:
 			return 0.7f;
 		case -1:
@@ -82,7 +86,7 @@ public class CharActionBar {
 			return 1.45f;
 		default:
 			if (speedModifier < -3){
-				return 0.4f;
+				return 0.5f;
 			} else {
 				return 1.6f;
 			}
@@ -98,6 +102,7 @@ public class CharActionBar {
 		float modifiedWaitTime = waitTime/this.getSpeedModifier();
 		
 		float newTotalTime = modifiedWaitTime + castTime;
+		System.out.println(newTotalTime);
 		return newTotalTime/MAX_TIME;
 	}
 	
@@ -109,6 +114,21 @@ public class CharActionBar {
 		float newTotalTime = modifiedWaitTime + castTime;
 		return modifiedWaitTime/newTotalTime;
 	}
+	
+	public float getHurtLength(float hurtPercent){
+		float trueLength = this.getLength();
+		float waitLength = trueLength * this.getCastPoint();
+		return 0;
+//		
+//		
+//		float healthW = getWaitWidth(canvas);
+//		float healthH = this.actionBar.getBarHeight(canvas);
+//		
+//		float damagedWidth = (healthW*this.health/this.maxHealth);
+//		float leftoverWidth = healthW - damagedWidth;
+//		return 0;
+	}
+	
 	
 	// need to account for offsetting for the cast point
 	public float getX(GameCanvas canvas){
@@ -137,11 +157,11 @@ public class CharActionBar {
 	
 	public float getSlotWidth(GameCanvas canvas){
 		float castWidth = getCastWidth(canvas);
-		return castWidth/numSlots;
+		return castWidth/getNumSlots();
 	}
 	
 	public float getSlotWidth(){
-		return (1-this.getCastPoint())/this.numSlots;
+		return (1-this.getCastPoint())/this.getNumSlots();
 	}
 	
 	public float getBarHeight(GameCanvas canvas){
@@ -182,8 +202,8 @@ public class CharActionBar {
 		
 		// non casting is green we draw width up to the casting point
 		canvas.drawBox(xPosBar, yPosBar, nonActWidth, heightBar, castColor);
-		for (int i = 0; i < this.numSlots; i++){
-			float intervalSize = (widthBar*(1-this.getCastPoint()))/this.numSlots;
+		for (int i = 0; i < this.getNumSlots(); i++){
+			float intervalSize = (widthBar*(1-this.getCastPoint()))/this.getNumSlots();
 			float startCastX = xPosBar + nonActWidth;
 			canvas.drawBox(startCastX + i*intervalSize, yPosBar, BAR_DIVIDER_WIDTH, heightBar, Color.BLACK);
 		}	
