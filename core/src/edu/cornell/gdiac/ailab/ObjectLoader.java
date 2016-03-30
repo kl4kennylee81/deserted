@@ -117,6 +117,7 @@ public class ObjectLoader {
 			characters = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
 		
+		
 		loadKeysFromLevels(allies);
 		loadKeysFromLevels(enemies);
 		loadKeysFromCharacters(characters);
@@ -292,8 +293,28 @@ public class ObjectLoader {
 	/**
 	 * Loads all the AI's from their yaml specifications
 	 */
-	private void loadAI(ArrayList<String> ai){
-		
+	@SuppressWarnings("unchecked") 
+	private void loadAI(ArrayList<String> ai) throws IOException{
+		for(String s: ai){
+			HashMap<String , HashMap<String, Object>> nodes;
+			FileHandle aiFile = Gdx.files.internal("yaml/"+s);
+			Yaml yaml = new Yaml();
+			try (InputStream is = aiFile.read()){
+				nodes = (HashMap<String, HashMap<String, Object>>) yaml.load(is);
+				processAIFile(nodes);
+			}
+		}
+	}
+	
+	
+	/**
+	 * Loads a specific AI file from the yaml HashMap
+	 */
+	private void processAIFile(HashMap<String, HashMap<String, Object>> nodes){
+		//Add these nodes to the tactical manager
+		//If the key is "root", then make it the root node of the tactical manager
+		//If the key is the name of a character, then add it to the individual character subtrees set
+		//Always add to the nodeMap map
 	}
 	
 	/**Loads all target animations from their yaml specifications

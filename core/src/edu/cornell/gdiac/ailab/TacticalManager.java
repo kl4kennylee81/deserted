@@ -21,12 +21,12 @@ public class TacticalManager extends ConditionalManager{
 	
 	private DecisionNode tacticalTree;
 	private HashMap<String, DecisionNode> nodeMap;
-	private HashMap<Character, LeafNode> preSelected;
-	private HashMap<Character, IndexNode> characterTrees;
+	private HashMap<String, LeafNode> preSelected;
+	private HashMap<String, IndexNode> characterTrees;
 	
 	public TacticalManager(){
-		preSelected = new HashMap<Character, LeafNode>();
-		characterTrees = new HashMap<Character, IndexNode>();
+		preSelected = new HashMap<String, LeafNode>();
+		characterTrees = new HashMap<String, IndexNode>();
 		nodeMap = new HashMap<String, DecisionNode>();
 	}
 	
@@ -68,9 +68,9 @@ public class TacticalManager extends ConditionalManager{
 	public void selectActions(Character c){
 		LeafNode leaf;
 		//Either get the preselected leaf or traverse the tree to find it
-		if(preSelected.containsKey(c)){
-			leaf = preSelected.get(c);
-			preSelected.remove(c);
+		if(preSelected.containsKey(c.name)){
+			leaf = preSelected.get(c.name);
+			preSelected.remove(c.name);
 		}
 		else{
 			leaf = traverse(tacticalTree);
@@ -80,7 +80,7 @@ public class TacticalManager extends ConditionalManager{
 		if(leaf.friendTactic != Tactic.NONE){
 			Character friend = findNextFriend(c);
 			LeafNode friendLeaf = new LeafNode(leaf.friendTactic, leaf.friendSpecific);
-			preSelected.put(friend, friendLeaf);
+			preSelected.put(friend.name, friendLeaf);
 		}
 		
 		if(leaf.myTactic == Tactic.SPECIFIC){
@@ -123,7 +123,7 @@ public class TacticalManager extends ConditionalManager{
 	 * decision tree to figure our what to do.
 	 */
 	public List<ActionNode> getActionsFromGeneral(Character c, Tactic general){
-		IndexNode node = characterTrees.get(c);
+		IndexNode node = characterTrees.get(c.name);
 		DecisionNode subTree = getSubtreeFromTactic(node, general);
 		LeafNode charLeaf = traverse(subTree);
 		return getActionsFromSpecific(c, charLeaf.mySpecific);
