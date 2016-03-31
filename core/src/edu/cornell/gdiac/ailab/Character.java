@@ -138,10 +138,9 @@ public class Character implements GUIElement {
 		this.availableActions = actions;
 		selectionMenu = new SelectionMenu(availableActions);
 		
-		float waitTime = 4;
-//		float waitTime = (float) (Math.random()*2 + 4);
+		float waitTime = (float) (Math.random()*3 + 2);
 		float castTime = (float) (Math.random()*4 + 4);
-		actionBar = new CharActionBar(5,waitTime,castTime);
+		actionBar = new CharActionBar(4,waitTime,castTime);
 		
 	}
 	
@@ -320,12 +319,6 @@ public class Character implements GUIElement {
 	
 	public float getCastPoint(){
 		return this.actionBar.getCastPoint();
-	}
-	
-	public float getCastStartPosition(){
-		float hurtPercent = ((float)this.health)/((float)this.maxHealth);
-		float startPosition = this.actionBar.getHurtStartPosition(hurtPercent);
-		return startPosition;
 	}
 	
 	public void setSpeedModifier(int val){
@@ -715,7 +708,7 @@ public class Character implements GUIElement {
 		canvas.drawTexture(this.icon, tokenX, tokenY, this.icon.getWidth(),this.icon.getHeight(),iconColor);
 		
 		/** the wait width is modified by the hp already **/
-		float healthW = this.actionBar.getWaitWidth(canvas);
+		float healthW = this.actionBar.getWaitWidthNoBuffer(canvas);
 		float healthH = this.actionBar.getBarHeight(canvas);
 		
 		float healthX = this.actionBar.getX(canvas);

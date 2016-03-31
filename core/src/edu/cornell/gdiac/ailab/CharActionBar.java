@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 public class CharActionBar {
 
 	/** time all characters have to wait before they enter their casting period **/
-	public static final float STARTING_BUFFER_TIME = 3f;
+	public static final float STARTING_BUFFER_TIME = 2f;
 	
 	public static final float CHAR_VELOCITY_SCREEN_RATIO = 0.001f;
 	
@@ -22,8 +22,6 @@ public class CharActionBar {
 	private static final float BAR_DIVIDER_WIDTH = 4f;
 	
 	private static final float Y_SPACING = 0.065f;
-	
-	
 	
 	// make this in terms of the max speed after applying speed modifier
 	public static float MAX_TIME = 24;
@@ -89,9 +87,9 @@ public class CharActionBar {
 			return 2f;
 		default:
 			if (speedModifier < -2){
-				return 1/2.5f;
+				return 1/2f;
 			} else if (speedModifier > 2){
-				return 2.5f;
+				return 2f;
 			}
 			else{
 				return 1;
@@ -110,11 +108,27 @@ public class CharActionBar {
 		float modifiedWaitTime = waitTime/this.getSpeedModifier();
 		
 		// modify based on current health left
-		modifiedWaitTime = modifiedWaitTime * this.healthProportion;
+		modifiedWaitTime = modifiedWaitTime * this.healthProportion  + STARTING_BUFFER_TIME;
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return newTotalTime/MAX_TIME;
 	}
+	
+	/** used to draw the width of the energy bar without the buffering period **/
+	public float getWaitWidthNoBuffer(GameCanvas canvas){
+		float widthWait = this.getWaitWidth(canvas);
+		return widthWait - getBufferWidth(canvas);
+	}
+	
+	public float getBufferWidth(){
+		float timeProp = STARTING_BUFFER_TIME/MAX_TIME;
+		return timeProp * MAX_BAR_SCREEN_RATIO;
+	}
+	
+	public float getBufferWidth(GameCanvas canvas){
+		return getBufferWidth() * canvas.getWidth();
+	}
+	
 	
 	public float getCastPoint(){
 		float totalTime = this.length * MAX_TIME;
@@ -122,21 +136,11 @@ public class CharActionBar {
 		float castTime = totalTime - waitTime;
 		float modifiedWaitTime = waitTime/this.getSpeedModifier();
 		// modify based on current health left
-		modifiedWaitTime = modifiedWaitTime * this.healthProportion;
+		modifiedWaitTime = modifiedWaitTime * this.healthProportion + STARTING_BUFFER_TIME;
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return modifiedWaitTime/newTotalTime;
 	}
-	
-	public float getHurtStartPosition(float hurtPercent){
-		float totalTime = this.getLength() * MAX_TIME;
-		float waitTime = totalTime * this.castPoint;
-		
-		// if you are at 4/5 health you start at the 4/5 position of the waitTime bar.
-		float hurtOffsetTime =waitTime*(1-hurtPercent);
-		float hurtLengthOffset = hurtOffsetTime/totalTime;
-		return hurtLengthOffset;
-	}	
 	
 	// need to account for offsetting for the cast point
 	public float getX(GameCanvas canvas){
@@ -206,7 +210,7 @@ public class CharActionBar {
 		float castTime = totalTime - waitTime;
 		
 		// modify based on speed modifier
-		float modifiedWaitTime = waitTime/this.getSpeedModifier();
+		float modifiedWaitTime = waitTime/this.getSpeedModifier() + STARTING_BUFFER_TIME;
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return newTotalTime/MAX_TIME;	
@@ -233,14 +237,14 @@ public class CharActionBar {
 		float totalTime = this.length * MAX_TIME;
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
-		float modifiedWaitTime = waitTime/this.getSpeedModifier();
+		float modifiedWaitTime = waitTime/this.getSpeedModifier() + STARTING_BUFFER_TIME;
 		// modify based on current health left
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return modifiedWaitTime/newTotalTime;
 	}
 	
-	public void draw(GameCanvas canvas,int count,Color waitColor,Color castColor){
+	public void draw(GameCanvas canvas,int count,Color waitColor,Color castColor,Color bufferColor){
 		float w = canvas.getWidth();
 		float h = canvas.getHeight();
 		
@@ -252,12 +256,17 @@ public class CharActionBar {
 		float heightBar = BAR_HEIGHT_RATIO * h;
 		
 		// waiting is red we draw red the full bar
-		canvas.drawBox(xPosBar,yPosBar, widthTotalBar, heightBar, waitColor);
-		
-		float waitWidth = widthTotalBar * this.getTotalCastPoint();
+		canvas.drawBox(xPosBar,yPosBar, widthTotalBar, heightBar, castColor);
 		
 		// non casting is green we draw width up to the casting point
-		canvas.drawBox(xPosBar, yPosBar, waitWidth, heightBar, castColor);
+		float waitWidth = widthTotalBar * this.getTotalCastPoint();
+		canvas.drawBox(xPosBar, yPosBar, waitWidth, heightBar, waitColor);
+		
+		//buffering period is coral color for now
+		float bufferWidth = waitWidth - this.getWaitWidthNoBuffer(canvas);
+		float xPosBuffer = xPosBar + + this.getWaitWidthNoBuffer(canvas);
+		canvas.drawBox(xPosBuffer, yPosBar, bufferWidth, heightBar, bufferColor);
+	
 		for (int i = 0; i < this.getNumSlots(); i++){
 			float intervalSize = this.getSlotWidth(canvas);
 			float startCastX = xPosBar + waitWidth;

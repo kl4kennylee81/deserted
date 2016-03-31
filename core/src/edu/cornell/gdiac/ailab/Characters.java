@@ -12,10 +12,11 @@ public class Characters extends LinkedList<Character>{
 		for (Character c:this){
 			count++;
 			
-			Color waitColor = c.getActionBarColor(shouldDim,Color.RED.cpy());
-			Color castColor = c.getActionBarColor(shouldDim, Color.WHITE.cpy());
+			Color waitColor = c.getActionBarColor(shouldDim,Color.WHITE.cpy());
+			Color castColor = c.getActionBarColor(shouldDim, Color.RED.cpy());
+			Color bufferColor = c.getActionBarColor(shouldDim, Color.LIGHT_GRAY.cpy());
 			
-			c.actionBar.draw(canvas,count,waitColor,castColor);
+			c.actionBar.draw(canvas,count,waitColor,castColor,bufferColor);
 			c.drawHealth(canvas, count, shouldDim);
 			c.drawToken(canvas,count,shouldDim);
 			
