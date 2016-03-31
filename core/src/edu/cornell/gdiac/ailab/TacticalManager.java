@@ -49,6 +49,7 @@ public class TacticalManager extends ConditionalManager{
 	 * Update all the condition booleans in the Conditional Manager
 	 */
 	public void updateConditions(Character c){
+		selected = c;
 		friends = new ArrayList<Character>();
 		enemies = new ArrayList<Character>();
 		interval  = (1f-ActionBar.castPoint) / ActionBar.getTotalSlots();
@@ -85,7 +86,7 @@ public class TacticalManager extends ConditionalManager{
 		
 		//If the leaf has an action for a ally, add it to the preselected info
 		if(leaf.allyTactic != Tactic.NONE){
-			Character friend = findNextFriend(c);
+			Character friend = findNextFriend();
 			LeafNode friendLeaf = new LeafNode(Tactic.NONE, leaf.allyTactic, leaf.allySpecific);
 			preSelected.put(friend.name, friendLeaf);
 		}
@@ -96,15 +97,6 @@ public class TacticalManager extends ConditionalManager{
 		else {
 			c.setQueuedActions(getActionsFromGeneral(c, leaf.myTactic));
 		}
-	}
-	
-	
-	/**
-	 * Find the teammate that will reach the casting phase next.
-	 */
-	public Character findNextFriend(Character c){
-		//IMPLEMENT
-		return null;
 	}
 	
 	
@@ -377,6 +369,9 @@ public class TacticalManager extends ConditionalManager{
 			if(a.damage > 0 && a.pattern != Pattern.SINGLE){
 				for(Character e: enemies){
 					if(canAttackSquareFrom(xPos, yPos, e.xPosition, e.yPosition, a)){
+						if(c.name.equals("blue")){
+							//System.out.println("("+xPos+","+yPos+")->("+e.xPosition+","+e.yPosition+") "+a.pattern.toString());
+						}
 						return a;
 					}
 				}
@@ -574,10 +569,8 @@ public class TacticalManager extends ConditionalManager{
 		}
 		d = attackingDirection(c, xPos, yPos);
 		if(d != Direction.NONE){
-			System.out.println(c.name + " " + d.toString());
 			return anPool.newActionNode(a, getCastTime(a, startPoint), 0, 0, d);
 		}
-		System.out.println("no direction");
 		return anPool.newActionNode(a, getCastTime(a, startPoint), xPos, yPos, randomDirection(xPos, yPos));
 	}
 	
@@ -588,16 +581,16 @@ public class TacticalManager extends ConditionalManager{
 	 * no such move exists.
 	 */
 	private Direction optimalDirection(Character c, int xPos, int yPos){
-		if(canHitEnemyFrom(xPos-1, yPos) && isSafeSquare(xPos-1, yPos) && !board.isOccupied(xPos-1, yPos)){
+		if(canHitEnemyFrom(c, xPos-1, yPos) && isSafeSquare(xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos - 1)){
 			return Direction.LEFT;
 		}
-		if(canHitEnemyFrom(xPos, yPos+1) && isSafeSquare(xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
+		if(canHitEnemyFrom(c, xPos, yPos+1) && isSafeSquare(xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
 			return Direction.UP;
 		}
-		if(canHitEnemyFrom(xPos, yPos-1) && isSafeSquare(xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
+		if(canHitEnemyFrom(c, xPos, yPos-1) && isSafeSquare(xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
 			return Direction.DOWN;
 		}
-		if(canHitEnemyFrom(xPos+1, yPos) && isSafeSquare(xPos+1, yPos) && !board.isOccupied(xPos+1, yPos)){
+		if(canHitEnemyFrom(c, xPos+1, yPos) && isSafeSquare(xPos+1, yPos) && !board.isOccupied(xPos+1, yPos)){
 			return Direction.RIGHT;
 		}
 		return Direction.NONE;
@@ -608,16 +601,16 @@ public class TacticalManager extends ConditionalManager{
 	 * Try to find a single movement that will put character in position to attack
 	 */
 	private Direction attackingDirection(Character c, int xPos, int yPos){
-		if(canHitEnemyFrom(xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos-1)){
+		if(canHitEnemyFrom(c, xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos-1)){
 			return Direction.LEFT;
 		}
-		if(canHitEnemyFrom(xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
+		if(canHitEnemyFrom(c, xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
 			return Direction.UP;
 		}
-		if(canHitEnemyFrom(xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
+		if(canHitEnemyFrom(c, xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
 			return Direction.DOWN;
 		}
-		if(canHitEnemyFrom(xPos+1, yPos) && !board.isOccupied(xPos+1, yPos)){
+		if(canHitEnemyFrom(c, xPos+1, yPos) && !board.isOccupied(xPos+1, yPos)){
 			return Direction.RIGHT;
 		}
 		return Direction.NONE;
@@ -628,16 +621,16 @@ public class TacticalManager extends ConditionalManager{
 	 * Try to find a single movement that will put the character at a safe square
 	 */
 	private Direction defensiveDirection(Character c, int xPos, int yPos){
-		if(canHitEnemyFrom(xPos+1, yPos) && !board.isOccupied(xPos+1, yPos)){
+		if(canHitEnemyFrom(c, xPos+1, yPos) && !board.isOccupied(xPos+1, yPos)){
 			return Direction.RIGHT;
 		}
-		if(canHitEnemyFrom(xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
+		if(canHitEnemyFrom(c, xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
 			return Direction.UP;
 		}
-		if(canHitEnemyFrom(xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
+		if(canHitEnemyFrom(c, xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
 			return Direction.DOWN;
 		}
-		if(canHitEnemyFrom(xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos-1)){
+		if(canHitEnemyFrom(c, xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos-1)){
 			return Direction.LEFT;
 		}
 		return Direction.NONE;

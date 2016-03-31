@@ -56,6 +56,9 @@ public class ConditionalManager {
 		map.put("ONE_ENEMY_LEFT", oneEnemyLeft());
 		map.put("HAS_SHIELD", hasShield());
 		map.put("HAS_SINGLE", hasSingle());
+		map.put("ALLY_SAFE", nextFriendSafe());
+		map.put("ALLY_CAN_HIT_ENEMY", nextFriendCanHit());
+		map.put("ALLY_ALMOST_DONE_WAITING", friendWillEnterSoon());
 		map.put("DEFAULT", true);
 	}
 	
@@ -76,13 +79,37 @@ public class ConditionalManager {
 		return !isSafeSquare(selected.xPosition, selected.yPosition);
 	}
 	
+	/**
+	 * Returns true if the next ally to enter the cast phase is currently at a 
+	 * a safe square
+	 */
+	public boolean nextFriendSafe(){
+		Character nextFriend = findNextFriend();
+		if(nextFriend == null){
+			return false;
+		}
+		return isSafeSquare(nextFriend.xPosition, nextFriend.yPosition);
+	}
+	
+	
+	/**
+	 * Returns true if the next ally to enter the cast phase can hit an enemy
+	 */
+	public boolean nextFriendCanHit(){
+		Character nextFriend = findNextFriend();
+		if(nextFriend == null){
+			return false;
+		}
+		return canHitEnemyFrom(nextFriend, nextFriend.xPosition, nextFriend.yPosition);
+	}
+	
 	
 	/**
 	 * Returns true if the selected character can hit an opponent from his 
 	 * current location
 	 */
 	public boolean canHitOpponent(){
-		return canHitEnemyFrom(selected.xPosition, selected.yPosition);
+		return canHitEnemyFrom(selected, selected.xPosition, selected.yPosition);
 	}
 	
 	
@@ -93,16 +120,16 @@ public class ConditionalManager {
 	public boolean attackSquareAdjacent(){
 		int x = selected.xPosition;
 		int y = selected.yPosition;
-		if(canHitEnemyFrom(x+1, y)){
+		if(canHitEnemyFrom(selected, x+1, y)){
 			return true;
 		}
-		if(canHitEnemyFrom(x, y+1)){
+		if(canHitEnemyFrom(selected, x, y+1)){
 			return true;
 		}
-		if(canHitEnemyFrom(x-1, y)){
+		if(canHitEnemyFrom(selected, x-1, y)){
 			return true;
 		}
-		if(canHitEnemyFrom(x, y-1)){
+		if(canHitEnemyFrom(selected, x, y-1)){
 			return true;
 		}
 		return false;
@@ -419,6 +446,14 @@ public class ConditionalManager {
 	}
 	
 	
+	/**
+	 * Returns true if there is an ally who will shortly enter their cast position
+	 */
+	public boolean friendWillEnterSoon(){
+		Character c = findNextFriend();
+		return c != null && c.castPosition < ActionBar.castPoint && c.castPosition > ActionBar.castPoint * .75f;
+	}
+	
 	
 	//=========================================================================//
 	//  	        +----------------+                                         //
@@ -632,19 +667,45 @@ public class ConditionalManager {
 	 * Returns true if Action a cast from (x1,y1) can hit square (x2,y2);
 	 */
 	public boolean canAttackSquareFrom(int x1, int y1, int x2, int y2, Action a){
-		return true;
+		return a.hitsTarget(x1, y1, x2, y2, false);
 	}
 	
 	
 	/**
-	 * Returns true if the selected character can hit an enemy from square (x,y)
+	 * Returns true if the the character can hit an enemy from square (x,y)
 	 */
-	public boolean canHitEnemyFrom(int x, int y){
-		for(Character c: enemies){
-			if(canAttackSquareNoSingle(selected, x, y, c.xPosition, c.yPosition)){
+	public boolean canHitEnemyFrom(Character c, int x, int y){
+		for(Character e: enemies){
+			if(canAttackSquareNoSingle(c, x, y, e.xPosition, e.yPosition)){
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	
+	/**
+	 * Find the teammate that will reach the casting phase next.
+	 */
+	public Character findNextFriend(){
+		Character ally = null;
+		int minFrames = Integer.MAX_VALUE;
+		for(Character ch: friends){
+			if(ch == selected || !ch.isAI) continue; 
+			int framesLeft;
+			if(ch.castPosition < ActionBar.castPoint){
+				framesLeft = (int) ((ActionBar.castPoint - ch.castPosition) / ch.getBarSpeed()); 
+			}
+			else{
+				int waitFrames = (int) (ActionBar.castPoint / ch.getBarSpeed());
+				int castFrames = (int) ((1f - ch.castPosition) / ch.getCastSpeed());
+				framesLeft = waitFrames + castFrames;
+			}
+			if(framesLeft < minFrames){
+				ally = ch;
+				minFrames = framesLeft;
+			}
+		}
+		return ally;
 	}
 }

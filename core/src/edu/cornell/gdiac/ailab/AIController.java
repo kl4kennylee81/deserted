@@ -50,7 +50,6 @@ public class AIController {
 				tacticalManager.updateConditions(c);
 				tacticalManager.selectActions(c);
 				c.needsSelection = false;
-//				selected = c;
 //				xOffset = 0;
 //				yOffset = 0;
 //				shield = false;
