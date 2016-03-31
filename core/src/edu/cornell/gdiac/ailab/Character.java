@@ -305,11 +305,28 @@ public class Character implements GUIElement {
 		return false;
 	}
 	
-	boolean hasAttacks() {
-		return queuedActions.peek() != null;
+	/** if the character hasAttacks leftover that are not interrupted (moves can still execute when interrupted)
+	 *  returns true if there are attacks left returns false if its empty or last action is interrupted
+	 *  sideEffect: pops the last action if its interrupted
+	 * @return
+	 */
+	public boolean hasAttacks() {
+		ActionNode anode = queuedActions.peek();
+		if (anode!= null){
+			if ((anode.isInterrupted && anode.action.pattern != Pattern.MOVE) && queuedActions.size() == 1){
+				queuedActions.poll();
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
+		else{
+			return false;
+		}
 	}
 	
-	boolean hasPersisting() {
+	public boolean hasPersisting() {
 		return persistingActions.peek() != null;
 	}
 	
