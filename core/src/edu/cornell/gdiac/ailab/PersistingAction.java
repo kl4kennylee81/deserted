@@ -13,5 +13,13 @@ public class PersistingAction extends Action {
 		this.totalNumRounds = totalNumRounds;
 		this.moveSpeed = moveSpeed;
 	}
+	
+	public PersistingAction(String name, int cost, int damage, int range, Pattern pattern, String path, Effect effect,
+			String description, int totalNumRounds, float moveSpeed) {
+		
+		super(name, cost, damage, range, pattern, effect, description, path);
+		this.totalNumRounds = totalNumRounds;
+		this.moveSpeed = moveSpeed;
+	}
 
 }

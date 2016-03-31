@@ -38,7 +38,7 @@ public class ActionNodes{
 		
 		// a path of the trajectory
 		Coordinate[] path;
-		int pathIndex = 0;
+		int pathIndex;
 		
 		public ActionNode(){
 			reset();
@@ -78,10 +78,6 @@ public class ActionNodes{
 			this.curY = curY;
 			this.path = path;
 			curRound = 0;
-			
-			for (int i =0;i<path.length;i++){
-				System.out.println(path[i]);
-			}
 		}
 
 		public int getCurrentX(){

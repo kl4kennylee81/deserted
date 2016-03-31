@@ -171,4 +171,37 @@
     numRounds: 10 
     moveSpeed: 0.05
   animationId: 0
+
+11:
+  name: L - PATH
+  cost: 2
+  damage: 1
+  range: 2
+  pattern: PROJECTILE
+  path: "0,0 1,0 2,1 3,0 4,1 5,0"
+  effect: 
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Launch a L shape projectile for 1 damage
+  persisting_action: 
+    numRounds: 10 
+    moveSpeed: 0.05
+  animationId: 0
+
+12:
+  name: zigzag - INSTANT
+  cost: 2
+  damage: 1
+  range: 2
+  pattern: INSTANT
+  path: "0,0 1,0 2,1 3,0 4,1 5,0"
+  effect: 
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: instant zig zag hit path 1 damage
+  animationId: 0
 ...

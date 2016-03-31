@@ -392,17 +392,25 @@ public class Character implements GUIElement {
 	}
 	
 	void addPersisting(ActionNode an,Coordinate[] path){
-		if (an.action.pattern == Pattern.SHIELD){
+		switch (an.action.pattern){
+		case SHIELD:
 			an.setPersisting(castPosition, xPosition, yPosition,path);
 			persistingActions.add(an);
 			resetShieldedCoordinates();
-		} else if (an.action.pattern == Pattern.DIAGONAL || an.action.pattern == Pattern.STRAIGHT){
+			break;
+		case DIAGONAL:
+		case STRAIGHT:
+		case PROJECTILE:
 			if (leftside){
-				an.setPersisting(castPosition, xPosition+1, yPosition,path);
+				an.setPersisting(castPosition, xPosition, yPosition,path);
 			} else {
-				an.setPersisting(castPosition, xPosition-1, yPosition,path);
+				an.setPersisting(castPosition, xPosition, yPosition,path);
 			}
 			persistingActions.add(an);
+			break;
+		default:
+			System.out.println("adding persisting not of persisting type");
+			break;
 		}
 	}
 	
@@ -690,7 +698,6 @@ public class Character implements GUIElement {
 	private void drawPersisting(GameCanvas canvas,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
-		Coordinate c;
 		for (ActionNode an : persistingActions){
 			switch (an.action.pattern){
 			case SHIELD:
@@ -698,12 +705,15 @@ public class Character implements GUIElement {
 				break;
 			case STRAIGHT:
 			case DIAGONAL:
+			case PROJECTILE:
 				float diagX = (tileW/2 - DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX));
 				float diagY = tileH/2 - DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY);
-				c = board.offsetBoard(canvas, diagX, diagY);
-				diagX = c.x;
-				diagY = c.y;
-				c.free();
+//				float diagX = (DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX));
+//				float diagY = (DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY));
+				float boardOffsetX = board.getBoardOffsetX(canvas);
+				float boardOffsetY = board.getBoardOffsetY(canvas);
+				diagX = diagX + boardOffsetX;
+				diagY = diagY + boardOffsetY;
 				canvas.drawBox(diagX,diagY, DIAGONAL_SIZE, DIAGONAL_SIZE, color);
 				break;
 			default:

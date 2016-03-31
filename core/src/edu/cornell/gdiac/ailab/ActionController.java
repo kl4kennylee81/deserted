@@ -135,6 +135,11 @@ public class ActionController {
 			case SINGLE:
 				executeSingle(a_node);
 				break;
+			case INSTANT:
+				executeInstant(a_node);
+				break;
+			case PROJECTILE:
+				break;
 			case NOP:
 				break;
 			default:
@@ -155,10 +160,44 @@ public class ActionController {
 				break;
 			case SHIELD:
 				path = shieldedPath(a_node);
+				break;
+			case PROJECTILE:
+				path = convertRelativePath(a_node);
+				break;
+			case INSTANT:
+				path = convertRelativePath(a_node);
+				break;
 			default:
 				break;
 		}
 		return path;
+	}
+	
+	/** converts path from relative coordinates to absolute coordinates on the board **/
+	private Coordinate[] convertRelativePath(ActionNode a_node){
+		Coordinates coords = Coordinates.getInstance();
+		// when we pass in coordinate for the path we can go out of bounds it is checked in execution time
+		if (a_node.action== null || a_node.action.path == null){
+			System.out.println("error input pattern projectile or instant did not have path");
+			return null;
+		}
+		Coordinate[] relativePath = a_node.action.path;
+		Coordinate[] absolutePath = new Coordinate[relativePath.length];
+		for (int i = 0;i<relativePath.length;i++){
+			// if on leftside we increment x in opposite direction
+			int x;int y;
+			if (selected.leftside){
+				x = selected.xPosition + relativePath[i].x;
+				y = selected.yPosition + relativePath[i].y;
+			}
+			else{
+				x = selected.xPosition - relativePath[i].x;
+				y = selected.yPosition + relativePath[i].y;
+			}
+			absolutePath[i] = coords.obtain();
+			absolutePath[i].set(x, y);
+		}
+		return absolutePath;
 	}
 	
 	private Coordinate[] shieldedPath(ActionNode a_node){
@@ -235,27 +274,31 @@ public class ActionController {
 		int heightRange = actionHeightRange(a_node,selected.yPosition);
 		int widthRange = actionWidthRange(a_node,projectileX);
 		int trueRange = Math.min(heightRange,widthRange);
-		Coordinate[] path = new Coordinate[trueRange+1];
-		path[0] = coordPool.newCoordinate(projectileX,selected.yPosition);
+		Coordinate[] path = new Coordinate[trueRange+2];
+		path[0] = coordPool.newCoordinate(selected.xPosition,selected.yPosition);
+		path[1] = coordPool.newCoordinate(projectileX,selected.yPosition);
 		if (selected.leftside && isDiagonalUp(a_node)){
 			for (int i=0;i<trueRange;i++){
-				path[i+1] = coordPool.newCoordinate(projectileX+i+1,selected.yPosition+i+1);
+				path[i+2] = coordPool.newCoordinate(projectileX+i+1,selected.yPosition+i+1);
 			}
 		}
 		else if (selected.leftside && isDiagonalDown(a_node)){
 			for (int i=0;i<trueRange;i++){
-				path[i+1] = coordPool.newCoordinate(projectileX+i+1,selected.yPosition-i-1);
+				path[i+2] = coordPool.newCoordinate(projectileX+i+1,selected.yPosition-i-1);
 			}			
 		}
 		else if (!selected.leftside && isDiagonalUp(a_node)){
 			for (int i=0;i<trueRange;i++){
-				path[i+1] = coordPool.newCoordinate(projectileX-i-1,selected.yPosition+i+1);
+				path[i+2] = coordPool.newCoordinate(projectileX-i-1,selected.yPosition+i+1);
 			}				
 		}
 		else if (!selected.leftside && isDiagonalDown(a_node)){
 			for (int i=0;i<trueRange;i++){
-				path[i+1] = coordPool.newCoordinate(projectileX-i-1,selected.yPosition-i-1);
+				path[i+2] = coordPool.newCoordinate(projectileX-i-1,selected.yPosition-i-1);
 			}
+		}
+		for (int i =0;i<path.length;i++){
+			System.out.println(path[i]);
 		}
 		return path;
 	}
@@ -336,6 +379,11 @@ public class ActionController {
 	private void executeDiagonal(ActionNode a_node){
 		Coordinate[] path = diagonalHitPath(a_node);
 		// check along path and apply damage to first person hit
+		processHitPath(a_node,path);
+	}
+	
+	private void executeInstant(ActionNode a_node){
+		Coordinate[] path = convertRelativePath(a_node);
 		processHitPath(a_node,path);
 	}
 	
