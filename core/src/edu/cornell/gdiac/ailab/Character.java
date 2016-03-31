@@ -313,6 +313,12 @@ public class Character implements GUIElement {
 		return this.actionBar.getCastPoint();
 	}
 	
+	public float getCastStartPosition(){
+		float hurtPercent = ((float)this.health)/((float)this.maxHealth);
+		float startPosition = this.actionBar.getHurtStartPosition(hurtPercent);
+		return startPosition;
+	}
+	
 	public void setSpeedModifier(int val){
 		//TODO if we have more modifier on stats have a bitmap of modifiers
 		this.actionBar.setSpeedModifier(val);

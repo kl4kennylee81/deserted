@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.Color;
 
 public class CharActionBar {
 
+	/** time all characters have to wait before they enter their casting period **/
+	public static final float STARTING_BUFFER_TIME = 3f;
+	
 	public static final float CHAR_VELOCITY_SCREEN_RATIO = 0.001f;
 	
 	public static final float MAX_BAR_SCREEN_RATIO = 0.9f;
@@ -102,7 +105,6 @@ public class CharActionBar {
 		float modifiedWaitTime = waitTime/this.getSpeedModifier();
 		
 		float newTotalTime = modifiedWaitTime + castTime;
-		System.out.println(newTotalTime);
 		return newTotalTime/MAX_TIME;
 	}
 	
@@ -115,20 +117,15 @@ public class CharActionBar {
 		return modifiedWaitTime/newTotalTime;
 	}
 	
-	public float getHurtLength(float hurtPercent){
-		float trueLength = this.getLength();
-		float waitLength = trueLength * this.getCastPoint();
-		return 0;
-//		
-//		
-//		float healthW = getWaitWidth(canvas);
-//		float healthH = this.actionBar.getBarHeight(canvas);
-//		
-//		float damagedWidth = (healthW*this.health/this.maxHealth);
-//		float leftoverWidth = healthW - damagedWidth;
-//		return 0;
-	}
-	
+	public float getHurtStartPosition(float hurtPercent){
+		float totalTime = this.getLength() * MAX_TIME;
+		float waitTime = totalTime * this.castPoint;
+		
+		// if you are at 4/5 health you start at the 4/5 position of the waitTime bar.
+		float hurtOffsetTime =waitTime*(1-hurtPercent);
+		float hurtLengthOffset = hurtOffsetTime/totalTime;
+		return hurtLengthOffset;
+	}	
 	
 	// need to account for offsetting for the cast point
 	public float getX(GameCanvas canvas){
