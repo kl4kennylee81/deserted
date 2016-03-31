@@ -57,7 +57,6 @@ public class EffectController {
 			e.isNew = false;
 		}
 		e.roundsLeft -= c.castMoved;
-		System.out.println(e.roundsLeft);
 		if (e.roundsLeft <= 0){
 			c.setSpeedModifier(c.getSpeedModifier()-e.magnitude);
 			e.isDone = true;

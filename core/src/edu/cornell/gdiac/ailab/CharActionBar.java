@@ -75,25 +75,26 @@ public class CharActionBar {
 	
 	float getSpeedModifier() {
 		switch (speedModifier) {
-		case -3:
-			return 0.6f;
 		case -2:
-			return 0.7f;
+			// gets you 2x more time
+			return 1/2f;
 		case -1:
-			return 0.85f;
+			// gets you 1.5x more time
+			return 2/3f;
 		case 0:
 			return 1;
 		case 1:
-			return 1.15f;
+			return 3/2f;
 		case 2:
-			return 1.3f;
-		case 3:
-			return 1.45f;
+			return 2f;
 		default:
-			if (speedModifier < -3){
-				return 0.5f;
-			} else {
-				return 1.6f;
+			if (speedModifier < -2){
+				return 1/2.5f;
+			} else if (speedModifier > 2){
+				return 2.5f;
+			}
+			else{
+				return 1;
 			}
 		
 		}
