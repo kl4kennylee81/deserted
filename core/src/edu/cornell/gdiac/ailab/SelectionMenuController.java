@@ -317,10 +317,10 @@ public class SelectionMenuController {
 			drawShield();
 			break;
 		case INSTANT:
-			drawPath();
+			drawPath(false);
 			break;
 		case PROJECTILE:
-			drawPath();
+			drawPath(true);
 			break;
 		case NOP:
 			break;
@@ -349,7 +349,7 @@ public class SelectionMenuController {
 		}
 	}
 	
-	public void drawPath(){
+	public void drawPath(boolean isProjectile){
 		if (action.path == null){
 			return;
 		}
@@ -361,6 +361,9 @@ public class SelectionMenuController {
 				if (shadowX == x && shadowY == y){
 					continue;
 				}
+				else if ((!board.isInBounds(x, y)) && isProjectile){
+					break;
+				}
 				else if (choosingTarget){
 					board.setHighlighted(x,y);
 				} else {
@@ -369,11 +372,13 @@ public class SelectionMenuController {
 			}
 		} else {
 			for (int i = 0; i < action.path.length; i++){
-				System.out.println(path[i]);
 				int x = shadowX - path[i].x;
 				int y = shadowY + path[i].y;
 				if (shadowX == x && shadowY == y){
 					continue;
+				}
+				else if ((!board.isInBounds(x, y)) && isProjectile){
+					break;
 				}
 				if (choosingTarget){
 					board.setHighlighted(x,y);
