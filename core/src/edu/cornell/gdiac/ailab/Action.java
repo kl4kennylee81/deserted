@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.mesh.TexturedMesh;
 
 public class Action implements GUIElement {
@@ -20,6 +21,8 @@ public class Action implements GUIElement {
 	float width;
 	float height;
 	int position;
+	
+	Coordinate[] path;
 
 	public static enum Pattern {
 		MOVE,
@@ -27,7 +30,9 @@ public class Action implements GUIElement {
 		STRAIGHT,
 		DIAGONAL,
 		SINGLE,
-		NOP
+		NOP,
+		PROJECTILE,
+		INSTANT
 	}
 	
 	public Action(String name, int cost, int damage, int range, Pattern pattern, Effect effect, String description){
@@ -38,6 +43,36 @@ public class Action implements GUIElement {
 		this.pattern = pattern;
 		this.effect = effect;
 		this.description = description;
+	}
+	
+	public Action(String name, int cost, int damage, int range, Pattern pattern, Effect effect, String description, String strpath){
+		this.name = name;
+		this.cost = cost;
+		this.damage = damage;
+		this.range = range;
+		this.pattern = pattern;
+		this.effect = effect;
+		this.description = description;
+		
+		if ((this.pattern == Pattern.PROJECTILE||this.pattern == Pattern.INSTANT)&&strpath!=""){
+			// path string for a straight range 3 looks like this "0,0 1,0 2,0, 3,0" with 0,0 being the character current position"
+			// the coordinate relative to the character will be converted to actual board coordinate when turned into an action node
+			String[] stringPath = strpath.split(" ");
+			this.path = new Coordinate[stringPath.length];
+			Coordinates coordPool = Coordinates.getInstance();
+			for (int i =0;i<stringPath.length;i++){
+				String[] coord = stringPath[i].split(",");
+				if (coord.length == 2){
+					this.path[i] = coordPool.obtain();
+					int x = Integer.parseInt(coord[0]);
+					int y = Integer.parseInt(coord[1]);
+					this.path[i].set(x, y);
+				}
+			}
+		}
+		else{
+			this.path = new Coordinate[0];
+		}
 	}
 	
 	public void setAnimation(Animation animation){
