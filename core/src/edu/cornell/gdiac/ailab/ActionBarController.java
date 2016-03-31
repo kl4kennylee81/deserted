@@ -52,7 +52,7 @@ public class ActionBarController {
 				this.isAttack = true;
 			} else if (!c.hasAttacks() && c.castPosition >= c.getCastPoint()) {
 				// Reset once done with attacks
-				c.castPosition = c.getCastStartPosition();
+				c.castPosition = 0;
 			}
 		}
 	}

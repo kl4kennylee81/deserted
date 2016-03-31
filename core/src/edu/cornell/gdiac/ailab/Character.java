@@ -171,6 +171,14 @@ public class Character implements GUIElement {
 		selectionMenu = new SelectionMenu(availableActions);
 	}
 	
+	/** update the state of the character 
+	 *  currently just updates his actionBar with his current health
+	 * **/
+	public void update(){
+		float healthProportion = ((float)health/(float)maxHealth);
+		this.actionBar.update(healthProportion);
+	}
+	
 	public float getXMin(GameCanvas canvas, GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		float canvasX = board.offsetBoard(canvas,tileW*xPosition,0).x;

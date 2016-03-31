@@ -42,6 +42,8 @@ public class CharActionBar {
 	// Speed Modifier when affected by Speed Up/Slows
 	int speedModifier;
 	
+	float healthProportion;
+	
 	// pass in seconds in waiting, seconds in casting, and number of slots
 	// generates a cast bar with a length and cast point
 	CharActionBar(int numSlots,float waitTime,float castTime){
@@ -102,7 +104,12 @@ public class CharActionBar {
 		float totalTime = this.length * MAX_TIME;
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
+		
+		// modify based on speed modifier
 		float modifiedWaitTime = waitTime/this.getSpeedModifier();
+		
+		// modify based on current health left
+		modifiedWaitTime = modifiedWaitTime * this.healthProportion;
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return newTotalTime/MAX_TIME;
@@ -113,6 +120,9 @@ public class CharActionBar {
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
 		float modifiedWaitTime = waitTime/this.getSpeedModifier();
+		// modify based on current health left
+		modifiedWaitTime = modifiedWaitTime * this.healthProportion;
+		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return modifiedWaitTime/newTotalTime;
 	}
@@ -180,6 +190,10 @@ public class CharActionBar {
 		float bar_width = getWidth(canvas);
 		float cast_point = bar_width * this.getCastPoint();
 		return start_x + cast_point;
+	}
+	
+	public void update(float healthProp){
+		this.healthProportion = healthProp;
 	}
 	
 	public void draw(GameCanvas canvas,int count,Color waitColor,Color castColor){

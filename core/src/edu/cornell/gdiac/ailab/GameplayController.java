@@ -80,6 +80,8 @@ public class GameplayController {
     	screen.noScreen();
     	switch(inGameState){
     	case NORMAL:
+    		// update the character models
+    		characters.update();
     		effectController.update();
     		actionBarController.update();
     		persistingController.update();

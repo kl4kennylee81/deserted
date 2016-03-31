@@ -23,6 +23,12 @@ public class Characters extends LinkedList<Character>{
 		}
 	}
 	
+	public void update(){
+		for (Character c: this){
+			c.update();
+		}
+	}
+	
 	public void drawSelectionMenu(GameCanvas canvas){
 		int count = 0;
         for (Character c : this){
