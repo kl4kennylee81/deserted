@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 public class CharActionBar {
 
 	/** time all characters have to wait before they enter their casting period **/
-	public static final float STARTING_BUFFER_TIME = 2.5f;
+	public static final float STARTING_BUFFER_TIME = 2f;
 	
 	public static final float CHAR_VELOCITY_SCREEN_RATIO = 0.001f;
 	
@@ -19,7 +19,7 @@ public class CharActionBar {
 	/** the x position of the bar should start at the top 7/8 of the screen **/
 	private static final float BAR_RELATIVE_Y_POS = 0.975f;
 	
-	private static final float BAR_DIVIDER_WIDTH = 4f;
+	private static final float BAR_DIVIDER_WIDTH = 4.5f;
 	
 	private static final float Y_SPACING = 0.065f;
 	
@@ -221,8 +221,14 @@ public class CharActionBar {
 		return MAX_BAR_SCREEN_RATIO * this.getTotalLength() * canvas.getWidth();
 	}
 	
+	/** used to offset the buffer area of the bar from the x position **/
+	public float getWaitWidthTotalNoBuffer(GameCanvas canvas){
+		float widthWait = this.getTotalWaitWidth(canvas);
+		return widthWait - getBufferWidth(canvas);
+	}
+	
 	public float getTotalWaitWidth(GameCanvas canvas){
-		return this.getCastPoint() * getTotalWidth(canvas);
+		return this.getTotalCastPoint() * getTotalWidth(canvas);
 	}
 	
 	public float getTotalX(GameCanvas canvas){
@@ -263,8 +269,8 @@ public class CharActionBar {
 		canvas.drawBox(xPosBar, yPosBar, waitWidth, heightBar, waitColor);
 		
 		//buffering period is coral color for now
-		float bufferWidth = waitWidth - this.getWaitWidthNoBuffer(canvas);
-		float xPosBuffer = xPosBar + + this.getWaitWidthNoBuffer(canvas);
+		float bufferWidth = this.getBufferWidth(canvas);
+		float xPosBuffer = xPosBar + this.getWaitWidthTotalNoBuffer(canvas);
 		canvas.drawBox(xPosBuffer, yPosBar, bufferWidth, heightBar, bufferColor);
 	
 		for (int i = 0; i < this.getNumSlots(); i++){
