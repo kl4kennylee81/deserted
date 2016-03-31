@@ -708,20 +708,19 @@ public class Character implements GUIElement {
 		Color iconColor = this.getColor(shouldDim);
 		Color waitColor = this.getActionBarColor(shouldDim, this.color.cpy());
 		
-		float tokenX = this.actionBar.getX(canvas) - this.icon.getWidth();
+		float tokenX = this.actionBar.getTotalX(canvas) - this.icon.getWidth();
 		float tokenY = this.actionBar.getY(canvas, count);
 		
 		canvas.drawTexture(this.icon, tokenX, tokenY, this.icon.getWidth(),this.icon.getHeight(),iconColor);
 		
+		/** the wait width is modified by the hp already **/
 		float healthW = this.actionBar.getWaitWidth(canvas);
 		float healthH = this.actionBar.getBarHeight(canvas);
 		
-		float damagedWidth = (healthW*this.health/this.maxHealth);
-		float leftoverWidth = healthW - damagedWidth;
-		float healthX = tokenX + this.icon.getWidth() + leftoverWidth;
+		float healthX = this.actionBar.getX(canvas);
 		float healthY = tokenY;
 		
-		canvas.drawBox(healthX, healthY, (int) Math.ceil(damagedWidth), healthH, waitColor);
+		canvas.drawBox(healthX, healthY, healthW, healthH, waitColor);
 	}
 	
 	public Color getActionBarColor(boolean shouldDim,Color c){
