@@ -229,34 +229,6 @@ public class Character implements GUIElement {
 		return tokenY + icon.getHeight()*charScale;
 	}
 	
-	/**
-	 * Resets a character back to starting data
-	 */
-	public void reset(){
-		this.health = this.maxHealth;
-		this.xPosition = this.startingXPosition;
-		this.yPosition = this.startingYPosition;
-		
-		/* Randomize for now so that its not always the same thing */
-		this.speed = (float) (Math.random()*0.003 + 0.003);
-		this.castSpeed = (float) (Math.random()*0.004 + 0.002);
-		
-		lastCastStart = 0;
-		castPosition = 0;
-		queuedActions.clear();
-		persistingActions.clear();
-
-		for (Coordinate c:shieldedCoordinates){
-			c.free();
-		}
-		shieldedCoordinates.clear();
-
-		selectionMenu.reset();
-		
-		needsSelection = needsAttack = needsShadow = isSelecting = isPersisting = false;
-		isExecuting = isHurt = false;
-	}
-	
 	/**  copy the static attributes of the character into a new object **/
 	public Character copy(){
 		return new Character(this);
@@ -420,17 +392,25 @@ public class Character implements GUIElement {
 	}
 	
 	void addPersisting(ActionNode an,Coordinate[] path){
-		if (an.action.pattern == Pattern.SHIELD){
+		switch (an.action.pattern){
+		case SHIELD:
 			an.setPersisting(castPosition, xPosition, yPosition,path);
 			persistingActions.add(an);
 			resetShieldedCoordinates();
-		} else if (an.action.pattern == Pattern.DIAGONAL || an.action.pattern == Pattern.STRAIGHT){
+			break;
+		case DIAGONAL:
+		case STRAIGHT:
+		case PROJECTILE:
 			if (leftside){
-				an.setPersisting(castPosition, xPosition+1, yPosition,path);
+				an.setPersisting(castPosition, xPosition, yPosition,path);
 			} else {
-				an.setPersisting(castPosition, xPosition-1, yPosition,path);
+				an.setPersisting(castPosition, xPosition, yPosition,path);
 			}
 			persistingActions.add(an);
+			break;
+		default:
+			System.out.println("adding persisting not of persisting type");
+			break;
 		}
 	}
 	
@@ -695,36 +675,45 @@ public class Character implements GUIElement {
 		}
 	}
 	
+	private void drawShield(GameCanvas canvas,GridBoard board,ActionNode an){
+		float tileW = board.getTileWidth(canvas);
+		float tileH = board.getTileHeight(canvas);
+		Coordinate c;	
+		int botY = Coordinates.minYCoordinate(an.path);
+		int numWithin = Coordinates.numWithinBounds(an.path, board);
+		int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
+		int shieldH = (int)(tileH * numWithin);
+		int shieldX = (int)(leftside ?(tileW + tileW*an.curX- SHIELD_OFFSET) :tileW*an.curX - SHIELD_OFFSET);
+		int shieldY = (int)(tileH *botY);
+		c = board.offsetBoard(canvas, shieldX, shieldY);
+		shieldX = c.x;
+		shieldY = c.y;
+		c.free();
+		canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
+	}
+	
 	/**
 	 * Draws persisting objects
 	 */
 	private void drawPersisting(GameCanvas canvas,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
-		Coordinate c;
 		for (ActionNode an : persistingActions){
 			switch (an.action.pattern){
 			case SHIELD:
-				int botY = Coordinates.minYCoordinate(an.path);
-				int numWithin = Coordinates.numWithinBounds(an.path, board);
-				int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
-				int shieldH = (int)(tileH * numWithin);
-				int shieldX = (int)(leftside ?(tileW + tileW*an.curX- SHIELD_OFFSET) :tileW*an.curX - SHIELD_OFFSET);
-				int shieldY = (int)(tileH *botY);
-				c = board.offsetBoard(canvas, shieldX, shieldY);
-				shieldX = c.x;
-				shieldY = c.y;
-				c.free();
-				canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
+				drawShield(canvas,board,an);
 				break;
 			case STRAIGHT:
 			case DIAGONAL:
+			case PROJECTILE:
 				float diagX = (tileW/2 - DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX));
 				float diagY = tileH/2 - DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY);
-				c = board.offsetBoard(canvas, diagX, diagY);
-				diagX = c.x;
-				diagY = c.y;
-				c.free();
+//				float diagX = (DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX));
+//				float diagY = (DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY));
+				float boardOffsetX = board.getBoardOffsetX(canvas);
+				float boardOffsetY = board.getBoardOffsetY(canvas);
+				diagX = diagX + boardOffsetX;
+				diagY = diagY + boardOffsetY;
 				canvas.drawBox(diagX,diagY, DIAGONAL_SIZE, DIAGONAL_SIZE, color);
 				break;
 			default:

@@ -53,6 +53,14 @@ public class Coordinates {
 			return angle;
 		}
 		
+		public float angleFrom(int x,int y){
+			float diffx = this.x - x;
+			float diffy = this.y - y;
+			float angle = (float)Math.atan2(diffy, diffx) * MathUtils.radiansToDegrees;
+			if (angle < 0) angle += 360;
+			return angle;
+		}
+		
 		public float dist(float x,float y){
 				final float x_d = x - this.x;
 				final float y_d = y - this.y;
