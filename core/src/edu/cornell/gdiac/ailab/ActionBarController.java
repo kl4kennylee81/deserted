@@ -51,6 +51,11 @@ public class ActionBarController {
 				c.needsAttack = true;
 				this.isAttack = true;
 			} else if (!c.hasAttacks() && c.castPosition >= c.getCastPoint()) {
+				// cast moved accounts for NOPing and stopping going through cast preemptively
+				if (c.castPosition < 1){
+					c.castMoved += Math.abs(1.0f - c.castPosition);
+				}
+				
 				// Reset once done with attacks
 				c.castPosition = 0;
 			}
