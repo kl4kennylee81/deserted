@@ -75,6 +75,41 @@ public class Action implements GUIElement {
 		}
 	}
 	
+	/** helper function you pass in the starting location of the path startX and startY
+	 * returns if (targetX,targetY) is on the path trajectory
+	 * @param startX: starting x position of path
+	 * @param startY: starting y position of path
+	 * @param targetX: target x position
+	 * @param targetY: target y position
+	 * @param leftside: if character is on leftside
+	 * @return if (targetX,targetY) is on the path trajectory of the action
+	 */
+	public boolean isOnPath(int startX,int startY, int targetX,int targetY,boolean leftside){
+		if (path == null||path.length <= 0){
+			return false;
+		}
+		Coordinate[] path = this.path;
+		if (leftside) {
+			for (int i = 0; i < path.length; i++){
+				int x = startX + path[i].x;
+				int y = startX + path[i].y;
+				if (x == targetX && y == targetY){
+					return true;
+				}
+			}
+			return false;
+		} else {
+			for (int i = 0; i < path.length; i++){
+				int x = startX - path[i].x;
+				int y = startX + path[i].y;
+				if (x == targetX && y == targetY){
+					return true;
+				}
+			}
+			return false;
+		}	
+	}
+	
 	public void setAnimation(Animation animation){
 		this.animation = animation;
 	}
