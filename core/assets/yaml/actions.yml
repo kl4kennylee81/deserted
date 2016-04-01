@@ -116,8 +116,8 @@
   effect:
     type: SPEED
     name: Slowed
-    numRounds: 1
-    magnitude: -1
+    numRounds: 2
+    magnitude: -4
   description: Target a single square to slow down enemy
   animationId: 0
 
@@ -133,7 +133,7 @@
   effect:
     type: SPEED
     name: Slowed
-    numRounds: 1
+    numRounds: 2
     magnitude: -1
   description: Launch a projectile 3 tiles straight ahead for 2 damage and slows
   animationId: 0

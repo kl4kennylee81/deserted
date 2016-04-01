@@ -15,8 +15,8 @@ public class PersistingController extends ActionController{
 	ActionNode selectedActionNode;
 	
 	
-	public PersistingController(GridBoard board, List<Character> chars, ActionBar bar,TextMessage textMsgs,AnimationPool animations) {
-		super(board, chars, bar, textMsgs, animations);
+	public PersistingController(GridBoard board, List<Character> chars,TextMessage textMsgs,AnimationPool animations) {
+		super(board, chars, textMsgs, animations);
 		
 		this.selected = null;
 		this.selectedActionNode = null;

@@ -53,12 +53,12 @@ public class EffectController {
 	 */
 	public void processSpeed(Effect e, Character c){
 		if(e.isNew){
-			c.speedModifier += e.magnitude;
+			c.setSpeedModifier(c.getSpeedModifier()+e.magnitude);
 			e.isNew = false;
 		}
 		e.roundsLeft -= c.castMoved;
 		if (e.roundsLeft <= 0){
-			c.speedModifier -= e.magnitude;
+			c.setSpeedModifier(c.getSpeedModifier()-e.magnitude);
 			e.isDone = true;
 		}
 	}

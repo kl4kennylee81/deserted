@@ -17,13 +17,14 @@ import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 
 public class Character implements GUIElement {
-	float TOKEN_OFFSET_UP = 20;
-	float TOKEN_OFFSET_DOWN = 30;
-	float SHADOW_ARROW_WIDTH = 0.0075f; // 6 pixel of 800
-	float SHIELD_OFFSET = 5;
-	float SHIELD_WIDTH = 0.0125f;
-	int DIAGONAL_SIZE = 20;
-	int HEALTH_HEIGHT = 10;
+	private static final float TOKEN_OFFSET_UP = 20;
+	private static final float TOKEN_OFFSET_DOWN = 30;
+	private static final float SHADOW_ARROW_WIDTH = 0.0075f; // 6 pixel of 800
+	private static final float SHIELD_OFFSET = 5;
+	private static final float SHIELD_WIDTH = 0.0125f;
+	private static final int DIAGONAL_SIZE = 20;
+	
+	private static final float ACTIONBAR_TICK_SIZE = 8f;
 	
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
@@ -53,6 +54,8 @@ public class Character implements GUIElement {
 	Texture icon;
 	AnimationNode animation;
 	SelectionMenu selectionMenu;
+	CharActionBar actionBar;
+	
 	boolean leftside;
 	
 	/** Do I need to select my actions */
@@ -101,11 +104,7 @@ public class Character implements GUIElement {
 	private boolean isHovering;
 	
 	/** Cast bar position of last cast (Used for animating) */
-	float lastCastStart;
-	
-	/** Speed modifier */
-	int speedModifier;
-	
+	float lastCastStart;	
 	
 	/**Constructor used by GameEngine to create characters from yaml input. */
 	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
@@ -118,8 +117,6 @@ public class Character implements GUIElement {
 		this.name = name;
 		this.health = health;
 		this.maxHealth = maxHealth;
-//		this.speed = speed;
-//		this.castSpeed = castSpeed;
 
 		this.color = color;
 		
@@ -130,8 +127,6 @@ public class Character implements GUIElement {
 		this.startingXPosition = this.xPosition = xPosition;
 		this.startingYPosition = this.yPosition = yPosition;
 		this.leftside = leftSide;
-		
-		speedModifier = 0;
 		lastCastStart = 0;
 		castPosition = 0;
 		castMoved = 0;
@@ -142,6 +137,10 @@ public class Character implements GUIElement {
 		
 		this.availableActions = actions;
 		selectionMenu = new SelectionMenu(availableActions);
+		
+		float waitTime = (float) (Math.random()*3 + 2);
+		float castTime = (float) (Math.random()*4 + 4);
+		actionBar = new CharActionBar(4,waitTime,castTime);
 		
 	}
 	
@@ -160,7 +159,6 @@ public class Character implements GUIElement {
 		this.startingYPosition = this.yPosition = c.yPosition;
 		this.leftside = c.leftside;
 		
-		speedModifier = 0;
 		lastCastStart = 0;
 		castPosition = 0;
 		castMoved = 0;
@@ -171,6 +169,14 @@ public class Character implements GUIElement {
 		
 		this.availableActions = c.availableActions;
 		selectionMenu = new SelectionMenu(availableActions);
+	}
+	
+	/** update the state of the character 
+	 *  currently just updates his actionBar with his current health
+	 * **/
+	public void update(){
+		float healthProportion = ((float)health/(float)maxHealth);
+		this.actionBar.update(healthProportion);
 	}
 	
 	public float getXMin(GameCanvas canvas, GridBoard board){
@@ -196,38 +202,38 @@ public class Character implements GUIElement {
 		return getYMin(canvas, board) + texture.getHeight()*charScale;
 	}
 	
-	public float getTokenX(GameCanvas canvas){
-		return ActionBar.getBarX(canvas) + ActionBar.getBarWidth(canvas)*castPosition - icon.getWidth()/2;
-	}
+//	public float getTokenX(GameCanvas canvas){
+//		return ActionBar.getBarX(canvas) + ActionBar.getBarWidth(canvas)*castPosition - icon.getWidth()/2;
+//	}
+//	
+//	public float getTokenY(GameCanvas canvas){
+//		float upBar = ActionBar.getBarY(canvas) + TOKEN_OFFSET_UP;
+//		float downBar = ActionBar.getBarY(canvas) - TOKEN_OFFSET_DOWN;
+//		return leftside ? upBar : downBar;
+//		
+//	}
 	
-	public float getTokenY(GameCanvas canvas){
-		float upBar = ActionBar.getBarY(canvas) + TOKEN_OFFSET_UP;
-		float downBar = ActionBar.getBarY(canvas) - TOKEN_OFFSET_DOWN;
-		return leftside ? upBar : downBar;
-		
-	}
-	
-	public float getTokenXMin(GameCanvas canvas, GridBoard board){
-		float tokenX = getTokenX(canvas);
-		return tokenX;
-	}
-	
-	public float getTokenYMin(GameCanvas canvas, GridBoard board){
-		float tokenY = getTokenY(canvas);
-		return tokenY;
-	}
-	
-	public float getTokenXMax(GameCanvas canvas, GridBoard board){
-		float tokenX = getTokenX(canvas);
-		float charScale = getCharScale(canvas,texture,board);
-		return tokenX + icon.getWidth()*charScale;
-	}
-	
-	public float getTokenYMax(GameCanvas canvas, GridBoard board){
-		float tokenY = getTokenY(canvas);
-		float charScale = getCharScale(canvas,texture,board);
-		return tokenY + icon.getHeight()*charScale;
-	}
+//	public float getTokenXMin(GameCanvas canvas, GridBoard board){
+//		float tokenX = getTokenX(canvas);
+//		return tokenX;
+//	}
+//	
+//	public float getTokenYMin(GameCanvas canvas, GridBoard board){
+//		float tokenY = getTokenY(canvas);
+//		return tokenY;
+//	}
+//	
+//	public float getTokenXMax(GameCanvas canvas, GridBoard board){
+//		float tokenX = getTokenX(canvas);
+//		float charScale = getCharScale(canvas,texture,board);
+//		return tokenX + icon.getWidth()*charScale;
+//	}
+//	
+//	public float getTokenYMax(GameCanvas canvas, GridBoard board){
+//		float tokenY = getTokenY(canvas);
+//		float charScale = getCharScale(canvas,texture,board);
+//		return tokenY + icon.getHeight()*charScale;
+//	}
 	
 	/**  copy the static attributes of the character into a new object **/
 	public Character copy(){
@@ -299,47 +305,46 @@ public class Character implements GUIElement {
 		return false;
 	}
 	
-	boolean hasAttacks() {
-		return queuedActions.peek() != null;
-	}
-	
-	boolean hasPersisting() {
-		return persistingActions.peek() != null;
-	}
-	
-	float getSpeedModifier() {
-		switch (speedModifier) {
-		case -3:
-			return 0.3f;
-		case -2:
-			return 0.6f;
-		case -1:
-			return 0.8f;
-		case 0:
-			return 1;
-		case 1:
-			return 1.2f;
-		case 2:
-			return 1.5f;
-		case 3:
-			return 1.7f;
-		default:
-			if (speedModifier < -3){
-				return 0.2f;
-			} else {
-				return 2f;
+	/** if the character hasAttacks leftover that are not interrupted (moves can still execute when interrupted)
+	 *  returns true if there are attacks left returns false if its empty or last action is interrupted
+	 *  sideEffect: pops the last action if its interrupted
+	 * @return
+	 */
+	public boolean hasAttacks() {
+		ActionNode anode = queuedActions.peek();
+		if (anode!= null){
+			if ((anode.isInterrupted && anode.action.pattern != Pattern.MOVE) && queuedActions.size() == 1){
+				queuedActions.poll();
+				return false;
 			}
-		
+			else{
+				return true;
+			}
+		}
+		else{
+			return false;
 		}
 	}
 	
-	float getCastSpeed() {
-//		return this.castSpeed*getSpeedModifier();
-		return this.castSpeed;
+	public boolean hasPersisting() {
+		return persistingActions.peek() != null;
 	}
 	
-	float getBarSpeed() {
-		return this.speed*getSpeedModifier();
+	public float getSpeed() {
+		return this.actionBar.getSpeed();
+	}
+	
+	public float getCastPoint(){
+		return this.actionBar.getCastPoint();
+	}
+	
+	public void setSpeedModifier(int val){
+		//TODO if we have more modifier on stats have a bitmap of modifiers
+		this.actionBar.setSpeedModifier(val);
+	}
+	
+	public int getSpeedModifier(){
+		return this.actionBar.speedModifier;
 	}
 	
 	/**
@@ -426,6 +431,10 @@ public class Character implements GUIElement {
 		return persistingActions;
 	}
 	
+	CharActionBar getActionBar(){
+		return this.actionBar;
+	}
+	
 	boolean hasShield() {
 		return !shieldedCoordinates.isEmpty();
 	}
@@ -485,20 +494,41 @@ public class Character implements GUIElement {
 		return shadY;
 	}
 	
-	public void draw(GameCanvas canvas,GridBoard board, boolean shouldDim){
+	public void draw(GameCanvas canvas,GridBoard board){
 		if (!isAlive()){
 			return;
 		}
-		drawToken(canvas, shouldDim);
 		if(hasPersisting()){
 			drawPersisting(canvas,board);
 		}
 	}
 	
 	/** temporary while menu is blocked by characters */
-	public void drawSelection(GameCanvas canvas){
+	public void drawSelection(GameCanvas canvas,int count){
 		if (isSelecting && isAlive()){
-			selectionMenu.draw(canvas);
+			selectionMenu.draw(canvas,this.actionBar,count);
+		}
+	}
+	
+	/** draw the queued actions **/
+	public void drawQueuedActions(GameCanvas canvas,int count){
+		// don't draw queued actions unless he is hovering or is an AI
+		if (this.isAI||!this.getHovering()){
+			return;
+		}
+		
+		float actionSlot_x = this.actionBar.getX(canvas);
+		float actionSlot_y = this.actionBar.getY(canvas, count);
+
+		List<ActionNode> queuedActions = this.queuedActions;
+		for (ActionNode a: queuedActions){
+			// length relative 
+			float centeredCast = this.actionBar.getCenteredActionX(canvas, a.executePoint, a.action.cost);
+			float x_pos = actionSlot_x + centeredCast;
+			
+			float y_pos = actionSlot_y;
+			String text = a.action.name;
+			canvas.drawCenteredText(text,x_pos,y_pos,Color.BLACK);
 		}
 	}
 	
@@ -548,7 +578,7 @@ public class Character implements GUIElement {
 				//change to interrupted later maybe?
 				return animation.getTexture(CharacterState.IDLE);
 			}
-			if (castPosition - lastCastStart >= ((1-ActionBar.castPoint)/ActionBar.getTotalSlots())){
+			if (castPosition - lastCastStart >= ((1-this.getActionBar().getCastPoint())/this.getActionBar().getNumSlots())){
 				return animation.getTexture(CharacterState.CAST);
 			} else {
 				return animation.getTexture(CharacterState.ACTIVE);
@@ -575,13 +605,8 @@ public class Character implements GUIElement {
 		float canvasY = c.y;
 		c.free();
 		
-		Color newColor = new Color(Color.WHITE);
-		if (shouldDim) {
-			newColor = Color.LIGHT_GRAY.cpy();
-		}
-		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
-		col = isHovering ? color : col;
-		
+		Color color = getColor(shouldDim);
+		Color highlightColor = getHighlightColor(shouldDim);
 		//Decide what animation to draw
 		//Will sometimes be null when current animation is done, we just need to call again
 		FilmStrip toDraw = getFilmStrip();
@@ -593,10 +618,13 @@ public class Character implements GUIElement {
 		//go back to initial texture (current idle texture)
 		if (toDraw != null){
 			float charScale = getCharScale(canvas,toDraw,board);
-			canvas.drawCharacter(toDraw, canvasX, canvasY, col, leftside,charScale);
+			// draw once character normally then draw character again with tint
+			canvas.drawCharacter(toDraw, canvasX, canvasY, color, leftside,charScale);
+			canvas.drawCharacter(toDraw, canvasX, canvasY, highlightColor, leftside,charScale);
 		} else {
 			float charScale = getCharScale(canvas,texture,board);
-			canvas.drawCharacter(texture, canvasX, canvasY, col, leftside,charScale);
+			canvas.drawCharacter(texture, canvasX, canvasY, color, leftside,charScale);
+			canvas.drawCharacter(texture, canvasX, canvasY, highlightColor, leftside,charScale);
 		}
 		//use Jons logic for getting textures and then continue doing the same thing with the textures
 	}
@@ -722,23 +750,93 @@ public class Character implements GUIElement {
 		}
 	}
 	
-	/**
-	 * Draws token on action bar
-	 * @param canvas
-	 */
-	private void drawToken(GameCanvas canvas, boolean shouldDim){
-		float tokenX = getTokenX(canvas);
-		float tokenY = getTokenY(canvas);
-		boolean selecting = isSelecting || isHovering;
-		tokenY = selecting && !leftside ? tokenY-10 : tokenY;//change to bar.getHeight
-		Color newColor = new Color(Color.WHITE);
-		if (shouldDim) {
-			newColor.set(newColor.r, newColor.g, newColor.b, 0.3f);
+	
+	public void drawHealth(GameCanvas canvas,int count,boolean shouldDim){
+		Color iconColor = this.getColor(shouldDim);
+		Color waitColor = this.getActionBarColor(shouldDim, this.color.cpy());
+		
+		float tokenX = this.actionBar.getTotalX(canvas) - this.icon.getWidth();
+		float tokenY = this.actionBar.getY(canvas, count);
+		
+		canvas.drawTexture(this.icon, tokenX, tokenY, this.icon.getWidth(),this.icon.getHeight(),iconColor);
+		
+		/** the wait width is modified by the hp already **/
+		float healthW = this.actionBar.getWaitWidthNoBuffer(canvas);
+		float healthH = this.actionBar.getBarHeight(canvas);
+		
+		float healthX = this.actionBar.getX(canvas);
+		float healthY = tokenY;
+		
+		canvas.drawBox(healthX, healthY, healthW, healthH, waitColor);
+	}
+	
+	public Color getActionBarColor(boolean shouldDim,Color c){
+		if (isHovering){
+			return c;
 		}
-		Color col = isSelecting ? Color.WHITE.cpy().lerp(color, lerpVal) : newColor;
-		col = isHovering ? color : col;
-		canvas.drawTexture(icon, tokenX, tokenY, selecting? col : 
-			newColor, selecting);
+		else if (isSelecting){
+			c.mul(Color.LIGHT_GRAY);
+		}
+		else if (shouldDim){
+			c.mul(Color.LIGHT_GRAY);
+		}
+		return c;
+	}
+	
+	private Color getColor(boolean shouldDim){
+		Color chosenColor = Color.WHITE.cpy();
+		if (isHovering){
+			return chosenColor;
+		}
+		else if (isSelecting){
+			chosenColor = chosenColor.lerp(this.color.cpy(), lerpVal);
+		}
+		else if (shouldDim){
+			chosenColor = Color.LIGHT_GRAY.cpy().mul(1,1,1,0.8f);
+		}
+		return chosenColor;
+	}
+	
+	private Color getHighlightColor(boolean shouldDim){
+		Color chosenColor = Color.DARK_GRAY.cpy().mul(1,1,1,0.0f);
+		if (isHovering){
+			chosenColor = this.color.cpy().mul(1,1,1,0.6f);
+		}
+		else if (isSelecting){
+			//
+		}
+		else if (shouldDim){
+			//
+		}
+		return chosenColor;
+	}
+	
+	private Color actionBarTickColor(boolean shouldDim){
+		Color chosenColor = Color.DARK_GRAY.cpy();
+		if (isHovering){
+			chosenColor = chosenColor.lerp(Color.WHITE, lerpVal);
+		}
+		else if (isSelecting){
+			chosenColor = chosenColor.lerp(Color.WHITE, lerpVal);
+		}
+		else if (shouldDim){
+			chosenColor = Color.DARK_GRAY.cpy().mul(1,1,1,0.8f);
+		}
+		return chosenColor;	
+	}
+	
+	public void drawToken(GameCanvas canvas, int count,boolean shouldDim){
+		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - ACTIONBAR_TICK_SIZE/2;
+		float tokenY = this.actionBar.getY(canvas, count);
+		
+		float actionBarHeight = this.actionBar.getBarHeight(canvas);
+		Color c = actionBarTickColor(shouldDim);
+		canvas.drawBox(tokenX, tokenY, ACTIONBAR_TICK_SIZE, actionBarHeight, c);
+		
+//		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - icon.getWidth()/2;
+//		float tokenY = this.actionBar.getY(canvas, count) - TOKEN_OFFSET_DOWN;
+//		Color c = getColor(shouldDim);
+//		canvas.drawTexture(icon,tokenX,tokenY,c,false);
 	}
 
 	public boolean getHovering(){
@@ -761,12 +859,14 @@ public class Character implements GUIElement {
 		float x_max = getXMax(canvas, board);
 		float y_min = getYMin(canvas, board);
 		float y_max = getYMax(canvas, board);
-		float x_token_min = getTokenXMin(canvas, board);
-		float x_token_max = getTokenXMax(canvas, board);
-		float y_token_min = getTokenYMin(canvas, board);
-		float y_token_max = getTokenYMax(canvas, board);
 		
-		return (x <= x_max && x >= x_min && y <= y_max && y >= y_min
-				|| x <= x_token_max && x >= x_token_min && y <= y_token_max && y >= y_token_min);
+		return (x <= x_max && x >= x_min && y <= y_max && y >= y_min);
+//		float x_token_min = getTokenXMin(canvas, board);
+//		float x_token_max = getTokenXMax(canvas, board);
+//		float y_token_min = getTokenYMin(canvas, board);
+//		float y_token_max = getTokenYMax(canvas, board);
+		
+//		return (x <= x_max && x >= x_min && y <= y_max && y >= y_min
+//				|| x <= x_token_max && x >= x_token_min && y <= y_token_max && y >= y_token_min);
 	}
 }
