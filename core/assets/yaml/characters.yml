@@ -84,5 +84,5 @@
 
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"
-  animationId: 4s
+  animationId: 4
 ...

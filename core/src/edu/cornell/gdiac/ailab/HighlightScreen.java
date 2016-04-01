@@ -13,7 +13,7 @@ public class HighlightScreen {
 	private static TextureRegion currentHighlight;
 	private static Color highlightColor = new Color(Color.WHITE);
 	private static boolean justScreen;
-	private static float SCREEN_OPACITY = 0.3f;
+	private static float SCREEN_OPACITY = 0.4f;
 	
 	public HighlightScreen(){
 		screen = new Texture(HIGHLIGHT_TEXTURE);
