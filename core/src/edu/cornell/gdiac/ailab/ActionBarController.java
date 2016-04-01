@@ -6,16 +6,14 @@ public class ActionBarController {
 	
 	/** Models */
 	List<Character> characters;
-	ActionBar bar;
 	
 	/** State variables */
 	boolean isPlayerSelection;
 	boolean isAISelection;
 	boolean isAttack;
 	
-	public ActionBarController(List<Character> chars, ActionBar bar) {
+	public ActionBarController(List<Character> chars) {
 		this.characters = chars;
-		this.bar = bar;
 	}
 	
 	public void update(){

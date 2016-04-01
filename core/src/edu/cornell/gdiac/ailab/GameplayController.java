@@ -27,7 +27,6 @@ public class GameplayController {
 	/** Current Models */
     private GridBoard board;
     private Characters characters;
-    private ActionBar bar;
     private TextMessage textMessages;
     private AnimationPool animations;
     
@@ -64,14 +63,13 @@ public class GameplayController {
         
         textMessages = new TextMessage();
         animations = new AnimationPool();
-        bar = new ActionBar();
         
 		// Create the subcontrollers
-        actionController = new ActionController(board,characters,bar,textMessages,animations);
-        selectionMenuController = new SelectionMenuController(board,characters,bar);
-        actionBarController = new ActionBarController(characters,bar);
-        aiController = new AIController(board,characters,bar);
-        persistingController = new PersistingController(board,characters,bar,textMessages,animations);
+        actionController = new ActionController(board,characters,textMessages,animations);
+        selectionMenuController = new SelectionMenuController(board,characters);
+        actionBarController = new ActionBarController(characters);
+        aiController = new AIController(board,characters);
+        persistingController = new PersistingController(board,characters,textMessages,animations);
         effectController = new EffectController(characters);
         mouseOverController.init(screen, board);
     }
@@ -143,7 +141,6 @@ public class GameplayController {
         screen.draw(canvas);
     	board.draw(canvas);
     	drawCharacters(canvas);
-        bar.draw(canvas);
         animations.draw(canvas,board);
         
         textMessages.draw(canvas,board);

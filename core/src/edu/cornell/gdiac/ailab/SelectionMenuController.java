@@ -10,7 +10,6 @@ public class SelectionMenuController {
 	/** Models */
 	GridBoard board;
 	List<Character> characters;
-	ActionBar bar;
 	
 	//TODO: Change how I handle this
 	/** NOP action that is available for every character */
@@ -45,10 +44,9 @@ public class SelectionMenuController {
 	/** Attack direction values */
 	Direction direction;
 	
-	public SelectionMenuController(GridBoard board, List<Character> chars, ActionBar bar) {
+	public SelectionMenuController(GridBoard board, List<Character> chars) {
 		this.board = board;
 		this.characters = chars;
-		this.bar = bar;
 		
 		isDone = false;
 		selected = null;

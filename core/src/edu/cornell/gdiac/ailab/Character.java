@@ -423,6 +423,10 @@ public class Character implements GUIElement {
 		return persistingActions;
 	}
 	
+	CharActionBar getActionBar(){
+		return this.actionBar;
+	}
+	
 	boolean hasShield() {
 		return !shieldedCoordinates.isEmpty();
 	}

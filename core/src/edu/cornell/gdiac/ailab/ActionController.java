@@ -38,7 +38,6 @@ public class ActionController {
 	/** Models */
 	public GridBoard board; 
 	public List<Character> characters;
-	public ActionBar bar;
 	public TextMessage textMessages;
 	public AnimationPool animations;
 	
@@ -56,11 +55,10 @@ public class ActionController {
 	 * @param chars The list of characters
 	 * @param bar The action bar
 	 */
-	public ActionController(GridBoard board, List<Character> chars, ActionBar bar, 
+	public ActionController(GridBoard board, List<Character> chars, 
 			TextMessage textMsgs, AnimationPool animations) {
 		this.board = board;
 		this.characters = chars;
-		this.bar = bar;
 		this.textMessages = textMsgs;
 		this.animations = animations;
 		
