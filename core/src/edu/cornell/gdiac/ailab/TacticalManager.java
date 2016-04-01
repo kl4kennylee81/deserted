@@ -54,10 +54,10 @@ public class TacticalManager extends ConditionalManager{
 		enemies = new ArrayList<Character>();
 		interval  = (1f-ActionBar.castPoint) / ActionBar.getTotalSlots();
 		for(Character ch: chars){
-			if(ch.isAI && ch != c && ch.isAlive()){
+			if(c.leftside == ch.leftside && ch != c && ch.isAlive()){
 				friends.add(ch);
 			}
-			else if(ch != c && ch.isAlive()){
+			else if(c.leftside != ch.leftside && ch != c && ch.isAlive()){
 				enemies.add(ch);
 			}
 		}
@@ -379,9 +379,6 @@ public class TacticalManager extends ConditionalManager{
 			if(a.damage > 0 && a.pattern != Pattern.SINGLE){
 				for(Character e: enemies){
 					if(canAttackSquareFrom(xPos, yPos, e.xPosition, e.yPosition, a)){
-						if(c.name.equals("blue")){
-							//System.out.println("("+xPos+","+yPos+")->("+e.xPosition+","+e.yPosition+") "+a.pattern.toString());
-						}
 						return a;
 					}
 				}
@@ -491,19 +488,25 @@ public class TacticalManager extends ConditionalManager{
 	private ActionNode shieldNode(Character c, int startPoint, int xPos, int yPos){
 		Action a = shield(c);
 		ActionNodes anPool = ActionNodes.getInstance();
+		int x1;
+		int x2;
 		for(Character f: friends){
-			if(f.xPosition + 1 >= xPos && f.yPosition - yPos == 1){
+			x1 = c.leftside? xPos : f.xPosition;
+			x2 = c.leftside? f.xPosition : xPos;
+			if(x1 + 1 >= xPos && x2 - yPos == 1){
 				return anPool.newActionNode(a, getCastTime(a, startPoint), xPos, yPos, Direction.UP);
 			}
-			if(f.xPosition + 1 >= xPos && f.yPosition - yPos == -1){
+			if(x1 + 1 >= x2 && f.yPosition - yPos == -1){
 				return anPool.newActionNode(a, getCastTime(a, startPoint), xPos, yPos, Direction.DOWN);
 			}
 		}
 		for(Character f: friends){
-			if(f.xPosition >= xPos && f.yPosition - yPos == 2){
+			x1 = c.leftside? xPos : f.xPosition;
+			x2 = c.leftside? f.xPosition : xPos;
+			if(x1 >= x2 && f.yPosition - yPos == 2){
 				return anPool.newActionNode(a, getCastTime(a, startPoint), xPos, yPos, Direction.UP);
 			}
-			if(f.xPosition >= xPos && f.yPosition - yPos == -2){
+			if(x1 >= x2 && f.yPosition - yPos == -2){
 				return anPool.newActionNode(a, getCastTime(a, startPoint), xPos, yPos, Direction.DOWN);
 			}
 		}
@@ -591,19 +594,24 @@ public class TacticalManager extends ConditionalManager{
 	 * no such move exists.
 	 */
 	private Direction optimalDirection(Character c, int xPos, int yPos){
+		ArrayList<Direction> list = new ArrayList<Direction>();
 		if(canHitEnemyFrom(c, xPos-1, yPos) && isSafeSquare(xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos - 1)){
-			return Direction.LEFT;
+			list.add(Direction.LEFT);
 		}
 		if(canHitEnemyFrom(c, xPos, yPos+1) && isSafeSquare(xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
-			return Direction.UP;
+			list.add(Direction.UP);
 		}
 		if(canHitEnemyFrom(c, xPos, yPos-1) && isSafeSquare(xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
-			return Direction.DOWN;
+			list.add(Direction.DOWN);
 		}
-		if(canHitEnemyFrom(c, xPos+1, yPos) && isSafeSquare(xPos+1, yPos) && !board.isOccupied(xPos+1, yPos)){
-			return Direction.RIGHT;
+		if(canHitEnemyFrom(c, xPos+1, yPos) && isSafeSquare(xPos+1, yPos) && !board.isOccupied(xPos+1, yPos) && ownSide(xPos + 1)){
+			list.add(Direction.RIGHT);
 		}
-		return Direction.NONE;
+		if(list.size() == 0){
+			return Direction.NONE;
+		}
+		Random r = new Random();
+		return list.get(r.nextInt(list.size()));
 	}
 	
 	
@@ -611,19 +619,24 @@ public class TacticalManager extends ConditionalManager{
 	 * Try to find a single movement that will put character in position to attack
 	 */
 	private Direction attackingDirection(Character c, int xPos, int yPos){
+		ArrayList<Direction> list = new ArrayList<Direction>();
 		if(canHitEnemyFrom(c, xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos-1)){
-			return Direction.LEFT;
+			list.add(Direction.LEFT);
 		}
 		if(canHitEnemyFrom(c, xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
-			return Direction.UP;
+			list.add(Direction.UP);
 		}
 		if(canHitEnemyFrom(c, xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
-			return Direction.DOWN;
+			list.add(Direction.DOWN);
 		}
-		if(canHitEnemyFrom(c, xPos+1, yPos) && !board.isOccupied(xPos+1, yPos)){
-			return Direction.RIGHT;
+		if(canHitEnemyFrom(c, xPos+1, yPos) && !board.isOccupied(xPos+1, yPos) && ownSide(xPos + 1)){
+			list.add(Direction.RIGHT);
 		}
-		return Direction.NONE;
+		if(list.size() == 0){
+			return Direction.NONE;
+		}
+		Random r = new Random();
+		return list.get(r.nextInt(list.size()));	
 	}
 	
 	
@@ -631,19 +644,24 @@ public class TacticalManager extends ConditionalManager{
 	 * Try to find a single movement that will put the character at a safe square
 	 */
 	private Direction defensiveDirection(Character c, int xPos, int yPos){
-		if(canHitEnemyFrom(c, xPos+1, yPos) && !board.isOccupied(xPos+1, yPos)){
-			return Direction.RIGHT;
+		ArrayList<Direction> list = new ArrayList<Direction>();
+		if(canHitEnemyFrom(c, xPos+1, yPos) && !board.isOccupied(xPos+1, yPos) && ownSide(xPos + 1)){
+			list.add(Direction.RIGHT);
 		}
 		if(canHitEnemyFrom(c, xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
-			return Direction.UP;
+			list.add(Direction.UP);
 		}
 		if(canHitEnemyFrom(c, xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
-			return Direction.DOWN;
+			list.add(Direction.DOWN);
 		}
 		if(canHitEnemyFrom(c, xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos-1)){
-			return Direction.LEFT;
+			list.add(Direction.LEFT);
 		}
-		return Direction.NONE;
+		if(list.size() == 0){
+			return Direction.NONE;
+		}
+		Random r = new Random();
+		return list.get(r.nextInt(list.size()));	
 	}
 	
 	
@@ -652,7 +670,7 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	private Direction randomDirection(int xPos, int yPos){
 		ArrayList<Direction> directions = new ArrayList<Direction>();
-		if(board.isInBounds(xPos + 1, yPos)){
+		if(board.isInBounds(xPos + 1, yPos)  && ownSide(xPos + 1)){
 			directions.add(Direction.RIGHT);
 		}
 		if(board.isInBounds(xPos, yPos + 1)){
@@ -666,14 +684,6 @@ public class TacticalManager extends ConditionalManager{
 		}
 		Random r = new Random();
 		return directions.get(r.nextInt(directions.size()));	
-	}
-	
-	
-	/**
-	 * Returns true if a tile (x, _ ) is on the right side of the board
-	 */
-	private boolean ownSide(int x){
-		return x >= board.width/2 ? true : false;
 	}
 	
 	
@@ -742,6 +752,14 @@ public class TacticalManager extends ConditionalManager{
 		ActionNodes anPool = ActionNodes.getInstance();
 		Action a = nop();
 		return anPool.newActionNode(a, getCastTime(a, startPoint), 0, 0, Direction.NONE);
+	}
+	
+	
+	/**
+	 * Output data to a file
+	 */
+	public void outputData(){
+		System.out.println("output");
 	}
 }
  

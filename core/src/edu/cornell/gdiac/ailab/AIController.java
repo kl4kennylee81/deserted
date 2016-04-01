@@ -49,12 +49,12 @@ public class AIController {
 				//Update tactical manager
 				tacticalManager.updateConditions(c);
 				tacticalManager.selectActions(c);
-				System.out.print(c.name+ ": ");
-				for(ActionNode n: c.queuedActions){
-					System.out.print("("+n.action.name+") ");
-				}
-				System.out.println();
 				c.needsSelection = false;
+//				System.out.print(c.name+ ": ");
+//				for(ActionNode n: c.queuedActions){
+//					System.out.print("("+n.action.name+") ");
+//				}
+//				System.out.println();
 //				xOffset = 0;
 //				yOffset = 0;
 //				shield = false;
@@ -72,6 +72,16 @@ public class AIController {
 //						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 1.0f));
 //						break;
 //				}
+			}
+		}
+	}
+	
+	public void outputData(){
+		for (Character c : chars){
+			if(c.needsDataOutput){
+				c.needsDataOutput = false;
+				tacticalManager.updateConditions(c);
+				tacticalManager.outputData();
 			}
 		}
 	}

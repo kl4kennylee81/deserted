@@ -104,6 +104,7 @@ public class GameplayController {
     			inGameState = InGameState.NORMAL;
     			prompt = null;
     			board.reset();
+    			aiController.outputData();
     		}
     		break;
     	case ATTACK:

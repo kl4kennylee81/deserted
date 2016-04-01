@@ -125,13 +125,13 @@ public class ConditionalManager {
 	public boolean attackSquareAdjacent(){
 		int x = selected.xPosition;
 		int y = selected.yPosition;
-		if(canHitEnemyFrom(selected, x+1, y)){
+		if(canHitEnemyFrom(selected, x+1, y) && ownSide(x+1)){
 			return true;
 		}
 		if(canHitEnemyFrom(selected, x, y+1)){
 			return true;
 		}
-		if(canHitEnemyFrom(selected, x-1, y)){
+		if(canHitEnemyFrom(selected, x-1, y) && ownSide(x-1)){
 			return true;
 		}
 		if(canHitEnemyFrom(selected, x, y-1)){
@@ -149,13 +149,13 @@ public class ConditionalManager {
 	public boolean safeSquareAdjacent(){
 		int x = selected.xPosition;
 		int y = selected.yPosition;
-		if(isSafeSquare(x+1, y)){
+		if(isSafeSquare(x+1, y) && ownSide(x+1)){
 			return true;
 		}
 		if(isSafeSquare(x, y+1)){
 			return true;
 		}
-		if(isSafeSquare(x-1, y)){
+		if(isSafeSquare(x-1, y) && ownSide(x-1)){
 			return true;
 		}
 		if(isSafeSquare(x, y-1)){
@@ -279,13 +279,12 @@ public class ConditionalManager {
 	}
 	
 	public boolean opponentHasWall(){
-		for(Character c: chars){
-			if(!c.isAI && c.hasShield()){
+		for(Character c: enemies){
+			if(c.hasShield()){
 				return true;
 			}
 		}
 		return false;
-		
 	}
 	
 	
@@ -356,7 +355,9 @@ public class ConditionalManager {
 			if(c.hasShield()){
 				List<Coordinate> list = c.getShieldedCoords();
 				for(Coordinate coord: list){
-					if(coord.y == selected.yPosition && coord.x <= selected.xPosition){
+					int x1 = selected.leftside? selected.xPosition : coord.x;
+					int x2 = selected.leftside? coord.x : selected.xPosition;
+					if(coord.y == selected.yPosition && x1 <= x2){
 						return true;
 					}
 				}
@@ -372,8 +373,9 @@ public class ConditionalManager {
 	 */
 	public boolean canProtect(){
 		for(Character c: friends){
-			if(selected.xPosition <= c.xPosition && 
-					Math.abs(selected.yPosition - c.yPosition) <= 1){
+			int x1 = selected.leftside? c.xPosition : selected.xPosition;
+			int x2 = selected.leftside? selected.xPosition : c.xPosition;
+			if(x1 <= x2 && Math.abs(selected.yPosition - c.yPosition) <= 1){
 				return true;
 			}
 		}
@@ -386,8 +388,9 @@ public class ConditionalManager {
 	 */
 	public boolean canBeProtected(){
 		for(Character c: friends){
-			if(c.xPosition <= selected.xPosition && 
-					Math.abs(selected.yPosition - c.yPosition) <= 1){
+			int x1 = selected.leftside? selected.xPosition : c.xPosition;
+			int x2 = selected.leftside? c.xPosition : selected.xPosition;
+			if(x1 <= x2 && Math.abs(selected.yPosition - c.yPosition) <= 1){
 				return true;
 			}
 		}
@@ -400,10 +403,12 @@ public class ConditionalManager {
 	 */
 	public boolean canBeProtectedWithMove(){
 		for(Character c: friends){
-			if(c.xPosition <= selected.xPosition+1 && Math.abs(c.yPosition - selected.yPosition) <= 1){
+			int x1 = selected.leftside? selected.xPosition : c.xPosition;
+			int x2 = selected.leftside? c.xPosition : selected.xPosition;
+			if(x1 <= x2+1 && Math.abs(c.yPosition - selected.yPosition) <= 1){
 				return true;
 			}
-			if(c.xPosition <= selected.xPosition && Math.abs(c.yPosition - selected.yPosition) <= 2){
+			if(x1 <= x2 && Math.abs(c.yPosition - selected.yPosition) <= 2){
 				return true;
 			}
 		}
@@ -420,10 +425,12 @@ public class ConditionalManager {
 			if(c.hasShield()){
 				List<Coordinate> list = c.getShieldedCoords();
 				for(Coordinate coord: list){
-					if(coord.y == selected.yPosition && coord.x <= selected.xPosition+1){
+					int x1 = selected.leftside? selected.xPosition : coord.x;
+					int x2 = selected.leftside? coord.x : selected.xPosition;
+					if(coord.y == selected.yPosition && x1 <= x2+1){
 						return true;
 					}
-					if(Math.abs(coord.y - selected.yPosition) <= 1 && coord.x <= selected.xPosition){
+					if(Math.abs(coord.y - selected.yPosition) <= 1 && x1 <= x2){
 						return true;
 					}
 				}
@@ -440,10 +447,12 @@ public class ConditionalManager {
 	 */
 	public boolean canProtectFriendWithMove(){
 		for(Character c: friends){
-			if(selected.xPosition <= c.xPosition+1 && Math.abs(c.yPosition - selected.yPosition) <= 1){
+			int x1 = selected.leftside? c.xPosition : selected.xPosition;
+			int x2 = selected.leftside? selected.xPosition : c.xPosition;
+			if(x1 <= x2+1 && Math.abs(c.yPosition - selected.yPosition) <= 1){
 				return true;
 			}
-			if(selected.xPosition <= c.xPosition && Math.abs(c.yPosition - selected.yPosition) <= 2){
+			if(x1 <= x2 && Math.abs(c.yPosition - selected.yPosition) <= 2){
 				return true;
 			}
 		}
@@ -667,6 +676,7 @@ public class ConditionalManager {
 	 * Returns true if the square specified by (x,y) is a safe square
 	 */
 	public boolean isSafeSquare(int x, int y){
+		if(!board.isInBounds(x, y)) return false;
 		for(Character c: enemies){
 			if(canAttackSquareNoSingle(c, x, y)) return false;
 		}
@@ -685,6 +695,7 @@ public class ConditionalManager {
 	 * Returns true if the the character can hit an enemy from square (x,y)
 	 */
 	public boolean canHitEnemyFrom(Character c, int x, int y){
+		if(!board.isInBounds(x, y)) return false;
 		for(Character e: enemies){
 			if(canAttackSquareNoSingle(c, x, y, e.xPosition, e.yPosition)){
 				return true;
@@ -717,5 +728,18 @@ public class ConditionalManager {
 			}
 		}
 		return ally;
+	}
+	
+	
+	/**
+	 * Returns true if a tile (x, _ ) is on the right side of the board
+	 */
+	public boolean ownSide(int x){
+		if(selected.leftside){
+			return x >= board.width/2 ? false : true;
+		}
+		else{
+			return x >= board.width/2 ? true : false;
+		}
 	}
 }

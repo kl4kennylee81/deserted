@@ -71,6 +71,8 @@ public class Character implements GUIElement {
 	boolean isExecuting;
 	/** Did I just get hit? */
 	boolean isHurt;
+	/** Do I need to output data about my selected actions? */
+	boolean needsDataOutput;
 	
 	//TODO: Change to pass this in from GameEngine
 	/** Starting x and y positions */
@@ -270,6 +272,7 @@ public class Character implements GUIElement {
 		this.needsSelection = true;
 		this.isBlocked = false;
 	}
+	
 	
 	/**
 	 * Make an AI with the given difficulty
