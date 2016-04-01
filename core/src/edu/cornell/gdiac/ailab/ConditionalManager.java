@@ -18,6 +18,35 @@ public class ConditionalManager {
 	protected List<Character> friends;
 	protected List<Character> enemies;
     protected float interval;
+    
+    protected final String[] conditions = {
+    		"SAFE", 
+    		"NOT_SAFE", 
+    		"CAN_HIT_ENEMY", 
+    		"ADJACENT_SAFE_SQUARE", 
+    		"ADJACENT_ATTACK_SQUARE", 
+    		"ALLY_CASTING", 
+    		"ALLY_SHIELDING", 
+    		"HIGH_INTERRUPT_CHANCE",
+    		"MEDIUM_INTERRUPT_CHANCE",
+    		"LOW_INTERRUPT_CHANCE", 
+    		"NO_INTERRUPT_CHANCE",
+    		"LOW_HEALTH", "HIGH_HEALTH", "ALONE",
+    		"ENEMY_HAS_WALL", 
+    		"PROTECTED", 
+    		"CAN_PROTECT",
+    		"CAN_PROTECT_WITH_MOVE",
+    		"PROTECTED_BY_MOVE",
+    		"MAYBE_PROTECTED_BY_MOVE",
+    		"COULD_BE_BLOCKED",
+    		"ONE_ENEMY_LEFT", 
+    		"HAS_SHIELD",
+    		"HAS_SINGLE", 
+    		"ALLY_SAFE",
+    		"ALLY_CAN_HIT_ENEMY",
+    		"ALLY_ALMOST_DONE_WAITING", 
+    		"DEFAULT"
+    };
 
 	
 	public void update(GridBoard board, List<Character> chars, List<Character> friends, List<Character> enemies, ActionBar bar, Character c){
@@ -33,23 +62,22 @@ public class ConditionalManager {
 		map.put("SAFE", isSafe());
 		map.put("NOT_SAFE", isNotSafe());
 		map.put("CAN_HIT_ENEMY", canHitOpponent());
-		map.put("ADJ_ATTACK_SQUARE", attackSquareAdjacent());
-		map.put("ADJ_SAFE_SQUARE", safeSquareAdjacent());
-		map.put("ADJ_SAFE_SQUARE", safeSquareAdjacent());
+		map.put("ADJACENT_ATTACK_SQUARE", attackSquareAdjacent());
+		map.put("ADJACENT_SAFE_SQUARE", safeSquareAdjacent());
 		map.put("ALLY_CASTING", friendIsCasting());
 		map.put("ALLY_SHIELDING", friendIsShielding());
 		map.put("ENEMY_CASTING", opponentIsCasting());
-		map.put("HIGH_INT_CHANCE", highInterruptChance());
-		map.put("MED_INT_CHANCE", mediumInterruptChance());
-		map.put("LOW_INT_CHANCE", lowInterruptChance());
-		map.put("NO_INT_CHANCE", noInterruptChance());
+		map.put("HIGH_INTERRUPT_CHANCE", highInterruptChance());
+		map.put("MEDIUM_INTERRUPT_CHANCE", mediumInterruptChance());
+		map.put("LOW_INTERRUPT_CHANCE", lowInterruptChance());
+		map.put("NO_INTERRUPT_CHANCE", noInterruptChance());
 		map.put("LOW_HEALTH", hasLowHealth());
 		map.put("HIGH_HEALTH", isHealthy());
 		map.put("ALONE", isAlone());
 		map.put("ENEMY_HAS_WALL", opponentHasWall());
 		map.put("PROTECTED", isProtected());
 		map.put("CAN_PROTECT", canProtect());
-		map.put("PROTECT_WITH_MOVE", canProtectFriendWithMove());
+		map.put("CAN_PROTECT_WITH_MOVE", canProtectFriendWithMove());
 		map.put("PROTECTED_BY_MOVE", wouldBeProtectedWithMove());
 		map.put("MAYBE_PROTECTED_BY_MOVE", canBeProtectedWithMove());
 		map.put("COULD_BE_BLOCKED", projectileCouldBeBlocked());

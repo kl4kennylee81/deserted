@@ -1,6 +1,7 @@
 package edu.cornell.gdiac.ailab;
 
 import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,6 +17,7 @@ import edu.cornell.gdiac.ailab.DecisionNode.MoveList;
 import edu.cornell.gdiac.ailab.DecisionNode.Specific;
 import edu.cornell.gdiac.ailab.DecisionNode.Tactic;
 import edu.cornell.gdiac.ailab.Effect.Type;
+import org.json.simple.*;
 
 
 public class TacticalManager extends ConditionalManager{
@@ -415,13 +417,13 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	public Action powerfulAttack(Character c, int xPos, int yPos){
 		Action powerful = nop();
-		int maxDamage = Integer.MIN_VALUE;
+		int maxCost = Integer.MIN_VALUE;
 		for(Action a: c.availableActions){
 			if(a.damage > 0 && a.pattern != Pattern.SINGLE){
 				for(Character e: enemies){
-					if(a.damage > maxDamage && canAttackSquareFrom(xPos, yPos, e.xPosition, e.yPosition, a)){
+					if(a.cost > maxCost && canAttackSquareFrom(xPos, yPos, e.xPosition, e.yPosition, a)){
 						powerful = a;
-						maxDamage = a.damage;
+						maxCost = a.cost;
 					}
 				}
 			}
@@ -645,16 +647,16 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	private Direction defensiveDirection(Character c, int xPos, int yPos){
 		ArrayList<Direction> list = new ArrayList<Direction>();
-		if(canHitEnemyFrom(c, xPos+1, yPos) && !board.isOccupied(xPos+1, yPos) && ownSide(xPos + 1)){
+		if(isSafeSquare(xPos+1, yPos) && !board.isOccupied(xPos+1, yPos) && ownSide(xPos + 1)){
 			list.add(Direction.RIGHT);
 		}
-		if(canHitEnemyFrom(c, xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
+		if(isSafeSquare(xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
 			list.add(Direction.UP);
 		}
-		if(canHitEnemyFrom(c, xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
+		if(isSafeSquare(xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
 			list.add(Direction.DOWN);
 		}
-		if(canHitEnemyFrom(c, xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos-1)){
+		if(isSafeSquare(xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos-1)){
 			list.add(Direction.LEFT);
 		}
 		if(list.size() == 0){
@@ -755,11 +757,154 @@ public class TacticalManager extends ConditionalManager{
 	}
 	
 	
+	
+	
+	//=======================================================================//
+	//             +------------+                                            //
+	//	           | JSON Stuff |							                 //
+	//	           +------------+							                 //
+	//			             \   ^__^										 //
+	//			              \  (00)\_______							     //	
+	//			                 (__)\       )\/\							 //
+	//			                     ||----w |								 //
+	//			                     ||     ||								 //
+    //=======================================================================//
+	
+	
 	/**
 	 * Output data to a file
 	 */
-	public void outputData(){
-		System.out.println("output");
+	public void outputData(Character c){
+		JSONObject json = new JSONObject();
+		StringBuilder vectorBuilder = new StringBuilder();
+		for(String s: conditions){
+			if(map.get(s)){
+				vectorBuilder.append('1');
+			}
+			else{
+				vectorBuilder.append('0');
+			}
+		}
+		String vector = vectorBuilder.toString();
+
+		JSONArray array = new JSONArray();
+		int startSlot = 0;
+		int xPos = c.xPosition;
+		int yPos = c.yPosition;
+		for(ActionNode a: c.queuedActions){
+			JSONObject moveMap = new JSONObject();
+			ArrayList<Specific> moves = getPossibleMoves(c, a, xPos, yPos, startSlot);
+			JSONArray possibleMoves = new JSONArray();
+			for(Specific move: moves){
+				possibleMoves.add(move.toString());
+			}
+			moveMap.put(a.action.name, possibleMoves);
+			array.add(moveMap);
+			startSlot += a.action.cost;
+			xPos += applyMoveX(a);
+			yPos += applyMoveY(a);
+		}
+		
+		json.put("vector", vector);
+		json.put("actions", array);
+		System.out.println(json.toString());
+	}
+	
+	
+	/**
+	 * Return a lost of possible specific moves that could have led to this ActionNode
+	 */
+	public ArrayList<Specific> getPossibleMoves(Character c, ActionNode a, int xPos, int yPos, int startSlot){
+		ArrayList<Specific> moves = new ArrayList<Specific>();
+		addSinglePossibilities(c, a, moves, startSlot);
+		if(a.action.pattern == Pattern.SHIELD){
+			moves.add(Specific.SHIELD);
+		}
+		addAttackPossibilities(c, a, moves, xPos, yPos);
+		addMovePossibilities(c, a, moves, xPos, yPos);
+		return moves;
+	}
+	
+	
+	private void addAttackPossibilities(Character c, ActionNode a, ArrayList<Specific> moves, int xPos, int yPos){
+		if(a.action.pattern == Pattern.SINGLE) return;
+		if(a.action.pattern == Pattern.MOVE) return;
+		if(a.action.pattern == Pattern.SHIELD) return;
+		Action power = powerfulAttack(c, xPos, yPos);
+		if(a.action.damage == power.cost){
+			moves.add(Specific.POWERFUL_ATTACK);
+		}
+		Action quick = quickAttack(c, xPos, yPos);
+		if(a.action.cost == quick.cost){
+			moves.add(Specific.QUICK_ATTACK);
+		}
+		moves.add(Specific.NORMAL_ATTACK);
+	}
+	
+	private void addSinglePossibilities(Character c, ActionNode a, ArrayList<Specific> moves, int startSlot){
+		if(a.action.pattern != Pattern.SINGLE) return;
+		ArrayList<Character> weakest = new ArrayList<Character>();
+		ArrayList<Character> strongest = new ArrayList<Character>();
+		int minHealth = Integer.MAX_VALUE;
+		int maxHealth = Integer.MIN_VALUE;
+		for(Character e: enemies){
+			if(e.health == minHealth){
+				weakest.add(e);
+			}
+			if(e.health < minHealth){
+				weakest = new ArrayList<Character>();
+				weakest.add(e);
+				minHealth = e.health;
+			}
+			if(e.health == maxHealth){
+				strongest.add(e);
+			}
+			if(e.health > maxHealth){
+				strongest = new ArrayList<Character>();
+				strongest.add(e);
+				maxHealth = e.health;
+			}
+
+		}
+		for(Character weak: weakest){
+			if(a.xPosition == weak.xPosition && a.yPosition == weak.yPosition){
+				moves.add(Specific.SINGLE_WEAKEST);
+			}
+		}
+		for(Character strong: strongest){
+			if(a.xPosition == strong.xPosition && a.yPosition == strong.yPosition){
+				moves.add(Specific.SINGLE_STRONGEST);
+			}
+		}
+		ActionNode node = singleOptimal(c, startSlot);
+		if(node.xPosition == a.xPosition && node.yPosition == a.yPosition || moves.size() == 0){
+			moves.add(Specific.SINGLE_OPTIMAL);
+		}
+	}
+	
+	private void addMovePossibilities(Character c, ActionNode a, ArrayList<Specific> moves, int xPos, int yPos){
+		if(a.action.pattern != Pattern.MOVE){
+			return;
+		}
+		boolean added = false;
+		int x = xPos;
+		int y = yPos;
+		if(a.direction == Direction.LEFT) x--;
+		if(a.direction == Direction.RIGHT) x++;
+		if(a.direction == Direction.DOWN) y--;
+		if(a.direction == Direction.UP) y++;
+		if(isSafeSquare(x,y)){
+			added = true;
+			moves.add(Specific.MOVE_DEFENSIVE);
+		}
+		if(canHitEnemyFrom(c, x, y)){
+			added = true;
+			moves.add(Specific.MOVE_AGGRESSIVE);
+		}
+		if(!added){
+			moves.add(Specific.MOVE_AGGRESSIVE);
+			moves.add(Specific.MOVE_DEFENSIVE);
+		}
 	}
 }
  

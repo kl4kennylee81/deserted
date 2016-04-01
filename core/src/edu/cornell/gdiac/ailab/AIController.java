@@ -81,7 +81,7 @@ public class AIController {
 			if(c.needsDataOutput){
 				c.needsDataOutput = false;
 				tacticalManager.updateConditions(c);
-				tacticalManager.outputData();
+				tacticalManager.outputData(c);
 			}
 		}
 	}
