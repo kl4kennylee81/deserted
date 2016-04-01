@@ -202,38 +202,38 @@ public class Character implements GUIElement {
 		return getYMin(canvas, board) + texture.getHeight()*charScale;
 	}
 	
-	public float getTokenX(GameCanvas canvas){
-		return ActionBar.getBarX(canvas) + ActionBar.getBarWidth(canvas)*castPosition - icon.getWidth()/2;
-	}
+//	public float getTokenX(GameCanvas canvas){
+//		return ActionBar.getBarX(canvas) + ActionBar.getBarWidth(canvas)*castPosition - icon.getWidth()/2;
+//	}
+//	
+//	public float getTokenY(GameCanvas canvas){
+//		float upBar = ActionBar.getBarY(canvas) + TOKEN_OFFSET_UP;
+//		float downBar = ActionBar.getBarY(canvas) - TOKEN_OFFSET_DOWN;
+//		return leftside ? upBar : downBar;
+//		
+//	}
 	
-	public float getTokenY(GameCanvas canvas){
-		float upBar = ActionBar.getBarY(canvas) + TOKEN_OFFSET_UP;
-		float downBar = ActionBar.getBarY(canvas) - TOKEN_OFFSET_DOWN;
-		return leftside ? upBar : downBar;
-		
-	}
-	
-	public float getTokenXMin(GameCanvas canvas, GridBoard board){
-		float tokenX = getTokenX(canvas);
-		return tokenX;
-	}
-	
-	public float getTokenYMin(GameCanvas canvas, GridBoard board){
-		float tokenY = getTokenY(canvas);
-		return tokenY;
-	}
-	
-	public float getTokenXMax(GameCanvas canvas, GridBoard board){
-		float tokenX = getTokenX(canvas);
-		float charScale = getCharScale(canvas,texture,board);
-		return tokenX + icon.getWidth()*charScale;
-	}
-	
-	public float getTokenYMax(GameCanvas canvas, GridBoard board){
-		float tokenY = getTokenY(canvas);
-		float charScale = getCharScale(canvas,texture,board);
-		return tokenY + icon.getHeight()*charScale;
-	}
+//	public float getTokenXMin(GameCanvas canvas, GridBoard board){
+//		float tokenX = getTokenX(canvas);
+//		return tokenX;
+//	}
+//	
+//	public float getTokenYMin(GameCanvas canvas, GridBoard board){
+//		float tokenY = getTokenY(canvas);
+//		return tokenY;
+//	}
+//	
+//	public float getTokenXMax(GameCanvas canvas, GridBoard board){
+//		float tokenX = getTokenX(canvas);
+//		float charScale = getCharScale(canvas,texture,board);
+//		return tokenX + icon.getWidth()*charScale;
+//	}
+//	
+//	public float getTokenYMax(GameCanvas canvas, GridBoard board){
+//		float tokenY = getTokenY(canvas);
+//		float charScale = getCharScale(canvas,texture,board);
+//		return tokenY + icon.getHeight()*charScale;
+//	}
 	
 	/**  copy the static attributes of the character into a new object **/
 	public Character copy(){
@@ -570,7 +570,7 @@ public class Character implements GUIElement {
 				//change to interrupted later maybe?
 				return animation.getTexture(CharacterState.IDLE);
 			}
-			if (castPosition - lastCastStart >= ((1-ActionBar.castPoint)/ActionBar.getTotalSlots())){
+			if (castPosition - lastCastStart >= ((1-this.getActionBar().getCastPoint())/this.getActionBar().getNumSlots())){
 				return animation.getTexture(CharacterState.CAST);
 			} else {
 				return animation.getTexture(CharacterState.ACTIVE);
@@ -849,12 +849,14 @@ public class Character implements GUIElement {
 		float x_max = getXMax(canvas, board);
 		float y_min = getYMin(canvas, board);
 		float y_max = getYMax(canvas, board);
-		float x_token_min = getTokenXMin(canvas, board);
-		float x_token_max = getTokenXMax(canvas, board);
-		float y_token_min = getTokenYMin(canvas, board);
-		float y_token_max = getTokenYMax(canvas, board);
 		
-		return (x <= x_max && x >= x_min && y <= y_max && y >= y_min
-				|| x <= x_token_max && x >= x_token_min && y <= y_token_max && y >= y_token_min);
+		return (x <= x_max && x >= x_min && y <= y_max && y >= y_min);
+//		float x_token_min = getTokenXMin(canvas, board);
+//		float x_token_max = getTokenXMax(canvas, board);
+//		float y_token_min = getTokenYMin(canvas, board);
+//		float y_token_max = getTokenYMax(canvas, board);
+		
+//		return (x <= x_max && x >= x_min && y <= y_max && y >= y_min
+//				|| x <= x_token_max && x >= x_token_min && y <= y_token_max && y >= y_token_min);
 	}
 }
