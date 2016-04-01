@@ -114,6 +114,29 @@ public class CharActionBar {
 		return newTotalTime/MAX_TIME;
 	}
 	
+	public float getCastPointX(GameCanvas canvas){
+		float xBar = this.getX(canvas);
+		float waitWidth = this.getWaitWidth(canvas);
+		return xBar + waitWidth;
+	}
+	
+	/** given a castPosition ex. 0.7 returns the x pixel of it relative to the start of the bar **/
+	public float getXInBar(GameCanvas canvas,float castposition){
+		return this.getWidth(canvas) * castposition;
+	}
+	
+	/** given a cast position and a cost of an action returns the x pixel 
+	 * center of the action on the bar relative to the start of the bar **/
+	public float getCenteredActionX(GameCanvas canvas, float executePoint, int cost){
+		float executeX = getXInBar(canvas,executePoint);
+		
+		// rewind based on cost * slot width to get starting position
+		float startingX = executeX - cost*this.getSlotWidth(canvas);
+		float average = (executeX + startingX)/2;
+		return average;
+		
+	}
+	
 	/** used to draw the width of the energy bar without the buffering period **/
 	public float getWaitWidthNoBuffer(GameCanvas canvas){
 		float widthWait = this.getWaitWidth(canvas);

@@ -498,6 +498,28 @@ public class Character implements GUIElement {
 		}
 	}
 	
+	/** draw the queued actions **/
+	public void drawQueuedActions(GameCanvas canvas,int count){
+		// don't draw queued actions unless he is hovering or is an AI
+		if (this.isAI||!this.getHovering()){
+			return;
+		}
+		
+		float actionSlot_x = this.actionBar.getX(canvas);
+		float actionSlot_y = this.actionBar.getY(canvas, count);
+
+		List<ActionNode> queuedActions = this.queuedActions;
+		for (ActionNode a: queuedActions){
+			// length relative 
+			float centeredCast = this.actionBar.getCenteredActionX(canvas, a.executePoint, a.action.cost);
+			float x_pos = actionSlot_x + centeredCast;
+			
+			float y_pos = actionSlot_y;
+			String text = a.action.name;
+			canvas.drawCenteredText(text,x_pos,y_pos,Color.BLACK);
+		}
+	}
+	
 	public float getCharScale(GameCanvas canvas, Texture texture,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		return (tileW*CHARACTER_PROPORTION)/texture.getWidth();

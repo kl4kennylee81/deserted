@@ -19,6 +19,7 @@ public class Characters extends LinkedList<Character>{
 			c.actionBar.draw(canvas,count,waitColor,castColor,bufferColor);
 			c.drawHealth(canvas, count, shouldDim);
 			c.drawToken(canvas,count,shouldDim);
+			c.drawQueuedActions(canvas,count);
 			
 			// handle all character drawing logic here
 		}

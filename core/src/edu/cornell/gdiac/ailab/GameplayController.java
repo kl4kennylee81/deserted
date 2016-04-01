@@ -73,7 +73,7 @@ public class GameplayController {
         aiController = new AIController(board,characters,bar);
         persistingController = new PersistingController(board,characters,bar,textMessages,animations);
         effectController = new EffectController(characters);
-        mouseOverController.init(characters, screen, board);
+        mouseOverController.init(screen, board);
     }
     
     public void update(){
@@ -85,7 +85,7 @@ public class GameplayController {
     		effectController.update();
     		actionBarController.update();
     		persistingController.update();
-    		mouseOverController.update(selectionMenuController.getMenu());
+    		mouseOverController.update(selectionMenuController.getMenu(),characters);
     		if (actionBarController.isAISelection) {
     			aiController.update();
     		}
@@ -99,7 +99,7 @@ public class GameplayController {
     		screen.setJustScreen();
     		mouseOverController.clearAll();
     		selectionMenuController.update();
-    		mouseOverController.update(selectionMenuController.getMenu());
+    		mouseOverController.update(selectionMenuController.getMenu(),characters);
     		prompt = "Choose an Action";
     		selectionMenuController.setPrompt(prompt);
     		if (selectionMenuController.isDone()){

@@ -24,7 +24,7 @@ public class SelectionMenu {
 
 	private static final float RELATIVE_TEXT_Y_POS = 0.5f;
 
-	private static final float RELATIVE_TEXT_SPACING = 0.0625f;
+	public static final float RELATIVE_TEXT_SPACING = 0.0625f;
 
 	private static final float ACTION_POINTER_OFFSET_X = 15;
 
