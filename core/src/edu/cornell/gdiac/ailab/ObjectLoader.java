@@ -248,6 +248,7 @@ public class ObjectLoader {
 			Integer range = (Integer) action.get("range");
 			String pattern = (String) action.get("pattern");
 			String description = (String) action.get("description");
+			String path = (String) action.get("path");
 			HashMap<String,Object> persisting = 
 						(HashMap<String, Object>) action.get("persisting_action"); 
 			HashMap<String, Object> effect = 
@@ -261,12 +262,12 @@ public class ObjectLoader {
 			if (persisting != null){
 				Integer persistingNumRounds = (Integer) persisting.get("numRounds");
 				Float moveSpeed = (Float) ((Double) persisting.get("moveSpeed")).floatValue();
-				actionToAdd = new PersistingAction(name, cost, damage, range, 
-						Pattern.valueOf(pattern), new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), 
-						description, persistingNumRounds, moveSpeed);
+					actionToAdd = new PersistingAction(name, cost, damage, range, 
+							Pattern.valueOf(pattern), path,new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), 
+							description, persistingNumRounds, moveSpeed);
 			}else{
 				actionToAdd = new Action(name, cost, damage, range, Pattern.valueOf(pattern),
-						new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), description);
+						new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), description,path);
 			}
 			
 			Integer animationId = (Integer) action.get("animationId");

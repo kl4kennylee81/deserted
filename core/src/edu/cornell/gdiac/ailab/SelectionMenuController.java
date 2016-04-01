@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.Effect.Type;
 
 public class SelectionMenuController {
@@ -138,13 +139,16 @@ public class SelectionMenuController {
 	 * Select an action to start targeting
 	 */
 	private void updateTargetedAction(){
-		if (action.pattern == Pattern.STRAIGHT){
+		switch (action.pattern){
+		case STRAIGHT:
 			menu.setChoosingTarget(true);
-		} else if (action.pattern == Pattern.SINGLE){
+			break;
+		case SINGLE:
 			selectedX = leftside ? SINGLE_X_LEFT : SINGLE_X_RIGHT;
 			selectedY = SINGLE_Y;
 			menu.setChoosingTarget(true);
-		} else if (action.pattern == Pattern.MOVE){
+			break;
+		case MOVE:
 			if (board.isInBounds(shadowX, shadowY+1)){
 				direction = Direction.UP;
 			} else if (board.isInBounds(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
@@ -157,20 +161,33 @@ public class SelectionMenuController {
 				System.out.println("do something to tell them they cant move");
 			}
 			menu.setChoosingTarget(true);
-		} else if (action.pattern == Pattern.DIAGONAL){
+			break;
+		case DIAGONAL:
 			if (shadowY < boardHeight/2){
 				direction = Direction.UP;
 			} else {
 				direction = Direction.DOWN;
 			}
 			menu.setChoosingTarget(true);
-		} else if (action.pattern == Pattern.SHIELD){
+			break;
+		case SHIELD:
 			if (shadowY < boardHeight/2){
 				direction = Direction.UP;
 			} else {
 				direction = Direction.DOWN;
 			}
 			menu.setChoosingTarget(true);
+			break;
+		case INSTANT:
+			menu.setChoosingTarget(true);
+			break;
+		case PROJECTILE:
+			menu.setChoosingTarget(true);
+			break;
+		case NOP:
+			break;
+		default:
+			break;
 		}
 	}
 	
@@ -196,6 +213,12 @@ public class SelectionMenuController {
 			} else if (InputController.pressedS() && !InputController.pressedW()){
 				direction = Direction.DOWN;
 			} 
+			break;
+		case INSTANT:
+			break;
+		case PROJECTILE:
+			break;
+		case NOP:
 			break;
 		default:
 			break;
@@ -280,20 +303,32 @@ public class SelectionMenuController {
 	}
 	
 	public void drawHighlights(){
-		if (action.pattern == Pattern.STRAIGHT){
+		switch (action.pattern){
+		case STRAIGHT:
 			drawStraight();
-		}
-		if (action.pattern == Pattern.SINGLE){
+			break;
+		case SINGLE:
 			drawSingle();
-		}
-		if (action.pattern == Pattern.MOVE){
+			break;
+		case MOVE:
 			drawMove();
-		}
-		if (action.pattern == Pattern.DIAGONAL){
+			break;
+		case DIAGONAL:
 			drawDiagonal();
-		}
-		if (action.pattern == Pattern.SHIELD){
+			break;
+		case SHIELD:
 			drawShield();
+			break;
+		case INSTANT:
+			drawPath(false);
+			break;
+		case PROJECTILE:
+			drawPath(true);
+			break;
+		case NOP:
+			break;
+		default:
+			break;
 		}
 	}
 	
@@ -315,6 +350,46 @@ public class SelectionMenuController {
 				}
 			}
 		}
+	}
+	
+	public void drawPath(boolean isProjectile){
+		if (action.path == null){
+			return;
+		}
+		Coordinate[] path = action.path;
+		if (leftside) {
+			for (int i = 0; i < path.length; i++){
+				int x = shadowX + path[i].x;
+				int y = shadowY + path[i].y;
+				if (shadowX == x && shadowY == y){
+					continue;
+				}
+				else if ((!board.isInBounds(x, y)) && isProjectile){
+					break;
+				}
+				else if (choosingTarget){
+					board.setHighlighted(x,y);
+				} else {
+					board.setCanTarget(x, y);
+				}
+			}
+		} else {
+			for (int i = 0; i < action.path.length; i++){
+				int x = shadowX - path[i].x;
+				int y = shadowY + path[i].y;
+				if (shadowX == x && shadowY == y){
+					continue;
+				}
+				else if ((!board.isInBounds(x, y)) && isProjectile){
+					break;
+				}
+				if (choosingTarget){
+					board.setHighlighted(x,y);
+				} else {
+					board.setCanTarget(x,y);
+				}
+			}
+		}	
 	}
 	public void drawSingle(){
 		if (choosingTarget){

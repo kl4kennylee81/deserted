@@ -38,7 +38,7 @@ public class ActionNodes{
 		
 		// a path of the trajectory
 		Coordinate[] path;
-		int pathIndex = 0;
+		int pathIndex;
 		
 		public ActionNode(){
 			reset();
