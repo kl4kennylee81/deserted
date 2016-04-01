@@ -60,6 +60,11 @@ public class ConditionalManager {
 		map.put("ALLY_CAN_HIT_ENEMY", nextFriendCanHit());
 		map.put("ALLY_ALMOST_DONE_WAITING", friendWillEnterSoon());
 		map.put("DEFAULT", true);
+		
+//		System.out.println("----------------------------------------------");
+//		for(String s: map.keySet()){
+//			System.out.println(s + ": "+ map.get(s));
+//		}
 	}
 	
 	
@@ -488,6 +493,7 @@ public class ConditionalManager {
 	 * number of slots.
 	 */
 	public int framesToMyAction(int slots){
+		//System.out.println("interval: "+interval + " | slots: "+slots + " | speed: "+selected.getCastSpeed());
 		return (int) ((interval * slots) / selected.getCastSpeed());
 	}
 	
@@ -521,7 +527,7 @@ public class ConditionalManager {
 	
 	
 	/**
-	 * Returns the number of slots of the characters fastest interrupting move
+	 * Returns the number of slots of the characters slowest interrupting move
 	 */
 	public int slowestMoveThatCanHitMe(Character c){
 		int maxCost = Integer.MIN_VALUE;
@@ -553,7 +559,7 @@ public class ConditionalManager {
 		int minCost = Integer.MAX_VALUE;
 		for(Action a: c.availableActions){
 			if(a.pattern != Pattern.MOVE){
-				minCost = Math.max(a.cost, minCost);
+				minCost = Math.min(a.cost, minCost);
 			}
 		}
 		return minCost;
@@ -582,6 +588,7 @@ public class ConditionalManager {
 	public boolean interruptibleBy(Character c, int mySlots, int theirSlots){
 		int theirFrames = framesToAction(c, theirSlots);
 		int myFrames = framesToMyAction(mySlots);
+		//System.out.println(c.name+"---theirFrames: "+theirFrames +" | myFrames: "+myFrames);
 		return theirFrames < myFrames;
 	}
 	
@@ -592,7 +599,8 @@ public class ConditionalManager {
 	 */
 	public boolean fastInterruptible(int slots){
 		for(Character c: enemies){
-			if(interruptibleBy(c, slots, fastestMoveThatCanHitMe(c))){
+			int num = fastestMoveThatCanHitMe(c);
+			if(num <= ActionBar.getTotalSlots() && interruptibleBy(c, slots, num)){
 				return true;
 			}
 		}
@@ -607,7 +615,9 @@ public class ConditionalManager {
 	 */
 	public boolean slowInterruptible(int slots){
 		for(Character c: enemies){
-			if(interruptibleBy(c, slots, slowestMoveThatCanHitMe(c))){
+			//System.out.println(c.name);
+			int num = slowestMoveThatCanHitMe(c);
+			if(num >= 0 && interruptibleBy(c, slots, num)){
 				return true;
 			}
 		}

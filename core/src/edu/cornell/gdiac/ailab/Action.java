@@ -81,7 +81,10 @@ public class Action implements GUIElement {
 	 * from (startX, startY).
 	 */
 	public boolean hitsTarget(int startX, int startY, int targetX, int targetY, boolean leftside){
-		if(pattern == Pattern.STRAIGHT){
+		if(pattern == Pattern.SINGLE){
+			return true;
+		}
+		else if(pattern == Pattern.STRAIGHT){
 			return startY == targetY && (Math.abs(startX - targetX) <= range);
 		}
 		else if(pattern == Pattern.DIAGONAL){

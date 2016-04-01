@@ -1,30 +1,58 @@
 root:
   type: index
-  LOW_HEALTH: child2
-  DEFAULT: child1
+  NO_INT_CHANCE: NO_INT
+  LOW_INT_CHANCE: LOW_INT
+  MED_INT_CHANCE: MED_INT
+  HIGH_INT_CHANCE: HIGH_INT
+  DEFAULT: DEFAULT_CHILD
 
-child1:
+#-------------------------------------------
+
+NO_INT:
   type: leaf
-  my_tactic: ATTACK
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_OPTIMAL, MOVE_DEFENSIVE]
 
-child2:
+LOW_INT:
+  type: index
+  CAN_HIT_ENEMY: CHILD1
+  ADJ_ATTACK_SQUARE: CHILD2
+  DEFAULT: DEFAULT_CHILD
+  
+MED_INT:
+  type: index
+  CAN_HIT_ENEMY: CHILD3
+  DEFAULT: DEFAULT_CHILD
+
+HIGH_INT:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_DEFENSIVE, SHIELD]
+ 
+#--------------------------------------------- 
+
+CHILD1:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [POWERFUL_ATTACK, MOVE_DEFENSIVE]
+
+CHILD2:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK]
+
+CHILD3:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SHIELD, NORMAL_ATTACK]
+  
+DEFAULT_CHILD:
   type: leaf
   my_tactic: SPECIFIC
   my_actions: [MOVE_DEFENSIVE, SINGLE_OPTIMAL]
   
-red:
-  type: index
-  DEFAULT: child3
-
-child3:
-  type: leaf
-  branch_type: ATTACK
-  my_tactic: SPECIFIC
-  my_actions: [MOVE_AGGRESSIVE, NORMAL_ATTACK]
   
-blue:
-  type: index
-  DEFAULT: child3
+  
   
   
   

@@ -60,7 +60,7 @@
   name: Straight - 4
   cost: 2
   damage: 2
-  range: 4
+  range: 5
   pattern: STRAIGHT
   effect: 
     type: REGULAR
@@ -75,7 +75,7 @@
 
 5:
   name: Diagonal
-  cost: 3
+  cost: 2
   damage: 2
   range: 5
   pattern: DIAGONAL

@@ -48,7 +48,7 @@
   leftSide: false
   availableActions: 
     - 0
-    - 6
+    - 7
     - 9
     - 10
     - 11
@@ -69,7 +69,7 @@
   availableActions: 
     - 0
     - 5
-    - 6
+    - 7
     - 8
     - 9
   texture: "models/CHARA_1.png"

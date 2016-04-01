@@ -49,6 +49,11 @@ public class AIController {
 				//Update tactical manager
 				tacticalManager.updateConditions(c);
 				tacticalManager.selectActions(c);
+				System.out.print(c.name+ ": ");
+				for(ActionNode n: c.queuedActions){
+					System.out.print("("+n.action.name+") ");
+				}
+				System.out.println();
 				c.needsSelection = false;
 //				xOffset = 0;
 //				yOffset = 0;

@@ -74,6 +74,12 @@ public class TacticalManager extends ConditionalManager{
 	 * Manager tree to find a list of actions. 
 	 */
 	public void selectActions(Character c){
+//		System.out.print(c.name+": ");
+//		System.out.print(map.get("NO_INT_CHANCE")+" ");
+//		System.out.print(map.get("LOW_INT_CHANCE")+" ");
+//		System.out.print(map.get("MED_INT_CHANCE")+" ");
+//		System.out.println(map.get("HIGH_INT_CHANCE")+" ");
+
 		LeafNode leaf;
 		//Either get the preselected leaf or traverse the tree to find it
 		if(preSelected.containsKey(c.name)){
@@ -164,8 +170,10 @@ public class TacticalManager extends ConditionalManager{
 		int startSlot = 0;
 		int x = c.xPosition;
 		int y = c.yPosition;
+		//System.out.print(c.name+ "moves: ");
 		for(Specific s: moves){
 			ActionNode a = nopNode(startSlot);
+			//System.out.print(s.toString()+" ");
 			switch(s){
 				case SINGLE_OPTIMAL:
 					a = singleOptimal(c, startSlot);
@@ -195,6 +203,7 @@ public class TacticalManager extends ConditionalManager{
 					a = moveDefensive(c, startSlot, x, y);
 					break;
 				default:
+					System.out.println("nopnode");
 					a = nopNode(startSlot);
 					break;
 			}
@@ -203,6 +212,7 @@ public class TacticalManager extends ConditionalManager{
 			y = y + applyMoveY(a);
 			nodes.add(a);
 		}
+		//System.out.println();
 		return nodes;
 	}
 	
