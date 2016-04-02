@@ -22,7 +22,6 @@ public class AIController {
 	
 	GridBoard board;
 	List<Character> chars;
-	ActionBar bar;
 	Character selected;
 	Action nop;
 	
@@ -34,14 +33,15 @@ public class AIController {
 	private boolean hasSingle;
 	private TacticalManager tacticalManager;
 	
-	public AIController(GridBoard board, List<Character> chars, ActionBar bar, TacticalManager tm) {
+	public AIController(GridBoard board, List<Character> chars, TacticalManager tm) {
 		this.board = board;
 		this.chars = chars;
-		this.bar = bar;
 		this.tacticalManager = tm;
-		tacticalManager.setState(board, chars, bar);
-		nop = new Action("NOP", 1, 0, 0, Pattern.NOP, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
+		tacticalManager.setState(board, chars);
 	}
+	
+	private Character selecting;
+
 	
 	public void update(){
 		for (Character c : chars){
@@ -237,19 +237,19 @@ public class AIController {
 		int curY = selected.yPosition + yOffset;
 		ActionNodes anPool = ActionNodes.getInstance();
 		if(isSafe(curX + 1, curY)){
-			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
+			nodes.add(anPool.newActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
 		}
 		if(isSafe(curX, curY + 1)){
-			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY + 1, Direction.UP));
+			nodes.add(anPool.newActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX, curY + 1, Direction.UP));
 		}
 		if(isSafe(curX - 1, curY)){
-			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX - 1, curY, Direction.LEFT));
+			nodes.add(anPool.newActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX - 1, curY, Direction.LEFT));
 		}
 		if(isSafe(curX, curY - 1)){
-			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY - 1, Direction.DOWN));
+			nodes.add(anPool.newActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX, curY - 1, Direction.DOWN));
 		}
 		if(isSafe(curX, curY)){			
-			nodes.add(anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE));		
+			nodes.add(anPool.newActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE));		
 		}
 		return nodes;
 	}
@@ -265,19 +265,19 @@ public class AIController {
 		int curY = selected.yPosition + yOffset;
 		ActionNodes anPool = ActionNodes.getInstance();
 		if(canHitSomeone(curX + 1, curY) && ownSide(curX + 1)){
-			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
+			nodes.add(anPool.newActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
 		}
 		if(canHitSomeone(curX, curY + 1) && ownSide(curX)){
-			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY + 1, Direction.UP));
+			nodes.add(anPool.newActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX, curY + 1, Direction.UP));
 		}
 		if(canHitSomeone(curX, curY - 1) && ownSide(curX)){
-			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY - 1, Direction.DOWN));
+			nodes.add(anPool.newActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX, curY - 1, Direction.DOWN));
 		}
 		if(canHitSomeone(curX - 1, curY) && ownSide(curX - 1)){
-			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX - 1, curY, Direction.LEFT));
+			nodes.add(anPool.newActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX - 1, curY, Direction.LEFT));
 		}
 		if(canHitSomeone(curX, curY)){	
-			nodes.add(anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE));
+			nodes.add(anPool.newActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE));
 		}
 		return nodes;
 	}
@@ -291,16 +291,16 @@ public class AIController {
 		int curY = selected.yPosition + yOffset;
 		ActionNodes anPool = ActionNodes.getInstance();
 		if(board.isInBounds(curX + 1, curY) && ownSide(curX + 1) ){
-			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
+			nodes.add(anPool.newActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
 		}
 		if(board.isInBounds(curX, curY + 1) && ownSide(curX)){
-			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY + 1, Direction.UP));
+			nodes.add(anPool.newActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX, curY + 1, Direction.UP));
 		}
 		if(board.isInBounds(curX - 1, curY) && ownSide(curX - 1)){
-			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX - 1, curY, Direction.LEFT));
+			nodes.add(anPool.newActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX - 1, curY, Direction.LEFT));
 		}
 		if(board.isInBounds(curX, curY - 1) && ownSide(curX)){
-			nodes.add(anPool.newActionNode(movement, bar.castPoint + (interval * (curSlot)), curX, curY - 1, Direction.DOWN));
+			nodes.add(anPool.newActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX, curY - 1, Direction.DOWN));
 		}
 		Random r = new Random();
 		return nodes.get(r.nextInt(nodes.size()));	
@@ -340,10 +340,10 @@ public class AIController {
 	 */
 	public void addStraight(Action a, ArrayList<ActionNode> attacks){
 		ActionNodes anPool = ActionNodes.getInstance();
-		//attacks.add(new ActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0));
+		//attacks.add(new ActionNode(a, c.getActionBar().getCastPoint() + (interval * (curSlot + a.cost - 1)), 0, 0));
 		for(Character c: chars){
 			if(!c.isAI && c.yPosition == selected.yPosition + yOffset && c.isAlive()){
-				attacks.add(anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0, Direction.NONE));
+				attacks.add(anPool.newActionNode(a, c.getActionBar().getCastPoint() + (interval * (curSlot + a.cost - 1)), 0, 0, Direction.NONE));
 			}
 		}
 	}
@@ -361,7 +361,7 @@ public class AIController {
 					c.xPosition, 
 					c.yPosition)){
 				Direction dir = c.yPosition < (selected.yPosition + yOffset) ? Direction.DOWN : Direction.UP;
-				attacks.add(anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost -1)), 0, 0, dir));
+				attacks.add(anPool.newActionNode(a, c.getActionBar().getCastPoint() + (interval * (curSlot + a.cost -1)), 0, 0, dir));
 			}
 		}
 	}
@@ -375,15 +375,15 @@ public class AIController {
 		for(Action a: selected.availableActions){
 			switch (a.pattern){
 				case STRAIGHT:
-					return anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0, Direction.NONE);
+					return anPool.newActionNode(a, selecting.getActionBar().getCastPoint() + (interval * (curSlot + a.cost - 1)), 0, 0, Direction.NONE);
 				case DIAGONAL:
 					Direction dir = (selected.yPosition + yOffset < board.height / 2) ? Direction.UP : Direction.DOWN;
-					return anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0, dir);
+					return anPool.newActionNode(a, selecting.getActionBar().getCastPoint() + (interval * (curSlot + a.cost - 1)), 0, 0, dir);
 				default:
 					break;
 			}
 		}
-		return anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE);			
+		return anPool.newActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE);			
 	}
 	
 	/**
@@ -418,7 +418,7 @@ public class AIController {
 		ActionNodes anPool = ActionNodes.getInstance();
 		for(Character c: chars){
 			if(!c.isAI && c.isAlive()){
-				attacks.add(anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost -1)), c.xPosition, c.yPosition, Direction.NONE));
+				attacks.add(anPool.newActionNode(a, c.getActionBar().getCastPoint() + (interval * (curSlot + a.cost -1)), c.xPosition, c.yPosition, Direction.NONE));
 			}
 		}
 	}
@@ -439,7 +439,7 @@ public class AIController {
 			}
 		}
 		if(attacks.size() == 0){
-			return anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE);
+			return anPool.newActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE);
 		}
 		else{
 			Random r = new Random();
@@ -460,7 +460,7 @@ public class AIController {
 			return getProjectile();
 		}
 		if(shield){
-			return anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE);
+			return anPool.newActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE);
 		}
 		return getMovement();
 	}
@@ -475,13 +475,13 @@ public class AIController {
 				case SHIELD:
 					shield = true;
 					Direction dir = (selected.yPosition + yOffset < board.height / 2) ? Direction.UP : Direction.DOWN;
-					return anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost -1)), 0, 0, dir);
+					return anPool.newActionNode(a, selecting.getActionBar().getCastPoint() + (interval * (curSlot + a.cost -1)), 0, 0, dir);
 				default:
 					break;
 			}
 		}
 		if(shield){
-			return anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE);
+			return anPool.newActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE);
 		}
 		return getMovement();
 	}
@@ -499,12 +499,12 @@ public class AIController {
 					break;
 				case STRAIGHT:
 					if(curSlot <= 3)
-						actions.add(anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0, Direction.NONE));
+						actions.add(anPool.newActionNode(a, selecting.getActionBar().getCastPoint() + (interval * (curSlot + a.cost - 1)), 0, 0, Direction.NONE));
 					break;
 				case DIAGONAL:
 					Direction dir = (selected.yPosition + yOffset < board.height / 2) ? Direction.UP : Direction.DOWN;
 					if(curSlot <= 3)
-						actions.add(anPool.newActionNode(a, bar.castPoint + (interval * (curSlot + a.cost - 1)), 0, 0, dir));
+						actions.add(anPool.newActionNode(a, selecting.getActionBar().getCastPoint() + (interval * (curSlot + a.cost - 1)), 0, 0, dir));
 					break;
 				default:
 					break;
@@ -518,7 +518,7 @@ public class AIController {
 			return actions.get(r.nextInt(actions.size())); 
 		}
 		else{
-			return anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE);
+			return anPool.newActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE);
 		}
 	}
 	
@@ -536,7 +536,7 @@ public class AIController {
 				action = getShield();
 			}
 			else if(shield){
-				action = anPool.newActionNode(nop, bar.castPoint + (interval * (curSlot)), 0, 0, Direction.NONE);
+				action = anPool.newActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE);
 			}
 			else{
 				action = getMovement();

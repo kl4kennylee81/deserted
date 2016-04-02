@@ -6,16 +6,14 @@ public class ActionBarController {
 	
 	/** Models */
 	List<Character> characters;
-	ActionBar bar;
 	
 	/** State variables */
 	boolean isPlayerSelection;
 	boolean isAISelection;
 	boolean isAttack;
 	
-	public ActionBarController(List<Character> chars, ActionBar bar) {
+	public ActionBarController(List<Character> chars) {
 		this.characters = chars;
-		this.bar = bar;
 	}
 	
 	public void update(){
@@ -30,15 +28,12 @@ public class ActionBarController {
 			float oldCastPosition = c.castPosition;
 			
 			// Increase characters cast position by their normal speed or cast speed
-			if (c.castPosition > ActionBar.castPoint){
-				c.castMoved = c.getCastSpeed();
-			} else {
-				c.castMoved = c.getBarSpeed();
-			}
+			// will remove castMoved and just do it by castSpeed
+			c.castMoved = c.getSpeed();
 			
 			c.castPosition += c.castMoved;
 			
-			if (c.castPosition >= ActionBar.castPoint && oldCastPosition < ActionBar.castPoint) {
+			if (c.castPosition >= c.getCastPoint() && oldCastPosition < c.getCastPoint()) {
 				// Let characters select their attacks
 				c.needsSelection();
 				c.startingCast();
@@ -53,7 +48,12 @@ public class ActionBarController {
 				c.startingCast();
 				c.needsAttack = true;
 				this.isAttack = true;
-			} else if (!c.hasAttacks() && c.castPosition >= ActionBar.castPoint) {
+			} else if (!c.hasAttacks() && c.castPosition >= c.getCastPoint()) {
+				// cast moved accounts for NOPing and stopping going through cast preemptively
+				if (c.castPosition < 1){
+					c.castMoved += Math.abs(1.0f - c.castPosition);
+				}
+				
 				// Reset once done with attacks
 				c.castPosition = 0;
 			}

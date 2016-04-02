@@ -40,10 +40,9 @@ public class TacticalManager extends ConditionalManager{
 	}
 	
 	
-	public void setState(GridBoard board, List<Character> chars, ActionBar bar){
+	public void setState(GridBoard board, List<Character> chars){
 		this.chars = chars;
 		this.board = board;
-		this.bar = bar;
 	}
 	
 	
@@ -63,7 +62,7 @@ public class TacticalManager extends ConditionalManager{
 				enemies.add(ch);
 			}
 		}
-		update(board, chars, friends, enemies, bar, c);
+		update(board, chars, friends, enemies, c);
 	}
 	
 	

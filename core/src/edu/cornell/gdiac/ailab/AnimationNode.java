@@ -1,6 +1,7 @@
 package edu.cornell.gdiac.ailab;
 
 import edu.cornell.gdiac.ailab.Animation.Segment;
+import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 
 public class AnimationNode {
 	/** Animation to draw */
@@ -45,7 +46,11 @@ public class AnimationNode {
 	/**
 	 * Returns the next FilmStrip with the given CharacterState
 	 */
-	public FilmStrip getTexture(CharacterState charState){
+	public FilmStrip getTexture(CharacterState charState,InGameState gameState){
+		// if the game state is selection freeze the frame on the current frame
+		if (gameState == InGameState.SELECTION){
+			return animation.filmStrip;
+		}
 		if (charState.id != curSegment){
 			curSegment = charState.id;
 			curFrameIndex = 0;

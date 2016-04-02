@@ -38,7 +38,6 @@ public class ActionController {
 	/** Models */
 	public GridBoard board; 
 	public List<Character> characters;
-	public ActionBar bar;
 	public TextMessage textMessages;
 	public AnimationPool animations;
 	
@@ -56,11 +55,10 @@ public class ActionController {
 	 * @param chars The list of characters
 	 * @param bar The action bar
 	 */
-	public ActionController(GridBoard board, List<Character> chars, ActionBar bar, 
+	public ActionController(GridBoard board, List<Character> chars, 
 			TextMessage textMsgs, AnimationPool animations) {
 		this.board = board;
 		this.characters = chars;
-		this.bar = bar;
 		this.textMessages = textMsgs;
 		this.animations = animations;
 		
@@ -84,7 +82,12 @@ public class ActionController {
 			selected.needsAttack = false;
 			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
 				if (action.action.pattern != Pattern.MOVE){
-					selected.setExecuting();
+					selected.setExecute();
+				}
+				// we want move to also reset the active state animation so we switch
+				// to idle first before it then gets set to active next frame
+				else {
+					selected.setIdle();
 				}
 				executeAction(action);
 			}

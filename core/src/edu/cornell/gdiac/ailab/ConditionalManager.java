@@ -49,9 +49,8 @@ public class ConditionalManager {
     };
 
 	
-	public void update(GridBoard board, List<Character> chars, List<Character> friends, List<Character> enemies, ActionBar bar, Character c){
+	public void update(GridBoard board, List<Character> chars, List<Character> friends, List<Character> enemies, Character c){
 		this.chars = chars;
-		this.bar = bar;
 		this.board = board;
 		selected = c;
 		interval  = (1f-ActionBar.castPoint) / ActionBar.getTotalSlots();

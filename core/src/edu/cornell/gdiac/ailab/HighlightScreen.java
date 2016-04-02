@@ -9,14 +9,15 @@ public class HighlightScreen {
 	Texture screen;
 	/** image for the highlight screen  */
 	private static final String HIGHLIGHT_TEXTURE = "images/white.png";
-	private static Color color = new Color(Color.BLACK);
+	private static Color color = Color.BLACK.cpy();
 	private static TextureRegion currentHighlight;
 	private static Color highlightColor = new Color(Color.WHITE);
 	private static boolean justScreen;
+	private static float SCREEN_OPACITY = 0.4f;
 	
 	public HighlightScreen(){
 		screen = new Texture(HIGHLIGHT_TEXTURE);
-		color.set(color.r, color.g, color.b, 0.1f);
+		color.mul(1,1,1,SCREEN_OPACITY);
 		highlightColor.set(highlightColor.r, highlightColor.g, highlightColor.b, 0.4f);
 	}
 	
