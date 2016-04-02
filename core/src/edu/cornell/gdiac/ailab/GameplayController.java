@@ -163,10 +163,10 @@ public class GameplayController {
     		for (Character c : characters){
     			
     			if (c.yPosition == i && c.isAlive()){
-    				c.drawCharacter(canvas,board,shouldDim);
+    				c.drawCharacter(canvas,board,shouldDim,this.inGameState);
     			}
     			if (c.getShadowY() == i && c.needShadow() && c.isAlive()){
-    				c.drawShadowCharacter(canvas,board);
+    				c.drawShadowCharacter(canvas,board,this.inGameState);
     			}
             }
     	}

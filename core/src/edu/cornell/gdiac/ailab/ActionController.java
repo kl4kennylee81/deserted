@@ -82,7 +82,12 @@ public class ActionController {
 			selected.needsAttack = false;
 			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
 				if (action.action.pattern != Pattern.MOVE){
-					selected.setExecuting();
+					selected.setExecute();
+				}
+				// we want move to also reset the active state animation so we switch
+				// to idle first before it then gets set to active next frame
+				else {
+					selected.setIdle();
 				}
 				executeAction(action);
 			}

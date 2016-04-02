@@ -13,6 +13,7 @@ import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
 import edu.cornell.gdiac.ailab.AnimationNode.CharacterState;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
+import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 
@@ -68,12 +69,8 @@ public class Character implements GUIElement {
 	boolean isSelecting;
 	/** Do I have a persisting action currently in play */
 	boolean isPersisting;
-	/** Am I currently being affected by an effect? */
-	boolean isAffected;
-	/** Did I just execute an attack? */
-	boolean isExecuting;
-	/** Did I just get hit? */
-	boolean isHurt;
+
+	CharacterState charState;
 	
 	//TODO: Change to pass this in from GameEngine
 	/** Starting x and y positions */
@@ -177,6 +174,29 @@ public class Character implements GUIElement {
 	public void update(){
 		float healthProportion = ((float)health/(float)maxHealth);
 		this.actionBar.update(healthProportion);
+		
+		// update character state
+		updateCharState();
+	}
+	
+	public void updateCharState(){
+		if (this.charState == CharacterState.EXECUTE){
+			return;
+		}
+		else if (queuedActions.isEmpty()){
+			this.setIdle();
+		} 
+		else {
+			if (queuedActions.peek().isInterrupted){
+				//change to interrupted later maybe?
+				this.setIdle();
+			}
+			if (castPosition - lastCastStart >= ((1-this.getActionBar().getCastPoint())/this.getActionBar().getNumSlots())){
+				this.setCast();
+			} else {
+				this.setActive();
+			}
+		}
 	}
 	
 	public float getXMin(GameCanvas canvas, GridBoard board){
@@ -542,51 +562,39 @@ public class Character implements GUIElement {
 		return (tileW*CHARACTER_PROPORTION)/region.getRegionWidth();
 	}
 	
-	public void setExecuting(){
-		isExecuting = true;
-		isHurt = false;
+	public void setExecute(){
+		charState = CharacterState.EXECUTE;
 	}
 	
 	public void setHurt(){
-		isHurt = true;
-		isExecuting = false;
+		charState = CharacterState.HURT;
+	}
+	
+	public void setIdle(){
+		charState = CharacterState.IDLE;
+	}
+	
+	public void setActive(){
+		charState = CharacterState.ACTIVE;
+	}
+	
+	public void setCast(){
+		charState = CharacterState.CAST;
 	}
 	
 	/**
 	 * Return FilmStrip with animation set as frame
 	 * @return
 	 */
-	public FilmStrip getFilmStrip(){
-		if (isHurt){
-			FilmStrip fs = animation.getTexture(CharacterState.HURT);
-			if (fs == null){
-				isHurt = false;
-			}
-			return fs;
-		} 
-		if (isExecuting){
-			FilmStrip fs = animation.getTexture(CharacterState.EXECUTE);
-			if (fs == null){
-				isExecuting = false;
-			}
-			return fs;
+	public FilmStrip getFilmStrip(InGameState gameState){
+		FilmStrip fs = animation.getTexture(charState,gameState);
+		if (fs == null){
+			this.setIdle();
 		}
-		if (queuedActions.isEmpty()){
-			return animation.getTexture(CharacterState.IDLE);
-		} else {
-			if (queuedActions.peek().isInterrupted){
-				//change to interrupted later maybe?
-				return animation.getTexture(CharacterState.IDLE);
-			}
-			if (castPosition - lastCastStart >= ((1-this.getActionBar().getCastPoint())/this.getActionBar().getNumSlots())){
-				return animation.getTexture(CharacterState.CAST);
-			} else {
-				return animation.getTexture(CharacterState.ACTIVE);
-			}
-		}
+		return fs;
 	}
 	
-	public void drawCharacter(GameCanvas canvas,GridBoard board, boolean shouldDim){
+	public void drawCharacter(GameCanvas canvas,GridBoard board, boolean shouldDim,InGameState gameState){
 		if (increasing){
 			lerpVal+=0.02;
 			if (lerpVal >= 0.5){
@@ -609,9 +617,9 @@ public class Character implements GUIElement {
 		Color highlightColor = getHighlightColor(shouldDim);
 		//Decide what animation to draw
 		//Will sometimes be null when current animation is done, we just need to call again
-		FilmStrip toDraw = getFilmStrip();
+		FilmStrip toDraw = getFilmStrip(gameState);
 		if (toDraw == null) {
-			toDraw = getFilmStrip();
+			toDraw = getFilmStrip(gameState);
 		}
 		
 		//For now, if still not found (shouldnt happen when animation sheet is full) 
@@ -633,7 +641,7 @@ public class Character implements GUIElement {
 	/**
 	 * Draws future position of ship with lines depicting path
 	 */
-	public void drawShadowCharacter(GameCanvas canvas,GridBoard board){
+	public void drawShadowCharacter(GameCanvas canvas,GridBoard board,InGameState gameState){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
 		Coordinate canvasC = board.offsetBoard(canvas, tileW*getShadowX(), tileH*getShadowY());
@@ -641,8 +649,15 @@ public class Character implements GUIElement {
 		float canvasY = canvasC.y;
 		canvasC.free();
 		
-		float charScale = getCharScale(canvas,texture,board);
-		canvas.drawCharacter(texture, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside,charScale);
+		//Decide what animation to draw
+		//Will sometimes be null when current animation is done, we just need to call again
+		FilmStrip toDraw = getFilmStrip(gameState);
+		if (toDraw == null) {
+			toDraw = getFilmStrip(gameState);
+		}
+		
+		float charScale = getCharScale(canvas,toDraw,board);
+		canvas.drawCharacter(toDraw, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside,charScale);
 		int tempX = xPosition;
 		int tempY = yPosition;
 		int nowX = tempX;
