@@ -12,15 +12,10 @@
     - 0
     - 4
     - 6
-<<<<<<< HEAD
     - 7
     - 8
     - 10
-=======
-    - 11
-    - 12
 
->>>>>>> refs/remotes/origin/master
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
   animationId: 1
@@ -38,17 +33,11 @@
   availableActions: 
     - 0
     - 5
-<<<<<<< HEAD
     - 6
-    - 7
-    - 8
-    - 10
-=======
     - 3
     - 11
     - 12
 
->>>>>>> refs/remotes/origin/master
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
   animationId: 2
@@ -69,11 +58,7 @@
     - 9
     - 10
     - 11
-<<<<<<< HEAD
-=======
-    - 12
-
->>>>>>> refs/remotes/origin/master
+    
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_3.png"
   animationId: 3
@@ -91,16 +76,10 @@
   availableActions: 
     - 0
     - 5
-<<<<<<< HEAD
     - 7
     - 8
     - 9
-=======
-    - 8
-    - 11
-    - 12
 
->>>>>>> refs/remotes/origin/master
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"
   animationId: 4
