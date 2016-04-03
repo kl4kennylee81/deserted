@@ -12,14 +12,13 @@ public class ConditionalManager {
 	
 	
 	protected List<Character> chars;
-	protected ActionBar bar;
 	protected GridBoard board;
 	protected Character selected;
 	protected List<Character> friends;
 	protected List<Character> enemies;
-    protected float interval;
     
     protected final String[] conditions = {
+    		"DEFAULT",
     		"SAFE", 
     		"NOT_SAFE", 
     		"CAN_HIT_ENEMY", 
@@ -31,7 +30,9 @@ public class ConditionalManager {
     		"MEDIUM_INTERRUPT_CHANCE",
     		"LOW_INTERRUPT_CHANCE", 
     		"NO_INTERRUPT_CHANCE",
-    		"LOW_HEALTH", "HIGH_HEALTH", "ALONE",
+    		"LOW_HEALTH", 
+    		"HIGH_HEALTH", 
+    		"ALONE",
     		"ENEMY_HAS_WALL", 
     		"PROTECTED", 
     		"CAN_PROTECT",
@@ -44,8 +45,8 @@ public class ConditionalManager {
     		"HAS_SINGLE", 
     		"ALLY_SAFE",
     		"ALLY_CAN_HIT_ENEMY",
-    		"ALLY_ALMOST_DONE_WAITING", 
-    		"DEFAULT"
+    		"ALLY_ALMOST_DONE_WAITING",
+    		"CAN_INTERRUPT_ENEMY"
     };
 
 	
@@ -53,7 +54,6 @@ public class ConditionalManager {
 		this.chars = chars;
 		this.board = board;
 		selected = c;
-		interval  = (1f-ActionBar.castPoint) / ActionBar.getTotalSlots();
 		map = new HashMap<String, Boolean>();
 		this.friends = friends;
 		this.enemies = enemies;
@@ -86,6 +86,7 @@ public class ConditionalManager {
 		map.put("ALLY_SAFE", nextFriendSafe());
 		map.put("ALLY_CAN_HIT_ENEMY", nextFriendCanHit());
 		map.put("ALLY_ALMOST_DONE_WAITING", friendWillEnterSoon());
+		map.put("CAN_INTERRUPT_ENEMY", canInterruptEnemy());
 		map.put("DEFAULT", true);
 		
 //		System.out.println("----------------------------------------------");
@@ -322,13 +323,13 @@ public class ConditionalManager {
 	public boolean projectileCouldBeBlocked(){
 		for(Character c: enemies){
 			if(c.hasShield()){
-				if(c.castPosition > ActionBar.castPoint){
+				if(c.castPosition > c.actionBar.castPoint){
 					return true;
 				}
 				else{
-					int framesLeft = (int) ((ActionBar.castPoint - c.castPosition) / c.getBarSpeed());
+					int framesLeft = (int) ((c.actionBar.castPoint - c.castPosition) / c.getSpeed());
 					int slots = fastestMoveThatCanHit(c);
-					int framesToCast = (int) ((interval * slots) / selected.getCastSpeed());
+					int framesToCast = (int) ((selected.getInterval() * slots) / selected.getSpeed());
 					if(framesLeft > framesToCast){
 						return true;
 					}
@@ -492,9 +493,27 @@ public class ConditionalManager {
 	 */
 	public boolean friendWillEnterSoon(){
 		Character c = findNextFriend();
-		return c != null && c.castPosition < ActionBar.castPoint && c.castPosition > ActionBar.castPoint * .75f;
+		return c != null && c.castPosition < c.actionBar.castPoint && c.castPosition > c.actionBar.castPoint * .75f;
 	}
 	
+	
+	/**
+	 * Returns true if I have an attack which can interrupt a currently casting enemy
+	 */
+	public boolean canInterruptEnemy(){
+		for(Character c: enemies){
+			if(c.castPosition > c.lastCastStart){
+				int slots = quickestAction(c);
+				int theirFrames = framesToAction(c, slots);
+				int mySlots = fastestMoveThatCanHit(c);
+				int myFrames = (int) ((c.getInterval() * mySlots)/ c.getSpeed());
+				if(myFrames < theirFrames){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 	
 	//=========================================================================//
 	//  	        +----------------+                                         //
@@ -513,14 +532,14 @@ public class ConditionalManager {
 	 * a certain number of slots. 
 	 */
 	public int framesToAction(Character c, int slots){
-		if(c.castPosition < ActionBar.castPoint){
-			int waitFrames = (int) ((ActionBar.castPoint - c.castPosition) / c.getBarSpeed());
-			int castFrames = (int) ((interval * slots) / c.getCastSpeed());
+		if(c.castPosition < c.actionBar.castPoint){
+			int waitFrames = (int) ((c.actionBar.castPoint - c.castPosition) / c.getSpeed());
+			int castFrames = (int) ((c.getInterval() * slots) / c.getSpeed());
 			return waitFrames + castFrames;
 		}
 		else {
-			float distance = (c.lastCastStart + (interval * slots)) - c.castPosition;
-			return Math.max(0, (int) (distance / c.getCastSpeed()));
+			float distance = (c.lastCastStart + (c.getInterval() * slots)) - c.castPosition;
+			return Math.max(0, (int) (distance / c.getSpeed()));
 		}
 	}
 	
@@ -530,7 +549,7 @@ public class ConditionalManager {
 	 */
 	public int framesToMyAction(int slots){
 		//System.out.println("interval: "+interval + " | slots: "+slots + " | speed: "+selected.getCastSpeed());
-		return (int) ((interval * slots) / selected.getCastSpeed());
+		return (int) ((selected.getInterval() * slots) / selected.getSpeed());
 	}
 	
 	/**
@@ -636,7 +655,7 @@ public class ConditionalManager {
 	public boolean fastInterruptible(int slots){
 		for(Character c: enemies){
 			int num = fastestMoveThatCanHitMe(c);
-			if(num <= ActionBar.getTotalSlots() && interruptibleBy(c, slots, num)){
+			if(num <= c.actionBar.getNumSlots() && interruptibleBy(c, slots, num)){
 				return true;
 			}
 		}
@@ -741,12 +760,12 @@ public class ConditionalManager {
 		for(Character ch: friends){
 			if(ch == selected || !ch.isAI) continue; 
 			int framesLeft;
-			if(ch.castPosition < ActionBar.castPoint){
-				framesLeft = (int) ((ActionBar.castPoint - ch.castPosition) / ch.getBarSpeed()); 
+			if(ch.castPosition < ch.actionBar.castPoint){
+				framesLeft = (int) ((ch.actionBar.castPoint - ch.castPosition) / ch.getSpeed()); 
 			}
 			else{
-				int waitFrames = (int) (ActionBar.castPoint / ch.getBarSpeed());
-				int castFrames = (int) ((1f - ch.castPosition) / ch.getCastSpeed());
+				int waitFrames = (int) (ch.actionBar.castPoint / ch.getSpeed());
+				int castFrames = (int) ((1f - ch.castPosition) / ch.getSpeed());
 				framesLeft = waitFrames + castFrames;
 			}
 			if(framesLeft < minFrames){

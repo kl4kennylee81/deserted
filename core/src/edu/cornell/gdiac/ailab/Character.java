@@ -376,6 +376,10 @@ public class Character implements GUIElement {
 		return this.actionBar.speedModifier;
 	}
 	
+	public float getInterval(){
+		return (1f-actionBar.castPoint) / actionBar.getNumSlots();
+	}
+	
 	/**
 	 * Reset coordinates that are shielded by this character 
 	 */

@@ -58,6 +58,9 @@ import edu.cornell.gdiac.ailab.GameplayController.InGameState;
  *
  */
 public class GameEngine implements Screen {
+	
+	public static final boolean dataGen = true;
+	
 	/** 
 	 * Enumeration defining the game state
 	 */
@@ -115,6 +118,8 @@ public class GameEngine implements Screen {
 	/** The size of the messages */
 	private static final int SELECT_FONT_SIZE = 20;
 	
+	public static final String DATA_PATH = "../core/assets/";
+	
 	/** The width of the progress bar */	
 	private int width;
 	/** The y-coordinate of the center of the progress bar */
@@ -166,6 +171,9 @@ public class GameEngine implements Screen {
     /** How far along (0 to 1) we are in loading process */
 	private float  gameLoad;
 	
+	/** What data file number we are on */
+	private int fileNum;
+	
 	/** 
 	 * Constructs a new game engine
 	 *
@@ -176,11 +184,13 @@ public class GameEngine implements Screen {
     	gameLoad  = 0.0f;
 		canvas = new GameCanvas();
 		
+		FileHandle file = dataGen ? new FileHandle(DATA_PATH+"data/fileinfo.txt") : null;
+		fileNum = Integer.parseInt(file.readString());
+		
 		mouseOverController = new MouseOverController(canvas);
-		gameplayController = new GameplayController(mouseOverController);
+		gameplayController = new GameplayController(mouseOverController, file, fileNum);
 
 		updateMeasures();
-
 	}
     
     public void updateMeasures(){

@@ -5,10 +5,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import org.json.simple.JSONArray;
+
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Effect.Type;
+
 
 public class AIController {
 	public static enum Difficulty {
@@ -76,12 +79,12 @@ public class AIController {
 		}
 	}
 	
-	public void outputData(){
+	public void outputData(JSONArray jsonArray){
 		for (Character c : chars){
 			if(c.needsDataOutput){
 				c.needsDataOutput = false;
 				tacticalManager.updateConditions(c);
-				tacticalManager.outputData(c);
+				tacticalManager.outputData(c, jsonArray);
 			}
 		}
 	}
