@@ -18,35 +18,36 @@ public class ConditionalManager {
 	protected List<Character> enemies;
     
     protected final String[] conditions = {
-    		"DEFAULT",
-    		"SAFE", 
-    		"NOT_SAFE", 
-    		"CAN_HIT_ENEMY", 
-    		"ADJACENT_SAFE_SQUARE", 
-    		"ADJACENT_ATTACK_SQUARE", 
-    		"ALLY_CASTING", 
-    		"ALLY_SHIELDING", 
-    		"HIGH_INTERRUPT_CHANCE",
-    		"MEDIUM_INTERRUPT_CHANCE",
-    		"LOW_INTERRUPT_CHANCE", 
-    		"NO_INTERRUPT_CHANCE",
-    		"LOW_HEALTH", 
-    		"HIGH_HEALTH", 
-    		"ALONE",
-    		"ENEMY_HAS_WALL", 
-    		"PROTECTED", 
-    		"CAN_PROTECT",
-    		"CAN_PROTECT_WITH_MOVE",
-    		"PROTECTED_BY_MOVE",
-    		"MAYBE_PROTECTED_BY_MOVE",
-    		"COULD_BE_BLOCKED",
-    		"ONE_ENEMY_LEFT", 
-    		"HAS_SHIELD",
-    		"HAS_SINGLE", 
-    		"ALLY_SAFE",
-    		"ALLY_CAN_HIT_ENEMY",
-    		"ALLY_ALMOST_DONE_WAITING",
-    		"CAN_INTERRUPT_ENEMY"
+    		"default",
+    		"safe", 
+    		"not_safe", 
+    		"can_hit_enemy", 
+    		"adjacent_safe_square", 
+    		"adjacent_attack_square", 
+    		"ally_casting", 
+    		"ally_shielding", 
+    		"enemy_casting",
+    		"high_interrupt_chance",
+    		"medium_interrupt_chance",
+    		"low_interrupt_chance", 
+    		"no_interrupt_chance",
+    		"low_health", 
+    		"high_health", 
+    		"alone",
+    		"enemy_has_wall", 
+    		"is_protected", 
+    		"can_protect",
+    		"can_protect_with_move",
+    		"protected_by_move",
+    		"maybe_protected_by_move",
+    		"could_be_blocked",
+    		"one_enemy_left", 
+    		"has_shield",
+    		"has_single", 
+    		"ally_safe",
+    		"ally_can_hit_enemy",
+    		"ally_almost_done_waiting",
+    		"can_interrupt_enemy"
     };
 
 	
@@ -58,36 +59,36 @@ public class ConditionalManager {
 		this.friends = friends;
 		this.enemies = enemies;
 		
-		map.put("SAFE", isSafe());
-		map.put("NOT_SAFE", isNotSafe());
-		map.put("CAN_HIT_ENEMY", canHitOpponent());
-		map.put("ADJACENT_ATTACK_SQUARE", attackSquareAdjacent());
-		map.put("ADJACENT_SAFE_SQUARE", safeSquareAdjacent());
-		map.put("ALLY_CASTING", friendIsCasting());
-		map.put("ALLY_SHIELDING", friendIsShielding());
-		map.put("ENEMY_CASTING", opponentIsCasting());
-		map.put("HIGH_INTERRUPT_CHANCE", highInterruptChance());
-		map.put("MEDIUM_INTERRUPT_CHANCE", mediumInterruptChance());
-		map.put("LOW_INTERRUPT_CHANCE", lowInterruptChance());
-		map.put("NO_INTERRUPT_CHANCE", noInterruptChance());
-		map.put("LOW_HEALTH", hasLowHealth());
-		map.put("HIGH_HEALTH", isHealthy());
-		map.put("ALONE", isAlone());
-		map.put("ENEMY_HAS_WALL", opponentHasWall());
-		map.put("PROTECTED", isProtected());
-		map.put("CAN_PROTECT", canProtect());
-		map.put("CAN_PROTECT_WITH_MOVE", canProtectFriendWithMove());
-		map.put("PROTECTED_BY_MOVE", wouldBeProtectedWithMove());
-		map.put("MAYBE_PROTECTED_BY_MOVE", canBeProtectedWithMove());
-		map.put("COULD_BE_BLOCKED", projectileCouldBeBlocked());
-		map.put("ONE_ENEMY_LEFT", oneEnemyLeft());
-		map.put("HAS_SHIELD", hasShield());
-		map.put("HAS_SINGLE", hasSingle());
-		map.put("ALLY_SAFE", nextFriendSafe());
-		map.put("ALLY_CAN_HIT_ENEMY", nextFriendCanHit());
-		map.put("ALLY_ALMOST_DONE_WAITING", friendWillEnterSoon());
-		map.put("CAN_INTERRUPT_ENEMY", canInterruptEnemy());
-		map.put("DEFAULT", true);
+		map.put("safe", isSafe());
+		map.put("not_safe", isNotSafe());
+		map.put("can_hit_enemy", canHitOpponent());
+		map.put("adjacent_attack_square", attackSquareAdjacent());
+		map.put("adjacent_safe_square", safeSquareAdjacent());
+		map.put("ally_casting", friendIsCasting());
+		map.put("ally_shielding", friendIsShielding());
+		map.put("enemy_casting", opponentIsCasting());
+		map.put("high_interrupt_chance", highInterruptChance());
+		map.put("medium_interrupt_chance", mediumInterruptChance());
+		map.put("low_interrupt_chance", lowInterruptChance());
+		map.put("no_interrupt_chance", noInterruptChance());
+		map.put("low_health", hasLowHealth());
+		map.put("high_health", isHealthy());
+		map.put("alone", isAlone());
+		map.put("enemy_has_wall", opponentHasWall());
+		map.put("is_protected", isProtected());
+		map.put("can_protect", canProtect());
+		map.put("can_protect_with_move", canProtectFriendWithMove());
+		map.put("protected_by_move", wouldBeProtectedWithMove());
+		map.put("maybe_protected_by_move", canBeProtectedWithMove());
+		map.put("could_be_blocked", projectileCouldBeBlocked());
+		map.put("one_enemy_left", oneEnemyLeft());
+		map.put("has_shield", hasShield());
+		map.put("has_single", hasSingle());
+		map.put("ally_safe", nextFriendSafe());
+		map.put("ally_can_hit_enemy", nextFriendCanHit());
+		map.put("ally_almost_done_waiting", friendWillEnterSoon());
+		map.put("can_interrupt_enemy", canInterruptEnemy());
+		map.put("default", true);
 		
 //		System.out.println("----------------------------------------------");
 //		for(String s: map.keySet()){

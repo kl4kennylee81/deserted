@@ -1,10 +1,10 @@
-root:
+ROOT:
   type: index
-  NO_INTERRUPT_CHANCE: NO_INT
-  LOW_INTERRUPT_CHANCE: LOW_INT
-  MEDIUM_INTERRUPT_CHANCE: MED_INT
-  HIGH_INTERRUPT_CHANCE: HIGH_INT
-  DEFAULT: DEFAULT_CHILD
+  no_interrupt_chance: NO_INT
+  low_interrupt_chance: LOW_INT
+  medium_interrupt_chance: MED_INT
+  high_interrupt_chance: HIGH_INT
+  default: DEFAULT_CHILD
 
 #-------------------------------------------
 
@@ -15,14 +15,14 @@ NO_INT:
 
 LOW_INT:
   type: index
-  CAN_HIT_ENEMY: CHILD1
-  ADJACENT_ATTACK_SQUARE: CHILD2
-  DEFAULT: DEFAULT_CHILD
+  can_hit_enemy: CHILD1
+  adjacent_attack_square: CHILD2
+  default: DEFAULT_CHILD
   
 MED_INT:
   type: index
-  CAN_HIT_ENEMY: CHILD3
-  DEFAULT: DEFAULT_CHILD
+  can_hit_enemy: CHILD3
+  default: DEFAULT_CHILD
 
 HIGH_INT:
   type: leaf
@@ -33,8 +33,7 @@ HIGH_INT:
 
 CHILD1:
   type: leaf
-  my_tactic: SPECIFIC
-  my_actions: [POWERFUL_ATTACK, MOVE_DEFENSIVE]
+  my_tactic: ATTACK
 
 CHILD2:
   type: leaf
@@ -50,8 +49,23 @@ DEFAULT_CHILD:
   type: leaf
   my_tactic: SPECIFIC
   my_actions: [MOVE_DEFENSIVE, SINGLE_OPTIMAL]
-  
-  
+
+#----------------------------------------------
+
+red:
+  type: character
+  branches: [BRANCH1]
+
+blue:
+  type: character
+  branches: [BRANCH1]
+
+BRANCH1:
+  type: leaf
+  branch_type: ATTACK
+  my_tactic: SPECIFIC
+  my_actions: [POWERFUL_ATTACK, MOVE_DEFENSIVE]
+    
   
   
   

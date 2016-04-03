@@ -353,12 +353,20 @@ public class ObjectLoader {
 						((LeafNode) node).allySpecific = new MoveList(stringsToSpecific(s2));
 					}
 				}
-			} else {
+			} 
+			else if(type.equals("character")){
+				node = new IndexNode(branchType);
+				ArrayList<String> s1 = (ArrayList<String>) map.get("branches");
+				for(String branch: s1){
+					((IndexNode) node).addRule(new ArrayList<String>(), branch);
+				}
+			}
+			else {
 				System.out.println("MUST SPECIFY INDEX OR LEAF");
 				return;
 			}
 			
-			if(s.equals("root")){
+			if(s.equals("ROOT")){
 				tacticalManager.setRoot(node);
 			}
 			tacticalManager.addToMap(s, node);

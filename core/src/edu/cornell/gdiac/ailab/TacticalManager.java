@@ -882,7 +882,6 @@ public class TacticalManager extends ConditionalManager{
 	}
 	
 	private void addMovePossibilities(Character c, ActionNode a, ArrayList<Specific> moves, int xPos, int yPos){
-		System.out.println("X: "+xPos+"... Y: "+yPos);
 		if(a.action.pattern != Pattern.MOVE){
 			return;
 		}
@@ -897,7 +896,6 @@ public class TacticalManager extends ConditionalManager{
 			added = true;
 			moves.add(Specific.MOVE_DEFENSIVE);
 		}
-		System.out.println("test can hit enemy");
 		System.out.println(canHitEnemyFrom(c,x,y));
 		if(canHitEnemyFrom(c, x, y)){
 			added = true;

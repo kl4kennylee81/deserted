@@ -50,6 +50,8 @@ public class DecisionNode {
 		GAMBLE,
 		/** Do whatever it takes to stay alive */
 		PRESERVATION,
+		/** be defensive */
+		DEFENSE,
 		/** This means that specific actions have been chosen */
 		SPECIFIC
 	}
