@@ -60,7 +60,7 @@
   name: Straight - 4
   cost: 2
   damage: 2
-  range: 4
+  range: 5
   pattern: STRAIGHT
   effect: 
     type: REGULAR
@@ -75,7 +75,7 @@
 
 5:
   name: Diagonal
-  cost: 3
+  cost: 2
   damage: 2
   range: 5
   pattern: DIAGONAL
@@ -92,7 +92,7 @@
 
 6:
   name: Shield-3
-  cost: 2
+  cost: 1
   damage: 0
   range: 3
   pattern: SHIELD
@@ -175,7 +175,7 @@
 11:
   name: L - PATH
   cost: 2
-  damage: 1
+  damage: 2
   range: 2
   pattern: PROJECTILE
   path: "0,0 1,0 2,1 3,0 4,1 5,0"

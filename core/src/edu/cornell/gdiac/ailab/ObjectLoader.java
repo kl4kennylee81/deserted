@@ -3,6 +3,7 @@ package edu.cornell.gdiac.ailab;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,6 +23,7 @@ import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.mesh.MeshLoader;
+import edu.cornell.gdiac.ailab.DecisionNode.*;
 
 public class ObjectLoader {
 	
@@ -38,6 +40,8 @@ public class ObjectLoader {
     private HashMap<Integer, Action> availableActions;
     //hashmap used to load animations for level from yaml
     private HashMap<Integer, Animation> availableAnimations;
+    //TacticalManager to be loaded from yaml
+    private TacticalManager tacticalManager;
     
     //singleton pattern constructor
     //Instantiates assets array and asset manager
@@ -69,6 +73,7 @@ public class ObjectLoader {
 		availableCharacters=null;
 		availableActions = null;
 		availableAnimations = null;
+		tacticalManager = null;
 	}
 	
 	/**
@@ -84,6 +89,7 @@ public class ObjectLoader {
 		availableCharacters = new HashMap<Integer, Character>();
 	    availableActions = new HashMap<Integer, Action>();
 	    availableAnimations = new HashMap<Integer, Animation>();
+	    tacticalManager = new TacticalManager();
 		
 		
 		ArrayList<HashMap<String, Object>> allies =  (ArrayList<HashMap<String, Object>>) levelDef.get("allies");
@@ -92,6 +98,7 @@ public class ObjectLoader {
 		Integer boardWidth = (Integer) levelDef.get("boardWidth");
 		Integer boardHeight = (Integer) levelDef.get("boardHeight");
 		String boardTexture = (String) levelDef.get("boardTexture");
+		ArrayList<String> ai = (ArrayList<String>) levelDef.get("AI");
 		
 		Yaml yaml = new Yaml();
 		FileHandle animationFile = Gdx.files.internal("yaml/animations.yml");
@@ -112,6 +119,7 @@ public class ObjectLoader {
 			characters = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
 		
+		
 		loadKeysFromLevels(allies);
 		loadKeysFromLevels(enemies);
 		loadKeysFromCharacters(characters);
@@ -121,6 +129,7 @@ public class ObjectLoader {
 		loadActions(actions);
 		loadCharacters(allies, characters, true);
 		loadCharacters(enemies, characters, false);
+		loadAI(ai);
 		
 		Level loadedLevel = new Level();
 		
@@ -130,6 +139,7 @@ public class ObjectLoader {
 		loadedLevel.setNextLevel(nextLevel);
 		loadedLevel.setBoardHeight(boardHeight);
 		loadedLevel.setBoardWidth(boardWidth);
+		loadedLevel.setTacticalManager(tacticalManager);
 		
 		manager.load(boardTexture,Texture.class);
 		assets.add(boardTexture);
@@ -280,6 +290,112 @@ public class ObjectLoader {
 			
 		}
 		
+	}
+	
+	
+	/**
+	 * Loads all the AI's from their yaml specifications
+	 */
+	@SuppressWarnings("unchecked") 
+	private void loadAI(ArrayList<String> ai) throws IOException{
+		for(String s: ai){
+			HashMap<String , HashMap<String, Object>> nodes;
+			FileHandle aiFile = Gdx.files.internal("yaml/"+s);
+			Yaml yaml = new Yaml();
+			try (InputStream is = aiFile.read()){
+				nodes = (HashMap<String, HashMap<String, Object>>) yaml.load(is);
+				processAIFile(nodes);
+			}
+		}
+	}
+	
+	
+	/**
+	 * Loads a specific AI file from the yaml HashMap
+	 */
+	@SuppressWarnings("unchecked")
+	private void processAIFile(HashMap<String, HashMap<String, Object>> nodes){
+		for(String s: nodes.keySet()){
+			HashMap<String, Object> map = nodes.get(s);
+			String type = (String) map.get("type");
+			map.remove("type");
+
+			Tactic branchType = Tactic.NONE;
+			if(map.containsKey("branch_type")){
+				branchType = Tactic.valueOf((String) map.get("branch_type"));
+				map.remove("branch_type");
+			}
+			
+			DecisionNode node;
+			if(type.equals("index")){
+				node = new IndexNode(branchType);
+				for(String cond: map.keySet()){
+					String[] conds = cond.split("/");
+					String other = (String) map.get(cond);
+					((IndexNode) node).addRule(Arrays.asList(conds), other);
+				}
+			}
+			
+			else if(type.equals("leaf")){
+				node = new LeafNode(branchType);
+				Tactic myTactic = Tactic.valueOf((String) map.get("my_tactic"));
+				((LeafNode) node).myTactic = myTactic;
+				if(myTactic == Tactic.SPECIFIC){
+					ArrayList<String> s1 = (ArrayList<String>) map.get("my_actions");
+					((LeafNode) node).mySpecific = new MoveList(stringsToSpecific(s1));
+				}
+				
+				if(map.containsKey("ally_tactic")){
+					Tactic allyTactic = Tactic.valueOf((String) map.get("ally_tactic"));
+					((LeafNode) node).allyTactic = allyTactic;
+					if(allyTactic == Tactic.SPECIFIC){
+						ArrayList<String> s2 = (ArrayList<String>) map.get("ally_actions");
+						((LeafNode) node).allySpecific = new MoveList(stringsToSpecific(s2));
+					}
+				}
+			} 
+			else if(type.equals("character")){
+				node = new IndexNode(branchType);
+				ArrayList<String> s1 = (ArrayList<String>) map.get("branches");
+				for(String branch: s1){
+					((IndexNode) node).addRule(new ArrayList<String>(), branch);
+				}
+			}
+			else {
+				System.out.println("MUST SPECIFY INDEX OR LEAF");
+				return;
+			}
+			
+			if(s.equals("ROOT")){
+				tacticalManager.setRoot(node);
+			}
+			tacticalManager.addToMap(s, node);
+		}
+	}
+	
+	
+	/**
+	 * Convert a list of strings into a list of specific actions
+	 */
+	private ArrayList<Specific> stringsToSpecific(ArrayList<String> strings){
+		ArrayList<Specific> moves = new ArrayList<Specific>();
+		for(String s: strings){
+			moves.add(Specific.valueOf(s));
+		}
+		return moves;
+	}
+	
+	
+	/**
+	 * Returns true if this string is the name of a character
+	 */
+	private boolean isCharacterName(String s){
+		for(Character c: availableCharacters.values()){
+			if(c.name.equals(s)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**Loads all target animations from their yaml specifications

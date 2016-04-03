@@ -5,10 +5,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import org.json.simple.JSONArray;
+
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Effect.Type;
+
 
 public class AIController {
 	public static enum Difficulty {
@@ -31,37 +34,57 @@ public class AIController {
 	private int curSlot;
 	private boolean shield;
 	private boolean hasSingle;
-	private Character selecting;
+	private TacticalManager tacticalManager;
 	
-	public AIController(GridBoard board, List<Character> chars) {
+	public AIController(GridBoard board, List<Character> chars, TacticalManager tm) {
 		this.board = board;
 		this.chars = chars;
-		nop = new Action("NOP", 1, 0, 0, Pattern.NOP, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
+		this.tacticalManager = tm;
+		tacticalManager.setState(board, chars);
 	}
+	
+	private Character selecting;
+
 	
 	public void update(){
 		for (Character c : chars){
 			if (c.needsSelection && c.isAI){
+				//Update tactical manager
+				tacticalManager.updateConditions(c);
+				tacticalManager.selectActions(c);
 				c.needsSelection = false;
-				selected = c;
-				xOffset = 0;
-				yOffset = 0;
-				shield = false;
-				hasSingle = hasSingle();
-				interval = (1f-c.getActionBar().getCastPoint()) / c.getActionBar().getNumSlots();
-				curSlot = 1;
-				selecting = c;
-				switch (c.diff){
-					case EASY:
-						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.1f));
-						break;
-					case MEDIUM:
-						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.7f));
-						break;
-					default:
-						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 1.0f));
-						break;
-				}
+//				System.out.print(c.name+ ": ");
+//				for(ActionNode n: c.queuedActions){
+//					System.out.print("("+n.action.name+") ");
+//				}
+//				System.out.println();
+//				xOffset = 0;
+//				yOffset = 0;
+//				shield = false;
+//				hasSingle = hasSingle();
+//				interval = (1f-bar.castPoint) / ActionBar.getTotalSlots();
+//				curSlot = 1;
+//				switch (c.diff){
+//					case EASY:
+//						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.1f));
+//						break;
+//					case MEDIUM:
+//						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 0.7f));
+//						break;
+//					default:
+//						selected.setQueuedActions(getActions(0.8f, 0.33f, 0.2f, 1.0f));
+//						break;
+//				}
+			}
+		}
+	}
+	
+	public void outputData(JSONArray jsonArray){
+		for (Character c : chars){
+			if(c.needsDataOutput){
+				c.needsDataOutput = false;
+				tacticalManager.updateConditions(c);
+				tacticalManager.outputData(c, jsonArray);
 			}
 		}
 	}

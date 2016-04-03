@@ -11,10 +11,10 @@
   availableActions: 
     - 0
     - 4
-    - 3
     - 6
-    - 11
-    - 12
+    - 7
+    - 8
+    - 10
 
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
@@ -32,8 +32,8 @@
   leftSide: true
   availableActions: 
     - 0
-    - 10
     - 5
+    - 6
     - 3
     - 11
     - 12
@@ -54,12 +54,11 @@
   leftSide: false
   availableActions: 
     - 0
-    - 4
-    - 3
-    - 6
+    - 7
+    - 9
+    - 10
     - 11
-    - 12
-
+    
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_3.png"
   animationId: 3
@@ -76,11 +75,10 @@
   leftSide: false
   availableActions: 
     - 0
-    - 10
     - 5
+    - 7
     - 8
-    - 11
-    - 12
+    - 9
 
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"

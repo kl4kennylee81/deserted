@@ -12,6 +12,7 @@ public class Level {
     private Integer boardWidth;
     private Integer boardHeight;
     private Texture boardTexture;
+    private TacticalManager tacticalManager;
     
     public Level(){
     	
@@ -74,8 +75,13 @@ public class Level {
 	public void setBoardTexture(Texture boardTexture) {
 		this.boardTexture = boardTexture;
 	}
-
-
-
+	
+	public TacticalManager getTacticalManager(){
+		return tacticalManager;
+	}
+	
+	public void setTacticalManager(TacticalManager tm){
+		this.tacticalManager = tm;
+	}
     
 }

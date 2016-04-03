@@ -301,7 +301,7 @@ public class ActionController {
 			}
 		}
 		for (int i =0;i<path.length;i++){
-			System.out.println(path[i]);
+			//System.out.println(path[i]);
 		}
 		return path;
 	}

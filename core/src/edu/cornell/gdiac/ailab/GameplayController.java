@@ -1,8 +1,12 @@
 package edu.cornell.gdiac.ailab;
 
 import java.util.Iterator;
-import java.util.List; 
+import java.util.List;
 
+import org.json.simple.JSONArray;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -30,12 +34,17 @@ public class GameplayController {
     private TextMessage textMessages;
     private AnimationPool animations;
     
+    
     private HighlightScreen screen;
     
     private String prompt;
     
     /** Current state of game */
     private InGameState inGameState;
+    private FileHandle fileNumFile;
+    private int fileNum;
+    private FileHandle dataFile;
+    private JSONArray jsonArray;
     
     public static enum InGameState {
 		NORMAL,
@@ -44,13 +53,17 @@ public class GameplayController {
 		DONE
 	}
     
-    public GameplayController(MouseOverController moc){
+    public GameplayController(MouseOverController moc, FileHandle file, int fileNum){
     	mouseOverController = moc;
+    	fileNumFile = file;
+    	this.fileNum = fileNum;
     }
     
     public void resetGame(Level level){
     	inGameState = InGameState.NORMAL;
-		
+    	fileNum++;
+		dataFile = GameEngine.dataGen ? new FileHandle(GameEngine.DATA_PATH+"data/data"+fileNum) : null;
+		jsonArray = new JSONArray();
     	int boardWidth = level.getBoardWidth();
     	int boardHeight = level.getBoardHeight();
     	Texture boardMesh = level.getBoardTexture();
@@ -68,7 +81,7 @@ public class GameplayController {
         actionController = new ActionController(board,characters,textMessages,animations);
         selectionMenuController = new SelectionMenuController(board,characters);
         actionBarController = new ActionBarController(characters);
-        aiController = new AIController(board,characters);
+        aiController = new AIController(board,characters,level.getTacticalManager());
         persistingController = new PersistingController(board,characters,textMessages,animations);
         effectController = new EffectController(characters);
         mouseOverController.init(screen, board);
@@ -104,6 +117,7 @@ public class GameplayController {
     			inGameState = InGameState.NORMAL;
     			prompt = null;
     			board.reset();
+    			aiController.outputData(jsonArray);
     		}
     		break;
     	case ATTACK:
@@ -123,6 +137,10 @@ public class GameplayController {
     	removeDead();
     	if (gameOver()){
     		inGameState = InGameState.DONE;
+    		if(GameEngine.dataGen){
+    			dataFile.writeString(jsonArray.toString(), false);
+        		fileNumFile.writeString(""+fileNum, false);
+    		}
     		ObjectLoader.getInstance().unloadCurrentLevel();
     	}
     }

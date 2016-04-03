@@ -69,6 +69,14 @@ public class Character implements GUIElement {
 	boolean isSelecting;
 	/** Do I have a persisting action currently in play */
 	boolean isPersisting;
+	/** Am I currently being affected by an effect? */
+	boolean isAffected;
+	/** Did I just execute an attack? */
+	boolean isExecuting;
+	/** Did I just get hit? */
+	boolean isHurt;
+	/** Do I need to output data about my selected actions? */
+	boolean needsDataOutput;
 
 	CharacterState charState;
 	
@@ -297,6 +305,7 @@ public class Character implements GUIElement {
 		this.isBlocked = false;
 	}
 	
+	
 	/**
 	 * Make an AI with the given difficulty
 	 */
@@ -365,6 +374,10 @@ public class Character implements GUIElement {
 	
 	public int getSpeedModifier(){
 		return this.actionBar.speedModifier;
+	}
+	
+	public float getInterval(){
+		return (1f-actionBar.castPoint) / actionBar.getNumSlots();
 	}
 	
 	/**
