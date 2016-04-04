@@ -14,42 +14,43 @@ import edu.cornell.gdiac.ailab.TextMessage.Message;
 
 public class GameplayController {
 	/** Subcontroller for actions (CONTROLLER CLASS) */
-    private ActionController actionController;
+    protected ActionController actionController;
     /** Subcontroller for selection menu (CONTROLLER CLASS) */
-    private SelectionMenuController selectionMenuController;
+    protected SelectionMenuController selectionMenuController;
     /** Subcontroller for action bar (CONTROLLER CLASS) */
-    private ActionBarController actionBarController;
+    protected ActionBarController actionBarController;
     /** Subcontroller for persisting actions (CONTROLLER CLASS) */
-    private PersistingController persistingController;
+    protected PersistingController persistingController;
     /** Subcontroller for AI selection (CONTROLLER CLASS) */
-    private AIController aiController;
+    protected AIController aiController;
     /** Subcontroller for managing effects */
-    private EffectController effectController;
+    protected EffectController effectController;
     /** Subcontroller for managing mouse over highlighting */
-    private MouseOverController mouseOverController;
+    protected MouseOverController mouseOverController;
 	
 	/** Current Models */
-    private GridBoard board;
-    private Characters characters;
-    private TextMessage textMessages;
-    private AnimationPool animations;
+    protected GridBoard board;
+    protected Characters characters;
+    protected TextMessage textMessages;
+    protected AnimationPool animations;
     
     
-    private HighlightScreen screen;
+    protected HighlightScreen screen;
     
-    private String prompt;
+    protected String prompt;
     
     /** Current state of game */
-    private InGameState inGameState;
-    private FileHandle fileNumFile;
-    private int fileNum;
-    private FileHandle dataFile;
-    private JSONArray jsonArray;
+    protected InGameState inGameState;
+    protected FileHandle fileNumFile;
+    protected int fileNum;
+    protected FileHandle dataFile;
+    protected JSONArray jsonArray;
     
     public static enum InGameState {
 		NORMAL,
 		SELECTION,
 		ATTACK,
+		PAUSED,
 		DONE
 	}
     
@@ -173,7 +174,7 @@ public class GameplayController {
     //Change how i do this.
     //This needs to be done so characters below show over characters above and selection menu
     //shows over characters.
-    private void drawCharacters(GameCanvas canvas){
+    protected void drawCharacters(GameCanvas canvas){
 		boolean shouldDim = inGameState == InGameState.SELECTION || 
 				mouseOverController.isCharacterHighlighted();
     	characters.draw(canvas,shouldDim);
@@ -200,9 +201,8 @@ public class GameplayController {
 			canvas.drawText("RED SIDE WINS", 400, 400, Color.BLACK);
 		} else if (rightsideDead()){
 			canvas.drawText("BLUE SIDE WINS", 400, 400, Color.BLACK);
-		} else {
-			System.out.println("SHOULD NEVER GET HERE");
-		}
+		} else 
+			
 	    canvas.drawText("Press R to return", 400, 360, Color.BLACK);
     }
     

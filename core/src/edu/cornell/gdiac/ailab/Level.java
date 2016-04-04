@@ -14,6 +14,8 @@ public class Level {
     private Texture boardTexture;
     private TacticalManager tacticalManager;
     
+    private TutorialSteps tutorialSteps;
+    
     public Level(){
     	
     }
@@ -82,6 +84,18 @@ public class Level {
 	
 	public void setTacticalManager(TacticalManager tm){
 		this.tacticalManager = tm;
+	}
+
+
+
+	public TutorialSteps getTutorialSteps() {
+		return tutorialSteps;
+	}
+
+
+
+	public void setTutorialSteps(TutorialSteps tutorialSteps) {
+		this.tutorialSteps = tutorialSteps;
 	}
     
 }

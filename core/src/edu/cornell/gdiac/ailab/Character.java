@@ -126,8 +126,8 @@ public class Character implements GUIElement {
 		this.color = color;
 		
 		/* Randomize so that its not always the same thing */
-		this.speed = (float) (Math.random()*0.003 + 0.003)/3;
-		this.castSpeed = (float) (Math.random()*0.003 + 0.0025)/3;
+		this.speed = speed;
+		this.castSpeed = castSpeed;
 		
 		this.startingXPosition = this.xPosition = xPosition;
 		this.startingYPosition = this.yPosition = yPosition;
@@ -143,8 +143,10 @@ public class Character implements GUIElement {
 		this.availableActions = actions;
 		selectionMenu = new SelectionMenu(availableActions);
 		
-		float waitTime = (float) (Math.random()*3 + 2);
-		float castTime = (float) (Math.random()*4 + 4);
+		//float waitTime = (float) (Math.random()*3 + 2);
+		//float castTime = (float) (Math.random()*4 + 4);
+		float waitTime = speed;
+		float castTime = castSpeed;
 		actionBar = new CharActionBar(4,waitTime,castTime);
 		
 	}

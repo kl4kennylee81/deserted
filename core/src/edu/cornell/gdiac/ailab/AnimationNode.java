@@ -51,6 +51,7 @@ public class AnimationNode {
 		if (gameState == InGameState.SELECTION){
 			return animation.filmStrip;
 		}
+		
 		if (charState.id != curSegment){
 			curSegment = charState.id;
 			curFrameIndex = 0;

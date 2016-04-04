@@ -99,6 +99,7 @@ public class ObjectLoader {
 		Integer boardHeight = (Integer) levelDef.get("boardHeight");
 		String boardTexture = (String) levelDef.get("boardTexture");
 		ArrayList<String> ai = (ArrayList<String>) levelDef.get("AI");
+		String tutorialFileName = (String) levelDef.get("tutorialFileName");
 		
 		Yaml yaml = new Yaml();
 		FileHandle animationFile = Gdx.files.internal("yaml/animations.yml");
@@ -140,6 +141,17 @@ public class ObjectLoader {
 		loadedLevel.setBoardHeight(boardHeight);
 		loadedLevel.setBoardWidth(boardWidth);
 		loadedLevel.setTacticalManager(tacticalManager);
+		
+		if (tutorialFileName != null){
+			FileHandle tutorialFile = Gdx.files.internal(tutorialFileName);
+			HashMap<Integer, HashMap<String, Object>> steps;
+			TutorialSteps tutorialSteps = new TutorialSteps();
+			try (InputStream is = tutorialFile.read()){
+				steps = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+				loadTutorialSteps(tutorialSteps,steps);
+			}
+			loadedLevel.setTutorialSteps(tutorialSteps);
+		}
 		
 		manager.load(boardTexture,Texture.class);
 		assets.add(boardTexture);
@@ -429,5 +441,25 @@ public class ObjectLoader {
 		
 	}
 	
-	
+	private void loadTutorialSteps(TutorialSteps ts, HashMap<Integer, HashMap<String, Object>> steps) {
+		for (HashMap<String, Object> step : steps.values()){
+			String text = (String) step.get("text");
+			Boolean paused = (Boolean) step.get("paused");
+			
+			ts.addStep(text, paused);
+			
+			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) step.get("actions");
+			
+			
+			if (actions != null){
+				for (HashMap<String, Object> actionData : actions){
+					Integer actionId = (Integer) actionData.get("actionId");
+					Integer xPos = (Integer) actionData.get("xPos");
+					Integer yPos = (Integer) actionData.get("yPos");
+					String direction = (String)actionData.get("direction");
+					ts.addAction(actionId,xPos,yPos,direction);
+				}
+			}
+		}
+	}
 }

@@ -66,6 +66,9 @@ public class MainMenuController {
 		} else if (InputController.pressedP()){
 			gameNo = 3;
 			isDone = true;
+		} else if (InputController.pressedT()){
+			gameNo = 4;
+			isDone = true;
 		}
 	}
 	

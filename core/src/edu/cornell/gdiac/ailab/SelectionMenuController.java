@@ -39,7 +39,7 @@ public class SelectionMenuController {
 	private static final int SINGLE_X_LEFT = 3;
 	private static final int SINGLE_X_RIGHT = 2;
 	private static final int SINGLE_Y = 3;
-	private String prompt;
+	protected String prompt;
 	
 	//TODO: Change to be 0 for down and anything else is up
 	/** Attack direction values */
@@ -91,7 +91,7 @@ public class SelectionMenuController {
 		}	
 	}
 	
-	private void updateVariables(){
+	protected void updateVariables(){
 		menu = selected.getSelectionMenu();
 		action = menu.getSelectedAction();
 		choosingTarget =  menu.getChoosingTarget();
@@ -124,9 +124,9 @@ public class SelectionMenuController {
 		} else if (InputController.pressedBack()){
 			menu.removeLast();
 		} else if (InputController.pressedD() && menu.canNop(numSlots)){
-			float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,0);
+			/*float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,0);
 			menu.add(anPool.newActionNode(nop,actionExecute,0,0,Direction.NONE),numSlots);
-			menu.resetPointer(numSlots);
+			menu.resetPointer(numSlots);*/
 		} else if (InputController.pressedW() && !InputController.pressedS()){
 			//Actions go from up down, so we need to flip
 			menu.changeSelected(false,numSlots);
@@ -138,7 +138,7 @@ public class SelectionMenuController {
 	/** 
 	 * Select an action to start targeting
 	 */
-	private void updateTargetedAction(){
+	protected void updateTargetedAction(){
 		switch (action.pattern){
 		case STRAIGHT:
 			menu.setChoosingTarget(true);
@@ -191,7 +191,7 @@ public class SelectionMenuController {
 		}
 	}
 	
-	private void updateChoosingTarget(){
+	protected void updateChoosingTarget(){
 		ActionNodes anPool = ActionNodes.getInstance();
 		switch (action.pattern){
 		case SINGLE:
@@ -288,7 +288,7 @@ public class SelectionMenuController {
 		}
 	}
 	
-	private void setNeedsShadow(){
+	protected void setNeedsShadow(){
 		for (Character c : characters){
 			if (c.leftside == selected.leftside){
 				c.needsShadow = true;
@@ -296,7 +296,7 @@ public class SelectionMenuController {
 		}
 	}
 	
-	private void resetNeedsShadow(){
+	protected void resetNeedsShadow(){
 		for (Character c : characters){
 			c.needsShadow = false;
 		}

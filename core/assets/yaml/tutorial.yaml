@@ -1,0 +1,51 @@
+0:
+  text: Welcome press Enter
+  textX: 
+  paused: true
+
+1: 
+  text: Look at action bar
+  paused: false
+  actions: 
+    - actionId: 0 
+      xPos: 0
+      yPos: 0
+      direction: UP
+
+2: 
+  text: Enemy is selecting action
+  paused: true
+
+3:
+  text: wait your turn
+  paused: false
+
+4: 
+  text: enter to next
+  paused: true
+
+5: 
+  text: Please move up one
+  paused: false
+  actions:
+    - actionId: 0 
+      xPos: 0
+      yPos: 0
+      direction: UP
+
+6: 
+  text: Good job
+  paused: true
+
+7: 
+  text: Continuing
+  paused: false
+  actions: 
+    - actionId: 0 
+      xPos: 0
+      yPos: 0
+      direction: DOWN
+
+8:
+  text: Done
+  paused: true

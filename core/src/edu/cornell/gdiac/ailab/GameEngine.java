@@ -136,6 +136,10 @@ public class GameEngine implements Screen {
 	/** Container to track the assets loaded so far */
 	private Array<String> assets;
     
+	/**Currently used gameplay subcontroller */
+	private GameplayController curGameplayController;
+	/**Subcontroller for tutorial (CONTROLLER CLASS) */
+	private TutorialGameplayController tutorialGameplayController;
 	/**Subcontroller for gameplay (CONTROLLER CLASS) */
 	private GameplayController gameplayController;
     /** Used to draw the game onto the screen (VIEW CLASS) */
@@ -189,7 +193,9 @@ public class GameEngine implements Screen {
 		
 		mouseOverController = new MouseOverController(canvas);
 		gameplayController = new GameplayController(mouseOverController, file, fileNum);
-
+		tutorialGameplayController = new TutorialGameplayController(mouseOverController, file, fileNum);
+		
+		
 		updateMeasures();
 	}
     
@@ -216,12 +222,25 @@ public class GameEngine implements Screen {
     	case 2:
     		level = getLevel("hard");
     		break;
-    	default:
+    	case 3:
     		level = getLevel("pvp");
     		break;
+    	case 4:
+    		level = getLevel("tutorial");
+    		break;
+    	default:
+    		break;
     	}
-    	gameplayController.resetGame(level);
-    	gameState = GameState.PLAY;
+    	
+    	if (level.getTutorialSteps() == null){
+    		gameplayController.resetGame(level);
+    		curGameplayController = gameplayController;
+        	gameState = GameState.PLAY;
+    	} else {
+    		tutorialGameplayController.resetGame(level);
+    		curGameplayController = tutorialGameplayController;
+    		gameState = GameState.PLAY;
+    	}
     	
     }
 
@@ -350,8 +369,8 @@ public class GameEngine implements Screen {
      * The primary update loop of the game; called while it is running.
      */
     public void updatePlay() {
-    	gameplayController.update();
-    	if (gameplayController.isDone()){
+    	curGameplayController.update();
+    	if (curGameplayController.isDone()){
     		gameState = GameState.AFTER;
     	}
     	if (InputController.pressedP()){
@@ -392,13 +411,12 @@ public class GameEngine implements Screen {
 	}
 	
 	public void drawPlay() {
-		gameplayController.drawPlay(canvas); 
+		curGameplayController.drawPlay(canvas); 
 	}
 	
 	public void drawAfter() {
-		gameplayController.drawAfter(canvas);
+		curGameplayController.drawAfter(canvas);
 	}
-    
 	
 	/**
 	 * Called when the Application is resized. 
