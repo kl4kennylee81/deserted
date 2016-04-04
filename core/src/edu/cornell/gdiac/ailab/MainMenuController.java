@@ -19,12 +19,14 @@ public class MainMenuController {
 	private static final String FONT_FILE  = "fonts/Milonga-Regular.ttf";
 	private AssetManager manager;
 	private MainMenu mainMenu;
+	private MouseOverController mouseOverController;
 	
-	public MainMenuController(GameCanvas canvas, AssetManager manager){
+	public MainMenuController(GameCanvas canvas, AssetManager manager, MouseOverController mouseOverController){
 		this.canvas = canvas;
 		this.manager = manager;
 		Option[] default_options = makeDefaultOptions();
 		mainMenu = new MainMenu(default_options);
+		this.mouseOverController = mouseOverController; 
 	}
 	
 	private Option[] makeDefaultOptions() {
@@ -52,21 +54,23 @@ public class MainMenuController {
 	}
 	
 	public void update(){
+		mouseOverController.update(mainMenu.options, mainMenu);
 		updateSelection();
 		drawMenu();
 		if (InputController.pressedE()){
-			gameNo = 0;
-			isDone = true;
+			done(0);
 		} else if (InputController.pressedM()){
-			gameNo = 1;
-			isDone = true;
+			done(1);
 		} else if (InputController.pressedH()){
-			gameNo = 2;
-			isDone = true;
+			done(2);
 		} else if (InputController.pressedP()){
-			gameNo = 3;
-			isDone = true;
+			done(3);
 		}
+	}
+	
+	public void done(int doneCode){
+		gameNo = doneCode;
+		isDone = true;
 	}
 	
 	public boolean isDone(){
@@ -97,9 +101,8 @@ public class MainMenuController {
 	 * Update when an action is not targeting yet
 	 */
 	private void updateSelection(){
-		if (InputController.pressedA() || InputController.pressedEnter()){
-			gameNo = mainMenu.selectedOption;
-			isDone = true;
+		if (InputController.pressedA() || InputController.pressedEnter() || InputController.pressedLeftMouse()){
+			done(mainMenu.selectedOption);
 		}  else if ((InputController.pressedW() && !InputController.pressedS())){
 	         //newSelection % length
 	         //(n < 0) ? (m - (abs(n) % m) ) %m : (n % m);

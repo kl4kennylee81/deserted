@@ -19,7 +19,23 @@ public class MouseOverController {
 	
 	private static final float TEXT_ACTION_OFFSET = 30f;
 	
+	public void update(Option[] options, MainMenu mainMenu){
+		if (!InputController.mouseJustMoved()){
+			return;
+		}
+		float x = InputController.getMouseX();
+		float y = InputController.getMouseY();
+		for(Option o: options){
+			if (o.contains(x,y,canvas,board)){
+				mainMenu.selectOption(o.srNo);
+			}
+		}
+		
+	}
 	public void update(SelectionMenu currMenu1){
+		if (!InputController.mouseJustMoved()){
+			return;
+		}
 		hAction = null;
 		currMenu = null;
 		if (currMenu1 != null){

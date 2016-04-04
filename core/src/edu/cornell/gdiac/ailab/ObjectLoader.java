@@ -246,6 +246,7 @@ public class ObjectLoader {
 			Integer cost = (Integer) action.get("cost");
 			Integer damage = (Integer) action.get("damage");
 			Integer range = (Integer) action.get("range");
+			Integer size = (Integer) action.get("size");
 			String pattern = (String) action.get("pattern");
 			String description = (String) action.get("description");
 			String path = (String) action.get("path");
@@ -262,11 +263,11 @@ public class ObjectLoader {
 			if (persisting != null){
 				Integer persistingNumRounds = (Integer) persisting.get("numRounds");
 				Float moveSpeed = (Float) ((Double) persisting.get("moveSpeed")).floatValue();
-					actionToAdd = new PersistingAction(name, cost, damage, range, 
+					actionToAdd = new PersistingAction(name, cost, damage, range, size, 
 							Pattern.valueOf(pattern), path,new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), 
 							description, persistingNumRounds, moveSpeed);
 			}else{
-				actionToAdd = new Action(name, cost, damage, range, Pattern.valueOf(pattern),
+				actionToAdd = new Action(name, cost, damage, range, size, Pattern.valueOf(pattern),
 						new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), description,path);
 			}
 			

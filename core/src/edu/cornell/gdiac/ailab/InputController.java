@@ -110,4 +110,9 @@ public class InputController {
 	public static boolean pressedLeftMouse(){
 		return Gdx.input.isButtonPressed(Input.Buttons.LEFT);
 	}
+	
+	public static boolean mouseJustMoved(){
+		//TODO: Make this better
+		return Gdx.input.getDeltaY() > 0f || Gdx.input.getDeltaX() > 0f;
+	}
 }

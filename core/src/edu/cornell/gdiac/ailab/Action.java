@@ -8,6 +8,8 @@ public class Action implements GUIElement {
 	int cost;
 	int damage;
 	int range;
+	/** horizontal width of action, used for projectiles*/
+	int size;
 	Pattern pattern;
 	Effect effect;
 	String description;
@@ -35,21 +37,23 @@ public class Action implements GUIElement {
 		INSTANT
 	}
 	
-	public Action(String name, int cost, int damage, int range, Pattern pattern, Effect effect, String description){
+	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, Effect effect, String description){
 		this.name = name;
 		this.cost = cost;
 		this.damage = damage;
 		this.range = range;
+		this.size = size;
 		this.pattern = pattern;
 		this.effect = effect;
 		this.description = description;
 	}
 	
-	public Action(String name, int cost, int damage, int range, Pattern pattern, Effect effect, String description, String strpath){
+	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, Effect effect, String description, String strpath){
 		this.name = name;
 		this.cost = cost;
 		this.damage = damage;
 		this.range = range;
+		this.size = size;
 		this.pattern = pattern;
 		this.effect = effect;
 		this.description = description;
