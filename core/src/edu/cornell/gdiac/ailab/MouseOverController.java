@@ -56,6 +56,10 @@ public class MouseOverController {
 			}
 		}
 		
+		if (hAction != null){
+			currMenu.setSelectedAction(hAction.position);
+		}
+		
 	}
 	
 	public void init(HighlightScreen screen, GridBoard board){
