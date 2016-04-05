@@ -16,7 +16,18 @@ public class MouseOverController {
 	GridBoard board;
 	Action hAction;
 	SelectionMenu currMenu;
-	
+
+	public void update(Option[] options, MainMenu mainMenu){
+		float x = InputController.getMouseX();
+		float y = InputController.getMouseY();
+		for(Option o: options){
+			if (o.contains(x,y,canvas,board)){
+				mainMenu.selectOption(o.srNo);
+			}
+		}
+		
+	}
+
 	public void update(SelectionMenu currMenu1,Characters characters){
 		hAction = null;
 		currMenu = null;
@@ -35,15 +46,18 @@ public class MouseOverController {
 		for(Character c: characters){
 			for (Action a: c.getSelectionMenu().getActions()){
 				if (a.contains(x,y,canvas,board)){
-//					hAction = a;
-//					currMenu = currMenu1;
-//					currMenu.setSelectedAction(hAction.position);
+					hAction = a;
+					currMenu = currMenu1;
 				}
 			}
 			if (c.contains(x,y,canvas,board)){
 				highlighted = c;
 				highlighted.setHovering();
 			}
+		}
+		
+		if (hAction != null){
+			currMenu.setSelectedAction(hAction.position);
 		}
 		
 	}

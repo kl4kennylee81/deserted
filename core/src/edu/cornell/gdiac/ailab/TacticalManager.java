@@ -741,7 +741,7 @@ public class TacticalManager extends ConditionalManager{
 	 * Returns a nop action object
 	 */
 	public Action nop(){
-		return new Action("NOP", 1, 0, 0, Pattern.NOP, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
+		return new Action("NOP", 1, 0, 0, 0, Pattern.NOP, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
 	}
 	
 	

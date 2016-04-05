@@ -506,7 +506,7 @@ public class GameEngine implements Screen {
 		manager.load(WHITE_BOX,Texture.class);
 		assets.add(WHITE_BOX);
 		
-		mainMenuController = new MainMenuController(canvas, manager);
+		mainMenuController = new MainMenuController(canvas, manager, mouseOverController);
 		
 		
 		manager.finishLoading();

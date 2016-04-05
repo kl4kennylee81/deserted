@@ -164,6 +164,10 @@ public class GameCanvas {
 	public void setFont(BitmapFont font) {
 		displayFont = font;
 	}
+	
+	public BitmapFont getFont() {
+		return displayFont;
+	}
 
 	/**
 	 * Sets the background texture for this canvas.
@@ -865,7 +869,7 @@ public class GameCanvas {
 	public GlyphLayout drawText(String msg, float x, float y, Color color) {
 		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
-		float width = GridBoard.BOARD_OFFSET_X *getWidth()-GridBoard.EXTRA_OFFSET*getWidth();
+		float width = (GridBoard.BOARD_OFFSET_X - GridBoard.EXTRA_OFFSET)*getWidth();
 		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
 		return g;
 	}

@@ -3,6 +3,7 @@
   cost: 1
   damage: 0
   range: 1
+  size: 1
   pattern: MOVE
   effect: 
     type: REGULAR
@@ -17,6 +18,7 @@
   cost: 2
   damage: 2
   range: 5
+  size: 1
   pattern: STRAIGHT
   effect: 
     type: REGULAR
@@ -31,6 +33,7 @@
   cost: 2
   damage: 2
   range: 5
+  size: 1
   pattern: DIAGONAL
   effect: 
     type: REGULAR
@@ -46,6 +49,7 @@
   cost: 4
   damage: 3
   range: 10
+  size: 1
   pattern: SINGLE
   effect: 
     type: REGULAR
@@ -60,7 +64,8 @@
   name: Straight - 4
   cost: 2
   damage: 2
-  range: 5
+  range: 4
+  size: 1
   pattern: STRAIGHT
   effect: 
     type: REGULAR
@@ -78,6 +83,7 @@
   cost: 2
   damage: 2
   range: 5
+  size: 1
   pattern: DIAGONAL
   effect: 
     type: REGULAR
@@ -94,7 +100,8 @@
   name: Shield-3
   cost: 1
   damage: 0
-  range: 3
+  range: 3  
+  size: 1
   pattern: SHIELD
   effect: 
     type: REGULAR
@@ -112,6 +119,7 @@
   cost: 3
   damage: 0
   range: 10
+  size: 1
   pattern: SINGLE
   effect:
     type: SPEED
@@ -126,6 +134,7 @@
   cost: 3
   damage: 2
   range: 3
+  size: 1
   pattern: STRAIGHT
   persisting_action: 
     numRounds: 10 
@@ -143,6 +152,7 @@
   cost: 1
   damage: 0
   range: 2
+  size: 1
   pattern: SHIELD
   effect: 
     type: REGULAR
@@ -160,6 +170,7 @@
   cost: 1
   damage: 1
   range: 2
+  size: 1
   pattern: STRAIGHT
   effect: 
     type: REGULAR
@@ -177,6 +188,7 @@
   cost: 2
   damage: 2
   range: 2
+  size: 1
   pattern: PROJECTILE
   path: "0,0 1,0 2,1 3,0 4,1 5,0"
   effect: 
@@ -195,6 +207,7 @@
   cost: 2
   damage: 1
   range: 2
+  size: 1
   pattern: INSTANT
   path: "0,0 1,0 2,1 3,0 4,1 5,0"
   effect: 

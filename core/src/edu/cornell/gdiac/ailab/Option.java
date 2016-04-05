@@ -3,7 +3,7 @@ package edu.cornell.gdiac.ailab;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
-public class Option {
+public class Option implements GUIElement{
 	int srNo;
 	boolean isSelected;
 	float x_size;
@@ -61,6 +61,13 @@ public class Option {
 		canvas.drawOption(x_min*canvas.getWidth()-x_size/2,y_min*canvas.getHeight()-y_size/2,new Texture(image),
 				x_size, 
 				y_size,isSelected() ? highlightedColor : regularColor, text);
+	}
+
+	@Override
+	public boolean contains(float x, float y, GameCanvas canvas, GridBoard board) {
+		float x_m = x_min*canvas.getWidth()-x_size/2;
+		float y_m = y_min*canvas.getHeight()-y_size/2;
+		return (x <= x_m+this.x_size && x >= x_m && y <= y_m + this.y_size && y >= y_m);
 	}
 
 

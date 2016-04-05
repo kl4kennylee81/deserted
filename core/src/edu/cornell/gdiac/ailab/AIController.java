@@ -41,6 +41,8 @@ public class AIController {
 		this.chars = chars;
 		this.tacticalManager = tm;
 		tacticalManager.setState(board, chars);
+		nop = new Action("NOP", 1, 0, 0, 1, Pattern.NOP, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
+
 	}
 	
 	private Character selecting;

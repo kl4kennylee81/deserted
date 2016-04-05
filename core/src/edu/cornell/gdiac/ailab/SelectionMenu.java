@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.utils.Align;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
@@ -29,6 +31,8 @@ public class SelectionMenu {
 	private static final float ACTION_POINTER_OFFSET_X = 15;
 
 	private static final float ACTION_POINTER_OFFSET_Y = 15;
+
+	public static final float TEXT_ACTION_OFFSET = 30f;
 
 	private static final float RELATIVE_DESCRIPTION_Y_POS = 0.65f;
 	
@@ -337,14 +341,23 @@ public class SelectionMenu {
 		float text_x = RELATIVE_TEXT_X_POS * w;
 		float text_y = RELATIVE_TEXT_Y_POS * h;
 		float spacing_h = RELATIVE_TEXT_SPACING * h;
+		BitmapFont b = canvas.getFont();
+		float width = (GridBoard.BOARD_OFFSET_X - GridBoard.EXTRA_OFFSET)*canvas.getWidth();
+		GlyphLayout g = new GlyphLayout(b, actions[0].name, Color.WHITE, width, Align.left, true);
+		float offset_y = actions[0].height;
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
-			float offset_y = spacing_h * i;
-			action.setHeight(15);//TODO change
+			g.setText(b, action.name, Color.WHITE, width, Align.left, true);
+			if (i != 0){
+				 offset_y += spacing_h + g.height/2;
+			}
+			action.setHeight(g.height);//TODO change
 			action.setPosition(i);
-			action.setWidth(80);//TODO change
+			action.setWidth(g.width);//TODO change
 			action.setX(text_x);
 			action.setY(text_y-offset_y);
+//			canvas.drawPointer(text_x,text_y-offset_y-g.height/2, Color.YELLOW);
+//			canvas.drawPointer(text_x+g.width,text_y-offset_y+g.height/2, Color.MAGENTA);
 		}
 	}
 	
