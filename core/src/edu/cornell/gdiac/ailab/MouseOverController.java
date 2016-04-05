@@ -16,13 +16,8 @@ public class MouseOverController {
 	GridBoard board;
 	Action hAction;
 	SelectionMenu currMenu;
-	
-	private static final float TEXT_ACTION_OFFSET = 30f;
-	
+
 	public void update(Option[] options, MainMenu mainMenu){
-		if (!InputController.mouseJustMoved()){
-			return;
-		}
 		float x = InputController.getMouseX();
 		float y = InputController.getMouseY();
 		for(Option o: options){
@@ -32,10 +27,8 @@ public class MouseOverController {
 		}
 		
 	}
-	public void update(SelectionMenu currMenu1){
-		if (!InputController.mouseJustMoved()){
-			return;
-		}
+
+	public void update(SelectionMenu currMenu1,Characters characters){
 		hAction = null;
 		currMenu = null;
 		if (currMenu1 != null){
@@ -89,7 +82,7 @@ public class MouseOverController {
 				int offset = 0;
 				for (ActionNode a: toDisplay){
 					float x_pos = actionSlot_x + offset + (slot_width*a.action.cost/2);
-					float y_pos = actionSlot_y - TEXT_ACTION_OFFSET;
+					float y_pos = actionSlot_y - SelectionMenu.TEXT_ACTION_OFFSET;
 					canvas.drawCenteredText(highlighted.isAI ? "?" : a.action.name, x_pos, y_pos, Color.BLACK);
 					offset+=slot_width*a.action.cost;
 				}

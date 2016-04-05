@@ -36,7 +36,8 @@ public class AIController {
 	public AIController(GridBoard board, List<Character> chars, ActionBar bar) {
 		this.board = board;
 		this.chars = chars;
-		this.bar = bar;
+		this.tacticalManager = tm;
+		tacticalManager.setState(board, chars);
 		nop = new Action("NOP", 1, 0, 0, 1, Pattern.NOP, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
 	}
 	
