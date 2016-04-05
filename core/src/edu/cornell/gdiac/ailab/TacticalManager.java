@@ -22,6 +22,8 @@ import org.json.simple.*;
 
 public class TacticalManager extends ConditionalManager{
 	
+	private static boolean PRINT_MODE = false;
+	
 	private DecisionNode tacticalTree;
 	private HashMap<String, DecisionNode> nodeMap;
 	private HashMap<String, LeafNode> preSelected;
@@ -806,7 +808,9 @@ public class TacticalManager extends ConditionalManager{
 		json.put("vector", vector);
 		json.put("actions", array);
 		jsonArray.add(json);
-		System.out.println(json.toString());
+		if (PRINT_MODE){
+			System.out.println(json.toString());
+		}
 	}
 	
 	

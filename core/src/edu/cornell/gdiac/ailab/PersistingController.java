@@ -103,8 +103,8 @@ public class PersistingController extends ActionController{
 			moveAlongPath();
 			
 			// check based on a rounding of the current X and current Y
-			int curIntX = selectedActionNode.getCurrentX();
-			int curIntY = selectedActionNode.getCurrentY();
+			int curIntX = selectedActionNode.getCurInPath().x;
+			int curIntY = selectedActionNode.getCurInPath().y;
 			
 			// Check if next position is out of bounds or blocked
 			if (!board.isInBounds(curIntX, curIntY) || isBlocked(curIntX, curIntY)){
