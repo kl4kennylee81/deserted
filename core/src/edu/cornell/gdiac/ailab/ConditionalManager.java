@@ -734,7 +734,7 @@ public class ConditionalManager {
 	 * Returns true if Action a cast from (x1,y1) can hit square (x2,y2);
 	 */
 	public boolean canAttackSquareFrom(int x1, int y1, int x2, int y2, Action a){
-		return a.hitsTarget(x1, y1, x2, y2, false);
+		return a.hitsTarget(x1, y1, x2, y2, false,board);
 	}
 	
 	

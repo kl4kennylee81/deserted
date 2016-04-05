@@ -6,18 +6,18 @@ public class PersistingAction extends Action {
 	// Move speed across screen
 	float moveSpeed;
 	
-	public PersistingAction(String name, int cost, int damage, int range, int size, Pattern pattern, Effect effect,
-			String description, int totalNumRounds, float moveSpeed) {
+	public PersistingAction(String name, int cost, int damage, int range, int size, Pattern pattern, boolean oneHit, 
+			boolean canBlock, Effect effect, String description, int totalNumRounds, float moveSpeed) {
 		
-		super(name, cost, damage, range, size, pattern, effect, description);
+		super(name, cost, damage, range, size, pattern, oneHit, canBlock, effect, description);
 		this.totalNumRounds = totalNumRounds;
 		this.moveSpeed = moveSpeed;
 	}
 	
-	public PersistingAction(String name, int cost, int damage, int range, int size, Pattern pattern, String path, Effect effect,
-			String description, int totalNumRounds, float moveSpeed) {
+	public PersistingAction(String name, int cost, int damage, int range, int size, Pattern pattern, String path, boolean oneHit,
+			boolean canBlock, Effect effect, String description, int totalNumRounds, float moveSpeed) {
 		
-		super(name, cost, damage, range, size, pattern, effect, description, path);
+		super(name, cost, damage, range, size, pattern, oneHit, canBlock, effect, description, path);
 		this.totalNumRounds = totalNumRounds;
 		this.moveSpeed = moveSpeed;
 	}

@@ -5,6 +5,8 @@
   range: 1
   size: 1
   pattern: MOVE
+  oneHit: false
+  canBlock: false
   effect: 
     type: REGULAR
     name: Regular
@@ -20,6 +22,8 @@
   range: 5
   size: 1
   pattern: STRAIGHT
+  oneHit: true
+  canBlock: true
   effect: 
     type: REGULAR
     name: Regular
@@ -35,6 +39,8 @@
   range: 5
   size: 1
   pattern: DIAGONAL
+  oneHit: true
+  canBlock: true
   effect: 
     type: REGULAR
     name: Regular
@@ -51,6 +57,8 @@
   range: 10
   size: 1
   pattern: SINGLE
+  oneHit: true
+  canBlock: false
   effect: 
     type: REGULAR
     name: Regular
@@ -67,6 +75,8 @@
   range: 4
   size: 1
   pattern: STRAIGHT
+  oneHit: true
+  canBlock: true
   effect: 
     type: REGULAR
     name: Regular
@@ -85,6 +95,8 @@
   range: 5
   size: 1
   pattern: DIAGONAL
+  oneHit: true
+  canBlock: true
   effect: 
     type: REGULAR
     name: Regular
@@ -103,6 +115,8 @@
   range: 3  
   size: 1
   pattern: SHIELD
+  oneHit: false
+  canBlock: false
   effect: 
     type: REGULAR
     name: Regular
@@ -121,6 +135,8 @@
   range: 10
   size: 1
   pattern: SINGLE
+  oneHit: true
+  canBlock: false
   effect:
     type: SPEED
     name: Slowed
@@ -136,6 +152,8 @@
   range: 3
   size: 1
   pattern: STRAIGHT
+  oneHit: true
+  canBlock: true
   persisting_action: 
     numRounds: 10 
     moveSpeed: 0.05
@@ -154,6 +172,8 @@
   range: 2
   size: 1
   pattern: SHIELD
+  oneHit: false
+  canBlock: false
   effect: 
     type: REGULAR
     name: Regular
@@ -172,6 +192,8 @@
   range: 2
   size: 1
   pattern: STRAIGHT
+  oneHit: true
+  canBlock: true
   effect: 
     type: REGULAR
     name: Regular
@@ -191,6 +213,8 @@
   size: 1
   pattern: PROJECTILE
   path: "0,0 1,0 2,1 3,0 4,1 5,0"
+  oneHit: true
+  canBlock: true
   effect: 
     type: REGULAR
     name: Regular
@@ -210,11 +234,30 @@
   size: 1
   pattern: INSTANT
   path: "0,0 1,0 2,1 3,0 4,1 5,0"
+  oneHit: true
+  canBlock: true
   effect: 
     type: REGULAR
     name: Regular
     numRounds: 0
     magnitude: 0
   description: instant zig zag hit path 1 damage
+  animationId: 0
+
+13:
+  name: horizontal attack
+  cost: 1
+  damage: 1
+  range: 10
+  size: 1
+  pattern: HORIZONTAL
+  oneHit: false
+  canBlock: false
+  effect: 
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: super horizontal attack
   animationId: 0
 ...

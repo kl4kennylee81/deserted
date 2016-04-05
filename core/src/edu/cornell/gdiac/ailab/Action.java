@@ -10,6 +10,8 @@ public class Action implements GUIElement {
 	int range;
 	/** horizontal width of action, used for projectiles*/
 	int size;
+	boolean oneHit;
+	boolean canBlock;
 	Pattern pattern;
 	Effect effect;
 	String description;
@@ -30,6 +32,7 @@ public class Action implements GUIElement {
 		MOVE,
 		SHIELD,
 		STRAIGHT,
+		HORIZONTAL,
 		DIAGONAL,
 		SINGLE,
 		NOP,
@@ -37,26 +40,21 @@ public class Action implements GUIElement {
 		INSTANT
 	}
 	
-	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, Effect effect, String description){
+	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, boolean oneHit, boolean canBlock, Effect effect, String description){
 		this.name = name;
 		this.cost = cost;
 		this.damage = damage;
 		this.range = range;
 		this.size = size;
 		this.pattern = pattern;
+		this.oneHit = oneHit;
+		this.canBlock = canBlock;
 		this.effect = effect;
 		this.description = description;
 	}
 	
-	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, Effect effect, String description, String strpath){
-		this.name = name;
-		this.cost = cost;
-		this.damage = damage;
-		this.range = range;
-		this.size = size;
-		this.pattern = pattern;
-		this.effect = effect;
-		this.description = description;
+	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, boolean oneHit, boolean canBlock, Effect effect, String description, String strpath){
+		this(name, cost, damage, range, size, pattern, oneHit, canBlock, effect, description);
 		
 		if ((this.pattern == Pattern.PROJECTILE||this.pattern == Pattern.INSTANT)&&strpath!=""){
 			// path string for a straight range 3 looks like this "0,0 1,0 2,0, 3,0" with 0,0 being the character current position"
@@ -84,12 +82,15 @@ public class Action implements GUIElement {
 	 * helper function that tells if this action would hit (targetX, targetY) starting
 	 * from (startX, startY).
 	 */
-	public boolean hitsTarget(int startX, int startY, int targetX, int targetY, boolean leftside){
+	public boolean hitsTarget(int startX, int startY, int targetX, int targetY, boolean leftside, GridBoard board){
 		if(pattern == Pattern.SINGLE){
 			return true;
 		}
 		else if(pattern == Pattern.STRAIGHT){
 			return startY == targetY && (Math.abs(startX - targetX) <= range);
+		}
+		else if (pattern == Pattern.HORIZONTAL){
+			return startX == board.height - 1 - targetX;
 		}
 		else if(pattern == Pattern.DIAGONAL){
 			if(Math.abs(startX - targetX) > range){

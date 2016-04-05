@@ -132,6 +132,9 @@ public class ActionController {
 			case STRAIGHT:
 				executeStraight(a_node);
 				break;
+			case HORIZONTAL:
+				executeHorizontal(a_node);
+				break;
 			case DIAGONAL:
 				executeDiagonal(a_node);
 				break;
@@ -329,6 +332,20 @@ public class ActionController {
 		return path;
 	}
 	
+	private Coordinate[] horizontalHitPath(ActionNode a_node){
+		Coordinates coordPool = Coordinates.getInstance();
+		int numTiles = board.height;
+		Coordinate[] path = new Coordinate[numTiles];
+		
+		int targetX = board.width - 1 - selected.xPosition;
+		for (int i = 0; i < numTiles; i++){
+			if (selected.leftside){
+				path[i] = coordPool.newCoordinate(targetX, i);
+			}
+		}
+		return path;
+	}
+	
 	protected void updateShieldedPath(){
 		shieldedPaths.clear();
 		for (Character c : characters){
@@ -376,24 +393,30 @@ public class ActionController {
 	private void executeStraight(ActionNode a_node){
 		Coordinate[] path = straightHitPath(a_node);
 		// execute the hit interrupt and do damage to closest enemy
-		processHitPath(a_node,path);
+		processHitPath(a_node,path,a_node.action.oneHit,a_node.action.canBlock);
+	}
+	
+	private void executeHorizontal(ActionNode a_node){
+		Coordinate[] path = horizontalHitPath(a_node);
+		// execute the hit interrupt and do damage to every enemy in path
+		processHitPath(a_node,path,a_node.action.oneHit,a_node.action.canBlock);
 	}
 	
 	private void executeDiagonal(ActionNode a_node){
 		Coordinate[] path = diagonalHitPath(a_node);
 		// check along path and apply damage to first person hit
-		processHitPath(a_node,path);
+		processHitPath(a_node,path,a_node.action.oneHit,a_node.action.canBlock);
 	}
 	
 	private void executeInstant(ActionNode a_node){
 		Coordinate[] path = convertRelativePath(a_node);
-		processHitPath(a_node,path);
+		processHitPath(a_node,path,a_node.action.oneHit,a_node.action.canBlock);
 	}
 	
-	private void processHitPath(ActionNode a_node, Coordinate[] path){
+	private void processHitPath(ActionNode a_node, Coordinate[] path, boolean oneHit, boolean canBlock){
 		boolean hasHit = false;
 		for (int i=0;i<path.length;i++){
-			if (isBlocked(path[i].x, path[i].y)){
+			if (canBlock && isBlocked(path[i].x, path[i].y)){
 				break;
 			}
 			if (selected.xPosition != path[i].x || selected.yPosition != path[i].y){
@@ -408,14 +431,12 @@ public class ActionController {
 					hasHit = true;
 					break;
 				}
-				if (hasHit){
+				if (oneHit && hasHit){
 					break;
 				}
 			}
 		}
-		if (!hasHit){
-			a_node.free();
-		}
+		a_node.free();
 		// free Coordinates back into the Pool
 		for (int j = 0;j<path.length;j++){
 			path[j].free();
@@ -427,6 +448,7 @@ public class ActionController {
 		for (Character c:characters){
 			if (c.xPosition == a_node.xPosition && c.yPosition == a_node.yPosition){
 				processHit(a_node,c);
+				a_node.free();
 				break;
 			}
 		}
@@ -467,7 +489,6 @@ public class ActionController {
 				}
 			}
 		}
-		a_node.free();
 	}
 	
 	protected void applyDamage(ActionNode a_node,Character target){

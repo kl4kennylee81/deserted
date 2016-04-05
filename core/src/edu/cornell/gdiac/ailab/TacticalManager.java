@@ -743,7 +743,7 @@ public class TacticalManager extends ConditionalManager{
 	 * Returns a nop action object
 	 */
 	public Action nop(){
-		return new Action("NOP", 1, 0, 0, 0, Pattern.NOP, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
+		return new Action("NOP", 1, 0, 0, 0, Pattern.NOP, false, false, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
 	}
 	
 	
@@ -900,7 +900,7 @@ public class TacticalManager extends ConditionalManager{
 			added = true;
 			moves.add(Specific.MOVE_DEFENSIVE);
 		}
-		System.out.println(canHitEnemyFrom(c,x,y));
+		//System.out.println(canHitEnemyFrom(c,x,y));
 		if(canHitEnemyFrom(c, x, y)){
 			added = true;
 			moves.add(Specific.MOVE_AGGRESSIVE);

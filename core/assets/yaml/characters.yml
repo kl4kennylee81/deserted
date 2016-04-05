@@ -3,13 +3,14 @@
   health: 10
   maxHealth: 10
   hexColor: 00cc00FF
-  speed: 4.3
-  castSpeed: 5.7
+  speed: 1.
+  castSpeed: 1.
   xPosition: 0
   yPosition: 0
   leftSide: true
   availableActions: 
     - 0
+    - 13
     - 5
     - 6
     - 7

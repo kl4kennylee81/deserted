@@ -57,7 +57,7 @@ public class SelectionMenuController {
 		
 		boardWidth = board.width;
 		boardHeight = board.height;
-		nop = new Action("NOP", 1, 0, 0, 1, Pattern.NOP, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
+		nop = new Action("NOP", 1, 0, 0, 1, Pattern.NOP, false, false, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
 	}
 	
 	public void update(){
@@ -148,6 +148,10 @@ public class SelectionMenuController {
 			selectedY = SINGLE_Y;
 			menu.setChoosingTarget(true);
 			break;
+		case HORIZONTAL:
+			selectedX = board.width - 1 - shadowX;
+			selectedY = 0;
+			menu.setChoosingTarget(true);
 		case MOVE:
 			if (board.isInBounds(shadowX, shadowY+1)){
 				direction = Direction.UP;
@@ -313,6 +317,9 @@ public class SelectionMenuController {
 		case MOVE:
 			drawMove();
 			break;
+		case HORIZONTAL:
+			drawHorizontal();
+			break;
 		case DIAGONAL:
 			drawDiagonal();
 			break;
@@ -348,6 +355,18 @@ public class SelectionMenuController {
 				} else {
 					board.setCanTarget(shadowX-i, shadowY);
 				}
+			}
+		}
+	}
+	
+	public void drawHorizontal(){
+		if (choosingTarget){
+			for (int y = 0; y < board.height; y++){
+				board.setHighlighted(selectedX, y);
+			}
+		} else {
+			for (int y = 0; y < board.height; y++){
+				board.setCanTarget(board.width - 1 - shadowX, y);
 			}
 		}
 	}
