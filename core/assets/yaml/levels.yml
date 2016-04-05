@@ -138,15 +138,23 @@ tutorial:
         - id: 2
           xPosition: 5
           yPosition: 0
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
           difficulty: EASY
 
         - id: 3
           xPosition: 5
           yPosition: 3
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
           difficulty: EASY
     nextLevel: 
     tutorialFileName: "yaml/tutorial.yaml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
-    AI: []
+    AI: ["tm.yml"]

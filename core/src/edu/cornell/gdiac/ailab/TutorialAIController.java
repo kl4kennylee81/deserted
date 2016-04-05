@@ -26,6 +26,7 @@ public class TutorialAIController {
 			if (c.needsSelection && c.isAI){
 				selected = c;
 				setActions();
+				c.needsSelection = false;
 				tutorialSteps.nextStep();
 			}
 		}

@@ -371,7 +371,7 @@ public class GameEngine implements Screen {
     public void updatePlay() {
     	curGameplayController.update();
     	if (curGameplayController.isDone()){
-    		gameState = GameState.AFTER;
+			gameState = GameState.AFTER;
     	}
     	if (InputController.pressedP()){
     		gameState = GameState.PAUSED;

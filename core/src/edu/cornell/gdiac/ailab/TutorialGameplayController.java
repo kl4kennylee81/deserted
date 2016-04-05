@@ -41,6 +41,10 @@ public class TutorialGameplayController extends GameplayController{
 	}
 	
 	public void update(){
+		if (tutorialSteps.isDone()){
+			super.update();
+			return;
+		}
     	screen.noScreen();
     	switch(inGameState){
     	case NORMAL:
@@ -60,6 +64,7 @@ public class TutorialGameplayController extends GameplayController{
     			selectionMenuController.update();
     			inGameState = InGameState.SELECTION;
     		}
+    		updateTutorial();
     		break;
     	case SELECTION:
     		screen.setJustScreen();
@@ -83,16 +88,18 @@ public class TutorialGameplayController extends GameplayController{
     				inGameState = InGameState.NORMAL;
     			}
     		}
+    		updateTutorial();
     		break;
     	case PAUSED:
     		if (regGameState == InGameState.SELECTION){
             	screen.setJustScreen();
             }
+    		updateTutorial();
     		break;
 		default:
+			updateTutorial();
 			break;	
     	}
-    	updateTutorial();
     	updateTextMessages();
     	removeDead();
     	if (gameOver()){
@@ -110,10 +117,6 @@ public class TutorialGameplayController extends GameplayController{
         tutorialSteps.drawText(canvas);
         //screen should be drawn after greyed out characters
         //but before selected characters
-    }
-	
-	public boolean isDone(){
-    	return tutorialSteps.isDone();
     }
 	
 	private void updateTutorial() {

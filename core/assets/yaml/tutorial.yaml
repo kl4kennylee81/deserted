@@ -47,5 +47,9 @@
       direction: DOWN
 
 8:
-  text: Done
+  text: Great now beat the baddies
+  paused: true
+
+9:
+  text: haha
   paused: true

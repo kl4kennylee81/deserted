@@ -95,7 +95,7 @@ public class TutorialSteps {
 	}
 	
 	public boolean needsAction(){
-		return step.actions != null;
+		return step != null && step.actions != null;
 	}
 	
 	public List<TutorialAction> getActions(){
