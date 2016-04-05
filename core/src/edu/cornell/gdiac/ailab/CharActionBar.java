@@ -273,6 +273,7 @@ public class CharActionBar {
 		return modifiedWaitTime/newTotalTime;
 	}
 	
+	/** original draw code to draw the action bar constant and a waiting time area **/
 	public void draw(GameCanvas canvas,int count,Color waitColor,Color castColor,Color bufferColor){
 		float w = canvas.getWidth();
 		float h = canvas.getHeight();
@@ -295,6 +296,32 @@ public class CharActionBar {
 		float bufferWidth = this.getBufferWidth(canvas);
 		float xPosBuffer = xPosBar + this.getWaitWidthTotalNoBuffer(canvas);
 		canvas.drawBox(xPosBuffer, yPosBar, bufferWidth, heightBar, bufferColor);
+	
+		for (int i = 0; i < this.getNumSlots(); i++){
+			float intervalSize = this.getSlotWidth(canvas);
+			float startCastX = xPosBar + waitWidth;
+			canvas.drawBox(startCastX + i*intervalSize, yPosBar, BAR_DIVIDER_WIDTH, heightBar, Color.BLACK);
+		}	
+		
+	}
+	
+	public void draw(GameCanvas canvas,int count,Color waitColor,Color castColor){
+		float w = canvas.getWidth();
+		float h = canvas.getHeight();
+		
+		float xPosBar = getX(canvas);
+		float yPosBar = getY(canvas,count);
+		
+		// width of the bar unmodified by hp
+		float widthTotalBar = this.getWidth(canvas);
+		float heightBar = BAR_HEIGHT_RATIO * h;
+		
+		// waiting is red we draw red the full bar
+		canvas.drawBox(xPosBar,yPosBar, widthTotalBar, heightBar, castColor);
+		
+		// non casting is green we draw width up to the casting point
+		float waitWidth = widthTotalBar * this.getCastPoint();
+		canvas.drawBox(xPosBar, yPosBar, waitWidth, heightBar, waitColor);
 	
 		for (int i = 0; i < this.getNumSlots(); i++){
 			float intervalSize = this.getSlotWidth(canvas);
