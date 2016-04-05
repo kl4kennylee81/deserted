@@ -53,41 +53,68 @@
 
 2:
   name: Character2Strip
-  texture: "models/spritesheetB1.png"
+  texture: "models/testAnimation.png"
   rows: 1
-  cols: 5
-  size: 5
+  cols: 25
+  size: 25
   segments:
     - segmentName: IDLE
       segmentId: 0 
+      startingIndex: 17
+      length: 5
+      frameData:
+      - 4
+      - 6
+      - 4
+      - 20
+      - 6
+      - 6
+      - 720
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 1
+      length: 5
+      frameData:
+      - 5
+      - 20
+      - 3
+      - 4
+      - 12
+      - 120
+
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 8
+      length: 9
+      frameData:
+      - 120
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 120
+
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 16
+      length: 9
+      frameData:
+      - 8
+      - 4
+      - 4
+      - 6
+      - 12
+      - 6
+      - 6
+      - 10
+    - segmentName: HURT
+      segmentId: 4
       startingIndex: 0
       length: 0
       frameData:
-    - segmentName: ACTIVE
-      segmentId: 1
-      startingIndex: 0
-      length: 1
-      frameData:
-      - 10
-    - segmentName: CAST
-      segmentId: 2
-      startingIndex: 1
-      length: 2
-      frameData:
-      - 20
-      - 20
-    - segmentName: EXECUTE
-      segmentId: 3
-      startingIndex: 3
-      length: 1
-      frameData:
-      - 15
-    - segmentName: HURT
-      segmentId: 4
-      startingIndex: 4
-      length: 1
-      frameData:
-      - 10
 
 3:
   name: Character3Strip

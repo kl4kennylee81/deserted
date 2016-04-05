@@ -79,6 +79,36 @@ public class Action implements GUIElement {
 		}
 	}
 	
+	
+	/**
+	 * helper function that tells if this action would hit (targetX, targetY) starting
+	 * from (startX, startY).
+	 */
+	public boolean hitsTarget(int startX, int startY, int targetX, int targetY, boolean leftside){
+		if(pattern == Pattern.SINGLE){
+			return true;
+		}
+		else if(pattern == Pattern.STRAIGHT){
+			return startY == targetY && (Math.abs(startX - targetX) <= range);
+		}
+		else if(pattern == Pattern.DIAGONAL){
+			if(Math.abs(startX - targetX) > range){
+				return false;
+			}
+			if(leftside){
+				return Math.abs(startX + 1 - targetX) == Math.abs(startY - targetY);
+			}
+			else{
+				return Math.abs(startX - 1 - targetX) == Math.abs(startY - targetY);
+			}
+		}
+		else{
+			return isOnPath(startX, startY, targetX, targetY, leftside);
+		}
+		
+	}
+	
+	
 	/** helper function you pass in the starting location of the path startX and startY
 	 * returns if (targetX,targetY) is on the path trajectory
 	 * @param startX: starting x position of path
@@ -96,7 +126,7 @@ public class Action implements GUIElement {
 		if (leftside) {
 			for (int i = 0; i < path.length; i++){
 				int x = startX + path[i].x;
-				int y = startX + path[i].y;
+				int y = startY + path[i].y;
 				if (x == targetX && y == targetY){
 					return true;
 				}
@@ -105,7 +135,7 @@ public class Action implements GUIElement {
 		} else {
 			for (int i = 0; i < path.length; i++){
 				int x = startX - path[i].x;
-				int y = startX + path[i].y;
+				int y = startY + path[i].y;
 				if (x == targetX && y == targetY){
 					return true;
 				}

@@ -80,7 +80,7 @@
 
 5:
   name: Diagonal
-  cost: 3
+  cost: 2
   damage: 2
   range: 5
   size: 1
@@ -98,7 +98,7 @@
 
 6:
   name: Shield-3
-  cost: 2
+  cost: 1
   damage: 0
   range: 3  
   size: 1
@@ -124,8 +124,8 @@
   effect:
     type: SPEED
     name: Slowed
-    numRounds: 1
-    magnitude: -1
+    numRounds: 2
+    magnitude: -4
   description: Target a single square to slow down enemy
   animationId: 0
 
@@ -142,7 +142,7 @@
   effect:
     type: SPEED
     name: Slowed
-    numRounds: 1
+    numRounds: 2
     magnitude: -1
   description: Launch a projectile 3 tiles straight ahead for 2 damage and slows
   animationId: 0
@@ -186,7 +186,7 @@
 11:
   name: L - PATH
   cost: 2
-  damage: 1
+  damage: 2
   range: 2
   size: 1
   pattern: PROJECTILE
