@@ -54,7 +54,7 @@
   name: Single
   cost: 4
   damage: 3
-  range: 10
+  range: 6
   size: 1
   pattern: SINGLE
   oneHit: true

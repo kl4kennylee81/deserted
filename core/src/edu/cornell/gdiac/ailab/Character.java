@@ -209,6 +209,14 @@ public class Character implements GUIElement {
 		}
 	}
 	
+	public float getX(){
+		return this.xPosition;
+	}
+	
+	public float getY(){
+		return this.yPosition;
+	}
+	
 	public float getXMin(GameCanvas canvas, GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		float canvasX = board.offsetBoard(canvas,tileW*xPosition,0).x;

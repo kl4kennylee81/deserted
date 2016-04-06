@@ -37,6 +37,14 @@ public class GridBoard {
 	
 	public static final float BOARD_OFFSET_Y = 0.05f;
 	
+	public float getWidth(){
+		return this.width;
+	}
+	
+	public float getHeight(){
+		return this.height;
+	}
+	
 	public float getTileWidth(GameCanvas canvas){
 		return (canvas.getWidth() * BOARD_WIDTH)/width;
 	}

@@ -240,28 +240,39 @@ public class SelectionMenuController {
 	
 	private void updateChoosingSingle(){
 		direction = Direction.NONE;
+		int updateX = selectedX;
+		int updateY = selectedY;
 		if (InputController.pressedW() && !InputController.pressedS()){
-			selectedY+=1;
-			selectedY %= boardHeight;
+			updateX = selectedX;
+			updateY = selectedY + 1;
+			updateY %= boardHeight;
 		} else if (InputController.pressedS() && !InputController.pressedW()){
-			selectedY-=1;
-			if (selectedY < 0){
-				selectedY += boardHeight;
+			updateX = selectedX;
+			updateY = selectedY - 1;
+			if (updateY < 0){
+				updateY += boardHeight;
 			}
 		} else if (InputController.pressedA() && !InputController.pressedD()){
-			selectedX -= 1;
+			updateX = selectedX - 1;
+			updateY = selectedY;
 			if (leftside && selectedX<boardWidth/2){
-				selectedX+=boardWidth/2;
+				updateX+=boardWidth/2;
 			} else if (!leftside && selectedX<0){
-				selectedX+=boardWidth/2;
+				updateX+=boardWidth/2;
 			}
 		} else if (InputController.pressedD() && !InputController.pressedA()){
-			selectedX += 1;
+			updateX = selectedX + 1;
+			updateY = selectedY;
 			if (leftside && selectedX > boardWidth-1){
-				selectedX -= boardWidth/2;
+				updateX -= boardWidth/2;
 			} else if (!leftside && selectedX > boardWidth/2-1){
-				selectedX -= boardWidth/2;
+				updateX -= boardWidth/2;
 			}
+		}
+		
+		if (action.singleCanTarget(selected.getShadowX(), selected.getShadowY(), updateX,updateY)){
+			selectedX = updateX;
+			selectedY = updateY;
 		}
 	}
 	
@@ -412,9 +423,35 @@ public class SelectionMenuController {
 	}
 	public void drawSingle(){
 		if (choosingTarget){
+				for (int i=0;i<board.getWidth();i++){
+					for (int j = 0;j<board.getHeight();j++){
+						if (this.action.singleCanTarget(selected.getShadowX(),selected.getShadowY(),i,j)){
+							if (selected.leftside && i >= (int)board.getWidth()/2){
+								board.setCanTarget(i,j);
+							}
+							else if (!selected.leftside && i < (int)board.getWidth()/2){
+								board.setCanTarget(i,j);
+							}
+						}
+					}
+				}
 			board.setHighlighted(selectedX, selectedY);
 		} else {
-			board.setCanTargetSide(leftside);
+			
+			// we have to limit it by the range so for example he can only single target with
+			// range 3 around a radius.
+			for (int i = 0;i<board.getWidth();i++){
+				for (int j = 0;j<board.getHeight();j++){
+					if (this.action.singleCanTarget(selected.getShadowX(),selected.getShadowY(),i,j)){
+						if (selected.leftside && i >= (int)board.getWidth()/2){
+							board.setCanTarget(i,j);
+						}
+						else if (!selected.leftside && i < (int)board.getWidth()/2){
+							board.setCanTarget(i,j);
+						}
+					}
+				}
+			}
 		}
 	}
 	

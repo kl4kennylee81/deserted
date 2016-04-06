@@ -3,8 +3,8 @@
   health: 10
   maxHealth: 10
   hexColor: 00cc00FF
-  speed: 1.
-  castSpeed: 1.
+  speed: 4.
+  castSpeed: 4.
   xPosition: 0
   yPosition: 0
   leftSide: true
@@ -26,7 +26,7 @@
   health: 10
   maxHealth: 10
   hexColor: FF9900FF
-  speed: 5.2
+  speed: 3.
   castSpeed: 4.
   xPosition: 0
   yPosition: 3

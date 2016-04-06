@@ -84,7 +84,7 @@ public class Action implements GUIElement {
 	 */
 	public boolean hitsTarget(int startX, int startY, int targetX, int targetY, boolean leftside, GridBoard board){
 		if(pattern == Pattern.SINGLE){
-			return true;
+			return this.singleCanTarget(startX, startY, targetX, targetY);
 		}
 		else if(pattern == Pattern.STRAIGHT){
 			return startY == targetY && (Math.abs(startX - targetX) <= range);
@@ -143,6 +143,14 @@ public class Action implements GUIElement {
 			}
 			return false;
 		}	
+	}
+	
+	public boolean singleCanTarget(int startX,int startY, int targetX,int targetY){
+		
+		// check with range from epicenter
+		int diffX = Math.abs(targetX - startX);
+		int diffY = Math.abs(targetY - startY);
+		return (diffX+diffY) < this.range;
 	}
 	
 	public void setAnimation(Animation animation){
