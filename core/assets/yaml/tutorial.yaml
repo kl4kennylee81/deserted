@@ -30,5 +30,53 @@
   text: Try selecting “Move”. Navigate to the “Move” option on the selection menu using W/D and press Enter
   paused: false
   highlight: true
-  action:
-    
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: RIGHT
+
+7:
+  text: The yellow tiles indicate all the possible places your character can move to the blue tile indicates the current selection. Toggle around the possible tiles using WASD or arrow keys. Then move right and press Enter to select
+  paused: false
+  highlight: true
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: RIGHT
+
+8:
+  text: Now select straight attack
+  paused: false
+  actions:
+    - actionId: 1
+      xPos: 0
+      yPos: 0
+      direction: NONE
+
+9:
+  text: Confirm straight attack
+  paused: false
+  actions:
+    - actionId: 1
+      xPos: 0
+      yPos: 0
+      direction: NONE
+
+10:
+  text: Confirm your actions!
+  paused: false
+  confirm: true
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: RIGHT
+    - actionId: 1
+      xPos: 0
+      yPos: 0
+      direction: NONE
+
+
+

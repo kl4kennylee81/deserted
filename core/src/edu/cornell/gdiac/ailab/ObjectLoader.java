@@ -444,15 +444,18 @@ public class ObjectLoader {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void loadTutorialSteps(TutorialSteps ts, HashMap<Integer, HashMap<String, Object>> steps) {
 		for (HashMap<String, Object> step : steps.values()){
 			String text = (String) step.get("text");
 			Boolean paused = (Boolean) step.get("paused");
+			Boolean confirm = (Boolean) step.get("confirm");
 			
-			ts.addStep(text, paused);
+			if (confirm == null) confirm = false;
+			
+			ts.addStep(text, paused, confirm);
 			
 			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) step.get("actions");
-			
 			
 			if (actions != null){
 				for (HashMap<String, Object> actionData : actions){
