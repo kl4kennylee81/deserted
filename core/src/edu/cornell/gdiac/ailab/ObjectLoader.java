@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.Array;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Effect.Type;
+import edu.cornell.gdiac.ailab.Tile.TileEffect;
 import edu.cornell.gdiac.mesh.MeshLoader;
 import edu.cornell.gdiac.ailab.DecisionNode.*;
 
@@ -98,6 +99,9 @@ public class ObjectLoader {
 		Integer boardWidth = (Integer) levelDef.get("boardWidth");
 		Integer boardHeight = (Integer) levelDef.get("boardHeight");
 		String boardTexture = (String) levelDef.get("boardTexture");
+		
+		HashMap<String, String> tiles = (HashMap<String, String>) levelDef.get("tiles");
+		
 		ArrayList<String> ai = (ArrayList<String>) levelDef.get("AI");
 		String tutorialFileName = (String) levelDef.get("tutorialFileName");
 		
@@ -138,9 +142,8 @@ public class ObjectLoader {
 		chars.addAll(availableCharacters.values());
 		loadedLevel.setCharacters(chars);
 		loadedLevel.setNextLevel(nextLevel);
-		loadedLevel.setBoardHeight(boardHeight);
-		loadedLevel.setBoardWidth(boardWidth);
 		loadedLevel.setTacticalManager(tacticalManager);
+		
 		
 		if (tutorialFileName != null){
 			FileHandle tutorialFile = Gdx.files.internal(tutorialFileName);
@@ -156,10 +159,29 @@ public class ObjectLoader {
 		manager.load(boardTexture,Texture.class);
 		assets.add(boardTexture);
 		manager.finishLoading();
-		loadedLevel.setBoardTexture(manager.get(boardTexture,Texture.class));
+		
+		GridBoard board = new GridBoard(boardWidth, boardHeight);
+		board.setTileTexture(manager.get(boardTexture, Texture.class));
+		if (tiles != null) {
+			setUpTileEffects(tiles, board);
+		}
+		loadedLevel.setBoard(board);
+		
 		return loadedLevel;
 	}
 	
+	
+	private void setUpTileEffects(HashMap<String, String> tiles, GridBoard board) {
+		for (String coord : tiles.keySet()) {
+			String effect = tiles.get(coord);
+			String[] coordSplit = coord.split("-");
+			int x = Integer.parseInt(coordSplit[0]);
+			int y = Integer.parseInt(coordSplit[1]);
+			board.setTileEffect(x, y, TileEffect.valueOf(effect));
+		}
+		
+	}
+
 	/**Looks at characters specified in level definition
 	 * and adds the character ids to availableCharacters.
 	 * @param levelChars
@@ -444,6 +466,8 @@ public class ObjectLoader {
 		
 	}
 	
+	
+	@SuppressWarnings("unchecked")
 	private void loadTutorialSteps(TutorialSteps ts, HashMap<Integer, HashMap<String, Object>> steps) {
 		for (HashMap<String, Object> step : steps.values()){
 			String text = (String) step.get("text");
