@@ -23,10 +23,12 @@ public class TutorialSteps {
 		String text;
 		boolean paused;
 		List<TutorialAction> actions;
+		boolean confirm;
 		
-		public Step (String text, boolean paused){
+		public Step (String text, boolean paused, boolean confirm){
 			this.text = text;
 			this.paused = paused;
+			this.confirm = confirm;
 			this.actions = null;
 		}
 		
@@ -51,16 +53,8 @@ public class TutorialSteps {
 		curStep = 0;
 	}
 	
-	public void addStep(String text, boolean paused, List<TutorialAction> actions){
-		Step newStep = new Step(text, paused);
-		steps.add(newStep);
-		if (steps.size() == 1){
-			step = newStep;
-		}
-	}
-	
-	public void addStep(String text, boolean paused){
-		Step newStep = new Step(text, paused);
+	public void addStep(String text, boolean paused, boolean confirm){
+		Step newStep = new Step(text, paused, confirm);
 		steps.add(newStep);
 		if (steps.size() == 1){
 			step = newStep;
@@ -100,6 +94,10 @@ public class TutorialSteps {
 	
 	public List<TutorialAction> getActions(){
 		return step.actions;
+	}
+	
+	public boolean needsConfirm(){
+		return step != null && step.confirm;
 	}
 	
 	public void drawText(GameCanvas canvas){

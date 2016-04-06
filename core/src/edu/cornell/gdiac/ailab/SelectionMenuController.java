@@ -238,7 +238,7 @@ public class SelectionMenuController {
 		}
 	}
 	
-	private void updateChoosingSingle(){
+	protected void updateChoosingSingle(){
 		direction = Direction.NONE;
 		if (InputController.pressedW() && !InputController.pressedS()){
 			selectedY+=1;
@@ -265,7 +265,7 @@ public class SelectionMenuController {
 		}
 	}
 	
-	private void updateChoosingMove(){
+	protected void updateChoosingMove(){
 		
 		//Find out why moving is weird on right side
 		//System.out.println("choosing");
