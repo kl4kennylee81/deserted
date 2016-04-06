@@ -172,11 +172,11 @@ public class ObjectLoader {
 	
 	
 	private void setUpTileEffects(HashMap<String, String> tiles, GridBoard board) {
-		for (String tile : tiles.keySet()) {
-			String effect = tiles.get(tile);
-			char letter = tile.charAt(0);
-			int x = (int) letter;
-			int y = Integer.parseInt(tile.substring(1,2));
+		for (String coord : tiles.keySet()) {
+			String effect = tiles.get(coord);
+			String[] coordSplit = coord.split("-");
+			int x = Integer.parseInt(coordSplit[0]);
+			int y = Integer.parseInt(coordSplit[1]);
 			board.setTileEffect(x, y, TileEffect.valueOf(effect));
 		}
 		

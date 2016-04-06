@@ -31,8 +31,8 @@ easy:
     boardHeight: 4
     boardTexture: "models/Tile.png"
     tiles:
-      a3: NORMAL
-      d5: NORMAL
+      1-1: NORMAL
+      1-2: NORMAL
     AI: ["tm.yml"]
 
 medium: 
