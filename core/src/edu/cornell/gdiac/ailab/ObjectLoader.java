@@ -176,7 +176,7 @@ public class ObjectLoader {
 			String effect = tiles.get(tile);
 			char letter = tile.charAt(0);
 			int x = (int) letter;
-			int y = Integer.parseInt(tile.substring(1,2));
+			int y = Integer.parseInt(tile.substring(1));
 			board.setTileEffect(x, y, TileEffect.valueOf(effect));
 		}
 		
