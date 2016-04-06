@@ -104,7 +104,7 @@ public class TutorialSteps {
 	
 	public void drawText(GameCanvas canvas){
 		if (step != null && step.text != null){
-			canvas.drawText(step.text, 80, 660, Color.WHITE);
+			canvas.drawTutorialText(step.text, Color.WHITE);
 		}
 	}
 	
