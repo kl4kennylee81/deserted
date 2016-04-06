@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
+import edu.cornell.gdiac.ailab.Tile.TileEffect;
 
 public class GridBoard {
 	float space;
@@ -61,28 +62,6 @@ public class GridBoard {
 		return c;
 	}
 	
-	private class Tile {
-		//Currently targeting
-		boolean isHighlighted;
-		
-		//Available to target
-		boolean canTarget;
-		
-		//Tile is attacked
-		boolean isAttacked;
-		
-		//Currently has a character
-		boolean isOccupied;
-		
-		public Tile() {
-			isHighlighted = canTarget = isAttacked = isOccupied = false;
-		}
-		
-		public void reset(){
-			isHighlighted = canTarget = isAttacked = isOccupied = false;
-		}
-		
-	}
 	
 	public GridBoard(int width, int height) {
 		this.width = width;
@@ -91,7 +70,7 @@ public class GridBoard {
 		tiles = new Tile[width][height];
 		for (int x = 0; x < width; x++){
 			for (int y = 0; y < height; y++){
-				tiles[x][y] = new Tile();
+				tiles[x][y] = new Tile(TileEffect.NORMAL);
 			}
 		}
 	}
@@ -99,6 +78,11 @@ public class GridBoard {
 	public void setTileTexture(Texture mesh) {
 		tileMesh = mesh;
 	}
+	
+	public void setTileEffect(int x, int y, TileEffect effect){
+		tiles[x][y].setEffect(effect);
+	}
+	
 	
 	/**
 	 * Draws the board to the given canvas.

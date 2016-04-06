@@ -65,13 +65,9 @@ public class GameplayController {
     	fileNum++;
 		dataFile = GameEngine.dataGen ? new FileHandle(GameEngine.DATA_PATH+"data/data"+fileNum) : null;
 		jsonArray = new JSONArray();
-    	int boardWidth = level.getBoardWidth();
-    	int boardHeight = level.getBoardHeight();
-    	Texture boardMesh = level.getBoardTexture();
     	
         // Create the models.
-        board = new GridBoard(boardWidth,boardHeight);
-        board.setTileTexture(boardMesh);
+        board = level.getBoard();
         this.characters = level.getCharacters();
         screen = new HighlightScreen();
         
