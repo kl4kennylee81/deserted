@@ -126,32 +126,20 @@ pvp:
 
 tutorial:
     allies:
-        - id: 0
-          xPosition: 0
-          yPosition: 0
-
-        - id: 1
-          xPosition: 0
-          yPosition: 3
+        - id: 90
+          xPosition: 1
+          yPosition: 1
 
     enemies:
-        - id: 2
-          xPosition: 5
-          yPosition: 0
+        - id: 91
+          xPosition: 4
+          yPosition: 1
           aggression: 0.5
           risk: 0.5
           defensiveness: 0.5
           intelligence: 0.3
           difficulty: EASY
 
-        - id: 3
-          xPosition: 5
-          yPosition: 3
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
     nextLevel: 
     tutorialFileName: "yaml/tutorial.yaml"
     boardWidth: 6

@@ -1,55 +1,34 @@
 0:
-  text: Welcome press Enter
-  textX: 
+  text: Welcome to Tutorial Level 1! This level will teach you about the basic rules and controls of the game. Press Enter to continue
   paused: true
 
-1: 
-  text: Look at action bar
-  paused: false
-  actions: 
-    - actionId: 0 
-      xPos: 0
-      yPos: 0
-      direction: UP
-
-2: 
-  text: Enemy is selecting action
+1:
+  text: You control the characters on the left side of the field.
   paused: true
+  highlight: true
+
+2:
+  text: Each character is governed by their action bar.
+  paused: true
+  highlight: true
 
 3:
-  text: wait your turn
+  text: As time goes on the character’s icon progresses on the action bar until it reaches the cast point (red portion)
   paused: false
 
-4: 
-  text: enter to next
+4:
+  text: When your character’s icon reaches beginning of the red portion the game pauses and you can plan out your character’s next few actions. You can choose from the available actions for this character on the menu here
   paused: true
+  highlight: true
 
-5: 
-  text: Please move up one
+5:
+  text: Descriptions of each action are displayed here
+  paused: true
+  highlight: true
+
+6:
+  text: Try selecting “Move”. Navigate to the “Move” option on the selection menu using W/D and press Enter
   paused: false
-  actions:
-    - actionId: 0 
-      xPos: 0
-      yPos: 0
-      direction: UP
-
-6: 
-  text: Good job
-  paused: true
-
-7: 
-  text: Continuing
-  paused: false
-  actions: 
-    - actionId: 0 
-      xPos: 0
-      yPos: 0
-      direction: DOWN
-
-8:
-  text: Great now beat the baddies
-  paused: true
-
-9:
-  text: haha
-  paused: true
+  highlight: true
+  action:
+    

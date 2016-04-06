@@ -260,4 +260,24 @@
     magnitude: 0
   description: super horizontal attack
   animationId: 0
+
+14:
+  name: Straight - 5
+  cost: 2
+  damage: 2
+  range: 5
+  size: 1
+  pattern: STRAIGHT
+  oneHit: true
+  canBlock: true
+  effect: 
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Launch a projectile 5 tiles straight ahead for 2 damage
+  persisting_action: 
+    numRounds: 10 
+    moveSpeed: 0.05
+  animationId: 0
 ...
