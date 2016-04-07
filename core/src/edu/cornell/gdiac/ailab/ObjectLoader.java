@@ -457,6 +457,8 @@ public class ObjectLoader {
 			
 			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) step.get("actions");
 			
+			ArrayList<HashMap<String, Object>> highlights = (ArrayList<HashMap<String, Object>>) step.get("highlightRegions");
+			
 			if (actions != null){
 				for (HashMap<String, Object> actionData : actions){
 					Integer actionId = (Integer) actionData.get("actionId");
@@ -464,6 +466,16 @@ public class ObjectLoader {
 					Integer yPos = (Integer) actionData.get("yPos");
 					String direction = (String)actionData.get("direction");
 					ts.addAction(actionId,xPos,yPos,direction);
+				}
+			}
+			
+			if (highlights != null){
+				for (HashMap<String, Object> highlightData : highlights){
+					Double xPos = (Double) highlightData.get("xPos");
+					Double yPos = (Double) highlightData.get("yPos");
+					Double width = (Double) highlightData.get("width");
+					Double height = (Double) highlightData.get("height");
+					ts.addHighlight(xPos,yPos,width, height);
 				}
 			}
 		}

@@ -76,7 +76,7 @@ public class MouseOverController {
 		int y = (int)highlighted.getYMin(canvas, board);
 		int x_width = (int)(highlighted.getXMax(canvas, board) - highlighted.getXMin(canvas, board));
 		int y_width = (int)(highlighted.getYMax(canvas, board) - highlighted.getYMin(canvas, board));
-		screen.setCurrentHighlight(x, y, x_width, y_width);
+		screen.addCurrentHighlight(x, y, x_width, y_width);
 	}
 
 	public void clearAll() {

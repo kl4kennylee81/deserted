@@ -1,5 +1,8 @@
 package edu.cornell.gdiac.ailab;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.simple.JSONArray;
 
 import com.badlogic.gdx.files.FileHandle;
@@ -7,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
+import edu.cornell.gdiac.ailab.TutorialSteps.CurrentHighlight;
 
 public class TutorialGameplayController extends GameplayController{
 	TutorialSteps tutorialSteps;
@@ -113,7 +117,31 @@ public class TutorialGameplayController extends GameplayController{
     }
 	
 	public void drawPlay(GameCanvas canvas){
-        super.drawPlay(canvas);
+		List<CurrentHighlight> highlights = tutorialSteps.getHighlights();
+		if (highlights == null){
+			screen.setJustScreen();
+		} else {
+	    	for (CurrentHighlight highlight:highlights){
+	    		screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(), 
+	    				highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight());
+//	    		System.out.println(highlight.xPos*canvas.getWidth());
+//	    		System.out.println(highlight.yPos*canvas.getHeight());
+//	    		System.out.println(highlight.width*canvas.getWidth());
+//	    		System.out.println(highlight.height*canvas.getHeight());	
+	    	}
+	    	screen.noScreen();	
+		}
+        screen.draw(canvas);
+    	board.draw(canvas);
+    	drawCharacters(canvas);
+        animations.draw(canvas,board);
+        
+        textMessages.draw(canvas,board);
+        if (prompt != null){
+        	canvas.drawText(prompt, 18, 530, Color.BLACK);
+        }
+        //screen should be drawn after greyed out characters
+        //but before selected characters
         tutorialSteps.drawText(canvas);
         //screen should be drawn after greyed out characters
         //but before selected characters

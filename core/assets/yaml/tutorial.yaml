@@ -1,28 +1,60 @@
 0:
-  text: Welcome to Tutorial Level 1! This level will teach you about the basic rules and controls of the game. Press Enter to continue
+  text: "Welcome to Tutorial Level 1! This level will teach you about the basic rules and controls of the game.
+  \n\nPress Enter to continue"
   paused: true
+
 
 1:
-  text: You control the characters on the left side of the field.
+  text: "You control the characters on the left side of the field.
+  \n\nPress Enter to continue"
   paused: true
-  highlight: true
+  highlightRegions:
+    - xPos: 0.24
+      yPos: 0.15
+      width: 0.1
+      height: 0.22
 
 2:
-  text: Each character is governed by their action bar.
+  text: "Each character is governed by their action bar.
+  \n\nPress Enter to continue"
   paused: true
-  highlight: true
+  highlightRegions:
+    - xPos: 0.24
+      yPos: 0.15
+      width: 0.1
+      height: 0.22
+    - xPos: 0.24
+      yPos: 0.9
+      width: 0.46
+      height: 0.06
 
 3:
-  text: As time goes on the character’s icon progresses on the action bar until it reaches the cast point (red portion)
+  text: "As time goes on the character’s icon progresses on the action bar until it reaches the cast point (red portion)
+  \n\nWatch the cast bar"
   paused: false
+  highlightRegions:
+    - xPos: 0.24
+      yPos: 0.15
+      width: 0.1
+      height: 0.22
+    - xPos: 0.24
+      yPos: 0.9
+      width: 0.46
+      height: 0.06
 
 4:
-  text: When your character’s icon reaches beginning of the red portion the game pauses and you can plan out your character’s next few actions. You can choose from the available actions for this character on the menu here
+  text: "When your character’s icon reaches the beginning of the red portion the game pauses and you can plan out your character’s next few actions. You can choose from the available actions for this character on the menu here
+  \n\nPress Enter to continue"
   paused: true
-  highlight: true
+  highlightRegions:
+    - xPos: 0.
+      yPos: 0.15
+      width: 0.11
+      height: 0.4
 
 5:
-  text: Descriptions of each action are displayed here
+  text: "Descriptions of each action are displayed here
+  \n\nPress Enter to continue"
   paused: true
   highlight: true
 

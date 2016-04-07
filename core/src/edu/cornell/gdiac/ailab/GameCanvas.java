@@ -874,6 +874,16 @@ public class GameCanvas {
 		return g;
 	}
 	
+	public GlyphLayout drawTutorialText(String msg, Color color) {
+		displayFont.getData().setScale(1);
+		displayFont.setColor(color);
+		float width = getWidth()/2;
+		float x = getWidth()/2-width/2;
+		float y = getHeight()/2;
+		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
+		return g;
+	}
+	
 	public void drawCenteredText(String msg, float x, float y, Color color) {
 		displayFont.getData().setScale(1);
 		layout.setText(displayFont, msg);
