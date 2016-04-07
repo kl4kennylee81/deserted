@@ -339,9 +339,7 @@ public class ActionController {
 		
 		int targetX = board.width - 1 - selected.xPosition;
 		for (int i = 0; i < numTiles; i++){
-			if (selected.leftside){
-				path[i] = coordPool.newCoordinate(targetX, i);
-			}
+			path[i] = coordPool.newCoordinate(targetX, i);
 		}
 		return path;
 	}
