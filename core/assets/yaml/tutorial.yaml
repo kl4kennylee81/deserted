@@ -66,6 +66,7 @@
 6:
   text: Try selecting “Move”. Navigate to the “Move” option on the selection menu using W/D and press Enter
   paused: false
+  confirm: false
   actions:
     - actionId: 0
       xPos: 0
@@ -75,6 +76,7 @@
 7:
   text: The yellow tiles indicate all the possible places your character can move to the blue tile indicates the current selection. Toggle around the possible tiles using WASD or arrow keys. Then move right and press Enter to select
   paused: false
+  confirm: false
   actions:
     - actionId: 0
       xPos: 0
