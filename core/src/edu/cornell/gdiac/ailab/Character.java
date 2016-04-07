@@ -670,7 +670,6 @@ public class Character implements GUIElement {
 		if (toDraw == null) {
 			toDraw = getFilmStrip(gameState);
 		}
-		
 		float charScale = getCharScale(canvas,toDraw,board);
 		canvas.drawCharacter(toDraw, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside,charScale);
 		int tempX = xPosition;
