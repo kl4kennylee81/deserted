@@ -255,7 +255,7 @@ public class SelectionMenuController {
 		} else if (InputController.pressedA() && !InputController.pressedD()){
 			updateX = selectedX - 1;
 			updateY = selectedY;
-			if (leftside && selectedX<boardWidth/2){
+			if (leftside && updateX<boardWidth/2){
 				updateX+=boardWidth/2;
 			} else if (!leftside && selectedX<0){
 				updateX+=boardWidth/2;
@@ -263,9 +263,9 @@ public class SelectionMenuController {
 		} else if (InputController.pressedD() && !InputController.pressedA()){
 			updateX = selectedX + 1;
 			updateY = selectedY;
-			if (leftside && selectedX > boardWidth-1){
+			if (leftside && updateX> boardWidth-1){
 				updateX -= boardWidth/2;
-			} else if (!leftside && selectedX > boardWidth/2-1){
+			} else if (!leftside && updateX > boardWidth/2-1){
 				updateX -= boardWidth/2;
 			}
 		}
