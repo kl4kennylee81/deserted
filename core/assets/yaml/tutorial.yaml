@@ -2,6 +2,7 @@
   text: "Welcome to Tutorial Level 1! This level will teach you about the basic rules and controls of the game.
   \n\nPress Enter to continue"
   paused: true
+  finishGame: true
 
 
 1:

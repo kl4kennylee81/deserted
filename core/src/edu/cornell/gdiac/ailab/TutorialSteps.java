@@ -17,6 +17,8 @@ public class TutorialSteps {
 	int curStep;
 	/** Step object */
 	Step step;
+	/** finish game or continue to next level */
+	boolean finishGame;
 	
 	/** Individual Step*/
 	private class Step{
@@ -67,6 +69,7 @@ public class TutorialSteps {
 	public TutorialSteps(){
 		steps = new ArrayList<Step>();
 		curStep = 0;
+		finishGame = false;
 	}
 	
 	public void addStep(String text, boolean paused, boolean confirm){
@@ -95,6 +98,10 @@ public class TutorialSteps {
 			latestStep.highlights = new ArrayList<CurrentHighlight>();
 		}
 		latestStep.highlights.add(ch);		
+	}
+	
+	public void setFinishGame(boolean finishGame){
+		this.finishGame = finishGame;
 	}
 	
 	public void nextStep(){

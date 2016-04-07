@@ -449,9 +449,14 @@ public class ObjectLoader {
 		for (HashMap<String, Object> step : steps.values()){
 			String text = (String) step.get("text");
 			Boolean paused = (Boolean) step.get("paused");
-			Boolean confirm = (Boolean) step.get("confirm");
 			
+			Boolean confirm = (Boolean) step.get("confirm");
 			if (confirm == null) confirm = false;
+			
+			Boolean finishGame = (Boolean) step.get("finishGame");
+			if (finishGame != null){
+				ts.setFinishGame(finishGame);
+			}
 			
 			ts.addStep(text, paused, confirm);
 			

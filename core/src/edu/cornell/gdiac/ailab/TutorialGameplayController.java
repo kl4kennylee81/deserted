@@ -118,6 +118,10 @@ public class TutorialGameplayController extends GameplayController{
     	}
     }
 	
+	public boolean isDone(){
+		return tutorialSteps.finishGame && tutorialSteps.isDone() && super.isDone();
+	}
+	
 	public void drawPlay(GameCanvas canvas){
 		List<CurrentHighlight> highlights = tutorialSteps.getHighlights();
 		if (highlights == null){
