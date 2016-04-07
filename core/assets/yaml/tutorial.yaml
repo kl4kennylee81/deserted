@@ -110,5 +110,22 @@
       yPos: 0
       direction: NONE
 
+11:
+  text: Going to AIs Turn
+  paused: false
+
+12:
+  text: 
+  paused: false
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: RIGHT
+
+13:
+  text: AI selecting actions
+  paused: true
+
 
 

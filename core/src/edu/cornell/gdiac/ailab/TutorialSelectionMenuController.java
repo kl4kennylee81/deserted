@@ -158,11 +158,9 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 	}
 	
 	public boolean correctActions(){
-		System.out.println("here");
 		if (!tutorialSteps.needsConfirm()){
 			return false;
 		}
-		System.out.println("we");
 		List<ActionNode> selectedActions = menu.getQueuedActions();
 		List<TutorialAction> tas = tutorialSteps.getActions();
 		if (selectedActions.size() != tas.size()){

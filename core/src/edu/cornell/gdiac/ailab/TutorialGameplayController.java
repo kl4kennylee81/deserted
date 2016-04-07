@@ -59,6 +59,7 @@ public class TutorialGameplayController extends GameplayController{
     		persistingController.update();
     		mouseOverController.update(selectionMenuController.getMenu(),characters);
     		if (actionBarController.isAISelection) {
+    			tutorialSteps.nextStep();
     			aiController.update();
     		}
     		if (actionBarController.isAttack){
@@ -148,7 +149,7 @@ public class TutorialGameplayController extends GameplayController{
     }
 	
 	private void updateTutorial() {
-		if (InputController.pressedEnter() && !tutorialSteps.needsAction()){
+		if (InputController.pressedEnter() && tutorialSteps.isPaused()){
 			tutorialSteps.nextStep();
 		}
 		if (tutorialSteps.isPaused()){
