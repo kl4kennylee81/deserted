@@ -83,16 +83,15 @@ public class Action implements GUIElement {
 	 * from (startX, startY).
 	 */
 	public boolean hitsTarget(int startX, int startY, int targetX, int targetY, boolean leftside, GridBoard board){
-		if(pattern == Pattern.SINGLE){
+		
+		switch(pattern){
+		case SINGLE:
 			return this.singleCanTarget(startX, startY, targetX, targetY);
-		}
-		else if(pattern == Pattern.STRAIGHT){
+		case STRAIGHT:
 			return startY == targetY && (Math.abs(startX - targetX) <= range);
-		}
-		else if (pattern == Pattern.HORIZONTAL){
+		case HORIZONTAL:
 			return startX == board.height - 1 - targetX;
-		}
-		else if(pattern == Pattern.DIAGONAL){
+		case DIAGONAL:
 			if(Math.abs(startX - targetX) > range){
 				return false;
 			}
@@ -102,11 +101,9 @@ public class Action implements GUIElement {
 			else{
 				return Math.abs(startX - 1 - targetX) == Math.abs(startY - targetY);
 			}
-		}
-		else{
+		default:
 			return isOnPath(startX, startY, targetX, targetY, leftside);
-		}
-		
+		}		
 	}
 	
 	

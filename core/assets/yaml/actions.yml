@@ -54,15 +54,15 @@
   name: Single
   cost: 4
   damage: 3
-  range: 6
+  range: 5
   size: 1
   pattern: SINGLE
   oneHit: true
   canBlock: false
   effect: 
-    type: REGULAR
+    type: BROKEN
     name: Regular
-    numRounds: 0
+    numRounds: 2
     magnitude: 0
   description: Target a single square for 3 damage
   animationId: 0

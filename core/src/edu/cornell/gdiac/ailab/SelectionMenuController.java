@@ -153,13 +153,13 @@ public class SelectionMenuController {
 			selectedY = 0;
 			menu.setChoosingTarget(true);
 		case MOVE:
-			if (board.isInBounds(shadowX, shadowY+1)){
+			if (board.canMove(selected.leftside,shadowX, shadowY+1)){
 				direction = Direction.UP;
-			} else if (board.isInBounds(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
+			} else if (board.canMove(selected.leftside,shadowX+1, shadowY)){
 				direction = Direction.RIGHT;
-			} else if (board.isInBounds(shadowX-1, shadowY) && !(!leftside && shadowY == boardWidth/2)){
+			} else if (board.canMove(selected.leftside,shadowX-1, shadowY)){
 				direction = Direction.LEFT;
-			} else if (board.isInBounds(shadowX, shadowY-1)){
+			} else if (board.canMove(selected.leftside,shadowX, shadowY-1)){
 				direction = Direction.DOWN;
 			} else {
 				System.out.println("do something to tell them they cant move");
@@ -283,21 +283,21 @@ public class SelectionMenuController {
 		
 		//Need to check in all of these if its a valid move;
 		if (InputController.pressedW() && !InputController.pressedS()){
-			if (board.isInBounds(shadowX, shadowY+1)){
+			if (board.canMove(selected.leftside,shadowX, shadowY+1)){
 				direction = Direction.UP;
 			}
 			
 		} else if (InputController.pressedS() && !InputController.pressedW()){
-			if (board.isInBounds(shadowX, shadowY-1)){
+			if (board.canMove(selected.leftside,shadowX, shadowY-1)){
 				direction = Direction.DOWN;
 			}
 		} else if (InputController.pressedA() && !InputController.pressedD()){
 			//if (not occupied) and (not rightside at x=3)
-			if (board.isInBounds(shadowX-1, shadowY) && !(!leftside && shadowX == boardWidth/2)){
+			if (board.canMove(selected.leftside,shadowX-1, shadowY)){
 				direction = Direction.LEFT;
 			}
 		} else if (InputController.pressedD() && !InputController.pressedA()){
-			if (board.isInBounds(shadowX+1, shadowY) && !(leftside && shadowX == boardWidth/2-1)){
+			if (board.canMove(selected.leftside,shadowX+1, shadowY)){
 				direction = Direction.RIGHT;
 			}
 		}
@@ -458,13 +458,13 @@ public class SelectionMenuController {
 	public void drawMove(){
 		//if not leftside and at x=2 then draw
 		if (!(leftside && shadowX == boardWidth/2-1)){
-			board.setCanTarget(shadowX+1, shadowY);
+			board.setCanMove(selected.leftside,shadowX+1, shadowY);
 		}
 		if (!(!leftside && shadowX == boardWidth/2)){
-			board.setCanTarget(shadowX-1, shadowY);
+			board.setCanMove(selected.leftside,shadowX-1, shadowY);
 		}
-		board.setCanTarget(shadowX, shadowY-1);
-		board.setCanTarget(shadowX, shadowY+1);
+		board.setCanMove(selected.leftside,shadowX, shadowY-1);
+		board.setCanMove(selected.leftside,shadowX, shadowY+1);
 		if (choosingTarget){
 			switch (direction){
 			case UP:

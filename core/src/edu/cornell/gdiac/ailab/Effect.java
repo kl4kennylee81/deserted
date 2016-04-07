@@ -31,6 +31,7 @@ public class Effect {
 	String name;
 	
 	public static enum Type {
+		BROKEN,
 		SPEED,
 		REGULAR
 	}

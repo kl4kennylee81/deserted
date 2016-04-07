@@ -34,7 +34,7 @@ public class TutorialGameplayController extends GameplayController{
 		curPaused = false;
 		// update the character models
 		characters.update();
-		effectController.update();
+		effectController.update(characters,board);
 		actionBarController.update();
 		persistingController.update();
 		mouseOverController.update(selectionMenuController.getMenu(),characters);
@@ -50,7 +50,7 @@ public class TutorialGameplayController extends GameplayController{
     	case NORMAL:
     		// update the character models
     		characters.update();
-    		effectController.update();
+    		effectController.update(characters,board);
     		actionBarController.update();
     		persistingController.update();
     		mouseOverController.update(selectionMenuController.getMenu(),characters);

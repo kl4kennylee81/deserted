@@ -80,7 +80,7 @@ public class GameplayController {
         actionBarController = new ActionBarController(characters);
         aiController = new AIController(board,characters,level.getTacticalManager());
         persistingController = new PersistingController(board,characters,textMessages,animations);
-        effectController = new EffectController(characters);
+        effectController = new EffectController();
         mouseOverController.init(screen, board);
     }
     
@@ -90,7 +90,7 @@ public class GameplayController {
     	case NORMAL:
     		// update the character models
     		characters.update();
-    		effectController.update();
+    		effectController.update(characters,board);
     		actionBarController.update();
     		persistingController.update();
     		mouseOverController.update(selectionMenuController.getMenu(),characters);

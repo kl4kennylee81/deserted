@@ -22,7 +22,7 @@ import com.badlogic.gdx.utils.Array;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Effect.Type;
-import edu.cornell.gdiac.ailab.Tile.TileEffect;
+import edu.cornell.gdiac.ailab.Tile.TileState;
 import edu.cornell.gdiac.mesh.MeshLoader;
 import edu.cornell.gdiac.ailab.DecisionNode.*;
 
@@ -177,7 +177,7 @@ public class ObjectLoader {
 			String[] coordSplit = coord.split("-");
 			int x = Integer.parseInt(coordSplit[0]);
 			int y = Integer.parseInt(coordSplit[1]);
-			board.setTileEffect(x, y, TileEffect.valueOf(effect));
+			board.setTileEffect(x, y, TileState.valueOf(effect));
 		}
 		
 	}

@@ -383,7 +383,8 @@ public class ActionController {
 		default:
 			break;
 		}
-		if (board.isOnSide(selected.leftside,nextX,nextY) && !board.isOccupied(nextX, nextY)){
+		// can't move onto tile that is broken/occupied or not on your side
+		if (board.canMove(selected.leftside,nextX,nextY)){
 			selected.xPosition = nextX;
 			selected.yPosition = nextY;
 		}
@@ -416,22 +417,31 @@ public class ActionController {
 	private void processHitPath(ActionNode a_node, Coordinate[] path, boolean oneHit, boolean canBlock){
 		boolean hasHit = false;
 		for (int i=0;i<path.length;i++){
+			// if you have already hit one character and you only can hit one break out of checking path
+			if (oneHit && hasHit){
+				break;
+			}
 			if (canBlock && isBlocked(path[i].x, path[i].y)){
 				break;
 			}
-			if (selected.xPosition != path[i].x || selected.yPosition != path[i].y){
+			if (board.isInBounds(path[i].x,path[i].y)){
 				animations.add(a_node.action.animation,path[i].x,path[i].y);
+				
+				// apply the tileEffect to all tiles in the hitpath
+				applyTileEffect(a_node.action.effect,path[i].x,path[i].y);
 			}
 			for (Character c:characters){
+				// if has hit one character and can only hit one stop checking characters
+				if (oneHit && hasHit){
+					break;
+				}
+				// if same side stop checking
 				if (selected.leftside ==c.leftside){
 					continue;
 				}
 				if (c.xPosition == path[i].x && c.yPosition == path[i].y){
 					processHit(a_node,c);
 					hasHit = true;
-					break;
-				}
-				if (oneHit && hasHit){
 					break;
 				}
 			}
@@ -443,16 +453,29 @@ public class ActionController {
 		}
 	}
 	
-	private void executeSingle(ActionNode a_node){
-		animations.add(a_node.action.animation,a_node.xPosition,a_node.yPosition);
-		for (Character c:characters){
-			if (c.xPosition == a_node.xPosition && c.yPosition == a_node.yPosition){
-				processHit(a_node,c);
-				a_node.free();
+	private void applyTileEffect(Effect e,int x,int y){
+		if (e==null){
+			return;
+		}
+		else{
+			switch (e.type){
+			case BROKEN:
+				Coordinate c = Coordinates.getInstance().obtain();
+				c.set(x, y);
+				board.addTileEffect(c, e);
+				break;
+			default:
 				break;
 			}
 		}
-		a_node.free();
+	}
+	
+	private void executeSingle(ActionNode a_node){
+		Coordinate c = Coordinates.getInstance().obtain();
+		c.set(a_node.xPosition, a_node.yPosition);
+		Coordinate[] path = new Coordinate[1];
+		path[0] = c;
+		processHitPath(a_node,path,true,false);
 	}
 	
 	protected void processHit(ActionNode a_node,Character target){

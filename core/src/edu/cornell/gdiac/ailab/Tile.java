@@ -2,12 +2,13 @@ package edu.cornell.gdiac.ailab;
 
 public class Tile {
 
-	public static enum TileEffect {
-		NORMAL
+	public static enum TileState {
+		NORMAL,
+		BROKEN
 	}
 	
-	//tile's effect
-	TileEffect effect;
+	//tile's state
+	TileState state;
 	
 	//Currently targeting
 	boolean isHighlighted;
@@ -21,8 +22,8 @@ public class Tile {
 	//Currently has a character
 	boolean isOccupied;
 	
-	public Tile(TileEffect effect) {
-		this.effect = effect;
+	public Tile(TileState effect) {
+		this.state = effect;
 		isHighlighted = canTarget = isAttacked = isOccupied = false;
 	}
 	
@@ -30,7 +31,7 @@ public class Tile {
 		isHighlighted = canTarget = isAttacked = isOccupied = false;
 	}
 	
-	public void setEffect(TileEffect effect) {
-		this.effect = effect;
+	public void setEffect(TileState effect) {
+		this.state = effect;
 	}
 }

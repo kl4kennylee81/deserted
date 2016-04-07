@@ -1,12 +1,14 @@
 package edu.cornell.gdiac.ailab;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
-import edu.cornell.gdiac.ailab.Tile.TileEffect;
+import edu.cornell.gdiac.ailab.Tile.TileState;
 
 public class GridBoard {
 	float space;
@@ -18,6 +20,9 @@ public class GridBoard {
 	float lerpVal = 0;
 	boolean increasing;
 	
+	// tile effects
+	private HashMap<Coordinate,Effect> tileEffects;
+	
 	/** Color of a regular tile */
 	private static final Color BASIC_COLOR1 = new Color(0.2f, 0.2f, 1.0f, 1.0f);
 	private static final Color BASIC_COLOR2 = new Color(237f/255f, 92f/255f, 92f/255f, 1.0f);//new Color(1.0f, 0.6f, 0.2f, 1.0f);
@@ -25,6 +30,7 @@ public class GridBoard {
 	private static final Color CAN_TARGET_COLOR = new Color( 1f,  1.0f,  0f, 1.0f);
 	private static final Color HIGHLIGHT_COLOR = new Color( 0.0f,  1.0f,  1.0f, 1.0f);
 	private static final Color ATTACK_COLOR = new Color( 1f, 0f, 0f, 1f);
+	private static final Color BROKEN_COLOR = Color.BLACK.cpy();
 	
 	
 	public static final float BOARD_WIDTH = 0.75f;
@@ -36,6 +42,10 @@ public class GridBoard {
 	public static final float EXTRA_OFFSET = 0.02f;
 	
 	public static final float BOARD_OFFSET_Y = 0.05f;
+	
+	public HashMap<Coordinate,Effect> getTileEffects(){
+		return this.tileEffects;
+	}
 	
 	public float getWidth(){
 		return this.width;
@@ -61,6 +71,22 @@ public class GridBoard {
 		return BOARD_OFFSET_Y * canvas.getHeight();
 	}
 	
+	/** returns true if tile (x,y) is broken **/
+	public boolean IsBroken(int x,int y){
+		if (this.isInBounds(x, y)){
+			return tiles[x][y].state == TileState.BROKEN;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	/** currently you can't move onto a tile if its broken not on your side or if its occupied **/
+	public boolean canMove(boolean leftside,int x,int y){
+		return this.isOnSide(leftside,x,y) &&
+		(!this.isOccupied(x,y)) && (!this.IsBroken(x,y));
+	}
+	
 	public Coordinate offsetBoard(GameCanvas canvas,float xPos,float yPos){
 		int newxPos = (int)(getBoardOffsetX(canvas) + xPos);
 		int newyPos = (int)(getBoardOffsetY(canvas) + yPos);
@@ -76,9 +102,10 @@ public class GridBoard {
 		this.height = height;
 		lerpVal = 0;
 		tiles = new Tile[width][height];
+		this.tileEffects = new HashMap<Coordinate,Effect>();
 		for (int x = 0; x < width; x++){
 			for (int y = 0; y < height; y++){
-				tiles[x][y] = new Tile(TileEffect.NORMAL);
+				tiles[x][y] = new Tile(TileState.NORMAL);
 			}
 		}
 	}
@@ -87,8 +114,12 @@ public class GridBoard {
 		tileMesh = mesh;
 	}
 	
-	public void setTileEffect(int x, int y, TileEffect effect){
+	public void setTileEffect(int x, int y, TileState effect){
 		tiles[x][y].setEffect(effect);
+	}
+	
+	public void addTileEffect(Coordinate c,Effect e){
+		this.tileEffects.put(c,e);
 	}
 	
 	
@@ -156,6 +187,8 @@ public class GridBoard {
 			color = CAN_TARGET_COLOR;
 		} else if (tile.isAttacked){
 			color = ATTACK_COLOR;
+		} else if (tile.state == TileState.BROKEN){
+			color = BROKEN_COLOR;
 		}
 
 		///////////////////////////////////////////////////////
@@ -188,6 +221,13 @@ public class GridBoard {
 	public void setCanTarget(int x, int y){
 		if (x>=0 && x<width && y>=0 && y<height){
 			tiles[x][y].canTarget = true;
+		}
+	}
+	
+	/** sets if you can move to tile x,y **/
+	public void setCanMove(boolean leftside,int x,int y){
+		if (this.canMove(leftside, x, y)){
+			this.setCanTarget(x,y);
 		}
 	}
 	
