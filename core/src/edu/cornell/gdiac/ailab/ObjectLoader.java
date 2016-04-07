@@ -235,7 +235,7 @@ public class ObjectLoader {
 			Integer yPosition = (Integer) levelChar.get("yPosition");
 			
 			HashMap<String, Object> character = characters.get(charId);
-
+			Integer numSlots = (Integer) character.get("slots");
 			String name = (String) character.get("name");
 			Integer health = (Integer) character.get("health");
 			Integer maxHealth = (Integer) character.get("maxHealth");
@@ -265,7 +265,7 @@ public class ObjectLoader {
 			
 			Character characterToAdd = new Character(charTexture, iconTexture, animNode,
 					name, health, maxHealth, Color.valueOf(hexColor), speed, 
-					castSpeed, xPosition, yPosition, leftSide, actionArray); 
+					castSpeed, xPosition, yPosition, leftSide, actionArray,numSlots); 
 			
 			//temporary difficulty ai code!!!
 			if (leftSide == false && levelChar.containsKey("difficulty")){

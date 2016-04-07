@@ -426,10 +426,9 @@ public class ActionController {
 			}
 			if (board.isInBounds(path[i].x,path[i].y)){
 				animations.add(a_node.action.animation,path[i].x,path[i].y);
-				
-				// apply the tileEffect to all tiles in the hitpath
-				applyTileEffect(a_node.action.effect,path[i].x,path[i].y);
 			}
+			
+			boolean prev_hasHit = hasHit;
 			for (Character c:characters){
 				// if has hit one character and can only hit one stop checking characters
 				if (oneHit && hasHit){
@@ -444,6 +443,15 @@ public class ActionController {
 					hasHit = true;
 					break;
 				}
+			}
+			// if when checking this coordinate it hit the target do something
+			if (!prev_hasHit && hasHit){
+				//TODO
+			}
+			//in the case where at this coordinate it did not hit a target do something else
+			else{
+				// apply the tileEffect to all tiles in the hitpath
+				applyTileEffect(a_node.action.effect,path[i].x,path[i].y);
 			}
 		}
 		a_node.free();
@@ -462,7 +470,7 @@ public class ActionController {
 			case BROKEN:
 				Coordinate c = Coordinates.getInstance().obtain();
 				c.set(x, y);
-				board.addTileEffect(c, e);
+				board.addTileEffect(c, e.clone());
 				break;
 			default:
 				break;

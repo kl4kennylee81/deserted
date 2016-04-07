@@ -53,14 +53,14 @@
 3:
   name: Single
   cost: 4
-  damage: 3
+  damage: 2
   range: 5
   size: 1
   pattern: SINGLE
   oneHit: true
   canBlock: false
   effect: 
-    type: BROKEN
+    type: REGULAR
     name: Regular
     numRounds: 2
     magnitude: 0
@@ -245,9 +245,9 @@
   animationId: 0
 
 13:
-  name: horizontal attack
-  cost: 1
-  damage: 1
+  name: Lightning Column
+  cost: 5
+  damage: 2
   range: 10
   size: 1
   pattern: HORIZONTAL
@@ -258,6 +258,102 @@
     name: Regular
     numRounds: 0
     magnitude: 0
-  description: super horizontal attack
+  description: Send Lightning Down on the same row as this character on the enemy's side
   animationId: 0
+
+14:
+  name: Firebolt
+  cost: 2
+  damage: 2
+  range: 4
+  size: 1
+  pattern: STRAIGHT
+  oneHit: true
+  canBlock: true
+  effect: 
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: super horizontal attack
+  persisting_action: 
+    numRounds: 10 
+    moveSpeed: 0.06
+  animationId: 0
+
+15:
+  name: Spirit Barrier
+  cost: 2
+  damage: 0
+  range: 2
+  size: 1
+  pattern: SHIELD
+  oneHit: false
+  canBlock: false
+  effect: 
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Creates a 2-tile wide shield (Cannot move after)
+  persisting_action: 
+    numRounds: 1
+    moveSpeed: 0.0
+  animationId: 0
+
+16:
+  name: Guardian Shield
+  cost: 1
+  damage: 0
+  range: 1
+  size: 1
+  pattern: SHIELD
+  oneHit: false
+  canBlock: false
+  effect: 
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Creates a 2-tile wide shield (Cannot move after)
+  persisting_action: 
+    numRounds: 1
+    moveSpeed: 0.0
+  animationId: 0
+
+17:
+  name: Avalanche
+  cost: 1
+  damage: 2
+  range: 1
+  size: 1
+  pattern: INSTANT
+  path: "0,0 1,0 2,0 2,1 2,-1"
+  oneHit: false
+  canBlock: true
+  effect: 
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Creates a 2-tile wide shield (Cannot move after)
+  animationId: 0
+
+18:
+  name: Shattering Earth
+  cost: 2
+  damage: 3
+  range: 4
+  size: 1
+  pattern: SINGLE
+  oneHit: false
+  canBlock: false
+  effect: 
+    type: BROKEN
+    name: Break Tile
+    numRounds: 1
+    magnitude: 0
+  description: Creates a 2-tile wide shield (Cannot move after)
+  animationId: 0
+
 ...

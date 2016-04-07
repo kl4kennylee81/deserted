@@ -115,7 +115,7 @@ public class Character implements GUIElement {
 	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
 						int health, int maxHealth, Color color, 
 						float speed, float castSpeed, int xPosition, int yPosition,
-						boolean leftSide, Action[] actions){
+						boolean leftSide, Action[] actions,int numSlots){
 		this.texture = texture;
 		this.icon = icon;
 		this.animation = animation;
@@ -147,7 +147,7 @@ public class Character implements GUIElement {
 		//float castTime = (float) (Math.random()*4 + 4);
 		float waitTime = speed;
 		float castTime = castSpeed;
-		actionBar = new CharActionBar(4,waitTime,castTime);
+		actionBar = new CharActionBar(numSlots,waitTime,castTime);
 		
 	}
 	
