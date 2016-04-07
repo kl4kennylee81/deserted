@@ -69,7 +69,7 @@ public class TutorialGameplayController extends GameplayController{
     			selectionMenuController.update();
     			inGameState = InGameState.SELECTION;
     		}
-    		updateTutorial();
+    		//updateTutorial();
     		break;
     	case SELECTION:
     		screen.setJustScreen();
@@ -93,18 +93,19 @@ public class TutorialGameplayController extends GameplayController{
     				inGameState = InGameState.NORMAL;
     			}
     		}
-    		updateTutorial();
+    		//updateTutorial();
     		break;
     	case PAUSED:
     		if (regGameState == InGameState.SELECTION){
             	screen.setJustScreen();
             }
-    		updateTutorial();
+    		//updateTutorial();
     		break;
 		default:
-			updateTutorial();
+			//updateTutorial();
 			break;	
     	}
+    	updateTutorial();
     	updateTextMessages();
     	removeDead();
     	if (gameOver()){
@@ -149,7 +150,7 @@ public class TutorialGameplayController extends GameplayController{
     }
 	
 	private void updateTutorial() {
-		if (InputController.pressedEnter() && tutorialSteps.isPaused()){
+		if (InputController.pressedSpace() && tutorialSteps.isPaused()){
 			tutorialSteps.nextStep();
 		}
 		if (tutorialSteps.isPaused()){

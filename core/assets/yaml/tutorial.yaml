@@ -56,12 +56,15 @@
   text: "Descriptions of each action are displayed here
   \n\nPress Enter to continue"
   paused: true
-  highlight: true
+  highlightRegions:
+    - xPos: 0.32
+      yPos: 0.6
+      width: 0.33
+      height: 0.06
 
 6:
   text: Try selecting “Move”. Navigate to the “Move” option on the selection menu using W/D and press Enter
   paused: false
-  highlight: true
   actions:
     - actionId: 0
       xPos: 0
@@ -71,7 +74,6 @@
 7:
   text: The yellow tiles indicate all the possible places your character can move to the blue tile indicates the current selection. Toggle around the possible tiles using WASD or arrow keys. Then move right and press Enter to select
   paused: false
-  highlight: true
   actions:
     - actionId: 0
       xPos: 0
@@ -79,53 +81,70 @@
       direction: RIGHT
 
 8:
-  text: Now select straight attack
-  paused: false
-  actions:
-    - actionId: 1
-      xPos: 0
-      yPos: 0
-      direction: NONE
+  text: "Even though you’ve selected to move, your character hasn’t moved just yet! Note how Move appears over the first unit of the cast bar above
+  \n\nPress Spacebar to continue"
+  paused: true
+  highlightRegions:
+      - xPos: 0.49
+        yPos: 0.89
+        width: 0.055
+        height: 0.07
 
 9:
-  text: Confirm straight attack
-  paused: false
-  actions:
-    - actionId: 1
-      xPos: 0
-      yPos: 0
-      direction: NONE
-
-10:
-  text: Confirm your actions!
-  paused: false
-  confirm: true
-  actions:
-    - actionId: 0
-      xPos: 0
-      yPos: 0
-      direction: RIGHT
-    - actionId: 1
-      xPos: 0
-      yPos: 0
-      direction: NONE
-
-11:
-  text: Going to AIs Turn
+  text: "Your \"Move\" action will execute when your character's icon progresses to the end of this slot when play resumes
+  \n\nPress Enter to continue"
   paused: false
 
-12:
-  text: 
-  paused: false
-  actions:
-    - actionId: 0
-      xPos: 0
-      yPos: 0
-      direction: RIGHT
-
-13:
-  text: AI selecting actions
-  paused: true
 
 
+# 8:
+#   text: Now select straight attack
+#   paused: false
+#   actions:
+#     - actionId: 1
+#       xPos: 0
+#       yPos: 0
+#       direction: NONE
 
+# 9:
+#   text: Confirm straight attack
+#   paused: false
+#   actions:
+#     - actionId: 1
+#       xPos: 0
+#       yPos: 0
+#       direction: NONE
+
+# 10:
+#   text: Confirm your actions!
+#   paused: false
+#   confirm: true
+#   actions:
+#     - actionId: 0
+#       xPos: 0
+#       yPos: 0
+#       direction: RIGHT
+#     - actionId: 1
+#       xPos: 0
+#       yPos: 0
+#       direction: NONE
+#
+# 11:
+#   text: Going to AIs Turn
+#   paused: false
+#
+# 12:
+#   text:
+#   paused: false
+#   actions:
+#     - actionId: 0
+#       xPos: 0
+#       yPos: 0
+#       direction: RIGHT
+#
+# 13:
+#   text: AI selecting actions
+#   paused: true
+#
+#
+#
