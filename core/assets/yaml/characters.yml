@@ -17,7 +17,7 @@
 
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
-  animationId: 1
+  animationId: 3
 
 3:
   name: Mage Spirit
@@ -59,7 +59,7 @@
 
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_3.png"
-  animationId: 3
+  animationId: 1
 
 1:
   name: blue

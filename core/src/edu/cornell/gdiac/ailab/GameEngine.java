@@ -87,6 +87,8 @@ public class GameEngine implements Screen {
 	/** Background image for the canvas */
 	private static final String LOADING_TEXTURE = "images/loading1.png";
 	
+	private static final String MENU_LOGO = "images/desertedLogo.png";
+	
 	/** image for the loading bar  */
 	private static final String PRGRSBR_TEXTURE = "images/progressbar.png";
 	/** Texture for loading status bar  */
@@ -482,6 +484,9 @@ public class GameEngine implements Screen {
 		manager.load(LOADING_TEXTURE,Texture.class);
 		assets.add(LOADING_TEXTURE);
 		
+		manager.load(MENU_LOGO,Texture.class);
+		assets.add(MENU_LOGO);
+		
 		manager.load(PRGRSBR_TEXTURE, Texture.class);
 		assets.add(PRGRSBR_TEXTURE);
 		statusBar = new Texture(PRGRSBR_TEXTURE);
@@ -499,9 +504,6 @@ public class GameEngine implements Screen {
 		parameter.attribs = new VertexAttribute[2];
 		parameter.attribs[0] = new VertexAttribute(Usage.Position, 3, "vPosition");
 		parameter.attribs[1] = new VertexAttribute(Usage.TextureCoordinates, 2, "vUV");
-
-//		manager.load(TILE_TEXTURE,Texture.class);
-//		assets.add(TILE_TEXTURE);
 		
 		manager.load(WHITE_BOX,Texture.class);
 		assets.add(WHITE_BOX);

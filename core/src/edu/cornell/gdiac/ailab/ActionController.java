@@ -87,7 +87,7 @@ public class ActionController {
 				// we want move to also reset the active state animation so we switch
 				// to idle first before it then gets set to active next frame
 				else {
-					selected.setIdle();
+					selected.setExecute();
 				}
 				executeAction(action);
 			}

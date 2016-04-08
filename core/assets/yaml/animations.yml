@@ -120,35 +120,50 @@
 
 3:
   name: Character3Strip
-  texture: "models/spritesheetB2.png"
+  texture: "models/tutorial.png"
   rows: 1
-  cols: 5
-  size: 5
+  cols: 12
+  size: 12
   segments:
     - segmentName: IDLE
       segmentId: 0 
-      startingIndex: 0
-      length: 0
+      startingIndex: 1
+      length: 3
       frameData:
+      - 8
+      - 8
+      - 8
     - segmentName: ACTIVE
       segmentId: 1
-      startingIndex: 0
-      length: 1
+      startingIndex: 1
+      length: 5
       frameData:
+      - 8
+      - 6
       - 10
+      - 8
+      - 300
     - segmentName: CAST
       segmentId: 2
-      startingIndex: 1
-      length: 2
+      startingIndex: 3
+      length: 3
       frameData:
-      - 20
-      - 20
+      - 7
+      - 6
+      - 300
+
     - segmentName: EXECUTE
       segmentId: 3
-      startingIndex: 3
-      length: 1
+      startingIndex: 5
+      length: 7
       frameData:
-      - 15
+      - 4
+      - 5
+      - 7
+      - 5
+      - 5
+      - 17
+      - 5
     - segmentName: HURT
       segmentId: 4
       startingIndex: 4

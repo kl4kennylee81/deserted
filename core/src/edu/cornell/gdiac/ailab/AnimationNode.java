@@ -49,13 +49,19 @@ public class AnimationNode {
 	public FilmStrip getTexture(CharacterState charState,InGameState gameState){
 		// if the game state is selection freeze the frame on the current frame
 		if (gameState == InGameState.SELECTION){
-			return animation.filmStrip;
+			// return animation.filmStrip;
 		}
 		
 		if (charState.id != curSegment){
 			curSegment = charState.id;
 			curFrameIndex = 0;
 			curFrameDuration = 0;
+		}
+		// in idle state allows for cycling back until otherwise changed externally
+		else if (charState.id == curSegment && charState == CharacterState.IDLE
+				&& curFrameIndex>=animation.segments.get(curSegment).length){
+			curFrameIndex = 0;
+			curFrameDuration = 0;			
 		}
 		return getTextureHelper(charState.id);
 	}
