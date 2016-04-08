@@ -6,6 +6,7 @@ MAGE_ATTACK:
   no_interrupt_chance: POWER
   low_interrupt_chance/quick_attack_can_hit: SHIELD_ATTACK
   low_interrupt_chance/safe: POWER
+  low_interrupt_chance/is_protected: POWER 
   low_interrupt_chance/can_protect: SHIELD_NOP
   low_interrupt_chance: MOVE_GOAL_ATTACK
   medium_interrupt_chance/quick_attack_can_hit: QUICK_MOVE_QUICK
@@ -15,6 +16,9 @@ MAGE_POSITION:
   type: index
   branch_type: POSITION
   adjacent_attack_square_quick: MOVE_SHIELD_ATTACK
+  adjacent_attack_square/no_interrupt_chance: MOVE_POWER
+  adjacent_attack_square/low_interrupt_chance: MOVE_POWER
+  adjacent_attack_square: MOVE_GOAL_SHIELD
   default: MOVE_GOAL_ATTACK
   
 #--------------------------------------
@@ -53,3 +57,8 @@ QUICK_MOVE_QUICK:
   type: leaf
   my_tactic: SPECIFIC
   my_actions: [QUICK_ATTACK, MOVE_GOAL, QUICK_ATTACK]
+  
+MOVE_POWER:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, POWERFUL_ATTACK]

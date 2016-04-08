@@ -11,6 +11,7 @@ ROCK_ATTACK:
   medium_interrupt_chance: SHIELD_NOP
   could_be_blocked/attack_square_adjacent_quick: MOVE_ATTACK
   could_be_blocked: MOVE_ATTACK2
+  attack_square_adjacent_quick: MOVE_ATTACK
   default: QUICK_QUICK
   
 ROCK_POSITION:
