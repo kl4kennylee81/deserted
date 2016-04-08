@@ -679,8 +679,19 @@ public class Character implements GUIElement {
 			toDraw = getFilmStrip(gameState);
 		}
 		
-		float charScale = getCharScale(canvas,toDraw,board);
-		canvas.drawCharacter(toDraw, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside,charScale);
+		//For now, if still not found (shouldnt happen when animation sheet is full) 
+		//go back to initial texture (current idle texture)
+		if (toDraw != null){
+			float charScale = getCharScale(canvas,toDraw,board);
+			// draw once character normally then draw character again with tint
+			canvas.drawCharacter(toDraw, canvasX, canvasY, color, leftside,charScale);
+			canvas.drawCharacter(toDraw, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside,charScale);
+		} else {
+			float charScale = getCharScale(canvas,texture,board);
+			canvas.drawCharacter(texture, canvasX, canvasY, color, leftside,charScale);
+			canvas.drawCharacter(texture, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside,charScale);
+		}
+		
 		int tempX = xPosition;
 		int tempY = yPosition;
 		int nowX = tempX;
