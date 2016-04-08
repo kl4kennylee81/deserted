@@ -35,10 +35,13 @@ public class CharActionBar {
 	float castPoint;
 	
 	// number of action slots
-	int numSlots;
+	private int numSlots;
 	
 	// Speed Modifier when affected by Speed Up/Slows
 	int speedModifier;
+	
+	// slots affected by daze
+	int dazedSlots;
 	
 	float healthProportion;
 	
@@ -50,6 +53,14 @@ public class CharActionBar {
 		this.length = totalTime/MAX_TIME;
 		this.castPoint = waitTime/totalTime;
 		this.speedModifier = 0;
+	}
+	
+	public int getTotalNumSlots(){
+		return numSlots;
+	}
+	
+	public int getUsableNumSlots(){
+		return Math.max(numSlots - getEffectedDazedSlots(),0);
 	}
 	
 	public void setSpeedModifier(int val){
@@ -65,10 +76,6 @@ public class CharActionBar {
 	public float getSpeed(){
 		float proportionLengthBar = MAX_BAR_SCREEN_RATIO * this.getLength();
 		return CHAR_VELOCITY_SCREEN_RATIO/proportionLengthBar;
-	}
-	
-	public int getNumSlots(){
-		return this.numSlots;
 	}
 	
 	float getSpeedModifier() {
@@ -96,6 +103,11 @@ public class CharActionBar {
 			}
 		
 		}
+	}
+	
+	/** clamp to be 0 or 1. */
+	public int getEffectedDazedSlots(){
+		return Math.min(dazedSlots, 1);
 	}
 	
 	/** length as a proportion of the max_length **/
@@ -192,11 +204,11 @@ public class CharActionBar {
 	
 	public float getSlotWidth(GameCanvas canvas){
 		float castWidth = getCastWidth(canvas);
-		return castWidth/getNumSlots();
+		return castWidth/getTotalNumSlots();
 	}
 	
 	public float getSlotWidth(){
-		return (1-this.getCastPoint())/this.getNumSlots();
+		return (1-this.getCastPoint())/this.getTotalNumSlots();
 	}
 	
 	public float getBarHeight(GameCanvas canvas){
@@ -297,7 +309,7 @@ public class CharActionBar {
 		float xPosBuffer = xPosBar + this.getWaitWidthTotalNoBuffer(canvas);
 		canvas.drawBox(xPosBuffer, yPosBar, bufferWidth, heightBar, bufferColor);
 	
-		for (int i = 0; i < this.getNumSlots(); i++){
+		for (int i = 0; i < this.getTotalNumSlots(); i++){
 			float intervalSize = this.getSlotWidth(canvas);
 			float startCastX = xPosBar + waitWidth;
 			canvas.drawBox(startCastX + i*intervalSize, yPosBar, BAR_DIVIDER_WIDTH, heightBar, Color.BLACK);
@@ -317,13 +329,19 @@ public class CharActionBar {
 		float heightBar = BAR_HEIGHT_RATIO * h;
 		
 		// waiting is red we draw red the full bar
-		canvas.drawBox(xPosBar,yPosBar, widthTotalBar, heightBar, castColor);
+		canvas.drawBox(xPosBar,yPosBar, widthTotalBar, heightBar, castColor);		
 		
 		// non casting is green we draw width up to the casting point
 		float waitWidth = widthTotalBar * this.getCastPoint();
 		canvas.drawBox(xPosBar, yPosBar, waitWidth, heightBar, waitColor);
+		
+		//draw dazed slots as gray
+		float castTotalWidth = widthTotalBar - waitWidth;
+		float dazedWidth = (dazedSlots*1f/numSlots)*castTotalWidth;
+		float dazedxPos = xPosBar + widthTotalBar - dazedWidth;
+		canvas.drawBox(dazedxPos, yPosBar, dazedWidth, heightBar, Color.GRAY);
 	
-		for (int i = 0; i < this.getNumSlots(); i++){
+		for (int i = 0; i < this.getTotalNumSlots(); i++){
 			float intervalSize = this.getSlotWidth(canvas);
 			float startCastX = xPosBar + waitWidth;
 			canvas.drawBox(startCastX + i*intervalSize, yPosBar, BAR_DIVIDER_WIDTH, heightBar, Color.BLACK);

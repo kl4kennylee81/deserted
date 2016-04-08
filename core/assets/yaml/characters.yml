@@ -11,6 +11,7 @@
   leftSide: false
   availableActions: 
     - 0
+    - 19
     - 16
     - 17
     - 18
@@ -35,6 +36,7 @@
     - 13
     - 14
     - 15
+    - 3
 
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"

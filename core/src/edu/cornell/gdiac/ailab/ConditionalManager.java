@@ -764,7 +764,7 @@ public class ConditionalManager {
 	public boolean fastInterruptible(int slots){
 		for(Character c: enemies){
 			int num = fastestMoveThatCanHitMe(c);
-			if(num <= c.actionBar.getNumSlots() && interruptibleBy(c, slots, num)){
+			if(num <= c.getActionBar().getTotalNumSlots() && interruptibleBy(c, slots, num)){
 				return true;
 			}
 		}

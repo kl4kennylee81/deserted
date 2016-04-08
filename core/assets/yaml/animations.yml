@@ -130,9 +130,9 @@
       startingIndex: 1
       length: 3
       frameData:
-      - 8
-      - 8
-      - 8
+      - 10
+      - 10
+      - 10
     - segmentName: ACTIVE
       segmentId: 1
       startingIndex: 1
