@@ -39,8 +39,8 @@ public class AnimationNode {
 	/**
 	 * Returns the next FilmStrip of the animation
 	 */
-	public FilmStrip getTexture(){
-		return getTextureHelper(0);
+	public FilmStrip getTexture(boolean paused){
+		return getTextureHelper(0,paused);
 	}
 	
 	/**
@@ -57,16 +57,19 @@ public class AnimationNode {
 			curFrameIndex = 0;
 			curFrameDuration = 0;
 		}
-		return getTextureHelper(charState.id);
+		return getTextureHelper(charState.id, false);
 	}
 	
 	/**
 	 * Returns the next FilmStrip with the given segment id
 	 */
-	public FilmStrip getTextureHelper(int segmentNum){
+	public FilmStrip getTextureHelper(int segmentNum, boolean paused){
 		Segment s = animation.segments.get(segmentNum);
 		if (s == null || s.frameLengths == null){
 			return null;
+		}
+		if (paused){
+			return animation.filmStrip;
 		}
 		curFrameDuration++;
 		if(curFrameDuration >= s.frameLengths[curFrameIndex]){
