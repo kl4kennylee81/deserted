@@ -11,6 +11,7 @@
   leftSide: false
   availableActions: 
     - 0
+    - 19
     - 16
     - 17
     - 18

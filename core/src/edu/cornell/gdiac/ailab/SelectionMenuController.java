@@ -63,7 +63,7 @@ public class SelectionMenuController {
 	public void update(){
 		if (selected != null){
 			updateVariables();
-			int numSlots = selected.actionBar.getNumSlots();
+			int numSlots = selected.getActionBar().getUsableNumSlots();
 			if (menu.canAct(numSlots) && action != null){
 				drawHighlights();
 			}
@@ -110,7 +110,7 @@ public class SelectionMenuController {
 		boolean mouseCondition = InputController.pressedLeftMouse();// && 
 //				action.contains(InputController.getMouseX(), InputController.getMouseX(), InputController.getCanvas(), board);
 		ActionNodes anPool = ActionNodes.getInstance();
-		int numSlots = selected.actionBar.numSlots;
+		int numSlots = selected.getActionBar().getUsableNumSlots();
 		if ((InputController.pressedEnter() || mouseCondition)){
 			if (action != null && menu.canAct(numSlots)){
 				updateTargetedAction();
@@ -229,7 +229,7 @@ public class SelectionMenuController {
 		}
 		if (InputController.pressedEnter()){
 			float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
-			int numSlots = selected.actionBar.numSlots;
+			int numSlots = selected.getActionBar().getUsableNumSlots();
 			menu.add(anPool.newActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 			menu.setChoosingTarget(false);
 			menu.resetPointer(numSlots);

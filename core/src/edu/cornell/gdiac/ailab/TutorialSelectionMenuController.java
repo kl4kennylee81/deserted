@@ -17,7 +17,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 	public void update(){
 		if (selected != null){
 			updateVariables();
-			int numSlots = selected.actionBar.getNumSlots();
+			int numSlots = selected.getActionBar().getUsableNumSlots();
 			if (menu.canAct(numSlots) && action != null){
 				drawHighlights();
 			}
@@ -49,7 +49,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 		boolean mouseCondition = InputController.pressedLeftMouse();// && 
 //				action.contains(InputController.getMouseX(), InputController.getMouseX(), InputController.getCanvas(), board);
 		ActionNodes anPool = ActionNodes.getInstance();
-		int numSlots = selected.actionBar.numSlots;
+		int numSlots = selected.getActionBar().getUsableNumSlots();
 		if ((InputController.pressedEnter() || mouseCondition)){
 			if (action != null && menu.canAct(numSlots)){
 				updateTargetedAction();

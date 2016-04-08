@@ -201,14 +201,13 @@ public class Character implements GUIElement {
 				//change to interrupted later maybe?
 				this.setIdle();
 			}
-			if (castPosition - lastCastStart >= ((1-this.getActionBar().getCastPoint())/this.getActionBar().getNumSlots())){
+			if (castPosition - lastCastStart >= ((1-this.getActionBar().getCastPoint())/this.getActionBar().getTotalNumSlots())){
 				this.setCast();
 			} else {
 				this.setActive();
 			}
 		}
 	}
-	
 	public float getX(){
 		return this.xPosition;
 	}
@@ -377,6 +376,19 @@ public class Character implements GUIElement {
 		return this.actionBar.getCastPoint();
 	}
 	
+	/**deals with total number of dazed slots, but only 1 will be in effect in actionBar */
+	public int getDazedSlots(){
+		return actionBar.dazedSlots;
+	}
+	
+	public void setDazedSlots(int num){
+		this.actionBar.dazedSlots = num;
+	}
+	
+	public boolean isDazed(){
+		return actionBar.dazedSlots >= 1;
+	}
+	
 	public void setSpeedModifier(int val){
 		//TODO if we have more modifier on stats have a bitmap of modifiers
 		this.actionBar.setSpeedModifier(val);
@@ -387,7 +399,7 @@ public class Character implements GUIElement {
 	}
 	
 	public float getInterval(){
-		return (1f-actionBar.castPoint) / actionBar.getNumSlots();
+		return (1f-actionBar.castPoint) / this.getActionBar().getTotalNumSlots();
 	}
 	
 	/**

@@ -38,6 +38,9 @@ public class EffectController {
 			case SPEED:
 				processSpeed(e, c);
 				break;
+			case DAZED:
+				processDazed(e, c);
+				break;
 			default:
 				break;
 		}
@@ -55,6 +58,22 @@ public class EffectController {
 		e.roundsLeft -= c.castMoved;
 		if (e.roundsLeft <= 0){
 			c.setSpeedModifier(c.getSpeedModifier()-e.magnitude);
+			e.isDone = true;
+		}
+	}
+	
+	/**
+	 * Applies the dazed effect to the character if it is new, reduces the "framesLeft" 
+	 * counter, and sets a flag, and reverses the effect, if the effect is done.
+	 */
+	public void processDazed(Effect e, Character c){
+		if(e.isNew){
+			c.setDazedSlots(c.getDazedSlots()+e.magnitude);
+			e.isNew = false;
+		}
+		e.roundsLeft -= c.castMoved;
+		if (e.roundsLeft <= 0){
+			c.setDazedSlots(c.getDazedSlots()-e.magnitude);
 			e.isDone = true;
 		}
 	}

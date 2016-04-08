@@ -33,7 +33,8 @@ public class Effect {
 	public static enum Type {
 		BROKEN,
 		SPEED,
-		REGULAR
+		REGULAR, 
+		DAZED
 	}
 	
 	public static float FRAMES_PER_SECOND = 60;

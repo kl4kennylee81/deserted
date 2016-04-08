@@ -234,8 +234,10 @@ public class SelectionMenu {
 		}
 	}
 	
+	//TODO: update for dazed
 	public void draw(GameCanvas canvas,CharActionBar actionBar,int count){
-		int numSlots = actionBar.numSlots;
+		int totalNumSlots = actionBar.getTotalNumSlots();
+		int usableNumSlots = actionBar.getUsableNumSlots();
 		
 		if (increasing){
 			lerpVal+=0.02;
@@ -268,7 +270,7 @@ public class SelectionMenu {
 			if (i == selectedAction){
 				selectedPointerOffset = offset_y;
 			}
-			if (action.cost > numSlots - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
+			if (action.cost > usableNumSlots - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
 				Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.2f);
 				 g = canvas.drawText(action.name, text_x, text_y - offset_y, dimColor);
 			} 
@@ -303,13 +305,15 @@ public class SelectionMenu {
 		float slot_height = actionBar.getBarHeight(canvas);
 		
 		int offset = 0;
-		for (int i = 0; i < numSlots; i++){
+		for (int i = 0; i < totalNumSlots; i++){
 			float curSlot_x = actionSlot_x + ((slot_width) * i) + CharActionBar.BAR_DIVIDER_WIDTH;
 			float slot_w_space = slot_width-CharActionBar.BAR_DIVIDER_WIDTH;
 			if (i < takenSlots) {
 				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.RED);
 			} else if (selectedAction < actions.length && i < takenSlots+actions[selectedAction].cost){
 				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE.cpy().lerp(Color.RED,lerpVal));
+			} else if (i >= usableNumSlots){
+				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.GRAY);
 			} else {
 				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE);
 			}
