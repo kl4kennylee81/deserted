@@ -110,7 +110,7 @@
 
 6:
   name: Shield-3
-  cost: 1
+  cost: 2
   damage: 0
   range: 3  
   size: 1
@@ -167,7 +167,7 @@
 
 9:
   name: Shield2
-  cost: 1
+  cost: 2
   damage: 0
   range: 2
   size: 1
@@ -246,8 +246,8 @@
 
 13:
   name: Lightning Column
-  cost: 5
-  damage: 2
+  cost: 4
+  damage: 4
   range: 10
   size: 1
   pattern: HORIZONTAL
@@ -265,7 +265,7 @@
   name: Firebolt
   cost: 2
   damage: 2
-  range: 4
+  range: 6
   size: 1
   pattern: STRAIGHT
   oneHit: true
@@ -343,7 +343,7 @@
   name: Shattering Earth
   cost: 2
   damage: 3
-  range: 4
+  range: 5
   size: 1
   pattern: SINGLE
   oneHit: false
