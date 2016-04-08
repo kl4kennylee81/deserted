@@ -5,7 +5,7 @@
   hexColor: 00cc00FF
   speed: 2.
   castSpeed: 8.
-  slots: 5
+  slots: 2
   xPosition: 0
   yPosition: 0
   leftSide: true

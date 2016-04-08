@@ -109,9 +109,9 @@ pvp:
           xPosition: 0
           yPosition: 0
 
-        - id: 1
-          xPosition: 0
-          yPosition: 3
+        # - id: 1
+        #   xPosition: 0
+        #   yPosition: 3
 
     enemies:
         - id: 2
