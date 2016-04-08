@@ -38,22 +38,13 @@ public class DecisionNode {
 		/** Try to move to a safety goal tile */
 		MOVE_DEFENSIVE,
 		/** Try to move in front of a teammate block attacks */
-		MOVE_PROTECT,		
+		MOVE_PROTECT, 
+		/** Try to move towards an optimal goal tile */
+		MOVE_GOAL,		
 	}
 	
 	public static enum Tactic {
-		/** No tactical information */
-		NONE,
-		/** General attack mode */
-		ATTACK,
-		/** Attempt high-risk, high-reward actions */
-		GAMBLE,
-		/** Do whatever it takes to stay alive */
-		PRESERVATION,
-		/** be defensive */
-		DEFENSE,
-		/** This means that specific actions have been chosen */
-		SPECIFIC
+		NONE, ATTACK, POSITION, DEFENSE, SPECIFIC
 	}
 	
 	

@@ -1,0 +1,39 @@
+ROCK_ATTACK:
+  type: index
+  branch_type: ATTACK
+  no_interrupt_chance/safe: POWER
+  no_interrupt_chance/quick_attack_can_hit: SHIELD_ATTACK
+  no_interrupt_chance: POWER
+  low_interrupt_chance/quick_attack_can_hit: SHIELD_ATTACK
+  low_interrupt_chance: POWER
+  medium_interrupt_chance/attack_square_adjacent_quick: MOVE_ATTACK
+  medium_interrupt_chance/quick_attack_can_hit: QUICK_QUICK
+  medium_interrupt_chance: SHIELD_NOP
+  could_be_blocked/attack_square_adjacent_quick: MOVE_ATTACK
+  could_be_blocked: MOVE_ATTACK2
+  default: QUICK_QUICK
+  
+ROCK_POSITION:
+  type: index
+  branch_type: POSITION
+  default: MOVE_GOAL_ATTACK
+
+QUICK_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, QUICK_ATTACK]
+
+NOP:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: []
+  
+MOVE_ATTACK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK]
+  
+MOVE_ATTACK2:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, QUICK_ATTACK]

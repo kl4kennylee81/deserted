@@ -1,0 +1,55 @@
+MAGE_ATTACK:
+  type: index
+  branch_type: ATTACK
+  no_interrupt_chance/safe: POWER
+  no_interrupt_chance/quick_attack_can_hit: SHIELD_ATTACK
+  no_interrupt_chance: POWER
+  low_interrupt_chance/quick_attack_can_hit: SHIELD_ATTACK
+  low_interrupt_chance/safe: POWER
+  low_interrupt_chance/can_protect: SHIELD_NOP
+  low_interrupt_chance: MOVE_GOAL_ATTACK
+  medium_interrupt_chance/quick_attack_can_hit: QUICK_MOVE_QUICK
+  default: MOVE_GOAL_SHIELD
+  
+MAGE_POSITION:
+  type: index
+  branch_type: POSITION
+  adjacent_attack_square_quick: MOVE_SHIELD_ATTACK
+  default: MOVE_GOAL_ATTACK
+  
+#--------------------------------------
+
+POWER:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [POWERFUL_ATTACK, POWERFUL_ATTACK, MOVE_DEFENSIVE]
+
+SHIELD_ATTACK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SHIELD, QUICK_ATTACK]
+
+SHIELD_NOP:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SHIELD]
+
+MOVE_GOAL_ATTACK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, MOVE_GOAL, MOVE_GOAL, QUICK_ATTACK]
+
+MOVE_GOAL_SHIELD:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, MOVE_GOAL, MOVE_GOAL, SHIELD]
+
+MOVE_SHIELD_ATTACK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, SHIELD, QUICK_ATTACK]
+  
+QUICK_MOVE_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, MOVE_GOAL, QUICK_ATTACK]

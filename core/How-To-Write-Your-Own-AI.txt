@@ -1,0 +1,128 @@
+We now have an AI framework which allows you to specify your own AI using a 
+tree-based format in a Yaml file. You can tell the AI to make decisions based
+on conditional booleans, such as "CAN_HIT_ENEMY", or "LOW_INTERRUPT_CHANCE",
+which are evaluated every time an AI character enters the cast phase. 
+
+A full list of available conditions can be found in the file "ConditionalManager.java".
+
+When you actually make a decision, you have two options. You can specify a general 
+action idea, such as "ATTACK" or "DEFENSE", or you can specify more specific action
+ideas, such as "MOVE_AGGRESSIVE, SINGLE_OPTIMAL". In the case where you specify a 
+general idea, there must be a subtree specific to each character which implements that
+idea, and the AI framework will take care of traversing the correct characters subtree 
+for that idea. In the case where you specify specific actions, and the AI framework 
+will handle the selection of the actual ActionNodes, i.e. finding a square where you 
+could be in an attacking position, or single-square attack the enemy who is easiest to hit.
+
+A full list of available actions can be found in the file "DecisionNode.java" under 
+the enum "Specific". A list of general keyowrds can be found under the enum "Tactic"
+
+The goal of this is to allow us to individualize AI for different levels, while 
+keeping it easily tweakable and general enough that it doesnt really care about the
+characters' specific movesets, while also giving us the option of giving different 
+characters different AI even within the same level.
+
+-----------------------------------------------------------------------------------
+
+Creating a tree consists of two types of nodes, index nodes and leaf nodes. All 
+decision making occurs in index nodes, while leaf nodes can only have information
+about actions. 
+
+Index nodes must have the following format:
+
+<NAME>:
+  type: index
+  branch_type: (ATTACK | DEFENSE ...)     *necessary if this is the first branch of an individual character's subtree*
+  <condition>/<condition>/.../<condition>: <NODE TO BRANCH TO> 
+  <condition>/<condition>/.../<condition>: <NODE TO BRANCH TO> 
+  ...
+  default: <NODE TO BRANCH TO> 
+  
+  
+example:
+
+KYLEINDEX:
+  type: index
+  low_interrupt_chance/can_hit_enemy: LOW_INT
+  high_interrupt_chance: HIGH_INT
+  default: DEFAULT_CHILD
+
+----------------------------------------------------------------------------------------
+
+Leaf nodes are interesting because they can specify actions for the currently selecting
+character as well as the ally that would next reach the cast phase. If actions are 
+selected for an ally, then the full decision tree will not execute when the ally reaches the cast
+phase, and instead the ally will just use its preselected action. Leaf nodes must have the
+following format:
+
+<NAME>:
+  type: index
+  branch_type: (ATTACK | DEFENSE ...)     *necessary if this is the first branch of an individual character's subtree*
+  my_tactic: (SPECIFIC | ATTACK | DEFENSE ...)           *necessary if my_tactic is SPECIFIC*
+  my_actions: [<SPECIFIC ACTION>,...,<SPECIFIC ACTION>]
+  ally_tactic: (SPECIFIC | ATTACK | DEFENSE ...)         *optional*
+  ally_actions: (SPECIFIC | ATTACK | DEFENSE ...)        *necessary if ally_tactic is SPECIFIC*
+  
+examples:
+
+KYLELEAF:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, NORMAL_ATTACK]
+  
+KYLELEAF:
+  type: leaf
+  my_tactic: ATTACK
+
+KYLELEAF
+  type: leaf
+  my_tactic: ATTACK
+  ally_tactic: SPECIFIC
+  ally_actions: [SHIELD]
+  
+KYLELEAF
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_OPTIMAL, MOVE_DEFENSIVE]
+  ally_tactic: ATTACK
+  
+-----------------------------------------------------------------------------------
+  
+IMPORTANT NOTES:
+The name of the root of the main tree must be "ROOT"
+The name of any character's individual tree must be the character's name
+"branch_type" must be specified at depth 1 of any character's individual tree.
+
+Here is an example of a small tree in which there is an individual character tree for "kyle"
+
+ROOT:
+  type: index
+  low_health: CHILD1
+  default: CHILD2
+
+CHILD1:
+  type:leaf
+  my_tactic: DEFENSE
+  
+CHILD2:
+  type:leaf
+  my_tactic: ATTACK
+  
+kyle:
+  type: character
+  branches: [BRANCH1, BRANCH2,...]
+
+BRANCH1:
+  type: leaf
+  branch_type: ATTACK
+  ...
+  
+  
+
+  
+  
+
+
+1. Create a new file for your AI in assets/yaml
+2. Specify that file in the AI field for a level in "levels.yml"
+3. Start writing you 

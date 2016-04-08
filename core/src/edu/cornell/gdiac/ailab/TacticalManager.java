@@ -10,6 +10,7 @@ import java.util.Random;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.DecisionNode;
 import edu.cornell.gdiac.ailab.DecisionNode.IndexNode;
 import edu.cornell.gdiac.ailab.DecisionNode.LeafNode;
@@ -27,6 +28,8 @@ public class TacticalManager extends ConditionalManager{
 	private DecisionNode tacticalTree;
 	private HashMap<String, DecisionNode> nodeMap;
 	private HashMap<String, LeafNode> preSelected;
+	private ArrayList<Coordinate> goalTiles;
+	private Coordinate goal;
 	
 	public TacticalManager(){
 		preSelected = new HashMap<String, LeafNode>();
@@ -76,11 +79,11 @@ public class TacticalManager extends ConditionalManager{
 	 * Manager tree to find a list of actions. 
 	 */
 	public void selectActions(Character c){
-//		System.out.print(c.name+": ");
-//		System.out.print(map.get("NO_INT_CHANCE")+" ");
-//		System.out.print(map.get("LOW_INT_CHANCE")+" ");
-//		System.out.print(map.get("MED_INT_CHANCE")+" ");
-//		System.out.println(map.get("HIGH_INT_CHANCE")+" ");
+		System.out.print(c.name+": ");
+		System.out.print(map.get("can_hit")+" ");
+		System.out.println(map.get("single_in_range")+" ");
+		//System.out.print(map.get("MED_INT_CHANCE")+" ");
+		//System.out.println(map.get("HIGH_INT_CHANCE")+" ");
 
 		LeafNode leaf;
 		//Either get the preselected leaf or traverse the tree to find it
@@ -172,19 +175,20 @@ public class TacticalManager extends ConditionalManager{
 		int startSlot = 0;
 		int x = c.xPosition;
 		int y = c.yPosition;
-		//System.out.print(c.name+ "moves: ");
+		System.out.print(c.name+ "moves: ");
+		goal = null;
 		for(Specific s: moves){
 			ActionNode a = nopNode(c, startSlot);
-			//System.out.print(s.toString()+" ");
+			System.out.print(s.toString()+" ");
 			switch(s){
 				case SINGLE_OPTIMAL:
-					a = singleOptimal(c, startSlot);
+					a = singleOptimal(c, startSlot, x, y);
 					break;
 				case SINGLE_WEAKEST:
-					a = singleWeakest(c, startSlot);
+					a = singleWeakest(c, startSlot, x, y);
 					break;
 				case SINGLE_STRONGEST:
-					a = singleStrongest(c, startSlot);
+					a = singleStrongest(c, startSlot, x, y);
 					break;
 				case NORMAL_ATTACK:
 					a = attackNode(c, startSlot, x, y, normalAttack(c, x, y));
@@ -204,6 +208,9 @@ public class TacticalManager extends ConditionalManager{
 				case MOVE_DEFENSIVE:
 					a = moveDefensive(c, startSlot, x, y);
 					break;
+				case MOVE_GOAL:
+					a = moveGoal(c, startSlot, x, y);
+					break;
 				default:
 					System.out.println("nopnode");
 					a = nopNode(c, startSlot);
@@ -214,7 +221,7 @@ public class TacticalManager extends ConditionalManager{
 			y = y + applyMoveY(a);
 			nodes.add(a);
 		}
-		//System.out.println();
+		System.out.println();
 		return nodes;
 	}
 	
@@ -277,11 +284,12 @@ public class TacticalManager extends ConditionalManager{
 	 * Returns a single-square attack node which attacks the character with the 
 	 * greatest chance of hitting
 	 */
-	private ActionNode singleOptimal(Character c, int startPoint){
+	private ActionNode singleOptimal(Character c, int startPoint, int xPos, int yPos){
 		Action a = single(c);
 		Character opt = null;
 		int framesToMove = Integer.MIN_VALUE;
 		for(Character e: enemies){
+			if(!a.hitsTarget(xPos, yPos, e.xPosition, e.yPosition, c.leftside, board)) continue;
 			int frames = minFramesToMove(e);
 			if(frames > framesToMove){
 				framesToMove = frames;
@@ -299,14 +307,19 @@ public class TacticalManager extends ConditionalManager{
 	/**
 	 * Returns a single square attack aimed at the enemy with the lowest health
 	 */
-	public ActionNode singleWeakest(Character attacker, int startPoint){
+	public ActionNode singleWeakest(Character attacker, int startPoint, int xPos, int yPos){
+		Action a = single(attacker);
 		int minHealth = Integer.MAX_VALUE;
 		Character weakest = null;
 		for(Character c: enemies){
+			if(!a.hitsTarget(xPos, yPos, c.xPosition, c.yPosition, c.leftside, board)) continue;
 			if(c.health < minHealth){
 				minHealth = c.health;
 				weakest = c;
 			}
+		}
+		if(weakest == null){
+			return nopNode(attacker, startPoint);
 		}
 		return singleNode(attacker, startPoint, weakest.xPosition, weakest.yPosition);	
 	}
@@ -315,14 +328,19 @@ public class TacticalManager extends ConditionalManager{
 	/**
 	 * Returns a single square attack aimed at the enemy with highest health
 	 */
-	public ActionNode singleStrongest(Character attacker, int startPoint){
+	public ActionNode singleStrongest(Character attacker, int startPoint, int xPos, int yPos){
+		Action a = single(attacker);
 		int minHealth = Integer.MIN_VALUE;
 		Character strongest = null;
 		for(Character c: enemies){
+			if(!a.hitsTarget(xPos, yPos, c.xPosition, c.yPosition, c.leftside, board)) continue;
 			if(c.health > minHealth){
 				minHealth = c.health;
 				strongest = c;
 			}
+		}
+		if(strongest == null){
+			return nopNode(attacker, startPoint);
 		}
 		return singleNode(attacker, startPoint, strongest.xPosition, strongest.yPosition);	
 	}
@@ -354,13 +372,16 @@ public class TacticalManager extends ConditionalManager{
 	
 	
 	/**
-	 * Launch a normal, non-single-target attack, assuming character is at (xPos,yPos)
+	 * Launch an attack, assuming character is at (xPos,yPos)
 	 */
 	public ActionNode attackNode(Character c, int startPoint, int xPos, int yPos, Action a){
 		if(a.pattern == Pattern.NOP){
 			return anyAttack(c, startPoint);
 		}
 		ActionNodes anPool = ActionNodes.getInstance();
+		if(a.pattern == Pattern.SINGLE){
+			return singleOptimal(c, startPoint, xPos, yPos);
+		}
 		if(a.pattern == Pattern.DIAGONAL){
 			Direction d = findDiagonalDirection(c, a, xPos, yPos);
 			return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
@@ -398,7 +419,7 @@ public class TacticalManager extends ConditionalManager{
 		Action quickest = nop();
 		int minCost = Integer.MAX_VALUE;
 		for(Action a: c.availableActions){
-			if(a.damage > 0 && a.pattern != Pattern.SINGLE){
+			if(a.damage > 0){
 				for(Character e: enemies){
 					if(a.cost < minCost && canAttackSquareFrom(xPos, yPos, e.xPosition, e.yPosition, a)){
 						quickest = a;
@@ -419,7 +440,7 @@ public class TacticalManager extends ConditionalManager{
 		Action powerful = nop();
 		int maxCost = Integer.MIN_VALUE;
 		for(Action a: c.availableActions){
-			if(a.damage > 0 && a.pattern != Pattern.SINGLE){
+			if(a.damage > 0){
 				for(Character e: enemies){
 					if(a.cost > maxCost && canAttackSquareFrom(xPos, yPos, e.xPosition, e.yPosition, a)){
 						powerful = a;
@@ -547,6 +568,38 @@ public class TacticalManager extends ConditionalManager{
 	
 	
 	/**
+	 * Move towards goal tile
+	 */
+	private ActionNode moveGoal(Character c, int startPoint, int xPos, int yPos){
+		Action a = move(c);
+		ActionNodes anPool = ActionNodes.getInstance();
+		if(goal == null){
+			setGoalTile(c, 2, 3);
+		}
+		for(Coordinate coord: goalTiles){
+			int prevDist = Math.abs(goal.x - xPos) + Math.abs(goal.y - yPos);
+			int dist = Math.abs(goal.x - coord.x) + Math.abs(goal.y - coord.y);
+			boolean adjacent = Math.abs(coord.x - xPos) + Math.abs(coord.y - yPos) == 1;
+//			System.out.println(coord.toString() + " prev: "+ prevDist + " dist: "+ dist+ "adjacent: "+adjacent);
+			if(dist < prevDist && adjacent && board.canMove(c.leftside, coord.x, coord.y)){
+				if(coord.x < xPos){
+					return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.LEFT);
+				}
+				if(coord.x > xPos){
+					return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.RIGHT);
+				}
+				if(coord.y < yPos){
+					return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.DOWN);
+				}
+				if(coord.y > yPos){
+					return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.UP);
+				}
+			}
+		}
+		return nopNode(c, startPoint);
+	}
+	
+	/**
 	 * Right now, only checks for an adjacent safe square and moves there. Prioritize tiles that 
 	 * would also lead to potential offensive positions.
 	 * Future improvement: mark ideal defensive goal tiles and try to move there if 
@@ -565,7 +618,7 @@ public class TacticalManager extends ConditionalManager{
 			return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
 		
-		return anPool.newActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(xPos, yPos));
+		return anPool.newActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(c, xPos, yPos));
 	}
 	
 	
@@ -586,7 +639,7 @@ public class TacticalManager extends ConditionalManager{
 		if(d != Direction.NONE){
 			return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
-		return anPool.newActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(xPos, yPos));
+		return anPool.newActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(c, xPos, yPos));
 	}
 	
 	
@@ -597,17 +650,31 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	private Direction optimalDirection(Character c, int xPos, int yPos){
 		ArrayList<Direction> list = new ArrayList<Direction>();
-		if(canHitEnemyFrom(c, xPos-1, yPos) && isSafeSquare(xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos - 1)){
+		if(canHitEnemyFrom(c, xPos-1, yPos) && isSafeSquare(xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)){
 			list.add(Direction.LEFT);
 		}
-		if(canHitEnemyFrom(c, xPos, yPos+1) && isSafeSquare(xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
+		if(canHitEnemyFrom(c, xPos, yPos+1) && isSafeSquare(xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)){
 			list.add(Direction.UP);
 		}
-		if(canHitEnemyFrom(c, xPos, yPos-1) && isSafeSquare(xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
+		if(canHitEnemyFrom(c, xPos, yPos-1) && isSafeSquare(xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)){
 			list.add(Direction.DOWN);
 		}
-		if(canHitEnemyFrom(c, xPos+1, yPos) && isSafeSquare(xPos+1, yPos) && !board.isOccupied(xPos+1, yPos) && ownSide(xPos + 1)){
+		if(canHitEnemyFrom(c, xPos+1, yPos) && isSafeSquare(xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)){
 			list.add(Direction.RIGHT);
+		}
+		if(list.size() == 0){
+			if(canHitEnemyFromSingle(c, xPos-1, yPos) && isSafeSquare(xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)){
+				list.add(Direction.LEFT);
+			}
+			if(canHitEnemyFromSingle(c, xPos, yPos+1) && isSafeSquare(xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)){
+				list.add(Direction.UP);
+			}
+			if(canHitEnemyFromSingle(c, xPos, yPos-1) && isSafeSquare(xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)){
+				list.add(Direction.DOWN);
+			}
+			if(canHitEnemyFromSingle(c, xPos+1, yPos) && isSafeSquare(xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)){
+				list.add(Direction.RIGHT);
+			}
 		}
 		if(list.size() == 0){
 			return Direction.NONE;
@@ -622,17 +689,31 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	private Direction attackingDirection(Character c, int xPos, int yPos){
 		ArrayList<Direction> list = new ArrayList<Direction>();
-		if(canHitEnemyFrom(c, xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos-1)){
+		if(canHitEnemyFrom(c, xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)){
 			list.add(Direction.LEFT);
 		}
-		if(canHitEnemyFrom(c, xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
+		if(canHitEnemyFrom(c, xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)){
 			list.add(Direction.UP);
 		}
-		if(canHitEnemyFrom(c, xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
+		if(canHitEnemyFrom(c, xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)){
 			list.add(Direction.DOWN);
 		}
-		if(canHitEnemyFrom(c, xPos+1, yPos) && !board.isOccupied(xPos+1, yPos) && ownSide(xPos + 1)){
+		if(canHitEnemyFrom(c, xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)){
 			list.add(Direction.RIGHT);
+		}
+		if(list.size() == 0){
+			if(canHitEnemyFromSingle(c, xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)){
+				list.add(Direction.LEFT);
+			}
+			if(canHitEnemyFromSingle(c, xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)){
+				list.add(Direction.UP);
+			}
+			if(canHitEnemyFromSingle(c, xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)){
+				list.add(Direction.DOWN);
+			}
+			if(canHitEnemyFromSingle(c, xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)){
+				list.add(Direction.RIGHT);
+			}		
 		}
 		if(list.size() == 0){
 			return Direction.NONE;
@@ -647,16 +728,16 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	private Direction defensiveDirection(Character c, int xPos, int yPos){
 		ArrayList<Direction> list = new ArrayList<Direction>();
-		if(isSafeSquare(xPos+1, yPos) && !board.isOccupied(xPos+1, yPos) && ownSide(xPos + 1)){
+		if(isSafeSquare(xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)){
 			list.add(Direction.RIGHT);
 		}
-		if(isSafeSquare(xPos, yPos+1) && !board.isOccupied(xPos, yPos+1)){
+		if(isSafeSquare(xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)){
 			list.add(Direction.UP);
 		}
-		if(isSafeSquare(xPos, yPos-1) && !board.isOccupied(xPos, yPos-1)){
+		if(isSafeSquare(xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)){
 			list.add(Direction.DOWN);
 		}
-		if(isSafeSquare(xPos-1, yPos) && !board.isOccupied(xPos-1, yPos) && ownSide(xPos-1)){
+		if(isSafeSquare(xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)){
 			list.add(Direction.LEFT);
 		}
 		if(list.size() == 0){
@@ -670,24 +751,84 @@ public class TacticalManager extends ConditionalManager{
 	/**
 	 * Returns a single random movement action from (xPos, yPos)
 	 */
-	private Direction randomDirection(int xPos, int yPos){
+	private Direction randomDirection(Character c, int xPos, int yPos){
 		ArrayList<Direction> directions = new ArrayList<Direction>();
-		if(board.isInBounds(xPos + 1, yPos)  && ownSide(xPos + 1)){
+		if(board.canMove(c.leftside, xPos + 1, yPos)  && ownSide(xPos + 1)){
 			directions.add(Direction.RIGHT);
 		}
-		if(board.isInBounds(xPos, yPos + 1)){
+		if(board.canMove(c.leftside, xPos, yPos + 1)){
 			directions.add(Direction.UP);
 		}
-		if(board.isInBounds(xPos - 1, yPos) && ownSide(xPos - 1)){
+		if(board.canMove(c.leftside, xPos - 1, yPos) && ownSide(xPos - 1)){
 			directions.add(Direction.LEFT);
 		}
-		if(board.isInBounds(xPos, yPos - 1)){
+		if(board.canMove(c.leftside, xPos, yPos - 1)){
 			directions.add(Direction.DOWN);
 		}
 		Random r = new Random();
 		return directions.get(r.nextInt(directions.size()));	
 	}
 	
+	/**
+	 * Return the tile that would be optimal for this character to be on
+	 */
+	public void setGoalTile(Character c, int aWeight, int dWeight){
+		Coordinates cPool = Coordinates.getInstance();
+		int xStart = c.leftside? 0 : board.width / 2;
+		int xEnd = c.leftside? (board.width / 2) : board.width;
+		ArrayList<Coordinate> goals = new ArrayList<Coordinate>();
+		ArrayList<Integer> values = new ArrayList<Integer>();
+//		System.out.println();
+
+		for(int x = xStart; x < xEnd; x++){
+			for(int y = 0; y < board.height; y++){
+				int curValue = 0;
+//				System.out.println("--------STARTING "+x+" "+y+" "+c.name+"-------------");
+				//calculate offensive value
+				for(Action a: c.availableActions){
+					for(Character e: enemies){
+						if(a.hitsTarget(x, y, e.xPosition, e.yPosition, c.leftside, board)){
+//							System.out.println("Can hit "+e.name+ " with "+a.name);
+							curValue += aWeight;
+						}
+					}
+				}
+				//calculate defensive value
+				for(Character e: enemies){
+					for(Action a: e.availableActions){
+						if(a.hitsTarget(e.xPosition, e.yPosition, x, y, e.leftside, board)){
+//							System.out.println("hit by "+e.name+ " with "+a.name);
+							curValue -= dWeight;
+						}
+					}
+				}
+				//insert in sorted order
+				boolean added = false;
+				for(int i = 0; i < values.size(); i++){
+					if(curValue > values.get(i)){
+						goals.add(i, cPool.newCoordinate(x, y));
+						values.add(i, curValue);
+						added = true;
+						break;
+					}
+				}
+				if(!added){
+					goals.add(cPool.newCoordinate(x, y));
+					values.add(curValue);
+				}
+			}
+		}
+		goalTiles = goals;
+		int i = 0;
+		for(Coordinate coord: goals){
+			if(board.canMove(c.leftside, coord.x, coord.y)){
+				goal = coord;
+//				System.out.println(c.name+": "+coord.x+" "+coord.y+" "+"value: "+values.get(i));
+				return;
+			}
+			i++;
+		}
+	}
 	
 	
 	//=======================================================================//
@@ -819,7 +960,7 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	public ArrayList<Specific> getPossibleMoves(Character c, ActionNode a, int xPos, int yPos, int startSlot){
 		ArrayList<Specific> moves = new ArrayList<Specific>();
-		addSinglePossibilities(c, a, moves, startSlot);
+		addSinglePossibilities(c, a, moves, startSlot, xPos, yPos);
 		if(a.action.pattern == Pattern.SHIELD){
 			moves.add(Specific.SHIELD);
 		}
@@ -844,7 +985,7 @@ public class TacticalManager extends ConditionalManager{
 		moves.add(Specific.NORMAL_ATTACK);
 	}
 	
-	private void addSinglePossibilities(Character c, ActionNode a, ArrayList<Specific> moves, int startSlot){
+	private void addSinglePossibilities(Character c, ActionNode a, ArrayList<Specific> moves, int startSlot, int xPos, int yPos){
 		if(a.action.pattern != Pattern.SINGLE) return;
 		ArrayList<Character> weakest = new ArrayList<Character>();
 		ArrayList<Character> strongest = new ArrayList<Character>();
@@ -879,7 +1020,7 @@ public class TacticalManager extends ConditionalManager{
 				moves.add(Specific.SINGLE_STRONGEST);
 			}
 		}
-		ActionNode node = singleOptimal(c, startSlot);
+		ActionNode node = singleOptimal(c, startSlot, xPos, yPos);
 		if(node.xPosition == a.xPosition && node.yPosition == a.yPosition || moves.size() == 0){
 			moves.add(Specific.SINGLE_OPTIMAL);
 		}

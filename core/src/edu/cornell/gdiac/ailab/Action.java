@@ -83,14 +83,16 @@ public class Action implements GUIElement {
 	 * from (startX, startY).
 	 */
 	public boolean hitsTarget(int startX, int startY, int targetX, int targetY, boolean leftside, GridBoard board){
-		
+		if(pattern == pattern.MOVE || pattern == pattern.NOP || pattern == pattern.SHIELD){
+			return false;
+		}
 		switch(pattern){
 		case SINGLE:
 			return this.singleCanTarget(startX, startY, targetX, targetY);
 		case STRAIGHT:
 			return startY == targetY && (Math.abs(startX - targetX) <= range);
 		case HORIZONTAL:
-			return startX == board.height - 1 - targetX;
+			return targetX == board.width - 1 - startX;
 		case DIAGONAL:
 			if(Math.abs(startX - targetX) > range){
 				return false;

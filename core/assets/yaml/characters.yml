@@ -1,4 +1,4 @@
-0:
+2:
   name: Rock Spirit
   health: 14
   maxHealth: 14
@@ -8,7 +8,7 @@
   slots: 2
   xPosition: 0
   yPosition: 0
-  leftSide: true
+  leftSide: false
   availableActions: 
     - 0
     - 16
@@ -19,17 +19,17 @@
   icon: "models/CASTICON_5.png"
   animationId: 3
 
-1:
+3:
   name: Mage Spirit
   health: 8
   maxHealth: 8
   hexColor: FF9900FF
-  speed: 4.
-  castSpeed: 4.
+  speed: 5.
+  castSpeed: 7.5
   slots: 5
   xPosition: 0
   yPosition: 3
-  leftSide: true
+  leftSide: false
   availableActions: 
     - 0
     - 13
@@ -40,43 +40,43 @@
   icon: "models/CASTICON_4.png"
   animationId: 2
 
-2:
+0:
   name: red
   health: 10
   maxHealth: 10
   hexColor: CD2626FF
-  speed: 5.
-  castSpeed: 5.
+  speed: 6.
+  castSpeed: 6.5
   slots: 4
   xPosition: 5
   yPosition: 0
-  leftSide: false
+  leftSide: true
   availableActions: 
     - 0
     - 5
-    - 6
-    - 4
+    - 10
+    - 9
 
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_3.png"
   animationId: 1
 
-3:
+1:
   name: blue
   health: 10
   maxHealth: 10
   hexColor: 3299FFFF
-  speed: 5.
-  castSpeed: 5.
+  speed: 6.
+  castSpeed: 6.5
   slots: 4
   xPosition: 5
   yPosition: 3
-  leftSide: false
+  leftSide: true
   availableActions: 
     - 0
-    - 8
-    - 10
-    - 5
+    - 6
+    - 4
+    - 7
 
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"

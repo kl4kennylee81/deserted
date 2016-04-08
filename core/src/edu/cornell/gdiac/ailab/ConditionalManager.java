@@ -21,9 +21,14 @@ public class ConditionalManager {
     		"default",
     		"safe", 
     		"not_safe", 
-    		"can_hit_enemy", 
+    		"can_hit",
+    		"quick_attack_can_hit",
     		"adjacent_safe_square", 
-    		"adjacent_attack_square", 
+    		"adjacent_attack_square",
+    		"adjacent_attack_square_single",
+    		"adjacent_attack_square_quick",
+    		"no_adjacent_attack_square",
+    		"single_in_range",
     		"ally_casting", 
     		"ally_shielding", 
     		"enemy_casting",
@@ -60,9 +65,14 @@ public class ConditionalManager {
 		this.enemies = enemies;
 		
 		map.put("safe", isSafe());
+		map.put("safe_from_single", isSafeFromSingle());
 		map.put("not_safe", isNotSafe());
-		map.put("can_hit_enemy", canHitOpponent());
+		map.put("can_hit", canHitOpponent());
+		map.put("quick_attack_can_hit", canHitQuickAttack());
 		map.put("adjacent_attack_square", attackSquareAdjacent());
+	    map.put("adjacent_attack_square_single", attackSquareAdjacentSingle());
+	    map.put("adjacent_attack_square_quick", attackSquareAdjacentQuick());
+		map.put("no_adjacent_attack_square", !attackSquareAdjacent());
 		map.put("adjacent_safe_square", safeSquareAdjacent());
 		map.put("ally_casting", friendIsCasting());
 		map.put("ally_shielding", friendIsShielding());
@@ -84,6 +94,7 @@ public class ConditionalManager {
 		map.put("one_enemy_left", oneEnemyLeft());
 		map.put("has_shield", hasShield());
 		map.put("has_single", hasSingle());
+		map.put("single_in_range", singleInRange());
 		map.put("ally_safe", nextFriendSafe());
 		map.put("ally_can_hit_enemy", nextFriendCanHit());
 		map.put("ally_almost_done_waiting", friendWillEnterSoon());
@@ -98,13 +109,26 @@ public class ConditionalManager {
 	
 	
 	/**
-	 * Returns true if the selected character's current square is safe
+	 * Returns true if the selected character's current square is safe from
+	 * projectiles and instant attacks
 	 */
 	public boolean isSafe(){
 		return isSafeSquare(selected.xPosition, selected.yPosition);
-		
 	}
 	
+	/**
+	 * Returns true if the selected character's current square is safe from 
+	 * all types of attacks
+	 */
+	public boolean isSafeFromSingle(){
+		for(Character c: enemies){
+			for(Action a: c.availableActions){
+				if(canAttackSquare(c, selected.xPosition, selected.yPosition, a)) return false;
+			}
+		}
+		return true;
+	}
+
 	
 	/** 
 	 * Returns true if the selected character's current square is not safe
@@ -146,6 +170,24 @@ public class ConditionalManager {
 		return canHitEnemyFrom(selected, selected.xPosition, selected.yPosition);
 	}
 	
+	/**
+	 * Returns true if the character's quickest damaging attack can hit someone
+	 */
+	public boolean canHitQuickAttack(){
+		Action quickest = null;
+		for(Action a : selected.availableActions){
+			if(a.damage > 0 && (quickest == null || a.cost < quickest.cost)){
+				quickest = a;
+			}
+		}
+		for(Character c: enemies){
+			if(quickest.hitsTarget(selected.xPosition, selected.yPosition, c.xPosition, c.yPosition, selected.leftside, board)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 	/**
 	 * Returns true if there is an adjacent square to the selected character's
@@ -154,16 +196,64 @@ public class ConditionalManager {
 	public boolean attackSquareAdjacent(){
 		int x = selected.xPosition;
 		int y = selected.yPosition;
-		if(canHitEnemyFrom(selected, x+1, y) && ownSide(x+1)){
+		Action quickest = null;
+		for(Action a : selected.availableActions){
+			if(a.damage > 0 && (quickest == null || a.cost < quickest.cost)){
+				quickest = a;
+			}
+		}
+		if(canHitEnemyFrom(selected, x+1, y) && board.canMove(selected.leftside, x+1, y)){
 			return true;
 		}
-		if(canHitEnemyFrom(selected, x, y+1)){
+		if(canHitEnemyFrom(selected, x, y+1) && board.canMove(selected.leftside, x, y+1)){
 			return true;
 		}
-		if(canHitEnemyFrom(selected, x-1, y) && ownSide(x-1)){
+		if(canHitEnemyFrom(selected, x-1, y) && board.canMove(selected.leftside, x-1, y)){
 			return true;
 		}
-		if(canHitEnemyFrom(selected, x, y-1)){
+		if(canHitEnemyFrom(selected, x, y-1) && board.canMove(selected.leftside, x, y-1)){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean attackSquareAdjacentSingle(){
+		int x = selected.xPosition;
+		int y = selected.yPosition;
+		if(canHitEnemyFromSingle(selected, x+1, y) && board.canMove(selected.leftside, x+1, y)){
+			return true;
+		}
+		if(canHitEnemyFromSingle(selected, x, y+1) && board.canMove(selected.leftside, x, y+1)){
+			return true;
+		}
+		if(canHitEnemyFromSingle(selected, x-1, y) && board.canMove(selected.leftside, x-1, y)){
+			return true;
+		}
+		if(canHitEnemyFromSingle(selected, x, y-1) && board.canMove(selected.leftside, x, y-1)){
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean attackSquareAdjacentQuick(){
+		int x = selected.xPosition;
+		int y = selected.yPosition;
+		Action quick = null;
+		for(Action a : selected.availableActions){
+			if(a.damage > 0 && (quick == null || a.cost < quick.cost)){
+				quick = a;
+			}
+		}
+		if(canHitEnemyFromAction(selected, x+1, y, quick) && board.canMove(selected.leftside, x+1, y)){
+			return true;
+		}
+		if(canHitEnemyFromAction(selected, x, y+1, quick) && board.canMove(selected.leftside, x, y+1)){
+			return true;
+		}
+		if(canHitEnemyFromAction(selected, x-1, y, quick) && board.canMove(selected.leftside, x-1, y)){
+			return true;
+		}
+		if(canHitEnemyFromAction(selected, x, y-1, quick) && board.canMove(selected.leftside, x, y-1)){
 			return true;
 		}
 		return false;
@@ -178,16 +268,16 @@ public class ConditionalManager {
 	public boolean safeSquareAdjacent(){
 		int x = selected.xPosition;
 		int y = selected.yPosition;
-		if(isSafeSquare(x+1, y) && ownSide(x+1)){
+		if(isSafeSquare(x+1, y) && board.canMove(selected.leftside, x+1, y)){
 			return true;
 		}
-		if(isSafeSquare(x, y+1)){
+		if(isSafeSquare(x, y+1) && board.canMove(selected.leftside, x, y+1)){
 			return true;
 		}
-		if(isSafeSquare(x-1, y) && ownSide(x-1)){
+		if(isSafeSquare(x-1, y) && board.canMove(selected.leftside, x-1, y)){
 			return true;
 		}
-		if(isSafeSquare(x, y-1)){
+		if(isSafeSquare(x, y-1) && board.canMove(selected.leftside, x, y-1)){
 			return true;
 		}
 		return false;
@@ -369,6 +459,24 @@ public class ConditionalManager {
 		for(Action a: selected.availableActions){
 			if(a.pattern == Pattern.SINGLE){
 				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if the selected character has a single square action
+	 * in range of hitting an opponent
+	 */
+	public boolean singleInRange(){
+		for(Action a: selected.availableActions){
+			if(a.pattern == Pattern.SINGLE){
+				for(Character c: enemies){
+					if(a.hitsTarget(selected.xPosition, selected.yPosition, 
+							c.xPosition, c.yPosition, selected.leftside, board)){
+						return true;
+					}
+				}
 			}
 		}
 		return false;
@@ -674,6 +782,7 @@ public class ConditionalManager {
 			//System.out.println(c.name);
 			int num = slowestMoveThatCanHitMe(c);
 			if(num >= 0 && interruptibleBy(c, slots, num)){
+				System.out.println(c.name + ": " + num);
 				return true;
 			}
 		}
@@ -730,11 +839,14 @@ public class ConditionalManager {
 		return true;
 	}
 	
+		
+	
 	/**
 	 * Returns true if Action a cast from (x1,y1) can hit square (x2,y2);
 	 */
 	public boolean canAttackSquareFrom(int x1, int y1, int x2, int y2, Action a){
-		return a.hitsTarget(x1, y1, x2, y2, false,board);
+		boolean leftside = x1 < board.width / 2 ? true : false;
+		return a.hitsTarget(x1, y1, x2, y2, leftside ,board);
 	}
 	
 	
@@ -747,6 +859,43 @@ public class ConditionalManager {
 			if(canAttackSquareNoSingle(c, x, y, e.xPosition, e.yPosition)){
 				return true;
 			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if the the character can hit an enemy from square (x,y), including single-square attacks
+	 */
+	public boolean canHitEnemyFromSingle(Character c, int x, int y){
+		if(!board.isInBounds(x, y)) return false;
+		for(Character e: enemies){
+			if(canAttackSquareWithSingle(c, x, y, e.xPosition, e.yPosition)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if the the character can hit an enemy from square (x,y) with action a
+	 */
+	public boolean canHitEnemyFromAction(Character c, int x, int y, Action a){
+		if(!board.isInBounds(x, y)) return false;
+		for(Character e: enemies){
+			if(a.hitsTarget(x, y, e.xPosition, e.yPosition, c.leftside, board)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/** 
+	 * Returns true if Character c can attack square (x2,y2) from (x1,y1), including using a
+	 * single-square attack
+	 */
+	public boolean canAttackSquareWithSingle(Character c, int x1, int y1, int x2, int y2){
+		for(Action a: c.availableActions){
+			if(canAttackSquareFrom(x1, y1, x2, y2, a)) return true;
 		}
 		return false;
 	}

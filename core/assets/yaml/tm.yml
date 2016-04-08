@@ -52,11 +52,11 @@ DEFAULT_CHILD:
 
 #----------------------------------------------
 
-red:
+Mage Spirit:
   type: character
   branches: [BRANCH1]
 
-blue:
+Rock Spirit:
   type: character
   branches: [BRANCH1]
 
