@@ -877,9 +877,9 @@ public class GameCanvas {
 	public GlyphLayout drawTutorialText(String msg, Color color) {
 		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
-		float width = getWidth()/2;
+		float width = ((float)getWidth())/1.3f;
 		float x = getWidth()/2-width/2;
-		float y = getHeight()/2;
+		float y = ((float)getHeight())/1.7f;
 		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
 		return g;
 	}
@@ -916,6 +916,15 @@ public class GameCanvas {
 		ADDITIVE,
 		/** Color values are draw on top of one another with no transparency support */
 		OPAQUE
+	}
+
+	public void drawWarningText(String warning) {
+		displayFont.getData().setScale(2);
+		displayFont.setColor(Color.SCARLET);
+		float width = ((float)getWidth())/2f;
+		float x = getWidth()/2-width/2;
+		float y = ((float)getHeight())/2f;
+		displayFont.draw(spriteBatch, warning, x,y, width, Align.center, true);
 	}	
 }
 //TODO: make draw message take positions rather than hardcoding

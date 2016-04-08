@@ -69,6 +69,7 @@ public class GameEngine implements Screen {
 		LOAD,
 		/** After loading, but before we start the game */
 		MENU,
+		LEVEL_MENU,
 		/** While we are playing the game */
 		PLAY,
 		/** When the game is currently paused */
@@ -226,7 +227,7 @@ public class GameEngine implements Screen {
     		level = getLevel("pvp");
     		break;
     	case 4:
-    		level = getLevel("tutorial");
+    		level = getLevel("tutorial1");
     		break;
     	default:
     		break;
@@ -296,6 +297,9 @@ public class GameEngine implements Screen {
 				e.printStackTrace();
 			}
 			break;
+		case LEVEL_MENU:
+			updateLevelMenu();
+			break;
 		case PLAY:
 			updatePlay();
 			drawPlay();
@@ -317,6 +321,11 @@ public class GameEngine implements Screen {
 		canvas.end();
 	}
 		
+	private void updateLevelMenu() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/** 
 	 * Returns true if the user reset the game.
 	 *
@@ -361,10 +370,15 @@ public class GameEngine implements Screen {
 	private void updateMenu() throws IOException {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
-			startGame(mainMenuController.gameNo);
+			loadNextMenu(mainMenuController.gameNo);
+			//startGame(mainMenuController.gameNo);
 		}
 	}
 	
+	private void loadNextMenu(int gameNo) throws IOException {
+		startGame(gameNo);
+	}
+
 	/**
      * The primary update loop of the game; called while it is running.
      */

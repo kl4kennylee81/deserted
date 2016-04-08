@@ -16,7 +16,7 @@ public class HighlightScreen {
 	private static List<TextureRegion> currentHighlights;
 	private static Color highlightColor;
 	private static boolean justScreen;
-	private static float SCREEN_OPACITY = 0.4f;
+	private static float SCREEN_OPACITY = 0.55f;
 	float lerpVal;
 	boolean increasing;
 	int maxY;
@@ -39,6 +39,7 @@ public class HighlightScreen {
 	
 	public void setJustScreen(){
 		justScreen = true;
+		currentHighlights.clear();
 	}
 	
 	public void noScreen(){

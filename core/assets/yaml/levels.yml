@@ -1,4 +1,4 @@
-easy: 
+easy:
     allies:
         - id: 0
           xPosition: 0
@@ -32,7 +32,7 @@ easy:
     boardTexture: "models/Tile.png"
     AI: ["tm.yml"]
 
-medium: 
+medium:
     allies:
         - id: 0
           xPosition: 0
@@ -66,7 +66,7 @@ medium:
     boardTexture: "models/Tile.png"
     AI: ["tm.yml"]
 
-hard: 
+hard:
     allies:
         - id: 0
           xPosition: 0
@@ -94,7 +94,7 @@ hard:
           defensiveness: 0.5
           intelligence: 0.3
           difficulty: HARD
-    nextLevel: 
+    nextLevel:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
@@ -118,13 +118,13 @@ pvp:
         - id: 3
           xPosition: 5
           yPosition: 3
-    nextLevel: 
+    nextLevel:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
     AI: []
 
-tutorial:
+tutorial1:
     allies:
         - id: 90
           xPosition: 1
@@ -140,8 +140,8 @@ tutorial:
           intelligence: 0.3
           difficulty: EASY
 
-    nextLevel: 
-    tutorialFileName: "yaml/tutorial.yaml"
+    nextLevel:
+    tutorialFileName: "yaml/tutorial1.yaml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"

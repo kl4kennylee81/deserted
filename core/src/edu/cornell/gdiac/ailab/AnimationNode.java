@@ -48,7 +48,7 @@ public class AnimationNode {
 	 */
 	public FilmStrip getTexture(CharacterState charState,InGameState gameState){
 		// if the game state is selection freeze the frame on the current frame
-		if (gameState == InGameState.SELECTION){
+		if (gameState == InGameState.SELECTION || gameState == InGameState.PAUSED){
 			return animation.filmStrip;
 		}
 		

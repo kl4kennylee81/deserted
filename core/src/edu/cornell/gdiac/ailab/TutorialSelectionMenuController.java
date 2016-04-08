@@ -59,6 +59,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 					tutorialSteps.nextStep();
 				} else {
 					System.out.println("wrong attack");
+					tutorialSteps.setWarning("Please follow the instructions!");
 				}
 			} else {
 				if (correctActions()){
@@ -69,6 +70,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 					tutorialSteps.nextStep();
 				} else {
 					System.out.println("can't confirm");
+					tutorialSteps.setWarning("You can\'t confirm that action just yet!");
 				}
 			}
 		} else if (InputController.pressedBack()){
@@ -127,6 +129,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 				tutorialSteps.nextStep();
 			} else {
 				System.out.println("wrong target");
+				tutorialSteps.setWarning("Please follow the instructions!");
 			}
 		} else if (InputController.pressedBack()){
 			//menu.setChoosingTarget(false);

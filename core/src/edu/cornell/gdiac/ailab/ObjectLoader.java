@@ -449,6 +449,17 @@ public class ObjectLoader {
 		for (HashMap<String, Object> step : steps.values()){
 			String text = (String) step.get("text");
 			Boolean paused = (Boolean) step.get("paused");
+			Integer waitTime = (Integer) step.get("waitTime");
+			Boolean spaceToContinue = (Boolean) step.get("spaceToContinue");
+			Boolean dontWriteText = (Boolean) step.get("dontWriteText");
+			Integer timeToPause = (Integer) step.get("timeToPause");
+			if (dontWriteText == null){
+				dontWriteText = false;
+			}
+			if (timeToPause == null){
+				timeToPause = -1;
+			}
+			
 			
 			Boolean confirm = (Boolean) step.get("confirm");
 			if (confirm == null) confirm = false;
@@ -458,7 +469,7 @@ public class ObjectLoader {
 				ts.setFinishGame(finishGame);
 			}
 			
-			ts.addStep(text, paused, confirm);
+			ts.addStep(text, paused, confirm, waitTime, spaceToContinue, dontWriteText, timeToPause);
 			
 			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) step.get("actions");
 			
