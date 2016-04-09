@@ -12,6 +12,7 @@ public class Action implements GUIElement {
 	int size;
 	boolean oneHit;
 	boolean canBlock;
+	boolean needsToggle;
 	Pattern pattern;
 	Effect effect;
 	String description;
@@ -40,7 +41,7 @@ public class Action implements GUIElement {
 		INSTANT
 	}
 	
-	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, boolean oneHit, boolean canBlock, Effect effect, String description){
+	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, boolean oneHit, boolean canBlock,boolean needsToggle, Effect effect, String description){
 		this.name = name;
 		this.cost = cost;
 		this.damage = damage;
@@ -49,12 +50,13 @@ public class Action implements GUIElement {
 		this.pattern = pattern;
 		this.oneHit = oneHit;
 		this.canBlock = canBlock;
+		this.needsToggle = needsToggle;
 		this.effect = effect;
 		this.description = description;
 	}
 	
-	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, boolean oneHit, boolean canBlock, Effect effect, String description, String strpath){
-		this(name, cost, damage, range, size, pattern, oneHit, canBlock, effect, description);
+	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, boolean oneHit, boolean canBlock,boolean needsToggle, Effect effect, String description, String strpath){
+		this(name, cost, damage, range, size, pattern, oneHit, canBlock,needsToggle, effect, description);
 		
 		if ((this.pattern == Pattern.PROJECTILE||this.pattern == Pattern.INSTANT)&&strpath!=""){
 			// path string for a straight range 3 looks like this "0,0 1,0 2,0, 3,0" with 0,0 being the character current position"
@@ -142,6 +144,10 @@ public class Action implements GUIElement {
 			}
 			return false;
 		}	
+	}
+	
+	public boolean getNeedsToggle(){
+		return this.needsToggle;
 	}
 	
 	public boolean singleCanTarget(int startX,int startY, int targetX,int targetY){

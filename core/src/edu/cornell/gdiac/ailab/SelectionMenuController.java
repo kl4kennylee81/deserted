@@ -57,7 +57,7 @@ public class SelectionMenuController {
 		
 		boardWidth = board.width;
 		boardHeight = board.height;
-		nop = new Action("NOP", 1, 0, 0, 1, Pattern.NOP, false, false, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
+		nop = new Action("NOP", 1, 0, 0, 1, Pattern.NOP, false, false,false, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
 	}
 	
 	public void update(){
@@ -113,7 +113,7 @@ public class SelectionMenuController {
 		int numSlots = selected.getActionBar().getUsableNumSlots();
 		if ((InputController.pressedEnter() || mouseCondition)){
 			if (action != null && menu.canAct(numSlots)){
-				if (action.needsToggle){
+				if (action.getNeedsToggle()){
 					updateTargetedAction();
 					prompt = "Choose a Target";
 				} else {

@@ -7,6 +7,7 @@
   pattern: MOVE
   oneHit: false
   canBlock: false
+  needsToggle: true
   effect: 
     type: REGULAR
     name: Regular
@@ -24,6 +25,7 @@
   pattern: STRAIGHT
   oneHit: true
   canBlock: true
+  needsToggle: false
   effect: 
     type: REGULAR
     name: Regular
@@ -39,6 +41,7 @@
   range: 5
   size: 1
   pattern: DIAGONAL
+  needsToggle: true
   oneHit: true
   canBlock: true
   effect: 
@@ -58,6 +61,7 @@
   size: 1
   pattern: SINGLE
   oneHit: true
+  needsToggle: true
   canBlock: false
   effect: 
     type: REGULAR
@@ -76,6 +80,7 @@
   size: 1
   pattern: STRAIGHT
   oneHit: true
+  needsToggle: false
   canBlock: true
   effect: 
     type: REGULAR
@@ -96,6 +101,7 @@
   size: 1
   pattern: DIAGONAL
   oneHit: true
+  needsToggle: true
   canBlock: true
   effect: 
     type: REGULAR
@@ -116,6 +122,7 @@
   size: 1
   pattern: SHIELD
   oneHit: false
+  needsToggle: false
   canBlock: false
   effect: 
     type: REGULAR
@@ -136,6 +143,7 @@
   size: 1
   pattern: SINGLE
   oneHit: true
+  needsToggle: false
   canBlock: false
   effect:
     type: SPEED
@@ -153,6 +161,7 @@
   size: 1
   pattern: STRAIGHT
   oneHit: true
+  needsToggle: false
   canBlock: true
   persisting_action: 
     numRounds: 10 
@@ -172,6 +181,7 @@
   range: 2
   size: 1
   pattern: SHIELD
+  needsToggle: true
   oneHit: false
   canBlock: false
   effect: 
@@ -192,6 +202,7 @@
   range: 2
   size: 1
   pattern: STRAIGHT
+  needsToggle: false
   oneHit: true
   canBlock: true
   effect: 
@@ -214,6 +225,7 @@
   pattern: PROJECTILE
   path: "0,0 1,0 2,1 3,0 4,1 5,0"
   oneHit: true
+  needsToggle: false
   canBlock: true
   effect: 
     type: REGULAR
@@ -235,6 +247,7 @@
   pattern: INSTANT
   path: "0,0 1,0 2,1 3,0 4,1 5,0"
   oneHit: true
+  needsToggle: false
   canBlock: true
   effect: 
     type: REGULAR
@@ -252,6 +265,7 @@
   size: 1
   pattern: HORIZONTAL
   oneHit: false
+  needsToggle: false
   canBlock: false
   effect: 
     type: REGULAR
@@ -268,6 +282,7 @@
   range: 6
   size: 1
   pattern: STRAIGHT
+  needsToggle: false
   oneHit: true
   canBlock: true
   effect: 
@@ -288,6 +303,7 @@
   range: 2
   size: 1
   pattern: SHIELD
+  needsToggle: true
   oneHit: false
   canBlock: false
   effect: 
@@ -308,6 +324,7 @@
   range: 1
   size: 1
   pattern: SHIELD
+  needsToggle: false
   oneHit: false
   canBlock: false
   effect: 
@@ -330,6 +347,7 @@
   pattern: INSTANT
   path: "0,0 1,0 2,0 2,1 2,-1"
   oneHit: false
+  needsToggle: false
   canBlock: true
   effect: 
     type: REGULAR
@@ -346,6 +364,7 @@
   range: 5
   size: 1
   pattern: SINGLE
+  needsToggle: true
   oneHit: false
   canBlock: false
   effect: 
@@ -364,6 +383,7 @@
   size: 1
   pattern: SINGLE
   oneHit: false
+  needsToggle: true
   canBlock: false
   effect: 
     type: DAZED
