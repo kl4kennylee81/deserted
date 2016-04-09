@@ -113,8 +113,14 @@ public class SelectionMenuController {
 		int numSlots = selected.getActionBar().getUsableNumSlots();
 		if ((InputController.pressedEnter() || mouseCondition)){
 			if (action != null && menu.canAct(numSlots)){
-				updateTargetedAction();
-				prompt = "Choose a Target";
+				if (action.needsToggle){
+					updateTargetedAction();
+					prompt = "Choose a Target";
+				} else {
+					float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
+					menu.add(anPool.newActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
+					menu.resetPointer(numSlots);
+				}
 			} else {
 				selected.setSelecting(false);
 				selected.setQueuedActions(menu.getQueuedActions());
