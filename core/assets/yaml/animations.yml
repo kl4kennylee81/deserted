@@ -120,7 +120,7 @@
 
 3:
   name: Character3Strip
-  texture: "models/tutorial.png"
+  texture: "models/tutorial_char.png"
   rows: 1
   cols: 12
   size: 12

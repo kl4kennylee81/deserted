@@ -143,7 +143,7 @@
   size: 1
   pattern: SINGLE
   oneHit: true
-  needsToggle: false
+  needsToggle: true
   canBlock: false
   effect:
     type: SPEED

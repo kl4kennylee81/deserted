@@ -553,6 +553,9 @@ public class Character implements GUIElement {
 		if (!isAlive()){
 			return;
 		}
+		else{
+			drawHealth(canvas,board);
+		}
 		if(hasPersisting()){
 			drawPersisting(canvas,board);
 		}
@@ -627,6 +630,12 @@ public class Character implements GUIElement {
 			this.setIdle();
 		}
 		return fs;
+	}
+	
+	/** return the current filmstrip with animation set as frame without incrementing
+	 * **/
+	public FilmStrip getCurrentFilmStrip(){
+		return getFilmStrip(InGameState.PAUSED);
 	}
 	
 	public void drawCharacter(GameCanvas canvas,GridBoard board, boolean shouldDim,InGameState gameState){
@@ -811,8 +820,28 @@ public class Character implements GUIElement {
 		}
 	}
 	
+	public void drawHealth(GameCanvas canvas,GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		float tileH = board.getTileHeight(canvas);
+		
+		// get the current film strip without incrementing the animation
+		FilmStrip toDraw = getFilmStrip(InGameState.PAUSED);
+		if (toDraw == null) {
+			toDraw = getCurrentFilmStrip();
+		}
+		float charScale = getCharScale(canvas,toDraw,board);
+		
+		float canvasX = tileW*xPosition + toDraw.getRegionWidth()*charScale/2;
+		float canvasY = tileH*yPosition + toDraw.getRegionHeight()*charScale + 20;
+		Coordinate canvasCoord = board.offsetBoard(canvas,canvasX,canvasY);
+		String healthText = Integer.toString(this.health);
+		canvas.drawCenteredText(healthText, canvasCoord.x, canvasCoord.y, Color.BLACK.cpy());
+		canvasCoord.free();
+	}
+	
 	
 	public void drawHealth(GameCanvas canvas,int count,boolean shouldDim){
+	
 //		Color iconColor = this.getColor(shouldDim);
 //		Color waitColor = this.getActionBarColor(shouldDim, this.color.cpy());
 //		

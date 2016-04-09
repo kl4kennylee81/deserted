@@ -48,8 +48,11 @@ public class AnimationNode {
 	 */
 	public FilmStrip getTexture(CharacterState charState,InGameState gameState){
 		// if the game state is selection freeze the frame on the current frame
-		if (gameState == InGameState.SELECTION){
-			// return animation.filmStrip;
+//		if (gameState == InGameState.SELECTION){
+//			 return animation.filmStrip;
+//		}
+		if (gameState == InGameState.PAUSED){
+			return animation.filmStrip;
 		}
 		
 		if (charState.id != curSegment){
