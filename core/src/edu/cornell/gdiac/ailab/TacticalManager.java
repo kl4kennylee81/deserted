@@ -79,9 +79,9 @@ public class TacticalManager extends ConditionalManager{
 	 * Manager tree to find a list of actions. 
 	 */
 	public void selectActions(Character c){
-		System.out.print(c.name+": ");
-		System.out.print(map.get("can_hit")+" ");
-		System.out.println(map.get("single_in_range")+" ");
+		// System.out.print(c.name+": ");
+		// System.out.print(map.get("can_hit")+" ");
+		// System.out.println(map.get("single_in_range")+" ");
 		//System.out.print(map.get("MED_INT_CHANCE")+" ");
 		//System.out.println(map.get("HIGH_INT_CHANCE")+" ");
 

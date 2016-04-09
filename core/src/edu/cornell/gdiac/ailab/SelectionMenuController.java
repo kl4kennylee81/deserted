@@ -68,6 +68,9 @@ public class SelectionMenuController {
 				drawHighlights();
 			}
 			if (!choosingTarget){
+				// prompt choose an action when not choosing target
+	    		prompt = "Choose an Action";
+	    		this.setPrompt(prompt);
 				updateNotChoosingTarget();
 			} else {
 				updateChoosingTarget();
@@ -113,6 +116,8 @@ public class SelectionMenuController {
 		int numSlots = selected.getActionBar().getUsableNumSlots();
 		if ((InputController.pressedEnter() || mouseCondition)){
 			if (action != null && menu.canAct(numSlots)){
+				
+				// allows for bypassing the targetting phase
 				if (action.getNeedsToggle()){
 					updateTargetedAction();
 					prompt = "Choose a Target";

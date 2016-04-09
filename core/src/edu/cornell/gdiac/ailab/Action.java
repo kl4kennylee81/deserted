@@ -184,12 +184,6 @@ public class Action implements GUIElement {
 	
 	
 	public boolean contains(float x, float y, GameCanvas canvas, GridBoard board){
-//		System.out.println("x is " + x);
-//		System.out.println("y is " + y);
-//		System.out.println("this.x is " + this.x);
-//		System.out.println("this.y is " + this.y);
-//		System.out.println("this.width is " + width);
-//		System.out.println("this.height is " + height);
 		return (x <= this.x+this.width && x >= this.x && y <= this.y + this.height && y >= this.y);
 	}
 }

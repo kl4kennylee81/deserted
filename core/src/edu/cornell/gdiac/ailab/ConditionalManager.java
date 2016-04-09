@@ -782,7 +782,6 @@ public class ConditionalManager {
 			//System.out.println(c.name);
 			int num = slowestMoveThatCanHitMe(c);
 			if(num >= 0 && interruptibleBy(c, slots, num)){
-				System.out.println(c.name + ": " + num);
 				return true;
 			}
 		}

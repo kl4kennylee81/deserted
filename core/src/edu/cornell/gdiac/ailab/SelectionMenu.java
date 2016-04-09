@@ -58,7 +58,6 @@ public class SelectionMenu {
 	
 	public SelectionMenu(Action[] actions){
 		this.actions = actions;
-//		System.out.println("Selection action set to 0");
 		selectedAction = 0;
 		takenSlots = 0;
 		choosingTarget = false;
@@ -183,10 +182,8 @@ public class SelectionMenu {
 	public boolean changeSelected(boolean up,int numSlots){
 		if (up){
 			for (int i = 0; i <= actions.length; i++){
-//				System.out.println("Selection action set to " + selectedAction);
 				selectedAction += 1;
 				selectedAction %= actions.length+1;
-//				System.out.println("Selection action set to " + selectedAction);
 				if (canDoAction(selectedAction,numSlots)){
 					return true;
 				}
@@ -197,7 +194,6 @@ public class SelectionMenu {
 				if (selectedAction < 0){
 					selectedAction += actions.length+1;
 				}
-//				System.out.println("Selection action set to " + selectedAction);
 				if (canDoAction(selectedAction,numSlots)){
 					return true;
 				}
@@ -214,7 +210,6 @@ public class SelectionMenu {
 		if (actions[selectedAction].cost > numSlots - takenSlots){
 			for (int i = 0; i <= actions.length; i++){
 				selectedAction = i;
-//				System.out.println("Selection action set to " + selectedAction);
 				if (canDoAction(selectedAction,numSlots)){
 					return true;
 				}
@@ -225,7 +220,6 @@ public class SelectionMenu {
 	
 	public void reset(){
 		selectedAction = 0;
-//		System.out.println("Selection action set to " + selectedAction);
 		takenSlots = 0;
 		choosingTarget = false;
 		while(selectedActions.peek() != null){
@@ -266,7 +260,6 @@ public class SelectionMenu {
 				offset_y += spacing_h + g.height/2;
 			}
 			
-//			System.out.println(action.name + " is at " + i);
 			if (i == selectedAction){
 				selectedPointerOffset = offset_y;
 			}
@@ -294,7 +287,6 @@ public class SelectionMenu {
 		float pointer_x = text_x - ACTION_POINTER_OFFSET_X;
 		float pointer_y = text_y - selectedPointerOffset -  ACTION_POINTER_OFFSET_Y;//spacing_h*selectedAction - ACTION_POINTER_OFFSET_Y;
 		//draws action name pointers
-//			System.out.println("Pointer is at " + selectedAction);
 		canvas.drawPointer(pointer_x,pointer_y, Color.CORAL);
 		
 		//Draw action bar with 3 black boxes to show 4 slots

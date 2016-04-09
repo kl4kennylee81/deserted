@@ -108,8 +108,6 @@ public class GameplayController {
     		mouseOverController.clearAll();
     		selectionMenuController.update();
     		mouseOverController.update(selectionMenuController.getMenu(),characters);
-    		prompt = "Choose an Action";
-    		selectionMenuController.setPrompt(prompt);
     		if (selectionMenuController.isDone()){
     			inGameState = InGameState.NORMAL;
     			prompt = null;

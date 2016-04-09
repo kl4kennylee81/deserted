@@ -303,9 +303,6 @@ public class ActionController {
 				path[i+2] = coordPool.newCoordinate(projectileX-i-1,selected.yPosition-i-1);
 			}
 		}
-		for (int i =0;i<path.length;i++){
-			//System.out.println(path[i]);
-		}
 		return path;
 	}
 	
