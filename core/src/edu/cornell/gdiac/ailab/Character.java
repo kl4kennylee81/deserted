@@ -201,13 +201,15 @@ public class Character implements GUIElement {
 				//change to interrupted later maybe?
 				this.setIdle();
 			}
-			if (castPosition - lastCastStart >= ((1-this.getActionBar().getCastPoint())/this.getActionBar().getTotalNumSlots())){
+			else if (castPosition > (this.getNextCast() - this.getActionBar().getSlotWidth()) 
+					&& (castPosition -lastCastStart) > this.getActionBar().getSlotWidth()){
 				this.setCast();
 			} else {
 				this.setActive();
 			}
 		}
-	}
+		}
+	
 	public float getX(){
 		return this.xPosition;
 	}
@@ -626,7 +628,8 @@ public class Character implements GUIElement {
 	 */
 	public FilmStrip getFilmStrip(InGameState gameState){
 		FilmStrip fs = animation.getTexture(charState,gameState);
-		if (fs == null){
+		// flip back when its in execute
+		if (fs == null && this.charState == CharacterState.EXECUTE){
 			this.setIdle();
 		}
 		return fs;

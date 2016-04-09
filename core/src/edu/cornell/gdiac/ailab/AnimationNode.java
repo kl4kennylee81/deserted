@@ -60,8 +60,8 @@ public class AnimationNode {
 			curFrameIndex = 0;
 			curFrameDuration = 0;
 		}
-		// in idle state allows for cycling back until otherwise changed externally
-		else if (charState.id == curSegment && charState == CharacterState.IDLE
+		// executes the only action that doesn't loop around
+		else if (charState.id == curSegment && charState != CharacterState.EXECUTE
 				&& curFrameIndex>=animation.segments.get(curSegment).length){
 			curFrameIndex = 0;
 			curFrameDuration = 0;			

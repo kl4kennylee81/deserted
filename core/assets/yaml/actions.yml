@@ -210,7 +210,7 @@
     name: Regular
     numRounds: 0
     magnitude: 0
-  description: Launch a projectile 3 tiles straight ahead for 1 damage
+  description: Launch a projectile 2 tiles straight ahead for 1 damage
   persisting_action: 
     numRounds: 10 
     moveSpeed: 0.05
@@ -279,7 +279,7 @@
   name: Firebolt
   cost: 2
   damage: 2
-  range: 6
+  range: 4
   size: 1
   pattern: STRAIGHT
   needsToggle: false
@@ -290,7 +290,7 @@
     name: Regular
     numRounds: 0
     magnitude: 0
-  description: super horizontal attack
+  description: Fire a straight projectile 4 squares for 2 damage.
   persisting_action: 
     numRounds: 10 
     moveSpeed: 0.06
@@ -354,7 +354,7 @@
     name: Regular
     numRounds: 0
     magnitude: 0
-  description: Creates a 2-tile wide shield (Cannot move after)
+  description: Deal 2 damage in a cone shaped T.
   animationId: 0
 
 18:
@@ -372,7 +372,7 @@
     name: Break Tile
     numRounds: 1
     magnitude: 0
-  description: Creates a 2-tile wide shield (Cannot move after)
+  description: Deal 3 damage to a particular tile and Breaks the tile.
   animationId: 0
 
 19:
@@ -390,7 +390,7 @@
     name: Dazed
     numRounds: 1
     magnitude: 1
-  description: Daze your opponent
+  description: Daze your opponent loses a slot.
   animationId: 0
 
 ...
