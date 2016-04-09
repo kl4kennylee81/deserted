@@ -155,8 +155,7 @@ public class SelectionMenuController {
 			menu.setChoosingTarget(true);
 			break;
 		case SINGLE:
-			selectedX = leftside ? SINGLE_X_LEFT : SINGLE_X_RIGHT;
-			selectedY = SINGLE_Y;
+			this.singleUpdateTargetedAction();
 			menu.setChoosingTarget(true);
 			break;
 		case HORIZONTAL:
@@ -203,6 +202,24 @@ public class SelectionMenuController {
 			break;
 		default:
 			break;
+		}
+	}
+	
+	protected void singleUpdateTargetedAction(){
+		boolean hasFound = false;
+		for (int i =0;i<board.getHeight();i++){
+			for (int j=0;j<board.getWidth();j++){
+				boolean canHit = this.action.hitsTarget(this.selected.getShadowX(),this.selected.getShadowY(),i,j,this.selected.leftside,board);
+				if (canHit){
+					this.selectedX = i;
+					this.selectedY = j;
+					hasFound = true;
+					break;
+				}
+			}
+			if (hasFound){
+				break;
+			}
 		}
 	}
 	
