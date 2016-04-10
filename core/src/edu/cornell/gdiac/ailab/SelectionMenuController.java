@@ -207,14 +207,17 @@ public class SelectionMenuController {
 	
 	protected void singleUpdateTargetedAction(){
 		boolean hasFound = false;
-		for (int i =0;i<board.getHeight();i++){
-			for (int j=0;j<board.getWidth();j++){
-				boolean canHit = this.action.hitsTarget(this.selected.getShadowX(),this.selected.getShadowY(),i,j,this.selected.leftside,board);
-				if (canHit){
-					this.selectedX = i;
-					this.selectedY = j;
-					hasFound = true;
-					break;
+		for (int i =0;i<board.getWidth();i++){
+			for (int j=0;j<board.getHeight();j++){
+				if ((this.selected.leftside && i >= board.getWidth()/2)||(!this.selected.leftside && i < board.getWidth()/2)){
+					boolean canHit = this.action.hitsTarget(this.selected.getShadowX(),this.selected.getShadowY(),i,j,this.selected.leftside,board);
+					if (canHit){
+						this.selectedX = i;
+						this.selectedY = j;
+						hasFound = true;
+						System.out.println(this.selectedX+":"+this.selectedY);
+						break;
+					}
 				}
 			}
 			if (hasFound){

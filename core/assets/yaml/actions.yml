@@ -260,7 +260,7 @@
 13:
   name: Lightning Column
   cost: 4
-  damage: 4
+  damage: 2
   range: 10
   size: 1
   pattern: HORIZONTAL
@@ -283,7 +283,7 @@
   size: 1
   pattern: STRAIGHT
   needsToggle: false
-  oneHit: true
+  oneHit: false
   canBlock: true
   effect: 
     type: REGULAR
@@ -385,6 +385,25 @@
   oneHit: false
   needsToggle: true
   canBlock: false
+  effect: 
+    type: DAZED
+    name: Dazed
+    numRounds: 1
+    magnitude: 1
+  description: Daze your opponent loses a slot.
+  animationId: 0
+
+20:
+  name: Lob
+  cost: 3
+  damage: 2
+  range: 10
+  size: 1
+  pattern: INSTANT
+  oneHit: false
+  needsToggle: true
+  canBlock: false
+  path: "0,0 3,0 4,0"
   effect: 
     type: DAZED
     name: Dazed

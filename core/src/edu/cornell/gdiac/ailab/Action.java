@@ -151,7 +151,6 @@ public class Action implements GUIElement {
 	}
 	
 	public boolean singleCanTarget(int startX,int startY, int targetX,int targetY){
-		
 		// check with range from epicenter
 		int diffX = Math.abs(targetX - startX);
 		int diffY = Math.abs(targetY - startY);

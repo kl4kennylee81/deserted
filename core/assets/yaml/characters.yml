@@ -11,7 +11,6 @@
   leftSide: false
   availableActions: 
     - 0
-    - 19
     - 16
     - 17
     - 18
@@ -36,7 +35,6 @@
     - 13
     - 14
     - 15
-    - 3
 
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
@@ -55,9 +53,9 @@
   leftSide: true
   availableActions: 
     - 0
+    - 3
+    - 4
     - 5
-    - 10
-    - 9
 
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_3.png"
@@ -76,9 +74,9 @@
   leftSide: true
   availableActions: 
     - 0
-    - 6
-    - 4
-    - 7
+    - 9
+    - 10
+    - 20
 
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"
