@@ -369,6 +369,7 @@ public class ObjectLoader {
 				node = new IndexNode(branchType);
 				for(String cond: map.keySet()){
 					String[] conds = cond.split("/");
+					//System.out.println(cond);
 					String other = (String) map.get(cond);
 					((IndexNode) node).addRule(Arrays.asList(conds), other);
 				}
@@ -403,7 +404,7 @@ public class ObjectLoader {
 				System.out.println("MUST SPECIFY INDEX OR LEAF");
 				return;
 			}
-			
+			node.label = s;
 			if(s.equals("ROOT")){
 				tacticalManager.setRoot(node);
 			}

@@ -145,11 +145,13 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	public LeafNode traverse(DecisionNode n){
 		if(n instanceof LeafNode){
+			//System.out.println(selected.name + " " + n.label + " ");
 			return (LeafNode) n;
 		}
 		IndexNode index = (IndexNode) n;
 		for(int i = 0; i < index.conditions.size(); i++){
 			List<String> conds = index.conditions.get(i);
+			//System.out.println(conds.toString());
 			boolean matched = true;
 			for(String s: conds){
 				if(!map.containsKey(s) || !map.get(s)){
@@ -158,6 +160,7 @@ public class TacticalManager extends ConditionalManager{
 				}
 			}
 			if(matched){
+				System.out.println(selected.name+ ": " + conds.toString());
 				return traverse(nodeMap.get(index.decisions.get(i)));
 			}
 		}
@@ -178,6 +181,7 @@ public class TacticalManager extends ConditionalManager{
 		System.out.print(c.name+ "moves: ");
 		goal = null;
 		for(Specific s: moves){
+			if(startSlot >= c.actionBar.getUsableNumSlots()) break;
 			ActionNode a = nopNode(c, startSlot);
 			System.out.print(s.toString()+" ");
 			switch(s){
@@ -574,13 +578,13 @@ public class TacticalManager extends ConditionalManager{
 		Action a = move(c);
 		ActionNodes anPool = ActionNodes.getInstance();
 		if(goal == null){
-			setGoalTile(c, 2, 3);
+			setGoalTile(c, 3, 4);
 		}
 		for(Coordinate coord: goalTiles){
 			int prevDist = Math.abs(goal.x - xPos) + Math.abs(goal.y - yPos);
 			int dist = Math.abs(goal.x - coord.x) + Math.abs(goal.y - coord.y);
 			boolean adjacent = Math.abs(coord.x - xPos) + Math.abs(coord.y - yPos) == 1;
-//			System.out.println(coord.toString() + " prev: "+ prevDist + " dist: "+ dist+ "adjacent: "+adjacent);
+        	//System.out.println(coord.toString() + " prev: "+ prevDist + " dist: "+ dist+ "adjacent: "+adjacent);
 			if(dist < prevDist && adjacent && board.canMove(c.leftside, coord.x, coord.y)){
 				if(coord.x < xPos){
 					return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.LEFT);
@@ -778,17 +782,17 @@ public class TacticalManager extends ConditionalManager{
 		int xEnd = c.leftside? (board.width / 2) : board.width;
 		ArrayList<Coordinate> goals = new ArrayList<Coordinate>();
 		ArrayList<Integer> values = new ArrayList<Integer>();
-//		System.out.println();
+     	System.out.println();
 
 		for(int x = xStart; x < xEnd; x++){
 			for(int y = 0; y < board.height; y++){
 				int curValue = 0;
-//				System.out.println("--------STARTING "+x+" "+y+" "+c.name+"-------------");
+				//System.out.println("--------STARTING "+x+" "+y+" "+c.name+"-------------");
 				//calculate offensive value
 				for(Action a: c.availableActions){
 					for(Character e: enemies){
 						if(a.hitsTarget(x, y, e.xPosition, e.yPosition, c.leftside, board)){
-//							System.out.println("Can hit "+e.name+ " with "+a.name);
+					//		System.out.println("Can hit "+e.name+ " with "+a.name);
 							curValue += aWeight;
 						}
 					}
@@ -797,7 +801,7 @@ public class TacticalManager extends ConditionalManager{
 				for(Character e: enemies){
 					for(Action a: e.availableActions){
 						if(a.hitsTarget(e.xPosition, e.yPosition, x, y, e.leftside, board)){
-//							System.out.println("hit by "+e.name+ " with "+a.name);
+						//	System.out.println("hit by "+e.name+ " with "+a.name);
 							curValue -= dWeight;
 						}
 					}
@@ -823,7 +827,7 @@ public class TacticalManager extends ConditionalManager{
 		for(Coordinate coord: goals){
 			if(board.canMove(c.leftside, coord.x, coord.y)){
 				goal = coord;
-//				System.out.println(c.name+": "+coord.x+" "+coord.y+" "+"value: "+values.get(i));
+				//System.out.println(c.name+": "+coord.x+" "+coord.y+" "+"value: "+values.get(i));
 				return;
 			}
 			i++;

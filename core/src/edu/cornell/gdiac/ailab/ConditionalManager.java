@@ -245,15 +245,19 @@ public class ConditionalManager {
 			}
 		}
 		if(canHitEnemyFromAction(selected, x+1, y, quick) && board.canMove(selected.leftside, x+1, y)){
+
 			return true;
 		}
 		if(canHitEnemyFromAction(selected, x, y+1, quick) && board.canMove(selected.leftside, x, y+1)){
+
 			return true;
 		}
 		if(canHitEnemyFromAction(selected, x-1, y, quick) && board.canMove(selected.leftside, x-1, y)){
+
 			return true;
 		}
 		if(canHitEnemyFromAction(selected, x, y-1, quick) && board.canMove(selected.leftside, x, y-1)){
+
 			return true;
 		}
 		return false;
@@ -764,6 +768,7 @@ public class ConditionalManager {
 	public boolean fastInterruptible(int slots){
 		for(Character c: enemies){
 			int num = fastestMoveThatCanHitMe(c);
+			//System.out.println(selected.name+": "+c.name+"'s fastest is "+num + " slots");
 			if(num <= c.getActionBar().getTotalNumSlots() && interruptibleBy(c, slots, num)){
 				return true;
 			}
