@@ -469,6 +469,15 @@ public class ObjectLoader {
 				ts.setFinishGame(finishGame);
 			}
 			
+			String levelColor = (String) step.get("levelColor");
+			if (levelColor != null){
+				if (levelColor.equals("WHITE")){
+					ts.setLevelColor(Color.WHITE);
+				} else if (levelColor.equals("BLACK")) {
+					ts.setLevelColor(Color.BLACK);
+				}
+			}
+			
 			ts.addStep(text, paused, confirm, waitTime, spaceToContinue, dontWriteText, timeToPause);
 			
 			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) step.get("actions");
@@ -491,7 +500,8 @@ public class ObjectLoader {
 					Double yPos = (Double) highlightData.get("yPos");
 					Double width = (Double) highlightData.get("width");
 					Double height = (Double) highlightData.get("height");
-					ts.addHighlight(xPos,yPos,width, height);
+					String arrow = (String) highlightData.get("arrow");
+					ts.addHighlight(xPos,yPos,width, height, arrow);
 				}
 			}
 		}

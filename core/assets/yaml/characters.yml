@@ -101,90 +101,94 @@
     - 3
     - 2
 
-  texture: "models/CHARA_1.png"
-  icon: "models/CASTICON_1.png"
-  animationId: 4
+  texture: "models/CHARA_5.png"
+  icon: "models/CASTICON_5.png"
+  animationId: 1
 
 91:
-  name: blue
+  name: orange
   health: 10
   maxHealth: 10
-  hexColor: 3299FFFF
+  hexColor: FF9900FF
   speed: 6.
   castSpeed: 5.5
   xPosition: 5
   yPosition: 3
-  leftSide: false
+  leftSide: true
   availableActions:
     - 0
-    - 14
+    - 5
+    - 6
+    - 3
+    - 11
+    - 12
 
-  texture: "models/CHARA_1.png"
-  icon: "models/CASTICON_1.png"
-  animationId: 4
+  texture: "models/CHARA_4.png"
+  icon: "models/CASTICON_4.png"
+  animationId: 2
 
 92:
-  name: blue
+  name: green
   health: 10
   maxHealth: 10
   hexColor: 3299FFFF
-  speed: 4.5
-  castSpeed: 5.5
+  speed: 4.2
+  castSpeed: 4.2
   xPosition: 5
   yPosition: 3
   leftSide: false
   availableActions:
     - 0
-    - 5
-    - 7
-    - 8
-    - 9
+    - 1
+    - 3
+    - 2
 
-  texture: "models/CHARA_1.png"
-  icon: "models/CASTICON_1.png"
-  animationId: 4
+  texture: "models/CHARA_5.png"
+  icon: "models/CASTICON_5.png"
+  animationId: 1
 
 93:
-  name: blue
+  name: orange
   health: 10
   maxHealth: 10
-  hexColor: 3299FFFF
-  speed: 4.5
-  castSpeed: 5.5
-  xPosition: 5
+  hexColor: FF9900FF
+  speed: 5.4
+  castSpeed: 4.
+  xPosition: 0
   yPosition: 3
-  leftSide: false
+  leftSide: true
   availableActions:
     - 0
     - 5
-    - 7
-    - 8
-    - 9
+    - 6
+    - 3
+    - 11
+    - 12
 
-  texture: "models/CHARA_1.png"
-  icon: "models/CASTICON_1.png"
-  animationId: 4
+  texture: "models/CHARA_4.png"
+  icon: "models/CASTICON_4.png"
+  animationId: 2
+
 
 94:
-  name: blue
+  name: red
   health: 10
   maxHealth: 10
-  hexColor: 3299FFFF
-  speed: 4.5
-  castSpeed: 5.5
+  hexColor: CD2626FF
+  speed: 3.5
+  castSpeed: 4.2
   xPosition: 5
   yPosition: 3
   leftSide: false
   availableActions:
     - 0
-    - 5
-    - 7
-    - 8
-    - 9
+    - 1
+    - 3
+    - 2
 
-  texture: "models/CHARA_1.png"
-  icon: "models/CASTICON_1.png"
-  animationId: 4
+  texture: "models/CHARA_3.png"
+  icon: "models/CASTICON_3.png"
+  animationId: 3
 
 95:
   name: blue
@@ -207,87 +211,4 @@
   icon: "models/CASTICON_1.png"
   animationId: 4
 
-96:
-  name: blue
-  health: 10
-  maxHealth: 10
-  hexColor: 3299FFFF
-  speed: 4.5
-  castSpeed: 5.5
-  xPosition: 5
-  yPosition: 3
-  leftSide: false
-  availableActions:
-    - 0
-    - 5
-    - 7
-    - 8
-    - 9
-
-  texture: "models/CHARA_1.png"
-  icon: "models/CASTICON_1.png"
-  animationId: 4
-
-97:
-  name: blue
-  health: 10
-  maxHealth: 10
-  hexColor: 3299FFFF
-  speed: 4.5
-  castSpeed: 5.5
-  xPosition: 5
-  yPosition: 3
-  leftSide: false
-  availableActions:
-    - 0
-    - 5
-    - 7
-    - 8
-    - 9
-
-  texture: "models/CHARA_1.png"
-  icon: "models/CASTICON_1.png"
-  animationId: 4
-
-98:
-  name: blue
-  health: 10
-  maxHealth: 10
-  hexColor: 3299FFFF
-  speed: 4.5
-  castSpeed: 5.5
-  xPosition: 5
-  yPosition: 3
-  leftSide: false
-  availableActions:
-    - 0
-    - 5
-    - 7
-    - 8
-    - 9
-
-  texture: "models/CHARA_1.png"
-  icon: "models/CASTICON_1.png"
-  animationId: 4
-
-99:
-  name: blue
-  health: 10
-  maxHealth: 10
-  hexColor: 3299FFFF
-  speed: 4.5
-  castSpeed: 5.5
-  xPosition: 5
-  yPosition: 3
-  leftSide: false
-  availableActions:
-    - 0
-    - 5
-    - 7
-    - 8
-    - 9
-
-  texture: "models/CHARA_1.png"
-  icon: "models/CASTICON_1.png"
-  animationId: 4
 ...

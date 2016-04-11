@@ -4,6 +4,7 @@ import java.util.List;
 
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.ailab.TutorialSteps.TutorialAction;
 
 public class TutorialSelectionMenuController extends SelectionMenuController{
@@ -16,6 +17,12 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 	}
 	
 	public void update(){
+		if (InputController.pressedSpace()){
+			if (tutorialSteps.timeElapsed <= tutorialSteps.step.waitTime){
+				tutorialSteps.timeElapsed = tutorialSteps.step.waitTime;
+				tutorialSteps.textDone = tutorialSteps.step.text.length();
+			}
+		}
 		if (selected != null){
 			updateVariables();
 			int numSlots = selected.actionBar.getNumSlots();

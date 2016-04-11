@@ -27,6 +27,7 @@ public class TutorialSteps {
 	boolean startTime;
 	String warning;
 	int warningTime;
+	Color levelColor;
 	
 	/** Individual Step*/
 	class Step{
@@ -74,12 +75,14 @@ public class TutorialSteps {
 		double yPos;
 		double width;
 		double height;
+		String arrow;
 		
-		public CurrentHighlight (double xPos, double yPos, double width, double height){
+		public CurrentHighlight (double xPos, double yPos, double width, double height, String arrow){
 			this.xPos = xPos;
 			this.yPos = yPos;
 			this.width = width;
 			this.height = height;
+			this.arrow = arrow;
 		}
 	}
 	
@@ -115,8 +118,8 @@ public class TutorialSteps {
 		latestStep.actions.add(ta);
 	}
 	
-	public void addHighlight(double xPos, double yPos, double width, double height){
-		CurrentHighlight ch = new CurrentHighlight(xPos, yPos, width, height);
+	public void addHighlight(double xPos, double yPos, double width, double height, String arrow){
+		CurrentHighlight ch = new CurrentHighlight(xPos, yPos, width, height, arrow);
 		Step latestStep = steps.get(steps.size()-1);
 		
 		if (latestStep.highlights == null){
@@ -127,6 +130,10 @@ public class TutorialSteps {
 	
 	public void setFinishGame(boolean finishGame){
 		this.finishGame = finishGame;
+	}
+	
+	public void setLevelColor(Color levelColor){
+		this.levelColor = levelColor;
 	}
 	
 	public void nextStep(){
@@ -170,7 +177,7 @@ public class TutorialSteps {
 	
 	public void drawText(GameCanvas canvas){
 		if (step!= null && !step.dontWriteText){
-			if (writeTime % 2 == 0){
+			if (writeTime % 4 == 0){
 				if (textDone < step.text.length()){
 					textDone++;
 				} else{
@@ -196,7 +203,7 @@ public class TutorialSteps {
 			//canvas.drawTutorialText("\n\n\nPress Spacebar to Continue", Color.WHITE);
 			toWrite +=  "\n\nPress Spacebar to Continue";
 		}
-		canvas.drawTutorialText(toWrite, Color.WHITE);
+		canvas.drawTutorialText(toWrite, levelColor == null? Color.WHITE: levelColor);
 		if (!warning.equals("")){
 			canvas.drawWarningText(warning);
 			warningTime++;

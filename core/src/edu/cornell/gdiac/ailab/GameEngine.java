@@ -119,6 +119,11 @@ public class GameEngine implements Screen {
 	/** The size of the messages */
 	private static final int SELECT_FONT_SIZE = 20;
 	
+	/** tutorial font info */
+	private static final String TUTORIAL_FONT_FILE = "fonts/Consolas.ttf";
+	private static final int TUTORIAL_FONT_SIZE = 25;
+	private static final Color TUTORIAL_FONT_COLOR = Color.WHITE;
+	
 	public static final String DATA_PATH = "../core/assets/";
 	
 	/** The width of the progress bar */	
@@ -228,6 +233,15 @@ public class GameEngine implements Screen {
     		break;
     	case 4:
     		level = getLevel("tutorial1");
+    		if (manager.isLoaded(TUTORIAL_FONT_FILE)) {
+    			canvas.setTutorialFont(manager.get(TUTORIAL_FONT_FILE,BitmapFont.class));
+    		}
+    		break;
+    	case 5:
+    		level = getLevel("tutorial2");
+    		if (manager.isLoaded(TUTORIAL_FONT_FILE)) {
+    			canvas.setTutorialFont(manager.get(TUTORIAL_FONT_FILE,BitmapFont.class));
+    		}
     		break;
     	default:
     		break;
@@ -537,10 +551,15 @@ public class GameEngine implements Screen {
 		size2Params.fontParameters.color = Color.WHITE;
 		manager.load(SELECT_FONT_FILE, BitmapFont.class, size2Params);
 		assets.add(SELECT_FONT_FILE);
+		size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+		size2Params.fontFileName = TUTORIAL_FONT_FILE;
+		size2Params.fontParameters.size = TUTORIAL_FONT_SIZE;
+		size2Params.fontParameters.color = TUTORIAL_FONT_COLOR;
+		manager.load(TUTORIAL_FONT_FILE, BitmapFont.class, size2Params);
+		assets.add(TUTORIAL_FONT_FILE);
 		
 		// We have to force the canvas to fully load (so we can draw something)
 		initializeCanvas(LOADING_TEXTURE, MENU_FONT_FILE);
-		
         // Sound controller manages its own material
         SoundController.PreLoadContent(manager);
     }

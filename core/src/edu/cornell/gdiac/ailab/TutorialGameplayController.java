@@ -83,6 +83,7 @@ public class TutorialGameplayController extends GameplayController{
     			inGameState = InGameState.PAUSED;
     			//System.out.println(inGameState);
     			aiController.update();
+    			System.out.println(tutorialSteps.curStep);
     		}
     		if (actionBarController.isAttack){
     			inGameState = InGameState.ATTACK;
@@ -157,10 +158,6 @@ public class TutorialGameplayController extends GameplayController{
 	    	for (CurrentHighlight highlight:highlights){
 	    		screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(), 
 	    				highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight());
-//	    		System.out.println(highlight.xPos*canvas.getWidth());
-//	    		System.out.println(highlight.yPos*canvas.getHeight());
-//	    		System.out.println(highlight.width*canvas.getWidth());
-//	    		System.out.println(highlight.height*canvas.getHeight());	
 	    	}
 	    	screen.noScreen();	
 		}
@@ -173,11 +170,25 @@ public class TutorialGameplayController extends GameplayController{
         if (prompt != null){
         	canvas.drawText(prompt, 18, 530, Color.BLACK);
         }
-        //screen should be drawn after greyed out characters
-        //but before selected characters
+        if (highlights != null && tutorialSteps.showHighlights){
+	    	for (CurrentHighlight highlight:highlights){
+	    		if (highlight.arrow.equals("up")){
+		    		canvas.drawUpArrow((float)(highlight.xPos*canvas.getWidth() + (highlight.width*canvas.getWidth())/2f), 
+		    				(float)highlight.yPos*canvas.getHeight(), 
+		    				Color.GOLD);
+	    			
+	    		} else if (highlight.arrow.equals("down")) {
+		    		canvas.drawDownArrow((float)(highlight.xPos*canvas.getWidth() + highlight.width*canvas.getWidth()), 
+		    				(float)(highlight.yPos*canvas.getHeight() + (highlight.height*canvas.getHeight())/2f), 
+		    				Color.GOLD);	    			
+	    		} else {
+		    		canvas.drawLeftArrow((float)(highlight.xPos*canvas.getWidth() + highlight.width*canvas.getWidth()), 
+		    				(float)(highlight.yPos*canvas.getHeight() + (highlight.height*canvas.getHeight())/2f), 
+		    				Color.GOLD);
+	    		}
+	    	}	
+		}
         tutorialSteps.drawText(canvas);
-        //screen should be drawn after greyed out characters
-        //but before selected characters
     }
 	
 	private void updateTutorial() {
