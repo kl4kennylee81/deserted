@@ -73,7 +73,9 @@ public class GameEngine implements Screen {
 		/** When the game has ended, but we are still waiting on animation */
 		FINISH,
 		/** When the game is over */
-		AFTER
+		AFTER,
+		/** When we are using one of the editors */
+		EDITOR
 	}
 
 	/** Background image for the canvas */
@@ -140,6 +142,10 @@ public class GameEngine implements Screen {
     /** Subcontroller for mouse controls (CONTROLLER CLASS) */
     private MouseOverController mouseOverController;
     
+    private EditorController editorController;
+    
+    
+    
 //	/** Default budget for asset loader (do nothing but load 60 fps) */
 //	private static int DEFAULT_BUDGET = 15;
 	/** Standard window size (for scaling) */
@@ -178,7 +184,7 @@ public class GameEngine implements Screen {
 		
 		mouseOverController = new MouseOverController(canvas);
 		gameplayController = new GameplayController(mouseOverController);
-
+		editorController = null;
 		updateMeasures();
 
 	}
@@ -258,34 +264,43 @@ public class GameEngine implements Screen {
 		case LOAD:
 			updateLoad();
 			drawLoad();
+			canvas.end();
 			break;
 		case MENU:
 			try {
-				updateMenu();
+				updateMenu();	
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			canvas.end();
 			break;
 		case PLAY:
 			updatePlay();
 			drawPlay();
+			canvas.end();
 			break;
 		case FINISH:
 			//Graphics after play is over?
+			canvas.end();
 			break;
 		case PAUSED:
 			updatePaused();
 			drawPlay();
 			drawPaused();
+			canvas.end();
 			break;
 		case AFTER:
 			//updateAfter();
 			drawAfter();
+			canvas.end();
+			break;
+		case EDITOR:
+			canvas.end();
+			updateEditor();
 			break;
 		}
 		
-		canvas.end();
 	}
 		
 	/** 
@@ -332,10 +347,33 @@ public class GameEngine implements Screen {
 	private void updateMenu() throws IOException {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
-			startGame(mainMenuController.gameNo);
+			if (mainMenuController.gameNo > 3){
+				startEditor(mainMenuController.gameNo);
+			}else{
+				startGame(mainMenuController.gameNo);
+			}
 		}
 	}
 	
+	private void startEditor(int gameNo) {
+		if (gameNo == 4) {
+			try {
+				editorController = new ActionEditorController();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else if (gameNo == 5) {
+			try {
+				editorController = new CharacterEditorController();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		gameState = gameState.EDITOR;
+	}
+
 	/**
      * The primary update loop of the game; called while it is running.
      */
@@ -387,6 +425,15 @@ public class GameEngine implements Screen {
 	
 	public void drawAfter() {
 		gameplayController.drawAfter(canvas);
+	}
+	
+	public void updateEditor() {
+		editorController.update();
+		editorController.draw();
+    	if (InputController.pressedR()) {
+    		editorController = null;
+    		gameState = gameState.MENU;
+    	}
 	}
     
 	

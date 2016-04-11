@@ -28,11 +28,13 @@ public class MainMenuController {
 	}
 	
 	private Option[] makeDefaultOptions() {
-		Option [] default_options = new Option[4];
-		default_options[0] = new Option(0.5f,0.1f,270,110,"     EASY \n  Or Press 'E'",OPTION_TEXTURE,0);
-		default_options[1] = new Option(0.5f,0.3f,270,110,"   MEDIUM \n  Or Press 'M'",OPTION_TEXTURE,1);
-		default_options[2] = new Option(0.5f,0.5f,270,110,"   HARD \n Or Press 'H'",OPTION_TEXTURE,2);
-		default_options[3] = new Option(0.5f,0.7f,270,110,"       PvP \n  Or Press 'P'",OPTION_TEXTURE,3);
+		Option [] default_options = new Option[6];
+		default_options[0] = new Option(0.5f,0.11f,270,80,"EASY\nOr Press 'E'",OPTION_TEXTURE,0);
+		default_options[1] = new Option(0.5f,0.22f,270,80,"MEDIUM\nOr Press 'M'",OPTION_TEXTURE,1);
+		default_options[2] = new Option(0.5f,0.33f,270,80,"HARD\nOr Press 'H'",OPTION_TEXTURE,2);
+		default_options[3] = new Option(0.5f,0.44f,270,80,"PvP\nOr Press 'P'",OPTION_TEXTURE,3);
+		default_options[4] = new Option(0.5f,0.55f,270,80,"Action Editor",OPTION_TEXTURE,4);
+		default_options[5] = new Option(0.5f,0.66f,270,80,"Character Editor",OPTION_TEXTURE,5);
 		return default_options;
 		//make a method that sizes and positions them according to the number of options
 		//resize isn't affecting this
