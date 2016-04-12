@@ -160,7 +160,7 @@ public class TacticalManager extends ConditionalManager{
 				}
 			}
 			if(matched){
-				System.out.println(selected.name+ ": " + conds.toString());
+				//System.out.println(selected.name+ ": " + conds.toString());
 				return traverse(nodeMap.get(index.decisions.get(i)));
 			}
 		}
@@ -178,12 +178,12 @@ public class TacticalManager extends ConditionalManager{
 		int startSlot = 0;
 		int x = c.xPosition;
 		int y = c.yPosition;
-		System.out.print(c.name+ "moves: ");
+		//System.out.print(c.name+ "moves: ");
 		goal = null;
 		for(Specific s: moves){
 			if(startSlot >= c.actionBar.getUsableNumSlots()) break;
 			ActionNode a = nopNode(c, startSlot);
-			System.out.print(s.toString()+" ");
+			//System.out.print(s.toString()+" ");
 			switch(s){
 				case SINGLE_OPTIMAL:
 					a = singleOptimal(c, startSlot, x, y);
@@ -216,7 +216,7 @@ public class TacticalManager extends ConditionalManager{
 					a = moveGoal(c, startSlot, x, y);
 					break;
 				default:
-					System.out.println("nopnode");
+					//System.out.println("nopnode");
 					a = nopNode(c, startSlot);
 					break;
 			}
@@ -225,7 +225,7 @@ public class TacticalManager extends ConditionalManager{
 			y = y + applyMoveY(a);
 			nodes.add(a);
 		}
-		System.out.println();
+		//System.out.println();
 		return nodes;
 	}
 	
