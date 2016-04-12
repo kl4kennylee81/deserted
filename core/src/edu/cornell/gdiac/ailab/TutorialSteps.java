@@ -201,7 +201,7 @@ public class TutorialSteps {
 		}
 		if (step != null && timeElapsed == step.waitTime && step.spaceToContinue){
 			//canvas.drawTutorialText("\n\n\nPress Spacebar to Continue", Color.WHITE);
-			toWrite +=  "\n\nPress Spacebar to Continue";
+			toWrite +=  " Press Spacebar to Continue";
 		}
 		canvas.drawTutorialText(toWrite, levelColor == null? Color.WHITE: levelColor);
 		if (!warning.equals("")){
