@@ -265,13 +265,13 @@ public class SelectionMenu {
 			}
 			if (action.cost > usableNumSlots - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
 				Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.2f);
-				 g = canvas.drawText(action.name, text_x, text_y - offset_y, dimColor);
+				 g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, dimColor);
 			} 
 			else if (selectedAction < actions.length && actions[selectedAction].name == action.name){
-				 g = canvas.drawText(action.name, text_x, text_y - offset_y, Color.CORAL);
+				 g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, Color.CORAL);
 			}
 			else {
-				 g = canvas.drawText(action.name, text_x, text_y - offset_y, Color.BLACK);
+				 g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, Color.BLACK);
 			}
 		}
 		
@@ -279,9 +279,9 @@ public class SelectionMenu {
 		offset_y += spacing_h + g.height/2;
 		if (selectedAction == actions.length){
 			selectedPointerOffset = offset_y;
-			g = canvas.drawText("Confirm", text_x, text_y - offset_y, Color.CORAL);
+			g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.CORAL);
 		} else {
-			g = canvas.drawText("Confirm", text_x, text_y - offset_y, Color.GREEN);
+			g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.GREEN);
 		}
 		
 		float pointer_x = text_x - ACTION_POINTER_OFFSET_X;

@@ -808,11 +808,12 @@ public class GameCanvas {
 		spriteBatch.draw(mesh,x,y,width,height);
 	}
 	
-	public void drawOption(float sx, float sy, Texture button,float x_size, float y_size, 
+	public void drawOption(float sx, float sy, Texture button,float width, float height, 
 			Color tint, String text){
 		spriteBatch.setColor(tint);
-		spriteBatch.draw(button,sx,sy,x_size,y_size);
-		displayFont.draw(spriteBatch, text, sx + x_size/2-65,sy + y_size/2+20);
+		spriteBatch.draw(button,sx,sy,width,height);
+			
+		displayFont.draw(spriteBatch, text, sx + width/2-65,sy + height/2+20);
 		//make positions in Option just multipliers of canvas.getWidth and Height for now
 		//TODO: change resizing in the long run
 	}	
@@ -913,11 +914,19 @@ public class GameCanvas {
 		spriteBatch.draw(leftArrow, x-35, y-80, 135, 135);
 	}
 	
-	public GlyphLayout drawText(String msg, float x, float y, Color color) {
+	public GlyphLayout drawBoardWrapText(String msg, float x, float y, Color color) {
 		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
 		float width = (GridBoard.BOARD_OFFSET_X - GridBoard.EXTRA_OFFSET)*getWidth();
 		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
+		return g;
+	}
+	
+	
+	public GlyphLayout drawText(String msg, float x, float y, Color color) {
+		displayFont.getData().setScale(1);
+		displayFont.setColor(color);
+		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y);
 		return g;
 	}
 	

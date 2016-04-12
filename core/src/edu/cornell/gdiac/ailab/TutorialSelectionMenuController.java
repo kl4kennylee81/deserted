@@ -163,8 +163,18 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 			return false;
 		}
 		List<TutorialAction> tas = tutorialSteps.getActions();
-		TutorialAction ta = tas.get(0);
-		return action == selected.availableActions[ta.actionId];
+		if (tas.size() > 0){
+			TutorialAction ta = tas.get(0);
+			if (ta == null){
+				System.out.println("check why null tutorialselectionmenu line 168");
+				return false;
+			}
+			return action == selected.availableActions[ta.actionId];
+		}
+		else {
+			System.out.println("check why no tutorial step on line 165");
+			return false;
+		}
 	}
 	
 	public boolean correctActions(){

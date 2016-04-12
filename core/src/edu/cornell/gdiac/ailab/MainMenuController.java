@@ -10,50 +10,42 @@ public class MainMenuController {
 	public int gameNo;
 	private boolean isDone;
 	private GameCanvas canvas;
-	/** Background image for the menu */
-	private static final String MENU_BCKGD_TEXTURE = "images/menubg.png";
-	/** File storing the texture for an option tile */
-	private static final String OPTION_TEXTURE = "models/Menu_Option.png";
-	private static final String WHITE_BOX = "images/white.png";
-	/** The message font to use */
-	private static final String FONT_FILE  = "fonts/Milonga-Regular.ttf";
+	
 	private AssetManager manager;
 	private MainMenu mainMenu;
 	private MouseOverController mouseOverController;
+	
 	
 	public MainMenuController(GameCanvas canvas, AssetManager manager, MouseOverController mouseOverController){
 		this.canvas = canvas;
 		this.manager = manager;
 		Option[] default_options = makeDefaultOptions();
 		mainMenu = new MainMenu(default_options);
+		if (default_options.length > 0){
+			mainMenu.selectOption(0);
+		}
 		this.mouseOverController = mouseOverController; 
 	}
 	
 	private Option[] makeDefaultOptions() {
-		Option [] default_options = new Option[4];
-		default_options[0] = new Option(0.5f,0.1f,270,110,"     EASY \n  Or Press 'E'",OPTION_TEXTURE,0);
-		default_options[1] = new Option(0.5f,0.3f,270,110,"   MEDIUM \n  Or Press 'M'",OPTION_TEXTURE,1);
-		default_options[2] = new Option(0.5f,0.5f,270,110,"   HARD \n Or Press 'H'",OPTION_TEXTURE,2);
-		default_options[3] = new Option(0.5f,0.7f,270,110,"       PvP \n  Or Press 'P'",OPTION_TEXTURE,3);
+		// we will rearrange when i merge to master
+		Option [] default_options = new Option[3];
+		default_options[0] = new Option("LEVEL SELECT",0);
+		default_options[1] = new Option("TUTORIAL",4);
+		default_options[2] = new Option("LEVEL EDITOR",2);
 		return default_options;
 		//make a method that sizes and positions them according to the number of options
 		//resize isn't affecting this
 	}
-	
-	private Option[] spaceOptions(int numOptions){
-		return null;
-	}
-	
-	private Option[] spaceOptions(Option[] options){
-		return null;
-	}
 
 	public void drawMenu() {
-		initializeCanvas(MENU_BCKGD_TEXTURE);
+		initializeCanvas(Constants.MENU_BCKGD_TEXTURE);
 		mainMenu.draw(canvas);
 	}
 	
 	public void update(){
+		updateMenuAssets();
+		
 		mouseOverController.update(mainMenu.options, mainMenu);
 		updateSelection();
 		drawMenu();
@@ -67,9 +59,10 @@ public class MainMenuController {
 			done(3);
 		} else if (InputController.pressedT()){
 			done(4);
-		}  else if (InputController.pressedW()){
-			done(5);
 		}
+//		}  else if (InputController.pressedW()){
+//			done(5);
+//		}
 	}
 	
 	public void done(int doneCode){
@@ -79,6 +72,16 @@ public class MainMenuController {
 	
 	public boolean isDone(){
 		return isDone;
+	}
+	
+	public void updateMenuAssets(){
+		if (manager.isLoaded(Constants.MENU_HIGHLIGHT_TEXTURE) && this.mainMenu.optionHighlight == null){
+			this.mainMenu.setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class));
+		}
+		
+		if (this.mainMenu.logo == null && manager.isLoaded(Constants.MENU_LOGO)){
+			this.mainMenu.setLogo(manager.get(Constants.MENU_LOGO,Texture.class));
+		}
 	}
 		
 	/**
@@ -93,10 +96,10 @@ public class MainMenuController {
 		Texture texture = manager.get(texture_msg, Texture.class);
 		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		canvas.setBackground(texture);
-		canvas.setWhite(manager.get(WHITE_BOX, Texture.class));
+		canvas.setWhite(manager.get(Constants.WHITE_BOX, Texture.class));
 		
-		if (manager.isLoaded(FONT_FILE)) {
-			canvas.setFont(manager.get(FONT_FILE,BitmapFont.class));
+		if (manager.isLoaded(Constants.MENU_FONT_FILE)) {
+			canvas.setFont(manager.get(Constants.MENU_FONT_FILE,BitmapFont.class));
 		}
 		//This method shouldn't be in two places as it currently is, only one
     }
@@ -107,7 +110,7 @@ public class MainMenuController {
 	private void updateSelection(){
 		if (InputController.pressedA() || InputController.pressedEnter() || InputController.pressedLeftMouse()){
 			done(mainMenu.selectedOption);
-		}  else if ((InputController.pressedW() && !InputController.pressedS())){
+		}  else if ((InputController.pressedS() && !InputController.pressedW())){
 	         //newSelection % length
 	         //(n < 0) ? (m - (abs(n) % m) ) %m : (n % m);
 	         //taken from http://stackoverflow.com/questions/5385024/mod-in-java-produces-negative-numbers
@@ -118,7 +121,7 @@ public class MainMenuController {
 						%length : (newSelection % 
 								length);
 			mainMenu.selectOption(toSelect);
-		}   else if ((InputController.pressedS() && !InputController.pressedW())){
+		}   else if ((InputController.pressedW() && !InputController.pressedS())){
 			//Actions go from up down, so we need to flip
 			int newSelection = mainMenu.selectedOption-1;
 	        int length = mainMenu.getOptions().length;

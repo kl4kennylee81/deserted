@@ -1,6 +1,21 @@
 package edu.cornell.gdiac.ailab;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+
 public class MainMenu {
+	/** game logo texture */
+	Texture logo;
+	
+	/** main menu background */
+	Texture menuBackground;
+	
+	/** option gradient highlighting */
+	Texture optionHighlight;
+	
+	/** option texture **/
+	Texture optionTexture;
+
 	/** Available options to use */
 	Option[] options;
 
@@ -12,11 +27,51 @@ public class MainMenu {
 
 	/** Lerp value increasing or decreasing */
 	private boolean increasing;
+	
+	/** start position of the menu's options x Position **/
+	private static final float RELATIVE_X_POS = 0.40f;
+	
+	/** start position of the menu's options y Position going down **/
+	private static final float RELATIVE_Y_POS = 0.45f;
+	
+	/** relative width of options **/
+	private static final float RELATIVE_WIDTH = 0.35f;
+	
+	/** relative height of options **/
+	private static final float RELATIVE_HEIGHT = 0.05f;
+	
+	/** relative spacing between options **/
+	private static final float RELATIVE_MENU_SPACING = 0.075f;
+	
+	private static final float RELATIVE_HIGHLIGHT_X_OFFSET = 0.02f;
+	
+	private static final float RELATIVE_LOGO_X = 0.13f;
+	
+	private static final float RELATIVE_LOGO_Y = 0.11f;
+	
+	private static final float RELATIVE_LOGO_WIDTH = 0.225f;
+	
+	private static final float RELATIVE_LOGO_HEIGHT = 0.8f;
 
 	public MainMenu(Option[] options){
 		this.options = options;
-		selectOption(0);
+		
+		// after setting the options must now assign the bounds based on the main menu specs
+		for (int i =0;i<options.length;i++){
+			
+			float spacedY= (RELATIVE_Y_POS - RELATIVE_MENU_SPACING * i);
+			options[i].setBounds(RELATIVE_X_POS, spacedY, RELATIVE_WIDTH, RELATIVE_HEIGHT);
+			options[i].setColor(Constants.MENU_COLOR);
+		}
 		lerpVal = 0;
+	}
+	
+	public void setHighlight(Texture t){
+		this.optionHighlight = t;
+	}
+	
+	public void setLogo(Texture t){
+		this.logo = t;
 	}
 	
 	public void selectOption(int optionNo){
@@ -26,9 +81,29 @@ public class MainMenu {
 	}
 	
 	public void draw(GameCanvas canvas){
+		drawLogo(canvas);
+		
+		// draw the menu options
 		for (int i=0;i<options.length;i++){
+			float x = options[i].getX(canvas) - RELATIVE_HIGHLIGHT_X_OFFSET*canvas.getWidth();
+			float y = options[i].getY(canvas) - 3*options[i].getHeight(canvas)/4;
+			float width = options[i].getWidth(canvas);
+			float height = options[i].getHeight(canvas);
+			
+			if (options[i].isSelected){
+				// we will draw the highlighting behind the option
+				canvas.drawTexture(optionHighlight,x,y,width,height,Color.WHITE);
+			}
 			options[i].draw(canvas);
 		}
+	}
+	
+	public void drawLogo(GameCanvas canvas){
+		float x = RELATIVE_LOGO_X * canvas.getWidth();
+		float y = RELATIVE_LOGO_Y * canvas.getHeight();
+		float width = RELATIVE_LOGO_WIDTH * canvas.getWidth();
+		float height = RELATIVE_LOGO_HEIGHT * canvas.getHeight();
+		canvas.drawTexture(logo, x, y,width,height, Color.WHITE);
 	}
 
 	public Option[] getOptions() {

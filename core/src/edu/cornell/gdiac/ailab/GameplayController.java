@@ -63,7 +63,7 @@ public class GameplayController {
     public void resetGame(Level level){
     	inGameState = InGameState.NORMAL;
     	fileNum++;
-		dataFile = GameEngine.dataGen ? new FileHandle(GameEngine.DATA_PATH+"data/data"+fileNum) : null;
+		dataFile = GameEngine.dataGen ? new FileHandle(Constants.DATA_PATH+"data/data"+fileNum) : null;
 		jsonArray = new JSONArray();
     	
         // Create the models.
