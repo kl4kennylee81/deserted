@@ -419,7 +419,7 @@ public class ActionController {
 			if (canBlock && isBlocked(path[i].x, path[i].y)){
 				break;
 			}
-			if (board.isInBounds(path[i].x,path[i].y) && (path[i].x == selected.xPosition && path[i].y == selected.yPosition)){
+			if (board.isInBounds(path[i].x,path[i].y) && !(path[i].x == selected.xPosition && path[i].y == selected.yPosition)){
 				animations.add(a_node.action.animation,path[i].x,path[i].y);
 			}
 			

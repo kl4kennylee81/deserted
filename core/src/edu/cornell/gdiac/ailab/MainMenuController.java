@@ -22,7 +22,7 @@ public class MainMenuController {
 		this.canvas = canvas;
 		this.manager = manager;
 		Option[] default_options = makeDefaultOptions();
-		menu = new MainMenu(default_options);
+		this.menu = new MainMenu(default_options);
 		if (default_options.length > 0){
 			menu.selectOption(0);
 		}
@@ -65,6 +65,10 @@ public class MainMenuController {
 //		}  else if (InputController.pressedQ()){
 //			done(5);
 //		}
+		
+		if (InputController.pressedP()){
+			done(3);
+		}
 	}
 	
 	public void done(int doneCode){
