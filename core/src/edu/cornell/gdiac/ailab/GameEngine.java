@@ -120,8 +120,8 @@ public class GameEngine implements Screen {
 	private static final int SELECT_FONT_SIZE = 20;
 	
 	/** tutorial font info */
-	private static final String TUTORIAL_FONT_FILE = "fonts/Consolas.ttf";
-	private static final int TUTORIAL_FONT_SIZE = 25;
+	private static final String TUTORIAL_FONT_FILE = "fonts/CandelaBook.ttf";
+	private static final int TUTORIAL_FONT_SIZE = 20;
 	private static final Color TUTORIAL_FONT_COLOR = Color.WHITE;
 	
 	public static final String DATA_PATH = "../core/assets/";
