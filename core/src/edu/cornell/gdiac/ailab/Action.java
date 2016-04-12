@@ -17,6 +17,7 @@ public class Action implements GUIElement {
 	Effect effect;
 	String description;
 	Animation animation;
+	Animation projectileAnimation;
 	
 	TexturedMesh menuToken;
 	TexturedMesh barToken;
@@ -159,6 +160,12 @@ public class Action implements GUIElement {
 	
 	public void setAnimation(Animation animation){
 		this.animation = animation;
+	}
+	
+	public void setProjectileAnimation(Animation projectileAnimation){
+		//System.out.println(name);
+		//System.out.println(projectileAnimation);
+		this.projectileAnimation = projectileAnimation;
 	}
 	
 	public void setX(float x){

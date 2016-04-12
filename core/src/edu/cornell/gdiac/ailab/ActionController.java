@@ -478,6 +478,7 @@ public class ActionController {
 		c.set(a_node.xPosition, a_node.yPosition);
 		Coordinate[] path = new Coordinate[1];
 		path[0] = c;
+		System.out.println("YO");
 		processHitPath(a_node,path,true,false);
 	}
 	

@@ -218,6 +218,10 @@ public class ObjectLoader {
 		for (Integer actionId: availableActions.keySet()) {
 			Integer animationId = (Integer) (actions.get(actionId).get("animationId"));
 			availableAnimations.put(animationId, null);
+			Integer projectileAnimationId = (Integer) (actions.get(actionId).get("projectileAnimationId"));
+			if (projectileAnimationId != null){
+				availableAnimations.put(projectileAnimationId, null);
+			}
 		}
 	}
 
@@ -321,6 +325,11 @@ public class ObjectLoader {
 			Integer animationId = (Integer) action.get("animationId");
 			if (animationId != null){
 				actionToAdd.setAnimation(availableAnimations.get(animationId));
+			}
+			
+			Integer projectileAnimationId = (Integer) action.get("projectileAnimationId");
+			if (projectileAnimationId != null){
+				actionToAdd.setProjectileAnimation(availableAnimations.get(projectileAnimationId));
 			}
 
 
