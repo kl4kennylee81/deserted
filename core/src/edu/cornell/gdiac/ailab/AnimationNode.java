@@ -70,6 +70,8 @@ public class AnimationNode {
 	 * Returns the next FilmStrip with the given segment id
 	 */
 	public FilmStrip getTextureHelper(int segmentNum, boolean paused){
+		//System.out.println(animation);
+		//System.out.println(animation.segments);
 		Segment s = animation.segments.get(segmentNum);
 		if (s == null || s.frameLengths == null){
 			return null;

@@ -439,6 +439,7 @@ public class Character implements GUIElement {
 	 * Add a persisting action to draw/be checked in the future
 	 */
 	void addPersisting(ActionNode an){
+		an.setAnimation();
 		if (an.action.pattern == Pattern.SHIELD){
 			an.setPersisting(castPosition, xPosition, yPosition);
 			persistingActions.add(an);
@@ -454,6 +455,7 @@ public class Character implements GUIElement {
 	}
 	
 	void addPersisting(ActionNode an,Coordinate[] path){
+		an.setAnimation();
 		switch (an.action.pattern){
 		case SHIELD:
 			an.setPersisting(castPosition, xPosition, yPosition,path);
@@ -799,6 +801,7 @@ public class Character implements GUIElement {
 	private void drawPersisting(GameCanvas canvas,GridBoard board,InGameState gameState){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
+		boolean paused = gameState == InGameState.PAUSED ? true : false;
 		for (ActionNode an : persistingActions){
 			switch (an.action.pattern){
 			case SHIELD:
@@ -807,18 +810,16 @@ public class Character implements GUIElement {
 			case STRAIGHT:
 			case DIAGONAL:
 			case PROJECTILE:
-				float diagX = (tileW/2 - DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX));
-				float diagY = tileH/2 - DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY);
-				float boardOffsetX = board.getBoardOffsetX(canvas);
-				float boardOffsetY = board.getBoardOffsetY(canvas);
-				diagX = diagX + boardOffsetX;
-				diagY = diagY + boardOffsetY;
-//				FilmStrip toDraw = an.actiongetTexture(charState,gameState);
-//				if (toDraw == null) {
-//					toDraw = getFilmStrip(gameState);
-//				}
-//				canvas.draw(toDraw,diagX,diagY);
-				canvas.drawBox(diagX,diagY, DIAGONAL_SIZE, DIAGONAL_SIZE, color);
+	    	    Coordinate c =board.offsetBoard(canvas, tileW*an.curX,tileH*an.curY);
+	    	    float messageX = c.x;
+				float messageY = c.y;
+				c.free();
+	    	    FilmStrip toDraw = an.animation.getTexture(paused);
+	    	    //try again to repeat animation
+	    	    if (toDraw == null){
+	    	    	toDraw = an.animation.getTexture(paused);
+	    	    }
+	    	    canvas.draw(toDraw, messageX,messageY);
 				break;
 			default:
 				break;

@@ -419,7 +419,7 @@ public class ActionController {
 			if (canBlock && isBlocked(path[i].x, path[i].y)){
 				break;
 			}
-			if (board.isInBounds(path[i].x,path[i].y) && (path[i].x == selected.xPosition && path[i].y == selected.yPosition)){
+			if (board.isInBounds(path[i].x,path[i].y)){
 				animations.add(a_node.action.animation,path[i].x,path[i].y);
 			}
 			
@@ -478,6 +478,7 @@ public class ActionController {
 		c.set(a_node.xPosition, a_node.yPosition);
 		Coordinate[] path = new Coordinate[1];
 		path[0] = c;
+		System.out.println("YO");
 		processHitPath(a_node,path,true,false);
 	}
 	

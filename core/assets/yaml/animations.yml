@@ -32,14 +32,15 @@
   name: Projectile
   texture: "actions/projectile_spritesheet.png"
   rows: 1
-  cols: 4
-  size: 4
+  cols: 5
+  size: 5
   segments:
     - segmentName: IDLE
       segmentId: 0 
       startingIndex: 0
-      length: 4
+      length: 5
       frameData:
+      - 8
       - 8
       - 8
       - 8
