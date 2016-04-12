@@ -89,6 +89,7 @@
   hexColor: 3299FFFF
   speed: 4.
   castSpeed: 4.2
+  slots: 4
   xPosition: 5
   yPosition: 3
   leftSide: false
@@ -109,6 +110,7 @@
   hexColor: FF9900FF
   speed: 6.
   castSpeed: 5.5
+  slots: 4
   xPosition: 5
   yPosition: 3
   leftSide: true
@@ -122,7 +124,7 @@
 
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
-  animationId: 2
+  animationId: 3
 
 92:
   name: green
@@ -131,6 +133,7 @@
   hexColor: 3299FFFF
   speed: 4.2
   castSpeed: 4.2
+  slots: 4
   xPosition: 5
   yPosition: 3
   leftSide: false
@@ -151,6 +154,7 @@
   hexColor: FF9900FF
   speed: 5.6
   castSpeed: 4.
+  slots: 4
   xPosition: 0
   yPosition: 3
   leftSide: true
@@ -174,6 +178,7 @@
   hexColor: CD2626FF
   speed: 3.5
   castSpeed: 4.2
+  slots: 4
   xPosition: 5
   yPosition: 3
   leftSide: false
@@ -194,6 +199,7 @@
   hexColor: 3299FFFF
   speed: 4.5
   castSpeed: 5.5
+  slots: 4
   xPosition: 5
   yPosition: 3
   leftSide: false
