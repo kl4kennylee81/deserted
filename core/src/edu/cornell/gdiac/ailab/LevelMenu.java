@@ -5,16 +5,16 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class LevelMenu extends Menu {
 	/** start position of the menu's options x Position **/
-	private static final float RELATIVE_X_POS = 0.1f;
+	private static final float RELATIVE_X_POS = 0.1375f;
 	
 	/** start position of the menu's options y Position going down **/
 	private static final float RELATIVE_Y_POS = 0.5f;
 	
 	/** relative width of options **/
-	private static final float RELATIVE_WIDTH = 0.2f;
+	private static final float RELATIVE_WIDTH = 0.15f;
 	
 	/** relative height of options **/
-	private static final float RELATIVE_HEIGHT = 0.3f;
+	private static final float RELATIVE_HEIGHT = 0.35f;
 	
 	/** relative spacing between options **/
 	private static final float RELATIVE_MENU_SPACING_X = 0.20f;

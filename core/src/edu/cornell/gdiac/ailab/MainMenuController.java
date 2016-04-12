@@ -33,7 +33,7 @@ public class MainMenuController {
 		// we will rearrange when i merge to master
 		Option [] default_options = new Option[3];
 		default_options[0] = new Option("LEVEL SELECT",0);
-		default_options[1] = new Option("TUTORIAL",1);
+		default_options[1] = new Option("TUTORIAL",4);
 		default_options[2] = new Option("LEVEL EDITOR",2);
 		return default_options;
 		//make a method that sizes and positions them according to the number of options
