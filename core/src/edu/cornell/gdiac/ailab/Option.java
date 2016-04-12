@@ -23,6 +23,12 @@ public class Option implements GUIElement{
 	
 	String text;
 	
+	Texture image;
+	
+	public void setImage(Texture t){
+		image = t;
+	}
+	
 	public float getX(){
 		return xPosition;
 	}
@@ -88,26 +94,43 @@ public class Option implements GUIElement{
 		float width = this.width * canvas.getWidth();
 		Color textColor = this.getColor();
 		canvas.drawText(this.text, x, y, textColor);
+		
+		if (image != null){
+			Color imageColor = this.getColorImages();
+			canvas.drawTexture(image, x, y, width,height, imageColor);
+		}
 	}
 	
 	public void setColor(Color c){
 		this.color = c;
 	}
 	
-	public Color getColor(){
+	public Color getColorImages(){
 		if (this.isSelected){
-			return Color.BLACK;
+			return this.color.cpy().mul(1f, 1f, 1f, 0.6f);
 		}
 		else{
-			return this.color;
+			return Color.WHITE.cpy();
+		}
+	}
+	
+	public Color getColor(){
+		if (this.isSelected){
+			return Color.BLACK.cpy();
+		}
+		else{
+			return this.color.cpy();
 		}
 	}
 
 	@Override
 	public boolean contains(float x, float y, GameCanvas canvas, GridBoard board) {
-		float x_m = this.xPosition*canvas.getWidth()-this.width/2;
-		float y_m = this.yPosition*canvas.getHeight()-this.height/2;
-		return (x <= x_m+this.width && x >= x_m && y <= y_m + this.height && y >= y_m);
+		float width_m = this.width * canvas.getWidth();
+		float height_m = this.height * canvas.getHeight();
+		
+		float x_m = this.xPosition*canvas.getWidth()-width_m/2;
+		float y_m = this.yPosition*canvas.getHeight()-height_m/2;
+		return (x <= x_m+width_m && x >= x_m && y <= y_m + height_m && y >= y_m);
 	}
 
 

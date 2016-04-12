@@ -487,6 +487,12 @@ public class GameEngine implements Screen {
 		manager.load(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class);
 		assets.add(Constants.MENU_HIGHLIGHT_TEXTURE);
 		
+		manager.load(Constants.LEVEL_SELECT_BOSS,Texture.class);
+		assets.add(Constants.LEVEL_SELECT_BOSS);
+		
+		manager.load(Constants.LEVEL_SELECT_REG,Texture.class);
+		assets.add(Constants.LEVEL_SELECT_REG);
+		
 		manager.load(Constants.PRGRSBR_TEXTURE, Texture.class);
 		assets.add(Constants.PRGRSBR_TEXTURE);
 		statusBar = new Texture(Constants.PRGRSBR_TEXTURE);

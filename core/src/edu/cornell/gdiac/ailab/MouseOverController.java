@@ -17,12 +17,12 @@ public class MouseOverController {
 	Action hAction;
 	SelectionMenu currMenu;
 
-	public void update(Option[] options, MainMenu mainMenu){
+	public void update(Option[] options, Menu Menu){
 		float x = InputController.getMouseX();
 		float y = InputController.getMouseY();
 		for(Option o: options){
 			if (o.contains(x,y,canvas,board)){
-				mainMenu.selectOption(o.srNo);
+				Menu.selectOption(o.srNo);
 			}
 		}
 		

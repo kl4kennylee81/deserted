@@ -38,4 +38,10 @@ public class Constants {
 
 	/** image for the loading bar  */
 	public static final String PRGRSBR_TEXTURE = "images/progressbar.png";
+	
+	/** SECTION FOR LEVEL SELECT MENU **/
+	public static final String LEVEL_SELECT_REG = "models/menu_tapestryregular.png";
+	
+	public static final String LEVEL_SELECT_BOSS = "models/menu_tapestryboss.png";
+	
 }

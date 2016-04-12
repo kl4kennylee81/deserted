@@ -3,24 +3,12 @@ package edu.cornell.gdiac.ailab;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
-public class MainMenu {
+public class MainMenu extends Menu{
 	/** game logo texture */
 	Texture logo;
 	
-	/** main menu background */
-	Texture menuBackground;
-	
 	/** option gradient highlighting */
 	Texture optionHighlight;
-	
-	/** option texture **/
-	Texture optionTexture;
-
-	/** Available options to use */
-	Option[] options;
-
-	/** Index of current option */
-	public int selectedOption;
 
 	/** Lerp value for highlighting */
 	private float lerpVal;
@@ -75,8 +63,14 @@ public class MainMenu {
 	}
 	
 	public void selectOption(int optionNo){
-		options[selectedOption].isSelected = false;
-		options[optionNo].isSelected = true;
+		for (int i=0;i<options.length;i++){
+			if (options[i].srNo == optionNo){
+				options[i].isSelected = true;
+			}
+			else if (options[i].srNo == selectedOption){
+				options[i].isSelected = false;
+			}
+		}
 		selectedOption = optionNo;
 	}
 	
@@ -91,6 +85,9 @@ public class MainMenu {
 			float height = options[i].getHeight(canvas);
 			
 			if (options[i].isSelected){
+				if (optionHighlight == null){
+					return;
+				}
 				// we will draw the highlighting behind the option
 				canvas.drawTexture(optionHighlight,x,y,width,height,Color.WHITE);
 			}
@@ -99,6 +96,9 @@ public class MainMenu {
 	}
 	
 	public void drawLogo(GameCanvas canvas){
+		if (logo == null){
+			return;
+		}
 		float x = RELATIVE_LOGO_X * canvas.getWidth();
 		float y = RELATIVE_LOGO_Y * canvas.getHeight();
 		float width = RELATIVE_LOGO_WIDTH * canvas.getWidth();
@@ -109,6 +109,21 @@ public class MainMenu {
 	public Option[] getOptions() {
 		// TODO Auto-generated method stub
 		return options;
+	}
+	
+	@Override
+	public int getIndexOption(int optionNo){
+		for (int i=0;i<options.length;i++){
+			if (options[i].srNo == optionNo){
+				return i;
+			}			
+		}
+		return -1;
+	}
+	
+	@Override
+	public int getCurIndexOption(){
+		return getIndexOption(this.selectedOption);
 	}
 
 }	
