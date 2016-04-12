@@ -12,9 +12,9 @@ public class Option implements GUIElement{
 	float x_min;
 	/** ratio of the options top y-limit to the and screen's height*/
 	float y_min;
-	Color regularColor = Color.FIREBRICK;
+	Color regularColor = Color.WHITE;
 	String text;
-	Color highlightedColor = new Color(1.0f, 0.7f, 0.0f, 1.0f);
+	Color highlightedColor = Color.SKY;//new Color(1.0f, 0.7f, 0.0f, 1.0f);
 	String image;
 	
 	public boolean isSelected(){

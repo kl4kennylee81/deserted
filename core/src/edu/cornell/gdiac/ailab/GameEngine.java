@@ -115,7 +115,8 @@ public class GameEngine implements Screen {
 	/** The message font to use */
 	private static final String MENU_FONT_FILE  = "fonts/Milonga-Regular.ttf";
 	/** The size of the messages */
-	private static final int MENU_FONT_SIZE = 20;
+	private static final int MENU_FONT_SIZE = 12;
+	private static final Color MENU_FONT_COLOR = Color.WHITE;
 	
 	private static final String SELECT_FONT_FILE  = "fonts/LondrinaSolid-Regular.ttf";
 	/** The size of the messages */
@@ -387,6 +388,7 @@ public class GameEngine implements Screen {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
 			loadNextMenu(mainMenuController.gameNo);
+			//to be added to when we add 2 beginning menus
 			//startGame(mainMenuController.gameNo);
 		}
 	}
@@ -544,7 +546,7 @@ public class GameEngine implements Screen {
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
 		size2Params.fontFileName = MENU_FONT_FILE;
 		size2Params.fontParameters.size = MENU_FONT_SIZE;
-		size2Params.fontParameters.color = Color.WHITE;
+		size2Params.fontParameters.color = MENU_FONT_COLOR;
 		manager.load(MENU_FONT_FILE, BitmapFont.class, size2Params);
 		assets.add(MENU_FONT_FILE);
 		size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();

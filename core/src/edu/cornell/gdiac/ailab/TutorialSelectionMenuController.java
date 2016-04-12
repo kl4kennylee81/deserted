@@ -9,18 +9,26 @@ import edu.cornell.gdiac.ailab.TutorialSteps.TutorialAction;
 
 public class TutorialSelectionMenuController extends SelectionMenuController{
 	TutorialSteps tutorialSteps;
-	
+
 	public TutorialSelectionMenuController(GridBoard board, List<Character> chars, TutorialSteps tutorialSteps) {
 		super(board, chars);
 		// TODO Auto-generated constructor stub
 		this.tutorialSteps = tutorialSteps;
 	}
-	
+
 	public void update(){
 		if (InputController.pressedSpace()){
-			if (tutorialSteps.timeElapsed <= tutorialSteps.step.waitTime){
-				tutorialSteps.timeElapsed = tutorialSteps.step.waitTime;
-				tutorialSteps.textDone = tutorialSteps.step.text.length();
+			if (tutorialSteps.textDone < tutorialSteps.step.text.length()){
+				if (tutorialSteps.step.text.charAt(tutorialSteps.textDone) == '\n'){
+					tutorialSteps.prevTextDone = tutorialSteps.textDone;
+					tutorialSteps.textDone++;
+				} else {
+					int pt = tutorialSteps.step.text.indexOf('\n', tutorialSteps.prevTextDone);
+					int t = tutorialSteps.step.text.indexOf('\n', tutorialSteps.textDone);
+//					System.out.println("prevTextDone:"+tutorialSteps.prevTextDone + " textDone:" + tutorialSteps.textDone + " pt:" + pt + " t:" + t);
+					if (pt != -1) tutorialSteps.prevTextDone = pt == t? tutorialSteps.prevTextDone: pt;
+					tutorialSteps.textDone = t == -1? tutorialSteps.step.text.length(): t;
+				}
 			}
 		}
 		if (selected != null){
@@ -50,11 +58,11 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 					break;
 				}
 			}
-		}	
+		}
 	}
-	
+
 	private void updateNotChoosingTarget(){
-		boolean mouseCondition = InputController.pressedLeftMouse();// && 
+		boolean mouseCondition = InputController.pressedLeftMouse();// &&
 //				action.contains(InputController.getMouseX(), InputController.getMouseX(), InputController.getCanvas(), board);
 		ActionNodes anPool = ActionNodes.getInstance();
 		int numSlots = selected.getActionBar().getUsableNumSlots();
@@ -93,7 +101,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 			menu.changeSelected(true,numSlots);
 		}
 	}
-	
+
 	protected void updateChoosingTarget(){
 		ActionNodes anPool = ActionNodes.getInstance();
 		switch (action.pattern){
@@ -108,14 +116,14 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 				direction = Direction.UP;
 			} else if (InputController.pressedS() && !InputController.pressedW()){
 				direction = Direction.DOWN;
-			} 
+			}
 			break;
 		case SHIELD:
 			if (InputController.pressedW() && !InputController.pressedS()){
 				direction = Direction.UP;
 			} else if (InputController.pressedS() && !InputController.pressedW()){
 				direction = Direction.DOWN;
-			} 
+			}
 			break;
 		case INSTANT:
 			break;
@@ -142,7 +150,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 			//menu.setChoosingTarget(false);
 		}
 	}
-	
+
 	public boolean correctDirection(){
 		if (tutorialSteps.needsConfirm()){
 			return false;
@@ -157,7 +165,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 		}
 		return true;
 	}
-	
+
 	public boolean correctAction(){
 		if (tutorialSteps.needsConfirm()){
 			return false;
@@ -166,7 +174,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 		TutorialAction ta = tas.get(0);
 		return action == selected.availableActions[ta.actionId];
 	}
-	
+
 	public boolean correctActions(){
 		if (!tutorialSteps.needsConfirm()){
 			return false;

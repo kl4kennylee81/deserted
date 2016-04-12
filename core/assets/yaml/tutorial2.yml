@@ -5,12 +5,10 @@
   finishGame: true
   levelColor: WHITE
   spaceToContinue: true
-  waitTime: 10
 
 1:
   text: "You will now control 2 characters, this is how Deserted is actually played"
   spaceToContinue: true
-  waitTime: 100
   paused: true
   highlightRegions:
     - xPos: 0.24
@@ -27,7 +25,6 @@
 2:
   text: ""
   spaceToContinue: false
-  waitTime: 0
   paused: false
   notes: play resumes. first opponent reaches cast phase and selects straight
   actions:
@@ -39,13 +36,11 @@
 3:
   text: ""
   spaceToContinue: false
-  waitTime: 0
   paused: false
 
 4:
   text: "Select a straight attack"
   spaceToContinue: false
-  waitTime: 0
   paused: false
   actions:
     - actionId: 1
@@ -55,7 +50,6 @@
 5:
   text: "Press Enter"
   spaceToContinue: false
-  waitTime: 0
   paused: false
   confirm: false
   actions:
@@ -67,7 +61,6 @@
 6:
   text: "Confirm this selection. (For now we won't select any more actions)"
   spaceToContinue: false
-  waitTime: 0
   paused: false
   confirm: true
   # timeToPause: 80
@@ -80,7 +73,6 @@
 7:
   text: ""
   spaceToContinue: false
-  waitTime: 0
   paused: false
   notes: second opponent reaches cast phase and selects nothing
   timeToPause: 40
@@ -88,7 +80,6 @@
 8:
   text: ""
   spaceToContinue: false
-  waitTime: 0
   paused: false
   notes: second opponent reaches cast phase and selects nothing
 
@@ -99,33 +90,28 @@
   past the appropriate cast point. This is why you must keep tabs on your opponent's
   action bar, to try and see what they are planning!"
   spaceToContinue: true
-  waitTime: 10
   paused: true
 
 10:
   text: ""
   spaceToContinue: false
-  waitTime: 0
   paused: false
 
 11:
   text: "Your second character has entered his cast phase. You should get used to
   balancing two characters like this"
   spaceToContinue: true
-  waitTime: 10
   paused: true
 
 12:
   text: "We now demonstrate the shield mechanic"
   spaceToContinue: true
-  waitTime: 10
   paused: true
 
 13:
   text: "Navigate to \"Shield\" on the selection menu using W/S or Up/Down and
   press Enter."
   spaceToContinue: false
-  waitTime: 0
   paused: false
   actions:
     - actionId: 2
@@ -138,7 +124,6 @@
   he is on as well as two other tiles to the right or left of his location. Select
   a right shield (pointing down) and press Enter."
   spaceToContinue: false
-  waitTime: 0
   paused: false
   confirm: false
   actions:
@@ -151,7 +136,6 @@
   reaches 0 the character faints and disappears from the screen. When either side has
   no characters left, the other side wins"
   spaceToContinue: true
-  waitTime: 0
   paused: true
 
 22:
@@ -159,7 +143,6 @@
   his action bar. When you lose health, your cast time decreases, so you have to
   wait less before you can make an action again”"
   spaceToContinue: true
-  waitTime: 0
   paused: true
   highlightRegions:
     - xPos: 0.24

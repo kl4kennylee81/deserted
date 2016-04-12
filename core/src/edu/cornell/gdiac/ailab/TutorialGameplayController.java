@@ -17,13 +17,13 @@ public class TutorialGameplayController extends GameplayController{
 	boolean curPaused;
 	int pauseTimer;
 	int targetPauseTime;
-	
+
 	/** State when tutorial is not paused */
 	InGameState regGameState;
-	
+
 	/** Subcontroller for selection menu (CONTROLLER CLASS) */
     protected TutorialSelectionMenuController selectionMenuController;
-    
+
     /** Subcontroller for AI selection (CONTROLLER CLASS) */
     protected TutorialAIController aiController;
 
@@ -47,16 +47,16 @@ public class TutorialGameplayController extends GameplayController{
 		pauseTimer = 0;
 		targetPauseTime = -1;
 	}
-	
+
 	public void update(){
 		tutorialSteps.writeTime += 2;
 		if (tutorialSteps.currStep() != null){
-			if (tutorialSteps.timeElapsed < tutorialSteps.currStep().waitTime && tutorialSteps.startTime){
+			if (tutorialSteps.startTime){
 				tutorialSteps.timeElapsed += 1;
 			}
 		}
-		
-		
+
+
 		if (tutorialSteps.isDone()){
 			super.update();
 			return;
@@ -129,7 +129,7 @@ public class TutorialGameplayController extends GameplayController{
     		break;
 		default:
 			//updateTutorial();
-			break;	
+			break;
     	}
     	updateTutorial();
     	updateTextMessages();
@@ -143,11 +143,11 @@ public class TutorialGameplayController extends GameplayController{
     		ObjectLoader.getInstance().unloadCurrentLevel();
     	}
     }
-	
+
 	public boolean isDone(){
 		return tutorialSteps.finishGame && tutorialSteps.isDone() && inGameState != InGameState.PAUSED || super.isDone();
 	}
-	
+
 	public void drawPlay(GameCanvas canvas){
 		if (isDone()){
 			return;
@@ -156,16 +156,16 @@ public class TutorialGameplayController extends GameplayController{
 		if(!tutorialSteps.step.text.equals("")) screen.setJustScreen();
 		if (highlights != null && tutorialSteps.showHighlights){
 	    	for (CurrentHighlight highlight:highlights){
-	    		screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(), 
+	    		screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(),
 	    				highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight());
 	    	}
-	    	screen.noScreen();	
+	    	screen.noScreen();
 		}
         screen.draw(canvas);
     	board.draw(canvas);
     	drawCharacters(canvas);
         animations.draw(canvas,board,inGameState);
-        
+
         textMessages.draw(canvas,board);
         if (prompt != null){
         	canvas.drawText(prompt, 18, 530, Color.BLACK);
@@ -173,24 +173,24 @@ public class TutorialGameplayController extends GameplayController{
         if (highlights != null && tutorialSteps.showHighlights){
 	    	for (CurrentHighlight highlight:highlights){
 	    		if (highlight.arrow.equals("up")){
-		    		canvas.drawUpArrow((float)(highlight.xPos*canvas.getWidth() + (highlight.width*canvas.getWidth())/2f), 
-		    				(float)highlight.yPos*canvas.getHeight(), 
+		    		canvas.drawUpArrow((float)(highlight.xPos*canvas.getWidth() + (highlight.width*canvas.getWidth())/2f),
+		    				(float)highlight.yPos*canvas.getHeight(),
 		    				Color.GOLD);
-	    			
+
 	    		} else if (highlight.arrow.equals("down")) {
-		    		canvas.drawDownArrow((float)(highlight.xPos*canvas.getWidth() + highlight.width*canvas.getWidth()), 
-		    				(float)(highlight.yPos*canvas.getHeight() + (highlight.height*canvas.getHeight())/2f), 
-		    				Color.GOLD);	    			
+		    		canvas.drawDownArrow((float)(highlight.xPos*canvas.getWidth() + highlight.width*canvas.getWidth()),
+		    				(float)(highlight.yPos*canvas.getHeight() + (highlight.height*canvas.getHeight())/2f),
+		    				Color.GOLD);
 	    		} else {
-		    		canvas.drawLeftArrow((float)(highlight.xPos*canvas.getWidth() + highlight.width*canvas.getWidth()), 
-		    				(float)(highlight.yPos*canvas.getHeight() + (highlight.height*canvas.getHeight())/2f), 
+		    		canvas.drawLeftArrow((float)(highlight.xPos*canvas.getWidth() + highlight.width*canvas.getWidth()),
+		    				(float)(highlight.yPos*canvas.getHeight() + (highlight.height*canvas.getHeight())/2f),
 		    				Color.GOLD);
 	    		}
-	    	}	
+	    	}
 		}
         tutorialSteps.drawText(canvas);
     }
-	
+
 	private void updateTutorial() {
 		pauseTimer++;
 		if (targetPauseTime != -1) {
@@ -211,15 +211,24 @@ public class TutorialGameplayController extends GameplayController{
 			tutorialSteps.nextStep();
 			return;
 		}
-		if (InputController.pressedSpace() && inGameState == InGameState.PAUSED){//(tutorialSteps.isPaused() ||
-			if (tutorialSteps.timeElapsed < tutorialSteps.step.waitTime){
-				tutorialSteps.timeElapsed = tutorialSteps.step.waitTime;
-				tutorialSteps.textDone = tutorialSteps.step.text.length();
-			} else {
+		if (InputController.pressedSpace() && inGameState == InGameState.PAUSED){
+			if (tutorialSteps.textDone == tutorialSteps.step.text.length()){
 				pauseTimer = 0;
 				targetPauseTime = tutorialSteps.currStep().timeToPause;
 				//System.out.println("next step 4");
 				tutorialSteps.nextStep();
+
+			} else {
+				if (tutorialSteps.step.text.charAt(tutorialSteps.textDone) == '\n'){
+					tutorialSteps.prevTextDone = tutorialSteps.textDone;
+					tutorialSteps.textDone++;
+				} else {
+					int pt = tutorialSteps.step.text.indexOf('\n', tutorialSteps.prevTextDone);
+					int t = tutorialSteps.step.text.indexOf('\n', tutorialSteps.textDone);
+//					System.out.println("prevTextDone:"+tutorialSteps.prevTextDone + " textDone:" + tutorialSteps.textDone + " pt:" + pt + " t:" + t);
+					if (pt != -1) tutorialSteps.prevTextDone = pt == t? tutorialSteps.prevTextDone: pt;
+					tutorialSteps.textDone = t == -1? tutorialSteps.step.text.length(): t;
+				}
 			}
 		}
 		if (tutorialSteps.isPaused()){
@@ -234,9 +243,9 @@ public class TutorialGameplayController extends GameplayController{
 				inGameState = regGameState;
 			}
 		}
-		
+
 	}
-	
+
     public void drawAfter(GameCanvas canvas){
 	    canvas.drawTutorialText("“Congratulations on completing Tutorial Level 1. "
 	    		+ "\n\nPress \'R\' to return to the main menu where you can "
@@ -245,4 +254,4 @@ public class TutorialGameplayController extends GameplayController{
 }
 
 //TODO bugs: multiple highlihgts when resizing
-//TODO: do text speed differently
+//TODO: spacebar to continue slightly flawed
