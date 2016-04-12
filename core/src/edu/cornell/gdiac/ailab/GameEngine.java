@@ -22,6 +22,7 @@ package edu.cornell.gdiac.ailab;
 //import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import org.yaml.snakeyaml.Yaml;
 
@@ -366,6 +367,13 @@ public class GameEngine implements Screen {
 		}else if (gameNo == 5) {
 			try {
 				editorController = new CharacterEditorController();
+			} catch (IOException | URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else if (gameNo == 6) {
+			try {
+				editorController = new LevelEditorController();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

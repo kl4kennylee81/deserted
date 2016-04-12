@@ -1,111 +1,187 @@
 package edu.cornell.gdiac.ailab;
 
-import java.util.HashMap;
+import java.util.Arrays;
 
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class LevelEditor {
 
-private Table table;
-private TextButton submit;
+	private static Float OBJ_WIDTH = 400f;
+	private static Float PADDING = 4f;
+	private Table table;
+	private SelectBox<String> editSelect;
+	private TextField idText;
+	private DropDownTable alliesTable;
+	private DropDownTable enemiesTable;
+	private SelectBox<String> nextSelect;
+	private TextField widthText;
+	private TextField heightText;
+	private TextField textureText;
+	private TextField aiText;
+
+
+	private TextButton submit;
 	
-	public LevelEditor () {
-		Skin skin = new Skin();	
-		Label nameLabel = new Label("Name:", skin);
-		TextField nameText = new TextField("", skin);
-	
-		Label alliesLabel = new Label("Allies (as csv of tuples of (char_id, x_position, y_position)):", skin);
-		TextField alliesText = new TextField("", skin);
+	public LevelEditor (String[] editOps, String[] charIds,
+						String[] addLabels) {
+		Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		
-		Label enemiesLabel = new Label("Enemies (as csv of tuples of (char_id, x_position, y_position, difficulty)):", skin);
-		TextField enemiesText = new TextField("", skin);
+		Label editLabel = new Label("Edit:", skin);
+		editSelect = new SelectBox<String>(skin);
+		editSelect.setItems(editOps);
+		
+		Label idLabel = new Label("Id:", skin);
+		idText = new TextField("", skin);
+	
+		Label alliesLabel = new Label("Allies:", skin);
+		alliesTable = new DropDownTable(charIds, addLabels);
+		
+		Label enemiesLabel = new Label("Enemies:", skin);
+		enemiesTable = new DropDownTable(charIds, addLabels);
 		
 		Label nextLabel = new Label("Next Level:", skin);
-		TextField nextText = new TextField("", skin);
+		nextSelect = new SelectBox<String>(skin);
+		nextSelect.setItems(Arrays.copyOfRange(editOps, 1, editOps.length));
 		
 		Label widthLabel = new Label("Board Width:", skin);
-		Slider widthSlider = new Slider(0f, 20f, 1f, false, skin);
+		widthText = new TextField("", skin);
 		
 		Label heightLabel = new Label("Board Height:", skin);
-		Slider heightSlider = new Slider(0f, 20f, 1f, false, skin);
-		
-		
-				
-		
+		heightText = new TextField("", skin);
+	
 		Label textureLabel = new Label("Board Texture:", skin);
-		TextField textureText = new TextField("", skin);
+		textureText = new TextField("", skin);
+		
+		Label aiLabel = new Label("AI:", skin);
+		aiText = new TextField("", skin);
 		
 		submit = new TextButton("Submit", skin);
 		
 		table = new Table();
 		
-		table.add(nameLabel);
-		table.add(nameText).width(100);
+		table.add(editLabel);
+		table.add(editSelect).width(OBJ_WIDTH).pad(PADDING);
+		table.row();
+	
+		table.add(idLabel);
+		table.add(idText).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(alliesLabel);
-		table.add(alliesText).width(300);
+		table.add(alliesTable).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(enemiesLabel);
-		table.add(enemiesText).width(300);
+		table.add(enemiesTable).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(nextLabel);
-		table.add(nextText).width(100);
+		table.add(nextSelect).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(widthLabel);
-		table.add(widthSlider).width(100);
+		table.add(widthText).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(heightLabel);
-		table.add(heightSlider).width(100);
+		table.add(heightText).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(textureLabel);
-		table.add(textureText).width(100);
+		table.add(textureText).width(OBJ_WIDTH).pad(PADDING);
+		table.row();
+		
+		table.add(aiLabel);
+		table.add(aiText).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(submit);
-	}
-	
-	//NOT USING THIS FOR NOW. 
-	/**Set up allies and enemies for table. Assumed that table is not null.*/
-	private void setUpAlliesAndEnemies (Skin skin, HashMap<Integer, HashMap<String, Object>> characters) {
-		for (HashMap<String, Object> character : characters.values()) {
-			String name = (String) character.get("name");
-			CheckBox charBox = new CheckBox(name, skin);
-			
-			Label xPosLabel = new Label("X Position:", skin);
-			Slider xPosSlider = new Slider(0f, 5f, 1f, false, skin);
-					
-			Label yPosLabel = new Label("Y Position:", skin);
-			Slider yPosSlider = new Slider(0f, 5f, 1f, false, skin);
-			
-			table.add(charBox);
-			table.row();
-			
-			table.add(xPosLabel);
-			table.add(xPosSlider);
-			table.row();
-			
-			table.add(yPosLabel);
-			table.add(yPosSlider);
-			table.row();
-			
-			
-		}
-		
 		
 	}
 	
+	
+	public Table getTable(){
+		return table;
+	}
+	
+	public String getSelectedId () {
+		return editSelect.getSelected();
+	}
+	
+	public String getId() {
+		return idText.getText();
+	}
+	
+	public Integer[] getAllies() {
+		return alliesTable.getIdValues();
+	}
+	
+	public Integer[] getAlliesAddIntField(int index){
+		return alliesTable.getIntFieldValues(index);
+	}
+	
+	
+	public Integer[] getEnemies() {
+		return enemiesTable.getIdValues();
+	}
+	 
+	public Integer[] getEnemiesAddIntField(int index){
+		return enemiesTable.getIntFieldValues(index);
+	}
+	
+	
+	public String getNext() {
+		return nextSelect.getSelected();
+	}
+	
+	public Integer getWidth() {
+		return Integer.parseInt(widthText.getText());
+	}
+	
+	public Integer getHeight() {
+		return Integer.parseInt(heightText.getText());
+	}
+	
+	public String getTexture() {
+		return textureText.getText();
+	}
+	
+	public String getAI() {
+		return aiText.getText();
+	}
+	
+	public boolean submitWasClicked() {
+		return submit.isPressed();
+	}
+	
+	public void setUpEdit(String[] allies, String[][] alliesAddtl, String[] enemies, 
+						String[][] enemiesAddtl, String next, String width, 
+					String height, String texture, String ai) {
+		idText.setText(editSelect.getSelected());
+		alliesTable.setValues(allies, alliesAddtl);
+		enemiesTable.setValues(enemies, enemiesAddtl);
+		nextSelect.setSelected(next);
+		widthText.setText(width);
+		heightText.setText(height);
+		textureText.setText(texture);
+		aiText.setText(ai);
+	}
+	
+	public void setUpAdd() {
+		idText.setText("");
+		alliesTable.setValues(null, null);
+		enemiesTable.setValues(null, null);
+		nextSelect.setSelected("");
+		widthText.setText("");
+		heightText.setText("");
+		textureText.setText("");
+		aiText.setText("");
+	}
 	
 }

@@ -1,6 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
-import java.util.HashMap;
+
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -12,9 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 
 public class CharacterEditor {
 	
-	private HashMap<Integer, HashMap<String, Object>> chars;
-	
 	private Float OBJ_WIDTH = 400f;
+	private Float PADDING = 4f;
 	
 	private Table table;
 	private SelectBox<String> editSelect;
@@ -65,7 +64,7 @@ public class CharacterEditor {
 		castSpeedText = new TextField("", skin);	
 		
 		Label actionsLabel = new Label("Actions:", skin);
-		actionsTable = new DropDownTable(actions);
+		actionsTable = new DropDownTable(actions, null);
 		
 		Label textureLabel = new Label("Texture:", skin);
 		textureText = new TextField("", skin);
@@ -83,52 +82,52 @@ public class CharacterEditor {
 		table = new Table();
 		
 		table.add(editLabel);
-		table.add(editSelect).width(OBJ_WIDTH);
+		table.add(editSelect).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(idLabel);
-		table.add(idText).width(OBJ_WIDTH);
+		table.add(idText).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(nameLabel);
-		table.add(nameText).width(OBJ_WIDTH);
+		table.add(nameText).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(healthLabel);
-		table.add(healthText).width(OBJ_WIDTH);
+		table.add(healthText).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(maxHealthLabel);
-		table.add(maxHealthText).width(OBJ_WIDTH);
+		table.add(maxHealthText).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(hexLabel);
-		table.add(hexText).width(OBJ_WIDTH);
+		table.add(hexText).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(speedLabel);
-		table.add(speedText).width(OBJ_WIDTH);
+		table.add(speedText).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(castSpeedLabel);
-		table.add(castSpeedText).width(OBJ_WIDTH);
+		table.add(castSpeedText).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		
 		table.add(actionsLabel);
-		table.add(actionsTable).width(OBJ_WIDTH);
+		table.add(actionsTable).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(textureLabel);
-		table.add(textureText).width(OBJ_WIDTH);
+		table.add(textureText).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(iconLabel);
-		table.add(iconText).width(OBJ_WIDTH);
+		table.add(iconText).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(animationLabel);
-		table.add(animationSelect).width(OBJ_WIDTH);
+		table.add(animationSelect).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(submit);
@@ -203,7 +202,7 @@ public class CharacterEditor {
 		hexText.setText(hex);
 		speedText.setText(speed);
 		castSpeedText.setText(castSpeed);
-		actionsTable.setValues(actions);
+		actionsTable.setValues(actions, null);
 		textureText.setText(texture);
 		iconText.setText(icon);
 		animationSelect.setSelected(animation);
@@ -217,7 +216,7 @@ public class CharacterEditor {
 		hexText.setText("");
 		speedText.setText("");
 		castSpeedText.setText("");
-		actionsTable.setValues(null);
+		actionsTable.setValues(null, null);
 		textureText.setText("");
 		iconText.setText("");
 		animationSelect.setSelectedIndex(0);

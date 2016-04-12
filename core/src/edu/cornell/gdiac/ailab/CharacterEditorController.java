@@ -1,8 +1,10 @@
 package edu.cornell.gdiac.ailab;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -18,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class CharacterEditorController implements EditorController {
+	private static File ROOT;
 	private Stage stage;
 	private Yaml yaml;
 	private String currentSelection;
@@ -27,7 +30,8 @@ public class CharacterEditorController implements EditorController {
 	private HashMap<Integer, HashMap<String, Object>> actions;
 	private CharacterEditor charEdit;
 	
-	public CharacterEditorController() throws IOException{
+	public CharacterEditorController() throws IOException, URISyntaxException{
+		setRoot();
 		yaml = new Yaml();
 		loadChars();
 		stage = new Stage();
@@ -40,6 +44,16 @@ public class CharacterEditorController implements EditorController {
 		Gdx.input.setInputProcessor(stage);
 		//table.setDebug(true);
 		currentSelection = "Add a new character";
+	}
+	
+	/**Code taken from http://stackoverflow.com/questions/5527744/java-jar-writing-to-a-file 
+	 * @throws URISyntaxException */
+	public void setRoot() throws URISyntaxException {
+		// Find out where the JAR is:
+		String path = CharacterEditor.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		path = path.substring(0, path.lastIndexOf('/')+1);
+		// Create the project-folder-file:
+		ROOT = new File(path);
 	}
 	
 	public void update() {

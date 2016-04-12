@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 public class ActionEditor {
 	
 	private Float OBJECT_WIDTH = 300f;
+	private Float PADDING = 4f;
 	
 	private Table table;
 	private SelectBox<String> editSelect;
@@ -98,63 +99,63 @@ public class ActionEditor {
 		table = new Table();
 		
 		table.add(editLabel);
-		table.add(editSelect).width(OBJECT_WIDTH);
+		table.add(editSelect).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(idLabel);
-		table.add(idText).width(OBJECT_WIDTH);
+		table.add(idText).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(nameLabel);
-		table.add(nameText).width(OBJECT_WIDTH);
+		table.add(nameText).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(costLabel);
-		table.add(costText).width(OBJECT_WIDTH);
+		table.add(costText).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(damageLabel);
-		table.add(damageText).width(OBJECT_WIDTH);
+		table.add(damageText).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(rangeLabel);
-		table.add(rangeText).width(OBJECT_WIDTH);
+		table.add(rangeText).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(patternLabel);
-		table.add(patternSelect).width(OBJECT_WIDTH);
+		table.add(patternSelect).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(typeLabel);
-		table.add(typeSelect).width(OBJECT_WIDTH);
+		table.add(typeSelect).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(effectNameLabel);
-		table.add(effectNameText).width(OBJECT_WIDTH);
+		table.add(effectNameText).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(effectRoundsLabel);
-		table.add(roundText).width(OBJECT_WIDTH);
+		table.add(roundText).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(magnitudeLabel);
-		table.add(magnitudeText).width(OBJECT_WIDTH);
+		table.add(magnitudeText).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(descriptLabel);
-		table.add(descriptNameText).width(OBJECT_WIDTH);
+		table.add(descriptNameText).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(persistRoundsLabel);
-		table.add(persistRoundText).width(OBJECT_WIDTH);
+		table.add(persistRoundText).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(persistSpeedLabel);
-		table.add(persistSpeedText).width(OBJECT_WIDTH);
+		table.add(persistSpeedText).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(animationLabel);
-		table.add(animationSelect).width(OBJECT_WIDTH);
+		table.add(animationSelect).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(submit);
