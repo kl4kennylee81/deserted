@@ -271,7 +271,7 @@ public class SelectionMenu {
 				 g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, Color.CORAL);
 			}
 			else {
-				 g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, Color.BLACK);
+				 g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, Color.WHITE);
 			}
 		}
 		
@@ -315,7 +315,7 @@ public class SelectionMenu {
 		for (ActionNode an : selectedActions){
 			float x_pos = actionSlot_x + offset + (slot_width*an.action.cost/2);
 			float y_pos = actionSlot_y;
-			canvas.drawCenteredText(an.action.name, x_pos, y_pos, Color.BLACK);
+			canvas.drawCenteredText(an.action.name, x_pos, y_pos, Color.WHITE);
 			offset+=slot_width*an.action.cost;
 		}
 		
@@ -323,7 +323,7 @@ public class SelectionMenu {
 		if (selectedAction < actions.length){
 			float descript_x = RELATIVE_DESCRIPTION_X_POS *w;
 			float descript_y = RELATIVE_DESCRIPTION_Y_POS * h;
-			canvas.drawCenteredText(actions[selectedAction].description, descript_x,descript_y, Color.BLACK);
+			canvas.drawCenteredText(actions[selectedAction].description, descript_x,descript_y, Color.WHITE);
 		}
 	}
 	

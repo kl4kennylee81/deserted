@@ -11,7 +11,7 @@ public class Constants {
 	/** The size of the messages */
 	public static final int MENU_FONT_SIZE = 20;
 	
-	public static final String MENU_HIGHLIGHT_TEXTURE = "models/mainmenu/gradient.png";
+	public static final String MENU_HIGHLIGHT_TEXTURE = "images/mainmenu/gradient.png";
 	
 	public static final Color MENU_COLOR = Color.valueOf("F4D883");
 	
@@ -34,7 +34,7 @@ public class Constants {
 	public static final String MENU_BCKGD_TEXTURE = "images/mainmenu/backgroundLogo.png";
 	
 	/** Background image for the canvas */
-	public static final String LOADING_TEXTURE = "images/loadingscreen.png";
+	public static final String LOADING_TEXTURE = "images/mainmenu/backgroundLogo.png";
 
 	/** image for the loading bar  */
 	public static final String PRGRSBR_TEXTURE = "images/progressbar.png";
