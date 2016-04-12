@@ -4,6 +4,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 
@@ -17,6 +20,11 @@ public class AnimationPool {
 	
 	public void add(Animation an, int xPos, int yPos){
 		pool.add(new AnimationNode(an,xPos,yPos));
+	}
+	
+	public float getBoardScale(GameCanvas canvas,float textureWidth,GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		return tileW/textureWidth;
 	}
 	
 	/**
@@ -35,7 +43,12 @@ public class AnimationPool {
 			c.free();
     	    FilmStrip toDraw = animNode.getTexture(paused);
     	    if (toDraw != null){
-    	    	canvas.draw(toDraw, messageX,messageY);
+    	    	// temporary to scale down for now to size of tile we will do something more clever 
+    	    	// later if we attempt to have multi-tile spanning particles.
+    	    	float boardScale =  this.getBoardScale(canvas, toDraw.getRegionWidth(), board);
+    			float widthTexture = toDraw.getRegionWidth()*boardScale;
+    			float heightTexture = toDraw.getRegionHeight()*boardScale;
+    	    	canvas.draw(toDraw, Color.WHITE.cpy(), messageX,messageY,widthTexture,heightTexture);
     	    } else {
     	    	iter.remove();
     	    }

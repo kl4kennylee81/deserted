@@ -420,6 +420,6 @@
     numRounds: 1
     magnitude: 1
   description: Daze your opponent loses a slot.
-  animationId: 0
+  animationId: 1
 
 ...

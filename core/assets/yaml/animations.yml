@@ -24,10 +24,10 @@
       startingIndex: 0
       length: 4
       frameData:
-      - 6
-      - 6
-      - 6
-      - 6
+      - 10
+      - 10
+      - 10
+      - 10
 2:
   name: Projectile
   texture: "actions/projectile_spritesheet.png"
