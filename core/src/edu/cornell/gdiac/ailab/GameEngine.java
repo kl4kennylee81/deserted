@@ -96,7 +96,6 @@ public class GameEngine implements Screen {
 	/** Right cap to the status forground (colored region) */
 	private TextureRegion statusFrgRight;	
 	
-	
 	/** The width of the progress bar */	
 	private int width;
 	/** The y-coordinate of the center of the progress bar */
@@ -356,6 +355,7 @@ public class GameEngine implements Screen {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
 			loadNextMenu(mainMenuController.gameNo);
+			//to be added to when we add 2 beginning menus
 			//startGame(mainMenuController.gameNo);
 		}
 	}
@@ -525,6 +525,7 @@ public class GameEngine implements Screen {
 		size2Params.fontParameters.color = Color.WHITE;
 		manager.load(Constants.MENU_FONT_FILE, BitmapFont.class, size2Params);
 		assets.add(Constants.MENU_FONT_FILE);
+
 		size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
 		size2Params.fontFileName = Constants.SELECT_FONT_FILE;
 		size2Params.fontParameters.size = Constants.SELECT_FONT_SIZE;

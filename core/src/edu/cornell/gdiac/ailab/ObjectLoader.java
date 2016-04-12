@@ -27,14 +27,14 @@ import edu.cornell.gdiac.mesh.MeshLoader;
 import edu.cornell.gdiac.ailab.DecisionNode.*;
 
 public class ObjectLoader {
-	
+
 	private static ObjectLoader instance = null;
-	
+
 	/** AssetManager to load game assets (textures, sounds, etc.) */
 	private AssetManager manager;
 	/** Container to track the assets loaded so far */
 	private Array<String> assets;
-	
+
 	//hashmap used to load characters for level from yaml
 	private HashMap<Integer, Character> availableCharacters;
 	//hashmap used to load actions for level from yaml
@@ -43,7 +43,7 @@ public class ObjectLoader {
     private HashMap<Integer, Animation> availableAnimations;
     //TacticalManager to be loaded from yaml
     private TacticalManager tacticalManager;
-    
+
     //singleton pattern constructor
     //Instantiates assets array and asset manager
 	protected ObjectLoader() {
@@ -51,7 +51,7 @@ public class ObjectLoader {
 		manager = new AssetManager();
 		manager.setLoader(Mesh.class, new MeshLoader(new InternalFileHandleResolver()));
 	}
-	
+
 	/**
 	 * Singleton pattern getInstance. Creates new instance if instance is null.
 	 * @return
@@ -62,8 +62,8 @@ public class ObjectLoader {
 		}
 		return instance;
 	}
-	
-	
+
+
 	public void unloadCurrentLevel() {
 		for(String s : assets) {
     		if (manager.isLoaded(s)) {
@@ -76,7 +76,7 @@ public class ObjectLoader {
 		availableAnimations = null;
 		tacticalManager = null;
 	}
-	
+
 	/**
 	 * Main method used to construct a level.
 	 * level definition hashmap passed in as argument.
@@ -91,60 +91,60 @@ public class ObjectLoader {
 	    availableActions = new HashMap<Integer, Action>();
 	    availableAnimations = new HashMap<Integer, Animation>();
 	    tacticalManager = new TacticalManager();
-		
-		
+
+
 		ArrayList<HashMap<String, Object>> allies =  (ArrayList<HashMap<String, Object>>) levelDef.get("allies");
 		ArrayList<HashMap<String, Object>> enemies = (ArrayList<HashMap<String, Object>>) levelDef.get("enemies");
-		String nextLevel = (String) levelDef.get("nextLevel");	
+		String nextLevel = (String) levelDef.get("nextLevel");
 		Integer boardWidth = (Integer) levelDef.get("boardWidth");
 		Integer boardHeight = (Integer) levelDef.get("boardHeight");
 		String boardTexture = (String) levelDef.get("boardTexture");
-		
+
 		HashMap<String, String> tiles = (HashMap<String, String>) levelDef.get("tiles");
-		
+
 		ArrayList<String> ai = (ArrayList<String>) levelDef.get("AI");
 		String tutorialFileName = (String) levelDef.get("tutorialFileName");
-		
+
 		Yaml yaml = new Yaml();
 		FileHandle animationFile = Gdx.files.internal("yaml/animations.yml");
 		HashMap<Integer, HashMap<String, Object>> animations;
 		try (InputStream is = animationFile.read()){
 			animations = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
-		
+
 		FileHandle actionFile = Gdx.files.internal("yaml/actions.yml");
 		HashMap<Integer, HashMap<String, Object>> actions;
 		try (InputStream is = actionFile.read()){
 			actions = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
-		
+
 		FileHandle charFile = Gdx.files.internal("yaml/characters.yml");
 		HashMap<Integer, HashMap<String, Object>> characters;
 		try (InputStream is = charFile.read()){
 			characters = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
-		
-		
+
+
 		loadKeysFromLevels(allies);
 		loadKeysFromLevels(enemies);
 		loadKeysFromCharacters(characters);
 		loadKeysFromActions(actions);
-		
+
 		loadAnimations(animations);
 		loadActions(actions);
 		loadCharacters(allies, characters, true);
 		loadCharacters(enemies, characters, false);
 		loadAI(ai);
-		
+
 		Level loadedLevel = new Level();
-		
+
 		Characters chars = new Characters();
 		chars.addAll(availableCharacters.values());
 		loadedLevel.setCharacters(chars);
 		loadedLevel.setNextLevel(nextLevel);
 		loadedLevel.setTacticalManager(tacticalManager);
-		
-		
+
+
 		if (tutorialFileName != null){
 			FileHandle tutorialFile = Gdx.files.internal(tutorialFileName);
 			HashMap<Integer, HashMap<String, Object>> steps;
@@ -155,22 +155,22 @@ public class ObjectLoader {
 			}
 			loadedLevel.setTutorialSteps(tutorialSteps);
 		}
-		
+
 		manager.load(boardTexture,Texture.class);
 		assets.add(boardTexture);
 		manager.finishLoading();
-		
+
 		GridBoard board = new GridBoard(boardWidth, boardHeight);
 		board.setTileTexture(manager.get(boardTexture, Texture.class));
 		if (tiles != null) {
 			setUpTileEffects(tiles, board);
 		}
 		loadedLevel.setBoard(board);
-		
+
 		return loadedLevel;
 	}
-	
-	
+
+
 	private void setUpTileEffects(HashMap<String, String> tiles, GridBoard board) {
 		for (String coord : tiles.keySet()) {
 			String effect = tiles.get(coord);
@@ -179,7 +179,7 @@ public class ObjectLoader {
 			int y = Integer.parseInt(coordSplit[1]);
 			board.setTileEffect(x, y, TileState.valueOf(effect));
 		}
-		
+
 	}
 
 	/**Looks at characters specified in level definition
@@ -192,7 +192,7 @@ public class ObjectLoader {
 			availableCharacters.put(charId, null);
 		}
 	}
-	
+
 	/** Looks at actions and animations specified in target character
 	 * definitions and adds ids as keys to the appropriate hashmap
 	 * @param characters
@@ -202,14 +202,14 @@ public class ObjectLoader {
 		for (Integer charId: availableCharacters.keySet()) {
 			Integer animationId = (Integer) characters.get(charId).get("animationId");
 			availableAnimations.put(animationId, null);
-			
+
 			ArrayList<Integer> actionList = (ArrayList<Integer>) characters.get(charId).get("availableActions");
 			for (Integer actionId : actionList) {
 				availableActions.put(actionId, null);
 			}
 		}
 	}
-	
+
 	/** Looks at animations specified in target action definitions
 	 * and adds ids as keys to the appropriate hashmap
 	 * @param actions
@@ -220,20 +220,20 @@ public class ObjectLoader {
 			availableAnimations.put(animationId, null);
 		}
 	}
-	
+
 	/**Loads all target characters from their yaml specifications
 	 * @param levelChars
 	 * @param characters
 	 * @param leftSide
 	 */
 	@SuppressWarnings("unchecked")
-	private void loadCharacters(ArrayList<HashMap<String, Object>> levelChars,  
+	private void loadCharacters(ArrayList<HashMap<String, Object>> levelChars,
 			HashMap<Integer, HashMap<String, Object>> characters, boolean leftSide){
 		for (HashMap<String, Object> levelChar : levelChars) {
 			Integer charId = (Integer) levelChar.get("id");
 			Integer xPosition = (Integer) levelChar.get("xPosition");
 			Integer yPosition = (Integer) levelChar.get("yPosition");
-			
+
 			HashMap<String, Object> character = characters.get(charId);
 			Integer numSlots = (Integer) character.get("slots");
 			String name = (String) character.get("name");
@@ -251,7 +251,7 @@ public class ObjectLoader {
 			}
 			String charTextureName = (String) character.get("texture");
 			String iconTextureName = (String) character.get("icon");
-			
+
 			manager.load(charTextureName,Texture.class);
 			assets.add(charTextureName);
 			manager.load(iconTextureName, Texture.class);
@@ -262,22 +262,22 @@ public class ObjectLoader {
 			Integer animationId = (Integer) character.get("animationId");
 			Animation anim = availableAnimations.get(animationId);
 			AnimationNode animNode = new AnimationNode(anim);
-			
+
 			Character characterToAdd = new Character(charTexture, iconTexture, animNode,
-					name, health, maxHealth, Color.valueOf(hexColor), speed, 
-					castSpeed, xPosition, yPosition, leftSide, actionArray,numSlots); 
-			
+					name, health, maxHealth, Color.valueOf(hexColor), speed,
+					castSpeed, xPosition, yPosition, leftSide, actionArray,numSlots);
+
 			//temporary difficulty ai code!!!
 			if (leftSide == false && levelChar.containsKey("difficulty")){
 				String difficulty = (String) levelChar.get("difficulty");
 				characterToAdd.setAI(Difficulty.valueOf(difficulty));
 			}
-			
+
 			availableCharacters.put(charId, characterToAdd);
 		}
 
 	}
-	
+
 	/**Loads all target actions from their yaml specifications
 	 * @param actions
 	 */
@@ -285,7 +285,7 @@ public class ObjectLoader {
 	private void loadActions(HashMap<Integer, HashMap<String, Object>> actions) {
 		for (Integer actionId: availableActions.keySet()) {
 			HashMap<String, Object> action = actions.get(actionId);
-			
+
 			String name = (String) action.get("name");
 			Integer cost = (Integer) action.get("cost");
 			Integer damage = (Integer) action.get("damage");
@@ -297,44 +297,44 @@ public class ObjectLoader {
 			Boolean needsToggle = (Boolean) action.get("needsToggle");
 			String description = (String) action.get("description");
 			String path = (String) action.get("path");
-			HashMap<String,Object> persisting = 
-						(HashMap<String, Object>) action.get("persisting_action"); 
-			HashMap<String, Object> effect = 
+			HashMap<String,Object> persisting =
+						(HashMap<String, Object>) action.get("persisting_action");
+			HashMap<String, Object> effect =
 					(HashMap<String, Object>) action.get("effect");
 			String eff = (String) effect.get("type");
 			String effectName = (String) effect.get("name");
 			Integer effectNumRounds = (Integer) effect.get("numRounds");
 			Integer magnitude = (Integer) effect.get("magnitude");
-			
+
 			Action actionToAdd;
 			if (persisting != null){
 				Integer persistingNumRounds = (Integer) persisting.get("numRounds");
 				Float moveSpeed = (Float) ((Double) persisting.get("moveSpeed")).floatValue();
-					actionToAdd = new PersistingAction(name, cost, damage, range, size, 
-							Pattern.valueOf(pattern), path, oneHit, canBlock,needsToggle, new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), 
+					actionToAdd = new PersistingAction(name, cost, damage, range, size,
+							Pattern.valueOf(pattern), path, oneHit, canBlock,needsToggle, new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName),
 							description, persistingNumRounds, moveSpeed);
 			}else{
 				actionToAdd = new Action(name, cost, damage, range, size, Pattern.valueOf(pattern), oneHit, canBlock,needsToggle,
 						new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), description,path);
 			}
-			
+
 			Integer animationId = (Integer) action.get("animationId");
 			if (animationId != null){
 				actionToAdd.setAnimation(availableAnimations.get(animationId));
 			}
-			
-			
+
+
 			availableActions.put(actionId, actionToAdd);
-			
+
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Loads all the AI's from their yaml specifications
 	 */
-	@SuppressWarnings("unchecked") 
+	@SuppressWarnings("unchecked")
 	private void loadAI(ArrayList<String> ai) throws IOException{
 		for(String s: ai){
 			HashMap<String , HashMap<String, Object>> nodes;
@@ -346,8 +346,8 @@ public class ObjectLoader {
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * Loads a specific AI file from the yaml HashMap
 	 */
@@ -363,7 +363,7 @@ public class ObjectLoader {
 				branchType = Tactic.valueOf((String) map.get("branch_type"));
 				map.remove("branch_type");
 			}
-			
+
 			DecisionNode node;
 			if(type.equals("index")){
 				node = new IndexNode(branchType);
@@ -374,7 +374,7 @@ public class ObjectLoader {
 					((IndexNode) node).addRule(Arrays.asList(conds), other);
 				}
 			}
-			
+
 			else if(type.equals("leaf")){
 				node = new LeafNode(branchType);
 				Tactic myTactic = Tactic.valueOf((String) map.get("my_tactic"));
@@ -383,7 +383,7 @@ public class ObjectLoader {
 					ArrayList<String> s1 = (ArrayList<String>) map.get("my_actions");
 					((LeafNode) node).mySpecific = new MoveList(stringsToSpecific(s1));
 				}
-				
+
 				if(map.containsKey("ally_tactic")){
 					Tactic allyTactic = Tactic.valueOf((String) map.get("ally_tactic"));
 					((LeafNode) node).allyTactic = allyTactic;
@@ -392,7 +392,7 @@ public class ObjectLoader {
 						((LeafNode) node).allySpecific = new MoveList(stringsToSpecific(s2));
 					}
 				}
-			} 
+			}
 			else if(type.equals("character")){
 				node = new IndexNode(branchType);
 				ArrayList<String> s1 = (ArrayList<String>) map.get("branches");
@@ -411,8 +411,8 @@ public class ObjectLoader {
 			tacticalManager.addToMap(s, node);
 		}
 	}
-	
-	
+
+
 	/**
 	 * Convert a list of strings into a list of specific actions
 	 */
@@ -423,8 +423,8 @@ public class ObjectLoader {
 		}
 		return moves;
 	}
-	
-	
+
+
 	/**
 	 * Returns true if this string is the name of a character
 	 */
@@ -436,7 +436,7 @@ public class ObjectLoader {
 		}
 		return false;
 	}
-	
+
 	/**Loads all target animations from their yaml specifications
 	 * @param animations
 	 */
@@ -454,26 +454,25 @@ public class ObjectLoader {
 			manager.finishLoading();
 			Texture animationTexture = manager.get(textureName,Texture.class);
 			Animation animationToAdd = new Animation(name,animationTexture,rows,cols,size);
-			
+
 			ArrayList<HashMap<String, Object>> segments = (ArrayList<HashMap<String, Object>>) animation.get("segments");
 			for (HashMap<String, Object> segmentData : segments){
 				Integer segmentId = (Integer) segmentData.get("segmentId");
 				Integer startingIndex = (Integer) segmentData.get("startingIndex");
 				List<Integer> frameLengths = (List<Integer>) segmentData.get("frameData");
-				
+
 				animationToAdd.addSegment(segmentId,startingIndex,frameLengths);
 			}
 			availableAnimations.put(animationId, animationToAdd);
 		}
-		
+
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void loadTutorialSteps(TutorialSteps ts, HashMap<Integer, HashMap<String, Object>> steps) {
 		for (HashMap<String, Object> step : steps.values()){
 			String text = (String) step.get("text");
 			Boolean paused = (Boolean) step.get("paused");
-			Integer waitTime = (Integer) step.get("waitTime");
 			Boolean spaceToContinue = (Boolean) step.get("spaceToContinue");
 			Boolean dontWriteText = (Boolean) step.get("dontWriteText");
 			Integer timeToPause = (Integer) step.get("timeToPause");
@@ -483,16 +482,16 @@ public class ObjectLoader {
 			if (timeToPause == null){
 				timeToPause = -1;
 			}
-			
-			
+
+
 			Boolean confirm = (Boolean) step.get("confirm");
 			if (confirm == null) confirm = false;
-			
+
 			Boolean finishGame = (Boolean) step.get("finishGame");
 			if (finishGame != null){
 				ts.setFinishGame(finishGame);
 			}
-			
+
 			String levelColor = (String) step.get("levelColor");
 			if (levelColor != null){
 				if (levelColor.equals("WHITE")){
@@ -501,13 +500,13 @@ public class ObjectLoader {
 					ts.setLevelColor(Color.BLACK);
 				}
 			}
-			
-			ts.addStep(text, paused, confirm, waitTime, spaceToContinue, dontWriteText, timeToPause);
-			
+
+			ts.addStep(text, paused, confirm, spaceToContinue, dontWriteText, timeToPause);
+
 			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) step.get("actions");
-			
+
 			ArrayList<HashMap<String, Object>> highlights = (ArrayList<HashMap<String, Object>>) step.get("highlightRegions");
-			
+
 			if (actions != null){
 				for (HashMap<String, Object> actionData : actions){
 					Integer actionId = (Integer) actionData.get("actionId");
@@ -517,7 +516,7 @@ public class ObjectLoader {
 					ts.addAction(actionId,xPos,yPos,direction);
 				}
 			}
-			
+
 			if (highlights != null){
 				for (HashMap<String, Object> highlightData : highlights){
 					Double xPos = (Double) highlightData.get("xPos");

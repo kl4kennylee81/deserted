@@ -138,10 +138,12 @@ public class SelectionMenuController {
 			/*float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,0);
 			menu.add(anPool.newActionNode(nop,actionExecute,0,0,Direction.NONE),numSlots);
 			menu.resetPointer(numSlots);*/
-		} else if (InputController.pressedW() && !InputController.pressedS()){
+		} else if ((InputController.pressedW() && !InputController.pressedS()) 
+			|| (InputController.pressedUp() && !InputController.pressedDown())){
 			//Actions go from up down, so we need to flip
 			menu.changeSelected(false,numSlots);
-		} else if (InputController.pressedS() && !InputController.pressedW()){
+		} else if ((InputController.pressedS() && !InputController.pressedW())
+				|| (InputController.pressedDown() && !InputController.pressedUp())){
 			menu.changeSelected(true,numSlots);
 		}
 	}

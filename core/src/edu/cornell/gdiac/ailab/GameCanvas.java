@@ -813,9 +813,10 @@ public class GameCanvas {
 		spriteBatch.setColor(tint);
 		spriteBatch.draw(button,sx,sy,width,height);
 			
-		displayFont.draw(spriteBatch, text, sx + width/2-65,sy + height/2+20);
+		displayFont.draw(spriteBatch, text, sx + width/2,sy + height/2);
 		//make positions in Option just multipliers of canvas.getWidth and Height for now
-		//TODO: change resizing in the long run
+		//TODO: we should get rid of any hardcoding going on with this what exactly are you trying
+		// to position it because it has to be extensible not just for one menu type.
 	}	
 	
 	public void drawScreen(float sx, float sy, Texture screen,float x_size, float y_size, 

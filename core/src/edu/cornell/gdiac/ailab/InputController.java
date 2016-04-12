@@ -56,6 +56,10 @@ public class InputController {
     	return Gdx.input.isKeyJustPressed(Input.Keys.T);
     }
     
+    public static boolean pressedQ() {
+    	return Gdx.input.isKeyJustPressed(Input.Keys.Q);
+    }
+    
     //PVP mode
     public static boolean pressedP() {
     	return Gdx.input.isKeyJustPressed(Input.Keys.P);

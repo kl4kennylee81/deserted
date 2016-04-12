@@ -5,13 +5,11 @@
   finishGame: true
   levelColor: WHITE
   spaceToContinue: true
-  waitTime: 10
 
 
 1:
   text: "You control the characters on the left side of the field."
   spaceToContinue: true
-  waitTime: 100
   paused: true
   highlightRegions:
     - xPos: 0.24
@@ -23,7 +21,6 @@
 2:
   text: "Each character is governed by their action bar."
   spaceToContinue: true
-  waitTime: 100
   paused: true
   highlightRegions:
     - xPos: 0.24
@@ -42,7 +39,6 @@
   dontWriteText: true
   paused: false
   spaceToContinue: false
-  waitTime: 0
   highlightRegions:
     - xPos: 0.24
       yPos: 0.15
@@ -57,10 +53,8 @@
 
 4:
   text: "When your character’s icon reaches the beginning of the red portion, the
-   game pauses and you can plan out your character’s next few actions.
-   \n\nYou can choose from the available actions for this character on the menu here.\n"
+   game pauses and you can plan out your character’s next few actions.\nYou can choose from the available actions for this character on the menu here."
   spaceToContinue: true
-  waitTime: 100
   paused: true
   highlightRegions:
     - xPos: 0.
@@ -71,7 +65,6 @@
 5:
   text: "Descriptions of each action are displayed here."
   spaceToContinue: true
-  waitTime: 80
   paused: true
   highlightRegions:
     - xPos: 0.32
@@ -84,7 +77,6 @@
   text: "Try selecting \"Move\". Navigate to the \"Move\" option on the
   selection menu using W/S or Up/Down and press Enter."
   spaceToContinue: false
-  waitTime: 0
   paused: false
   confirm: false
   actions:
@@ -98,7 +90,6 @@
   move to, and the blue tile indicates the current selection.
   \n\nMove right using WASD or the Arrow keys and press Enter to select."
   spaceToContinue: false
-  waitTime: 0
   paused: false
   confirm: false
   actions:
@@ -111,7 +102,6 @@
   text: "Even though you've selected to move, your character hasn't moved just
   yet! \nNote how Move appears over the first unit of the red portion of their cast bar."
   spaceToContinue: true
-  waitTime: 80
   paused: true
   highlightRegions:
       - xPos: 0.49
@@ -124,7 +114,6 @@
   text: "Your \"Move\" action will execute when your character's icon reaches
    the end of this slot above when play resumes."
   spaceToContinue: true
-  waitTime: 10
   paused: true
   highlightRegions:
         - xPos: 0.535
@@ -139,7 +128,6 @@
   \n\nLet’s fill up your character's action bar with other actions before ending her turn.
   \n\nSelect \"Straight\" and Press Enter"
   spaceToContinue: false
-  waitTime: 0
   paused: false
   confirm: false
   actions:
@@ -154,7 +142,6 @@
   \n\nIf there is no opponent in its path by the end of its range it will have no effect
   \n\nPress Enter Again"
   spaceToContinue: false
-  waitTime: 0
   paused: false
   confirm: false
   actions:
@@ -167,7 +154,6 @@
   text: "Fill in your last action slot with a \"Move\" Up. Let's see if you can
   do this on your own!"
   spaceToContinue: false
-  waitTime: 0
   paused: false
   confirm: false
   actions:
@@ -179,7 +165,6 @@
 13:
   text: "You know what to do!"
   spaceToContinue: false
-  waitTime: 0
   paused: false
   confirm: false
   actions:
@@ -193,7 +178,6 @@
   select \"Confirm\" to confirm these choices. \n\n(During actual gameplay you can go back on
   any action by pressing Backspace)"
   spaceToContinue: false
-  waitTime: 0
   paused: false
   confirm: true
   actions:
@@ -213,14 +197,12 @@
   text: "Well done! Press Spacebar when you are ready for play to resume. During
   actual gameplay, play automatically resumes after you confirm your actions"
   spaceToContinue: false
-  waitTime: 0
   paused: true
   timeToPause: 55
 
 16:
   text: ""
   spaceToContinue: false
-  waitTime: 0
   paused: false
 
 17:
@@ -228,13 +210,11 @@
   her icon progressed across the first action slot. In actual gameplay, play will not
   pause for actions to be completed, they will seamlessly occur while play is in progress"
   spaceToContinue: true
-  waitTime: 10
   paused: true
 
 18:
   text: ""
   spaceToContinue: false
-  waitTime: 0
   paused: false
 
 19:
@@ -243,7 +223,6 @@
   against an AI, play will not pause for opponents to choose their actions,
   it will only pause for you to choose yours!"
   spaceToContinue: true
-  waitTime: 10
   paused: true
   timeToPause: 55
   actions:
@@ -255,7 +234,6 @@
 20:
   text: ""
   spaceToContinue: false
-  waitTime: 0
   paused: false
 
 21:
@@ -263,7 +241,6 @@
   reaches 0 the character faints and disappears from the screen. When either side has
   no characters left, the other side wins"
   spaceToContinue: true
-  waitTime: 0
   paused: true
 
 22:
@@ -271,7 +248,6 @@
   his action bar. When you lose health, your cast time decreases, so you have to
   wait less before you can make an action again”"
   spaceToContinue: true
-  waitTime: 0
   paused: true
   highlightRegions:
     - xPos: 0.24
