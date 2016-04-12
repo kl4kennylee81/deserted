@@ -1,12 +1,16 @@
 package edu.cornell.gdiac.ailab;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import com.badlogic.gdx.Gdx;
@@ -15,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class ActionEditorController implements EditorController {
+	private static File ROOT;
 	private Stage stage;
 	private Yaml yaml;
 	
@@ -25,7 +30,10 @@ public class ActionEditorController implements EditorController {
 	private ActionEditor actionEdit;
 	
 	public ActionEditorController() throws IOException{
-		yaml = new Yaml();
+		setRoot();
+		DumperOptions options = new DumperOptions();
+		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		yaml = new Yaml(options);
 		loadActions();
 		stage = new Stage();
 		actionEdit = new ActionEditor(getIds(), getAnimationIds(), nextId.toString());
@@ -35,6 +43,30 @@ public class ActionEditorController implements EditorController {
 		stage.addActor(table);
 		Gdx.input.setInputProcessor(stage);
 		currentSelection = "Add a new action";
+	}
+	
+	/**Code taken from http://stackoverflow.com/questions/5527744/java-jar-writing-to-a-file 
+	 * @throws URISyntaxException */
+	public void setRoot() {
+		// Find out where the JAR is:
+		String path = null;
+		try {
+			path = CharacterEditor.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//add to make work for eclipse
+		String uri = CharacterEditor.class.getResource("CharacterEditor.class").toString();
+		if (!uri.substring(0, 3).equals("jar")) {
+			path = path.substring(0, path.lastIndexOf('/'));
+			path = path.substring(0, path.lastIndexOf('/'));
+		}
+		path = path.substring(0, path.lastIndexOf('/')+1);
+		
+		// Create the project-folder-file:
+		ROOT = new File(path);
 	}
 	
 	public void update() {
@@ -61,8 +93,8 @@ public class ActionEditorController implements EditorController {
 	
 	@SuppressWarnings("unchecked")
 	private void loadActions() throws IOException{
-		FileHandle actionFile = Gdx.files.internal("yaml/actions.yml");
-		try (InputStream is = actionFile.read()){
+		File actionFile = new File(ROOT, "yaml/actions.yml");
+		try (InputStream is = new FileInputStream(actionFile)){
 			actions = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
 	}
@@ -84,8 +116,8 @@ public class ActionEditorController implements EditorController {
 	
 	@SuppressWarnings("unchecked")
 	private String[] getAnimationIds() throws IOException {
-		FileHandle animationsFile = Gdx.files.internal("yaml/animations.yml"); 
-		try (InputStream is = animationsFile.read()){
+		File animationsFile = new File(ROOT, "yaml/animations.yml"); 
+		try (InputStream is = new FileInputStream(animationsFile)){
 			animations = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
 		Set<Integer> keys = animations.keySet();
@@ -139,8 +171,14 @@ public class ActionEditorController implements EditorController {
 	}
 	
 	private void writeActionsToFile(){
-		FileHandle actionFile = Gdx.files.internal("yaml/actions.yml");
-		FileWriter writer = (FileWriter) actionFile.writer(false);
+		File actionFile = new File(ROOT, "yaml/actions.yml");
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter(actionFile, false);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		yaml.dump(actions, writer);
 	}
 	

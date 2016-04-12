@@ -1,14 +1,22 @@
 package edu.cornell.gdiac.ailab;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import com.badlogic.gdx.Gdx;
@@ -30,9 +38,11 @@ public class CharacterEditorController implements EditorController {
 	private HashMap<Integer, HashMap<String, Object>> actions;
 	private CharacterEditor charEdit;
 	
-	public CharacterEditorController() throws IOException, URISyntaxException{
+	public CharacterEditorController() throws IOException{
 		setRoot();
-		yaml = new Yaml();
+		DumperOptions options = new DumperOptions();
+		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		yaml = new Yaml(options);
 		loadChars();
 		stage = new Stage();
 		charEdit = new CharacterEditor(getIds(), getAnimationIds(), 
@@ -48,10 +58,24 @@ public class CharacterEditorController implements EditorController {
 	
 	/**Code taken from http://stackoverflow.com/questions/5527744/java-jar-writing-to-a-file 
 	 * @throws URISyntaxException */
-	public void setRoot() throws URISyntaxException {
+	public void setRoot() {
 		// Find out where the JAR is:
-		String path = CharacterEditor.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		String path = null;
+		try {
+			path = CharacterEditor.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//add to make work for eclipse
+		String uri = CharacterEditor.class.getResource("CharacterEditor.class").toString();
+		if (!uri.substring(0, 3).equals("jar")) {
+			path = path.substring(0, path.lastIndexOf('/'));
+			path = path.substring(0, path.lastIndexOf('/'));
+		}
 		path = path.substring(0, path.lastIndexOf('/')+1);
+		
 		// Create the project-folder-file:
 		ROOT = new File(path);
 	}
@@ -81,8 +105,10 @@ public class CharacterEditorController implements EditorController {
 	
 	@SuppressWarnings("unchecked")
 	private void loadChars() throws IOException{
-		FileHandle charFile = Gdx.files.internal("yaml/characters.yml");
-		try (InputStream is = charFile.read()){
+		//FileHandle charFile = Gdx.files.internal("yaml/characters.yml");
+		File charFile = new File(ROOT, "yaml/characters.yml");
+		
+		try (FileInputStream is = new FileInputStream(charFile)){
 			chars = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
 	}
@@ -104,8 +130,9 @@ public class CharacterEditorController implements EditorController {
 	
 	@SuppressWarnings("unchecked")
 	private String[] getAnimationIds() throws IOException {
-		FileHandle animationsFile = Gdx.files.internal("yaml/animations.yml"); 
-		try (InputStream is = animationsFile.read()){
+		//FileHandle animationsFile = Gdx.files.internal("yaml/animations.yml"); 
+		File animationsFile = new File(ROOT, "yaml/animations.yml");
+		try (FileInputStream is = new FileInputStream(animationsFile)){
 			animations = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
 		Set<Integer> keys = animations.keySet();
@@ -132,7 +159,7 @@ public class CharacterEditorController implements EditorController {
 		
 		String texture = charEdit.getTexture();
 		String icon = charEdit.getIcon();
-		String animation = charEdit.getAnimation();
+		Integer animation = Integer.parseInt(charEdit.getAnimation());
 		
 		HashMap<String, Object> entry = new HashMap<String, Object>();
 		entry.put("name", name);
@@ -148,9 +175,15 @@ public class CharacterEditorController implements EditorController {
 		chars.put(id, entry);
 	}
 	
-	private void writeCharsToFile(){
-		FileHandle charFile = Gdx.files.internal("yaml/characters.yml");
-		FileWriter writer = (FileWriter) charFile.writer(false);
+	private void writeCharsToFile() {
+		//FileHandle charFile = Gdx.files.internal("yaml/characters.yml");
+		File charFile = new File(ROOT, "yaml/characters.yml");
+		FileWriter writer = null;;
+		try {
+			writer = new FileWriter(charFile, false);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		yaml.dump(chars, writer);
 	}
 	
@@ -203,8 +236,9 @@ public class CharacterEditorController implements EditorController {
 	
 	@SuppressWarnings("unchecked")
 	private String[] getActions() throws IOException{
-		FileHandle actionsFile = Gdx.files.internal("yaml/actions.yml"); 
-		try (InputStream is = actionsFile.read()){
+		//FileHandle actionsFile = Gdx.files.internal("yaml/actions.yml");
+		File actionsFile = new File(ROOT, "yaml/actions.yml");
+		try (FileInputStream is = new FileInputStream(actionsFile)){
 			actions = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
 		Set<Integer> keys = actions.keySet();
@@ -218,4 +252,44 @@ public class CharacterEditorController implements EditorController {
 		return options;
 	}
 	
+	/** TAKEN FROM http://www.uofr.net/~greg/java/get-resource-listing.html*/
+	String[] getResourceListing(Class clazz, String path) throws URISyntaxException, IOException {
+	      URL dirURL = clazz.getClassLoader().getResource(path);
+	      if (dirURL != null && dirURL.getProtocol().equals("file")) {
+	        /* A file path: easy enough */
+	        return new File(dirURL.toURI()).list();
+	      } 
+
+	      if (dirURL == null) {
+	        /* 
+	         * In case of a jar file, we can't actually find a directory.
+	         * Have to assume the same jar as clazz.
+	         */
+	        String me = clazz.getName().replace(".", "/")+".class";
+	        dirURL = clazz.getClassLoader().getResource(me);
+	      }
+	      
+	      if (dirURL.getProtocol().equals("jar")) {
+	        /* A JAR path */
+	        String jarPath = dirURL.getPath().substring(5, dirURL.getPath().indexOf("!")); //strip out only the JAR file
+	        JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
+	        Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
+	        Set<String> result = new HashSet<String>(); //avoid duplicates in case it is a subdirectory
+	        while(entries.hasMoreElements()) {
+	          String name = entries.nextElement().getName();
+	          if (name.startsWith(path)) { //filter according to the path
+	            String entry = name.substring(path.length());
+	            int checkSubdir = entry.indexOf("/");
+	            if (checkSubdir >= 0) {
+	              // if it is a subdirectory, we just return the directory name
+	              entry = entry.substring(0, checkSubdir);
+	            }
+	            result.add(entry);
+	          }
+	        }
+	        return result.toArray(new String[result.size()]);
+	      } 
+	        
+	      throw new UnsupportedOperationException("Cannot list files for URL "+dirURL);
+	  }
 }

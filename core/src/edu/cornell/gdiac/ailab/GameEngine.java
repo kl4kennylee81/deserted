@@ -16,6 +16,9 @@
  */
 package edu.cornell.gdiac.ailab;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 //import static com.badlogic.gdx.Gdx.gl20;
 //import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
 
@@ -79,6 +82,7 @@ public class GameEngine implements Screen {
 		EDITOR
 	}
 
+	private static File ROOT;
 	/** Background image for the canvas */
 	private static final String BCKGD_TEXTURE = "images/bg.png";
 	/** Background image for the menu */
@@ -179,6 +183,7 @@ public class GameEngine implements Screen {
 	 * We can only assign simple fields at this point, as there is no OpenGL context
 	 */
     public GameEngine() {
+    	setRoot();
     	gameState = GameState.LOAD;
     	gameLoad  = 0.0f;
 		canvas = new GameCanvas();
@@ -188,6 +193,30 @@ public class GameEngine implements Screen {
 		editorController = null;
 		updateMeasures();
 
+	}
+    
+    /**Code taken from http://stackoverflow.com/questions/5527744/java-jar-writing-to-a-file 
+	 * @throws URISyntaxException */
+	public void setRoot() {
+		// Find out where the JAR is:
+		String path = null;
+		try {
+			path = CharacterEditor.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//add to make work for eclipse
+		String uri = CharacterEditor.class.getResource("CharacterEditor.class").toString();
+		if (!uri.substring(0, 3).equals("jar")) {
+			path = path.substring(0, path.lastIndexOf('/'));
+			path = path.substring(0, path.lastIndexOf('/'));
+		}
+		path = path.substring(0, path.lastIndexOf('/')+1);
+		
+		// Create the project-folder-file:
+		ROOT = new File(path);
 	}
     
     public void updateMeasures(){
@@ -367,7 +396,7 @@ public class GameEngine implements Screen {
 		}else if (gameNo == 5) {
 			try {
 				editorController = new CharacterEditorController();
-			} catch (IOException | URISyntaxException e) {
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -475,9 +504,9 @@ public class GameEngine implements Screen {
 	@SuppressWarnings("unchecked")
 	private Level getLevel(String levelId) throws IOException{
 		Yaml yaml = new Yaml();
-		FileHandle levelFile = Gdx.files.internal("yaml/levels.yml");
+		File levelFile = new File(ROOT,"yaml/levels.yml");
 		HashMap<String, Object> targetLevelDef;
-		try (InputStream iS = levelFile.read()){
+		try (InputStream iS = new FileInputStream(levelFile)){
 			levelDefs = (HashMap<String, HashMap<String, Object>>) yaml.load(iS);
 			targetLevelDef= levelDefs.get(levelId);	
 			

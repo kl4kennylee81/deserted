@@ -1,22 +1,25 @@
 package edu.cornell.gdiac.ailab;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class LevelEditorController implements EditorController {
-
+	private static File ROOT;
 	private Stage stage;
 	private Yaml yaml;
 	private String currentSelection;
@@ -25,7 +28,10 @@ public class LevelEditorController implements EditorController {
 	private LevelEditor levelEdit;
 	
 	public LevelEditorController() throws IOException{
-		yaml = new Yaml();
+		setRoot();
+		DumperOptions options = new DumperOptions();
+		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		yaml = new Yaml(options);
 		loadLevelsAndChars();
 		stage = new Stage();
 		String[] labels = new String[2];
@@ -39,6 +45,30 @@ public class LevelEditorController implements EditorController {
 		Gdx.input.setInputProcessor(stage);
 		//table.setDebug(true);
 		currentSelection = "Add a new level";
+	}
+	
+	/**Code taken from http://stackoverflow.com/questions/5527744/java-jar-writing-to-a-file 
+	 * @throws URISyntaxException */
+	public void setRoot() {
+		// Find out where the JAR is:
+		String path = null;
+		try {
+			path = CharacterEditor.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//add to make work for eclipse
+		String uri = CharacterEditor.class.getResource("CharacterEditor.class").toString();
+		if (!uri.substring(0, 3).equals("jar")) {
+			path = path.substring(0, path.lastIndexOf('/'));
+			path = path.substring(0, path.lastIndexOf('/'));
+		}
+		path = path.substring(0, path.lastIndexOf('/')+1);
+		
+		// Create the project-folder-file:
+		ROOT = new File(path);
 	}
 	
 	public void update() {
@@ -63,13 +93,14 @@ public class LevelEditorController implements EditorController {
 	
 	@SuppressWarnings("unchecked")
 	private void loadLevelsAndChars() throws IOException{
-		FileHandle levelFile = Gdx.files.internal("yaml/levels.yml");
-		try (InputStream is = levelFile.read()){
+		//FileHandle levelFile = Gdx.files.internal("yaml/levels.yml");
+		File levelFile = new File(ROOT, "yaml/levels.yml");
+		try (InputStream is = new FileInputStream(levelFile)){
 			levels = (HashMap<String, HashMap<String, Object>>) yaml.load(is);
 		}
 		
-		FileHandle charFile = Gdx.files.internal("yaml/characters.yml");
-		try (InputStream is = charFile.read()){
+		File charFile = new File(ROOT, "yaml/characters.yml");
+		try (InputStream is = new FileInputStream(charFile)){
 			characters = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
 	}
@@ -144,14 +175,20 @@ public class LevelEditorController implements EditorController {
 	}
 	
 	private void writeLevelsToFile(){
-		FileHandle levelFile = Gdx.files.internal("yaml/levels.yml");
-		FileWriter writer = (FileWriter) levelFile.writer(false);
+		File levelFile = new File(ROOT, "yaml/levels.yml");
+		FileWriter writer = null;
+		try {
+			writer = new FileWriter(levelFile, false);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		yaml.dump(levels, writer);
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void setUpIdEdit(String id) {
-		if (id.equals("Add a new character") ){
+		if (id.equals("Add a new level") ){
 			levelEdit.setUpAdd();
 		}else{
 			HashMap<String, Object> level = levels.get(id);
@@ -164,8 +201,8 @@ public class LevelEditorController implements EditorController {
 			String[][] allyInfo = Arrays.copyOfRange(completeAlly, 1, 3);
 			
 			String[][] completeEnemy = getCharInfo(enemyList);
-			String[] enemies = completeAlly[0];
-			String[][] enemyInfo = Arrays.copyOfRange(completeAlly, 1, 3);
+			String[] enemies = completeEnemy[0];
+			String[][] enemyInfo = Arrays.copyOfRange(completeEnemy, 1, 3);
 			
 			String next = (String) level.get("nextLevel");
 			String width = ((Integer) level.get("boardWidth")).toString();
@@ -189,41 +226,6 @@ public class LevelEditorController implements EditorController {
 		}
 		return array;
 	}
-	
-	
-//	private String[] getModels(){
-//		FileHandle modelDir = Gdx.files.internal("models");
-//		modelDir.
-//		
-//	}
-	
-//	private String[] convertActionsFormat(Integer[] availActions){
-//		String[] options = new String[availActions.length];
-//		int i = 0;
-//		for (Integer id : availActions){
-//			options[i] = id.toString()+ " " + actions.get(id).get("name");
-//			i++;
-//		}
-//		return options;
-//	}
-//	
-//	@SuppressWarnings("unchecked")
-//	private String[] getActions() throws IOException{
-//		FileHandle actionsFile = Gdx.files.internal("yaml/actions.yml"); 
-//		try (InputStream is = actionsFile.read()){
-//			actions = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
-//		}
-//		Set<Integer> keys = actions.keySet();
-//		Integer num_ids = keys.size();
-//		String[] options = new String[num_ids];
-//		int i = 0;
-//		for (Integer id : keys){
-//			options[i] = id.toString()+ " " + actions.get(id).get("name");
-//			i++;
-//		}
-//		return options;
-//	}
-
 	
 	
 }

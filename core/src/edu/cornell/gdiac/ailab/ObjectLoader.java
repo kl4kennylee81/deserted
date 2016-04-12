@@ -1,7 +1,10 @@
 package edu.cornell.gdiac.ailab;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -27,6 +30,7 @@ public class ObjectLoader {
 	
 	private static ObjectLoader instance = null;
 	
+	private static File ROOT;
 	/** AssetManager to load game assets (textures, sounds, etc.) */
 	private AssetManager manager;
 	/** Container to track the assets loaded so far */
@@ -42,6 +46,7 @@ public class ObjectLoader {
     //singleton pattern constructor
     //Instantiates assets array and asset manager
 	protected ObjectLoader() {
+		setRoot();
 		assets = new Array<String>();
 		manager = new AssetManager();
 		manager.setLoader(Mesh.class, new MeshLoader(new InternalFileHandleResolver()));
@@ -58,6 +63,27 @@ public class ObjectLoader {
 		return instance;
 	}
 	
+	public void setRoot() {
+		// Find out where the JAR is:
+		String path = null;
+		try {
+			path = CharacterEditor.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//add to make work for eclipse
+		String uri = CharacterEditor.class.getResource("CharacterEditor.class").toString();
+		if (!uri.substring(0, 3).equals("jar")) {
+			path = path.substring(0, path.lastIndexOf('/'));
+			path = path.substring(0, path.lastIndexOf('/'));
+		}
+		path = path.substring(0, path.lastIndexOf('/')+1);
+		
+		// Create the project-folder-file:
+		ROOT = new File(path);
+	}
 	
 	public void unloadCurrentLevel() {
 		for(String s : assets) {
@@ -94,21 +120,21 @@ public class ObjectLoader {
 		String boardTexture = (String) levelDef.get("boardTexture");
 		
 		Yaml yaml = new Yaml();
-		FileHandle animationFile = Gdx.files.internal("yaml/animations.yml");
+		File animationFile = new File(ROOT, "yaml/animations.yml");
 		HashMap<Integer, HashMap<String, Object>> animations;
-		try (InputStream is = animationFile.read()){
+		try (InputStream is = new FileInputStream(animationFile)){
 			animations = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
 		
-		FileHandle actionFile = Gdx.files.internal("yaml/actions.yml");
+		File actionFile = new File(ROOT, "yaml/actions.yml");
 		HashMap<Integer, HashMap<String, Object>> actions;
-		try (InputStream is = actionFile.read()){
+		try (InputStream is = new FileInputStream(actionFile)){
 			actions = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
 		
-		FileHandle charFile = Gdx.files.internal("yaml/characters.yml");
+		File charFile = new File(ROOT, "yaml/characters.yml");
 		HashMap<Integer, HashMap<String, Object>> characters;
-		try (InputStream is = charFile.read()){
+		try (InputStream is = new FileInputStream(charFile)){
 			characters = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
 		
