@@ -69,6 +69,7 @@ public class GameEngine implements Screen {
 		LOAD,
 		/** After loading, but before we start the game */
 		MENU,
+		LEVEL_MENU,
 		/** While we are playing the game */
 		PLAY,
 		/** When the game is currently paused */
@@ -119,6 +120,11 @@ public class GameEngine implements Screen {
 	private static final String SELECT_FONT_FILE  = "fonts/LondrinaSolid-Regular.ttf";
 	/** The size of the messages */
 	private static final int SELECT_FONT_SIZE = 20;
+	
+	/** tutorial font info */
+	private static final String TUTORIAL_FONT_FILE = "fonts/CandelaBook.ttf";
+	private static final int TUTORIAL_FONT_SIZE = 20;
+	private static final Color TUTORIAL_FONT_COLOR = Color.WHITE;
 	
 	public static final String DATA_PATH = "../core/assets/";
 	
@@ -228,7 +234,16 @@ public class GameEngine implements Screen {
     		level = getLevel("pvp");
     		break;
     	case 4:
-    		level = getLevel("tutorial");
+    		level = getLevel("tutorial1");
+    		if (manager.isLoaded(TUTORIAL_FONT_FILE)) {
+    			canvas.setTutorialFont(manager.get(TUTORIAL_FONT_FILE,BitmapFont.class));
+    		}
+    		break;
+    	case 5:
+    		level = getLevel("tutorial2");
+    		if (manager.isLoaded(TUTORIAL_FONT_FILE)) {
+    			canvas.setTutorialFont(manager.get(TUTORIAL_FONT_FILE,BitmapFont.class));
+    		}
     		break;
     	default:
     		break;
@@ -298,6 +313,9 @@ public class GameEngine implements Screen {
 				e.printStackTrace();
 			}
 			break;
+		case LEVEL_MENU:
+			updateLevelMenu();
+			break;
 		case PLAY:
 			updatePlay();
 			drawPlay();
@@ -319,6 +337,11 @@ public class GameEngine implements Screen {
 		canvas.end();
 	}
 		
+	private void updateLevelMenu() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/** 
 	 * Returns true if the user reset the game.
 	 *
@@ -363,10 +386,15 @@ public class GameEngine implements Screen {
 	private void updateMenu() throws IOException {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
-			startGame(mainMenuController.gameNo);
+			loadNextMenu(mainMenuController.gameNo);
+			//startGame(mainMenuController.gameNo);
 		}
 	}
 	
+	private void loadNextMenu(int gameNo) throws IOException {
+		startGame(gameNo);
+	}
+
 	/**
      * The primary update loop of the game; called while it is running.
      */
@@ -525,10 +553,15 @@ public class GameEngine implements Screen {
 		size2Params.fontParameters.color = Color.WHITE;
 		manager.load(SELECT_FONT_FILE, BitmapFont.class, size2Params);
 		assets.add(SELECT_FONT_FILE);
+		size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+		size2Params.fontFileName = TUTORIAL_FONT_FILE;
+		size2Params.fontParameters.size = TUTORIAL_FONT_SIZE;
+		size2Params.fontParameters.color = TUTORIAL_FONT_COLOR;
+		manager.load(TUTORIAL_FONT_FILE, BitmapFont.class, size2Params);
+		assets.add(TUTORIAL_FONT_FILE);
 		
 		// We have to force the canvas to fully load (so we can draw something)
 		initializeCanvas(LOADING_TEXTURE, MENU_FONT_FILE);
-		
         // Sound controller manages its own material
         SoundController.PreLoadContent(manager);
     }

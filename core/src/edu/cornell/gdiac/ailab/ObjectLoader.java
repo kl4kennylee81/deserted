@@ -468,17 +468,45 @@ public class ObjectLoader {
 		
 	}
 	
-	
 	@SuppressWarnings("unchecked")
 	private void loadTutorialSteps(TutorialSteps ts, HashMap<Integer, HashMap<String, Object>> steps) {
 		for (HashMap<String, Object> step : steps.values()){
 			String text = (String) step.get("text");
 			Boolean paused = (Boolean) step.get("paused");
+			Integer waitTime = (Integer) step.get("waitTime");
+			Boolean spaceToContinue = (Boolean) step.get("spaceToContinue");
+			Boolean dontWriteText = (Boolean) step.get("dontWriteText");
+			Integer timeToPause = (Integer) step.get("timeToPause");
+			if (dontWriteText == null){
+				dontWriteText = false;
+			}
+			if (timeToPause == null){
+				timeToPause = -1;
+			}
 			
-			ts.addStep(text, paused);
+			
+			Boolean confirm = (Boolean) step.get("confirm");
+			if (confirm == null) confirm = false;
+			
+			Boolean finishGame = (Boolean) step.get("finishGame");
+			if (finishGame != null){
+				ts.setFinishGame(finishGame);
+			}
+			
+			String levelColor = (String) step.get("levelColor");
+			if (levelColor != null){
+				if (levelColor.equals("WHITE")){
+					ts.setLevelColor(Color.WHITE);
+				} else if (levelColor.equals("BLACK")) {
+					ts.setLevelColor(Color.BLACK);
+				}
+			}
+			
+			ts.addStep(text, paused, confirm, waitTime, spaceToContinue, dontWriteText, timeToPause);
 			
 			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) step.get("actions");
 			
+			ArrayList<HashMap<String, Object>> highlights = (ArrayList<HashMap<String, Object>>) step.get("highlightRegions");
 			
 			if (actions != null){
 				for (HashMap<String, Object> actionData : actions){
@@ -487,6 +515,17 @@ public class ObjectLoader {
 					Integer yPos = (Integer) actionData.get("yPos");
 					String direction = (String)actionData.get("direction");
 					ts.addAction(actionId,xPos,yPos,direction);
+				}
+			}
+			
+			if (highlights != null){
+				for (HashMap<String, Object> highlightData : highlights){
+					Double xPos = (Double) highlightData.get("xPos");
+					Double yPos = (Double) highlightData.get("yPos");
+					Double width = (Double) highlightData.get("width");
+					Double height = (Double) highlightData.get("height");
+					String arrow = (String) highlightData.get("arrow");
+					ts.addHighlight(xPos,yPos,width, height, arrow);
 				}
 			}
 		}

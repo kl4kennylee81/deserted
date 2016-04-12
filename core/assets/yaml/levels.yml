@@ -1,4 +1,4 @@
-easy: 
+easy:
     allies:
         - id: 0
           xPosition: 0
@@ -35,7 +35,7 @@ easy:
       1-2: NORMAL
     AI: ["tm.yml"]
 
-medium: 
+medium:
     allies:
         - id: 0
           xPosition: 0
@@ -69,7 +69,7 @@ medium:
     boardTexture: "models/Tile.png"
     AI: ["tm.yml"]
 
-hard: 
+hard:
     allies:
         - id: 0
           xPosition: 0
@@ -97,7 +97,7 @@ hard:
           defensiveness: 0.5
           intelligence: 0.3
           difficulty: HARD
-    nextLevel: 
+    nextLevel:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
@@ -121,42 +121,64 @@ pvp:
         - id: 3
           xPosition: 5
           yPosition: 3
-    nextLevel: 
+    nextLevel:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
     AI: []
 
-tutorial:
+tutorial1:
     allies:
-        - id: 0
-          xPosition: 0
-          yPosition: 0
-
-        - id: 1
-          xPosition: 0
-          yPosition: 3
+        - id: 90
+          xPosition: 1
+          yPosition: 1
 
     enemies:
-        - id: 2
-          xPosition: 5
-          yPosition: 0
+        - id: 91
+          xPosition: 4
+          yPosition: 1
           aggression: 0.5
           risk: 0.5
           defensiveness: 0.5
           intelligence: 0.3
           difficulty: EASY
 
-        - id: 3
-          xPosition: 5
+    nextLevel:
+    tutorialFileName: "yaml/tutorial1.yml"
+    boardWidth: 6
+    boardHeight: 4
+    boardTexture: "models/Tile.png"
+    AI: ["tm.yml"]
+
+tutorial2:
+    allies:
+        - id: 92
+          xPosition: 1
+          yPosition: 1
+        - id: 93
+          xPosition: 2
+          yPosition: 2
+
+    enemies:
+        - id: 94
+          xPosition: 4
+          yPosition: 1
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
+          difficulty: EASY
+        - id: 95
+          xPosition: 4
           yPosition: 3
           aggression: 0.5
           risk: 0.5
           defensiveness: 0.5
           intelligence: 0.3
           difficulty: EASY
-    nextLevel: 
-    tutorialFileName: "yaml/tutorial.yaml"
+
+    nextLevel:
+    tutorialFileName: "yaml/tutorial2.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"

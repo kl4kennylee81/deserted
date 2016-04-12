@@ -269,7 +269,7 @@ public class SelectionMenuController {
 		}
 	}
 	
-	private void updateChoosingSingle(){
+	protected void updateChoosingSingle(){
 		direction = Direction.NONE;
 		int updateX = selectedX;
 		int updateY = selectedY;
@@ -307,7 +307,7 @@ public class SelectionMenuController {
 		}
 	}
 	
-	private void updateChoosingMove(){
+	protected void updateChoosingMove(){
 		
 		//Find out why moving is weird on right side
 		//System.out.println("choosing");

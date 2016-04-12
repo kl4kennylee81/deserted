@@ -154,7 +154,7 @@ public class GameplayController {
         screen.draw(canvas);
     	board.draw(canvas);
     	drawCharacters(canvas);
-        animations.draw(canvas,board);
+        animations.draw(canvas,board,inGameState);
         
         textMessages.draw(canvas,board);
         if (prompt != null){

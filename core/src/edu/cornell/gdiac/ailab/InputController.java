@@ -119,4 +119,8 @@ public class InputController {
 		//TODO: Make this better
 		return Gdx.input.getDeltaY() > 0f || Gdx.input.getDeltaX() > 0f;
 	}
+
+	public static boolean pressedSpace() {
+		return Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+	}
 }

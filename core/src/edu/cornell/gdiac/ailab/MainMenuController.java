@@ -67,6 +67,8 @@ public class MainMenuController {
 			done(3);
 		} else if (InputController.pressedT()){
 			done(4);
+		}  else if (InputController.pressedW()){
+			done(5);
 		}
 	}
 	
