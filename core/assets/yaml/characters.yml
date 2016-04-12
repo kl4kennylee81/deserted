@@ -17,7 +17,7 @@
 
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
-  animationId: 3
+  animationId: 103
 
 3:
   name: Mage Spirit
@@ -38,7 +38,7 @@
 
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
-  animationId: 2
+  animationId: 102
 
 0:
   name: red
@@ -59,7 +59,7 @@
 
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_3.png"
-  animationId: 1
+  animationId: 101
 
 1:
   name: blue
@@ -80,7 +80,7 @@
 
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"
-  animationId: 4
+  animationId: 104
 
 90:
   name: green
@@ -101,7 +101,7 @@
 
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
-  animationId: 1
+  animationId: 101
 
 91:
   name: orange
@@ -124,7 +124,7 @@
 
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
-  animationId: 3
+  animationId: 103
 
 92:
   name: green
@@ -145,7 +145,7 @@
 
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
-  animationId: 1
+  animationId: 101
 
 93:
   name: orange
@@ -168,7 +168,7 @@
 
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
-  animationId: 2
+  animationId: 102
 
 
 94:
@@ -190,7 +190,7 @@
 
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_3.png"
-  animationId: 3
+  animationId: 103
 
 95:
   name: blue
@@ -212,6 +212,6 @@
 
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"
-  animationId: 4
+  animationId: 104
 
 ...

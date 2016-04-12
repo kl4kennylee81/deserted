@@ -551,7 +551,7 @@ public class Character implements GUIElement {
 		return shadY;
 	}
 	
-	public void draw(GameCanvas canvas,GridBoard board){
+	public void draw(GameCanvas canvas,GridBoard board,InGameState inGameState){
 		if (!isAlive()){
 			return;
 		}
@@ -559,7 +559,7 @@ public class Character implements GUIElement {
 			drawHealth(canvas,board);
 		}
 		if(hasPersisting()){
-			drawPersisting(canvas,board);
+			drawPersisting(canvas,board,inGameState);
 		}
 	}
 	
@@ -796,7 +796,7 @@ public class Character implements GUIElement {
 	/**
 	 * Draws persisting objects
 	 */
-	private void drawPersisting(GameCanvas canvas,GridBoard board){
+	private void drawPersisting(GameCanvas canvas,GridBoard board,InGameState gameState){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
 		for (ActionNode an : persistingActions){
@@ -809,12 +809,15 @@ public class Character implements GUIElement {
 			case PROJECTILE:
 				float diagX = (tileW/2 - DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX));
 				float diagY = tileH/2 - DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY);
-//				float diagX = (DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX));
-//				float diagY = (DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY));
 				float boardOffsetX = board.getBoardOffsetX(canvas);
 				float boardOffsetY = board.getBoardOffsetY(canvas);
 				diagX = diagX + boardOffsetX;
 				diagY = diagY + boardOffsetY;
+//				FilmStrip toDraw = an.actiongetTexture(charState,gameState);
+//				if (toDraw == null) {
+//					toDraw = getFilmStrip(gameState);
+//				}
+//				canvas.draw(toDraw,diagX,diagY);
 				canvas.drawBox(diagX,diagY, DIAGONAL_SIZE, DIAGONAL_SIZE, color);
 				break;
 			default:

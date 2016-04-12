@@ -97,6 +97,7 @@ public class Option implements GUIElement{
 		
 		if (image != null){
 			Color imageColor = this.getColorImages();
+			canvas.drawTexture(image, x, y, width,height, Color.WHITE);
 			canvas.drawTexture(image, x, y, width,height, imageColor);
 		}
 	}
@@ -107,7 +108,7 @@ public class Option implements GUIElement{
 	
 	public Color getColorImages(){
 		if (this.isSelected){
-			return this.color.cpy().mul(1f, 1f, 1f, 0.6f);
+			return Color.BLACK.cpy().mul(1f, 1f, 1f, 0.5f);
 		}
 		else{
 			return Color.WHITE.cpy();

@@ -12,8 +12,40 @@
       frameData:
       - 50
       - 50
-
 1:
+  name: Ground Fire
+  texture: "actions/flame_sim_spritesheet.png"
+  rows: 1
+  cols: 4
+  size: 4
+  segments:
+    - segmentName: IDLE
+      segmentId: 0 
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+2:
+  name: Projectile
+  texture: "actions/projectile_spritesheet.png"
+  rows: 1
+  cols: 4
+  size: 4
+  segments:
+    - segmentName: IDLE
+      segmentId: 0 
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 8
+      - 8
+      - 8
+      - 8
+
+101:
   name: Character1Strip
   texture: "models/castanimation_spritesheet.png"
   rows: 1
@@ -53,7 +85,7 @@
       length: 0
       frameData:
 
-2:
+102:
   name: Character2Strip
   texture: "models/testAnimation.png"
   rows: 1
@@ -118,7 +150,7 @@
       length: 0
       frameData:
 
-3:
+103:
   name: Character3Strip
   texture: "models/tutorial_char.png"
   rows: 1
@@ -173,7 +205,7 @@
       frameData:
       - 10
 
-4:
+104:
   name: Character4Strip
   texture: "models/spritesheetG1.png"
   rows: 1
@@ -210,4 +242,5 @@
       length: 1
       frameData:
       - 10
+
 ...

@@ -184,7 +184,7 @@ public class GameplayController {
             }
     	}
         for (Character c : characters){
-        	c.draw(canvas,board);
+        	c.draw(canvas,board,inGameState);
         }
     }
     
