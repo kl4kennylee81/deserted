@@ -136,7 +136,7 @@
     numRounds: 1
     moveSpeed: 0.0
   animationId: 0
-  projectileAnimationID: 2
+  projectileAnimationId: 2
 
 7:
   name : Slow
@@ -176,7 +176,7 @@
     magnitude: -1
   description: Launch a projectile 3 tiles straight ahead for 2 damage and slows
   animationId: 0
-  projectileAnimationID: 2
+  projectileAnimationId: 2
 
 9:
   name: Shield2
@@ -198,7 +198,7 @@
     numRounds: 1
     moveSpeed: 0.0
   animationId: 0
-  projectileAnimationID: 2
+  projectileAnimationId: 2
 
 10:
   name: Straight - 2
@@ -220,7 +220,7 @@
     numRounds: 10
     moveSpeed: 0.05
   animationId: 0
-  projectileAnimationID: 2
+  projectileAnimationId: 2
 
 11:
   name: L - PATH
@@ -243,7 +243,7 @@
     numRounds: 10
     moveSpeed: 0.05
   animationId: 0
-  projectileAnimationID: 2
+  projectileAnimationId: 2
 
 12:
   name: zigzag - INSTANT
@@ -302,7 +302,7 @@
     numRounds: 10
     moveSpeed: 0.06
   animationId: 0
-  projectileAnimationID: 2
+  projectileAnimationId: 2
 
 15:
   name: Spirit Barrier
@@ -324,7 +324,7 @@
     numRounds: 1
     moveSpeed: 0.0
   animationId: 0
-  projectileAnimationID: 2
+  projectileAnimationId: 2
 
 16:
   name: Guardian Shield
@@ -346,7 +346,7 @@
     numRounds: 1
     moveSpeed: 0.0
   animationId: 0
-  projectileAnimationID: 2
+  projectileAnimationId: 2
 
 17:
   name: Avalanche

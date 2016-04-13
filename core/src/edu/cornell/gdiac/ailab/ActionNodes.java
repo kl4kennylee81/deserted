@@ -84,9 +84,6 @@ public class ActionNodes{
 		}
 		
 		public void setAnimation(){
-			//System.out.println(action.name);
-			//System.out.println(this.action.animation);
-			//System.out.println("hi "+this.action.projectileAnimation);
 			this.animation = new AnimationNode(this.action.projectileAnimation);
 		}
 
