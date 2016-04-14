@@ -134,16 +134,15 @@ public class SelectionMenuController {
 			}
 		} else if (InputController.pressedBack()){
 			menu.removeLast();
-		} else if (InputController.pressedD() && menu.canNop(numSlots)){
+		// this is the noping command
+//		} else if (InputController.pressedRight() && menu.canNop(numSlots)){
 			/*float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,0);
 			menu.add(anPool.newActionNode(nop,actionExecute,0,0,Direction.NONE),numSlots);
 			menu.resetPointer(numSlots);*/
-		} else if ((InputController.pressedW() && !InputController.pressedS()) 
-			|| (InputController.pressedUp() && !InputController.pressedDown())){
+		} else if (InputController.pressedUp() && !InputController.pressedDown()){
 			//Actions go from up down, so we need to flip
 			menu.changeSelected(false,numSlots);
-		} else if ((InputController.pressedS() && !InputController.pressedW())
-				|| (InputController.pressedDown() && !InputController.pressedUp())){
+		} else if (InputController.pressedDown() && !InputController.pressedUp()){
 			menu.changeSelected(true,numSlots);
 		}
 	}
@@ -237,16 +236,16 @@ public class SelectionMenuController {
 			updateChoosingMove();
 			break;
 		case DIAGONAL:
-			if (InputController.pressedW() && !InputController.pressedS()){
+			if (InputController.pressedUp() && !InputController.pressedDown()){
 				direction = Direction.UP;
-			} else if (InputController.pressedS() && !InputController.pressedW()){
+			} else if (InputController.pressedDown() && !InputController.pressedUp()){
 				direction = Direction.DOWN;
 			} 
 			break;
 		case SHIELD:
-			if (InputController.pressedW() && !InputController.pressedS()){
+			if (InputController.pressedUp() && !InputController.pressedDown()){
 				direction = Direction.UP;
-			} else if (InputController.pressedS() && !InputController.pressedW()){
+			} else if (InputController.pressedDown() && !InputController.pressedUp()){
 				direction = Direction.DOWN;
 			} 
 			break;
@@ -274,17 +273,17 @@ public class SelectionMenuController {
 		direction = Direction.NONE;
 		int updateX = selectedX;
 		int updateY = selectedY;
-		if (InputController.pressedW() && !InputController.pressedS()){
+		if (InputController.pressedUp() && !InputController.pressedDown()){
 			updateX = selectedX;
 			updateY = selectedY + 1;
 			updateY %= boardHeight;
-		} else if (InputController.pressedS() && !InputController.pressedW()){
+		} else if (InputController.pressedUp() && !InputController.pressedDown()){
 			updateX = selectedX;
 			updateY = selectedY - 1;
 			if (updateY < 0){
 				updateY += boardHeight;
 			}
-		} else if (InputController.pressedA() && !InputController.pressedD()){
+		} else if (InputController.pressedLeft() && !InputController.pressedRight()){
 			updateX = selectedX - 1;
 			updateY = selectedY;
 			if (leftside && updateX<boardWidth/2){
@@ -292,7 +291,7 @@ public class SelectionMenuController {
 			} else if (!leftside && selectedX<0){
 				updateX+=boardWidth/2;
 			}
-		} else if (InputController.pressedD() && !InputController.pressedA()){
+		} else if (InputController.pressedRight() && !InputController.pressedLeft()){
 			updateX = selectedX + 1;
 			updateY = selectedY;
 			if (leftside && updateX> boardWidth-1){
@@ -314,21 +313,21 @@ public class SelectionMenuController {
 		//System.out.println("choosing");
 		
 		//Need to check in all of these if its a valid move;
-		if (InputController.pressedW() && !InputController.pressedS()){
+		if (InputController.pressedUp() && !InputController.pressedDown()){
 			if (board.canMove(selected.leftside,shadowX, shadowY+1)){
 				direction = Direction.UP;
 			}
 			
-		} else if (InputController.pressedS() && !InputController.pressedW()){
+		} else if (InputController.pressedDown() && !InputController.pressedUp()){
 			if (board.canMove(selected.leftside,shadowX, shadowY-1)){
 				direction = Direction.DOWN;
 			}
-		} else if (InputController.pressedA() && !InputController.pressedD()){
+		} else if (InputController.pressedLeft() && !InputController.pressedRight()){
 			//if (not occupied) and (not rightside at x=3)
 			if (board.canMove(selected.leftside,shadowX-1, shadowY)){
 				direction = Direction.LEFT;
 			}
-		} else if (InputController.pressedD() && !InputController.pressedA()){
+		} else if (InputController.pressedRight() && !InputController.pressedLeft()){
 			if (board.canMove(selected.leftside,shadowX+1, shadowY)){
 				direction = Direction.RIGHT;
 			}

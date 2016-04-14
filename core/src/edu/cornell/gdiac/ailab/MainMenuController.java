@@ -51,21 +51,7 @@ public class MainMenuController {
 		
 		mouseOverController.update(menu.options, menu);
 		updateSelection();
-		drawMenu();
-//		if (InputController.pressedE()){
-//			done(0);
-//		} else if (InputController.pressedM()){
-//			done(1);
-//		} else if (InputController.pressedH()){
-//			done(2);
-//		} else if (InputController.pressedP()){
-//			done(3);
-//		} else if (InputController.pressedT()){
-//			done(4);
-//		}  else if (InputController.pressedQ()){
-//			done(5);
-//		}
-		
+		drawMenu();		
 		if (InputController.pressedP()){
 			done(3);
 		}
@@ -174,8 +160,7 @@ public class MainMenuController {
 				done(levelMenu.selectedOption);
 			}
 			
-		     else if ((InputController.pressedD() && !InputController.pressedA())
-		    		 ||InputController.pressedRight() && !InputController.pressedLeft()){
+		     else if (InputController.pressedRight() && !InputController.pressedLeft()){
 		         //newSelection % length
 		         //(n < 0) ? (m - (abs(n) % m) ) %m : (n % m);
 		         //taken from http://stackoverflow.com/questions/5385024/mod-in-java-produces-negative-numbers
@@ -188,8 +173,7 @@ public class MainMenuController {
 			     int optionSrNo = levelMenu.getOptions()[toSelect].srNo;
 			     levelMenu.selectOption(optionSrNo);
 		     }  
-		     else if ((InputController.pressedA() && !InputController.pressedD())
-		    		 ||InputController.pressedLeft() && !InputController.pressedRight()){
+		     else if (InputController.pressedLeft() && !InputController.pressedRight()){
 				//Actions go from up down, so we need to flip
 		    	 int newSelection = levelMenu.getCurIndexOption() - 1;
 		        int length = levelMenu.getOptions().length;
@@ -206,8 +190,7 @@ public class MainMenuController {
 	private void updateSelectionMainMenu(MainMenu mainMenu){
 		if (InputController.pressedEnter() || InputController.pressedLeftMouse()){
 			done(mainMenu.selectedOption);
-		}  else if ((InputController.pressedS() && !InputController.pressedW())
-				||InputController.pressedDown() && !InputController.pressedUp()){
+		}  else if (InputController.pressedDown() && !InputController.pressedUp()){
 	         //newSelection % length
 	         //(n < 0) ? (m - (abs(n) % m) ) %m : (n % m);
 	         //taken from http://stackoverflow.com/questions/5385024/mod-in-java-produces-negative-numbers
@@ -219,15 +202,14 @@ public class MainMenuController {
 								length);
 		     int optionSrNo = mainMenu.getOptions()[toSelect].srNo;
 		     mainMenu.selectOption(optionSrNo);
-		}   else if ((InputController.pressedW() && !InputController.pressedS())
-				|| InputController.pressedUp() && !InputController.pressedDown()){
+		}   else if (InputController.pressedUp() && !InputController.pressedDown()){
 	    	 int newSelection = mainMenu.getCurIndexOption() - 1;
 	        int length = mainMenu.getOptions().length;
 	        int toSelect = (newSelection < 0) ? (length - 
 						(Math.abs(newSelection) % length) ) 
 						%length : (newSelection % 
 								length);
-	        // at teh moment we are storing the srNo NOT THE INDEX!
+	        // at the moment we are storing the srNo NOT THE INDEX!
 	        int optionSrNo = mainMenu.getOptions()[toSelect].srNo;
 	        mainMenu.selectOption(optionSrNo);
 		}

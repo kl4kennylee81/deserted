@@ -29,56 +29,16 @@ public class InputController {
     	return canvas;
     }
     
-    public static boolean pressedESC() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE);
+    public static boolean pressedESC(){
+    	return Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE);    	
     }
     
     public static boolean pressedBack() {
     	return Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE);
     }
     
-    //Easy mode
-    public static boolean pressedE() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.E);
-    }
-    
-    //Medium mode
-    public static boolean pressedM() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.M);
-    }
-    
-    //Hard mode
-    public static boolean pressedH() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.H);
-    }
-    
-    public static boolean pressedT() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.T);
-    }
-    
-    public static boolean pressedQ() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.Q);
-    }
-    
-    //PVP mode
     public static boolean pressedP() {
     	return Gdx.input.isKeyJustPressed(Input.Keys.P);
-    }
-    
-    public static boolean pressedW() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.W);
-    }
-    
-    public static boolean pressedA() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.A);
-    }
-    
-    public static boolean pressedS() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.S);
-    }
-    
-    public static boolean pressedD() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.D);
     }
     
     //Reset
@@ -87,19 +47,19 @@ public class InputController {
     }
     
     public static boolean pressedUp() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.UP);
+    	return Gdx.input.isKeyJustPressed(Input.Keys.UP)||Gdx.input.isKeyJustPressed(Input.Keys.W);
     }
     
     public static boolean pressedDown() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.DOWN);
+    	return Gdx.input.isKeyJustPressed(Input.Keys.DOWN)||Gdx.input.isKeyJustPressed(Input.Keys.S);
     }
     
     public static boolean pressedLeft() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.LEFT);
+    	return Gdx.input.isKeyJustPressed(Input.Keys.LEFT)||Gdx.input.isKeyJustPressed(Input.Keys.A);
     }
     
     public static boolean pressedRight() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.RIGHT);
+    	return Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)||Gdx.input.isKeyJustPressed(Input.Keys.D);
     }
 
 	public static void setCanvas(GameCanvas canvas) {
