@@ -787,17 +787,14 @@ public class Character implements GUIElement {
 		int numWithin = Coordinates.numWithinBounds(an.path, board);
 		int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
 		int shieldH = (int)(tileH * numWithin);
-		int shieldX = (int)(leftside ?(tileW + tileW*an.curX- SHIELD_OFFSET) :tileW*an.curX - SHIELD_OFFSET);
+		// offset based on left and right adding 0.5 on the left and -0.5 on the right
+		int shieldX = (int)(leftside ?(tileW/2 + tileW*an.curX- SHIELD_OFFSET) :tileW*an.curX - SHIELD_OFFSET - tileW/2);
 		int shieldY = (int)(tileH *botY);
-//		int shieldW = 10;
-//		int shieldH = 50;
-//		int shieldX = 150;
-//		int shieldY = 150;
 		c = board.offsetBoard(canvas, shieldX, shieldY);
 		shieldX = c.x;
 		shieldY = c.y;
 		c.free();
-		canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
+		canvas.drawTileArrow(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
 	}
 	
 	/**
