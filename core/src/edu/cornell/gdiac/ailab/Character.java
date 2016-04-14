@@ -235,7 +235,6 @@ public class Character implements GUIElement {
 	public float getXMax(GameCanvas canvas, GridBoard board){
 		float charScale = getCharScale(canvas,texture,board);
 		return getXMin(canvas, board) + texture.getWidth()*charScale;
-//		return CANVAS_X_MULTIPLIER*xPosition + texture.getWidth();
 	}
 	
 	public float getYMax(GameCanvas canvas, GridBoard board){

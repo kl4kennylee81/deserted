@@ -16,7 +16,7 @@
     - 18
 
   texture: "models/CHARA_5.png"
-  icon: "models/CASTICON_5.png"
+  icon: "models/tutorial_icon.png"
   animationId: 103
 
 3:
@@ -37,7 +37,7 @@
     - 15
 
   texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
+  icon: "models/mage_icon.png"
   animationId: 102
 
 0:
@@ -58,7 +58,7 @@
     - 20
 
   texture: "models/CHARA_3.png"
-  icon: "models/CASTICON_3.png"
+  icon: "models/CASTICON_5.png"
   animationId: 101
 
 1:

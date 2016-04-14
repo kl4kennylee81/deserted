@@ -16,6 +16,8 @@ public class MouseOverController {
 	GridBoard board;
 	Action hAction;
 	SelectionMenu currMenu;
+	
+	private static boolean DISABLE_MOUSE = true;
 
 	public void update(Option[] options, Menu Menu){
 		float x = InputController.getMouseX();
@@ -29,6 +31,9 @@ public class MouseOverController {
 	}
 
 	public void update(SelectionMenu currMenu1,Characters characters){
+		if (DISABLE_MOUSE){
+			return;
+		}
 		hAction = null;
 		currMenu = null;
 		if (currMenu1 != null){
