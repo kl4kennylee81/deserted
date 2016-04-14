@@ -20,7 +20,6 @@ public class DropDownTable extends Table{
 	private LinkedList<SelectBox<String>> boxes; 
 	private Array<LinkedList<TextField>> additional;
 	private String[] fieldLabels;
-	//private Integer numAdditional;
 	private String[] options;
 	private Skin skin;
 	private TextButton add;
@@ -39,7 +38,6 @@ public class DropDownTable extends Table{
 		
 		if (fieldLabels != null){
 			this.fieldLabels = fieldLabels;
-			//this.numAdditional = fieldLabels.length;
 			additional = new Array<LinkedList<TextField>>(fieldLabels.length);
 			
 			for (String label : fieldLabels){
@@ -165,7 +163,7 @@ public class DropDownTable extends Table{
 			setUpValue(values[0], formatFieldVals(additionalVals, 0));
 			remove.remove();
 			for (int i = 1; i < values.length ; i++) {
-				setUpValue(values[i], formatFieldVals(additionalVals, 0));			
+				setUpValue(values[i], formatFieldVals(additionalVals, i));			
 			}
 		}else{
 			setUpValue("", null);
@@ -184,6 +182,7 @@ public class DropDownTable extends Table{
 			fVals[i] = vals[level];
 			i++;
 		}
+		
 		return fVals;
 	}
 	

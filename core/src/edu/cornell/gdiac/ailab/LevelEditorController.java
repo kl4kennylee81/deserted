@@ -200,6 +200,7 @@ public class LevelEditorController implements EditorController {
 			String[] allies = completeAlly[0];
 			String[][] allyInfo = Arrays.copyOfRange(completeAlly, 1, 3);
 			
+			
 			String[][] completeEnemy = getCharInfo(enemyList);
 			String[] enemies = completeEnemy[0];
 			String[][] enemyInfo = Arrays.copyOfRange(completeEnemy, 1, 3);
@@ -220,9 +221,11 @@ public class LevelEditorController implements EditorController {
 		String[][] array = new String[3][list.size()];
 		int i=0;
 		for (HashMap<String,Object> map : list) {
-			array[0][i] = ((Integer) map.get("id")).toString();
+			Integer charId = (Integer) map.get("id");
+			array[0][i] = charId + " " + characters.get(charId).get("name");
 			array[1][i] = ((Integer) map.get("xPosition")).toString();
 			array[2][i] = ((Integer) map.get("yPosition")).toString();
+			i++;
 		}
 		return array;
 	}

@@ -26,6 +26,7 @@ public class CharacterEditor {
 	private TextField castSpeedText;
 	private DropDownTable actionsTable;
 	private TextField textureText;
+	//private SelectBox<String> textureSelect;
 	private TextField iconText;
 	private SelectBox<String> animationSelect;
 	
@@ -68,7 +69,8 @@ public class CharacterEditor {
 		
 		Label textureLabel = new Label("Texture:", skin);
 		textureText = new TextField("", skin);
-		
+		//textureSelect = new SelectBox<String>();
+		//textureSelect.setItems(newItems);
 		
 		Label iconLabel = new Label("Icon:", skin);
 		iconText = new TextField("", skin);
@@ -131,6 +133,7 @@ public class CharacterEditor {
 		table.row();
 		
 		table.add(submit);
+		
 	}
 	
 	public Table getTable() {
