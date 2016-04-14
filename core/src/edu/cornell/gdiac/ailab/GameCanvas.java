@@ -47,6 +47,9 @@ public class GameCanvas {
 	/** White texture */
 	private Texture white;
 	
+	/** white texture region that can be transformed **/
+	private TextureRegion whiteRegion;
+	
 	/** Value to cache window width (if we are currently full screen) */
 	int width;
 	/** Value to cache window height (if we are currently full screen) */
@@ -202,6 +205,7 @@ public class GameCanvas {
 	
 	public void setWhite(Texture white) {
 		this.white = white;
+		this.whiteRegion = new TextureRegion(white);
 	}
 	
 	/**
@@ -803,9 +807,15 @@ public class GameCanvas {
 		spriteBatch.draw(white, x, y, 600*ratio, 20);
 	}
 	
-	public void drawTile(float x, float y, Texture mesh, int width, int height, Color tint){
+	public void setShearBoard(float x,float y,float shearX,float shearY){
+		local.setToShearing(shearX, shearY);
+		local.translate(x, y);
+	}
+	
+	public void drawTile(float x, float y, TextureRegion mesh, int width, int height, Color tint){	
+		setShearBoard(x,y,Constants.TILE_SHEAR,0);
 		spriteBatch.setColor(tint);
-		spriteBatch.draw(mesh,x,y,width,height);
+		spriteBatch.draw(mesh,width,height,local);
 	}
 	
 	public void drawOption(float sx, float sy, Texture button,float width, float height, 
@@ -891,6 +901,13 @@ public class GameCanvas {
 	public void drawBox(float x, float y, float width, float height, Color color){
 		spriteBatch.setColor(color);
 		spriteBatch.draw(white,x,y,width,height);
+	}
+	
+	/** we might change the guide to reflect the game properly **/
+	public void drawTileArrow(float x,float y,float width,float height,Color color){
+		this.setShearBoard(x,y,Constants.TILE_SHEAR,0);
+		spriteBatch.setColor(color);
+		spriteBatch.draw(whiteRegion,width,height,local);
 	}
 	
 	public void drawUpArrow(float x1, float y1, float x2, float y2, Color color){

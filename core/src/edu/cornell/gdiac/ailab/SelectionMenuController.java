@@ -217,7 +217,6 @@ public class SelectionMenuController {
 						this.selectedX = i;
 						this.selectedY = j;
 						hasFound = true;
-						System.out.println(this.selectedX+":"+this.selectedY);
 						break;
 					}
 				}

@@ -184,7 +184,7 @@ public class ActionController {
 		Coordinates coords = Coordinates.getInstance();
 		// when we pass in coordinate for the path we can go out of bounds it is checked in execution time
 		if (a_node.action== null || a_node.action.path == null){
-			System.out.println("error input pattern projectile or instant did not have path");
+			System.out.println("line action controller 187: error input pattern projectile or instant did not have path");
 			return null;
 		}
 		Coordinate[] relativePath = a_node.action.path;
@@ -463,9 +463,8 @@ public class ActionController {
 		else{
 			switch (e.type){
 			case BROKEN:
-				Coordinate c = Coordinates.getInstance().obtain();
-				c.set(x, y);
-				board.addTileEffect(c, e.clone());
+				String keyCoordinate = String.format("%s:%s",Integer.toString(x),Integer.toString(y));
+				board.addTileEffect(keyCoordinate, e.clone());
 				break;
 			default:
 				break;
@@ -478,7 +477,6 @@ public class ActionController {
 		c.set(a_node.xPosition, a_node.yPosition);
 		Coordinate[] path = new Coordinate[1];
 		path[0] = c;
-		System.out.println("YO");
 		processHitPath(a_node,path,true,false);
 	}
 	

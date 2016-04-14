@@ -168,37 +168,38 @@
     - segmentName: ACTIVE
       segmentId: 1
       startingIndex: 0
-      length: 5
+      length: 4
       frameData:
       - 6
       - 6
-      - 7
-      - 10
-      - 7
+      - 6
+      - 9
     - segmentName: CAST
       segmentId: 2
-      startingIndex: 5
-      length: 6
+      startingIndex: 4
+      length: 8
       frameData:
-      - 7
       - 6
       - 6
       - 6
       - 6
-      - 7
+      - 4
+      - 6
+      - 4
+      - 4
 
     - segmentName: EXECUTE
       segmentId: 3
       startingIndex: 5
       length: 7
       frameData:
-      - 7
       - 6
       - 6
       - 6
       - 6
-      - 11
-      - 8
+      - 6
+      - 5
+      - 5
     - segmentName: HURT
       segmentId: 4
       startingIndex: 4

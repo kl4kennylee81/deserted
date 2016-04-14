@@ -92,47 +92,52 @@ public class EffectController {
 	}
 	
 	public void processTileEffects(GridBoard board){
-		HashMap<Coordinate,Effect> tileEffects = board.getTileEffects();
-		LinkedList<Coordinate> toRemove = new LinkedList<Coordinate>();
-		for (Coordinate c:tileEffects.keySet()){
+		HashMap<String,Effect> tileEffects = board.getTileEffects();
+		LinkedList<String> toRemove = new LinkedList<String>();
+		for (String c:tileEffects.keySet()){
 			Effect e = tileEffects.get(c);
 			processTileEffect(e,c,board);
 			if (e.isDone){
 				toRemove.add(c);
-				c.free();
 			}
 		}
 		// remove the tile effects outside of the iteration
-		for (Coordinate c:toRemove){
+		for (String c:toRemove){
 			tileEffects.remove(c);
 		}
 	}
 	
-	public void processTileEffect(Effect e,Coordinate c,GridBoard board){
+	public void processTileEffect(Effect e,String c,GridBoard board){
 		// each frame take away 1/(FPS * ROUNDS_TO_SECONDS) of an effects rounds
 		// for all tile effects need to subtract some part of a rounds
 		e.roundsLeft -= 1/(FPS*ROUNDS_TO_SECONDS);
 		if (e.roundsLeft <= 0){
 			e.isDone = true;
 		}
+		String[] coordString = c.split(":");
+		int x = 0; int y = 0;
+		if (coordString.length > 1){
+			x = Integer.parseInt(coordString[0]);
+			y = Integer.parseInt(coordString[1]);
+		}
 		switch (e.type){
 		case BROKEN:
-			processBroken(e,c,board);
+			processBroken(e,x,y,board);
 			break;
 		default:
 			break;
 		}
 	}
 	
-	public void processBroken(Effect e,Coordinate c,GridBoard board){
+	public void processBroken(Effect e,int x,int y,GridBoard board){
 		if (e.isNew){
 			// set the tile state to broken
-			board.setTileEffect(c.x,c.y, TileState.BROKEN);
+			board.setTileEffect(x,y, TileState.BROKEN);
 			e.isNew = false;
 		}
 		else if (e.isDone){
 			// might have to save the previous tile state and return to its original state
-			board.setTileEffect(c.x, c.y, TileState.NORMAL);
+			board.setTileEffect(x,y, TileState.NORMAL);
 		}
 	}
 }

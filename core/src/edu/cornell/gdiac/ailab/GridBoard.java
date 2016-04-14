@@ -6,13 +6,14 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.Tile.TileState;
 
 public class GridBoard {
 	float space;
-	Texture tileMesh;
+	TextureRegion tileMesh;
 	Tile[][] tiles;
 	// In number of tiles
 	int width;
@@ -21,7 +22,7 @@ public class GridBoard {
 	boolean increasing;
 	
 	// tile effects
-	private HashMap<Coordinate,Effect> tileEffects;
+	private HashMap<String,Effect> tileEffects;
 	
 	/** Color of a regular tile */
 	private static final Color BASIC_COLOR1 = new Color(0.2f, 0.2f, 1.0f, 1.0f);
@@ -33,17 +34,17 @@ public class GridBoard {
 	private static final Color BROKEN_COLOR = Color.BLACK.cpy();
 	
 	
-	public static final float BOARD_WIDTH = 0.75f;
+	public static final float BOARD_WIDTH = 0.60f;
 	
-	public static final float BOARD_HEIGHT = 0.45f;
+	public static final float BOARD_HEIGHT = 0.3f;
 
-	public static final float BOARD_OFFSET_X = (1-BOARD_WIDTH)/2;
+	public static final float BOARD_OFFSET_X = (1-BOARD_WIDTH - BOARD_HEIGHT*Constants.TILE_SHEAR)/2;
 	
 	public static final float EXTRA_OFFSET = 0.02f;
 	
-	public static final float BOARD_OFFSET_Y = 0.05f;
+	public static final float BOARD_OFFSET_Y = 0.025f;
 	
-	public HashMap<Coordinate,Effect> getTileEffects(){
+	public HashMap<String,Effect> getTileEffects(){
 		return this.tileEffects;
 	}
 	
@@ -88,7 +89,8 @@ public class GridBoard {
 	}
 	
 	public Coordinate offsetBoard(GameCanvas canvas,float xPos,float yPos){
-		int newxPos = (int)(getBoardOffsetX(canvas) + xPos);
+		// board offset accounts for the shearing as well as centering to the tile
+		int newxPos = (int)(getBoardOffsetX(canvas) + xPos + Constants.TILE_SHEAR*yPos + this.getTileWidth(canvas)/3);
 		int newyPos = (int)(getBoardOffsetY(canvas) + yPos);
 		Coordinates coords = Coordinates.getInstance();
 		Coordinate c = coords.obtain();
@@ -102,7 +104,7 @@ public class GridBoard {
 		this.height = height;
 		lerpVal = 0;
 		tiles = new Tile[width][height];
-		this.tileEffects = new HashMap<Coordinate,Effect>();
+		this.tileEffects = new HashMap<String,Effect>();
 		for (int x = 0; x < width; x++){
 			for (int y = 0; y < height; y++){
 				tiles[x][y] = new Tile(TileState.NORMAL);
@@ -111,14 +113,14 @@ public class GridBoard {
 	}
 	
 	public void setTileTexture(Texture mesh) {
-		tileMesh = mesh;
+		tileMesh = new TextureRegion(mesh);
 	}
 	
 	public void setTileEffect(int x, int y, TileState effect){
 		tiles[x][y].setEffect(effect);
 	}
 	
-	public void addTileEffect(Coordinate c,Effect e){
+	public void addTileEffect(String c,Effect e){
 		this.tileEffects.put(c,e);
 	}
 	
@@ -168,18 +170,6 @@ public class GridBoard {
 		float sx = tileW*x + getBoardOffsetX(canvas);
 		float sy = tileH*y + getBoardOffsetY(canvas);
 
-		// You can modify the following to change a tile's highlight color.
-		// BASIC_COLOR corresponds to no highlight.
-		///////////////////////////////////////////////////////
-		/*
-		if (x<width/2){
-			((TexturedMesh) tileMesh).setColor(BASIC_COLOR1);
-		} else {
-			tileMesh.setColor(BASIC_COLOR2);
-		}
-		if (tile.isHighlighted) {
-			tileMesh.setColor(POWER_COLOR);
-		}*/
 		Color color = x<width/2 ? BASIC_COLOR1.cpy() : BASIC_COLOR2.cpy();
 		if (tile.isHighlighted){
 			color.lerp(HIGHLIGHT_COLOR,lerpVal);

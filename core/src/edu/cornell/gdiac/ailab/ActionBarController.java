@@ -52,6 +52,7 @@ public class ActionBarController {
 				// cast moved accounts for NOPing and stopping going through cast preemptively
 				if (c.castPosition < 1){
 					c.castMoved += Math.abs(1.0f - c.castPosition);
+//					System.out.println("SKIP ACTION BAR Controller "+c.castMoved);
 				}
 				
 				// Reset once done with attacks

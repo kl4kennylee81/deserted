@@ -44,4 +44,7 @@ public class Constants {
 	
 	public static final String LEVEL_SELECT_BOSS = "models/menu_tapestryboss.png";
 	
+	
+	/** Tile Shearing constant **/
+	public static final float TILE_SHEAR = 0.6f;
 }

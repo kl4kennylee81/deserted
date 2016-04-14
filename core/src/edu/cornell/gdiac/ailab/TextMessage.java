@@ -41,9 +41,9 @@ public class TextMessage {
 		}
 	}
 
-	private static final int DAMAGE_OFFSET = 200;
+	private static final int DAMAGE_OFFSET = 180;
 
-	private static final int OTHER_OFFSET = 220;
+	private static final int OTHER_OFFSET = 200;
 
 	private static final int TIME_TRANSLATION_OFFSET = 25;
 	
@@ -74,24 +74,23 @@ public class TextMessage {
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
 		for (Message m : damageMessages){
-			float messageX = tileW/2 + tileW*m.xPos;
+			// FIXUP temp fix to get in relatively close to correct location
+			float messageX = tileW*m.xPos - board.getTileWidth(canvas)/3;
 			float messageY = tileH*m.yPos + DAMAGE_OFFSET + m.getRatio()*TIME_TRANSLATION_OFFSET;
 			Coordinate c = board.offsetBoard(canvas, messageX, messageY);
 			messageX = c.x;
 			messageY = c.y;
 			c.free();
 			canvas.drawCenteredText(m.text, messageX, messageY, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 2f);
-			//canvas.drawCenteredText(m.text, 75+150*m.xPos, 300+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 2f);
 		}
 		for (Message m : otherMessages){
-			float messageX = tileW/2 + tileW*m.xPos;
+			float messageX = tileW*m.xPos;
 			float messageY = tileH*m.yPos + OTHER_OFFSET + m.getRatio()*TIME_TRANSLATION_OFFSET;
 			Coordinate c = board.offsetBoard(canvas, messageX, messageY);
 			messageX = c.x;
 			messageY = c.y;
 			c.free();
 			canvas.drawCenteredText(m.text, messageX, messageY, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
-			//canvas.drawCenteredText(m.text, 75+150*m.xPos, 320+100*m.yPos+m.getRatio()*25, m.color.cpy().lerp(Color.CLEAR, m.getRatio()/2), 1.3f);
 		}
 	}
 }

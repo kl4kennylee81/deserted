@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 //import java.util.Random;
+import java.util.ListIterator;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -26,6 +27,7 @@ public class Character implements GUIElement {
 	private static final int DIAGONAL_SIZE = 20;
 	
 	private static final float ACTIONBAR_TICK_SIZE = 8f;
+	private static final float HEALTH_OFFSET = 20f;
 	
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
@@ -301,6 +303,19 @@ public class Character implements GUIElement {
 	}
 	
 	public void setQueuedActions(List<ActionNode> actions){
+		// iterate through the queued actions and make sure the set of queued actions
+		// do not supercede the number of slots. Any that do will be canceled.
+		int numSlots = this.getActionBar().getUsableNumSlots();
+		int queuedSlots = 0;
+		ListIterator<ActionNode> iter = actions.listIterator();
+		while(iter.hasNext()){
+			ActionNode an = iter.next();
+			queuedSlots+=an.action.cost;
+			if (queuedSlots > numSlots){
+				// throw it away from the list
+				iter.remove();
+			}
+		}
 		this.queuedActions = (LinkedList<ActionNode>) actions;
 	}
 	
@@ -557,9 +572,6 @@ public class Character implements GUIElement {
 		if (!isAlive()){
 			return;
 		}
-		else{
-			drawHealth(canvas,board);
-		}
 		if(hasPersisting()){
 			drawPersisting(canvas,board,inGameState);
 		}
@@ -747,29 +759,18 @@ public class Character implements GUIElement {
 			float arrowOffY = (tileH - SHADOW_ARROW_WIDTH)/2;
 			if (nowX != tempX && nowY == tempY){
 				int minX = Math.min(nowX, tempX);
-				float arrowX = arrowOffX + (tileW *minX);
-				float arrowY = arrowOffY + (tileH *nowY);
-				Coordinate c = board.offsetBoard(canvas, arrowX, arrowY);
-				arrowX = c.x;
-				arrowY = c.y;
-				c.free();
+				float arrowX = arrowOffX + (tileW *minX) + board.getBoardOffsetX(canvas);
+				float arrowY = arrowOffY + (tileH *nowY) + board.getBoardOffsetY(canvas);
 				float arrowWidth = tileW + SHADOW_ARROW_WIDTH*canvas.getWidth();
 				float arrowHeight = SHADOW_ARROW_WIDTH*canvas.getWidth();
-				canvas.drawBox(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
-				//canvas.drawBox(72 + 150*minX, 47 + 100*nowY, 156, 6, Color.BLACK);
+				canvas.drawTileArrow(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
 			} else if (nowY != tempY && nowX == tempX){
 				int minY = Math.min(nowY, tempY);
-				float arrowX = arrowOffX + (tileW *nowX);
-				float arrowY = arrowOffY + (tileH *minY);
-
-				Coordinate c = board.offsetBoard(canvas, arrowX, arrowY);
-				arrowX = c.x;
-				arrowY = c.y;
-				c.free();
+				float arrowX = arrowOffX + (tileW *nowX) + board.getBoardOffsetX(canvas);
+				float arrowY = arrowOffY + (tileH *minY) + board.getBoardOffsetY(canvas);
 				float arrowWidth = SHADOW_ARROW_WIDTH*canvas.getWidth();
 				float arrowHeight = tileH + SHADOW_ARROW_WIDTH*canvas.getWidth();
-				canvas.drawBox(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
-				//canvas.drawBox(72+150*nowX, 47+100*minY, 6, 106, Color.BLACK);
+				canvas.drawTileArrow(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
 			} else {
 //				System.out.println("PLEASE CHECK Character");
 			}
@@ -778,6 +779,7 @@ public class Character implements GUIElement {
 		}
 	}
 	
+	/**FIXUP**/
 	private void drawShield(GameCanvas canvas,GridBoard board,ActionNode an){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
@@ -788,6 +790,10 @@ public class Character implements GUIElement {
 		int shieldH = (int)(tileH * numWithin);
 		int shieldX = (int)(leftside ?(tileW + tileW*an.curX- SHIELD_OFFSET) :tileW*an.curX - SHIELD_OFFSET);
 		int shieldY = (int)(tileH *botY);
+//		int shieldW = 10;
+//		int shieldH = 50;
+//		int shieldX = 150;
+//		int shieldY = 150;
 		c = board.offsetBoard(canvas, shieldX, shieldY);
 		shieldX = c.x;
 		shieldY = c.y;
@@ -805,6 +811,7 @@ public class Character implements GUIElement {
 		for (ActionNode an : persistingActions){
 			switch (an.action.pattern){
 			case SHIELD:
+				System.out.println("character shield is still drawing");
 				drawShield(canvas,board,an);
 				break;
 			case STRAIGHT:
@@ -825,36 +832,19 @@ public class Character implements GUIElement {
 				break;
 			}
 		}
-	}
-	
-	public void drawHealth(GameCanvas canvas,GridBoard board){
-		float tileW = board.getTileWidth(canvas);
-		float tileH = board.getTileHeight(canvas);
-		
-		// get the current film strip without incrementing the animation
-		FilmStrip toDraw = getFilmStrip(InGameState.PAUSED);
-		if (toDraw == null) {
-			toDraw = getCurrentFilmStrip();
-		}
-		float charScale = getCharScale(canvas,toDraw,board);
-		
-		float canvasX = tileW*xPosition + toDraw.getRegionWidth()*charScale/2;
-		float canvasY = tileH*yPosition + toDraw.getRegionHeight()*charScale + 20;
-		Coordinate canvasCoord = board.offsetBoard(canvas,canvasX,canvasY);
-		String healthText = Integer.toString(this.health);
-		canvas.drawCenteredText(healthText, canvasCoord.x, canvasCoord.y, Color.BLACK.cpy());
-		canvasCoord.free();
-	}
-	
+	}	
 	
 	public void drawHealth(GameCanvas canvas,int count,boolean shouldDim){
 	
 //		Color iconColor = this.getColor(shouldDim);
 //		Color waitColor = this.getActionBarColor(shouldDim, this.color.cpy());
-//		
-//		float tokenX = this.actionBar.getTotalX(canvas) - this.icon.getWidth();
-//		float tokenY = this.actionBar.getY(canvas, count);
-//		
+		
+		float tokenX = this.actionBar.getX(canvas);
+		float tokenY = this.actionBar.getY(canvas, count) + this.actionBar.getBarHeight(canvas);
+		String healthText = Integer.toString(this.health);
+		canvas.drawText(healthText, tokenX, tokenY, Color.BLACK.cpy());
+		
+		
 //		canvas.drawTexture(this.icon, tokenX, tokenY, this.icon.getWidth(),this.icon.getHeight(),iconColor);
 //		
 //		/** the wait width is modified by the hp already **/
