@@ -9,7 +9,7 @@ public abstract class Menu {
 	/** Name of current option */
 	
 	/** will change to index again don't worry lads the calvary is here **/
-	public String selectedOption;
+	public int selectedIndex;
 	
 	/** option texture **/
 	Texture optionTexture;
@@ -38,19 +38,20 @@ public abstract class Menu {
 		}
 	}
 	
-	public abstract void selectOption(String optionKey);
-	
-	/** return the index if found otherwise return -1 **/
-	public abstract int getIndexOption(String optionKey);
-	
 	/** return the current index of the selected option otherwise return -1 **/
-	public abstract int getCurIndexOption();
+	public int getCurIndexOption(){
+		return this.selectedIndex;
+	}
 	
-	public void setOption(int index){
-		if (this.options.length > index){
-			String selectedOptionKey = this.options[index].optionKey;
-			// then call select action
-			selectOption(selectedOptionKey);
+	public String getCurOption(){
+		return this.getOption(this.selectedIndex);
+	}
+	
+	public void setOption(int newIndex){
+		if (newIndex < options.length){
+			options[selectedIndex].isSelected = false;
+			options[newIndex].isSelected = true;
+			this.selectedIndex = newIndex;
 		}
 	}
 }

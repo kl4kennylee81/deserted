@@ -52,32 +52,4 @@ public class LevelMenu extends Menu {
 			options[i].draw(canvas);
 		}
 	}
-
-	@Override
-	public void selectOption(String optionKey) {
-		for (int i=0;i<options.length;i++){
-			if (options[i].optionKey == optionKey){
-				options[i].isSelected = true;
-			}
-			else if (options[i].optionKey == selectedOption){
-				options[i].isSelected = false;
-			}
-		}
-		selectedOption = optionKey;
-	}
-	
-	@Override
-	public int getIndexOption(String optionKey){
-		for (int i=0;i<options.length;i++){
-			if (options[i].optionKey == optionKey){
-				return i;
-			}			
-		}
-		return -1;
-	}
-	
-	public int getCurIndexOption(){
-		return getIndexOption(this.selectedOption);
-	}
-
 }

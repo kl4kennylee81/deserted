@@ -50,7 +50,7 @@ public class MainMenu extends Menu{
 			options[i].setBounds(RELATIVE_X_POS, spacedY, RELATIVE_WIDTH, RELATIVE_HEIGHT);
 			options[i].setColor(Constants.MENU_COLOR);
 		}
-		lerpVal = 0;
+		this.lerpVal = 0;
 	}
 	
 	public void setHighlight(Texture t){
@@ -59,18 +59,6 @@ public class MainMenu extends Menu{
 	
 	public void setLogo(Texture t){
 		this.logo = t;
-	}
-	
-	public void selectOption(String optionKey){
-		for (int i=0;i<options.length;i++){
-			if (options[i].optionKey == optionKey){
-				options[i].isSelected = true;
-			}
-			else if (options[i].optionKey == selectedOption){
-				options[i].isSelected = false;
-			}
-		}
-		selectedOption = optionKey;
 	}
 	
 	public void draw(GameCanvas canvas){
@@ -104,25 +92,4 @@ public class MainMenu extends Menu{
 		float height = RELATIVE_LOGO_HEIGHT * canvas.getHeight();
 		canvas.drawTexture(logo, x, y,width,height, Color.WHITE);
 	}
-
-	public Option[] getOptions() {
-		// TODO Auto-generated method stub
-		return options;
-	}
-	
-	@Override
-	public int getIndexOption(String optionKey){
-		for (int i=0;i<options.length;i++){
-			if (options[i].optionKey == optionKey){
-				return i;
-			}			
-		}
-		return -1;
-	}
-	
-	@Override
-	public int getCurIndexOption(){
-		return getIndexOption(this.selectedOption);
-	}
-
 }	

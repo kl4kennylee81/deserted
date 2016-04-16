@@ -22,6 +22,8 @@ public class MainMenuController {
 	
 	private static final String LEVEL_SELECT_NAME = "level select";
 	
+	private static final String MAIN_MENU_NAME = "main menu";
+	
 	
 	public MainMenuController(GameCanvas canvas, AssetManager manager, MouseOverController mouseOverController,
 			HashMap<String, HashMap<String,Object>> levelDefs){
@@ -40,18 +42,24 @@ public class MainMenuController {
 	}
 	
 	private Option[] makeDefaultOptions() {
-		// we will rearrange when i merge to master
 		if (this.levelDefs == null){
 			Option [] default_options = new Option[0];
 			return default_options;
 		}
 		Option [] default_options = new Option[this.levelDefs.size()];
+		
 		int i = 0;
 		for (String levelName:levelDefs.keySet()){
 			default_options[i] = new Option(levelName,levelName);
 			i++;
 		}
 		return default_options;
+	}
+	
+	private Option[] makeMainMenuOptions(){
+//		Option[] options = new Option[3];
+//		for ()
+//		return null;
 	}
 
 	public void drawMenu() {
@@ -64,7 +72,9 @@ public class MainMenuController {
 		
 		mouseOverController.update(menu.options, menu);
 		updateSelection();
-		drawMenu();		
+		drawMenu();
+		
+		// this is technically cheating this wont be allowed just used for fast testing
 		if (InputController.pressedP()){
 			done("pvp");
 		}
@@ -81,7 +91,7 @@ public class MainMenuController {
 			}
 		}
 		else if (menu instanceof LevelMenu){
-			if (levelName == LEVEL_SELECT_NAME){
+			if (levelName == MAIN_MENU_NAME){
 				this.menu = createMainMenu();
 			}
 			else{
@@ -167,7 +177,9 @@ public class MainMenuController {
 		else if (menu instanceof LevelMenu){
 			LevelMenu levelMenu = (LevelMenu) menu;
 			if (InputController.pressedEnter() || InputController.pressedLeftMouse()){
-				done(levelMenu.selectedOption);
+				// fixup to get cur option string from the index
+				String levelKey = levelMenu.getCurOption();
+				done(levelKey);
 			}
 			
 		     else if (InputController.pressedRight() && !InputController.pressedLeft()){
@@ -180,9 +192,7 @@ public class MainMenuController {
 							(Math.abs(newSelection) % length) ) 
 							%length : (newSelection % 
 									length);
-
-			     String optionKey = levelMenu.getOption(toSelect);
-			     levelMenu.selectOption(optionKey);
+			     levelMenu.setOption(toSelect);
 		     }  
 		     else if (InputController.pressedLeft() && !InputController.pressedRight()){
 				//Actions go from up down, so we need to flip
@@ -192,8 +202,7 @@ public class MainMenuController {
 						(Math.abs(newSelection) % length) ) 
 						%length : (newSelection % 
 								length);
-			    String optionKey = levelMenu.getOption(toSelect);
-		        levelMenu.selectOption(optionKey);
+		        levelMenu.setOption(toSelect);
 			}
 		}
 	}
@@ -204,7 +213,9 @@ public class MainMenuController {
 		}
 		
 		if (InputController.pressedEnter() || InputController.pressedLeftMouse()){
-			done(mainMenu.selectedOption);
+			// fixup to get cur option string from the index
+			String levelKey = mainMenu.getCurOption();
+			done(levelKey);
 		}  else if (InputController.pressedDown() && !InputController.pressedUp()){
 	         //newSelection % length
 	         //(n < 0) ? (m - (abs(n) % m) ) %m : (n % m);
@@ -215,9 +226,9 @@ public class MainMenuController {
 						(Math.abs(newSelection) % length) ) 
 						%length : (newSelection % 
 								length);
-	         // FIXUP this nonsense
-		     String optionSrNo = mainMenu.getOptions()[toSelect].optionKey;
-		     mainMenu.selectOption(optionSrNo);
+
+		     mainMenu.setOption(toSelect);
+		     
 		}   else if (InputController.pressedUp() && !InputController.pressedDown()){
 	    	 int newSelection = mainMenu.getCurIndexOption() - 1;
 	        int length = mainMenu.getOptions().length;
@@ -225,9 +236,7 @@ public class MainMenuController {
 						(Math.abs(newSelection) % length) ) 
 						%length : (newSelection % 
 								length);
-	        // at the moment we are storing the srNo NOT THE INDEX!
-	        String optionSrNo = mainMenu.getOptions()[toSelect].optionKey;
-	        mainMenu.selectOption(optionSrNo);
+	        mainMenu.setOption(toSelect);
 		}
 	}
 	public void resetMenu(){
