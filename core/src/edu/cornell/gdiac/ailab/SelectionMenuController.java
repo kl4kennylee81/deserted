@@ -277,7 +277,7 @@ public class SelectionMenuController {
 			updateX = selectedX;
 			updateY = selectedY + 1;
 			updateY %= boardHeight;
-		} else if (InputController.pressedUp() && !InputController.pressedDown()){
+		} else if (InputController.pressedDown() && !InputController.pressedUp()){
 			updateX = selectedX;
 			updateY = selectedY - 1;
 			if (updateY < 0){
