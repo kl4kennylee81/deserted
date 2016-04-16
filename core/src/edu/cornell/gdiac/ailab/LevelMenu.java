@@ -54,22 +54,22 @@ public class LevelMenu extends Menu {
 	}
 
 	@Override
-	public void selectOption(int optionNo) {
+	public void selectOption(String optionKey) {
 		for (int i=0;i<options.length;i++){
-			if (options[i].srNo == optionNo){
+			if (options[i].optionKey == optionKey){
 				options[i].isSelected = true;
 			}
-			else if (options[i].srNo == selectedOption){
+			else if (options[i].optionKey == selectedOption){
 				options[i].isSelected = false;
 			}
 		}
-		selectedOption = optionNo;
+		selectedOption = optionKey;
 	}
 	
 	@Override
-	public int getIndexOption(int optionNo){
+	public int getIndexOption(String optionKey){
 		for (int i=0;i<options.length;i++){
-			if (options[i].srNo == optionNo){
+			if (options[i].optionKey == optionKey){
 				return i;
 			}			
 		}

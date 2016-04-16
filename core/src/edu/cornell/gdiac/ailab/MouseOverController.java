@@ -24,7 +24,7 @@ public class MouseOverController {
 		float y = InputController.getMouseY();
 		for(Option o: options){
 			if (o.contains(x,y,canvas,board)){
-				Menu.selectOption(o.srNo);
+				Menu.selectOption(o.optionKey);
 			}
 		}
 		

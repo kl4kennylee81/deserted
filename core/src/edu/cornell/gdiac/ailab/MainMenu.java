@@ -46,7 +46,6 @@ public class MainMenu extends Menu{
 		
 		// after setting the options must now assign the bounds based on the main menu specs
 		for (int i =0;i<options.length;i++){
-			
 			float spacedY= (RELATIVE_Y_POS - RELATIVE_MENU_SPACING * i);
 			options[i].setBounds(RELATIVE_X_POS, spacedY, RELATIVE_WIDTH, RELATIVE_HEIGHT);
 			options[i].setColor(Constants.MENU_COLOR);
@@ -62,16 +61,16 @@ public class MainMenu extends Menu{
 		this.logo = t;
 	}
 	
-	public void selectOption(int optionNo){
+	public void selectOption(String optionKey){
 		for (int i=0;i<options.length;i++){
-			if (options[i].srNo == optionNo){
+			if (options[i].optionKey == optionKey){
 				options[i].isSelected = true;
 			}
-			else if (options[i].srNo == selectedOption){
+			else if (options[i].optionKey == selectedOption){
 				options[i].isSelected = false;
 			}
 		}
-		selectedOption = optionNo;
+		selectedOption = optionKey;
 	}
 	
 	public void draw(GameCanvas canvas){
@@ -112,9 +111,9 @@ public class MainMenu extends Menu{
 	}
 	
 	@Override
-	public int getIndexOption(int optionNo){
+	public int getIndexOption(String optionKey){
 		for (int i=0;i<options.length;i++){
-			if (options[i].srNo == optionNo){
+			if (options[i].optionKey == optionKey){
 				return i;
 			}			
 		}
