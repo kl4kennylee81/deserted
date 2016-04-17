@@ -787,13 +787,16 @@ public class Character implements GUIElement {
 		int numWithin = Coordinates.numWithinBounds(an.path, board);
 		int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
 		int shieldH = (int)(tileH * numWithin);
-		// offset based on left and right adding 0.5 on the left and -0.5 on the right
-		int shieldX = (int)(leftside ?(tileW/2 + tileW*an.curX- SHIELD_OFFSET) :tileW*an.curX - SHIELD_OFFSET - tileW/2);
+		// since we draw from the lower left corner. for the left side you draw 1 tile up
+		// so it looks like its covering the back of the 2nd tile aka the front of the 1st.
+		int shieldX = (int)(leftside ?tileW*an.curX + tileW:tileW*an.curX);
 		int shieldY = (int)(tileH *botY);
-		c = board.offsetBoard(canvas, shieldX, shieldY);
-		shieldX = c.x;
-		shieldY = c.y;
-		c.free();
+		
+		// since the shield is being sheared it just needs to be offset by the X and not by the shearing amount which
+		// board offset does. thus we just do it manually by adding on the amount we offset rather than offset board
+		// which also takes into the x displacement from being sheared.
+		shieldX = (int) (shieldX + board.getBoardOffsetX(canvas));
+		shieldY = (int) (shieldY + board.getBoardOffsetY(canvas));
 		canvas.drawTileArrow(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
 	}
 	
@@ -807,7 +810,6 @@ public class Character implements GUIElement {
 		for (ActionNode an : persistingActions){
 			switch (an.action.pattern){
 			case SHIELD:
-				System.out.println("character shield is still drawing");
 				drawShield(canvas,board,an);
 				break;
 			case STRAIGHT:
