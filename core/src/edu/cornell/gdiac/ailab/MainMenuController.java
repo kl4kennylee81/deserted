@@ -33,12 +33,7 @@ public class MainMenuController {
 		// the levelDef is needed to create the options
 		this.levelDefs = levelDefs;
 		// initially create the main menu options
-		Option[] default_options = makeDefaultOptions();
-		this.menu = new LevelMenu(default_options);
-		if (default_options.length > 0){
-			// FIXUP DEFAULT
-			menu.setOption(0);
-		}
+		this.menu = this.createMainMenu();
 		this.mouseOverController = mouseOverController; 
 	}
 	
@@ -60,6 +55,24 @@ public class MainMenuController {
 	private Option[] makeMainMenuOptions(){
 		Option[] options = new Option[1];
 		options[0] = new Option(LEVEL_SELECT_NAME,LEVEL_SELECT_NAME);
+		return options;
+	}
+	
+	private Option[] makeLevelSelectOptions(){
+		Option[] options;
+		if (this.levelDefs == null){
+			options = new Option[0];
+			return options;
+		}
+		
+		options = new Option[this.levelDefs.size()+1];
+		
+		options[0] = new Option("Back",MAIN_MENU_NAME);
+		int i = 1;
+		for (String levelName:levelDefs.keySet()){
+			options[i] = new Option(levelName,levelName);
+			i++;
+		}
 		return options;
 	}
 
@@ -103,23 +116,23 @@ public class MainMenuController {
 	}
 	
 	public Menu createLevelMenu(){
-		Option [] default_options = this.makeDefaultOptions();
+		Option [] default_options = this.makeLevelSelectOptions();
 		
 		Menu levelMenu = new LevelMenu(default_options);
 		if (default_options.length > 0){
 			// DEFAULT FIXUP
-			menu.setOption(0);
+			levelMenu.setOption(0);
 		}
 		return levelMenu;
 	}
 	
 	public Menu createMainMenu(){
-		Option[] default_options = makeMainMenuOptions();
-		MainMenu menu = new MainMenu(default_options);
+		Option[] default_options = this.makeMainMenuOptions();
+		MainMenu mainmenu = new MainMenu(default_options);
 		if (default_options.length > 0){
-			menu.setOption(0);
+			mainmenu.setOption(0);
 		}
-		return menu;
+		return mainmenu;
 	}
 	
 	public boolean isDone(){
