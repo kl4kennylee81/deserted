@@ -22,9 +22,10 @@ public class MouseOverController {
 	public void update(Option[] options, Menu Menu){
 		float x = InputController.getMouseX();
 		float y = InputController.getMouseY();
-		for(Option o: options){
+		for (int i =0;i<options.length;i++){
+			Option o = options[i];
 			if (o.contains(x,y,canvas,board)){
-				Menu.setOption(0);
+				Menu.setOption(i);
 			}
 		}
 		
