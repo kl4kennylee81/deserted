@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 public class ActionEditor {
 	
 	private Float OBJECT_WIDTH = 300f;
+	private Float OBJECT_HEIGHT = 20f;
 	private Float PADDING = 4f;
 	
 	private Table table;
@@ -116,75 +117,75 @@ public class ActionEditor {
 		table = new Table();
 		
 		table.add(editLabel);
-		table.add(editSelect).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(editSelect).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(idLabel);
-		table.add(idText).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(idText).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(nameLabel);
-		table.add(nameText).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(nameText).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(costLabel);
-		table.add(costText).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(costText).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(damageLabel);
-		table.add(damageText).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(damageText).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(rangeLabel);
-		table.add(rangeText).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(rangeText).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(patternLabel);
-		table.add(patternSelect).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(patternSelect).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(oneHitLabel);
-		table.add(oneHitSelect).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(oneHitSelect).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(canBlockLabel);
-		table.add(canBlockSelect).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(canBlockSelect).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(needsToggleLabel);
-		table.add(needsToggleSelect).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(needsToggleSelect).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(typeLabel);
-		table.add(typeSelect).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(typeSelect).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(effectNameLabel);
-		table.add(effectNameText).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(effectNameText).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(effectRoundsLabel);
-		table.add(roundText).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(roundText).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(magnitudeLabel);
-		table.add(magnitudeText).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(magnitudeText).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(descriptLabel);
-		table.add(descriptNameText).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(descriptNameText).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(persistRoundsLabel);
-		table.add(persistRoundText).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(persistRoundText).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(persistSpeedLabel);
-		table.add(persistSpeedText).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(persistSpeedText).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(animationLabel);
-		table.add(animationSelect).width(OBJECT_WIDTH).pad(PADDING);
+		table.add(animationSelect).width(OBJECT_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(submit);

@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 public class CharacterEditor {
 	
 	private Float OBJ_WIDTH = 400f;
+	private Float OBJECT_HEIGHT = 20f;
 	private Float PADDING = 4f;
 	
 	private Table table;
@@ -86,52 +87,52 @@ public class CharacterEditor {
 		table = new Table();
 		
 		table.add(editLabel);
-		table.add(editSelect).width(OBJ_WIDTH).pad(PADDING);
+		table.add(editSelect).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(idLabel);
-		table.add(idText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(idText).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(nameLabel);
-		table.add(nameText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(nameText).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(healthLabel);
-		table.add(healthText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(healthText).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(maxHealthLabel);
-		table.add(maxHealthText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(maxHealthText).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(hexLabel);
-		table.add(hexText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(hexText).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(speedLabel);
-		table.add(speedText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(speedText).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(castSpeedLabel);
-		table.add(castSpeedText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(castSpeedText).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		
 		table.add(actionsLabel);
-		table.add(actionsTable).width(OBJ_WIDTH).pad(PADDING);
+		table.add(actionsTable).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(textureLabel);
-		table.add(textureSelect).width(OBJ_WIDTH).pad(PADDING);
+		table.add(textureSelect).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(iconLabel);
-		table.add(iconSelect).width(OBJ_WIDTH).pad(PADDING);
+		table.add(iconSelect).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(animationLabel);
-		table.add(animationSelect).width(OBJ_WIDTH).pad(PADDING);
+		table.add(animationSelect).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(submit);

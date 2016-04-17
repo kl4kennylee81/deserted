@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 public class LevelEditor {
 
 	private static Float OBJ_WIDTH = 400f;
+	private Float OBJECT_HEIGHT = 20f;
 	private static Float PADDING = 4f;
 	private Table table;
 	private SelectBox<String> editSelect;
@@ -70,39 +71,39 @@ public class LevelEditor {
 		table = new Table();
 		
 		table.add(editLabel);
-		table.add(editSelect).width(OBJ_WIDTH).pad(PADDING);
+		table.add(editSelect).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 	
 		table.add(idLabel);
-		table.add(idText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(idText).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(alliesLabel);
-		table.add(alliesTable).width(OBJ_WIDTH).pad(PADDING);
+		table.add(alliesTable).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(enemiesLabel);
-		table.add(enemiesTable).width(OBJ_WIDTH).pad(PADDING);
+		table.add(enemiesTable).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(nextLabel);
-		table.add(nextSelect).width(OBJ_WIDTH).pad(PADDING);
+		table.add(nextSelect).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(widthLabel);
-		table.add(widthText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(widthText).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(heightLabel);
-		table.add(heightText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(heightText).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(textureLabel);
-		table.add(textureSelect).width(OBJ_WIDTH).pad(PADDING);
+		table.add(textureSelect).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(aiLabel);
-		table.add(aiTable).width(OBJ_WIDTH).pad(PADDING);
+		table.add(aiTable).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 		table.row();
 		
 		table.add(submit);
