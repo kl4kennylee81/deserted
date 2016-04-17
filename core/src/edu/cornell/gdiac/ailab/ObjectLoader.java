@@ -126,6 +126,7 @@ public class ObjectLoader {
 		Integer boardWidth = (Integer) levelDef.get("boardWidth");
 		Integer boardHeight = (Integer) levelDef.get("boardHeight");
 		String boardTexture = (String) levelDef.get("boardTexture");
+		String rimTexture = (String) levelDef.get("rimTexture");
 
 		HashMap<String, String> tiles = (HashMap<String, String>) levelDef.get("tiles");
 
@@ -185,10 +186,14 @@ public class ObjectLoader {
 
 		manager.load(boardTexture,Texture.class);
 		assets.add(boardTexture);
+		
+		manager.load(rimTexture,Texture.class);
+		assets.add(rimTexture);
 		manager.finishLoading();
 
 		GridBoard board = new GridBoard(boardWidth, boardHeight);
 		board.setTileTexture(manager.get(boardTexture, Texture.class));
+		board.setTileRimTexture(manager.get(rimTexture,Texture.class));
 		if (tiles != null) {
 			setUpTileEffects(tiles, board);
 		}

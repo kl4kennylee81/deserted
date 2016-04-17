@@ -14,6 +14,8 @@ import edu.cornell.gdiac.ailab.Tile.TileState;
 public class GridBoard {
 	float space;
 	TextureRegion tileMesh;
+	TextureRegion bottomRimMesh;
+	
 	Tile[][] tiles;
 	// In number of tiles
 	int width;
@@ -116,6 +118,10 @@ public class GridBoard {
 		tileMesh = new TextureRegion(mesh);
 	}
 	
+	public void setTileRimTexture(Texture mesh){
+		bottomRimMesh = new TextureRegion(mesh);
+	}
+	
 	public void setTileEffect(int x, int y, TileState effect){
 		tiles[x][y].setEffect(effect);
 	}
@@ -167,8 +173,8 @@ public class GridBoard {
 		int tileW = (int) getTileWidth(canvas);
 		int tileH = (int) getTileHeight(canvas);
 		
-		float sx = tileW*x + getBoardOffsetX(canvas);
-		float sy = tileH*y + getBoardOffsetY(canvas);
+		float tileX = tileW*x + getBoardOffsetX(canvas);
+		float tileY = tileH*y + getBoardOffsetY(canvas);
 
 		Color color = x<width/2 ? BASIC_COLOR1.cpy() : BASIC_COLOR2.cpy();
 		if (tile.isHighlighted){
@@ -184,7 +190,26 @@ public class GridBoard {
 		///////////////////////////////////////////////////////
 
 		// Draw
-		canvas.drawTile(sx, sy, tileMesh, tileW, tileH,color);
+		canvas.drawTile(tileX, tileY, tileMesh, tileW, tileH,color);
+		
+		// for the bottom row draw the tile rim
+		if (y == 0){
+			float rimSx = this.getTileWidth(canvas)/this.bottomRimMesh.getRegionWidth();
+			float rimSy = 1;
+			float rimY = tileY - this.bottomRimMesh.getRegionHeight();
+			float rimX = tileX + 10;
+			//FIXUP this hacky thing to get it to the right position figure out why its not aligned
+			canvas.drawTexture(this.bottomRimMesh,rimX, rimY,rimSx,rimSy, color,0,false);
+		}
+		// for the rightmost row draw rim
+		if (x == this.getWidth()-1){
+			float rimSx = this.getTileHeight(canvas)/this.bottomRimMesh.getRegionWidth();
+			float rimSy = 0.8f;
+			float rimY = tileY - this.bottomRimMesh.getRegionHeight();
+			float rimX = tileX + this.getTileWidth(canvas) + 10 + (4f*this.bottomRimMesh.getRegionHeight()*y);
+			//FIXUP this hacky thing to get it to the right position figure out why its not aligned
+			canvas.drawTexture(this.bottomRimMesh,rimX, rimY,rimSx,rimSy, color,57,true);
+		}
 	}
 	
 	public float bottomOffset(GameCanvas canvas) {

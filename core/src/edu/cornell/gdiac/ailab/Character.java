@@ -919,7 +919,7 @@ public class Character implements GUIElement {
 		float tokenY = this.actionBar.getY(canvas, count) - 2;
 		
 		Color c = getColor(shouldDim);
-		canvas.drawTexture(icon, tokenX, tokenY, c, false);
+		canvas.drawTexture(icon, tokenX, tokenY,icon.getWidth(),icon.getHeight(),c);
 		
 		
 		// code for ticks as the tokens

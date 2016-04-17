@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 public class Constants {
 	public static final String TILE_TEXTURE = "models/Tile.png";
 	
+	public static final String TILE_BOTTOM_TEXTURE = "models/tiles_bottomrim.png";
+	
 	public static final String WHITE_BOX = "images/white.png";
 	/** The message font to use */
 	public static final String MENU_FONT_FILE  = "fonts/tw-cen-mt.ttf";

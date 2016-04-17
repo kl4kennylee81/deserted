@@ -812,7 +812,7 @@ public class GameCanvas {
 		local.translate(x, y);
 	}
 	
-	public void drawTile(float x, float y, TextureRegion mesh, int width, int height, Color tint){	
+	public void drawTile(float x, float y, TextureRegion mesh, float width, float height, Color tint){	
 		setShearBoard(x,y,Constants.TILE_SHEAR,0);
 		spriteBatch.setColor(tint);
 		spriteBatch.draw(mesh,width,height,local);
@@ -835,18 +835,21 @@ public class GameCanvas {
 		spriteBatch.draw(screen,sx,sy,x_size,y_size);
 	}
 	
-	public void drawTexture(Texture texture, float x, float y, Color color, boolean selecting){
-		spriteBatch.setColor(color);
-		if (selecting){
-			spriteBatch.draw(texture, x, y, 40, 40);	
-		} else {
-			spriteBatch.draw(texture, x, y);	
-		}	
-	}
-	
 	public void drawTexture(Texture texture, float x, float y, float width, float height, Color color){
 		spriteBatch.setColor(color);
 		spriteBatch.draw(texture, x, y, width, height);
+	}
+	
+	public void drawTexture(TextureRegion region,float x,float y,float sx,float sy, Color color,float angle,boolean shearToBoard){
+		if (shearToBoard){
+			this.computeTransform(0, 0, x, y, angle, sx, sy);
+			local.shear(4f,0);
+			spriteBatch.draw(region,region.getRegionWidth(),region.getRegionHeight(),local);
+		}
+		else{
+			this.draw(region, color,0,0,
+					x, y,angle, sx,sy);
+		}
 	}
 	
 	

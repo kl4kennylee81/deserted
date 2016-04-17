@@ -30,6 +30,7 @@ easy:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
     tiles:
       1-1: NORMAL
       1-2: NORMAL
@@ -67,6 +68,7 @@ medium:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/tm.yml"]
 
 hard:
@@ -101,6 +103,7 @@ hard:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/rock-mage.yml", "aiyaml/rock.yml", "aiyaml/mage.yml"]
 
 pvp:
@@ -125,6 +128,7 @@ pvp:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
     AI: []
 
 tutorial1:
@@ -148,6 +152,7 @@ tutorial1:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/tm.yml"]
 
 tutorial2:
@@ -182,4 +187,5 @@ tutorial2:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/tm.yml"]
