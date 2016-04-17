@@ -54,4 +54,10 @@ public abstract class Menu {
 			this.selectedIndex = newIndex;
 		}
 	}
+	
+	public void reset(){
+		if (this.options.length > 0){
+			selectedIndex = 0;
+		}
+	}
 }

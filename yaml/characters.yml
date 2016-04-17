@@ -6,9 +6,6 @@
   speed: 2.
   castSpeed: 8.
   slots: 2
-  xPosition: 0
-  yPosition: 0
-  leftSide: false
   availableActions:
     - 0
     - 16
@@ -27,9 +24,6 @@
   speed: 5.
   castSpeed: 7.5
   slots: 5
-  xPosition: 0
-  yPosition: 3
-  leftSide: false
   availableActions:
     - 0
     - 13
@@ -48,9 +42,6 @@
   speed: 6.
   castSpeed: 6.5
   slots: 4
-  xPosition: 5
-  yPosition: 0
-  leftSide: true
   availableActions:
     - 0
     - 5
@@ -69,9 +60,6 @@
   speed: 6.
   castSpeed: 6.5
   slots: 4
-  xPosition: 5
-  yPosition: 3
-  leftSide: true
   availableActions:
     - 0
     - 4
@@ -90,9 +78,6 @@
   speed: 4.
   castSpeed: 4.2
   slots: 4
-  xPosition: 5
-  yPosition: 3
-  leftSide: false
   availableActions:
     - 0
     - 1
@@ -111,9 +96,6 @@
   speed: 6.
   castSpeed: 5.5
   slots: 4
-  xPosition: 5
-  yPosition: 3
-  leftSide: true
   availableActions:
     - 0
     - 5
@@ -134,9 +116,6 @@
   speed: 4.2
   castSpeed: 4.2
   slots: 4
-  xPosition: 5
-  yPosition: 3
-  leftSide: false
   availableActions:
     - 0
     - 1
@@ -155,9 +134,6 @@
   speed: 5.6
   castSpeed: 4.
   slots: 4
-  xPosition: 0
-  yPosition: 3
-  leftSide: true
   availableActions:
     - 0
     - 5
@@ -179,9 +155,6 @@
   speed: 3.5
   castSpeed: 4.2
   slots: 4
-  xPosition: 5
-  yPosition: 3
-  leftSide: false
   availableActions:
     - 0
     - 1
@@ -200,9 +173,6 @@
   speed: 4.5
   castSpeed: 5.5
   slots: 4
-  xPosition: 5
-  yPosition: 3
-  leftSide: false
   availableActions:
     - 0
     - 5

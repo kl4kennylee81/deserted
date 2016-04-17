@@ -126,12 +126,26 @@ public class Option implements GUIElement{
 
 	@Override
 	public boolean contains(float x, float y, GameCanvas canvas, GridBoard board) {
-		float width_m = this.width * canvas.getWidth();
-		float height_m = this.height * canvas.getHeight();
-		
-		float x_m = this.xPosition*canvas.getWidth();
-		float y_m = this.yPosition*canvas.getHeight();
-		return (x <= x_m+width_m && x >= x_m && y <= y_m + height_m && y >= y_m);
+		// to capture within the image
+		if (image != null){
+			float width_m = this.width * canvas.getWidth();
+			float height_m = this.height * canvas.getHeight();
+			
+			float x_m = this.xPosition*canvas.getWidth();
+			float y_m = this.yPosition*canvas.getHeight();
+			return (x <= x_m+width_m && x >= x_m && y <= y_m + height_m && y >= y_m);
+		}
+		// to capture within the text the problem with text is when i'm drawing it
+		// it starts x,y at the top left coordinate i have no idea why, thus the minY
+		// is actually the yPosition - height.
+		else{
+			float width_m = this.width * canvas.getWidth();
+			float height_m = this.height * canvas.getHeight();	
+			
+			float x_m = this.xPosition*canvas.getWidth();
+			float y_m = this.yPosition*canvas.getHeight() - height_m;
+			return (x <= x_m+width_m && x >= x_m && y <= y_m + height_m && y >= y_m);
+		}
 	}
 
 

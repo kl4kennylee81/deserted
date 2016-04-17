@@ -16,12 +16,16 @@
  */
 package edu.cornell.gdiac.ailab;
 
+import java.io.File;
+import java.io.FileInputStream;
+
 //import static com.badlogic.gdx.Gdx.gl20;
 //import static com.badlogic.gdx.graphics.GL20.GL_BLEND;
 
 //import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import org.yaml.snakeyaml.Yaml;
 
@@ -77,9 +81,14 @@ public class GameEngine implements Screen {
 		/** When the game has ended, but we are still waiting on animation */
 		FINISH,
 		/** When the game is over */
-		AFTER
+		AFTER,
+		/** When we are using one of the editors */
+		EDITOR
 	}
 
+
+	private static File ROOT;
+	/** Background image for the canvas */
 	/** Texture for loading status bar  */
 	private static Texture statusBar;
 	// statusBar is a "texture atlas." Break it up into parts.
@@ -125,6 +134,10 @@ public class GameEngine implements Screen {
     /** Subcontroller for mouse controls (CONTROLLER CLASS) */
     private MouseOverController mouseOverController;
     
+    private EditorController editorController;
+    
+    
+    
 //	/** Default budget for asset loader (do nothing but load 60 fps) */
 //	private static int DEFAULT_BUDGET = 15;
 	/** Standard window size (for scaling) */
@@ -160,19 +173,44 @@ public class GameEngine implements Screen {
 	 * We can only assign simple fields at this point, as there is no OpenGL context
 	 */
     public GameEngine() {
+    	setRoot();
     	gameState = GameState.LOAD;
     	gameLoad  = 0.0f;
 		canvas = new GameCanvas();
-		
-		FileHandle file = dataGen ? new FileHandle(Constants.DATA_PATH+"data/fileinfo.txt") : null;
+		FileHandle file = Gdx.files.internal("data/fileinfo.txt");
 		fileNum = Integer.parseInt(file.readString());
 		
 		mouseOverController = new MouseOverController(canvas);
+
+		editorController = null;
 		gameplayController = new GameplayController(mouseOverController, file, fileNum);
 		tutorialGameplayController = new TutorialGameplayController(mouseOverController, file, fileNum);
 		
-		
 		updateMeasures();
+	}
+    
+    /**Code taken from http://stackoverflow.com/questions/5527744/java-jar-writing-to-a-file 
+	 * @throws URISyntaxException */
+	public void setRoot() {
+		// Find out where the JAR is:
+		String path = null;
+		try {
+			path = CharacterEditor.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//add to make work for eclipse
+		String uri = CharacterEditor.class.getResource("CharacterEditor.class").toString();
+		if (!uri.substring(0, 3).equals("jar")) {
+			path = path.substring(0, path.lastIndexOf('/'));
+			path = path.substring(0, path.lastIndexOf('/'));
+		}
+		path = path.substring(0, path.lastIndexOf('/')+1);
+		
+		// Create the project-folder-file:
+		ROOT = new File(path);
 	}
     
     public void updateMeasures(){
@@ -189,16 +227,20 @@ public class GameEngine implements Screen {
     	Level level = null;
     	if (this.levelDefs.containsKey(levelName)){
     		level = this.getLevel(levelName);
+    		
+        	if (level.getTutorialSteps() == null){
+        		gameplayController.resetGame(level);
+        		curGameplayController = gameplayController;
+            	gameState = GameState.PLAY;
+        	} else {
+        		tutorialGameplayController.resetGame(level);
+        		curGameplayController = tutorialGameplayController;
+        		gameState = GameState.PLAY;
+        	}
     	}
-    	
-    	if (level.getTutorialSteps() == null){
-    		gameplayController.resetGame(level);
-    		curGameplayController = gameplayController;
-        	gameState = GameState.PLAY;
-    	} else {
-    		tutorialGameplayController.resetGame(level);
-    		curGameplayController = tutorialGameplayController;
-    		gameState = GameState.PLAY;
+    	// start matching with keywords to get to levels, options, etc.
+    	else {
+    		this.startEditor(levelName);
     	}
     	
     }
@@ -251,14 +293,16 @@ public class GameEngine implements Screen {
 		case LOAD:
 			updateLoad();
 			drawLoad();
+			canvas.end();
 			break;
 		case MENU:
 			try {
-				updateMenu();
+				updateMenu();	
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			canvas.end();
 			break;
 		case LEVEL_MENU:
 			updateLevelMenu();
@@ -266,22 +310,29 @@ public class GameEngine implements Screen {
 		case PLAY:
 			updatePlay();
 			drawPlay();
+			canvas.end();
 			break;
 		case FINISH:
 			//Graphics after play is over?
+			canvas.end();
 			break;
 		case PAUSED:
 			updatePaused();
 			drawPlay();
 			drawPaused();
+			canvas.end();
 			break;
 		case AFTER:
 			//updateAfter();
 			drawAfter();
+			canvas.end();
+			break;
+		case EDITOR:
+			canvas.end();
+			updateEditor();
 			break;
 		}
 		
-		canvas.end();
 	}
 		
 	private void updateLevelMenu() {
@@ -302,7 +353,8 @@ public class GameEngine implements Screen {
         }
 		
 		// If the player presses 'R', reset the game.
-        if (gameState != GameState.LOAD && InputController.pressedR()) {
+        if (gameState != GameState.LOAD && gameState != GameState.EDITOR
+        		&& InputController.pressedR()) {
         	mainMenuController.resetMenu();
             gameState = GameState.MENU;
             return true;
@@ -334,10 +386,35 @@ public class GameEngine implements Screen {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
 			loadNextMenu(mainMenuController.levelName);
-
 		}
 	}
 	
+	private void startEditor(String keyword) {
+		if (keyword == "Action Editor") {
+			try {
+				editorController = new ActionEditorController();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else if (keyword == "Character Editor") {
+			try {
+				editorController = new CharacterEditorController();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else if (keyword == "Level Editor") {
+			try {
+				editorController = new LevelEditorController();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		gameState = gameState.EDITOR;
+	}
+
 	private void loadNextMenu(String levelName) throws IOException {
 		startGame(levelName);
 	}
@@ -395,6 +472,17 @@ public class GameEngine implements Screen {
 		curGameplayController.drawAfter(canvas);
 	}
 	
+	public void updateEditor() {
+		editorController.update();
+		editorController.draw();
+    	if (editorController.isDone()) {
+    		editorController = null;
+    		mainMenuController.resetMenu();
+    		gameState = gameState.MENU;
+    	}
+	}
+    
+	
 	/**
 	 * Called when the Application is resized. 
 	 * 
@@ -425,9 +513,9 @@ public class GameEngine implements Screen {
 	@SuppressWarnings("unchecked")
 	private Level getLevel(String levelId) throws IOException{
 		Yaml yaml = new Yaml();
-		FileHandle levelFile = Gdx.files.internal("yaml/levels.yml");
+		File levelFile = new File(ROOT,"yaml/levels.yml");
 		HashMap<String, Object> targetLevelDef;
-		try (InputStream iS = levelFile.read()){
+		try (InputStream iS = new FileInputStream(levelFile)){
 			levelDefs = (HashMap<String, HashMap<String, Object>>) yaml.load(iS);
 			targetLevelDef= levelDefs.get(levelId);	
 			
@@ -438,8 +526,8 @@ public class GameEngine implements Screen {
 	@SuppressWarnings("unchecked")
 	private void loadLevels() throws IOException{
 		Yaml yaml = new Yaml();
-		FileHandle levelFile = Gdx.files.internal("yaml/levels.yml");
-		try (InputStream iS = levelFile.read()){
+		File levelFile = new File(ROOT,"yaml/levels.yml");
+		try (InputStream iS = new FileInputStream(levelFile)){
 			this.levelDefs = (HashMap<String, HashMap<String, Object>>) yaml.load(iS);
 		}	
 	}
