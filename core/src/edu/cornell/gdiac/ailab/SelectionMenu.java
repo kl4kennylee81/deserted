@@ -228,6 +228,25 @@ public class SelectionMenu {
 		}
 	}
 	
+	/** determines the color for the action names in the selection menu while selecting **/
+	public Color getActionColor(int usableNumSlots,Action action){
+		if (action.cost > usableNumSlots - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
+			Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.2f);
+			 return dimColor;
+		} 
+		else if (selectedAction < actions.length && actions[selectedAction].name == action.name){
+			 if (this.choosingTarget){
+				return Color.CORAL.cpy();
+			 }
+			 else{
+				 return Color.WHITE.cpy().lerp(Color.CORAL,lerpVal);
+			 }
+		}
+		else {
+			return Color.WHITE;
+		}
+	}
+	
 	//TODO: update for dazed
 	public void draw(GameCanvas canvas,CharActionBar actionBar,int count){
 		int totalNumSlots = actionBar.getTotalNumSlots();
@@ -263,16 +282,8 @@ public class SelectionMenu {
 			if (i == selectedAction){
 				selectedPointerOffset = offset_y;
 			}
-			if (action.cost > usableNumSlots - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
-				Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.2f);
-				 g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, dimColor);
-			} 
-			else if (selectedAction < actions.length && actions[selectedAction].name == action.name){
-				 g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, Color.CORAL);
-			}
-			else {
-				 g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, Color.WHITE);
-			}
+			Color actionColor = this.getActionColor(usableNumSlots, action);
+			g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, actionColor);
 		}
 		
 		//Draw confirm selection
@@ -285,9 +296,11 @@ public class SelectionMenu {
 		}
 		
 		float pointer_x = text_x - ACTION_POINTER_OFFSET_X;
-		float pointer_y = text_y - selectedPointerOffset -  ACTION_POINTER_OFFSET_Y;//spacing_h*selectedAction - ACTION_POINTER_OFFSET_Y;
+		float pointer_y = text_y - selectedPointerOffset -  ACTION_POINTER_OFFSET_Y;
 		//draws action name pointers
-		canvas.drawPointer(pointer_x,pointer_y, Color.CORAL);
+		if (!this.choosingTarget){
+			canvas.drawPointer(pointer_x,pointer_y, Color.CORAL);
+		}
 		
 		//Draw action bar with 3 black boxes to show 4 slots
 		float actionSlot_x = actionBar.getBarCastPoint(canvas);

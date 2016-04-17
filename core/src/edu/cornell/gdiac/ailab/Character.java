@@ -567,12 +567,14 @@ public class Character implements GUIElement {
 		return shadY;
 	}
 	
-	public void draw(GameCanvas canvas,GridBoard board,InGameState inGameState){
+	/** currently the character draw function only draws the character and the persisting actions **/
+	public void draw(GameCanvas canvas,GridBoard board, boolean shouldDim,InGameState gameState){
 		if (!isAlive()){
 			return;
 		}
+		this.drawCharacter(canvas, board, shouldDim, gameState);
 		if(hasPersisting()){
-			drawPersisting(canvas,board,inGameState);
+			drawPersisting(canvas,board,gameState);
 		}
 	}
 	
