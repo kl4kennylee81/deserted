@@ -334,8 +334,7 @@ public class GameEngine implements Screen {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
 			loadNextMenu(mainMenuController.levelName);
-			//to be added to when we add 2 beginning menus
-			//startGame(mainMenuController.gameNo);
+
 		}
 	}
 	
