@@ -9,15 +9,22 @@ public class Level {
 	private Characters characters;
     
     private String nextLevel;
-    private Integer boardWidth;
-    private Integer boardHeight;
-    private Texture boardTexture;
+    private GridBoard board;
+    private TacticalManager tacticalManager;
+    
+    private TutorialSteps tutorialSteps;
     
     public Level(){
     	
     }
 
-
+    public GridBoard getBoard() {
+    	return board;
+    }
+    
+    public void setBoard(GridBoard board) {
+    	this.board = board;
+    }
 
 	public String getNextLevel() {
 		return nextLevel;
@@ -39,43 +46,25 @@ public class Level {
 		this.characters = characters;
 	}
 
-
-
-	public int getBoardHeight() {
-		return boardHeight;
+	
+	public TacticalManager getTacticalManager(){
+		return tacticalManager;
+	}
+	
+	public void setTacticalManager(TacticalManager tm){
+		this.tacticalManager = tm;
 	}
 
 
 
-	public void setBoardHeight(int boardHeight) {
-		this.boardHeight = boardHeight;
+	public TutorialSteps getTutorialSteps() {
+		return tutorialSteps;
 	}
 
 
 
-	public int getBoardWidth() {
-		return boardWidth;
+	public void setTutorialSteps(TutorialSteps tutorialSteps) {
+		this.tutorialSteps = tutorialSteps;
 	}
-
-
-
-	public void setBoardWidth(int boardWidth) {
-		this.boardWidth = boardWidth;
-	}
-
-
-
-	public Texture getBoardTexture() {
-		return boardTexture;
-	}
-
-
-
-	public void setBoardTexture(Texture boardTexture) {
-		this.boardTexture = boardTexture;
-	}
-
-
-
     
 }

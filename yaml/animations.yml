@@ -12,8 +12,41 @@
       frameData:
       - 50
       - 50
-
 1:
+  name: Ground Fire
+  texture: "actions/flame_sim_spritesheet.png"
+  rows: 1
+  cols: 4
+  size: 4
+  segments:
+    - segmentName: IDLE
+      segmentId: 0 
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 10
+      - 10
+      - 10
+      - 10
+2:
+  name: Projectile
+  texture: "actions/projectile_spritesheet.png"
+  rows: 1
+  cols: 5
+  size: 5
+  segments:
+    - segmentName: IDLE
+      segmentId: 0 
+      startingIndex: 0
+      length: 5
+      frameData:
+      - 8
+      - 8
+      - 8
+      - 8
+      - 8
+
+101:
   name: Character1Strip
   texture: "models/castanimation_spritesheet.png"
   rows: 1
@@ -23,103 +56,150 @@
     - segmentName: IDLE
       segmentId: 0 
       startingIndex: 0
-      length: 0
+      length: 1
       frameData:
+      - 500
     - segmentName: ACTIVE
       segmentId: 1
       startingIndex: 0
       length: 1
       frameData:
-      - 10
+      - 300
     - segmentName: CAST
       segmentId: 2
-      startingIndex: 1
-      length: 2
+      startingIndex: 0
+      length: 3
       frameData:
+      - 10
       - 20
-      - 20
+      - 200
     - segmentName: EXECUTE
       segmentId: 3
       startingIndex: 3
-      length: 1
-      frameData:
-      - 15
-    - segmentName: HURT
-      segmentId: 4
-      startingIndex: 4
-      length: 1
+      length: 2
       frameData:
       - 10
+      - 10
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 0
+      length: 0
+      frameData:
 
-2:
+102:
   name: Character2Strip
-  texture: "models/spritesheetB1.png"
+  texture: "models/testAnimation.png"
   rows: 1
-  cols: 5
-  size: 5
+  cols: 25
+  size: 25
   segments:
     - segmentName: IDLE
       segmentId: 0 
+      startingIndex: 17
+      length: 5
+      frameData:
+      - 4
+      - 6
+      - 4
+      - 20
+      - 6
+      - 6
+      - 720
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 1
+      length: 5
+      frameData:
+      - 5
+      - 20
+      - 3
+      - 4
+      - 12
+      - 120
+
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 8
+      length: 9
+      frameData:
+      - 120
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 120
+
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 16
+      length: 9
+      frameData:
+      - 8
+      - 4
+      - 4
+      - 6
+      - 12
+      - 6
+      - 6
+      - 10
+    - segmentName: HURT
+      segmentId: 4
       startingIndex: 0
       length: 0
       frameData:
-    - segmentName: ACTIVE
-      segmentId: 1
-      startingIndex: 0
-      length: 1
-      frameData:
-      - 10
-    - segmentName: CAST
-      segmentId: 2
-      startingIndex: 1
-      length: 2
-      frameData:
-      - 20
-      - 20
-    - segmentName: EXECUTE
-      segmentId: 3
-      startingIndex: 3
-      length: 1
-      frameData:
-      - 15
-    - segmentName: HURT
-      segmentId: 4
-      startingIndex: 4
-      length: 1
-      frameData:
-      - 10
 
-3:
+103:
   name: Character3Strip
-  texture: "models/spritesheetB2.png"
+  texture: "models/tutorial_char.png"
   rows: 1
-  cols: 5
-  size: 5
+  cols: 12
+  size: 12
   segments:
     - segmentName: IDLE
       segmentId: 0 
       startingIndex: 0
-      length: 0
+      length: 2
       frameData:
+      - 1
+      - 1
     - segmentName: ACTIVE
       segmentId: 1
       startingIndex: 0
-      length: 1
+      length: 4
       frameData:
-      - 10
+      - 6
+      - 6
+      - 6
+      - 9
     - segmentName: CAST
       segmentId: 2
-      startingIndex: 1
-      length: 2
+      startingIndex: 4
+      length: 8
       frameData:
-      - 20
-      - 20
+      - 6
+      - 6
+      - 6
+      - 6
+      - 4
+      - 6
+      - 4
+      - 4
+
     - segmentName: EXECUTE
       segmentId: 3
-      startingIndex: 3
-      length: 1
+      startingIndex: 5
+      length: 7
       frameData:
-      - 15
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 5
+      - 5
     - segmentName: HURT
       segmentId: 4
       startingIndex: 4
@@ -127,7 +207,7 @@
       frameData:
       - 10
 
-4:
+104:
   name: Character4Strip
   texture: "models/spritesheetG1.png"
   rows: 1
@@ -164,4 +244,5 @@
       length: 1
       frameData:
       - 10
+
 ...

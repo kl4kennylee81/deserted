@@ -32,15 +32,20 @@ public class PersistingController extends ActionController{
 				selected = c;
 				updateShieldedPath();
 				List<ActionNode> actionNodes = c.getPersistingActions();
-				for (int i=0;i<actionNodes.size();i++){
-					ActionNode an = actionNodes.get(i);
+				List<ActionNode> toDelete = new LinkedList<ActionNode>();
+				for (ActionNode an:actionNodes){
 					an.curRound+= c.castMoved;
+//					System.out.println("persisting controller line 38 "+an.curRound);
 					if (an.curRound >= ((PersistingAction) an.action).totalNumRounds){
-						c.popPersistingCast(an);
+						toDelete.add(an);
 					} else {
 						selectedActionNode = an;
 						executeAction();
 					}
+				}
+				for (ActionNode an:toDelete){
+//					System.out.println("deleting here in persistingControll 46");
+					c.popPersistingCast(an);
 				}
 			}
 		}
@@ -103,8 +108,8 @@ public class PersistingController extends ActionController{
 			moveAlongPath();
 			
 			// check based on a rounding of the current X and current Y
-			int curIntX = selectedActionNode.getCurrentX();
-			int curIntY = selectedActionNode.getCurrentY();
+			int curIntX = selectedActionNode.getCurInPath().x;
+			int curIntY = selectedActionNode.getCurInPath().y;
 			
 			// Check if next position is out of bounds or blocked
 			if (!board.isInBounds(curIntX, curIntY) || isBlocked(curIntX, curIntY)){

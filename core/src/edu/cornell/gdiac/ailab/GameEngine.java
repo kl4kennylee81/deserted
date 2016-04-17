@@ -62,6 +62,9 @@ import edu.cornell.gdiac.ailab.GameplayController.InGameState;
  *
  */
 public class GameEngine implements Screen {
+	
+	public static final boolean dataGen = true;
+	
 	/** 
 	 * Enumeration defining the game state
 	 */
@@ -70,6 +73,7 @@ public class GameEngine implements Screen {
 		LOAD,
 		/** After loading, but before we start the game */
 		MENU,
+		LEVEL_MENU,
 		/** While we are playing the game */
 		PLAY,
 		/** When the game is currently paused */
@@ -82,17 +86,9 @@ public class GameEngine implements Screen {
 		EDITOR
 	}
 
+
 	private static File ROOT;
 	/** Background image for the canvas */
-	private static final String BCKGD_TEXTURE = "images/bg.png";
-	/** Background image for the menu */
-	private static final String MENU_BCKGD_TEXTURE = "images/menubg.png";
-	
-	/** Background image for the canvas */
-	private static final String LOADING_TEXTURE = "images/loading1.png";
-	
-	/** image for the loading bar  */
-	private static final String PRGRSBR_TEXTURE = "images/progressbar.png";
 	/** Texture for loading status bar  */
 	private static Texture statusBar;
 	// statusBar is a "texture atlas." Break it up into parts.
@@ -108,19 +104,6 @@ public class GameEngine implements Screen {
 	private TextureRegion statusFrgMiddle;
 	/** Right cap to the status forground (colored region) */
 	private TextureRegion statusFrgRight;	
-	
-	/** File storing the texture for a board tile */
-	public static final String TILE_TEXTURE = "models/Tile.png";
-	
-	private static final String WHITE_BOX = "images/white.png";
-	/** The message font to use */
-	private static final String MENU_FONT_FILE  = "fonts/Milonga-Regular.ttf";
-	/** The size of the messages */
-	private static final int MENU_FONT_SIZE = 20;
-	
-	private static final String SELECT_FONT_FILE  = "fonts/LondrinaSolid-Regular.ttf";
-	/** The size of the messages */
-	private static final int SELECT_FONT_SIZE = 20;
 	
 	/** The width of the progress bar */	
 	private int width;
@@ -138,6 +121,10 @@ public class GameEngine implements Screen {
 	/** Container to track the assets loaded so far */
 	private Array<String> assets;
     
+	/**Currently used gameplay subcontroller */
+	private GameplayController curGameplayController;
+	/**Subcontroller for tutorial (CONTROLLER CLASS) */
+	private TutorialGameplayController tutorialGameplayController;
 	/**Subcontroller for gameplay (CONTROLLER CLASS) */
 	private GameplayController gameplayController;
     /** Used to draw the game onto the screen (VIEW CLASS) */
@@ -177,6 +164,9 @@ public class GameEngine implements Screen {
     /** How far along (0 to 1) we are in loading process */
 	private float  gameLoad;
 	
+	/** What data file number we are on */
+	private int fileNum;
+	
 	/** 
 	 * Constructs a new game engine
 	 *
@@ -188,11 +178,16 @@ public class GameEngine implements Screen {
     	gameLoad  = 0.0f;
 		canvas = new GameCanvas();
 		
+		FileHandle file = dataGen ? new FileHandle(Constants.DATA_PATH+"data/fileinfo.txt") : null;
+		fileNum = Integer.parseInt(file.readString());
+		
 		mouseOverController = new MouseOverController(canvas);
-		gameplayController = new GameplayController(mouseOverController);
-		editorController = null;
-		updateMeasures();
 
+		editorController = null;
+		gameplayController = new GameplayController(mouseOverController, file, fileNum);
+		tutorialGameplayController = new TutorialGameplayController(mouseOverController, file, fileNum);
+		
+		updateMeasures();
 	}
     
     /**Code taken from http://stackoverflow.com/questions/5527744/java-jar-writing-to-a-file 
@@ -229,7 +224,7 @@ public class GameEngine implements Screen {
     }
     
     public void startGame(int type) throws IOException {
-    	initializeCanvas(BCKGD_TEXTURE, SELECT_FONT_FILE);
+    	initializeCanvas(Constants.BCKGD_TEXTURE, Constants.SELECT_FONT_FILE);
     	Level level = null;
 
     	switch (type) {
@@ -242,12 +237,34 @@ public class GameEngine implements Screen {
     	case 2:
     		level = getLevel("hard");
     		break;
-    	default:
+    	case 3:
     		level = getLevel("pvp");
     		break;
+    	case 4:
+    		level = getLevel("tutorial1");
+    		if (manager.isLoaded(Constants.TUTORIAL_FONT_FILE)) {
+    			canvas.setTutorialFont(manager.get(Constants.TUTORIAL_FONT_FILE,BitmapFont.class));
+    		}
+    		break;
+    	case 5:
+    		level = getLevel("tutorial2");
+    		if (manager.isLoaded(Constants.TUTORIAL_FONT_FILE)) {
+    			canvas.setTutorialFont(manager.get(Constants.TUTORIAL_FONT_FILE,BitmapFont.class));
+    		}
+    		break;
+    	default:
+    		break;
     	}
-    	gameplayController.resetGame(level);
-    	gameState = GameState.PLAY;
+    	
+    	if (level.getTutorialSteps() == null){
+    		gameplayController.resetGame(level);
+    		curGameplayController = gameplayController;
+        	gameState = GameState.PLAY;
+    	} else {
+    		tutorialGameplayController.resetGame(level);
+    		curGameplayController = tutorialGameplayController;
+    		gameState = GameState.PLAY;
+    	}
     	
     }
 
@@ -305,6 +322,9 @@ public class GameEngine implements Screen {
 			}
 			canvas.end();
 			break;
+		case LEVEL_MENU:
+			updateLevelMenu();
+			break;
 		case PLAY:
 			updatePlay();
 			drawPlay();
@@ -333,6 +353,11 @@ public class GameEngine implements Screen {
 		
 	}
 		
+	private void updateLevelMenu() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/** 
 	 * Returns true if the user reset the game.
 	 *
@@ -378,11 +403,9 @@ public class GameEngine implements Screen {
 	private void updateMenu() throws IOException {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
-			if (mainMenuController.gameNo > 3){
-				startEditor(mainMenuController.gameNo);
-			}else{
-				startGame(mainMenuController.gameNo);
-			}
+			loadNextMenu(mainMenuController.gameNo);
+			//to be added to when we add 2 beginning menus
+			//startGame(mainMenuController.gameNo);
 		}
 	}
 	
@@ -412,13 +435,17 @@ public class GameEngine implements Screen {
 		gameState = gameState.EDITOR;
 	}
 
+	private void loadNextMenu(int gameNo) throws IOException {
+		startGame(gameNo);
+	}
+
 	/**
      * The primary update loop of the game; called while it is running.
      */
     public void updatePlay() {
-    	gameplayController.update();
-    	if (gameplayController.isDone()){
-    		gameState = GameState.AFTER;
+    	curGameplayController.update();
+    	if (curGameplayController.isDone()){
+			gameState = GameState.AFTER;
     	}
     	if (InputController.pressedP()){
     		gameState = GameState.PAUSED;
@@ -458,11 +485,11 @@ public class GameEngine implements Screen {
 	}
 	
 	public void drawPlay() {
-		gameplayController.drawPlay(canvas); 
+		curGameplayController.drawPlay(canvas); 
 	}
 	
 	public void drawAfter() {
-		gameplayController.drawAfter(canvas);
+		curGameplayController.drawAfter(canvas);
 	}
 	
 	public void updateEditor() {
@@ -531,18 +558,30 @@ public class GameEngine implements Screen {
 		manager.setLoader(Mesh.class, new MeshLoader(new InternalFileHandleResolver()));
 		assets = new Array<String>();
 		
-		manager.load(BCKGD_TEXTURE,Texture.class);
-		assets.add(BCKGD_TEXTURE);
+		manager.load(Constants.BCKGD_TEXTURE,Texture.class);
+		assets.add(Constants.BCKGD_TEXTURE);
 		
-		manager.load(MENU_BCKGD_TEXTURE,Texture.class);
-		assets.add(MENU_BCKGD_TEXTURE);
+		manager.load(Constants.MENU_BCKGD_TEXTURE,Texture.class);
+		assets.add(Constants.MENU_BCKGD_TEXTURE);
 		
-		manager.load(LOADING_TEXTURE,Texture.class);
-		assets.add(LOADING_TEXTURE);
+		manager.load(Constants.LOADING_TEXTURE,Texture.class);
+		assets.add(Constants.LOADING_TEXTURE);
 		
-		manager.load(PRGRSBR_TEXTURE, Texture.class);
-		assets.add(PRGRSBR_TEXTURE);
-		statusBar = new Texture(PRGRSBR_TEXTURE);
+		manager.load(Constants.MENU_LOGO,Texture.class);
+		assets.add(Constants.MENU_LOGO);
+		
+		manager.load(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class);
+		assets.add(Constants.MENU_HIGHLIGHT_TEXTURE);
+		
+		manager.load(Constants.LEVEL_SELECT_BOSS,Texture.class);
+		assets.add(Constants.LEVEL_SELECT_BOSS);
+		
+		manager.load(Constants.LEVEL_SELECT_REG,Texture.class);
+		assets.add(Constants.LEVEL_SELECT_REG);
+		
+		manager.load(Constants.PRGRSBR_TEXTURE, Texture.class);
+		assets.add(Constants.PRGRSBR_TEXTURE);
+		statusBar = new Texture(Constants.PRGRSBR_TEXTURE);
 		statusBkgLeft   = new TextureRegion(statusBar,0,0,PROGRESS_CAP,PROGRESS_HEIGHT);
 		statusBkgRight  = new TextureRegion(statusBar,statusBar.getWidth()-PROGRESS_CAP,0,PROGRESS_CAP,PROGRESS_HEIGHT);
 		statusBkgMiddle = new TextureRegion(statusBar,PROGRESS_CAP,0,PROGRESS_MIDDLE,PROGRESS_HEIGHT);
@@ -557,34 +596,37 @@ public class GameEngine implements Screen {
 		parameter.attribs = new VertexAttribute[2];
 		parameter.attribs[0] = new VertexAttribute(Usage.Position, 3, "vPosition");
 		parameter.attribs[1] = new VertexAttribute(Usage.TextureCoordinates, 2, "vUV");
-
-//		manager.load(TILE_TEXTURE,Texture.class);
-//		assets.add(TILE_TEXTURE);
 		
-		manager.load(WHITE_BOX,Texture.class);
-		assets.add(WHITE_BOX);
+		manager.load(Constants.WHITE_BOX,Texture.class);
+		assets.add(Constants.WHITE_BOX);
 		
-		mainMenuController = new MainMenuController(canvas, manager);
+		mainMenuController = new MainMenuController(canvas, manager, mouseOverController);
 		
 		
 		manager.finishLoading();
 		//for some reason the font loading has to be after the call to manager.finishLoading();
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-		size2Params.fontFileName = MENU_FONT_FILE;
-		size2Params.fontParameters.size = MENU_FONT_SIZE;
+		size2Params.fontFileName = Constants.MENU_FONT_FILE;
+		size2Params.fontParameters.size = Constants.MENU_FONT_SIZE;
 		size2Params.fontParameters.color = Color.WHITE;
-		manager.load(MENU_FONT_FILE, BitmapFont.class, size2Params);
-		assets.add(MENU_FONT_FILE);
+		manager.load(Constants.MENU_FONT_FILE, BitmapFont.class, size2Params);
+		assets.add(Constants.MENU_FONT_FILE);
+
 		size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-		size2Params.fontFileName = SELECT_FONT_FILE;
-		size2Params.fontParameters.size = SELECT_FONT_SIZE;
+		size2Params.fontFileName = Constants.SELECT_FONT_FILE;
+		size2Params.fontParameters.size = Constants.SELECT_FONT_SIZE;
 		size2Params.fontParameters.color = Color.WHITE;
-		manager.load(SELECT_FONT_FILE, BitmapFont.class, size2Params);
-		assets.add(SELECT_FONT_FILE);
+		manager.load(Constants.SELECT_FONT_FILE, BitmapFont.class, size2Params);
+		assets.add(Constants.SELECT_FONT_FILE);
+		size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+		size2Params.fontFileName = Constants.TUTORIAL_FONT_FILE;
+		size2Params.fontParameters.size = Constants.TUTORIAL_FONT_SIZE;
+		size2Params.fontParameters.color = Constants.TUTORIAL_FONT_COLOR;
+		manager.load(Constants.TUTORIAL_FONT_FILE, BitmapFont.class, size2Params);
+		assets.add(Constants.TUTORIAL_FONT_FILE);
 		
 		// We have to force the canvas to fully load (so we can draw something)
-		initializeCanvas(LOADING_TEXTURE, MENU_FONT_FILE);
-		
+		initializeCanvas(Constants.LOADING_TEXTURE, Constants.MENU_FONT_FILE);
         // Sound controller manages its own material
         SoundController.PreLoadContent(manager);
     }
@@ -601,7 +643,7 @@ public class GameEngine implements Screen {
 		Texture texture = manager.get(texture_msg, Texture.class);
 		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		canvas.setBackground(texture);
-		canvas.setWhite(manager.get(WHITE_BOX, Texture.class));
+		canvas.setWhite(manager.get(Constants.WHITE_BOX, Texture.class));
 		
 		//Font support
 		FileHandleResolver resolver = new InternalFileHandleResolver();

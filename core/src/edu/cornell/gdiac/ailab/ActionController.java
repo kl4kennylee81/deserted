@@ -82,7 +82,12 @@ public class ActionController {
 			selected.needsAttack = false;
 			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
 				if (action.action.pattern != Pattern.MOVE){
-					selected.setExecuting();
+					selected.setExecute();
+				}
+				// we want move to also reset the active state animation so we switch
+				// to idle first before it then gets set to active next frame
+				else {
+					selected.setExecute();
 				}
 				executeAction(action);
 			}
@@ -126,6 +131,9 @@ public class ActionController {
 				break;
 			case STRAIGHT:
 				executeStraight(a_node);
+				break;
+			case HORIZONTAL:
+				executeHorizontal(a_node);
 				break;
 			case DIAGONAL:
 				executeDiagonal(a_node);
@@ -176,7 +184,7 @@ public class ActionController {
 		Coordinates coords = Coordinates.getInstance();
 		// when we pass in coordinate for the path we can go out of bounds it is checked in execution time
 		if (a_node.action== null || a_node.action.path == null){
-			System.out.println("error input pattern projectile or instant did not have path");
+			System.out.println("line action controller 187: error input pattern projectile or instant did not have path");
 			return null;
 		}
 		Coordinate[] relativePath = a_node.action.path;
@@ -295,9 +303,6 @@ public class ActionController {
 				path[i+2] = coordPool.newCoordinate(projectileX-i-1,selected.yPosition-i-1);
 			}
 		}
-		for (int i =0;i<path.length;i++){
-			System.out.println(path[i]);
-		}
 		return path;
 	}
 	
@@ -320,6 +325,18 @@ public class ActionController {
 			else{
 				path[i] = coordPool.newCoordinate(selected.xPosition-i-1,j);
 			}
+		}
+		return path;
+	}
+	
+	private Coordinate[] horizontalHitPath(ActionNode a_node){
+		Coordinates coordPool = Coordinates.getInstance();
+		int numTiles = board.height;
+		Coordinate[] path = new Coordinate[numTiles];
+		
+		int targetX = board.width - 1 - selected.xPosition;
+		for (int i = 0; i < numTiles; i++){
+			path[i] = coordPool.newCoordinate(targetX, i);
 		}
 		return path;
 	}
@@ -361,7 +378,8 @@ public class ActionController {
 		default:
 			break;
 		}
-		if (board.isOnSide(selected.leftside,nextX,nextY) && !board.isOccupied(nextX, nextY)){
+		// can't move onto tile that is broken/occupied or not on your side
+		if (board.canMove(selected.leftside,nextX,nextY)){
 			selected.xPosition = nextX;
 			selected.yPosition = nextY;
 		}
@@ -371,27 +389,47 @@ public class ActionController {
 	private void executeStraight(ActionNode a_node){
 		Coordinate[] path = straightHitPath(a_node);
 		// execute the hit interrupt and do damage to closest enemy
-		processHitPath(a_node,path);
+		processHitPath(a_node,path,a_node.action.oneHit,a_node.action.canBlock);
+	}
+	
+	private void executeHorizontal(ActionNode a_node){
+		Coordinate[] path = horizontalHitPath(a_node);
+		// execute the hit interrupt and do damage to every enemy in path
+		processHitPath(a_node,path,a_node.action.oneHit,a_node.action.canBlock);
 	}
 	
 	private void executeDiagonal(ActionNode a_node){
 		Coordinate[] path = diagonalHitPath(a_node);
 		// check along path and apply damage to first person hit
-		processHitPath(a_node,path);
+		processHitPath(a_node,path,a_node.action.oneHit,a_node.action.canBlock);
 	}
 	
 	private void executeInstant(ActionNode a_node){
 		Coordinate[] path = convertRelativePath(a_node);
-		processHitPath(a_node,path);
+		processHitPath(a_node,path,a_node.action.oneHit,a_node.action.canBlock);
 	}
 	
-	private void processHitPath(ActionNode a_node, Coordinate[] path){
+	private void processHitPath(ActionNode a_node, Coordinate[] path, boolean oneHit, boolean canBlock){
 		boolean hasHit = false;
 		for (int i=0;i<path.length;i++){
-			if (isBlocked(path[i].x, path[i].y)){
+			// if you have already hit one character and you only can hit one break out of checking path
+			if (oneHit && hasHit){
 				break;
 			}
+			if (canBlock && isBlocked(path[i].x, path[i].y)){
+				break;
+			}
+			if (board.isInBounds(path[i].x,path[i].y) && !(path[i].x == selected.xPosition && path[i].y == selected.yPosition)){
+				animations.add(a_node.action.animation,path[i].x,path[i].y);
+			}
+			
+			boolean prev_hasHit = hasHit;
 			for (Character c:characters){
+				// if has hit one character and can only hit one stop checking characters
+				if (oneHit && hasHit){
+					break;
+				}
+				// if same side stop checking
 				if (selected.leftside ==c.leftside){
 					continue;
 				}
@@ -400,28 +438,46 @@ public class ActionController {
 					hasHit = true;
 					break;
 				}
-				if (hasHit){
-					break;
-				}
+			}
+			// if when checking this coordinate it hit the target do something
+			if (!prev_hasHit && hasHit){
+				//TODO
+			}
+			//in the case where at this coordinate it did not hit a target do something else
+			else{
+				// apply the tileEffect to all tiles in the hitpath
+				applyTileEffect(a_node.action.effect,path[i].x,path[i].y);
 			}
 		}
-		if (!hasHit){
-			a_node.free();
-		}
+		a_node.free();
 		// free Coordinates back into the Pool
 		for (int j = 0;j<path.length;j++){
 			path[j].free();
 		}
 	}
 	
-	private void executeSingle(ActionNode a_node){
-		for (Character c:characters){
-			if (c.xPosition == a_node.xPosition && c.yPosition == a_node.yPosition){
-				processHit(a_node,c);
+	private void applyTileEffect(Effect e,int x,int y){
+		if (e==null){
+			return;
+		}
+		else{
+			switch (e.type){
+			case BROKEN:
+				String keyCoordinate = String.format("%s:%s",Integer.toString(x),Integer.toString(y));
+				board.addTileEffect(keyCoordinate, e.clone());
+				break;
+			default:
 				break;
 			}
 		}
-		a_node.free();
+	}
+	
+	private void executeSingle(ActionNode a_node){
+		Coordinate c = Coordinates.getInstance().obtain();
+		c.set(a_node.xPosition, a_node.yPosition);
+		Coordinate[] path = new Coordinate[1];
+		path[0] = c;
+		processHitPath(a_node,path,true,false);
 	}
 	
 	protected void processHit(ActionNode a_node,Character target){
@@ -433,7 +489,6 @@ public class ActionController {
 		if (a_node.action.damage > 0){
 			String attack_damage = Integer.toString(a_node.action.damage);
 			textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
-			animations.add(a_node.action.animation,target.xPosition, target.yPosition);
 			target.setHurt();
 			ActionNode nextAttack = target.queuedActions.peek();
 			
@@ -459,7 +514,6 @@ public class ActionController {
 				}
 			}
 		}
-		a_node.free();
 	}
 	
 	protected void applyDamage(ActionNode a_node,Character target){

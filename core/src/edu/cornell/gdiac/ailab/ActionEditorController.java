@@ -168,6 +168,10 @@ public class ActionEditorController implements EditorController {
 		Integer damage = Integer.parseInt(actionEdit.getDamage());
 		Integer range = Integer.parseInt(actionEdit.getRange());
 		String pattern = actionEdit.getPattern();
+		Boolean oneHit = actionEdit.getOneHit();
+		Boolean canBlock = actionEdit.getCanBlock();
+		Boolean needsToggle = actionEdit.getNeedsToggle();
+		
 		String type = actionEdit.getType();
 		String effectName = actionEdit.getEffectName();
 		Integer rounds = Integer.parseInt(actionEdit.getRounds());
@@ -182,6 +186,9 @@ public class ActionEditorController implements EditorController {
 		entry.put("damage", damage);
 		entry.put("range", range);
 		entry.put("pattern", pattern);
+		entry.put("oneHit", oneHit);
+		entry.put("canBlock", canBlock);
+		entry.put("needsToggle", needsToggle);
 		
 		HashMap<String, Object> effect = new HashMap<String, Object>();
 		effect.put("type", type);
@@ -233,6 +240,10 @@ public class ActionEditorController implements EditorController {
 			Integer range = (Integer) action.get("range");
 			String pattern = (String) action.get("pattern");
 			
+			String oneHit = action.get("oneHit").toString();
+			String canBlock = action.get("canBlock").toString();
+			String needsToggle = action.get("needsToggle").toString();
+			
 			HashMap<String, Object> effect = (HashMap<String, Object>) action.get("effect");
 			String type = (String) effect.get("type");
 			String effectName = (String) effect.get("name");
@@ -253,7 +264,8 @@ public class ActionEditorController implements EditorController {
 			Integer animationId = (Integer) action.get("animationId");
 			String animation = animationId + " " + animations.get(animationId).get("name");
 			actionEdit.setUpEdit(id, name, cost.toString(), damage.toString(), 
-					range.toString(), pattern, type, effectName, numRounds.toString(), 
+					range.toString(), pattern, oneHit, canBlock, needsToggle, 
+					type, effectName, numRounds.toString(), 
 					magnitude.toString(), description, persistingRounds, 
 					persistingSpeed, animation);
 		}

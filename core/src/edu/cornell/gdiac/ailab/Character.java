@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 //import java.util.Random;
+import java.util.ListIterator;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,6 +14,7 @@ import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
 import edu.cornell.gdiac.ailab.AnimationNode.CharacterState;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
+import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 
@@ -25,6 +27,7 @@ public class Character implements GUIElement {
 	private static final int DIAGONAL_SIZE = 20;
 	
 	private static final float ACTIONBAR_TICK_SIZE = 8f;
+	private static final float HEALTH_OFFSET = 20f;
 	
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
@@ -74,6 +77,10 @@ public class Character implements GUIElement {
 	boolean isExecuting;
 	/** Did I just get hit? */
 	boolean isHurt;
+	/** Do I need to output data about my selected actions? */
+	boolean needsDataOutput;
+
+	CharacterState charState;
 	
 	//TODO: Change to pass this in from GameEngine
 	/** Starting x and y positions */
@@ -110,7 +117,7 @@ public class Character implements GUIElement {
 	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
 						int health, int maxHealth, Color color, 
 						float speed, float castSpeed, int xPosition, int yPosition,
-						boolean leftSide, Action[] actions){
+						boolean leftSide, Action[] actions,int numSlots){
 		this.texture = texture;
 		this.icon = icon;
 		this.animation = animation;
@@ -121,8 +128,8 @@ public class Character implements GUIElement {
 		this.color = color;
 		
 		/* Randomize so that its not always the same thing */
-		this.speed = (float) (Math.random()*0.003 + 0.003)/3;
-		this.castSpeed = (float) (Math.random()*0.003 + 0.0025)/3;
+		this.speed = speed;
+		this.castSpeed = castSpeed;
 		
 		this.startingXPosition = this.xPosition = xPosition;
 		this.startingYPosition = this.yPosition = yPosition;
@@ -138,9 +145,11 @@ public class Character implements GUIElement {
 		this.availableActions = actions;
 		selectionMenu = new SelectionMenu(availableActions);
 		
-		float waitTime = (float) (Math.random()*3 + 2);
-		float castTime = (float) (Math.random()*4 + 4);
-		actionBar = new CharActionBar(4,waitTime,castTime);
+		//float waitTime = (float) (Math.random()*3 + 2);
+		//float castTime = (float) (Math.random()*4 + 4);
+		float waitTime = speed;
+		float castTime = castSpeed;
+		actionBar = new CharActionBar(numSlots,waitTime,castTime);
 		
 	}
 	
@@ -177,6 +186,38 @@ public class Character implements GUIElement {
 	public void update(){
 		float healthProportion = ((float)health/(float)maxHealth);
 		this.actionBar.update(healthProportion);
+		
+		// update character state
+		updateCharState();
+	}
+	
+	public void updateCharState(){
+		if (this.charState == CharacterState.EXECUTE){
+			return;
+		}
+		else if (queuedActions.isEmpty()){
+			this.setIdle();
+		} 
+		else {
+			if (queuedActions.peek().isInterrupted){
+				//change to interrupted later maybe?
+				this.setIdle();
+			}
+			else if (castPosition > (this.getNextCast() - this.getActionBar().getSlotWidth()) 
+					&& (castPosition -lastCastStart) > this.getActionBar().getSlotWidth()){
+				this.setCast();
+			} else {
+				this.setActive();
+			}
+		}
+		}
+	
+	public float getX(){
+		return this.xPosition;
+	}
+	
+	public float getY(){
+		return this.yPosition;
 	}
 	
 	public float getXMin(GameCanvas canvas, GridBoard board){
@@ -194,7 +235,6 @@ public class Character implements GUIElement {
 	public float getXMax(GameCanvas canvas, GridBoard board){
 		float charScale = getCharScale(canvas,texture,board);
 		return getXMin(canvas, board) + texture.getWidth()*charScale;
-//		return CANVAS_X_MULTIPLIER*xPosition + texture.getWidth();
 	}
 	
 	public float getYMax(GameCanvas canvas, GridBoard board){
@@ -262,6 +302,19 @@ public class Character implements GUIElement {
 	}
 	
 	public void setQueuedActions(List<ActionNode> actions){
+		// iterate through the queued actions and make sure the set of queued actions
+		// do not supercede the number of slots. Any that do will be canceled.
+		int numSlots = this.getActionBar().getUsableNumSlots();
+		int queuedSlots = 0;
+		ListIterator<ActionNode> iter = actions.listIterator();
+		while(iter.hasNext()){
+			ActionNode an = iter.next();
+			queuedSlots+=an.action.cost;
+			if (queuedSlots > numSlots){
+				// throw it away from the list
+				iter.remove();
+			}
+		}
 		this.queuedActions = (LinkedList<ActionNode>) actions;
 	}
 	
@@ -276,6 +329,7 @@ public class Character implements GUIElement {
 		this.needsSelection = true;
 		this.isBlocked = false;
 	}
+	
 	
 	/**
 	 * Make an AI with the given difficulty
@@ -338,6 +392,19 @@ public class Character implements GUIElement {
 		return this.actionBar.getCastPoint();
 	}
 	
+	/**deals with total number of dazed slots, but only 1 will be in effect in actionBar */
+	public int getDazedSlots(){
+		return actionBar.dazedSlots;
+	}
+	
+	public void setDazedSlots(int num){
+		this.actionBar.dazedSlots = num;
+	}
+	
+	public boolean isDazed(){
+		return actionBar.dazedSlots >= 1;
+	}
+	
 	public void setSpeedModifier(int val){
 		//TODO if we have more modifier on stats have a bitmap of modifiers
 		this.actionBar.setSpeedModifier(val);
@@ -345,6 +412,10 @@ public class Character implements GUIElement {
 	
 	public int getSpeedModifier(){
 		return this.actionBar.speedModifier;
+	}
+	
+	public float getInterval(){
+		return (1f-actionBar.castPoint) / this.getActionBar().getTotalNumSlots();
 	}
 	
 	/**
@@ -382,6 +453,7 @@ public class Character implements GUIElement {
 	 * Add a persisting action to draw/be checked in the future
 	 */
 	void addPersisting(ActionNode an){
+		an.setAnimation();
 		if (an.action.pattern == Pattern.SHIELD){
 			an.setPersisting(castPosition, xPosition, yPosition);
 			persistingActions.add(an);
@@ -397,6 +469,7 @@ public class Character implements GUIElement {
 	}
 	
 	void addPersisting(ActionNode an,Coordinate[] path){
+		an.setAnimation();
 		switch (an.action.pattern){
 		case SHIELD:
 			an.setPersisting(castPosition, xPosition, yPosition,path);
@@ -494,12 +567,12 @@ public class Character implements GUIElement {
 		return shadY;
 	}
 	
-	public void draw(GameCanvas canvas,GridBoard board){
+	public void draw(GameCanvas canvas,GridBoard board,InGameState inGameState){
 		if (!isAlive()){
 			return;
 		}
 		if(hasPersisting()){
-			drawPersisting(canvas,board);
+			drawPersisting(canvas,board,inGameState);
 		}
 	}
 	
@@ -542,51 +615,46 @@ public class Character implements GUIElement {
 		return (tileW*CHARACTER_PROPORTION)/region.getRegionWidth();
 	}
 	
-	public void setExecuting(){
-		isExecuting = true;
-		isHurt = false;
+	public void setExecute(){
+		charState = CharacterState.EXECUTE;
 	}
 	
 	public void setHurt(){
-		isHurt = true;
-		isExecuting = false;
+		charState = CharacterState.HURT;
+	}
+	
+	public void setIdle(){
+		charState = CharacterState.IDLE;
+	}
+	
+	public void setActive(){
+		charState = CharacterState.ACTIVE;
+	}
+	
+	public void setCast(){
+		charState = CharacterState.CAST;
 	}
 	
 	/**
 	 * Return FilmStrip with animation set as frame
 	 * @return
 	 */
-	public FilmStrip getFilmStrip(){
-		if (isHurt){
-			FilmStrip fs = animation.getTexture(CharacterState.HURT);
-			if (fs == null){
-				isHurt = false;
-			}
-			return fs;
-		} 
-		if (isExecuting){
-			FilmStrip fs = animation.getTexture(CharacterState.EXECUTE);
-			if (fs == null){
-				isExecuting = false;
-			}
-			return fs;
+	public FilmStrip getFilmStrip(InGameState gameState){
+		FilmStrip fs = animation.getTexture(charState,gameState);
+		// flip back when its in execute
+		if (fs == null && this.charState == CharacterState.EXECUTE){
+			this.setIdle();
 		}
-		if (queuedActions.isEmpty()){
-			return animation.getTexture(CharacterState.IDLE);
-		} else {
-			if (queuedActions.peek().isInterrupted){
-				//change to interrupted later maybe?
-				return animation.getTexture(CharacterState.IDLE);
-			}
-			if (castPosition - lastCastStart >= ((1-this.getActionBar().getCastPoint())/this.getActionBar().getNumSlots())){
-				return animation.getTexture(CharacterState.CAST);
-			} else {
-				return animation.getTexture(CharacterState.ACTIVE);
-			}
-		}
+		return fs;
 	}
 	
-	public void drawCharacter(GameCanvas canvas,GridBoard board, boolean shouldDim){
+	/** return the current filmstrip with animation set as frame without incrementing
+	 * **/
+	public FilmStrip getCurrentFilmStrip(){
+		return getFilmStrip(InGameState.PAUSED);
+	}
+	
+	public void drawCharacter(GameCanvas canvas,GridBoard board, boolean shouldDim,InGameState gameState){
 		if (increasing){
 			lerpVal+=0.02;
 			if (lerpVal >= 0.5){
@@ -609,9 +677,9 @@ public class Character implements GUIElement {
 		Color highlightColor = getHighlightColor(shouldDim);
 		//Decide what animation to draw
 		//Will sometimes be null when current animation is done, we just need to call again
-		FilmStrip toDraw = getFilmStrip();
+		FilmStrip toDraw = getFilmStrip(gameState);
 		if (toDraw == null) {
-			toDraw = getFilmStrip();
+			toDraw = getFilmStrip(gameState);
 		}
 		
 		//For now, if still not found (shouldnt happen when animation sheet is full) 
@@ -633,7 +701,7 @@ public class Character implements GUIElement {
 	/**
 	 * Draws future position of ship with lines depicting path
 	 */
-	public void drawShadowCharacter(GameCanvas canvas,GridBoard board){
+	public void drawShadowCharacter(GameCanvas canvas,GridBoard board,InGameState gameState){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
 		Coordinate canvasC = board.offsetBoard(canvas, tileW*getShadowX(), tileH*getShadowY());
@@ -641,8 +709,26 @@ public class Character implements GUIElement {
 		float canvasY = canvasC.y;
 		canvasC.free();
 		
-		float charScale = getCharScale(canvas,texture,board);
-		canvas.drawCharacter(texture, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside,charScale);
+		//Decide what animation to draw
+		//Will sometimes be null when current animation is done, we just need to call again
+		FilmStrip toDraw = getFilmStrip(gameState);
+		if (toDraw == null) {
+			toDraw = getFilmStrip(gameState);
+		}
+		
+		//For now, if still not found (shouldnt happen when animation sheet is full) 
+		//go back to initial texture (current idle texture)
+		if (toDraw != null){
+			float charScale = getCharScale(canvas,toDraw,board);
+			// draw once character normally then draw character again with tint
+			canvas.drawCharacter(toDraw, canvasX, canvasY, color, leftside,charScale);
+			canvas.drawCharacter(toDraw, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside,charScale);
+		} else {
+			float charScale = getCharScale(canvas,texture,board);
+			canvas.drawCharacter(texture, canvasX, canvasY, color, leftside,charScale);
+			canvas.drawCharacter(texture, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside,charScale);
+		}
+		
 		int tempX = xPosition;
 		int tempY = yPosition;
 		int nowX = tempX;
@@ -672,29 +758,18 @@ public class Character implements GUIElement {
 			float arrowOffY = (tileH - SHADOW_ARROW_WIDTH)/2;
 			if (nowX != tempX && nowY == tempY){
 				int minX = Math.min(nowX, tempX);
-				float arrowX = arrowOffX + (tileW *minX);
-				float arrowY = arrowOffY + (tileH *nowY);
-				Coordinate c = board.offsetBoard(canvas, arrowX, arrowY);
-				arrowX = c.x;
-				arrowY = c.y;
-				c.free();
+				float arrowX = arrowOffX + (tileW *minX) + board.getBoardOffsetX(canvas);
+				float arrowY = arrowOffY + (tileH *nowY) + board.getBoardOffsetY(canvas);
 				float arrowWidth = tileW + SHADOW_ARROW_WIDTH*canvas.getWidth();
 				float arrowHeight = SHADOW_ARROW_WIDTH*canvas.getWidth();
-				canvas.drawBox(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
-				//canvas.drawBox(72 + 150*minX, 47 + 100*nowY, 156, 6, Color.BLACK);
+				canvas.drawTileArrow(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
 			} else if (nowY != tempY && nowX == tempX){
 				int minY = Math.min(nowY, tempY);
-				float arrowX = arrowOffX + (tileW *nowX);
-				float arrowY = arrowOffY + (tileH *minY);
-
-				Coordinate c = board.offsetBoard(canvas, arrowX, arrowY);
-				arrowX = c.x;
-				arrowY = c.y;
-				c.free();
+				float arrowX = arrowOffX + (tileW *nowX) + board.getBoardOffsetX(canvas);
+				float arrowY = arrowOffY + (tileH *minY) + board.getBoardOffsetY(canvas);
 				float arrowWidth = SHADOW_ARROW_WIDTH*canvas.getWidth();
 				float arrowHeight = tileH + SHADOW_ARROW_WIDTH*canvas.getWidth();
-				canvas.drawBox(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
-				//canvas.drawBox(72+150*nowX, 47+100*minY, 6, 106, Color.BLACK);
+				canvas.drawTileArrow(arrowX,arrowY,arrowWidth, arrowHeight, Color.BLACK);
 			} else {
 //				System.out.println("PLEASE CHECK Character");
 			}
@@ -703,6 +778,7 @@ public class Character implements GUIElement {
 		}
 	}
 	
+	/**FIXUP**/
 	private void drawShield(GameCanvas canvas,GridBoard board,ActionNode an){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
@@ -711,63 +787,70 @@ public class Character implements GUIElement {
 		int numWithin = Coordinates.numWithinBounds(an.path, board);
 		int shieldW = (int)(SHIELD_WIDTH * canvas.getWidth());
 		int shieldH = (int)(tileH * numWithin);
-		int shieldX = (int)(leftside ?(tileW + tileW*an.curX- SHIELD_OFFSET) :tileW*an.curX - SHIELD_OFFSET);
+		// offset based on left and right adding 0.5 on the left and -0.5 on the right
+		int shieldX = (int)(leftside ?(tileW/2 + tileW*an.curX- SHIELD_OFFSET) :tileW*an.curX - SHIELD_OFFSET - tileW/2);
 		int shieldY = (int)(tileH *botY);
 		c = board.offsetBoard(canvas, shieldX, shieldY);
 		shieldX = c.x;
 		shieldY = c.y;
 		c.free();
-		canvas.drawBox(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
+		canvas.drawTileArrow(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
 	}
 	
 	/**
 	 * Draws persisting objects
 	 */
-	private void drawPersisting(GameCanvas canvas,GridBoard board){
+	private void drawPersisting(GameCanvas canvas,GridBoard board,InGameState gameState){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
+		boolean paused = gameState == InGameState.PAUSED ? true : false;
 		for (ActionNode an : persistingActions){
 			switch (an.action.pattern){
 			case SHIELD:
+				System.out.println("character shield is still drawing");
 				drawShield(canvas,board,an);
 				break;
 			case STRAIGHT:
 			case DIAGONAL:
 			case PROJECTILE:
-				float diagX = (tileW/2 - DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX));
-				float diagY = tileH/2 - DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY);
-//				float diagX = (DIAGONAL_SIZE/2 + (board.getTileWidth(canvas)*an.curX));
-//				float diagY = (DIAGONAL_SIZE/2 + (board.getTileHeight(canvas)*an.curY));
-				float boardOffsetX = board.getBoardOffsetX(canvas);
-				float boardOffsetY = board.getBoardOffsetY(canvas);
-				diagX = diagX + boardOffsetX;
-				diagY = diagY + boardOffsetY;
-				canvas.drawBox(diagX,diagY, DIAGONAL_SIZE, DIAGONAL_SIZE, color);
+	    	    Coordinate c =board.offsetBoard(canvas, tileW*an.curX,tileH*an.curY);
+	    	    float messageX = c.x;
+				float messageY = c.y;
+				c.free();
+	    	    FilmStrip toDraw = an.animation.getTexture(paused);
+	    	    //try again to repeat animation
+	    	    if (toDraw == null){
+	    	    	toDraw = an.animation.getTexture(paused);
+	    	    }
+	    	    canvas.draw(toDraw, messageX,messageY);
 				break;
 			default:
 				break;
 			}
 		}
-	}
-	
+	}	
 	
 	public void drawHealth(GameCanvas canvas,int count,boolean shouldDim){
-		Color iconColor = this.getColor(shouldDim);
-		Color waitColor = this.getActionBarColor(shouldDim, this.color.cpy());
+	
+//		Color iconColor = this.getColor(shouldDim);
+//		Color waitColor = this.getActionBarColor(shouldDim, this.color.cpy());
 		
-		float tokenX = this.actionBar.getTotalX(canvas) - this.icon.getWidth();
-		float tokenY = this.actionBar.getY(canvas, count);
+		float tokenX = this.actionBar.getX(canvas);
+		float tokenY = this.actionBar.getY(canvas, count) + this.actionBar.getBarHeight(canvas);
+		String healthText = Integer.toString(this.health);
+		canvas.drawText(healthText, tokenX, tokenY, Color.BLACK.cpy());
 		
-		canvas.drawTexture(this.icon, tokenX, tokenY, this.icon.getWidth(),this.icon.getHeight(),iconColor);
 		
-		/** the wait width is modified by the hp already **/
-		float healthW = this.actionBar.getWaitWidthNoBuffer(canvas);
-		float healthH = this.actionBar.getBarHeight(canvas);
-		
-		float healthX = this.actionBar.getX(canvas);
-		float healthY = tokenY;
-		
-		canvas.drawBox(healthX, healthY, healthW, healthH, waitColor);
+//		canvas.drawTexture(this.icon, tokenX, tokenY, this.icon.getWidth(),this.icon.getHeight(),iconColor);
+//		
+//		/** the wait width is modified by the hp already **/
+//		float healthW = this.actionBar.getWaitWidthNoBuffer(canvas);
+//		float healthH = this.actionBar.getBarHeight(canvas);
+//		
+//		float healthX = this.actionBar.getX(canvas);
+//		float healthY = tokenY;
+//		
+//		canvas.drawBox(healthX, healthY, healthW, healthH, waitColor);
 	}
 	
 	public Color getActionBarColor(boolean shouldDim,Color c){
@@ -826,17 +909,20 @@ public class Character implements GUIElement {
 	}
 	
 	public void drawToken(GameCanvas canvas, int count,boolean shouldDim){
-		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - ACTIONBAR_TICK_SIZE/2;
-		float tokenY = this.actionBar.getY(canvas, count);
+		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - this.icon.getWidth()/2;
 		
-		float actionBarHeight = this.actionBar.getBarHeight(canvas);
-		Color c = actionBarTickColor(shouldDim);
-		canvas.drawBox(tokenX, tokenY, ACTIONBAR_TICK_SIZE, actionBarHeight, c);
+		// 2 is a random offset to center it
+		float tokenY = this.actionBar.getY(canvas, count) - 2;
 		
-//		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - icon.getWidth()/2;
-//		float tokenY = this.actionBar.getY(canvas, count) - TOKEN_OFFSET_DOWN;
-//		Color c = getColor(shouldDim);
-//		canvas.drawTexture(icon,tokenX,tokenY,c,false);
+		Color c = getColor(shouldDim);
+		canvas.drawTexture(icon, tokenX, tokenY, c, false);
+		
+		
+		// code for ticks as the tokens
+		//float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - ACTIONBAR_TICK_SIZE/2;
+		//float actionBarHeight = this.actionBar.getBarHeight(canvas);
+		//Color c = actionBarTickColor(shouldDim);
+		//canvas.drawBox(tokenX, tokenY, ACTIONBAR_TICK_SIZE, actionBarHeight, c);
 	}
 
 	public boolean getHovering(){

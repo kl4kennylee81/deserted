@@ -10,70 +10,120 @@ public class MainMenuController {
 	public int gameNo;
 	private boolean isDone;
 	private GameCanvas canvas;
-	/** Background image for the menu */
-	private static final String MENU_BCKGD_TEXTURE = "images/menubg.png";
-	/** File storing the texture for an option tile */
-	private static final String OPTION_TEXTURE = "models/Menu_Option.png";
-	private static final String WHITE_BOX = "images/white.png";
-	/** The message font to use */
-	private static final String FONT_FILE  = "fonts/Milonga-Regular.ttf";
+
 	private AssetManager manager;
-	private MainMenu mainMenu;
+	private Menu menu;
+	private MouseOverController mouseOverController;
 	
-	public MainMenuController(GameCanvas canvas, AssetManager manager){
+	private int LEVEL_SELECT_CODE = 0;
+	
+	
+	public MainMenuController(GameCanvas canvas, AssetManager manager, MouseOverController mouseOverController){
 		this.canvas = canvas;
 		this.manager = manager;
 		Option[] default_options = makeDefaultOptions();
-		mainMenu = new MainMenu(default_options);
+		this.menu = new MainMenu(default_options);
+		if (default_options.length > 0){
+			menu.selectOption(0);
+		}
+		this.mouseOverController = mouseOverController; 
 	}
 	
 	private Option[] makeDefaultOptions() {
-		Option [] default_options = new Option[7];
-		default_options[0] = new Option(0.5f,0.11f,270,80,"EASY\nOr Press 'E'",OPTION_TEXTURE,0);
-		default_options[1] = new Option(0.5f,0.22f,270,80,"MEDIUM\nOr Press 'M'",OPTION_TEXTURE,1);
-		default_options[2] = new Option(0.5f,0.33f,270,80,"HARD\nOr Press 'H'",OPTION_TEXTURE,2);
-		default_options[3] = new Option(0.5f,0.44f,270,80,"PvP\nOr Press 'P'",OPTION_TEXTURE,3);
-		default_options[4] = new Option(0.5f,0.55f,270,80,"Action Editor",OPTION_TEXTURE,4);
-		default_options[5] = new Option(0.5f,0.66f,270,80,"Character Editor",OPTION_TEXTURE,5);
-		default_options[6] = new Option(0.5f,0.77f,270,80,"Level Editor",OPTION_TEXTURE,6);
+		// we will rearrange when i merge to master
+		Option [] default_options = new Option[3];
+		default_options[0] = new Option("LEVEL SELECT",0);
+		default_options[1] = new Option("TUTORIAL",4);
+		default_options[2] = new Option("LEVEL EDITOR",2);
 		return default_options;
+		
 		//make a method that sizes and positions them according to the number of options
 		//resize isn't affecting this
 	}
-	
-	private Option[] spaceOptions(int numOptions){
-		return null;
-	}
-	
-	private Option[] spaceOptions(Option[] options){
-		return null;
-	}
 
 	public void drawMenu() {
-		initializeCanvas(MENU_BCKGD_TEXTURE);
-		mainMenu.draw(canvas);
+		initializeCanvas(Constants.MENU_BCKGD_TEXTURE);
+		menu.draw(canvas);
 	}
 	
 	public void update(){
+		updateMenuAssets();
+		
+		mouseOverController.update(menu.options, menu);
 		updateSelection();
-		drawMenu();
-		if (InputController.pressedE()){
-			gameNo = 0;
-			isDone = true;
-		} else if (InputController.pressedM()){
-			gameNo = 1;
-			isDone = true;
-		} else if (InputController.pressedH()){
-			gameNo = 2;
-			isDone = true;
-		} else if (InputController.pressedP()){
-			gameNo = 3;
-			isDone = true;
+		drawMenu();		
+		if (InputController.pressedP()){
+			done(3);
 		}
+	}
+	
+	public void done(int doneCode){
+		if (menu instanceof MainMenu){
+			if (doneCode == LEVEL_SELECT_CODE){
+				this.menu = createLevelMenu();
+			}
+			else {
+				gameNo = doneCode;
+				isDone = true;
+			}
+		}
+		else if (menu instanceof LevelMenu){
+			if (doneCode == LEVEL_SELECT_CODE){
+				this.menu = createMainMenu();
+			}
+			else{
+				gameNo = doneCode;
+				isDone = true;
+			}
+		}
+	}
+	
+	public Menu createLevelMenu(){
+		Option [] default_options = new Option[4];
+		default_options[0] = new Option("Back",0);
+		default_options[1] = new Option("TUTORIAL 1",4);
+		default_options[2] = new Option("TUTORIAL 2",5);
+		default_options[3] = new Option("LEVEL 1",2);
+		
+		Menu levelMenu = new LevelMenu(default_options);
+		if (default_options.length > 0){
+			menu.selectOption(0);
+		}
+		return levelMenu;
+	}
+	
+	public Menu createMainMenu(){
+		Option[] default_options = makeDefaultOptions();
+		MainMenu menu = new MainMenu(default_options);
+		if (default_options.length > 0){
+			menu.selectOption(0);
+		}
+		return menu;
 	}
 	
 	public boolean isDone(){
 		return isDone;
+	}
+	
+	public void updateMenuAssets(){
+		
+		if (menu instanceof MainMenu){
+			MainMenu mainMenu = (MainMenu) menu;
+		
+			if (manager.isLoaded(Constants.MENU_HIGHLIGHT_TEXTURE) && mainMenu.optionHighlight == null){
+				mainMenu.setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class));
+			}
+			
+			if (mainMenu.logo == null && manager.isLoaded(Constants.MENU_LOGO)){
+				mainMenu.setLogo(manager.get(Constants.MENU_LOGO,Texture.class));
+			}
+		}
+		if (menu instanceof LevelMenu){
+			LevelMenu levelMenu = (LevelMenu) menu;
+			if (manager.isLoaded(Constants.LEVEL_SELECT_REG) && levelMenu.getImage() == null){
+				levelMenu.setImage(manager.get(Constants.LEVEL_SELECT_REG,Texture.class));
+			}
+		}
 	}
 		
 	/**
@@ -88,10 +138,10 @@ public class MainMenuController {
 		Texture texture = manager.get(texture_msg, Texture.class);
 		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		canvas.setBackground(texture);
-		canvas.setWhite(manager.get(WHITE_BOX, Texture.class));
+		canvas.setWhite(manager.get(Constants.WHITE_BOX, Texture.class));
 		
-		if (manager.isLoaded(FONT_FILE)) {
-			canvas.setFont(manager.get(FONT_FILE,BitmapFont.class));
+		if (manager.isLoaded(Constants.MENU_FONT_FILE)) {
+			canvas.setFont(manager.get(Constants.MENU_FONT_FILE,BitmapFont.class));
 		}
 		//This method shouldn't be in two places as it currently is, only one
     }
@@ -100,32 +150,70 @@ public class MainMenuController {
 	 * Update when an action is not targeting yet
 	 */
 	private void updateSelection(){
-		if (InputController.pressedA() || InputController.pressedEnter()){
-			gameNo = mainMenu.selectedOption;
-			isDone = true;
-		}  else if ((InputController.pressedW() && !InputController.pressedS())){
+		if (menu instanceof MainMenu){
+			MainMenu mainMenu = (MainMenu) menu;
+			updateSelectionMainMenu(mainMenu);
+		}
+		else if (menu instanceof LevelMenu){
+			LevelMenu levelMenu = (LevelMenu) menu;
+			if (InputController.pressedEnter() || InputController.pressedLeftMouse()){
+				done(levelMenu.selectedOption);
+			}
+			
+		     else if (InputController.pressedRight() && !InputController.pressedLeft()){
+		         //newSelection % length
+		         //(n < 0) ? (m - (abs(n) % m) ) %m : (n % m);
+		         //taken from http://stackoverflow.com/questions/5385024/mod-in-java-produces-negative-numbers
+		    	 int newSelection = levelMenu.getCurIndexOption() + 1;
+		         int length = levelMenu.getOptions().length;
+		         int toSelect = (newSelection < 0) ? (length - 
+							(Math.abs(newSelection) % length) ) 
+							%length : (newSelection % 
+									length);
+			     int optionSrNo = levelMenu.getOptions()[toSelect].srNo;
+			     levelMenu.selectOption(optionSrNo);
+		     }  
+		     else if (InputController.pressedLeft() && !InputController.pressedRight()){
+				//Actions go from up down, so we need to flip
+		    	 int newSelection = levelMenu.getCurIndexOption() - 1;
+		        int length = levelMenu.getOptions().length;
+		        int toSelect = (newSelection < 0) ? (length - 
+						(Math.abs(newSelection) % length) ) 
+						%length : (newSelection % 
+								length);
+		        int optionSrNo = levelMenu.getOptions()[toSelect].srNo;
+		        levelMenu.selectOption(optionSrNo);
+			}
+		}
+	}
+	
+	private void updateSelectionMainMenu(MainMenu mainMenu){
+		if (InputController.pressedEnter() || InputController.pressedLeftMouse()){
+			done(mainMenu.selectedOption);
+		}  else if (InputController.pressedDown() && !InputController.pressedUp()){
 	         //newSelection % length
 	         //(n < 0) ? (m - (abs(n) % m) ) %m : (n % m);
 	         //taken from http://stackoverflow.com/questions/5385024/mod-in-java-produces-negative-numbers
-	         int newSelection = mainMenu.selectedOption+1;
+	    	 int newSelection = mainMenu.getCurIndexOption() + 1;
 	         int length = mainMenu.getOptions().length;
 	         int toSelect = (newSelection < 0) ? (length - 
 						(Math.abs(newSelection) % length) ) 
 						%length : (newSelection % 
 								length);
-			mainMenu.selectOption(toSelect);
-		}   else if ((InputController.pressedS() && !InputController.pressedW())){
-			//Actions go from up down, so we need to flip
-			int newSelection = mainMenu.selectedOption-1;
+		     int optionSrNo = mainMenu.getOptions()[toSelect].srNo;
+		     mainMenu.selectOption(optionSrNo);
+		}   else if (InputController.pressedUp() && !InputController.pressedDown()){
+	    	 int newSelection = mainMenu.getCurIndexOption() - 1;
 	        int length = mainMenu.getOptions().length;
 	        int toSelect = (newSelection < 0) ? (length - 
 						(Math.abs(newSelection) % length) ) 
 						%length : (newSelection % 
 								length);
-	        mainMenu.selectOption(toSelect);
+	        // at the moment we are storing the srNo NOT THE INDEX!
+	        int optionSrNo = mainMenu.getOptions()[toSelect].srNo;
+	        mainMenu.selectOption(optionSrNo);
 		}
 	}
-	
 	public void resetMenu(){
 		isDone = false;
 	}

@@ -17,7 +17,23 @@ public class MouseOverController {
 	Action hAction;
 	SelectionMenu currMenu;
 	
+	private static boolean DISABLE_MOUSE = true;
+
+	public void update(Option[] options, Menu Menu){
+		float x = InputController.getMouseX();
+		float y = InputController.getMouseY();
+		for(Option o: options){
+			if (o.contains(x,y,canvas,board)){
+				Menu.selectOption(o.srNo);
+			}
+		}
+		
+	}
+
 	public void update(SelectionMenu currMenu1,Characters characters){
+		if (DISABLE_MOUSE){
+			return;
+		}
 		hAction = null;
 		currMenu = null;
 		if (currMenu1 != null){
@@ -35,15 +51,18 @@ public class MouseOverController {
 		for(Character c: characters){
 			for (Action a: c.getSelectionMenu().getActions()){
 				if (a.contains(x,y,canvas,board)){
-//					hAction = a;
-//					currMenu = currMenu1;
-//					currMenu.setSelectedAction(hAction.position);
+					hAction = a;
+					currMenu = currMenu1;
 				}
 			}
 			if (c.contains(x,y,canvas,board)){
 				highlighted = c;
 				highlighted.setHovering();
 			}
+		}
+		
+		if (hAction != null){
+			currMenu.setSelectedAction(hAction.position);
 		}
 		
 	}
@@ -62,7 +81,7 @@ public class MouseOverController {
 		int y = (int)highlighted.getYMin(canvas, board);
 		int x_width = (int)(highlighted.getXMax(canvas, board) - highlighted.getXMin(canvas, board));
 		int y_width = (int)(highlighted.getYMax(canvas, board) - highlighted.getYMin(canvas, board));
-		screen.setCurrentHighlight(x, y, x_width, y_width);
+		screen.addCurrentHighlight(x, y, x_width, y_width);
 	}
 
 	public void clearAll() {

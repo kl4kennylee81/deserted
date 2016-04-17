@@ -22,6 +22,9 @@ public class ActionEditor {
 	private TextField damageText;
 	private TextField rangeText;
 	private SelectBox<String> patternSelect;
+	private SelectBox<String> oneHitSelect;
+	private SelectBox<String> canBlockSelect;
+	private SelectBox<String> needsToggleSelect;
 	private SelectBox<String> typeSelect;
 	private TextField effectNameText;
 	private TextField roundText;
@@ -64,6 +67,18 @@ public class ActionEditor {
 						"PROJECTILE", "INSTANT"};
 		patternSelect.setItems(patterns);
 		
+		String[] booleans = {"true","false"};
+		Label oneHitLabel = new Label("One Hit:", skin);
+		oneHitSelect = new SelectBox<String>(skin);
+		oneHitSelect.setItems(booleans);
+		
+		Label canBlockLabel = new Label("Can Block:", skin);
+		canBlockSelect = new SelectBox<String>(skin);
+		canBlockSelect.setItems(booleans);
+		
+		Label needsToggleLabel = new Label("Needs Toggle:", skin);
+		needsToggleSelect = new SelectBox<String>(skin);
+		needsToggleSelect.setItems(booleans);
 		
 		Label typeLabel = new Label("Effect Type:", skin);
 		typeSelect = new SelectBox<String>(skin);
@@ -126,6 +141,18 @@ public class ActionEditor {
 		
 		table.add(patternLabel);
 		table.add(patternSelect).width(OBJECT_WIDTH).pad(PADDING);
+		table.row();
+		
+		table.add(oneHitLabel);
+		table.add(oneHitSelect).width(OBJECT_WIDTH).pad(PADDING);
+		table.row();
+		
+		table.add(canBlockLabel);
+		table.add(canBlockSelect).width(OBJECT_WIDTH).pad(PADDING);
+		table.row();
+		
+		table.add(needsToggleLabel);
+		table.add(needsToggleSelect).width(OBJECT_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(typeLabel);
@@ -196,6 +223,18 @@ public class ActionEditor {
 		return patternSelect.getSelected();
 	}
 	
+	public Boolean getOneHit() {
+		return Boolean.parseBoolean(oneHitSelect.getSelected());
+	}
+	
+	public Boolean getCanBlock() {
+		return Boolean.parseBoolean(canBlockSelect.getSelected());
+	}
+	
+	public Boolean getNeedsToggle() {
+		return Boolean.parseBoolean(needsToggleSelect.getSelected());
+	}
+	
 	public String getType() {
 		return typeSelect.getSelected();
 	}
@@ -240,7 +279,8 @@ public class ActionEditor {
 	}
 
 	public void setUpEdit(String id, String name, String cost, String damage, String range,
-			String pattern, String type, String effectName, String rounds,
+			String pattern, String oneHit, String canBlock,
+			String needsToggle, String type, String effectName, String rounds,
 			String magnitude, String description, Integer persistRound, 
 			Double persistSpeed, String animation) {
 		idText.setText(id);
@@ -249,6 +289,9 @@ public class ActionEditor {
 		damageText.setText(damage);
 		rangeText.setText(range);
 		patternSelect.setSelected(pattern);
+		oneHitSelect.setSelected(oneHit);
+		canBlockSelect.setSelected(canBlock);
+		needsToggleSelect.setSelected(needsToggle);
 		typeSelect.setSelected(type);
 		effectNameText.setText(effectName);
 		roundText.setText(rounds);
@@ -272,6 +315,9 @@ public class ActionEditor {
 		damageText.setText("");
 		rangeText.setText("");
 		patternSelect.setSelectedIndex(0);
+		oneHitSelect.setSelectedIndex(0);
+		canBlockSelect.setSelectedIndex(0);
+		needsToggleSelect.setSelectedIndex(0);
 		typeSelect.setSelectedIndex(0);
 		effectNameText.setText("");
 		roundText.setText("");

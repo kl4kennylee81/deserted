@@ -40,6 +40,9 @@ public class ActionNodes{
 		Coordinate[] path;
 		int pathIndex;
 		
+		//projectile animation
+		AnimationNode animation;
+		
 		public ActionNode(){
 			reset();
 		}
@@ -78,6 +81,10 @@ public class ActionNodes{
 			this.curY = curY;
 			this.path = path;
 			curRound = 0;
+		}
+		
+		public void setAnimation(){
+			this.animation = new AnimationNode(this.action.projectileAnimation);
 		}
 
 		public int getCurrentX(){

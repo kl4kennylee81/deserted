@@ -1,8 +1,12 @@
 package edu.cornell.gdiac.ailab;
 
 import java.util.Iterator;
-import java.util.List; 
+import java.util.List;
 
+import org.json.simple.JSONArray;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -10,54 +14,60 @@ import edu.cornell.gdiac.ailab.TextMessage.Message;
 
 public class GameplayController {
 	/** Subcontroller for actions (CONTROLLER CLASS) */
-    private ActionController actionController;
+    protected ActionController actionController;
     /** Subcontroller for selection menu (CONTROLLER CLASS) */
-    private SelectionMenuController selectionMenuController;
+    protected SelectionMenuController selectionMenuController;
     /** Subcontroller for action bar (CONTROLLER CLASS) */
-    private ActionBarController actionBarController;
+    protected ActionBarController actionBarController;
     /** Subcontroller for persisting actions (CONTROLLER CLASS) */
-    private PersistingController persistingController;
+    protected PersistingController persistingController;
     /** Subcontroller for AI selection (CONTROLLER CLASS) */
-    private AIController aiController;
+    protected AIController aiController;
     /** Subcontroller for managing effects */
-    private EffectController effectController;
+    protected EffectController effectController;
     /** Subcontroller for managing mouse over highlighting */
-    private MouseOverController mouseOverController;
+    protected MouseOverController mouseOverController;
 	
 	/** Current Models */
-    private GridBoard board;
-    private Characters characters;
-    private TextMessage textMessages;
-    private AnimationPool animations;
+    protected GridBoard board;
+    protected Characters characters;
+    protected TextMessage textMessages;
+    protected AnimationPool animations;
     
-    private HighlightScreen screen;
     
-    private String prompt;
+    protected HighlightScreen screen;
+    
+    protected String prompt;
     
     /** Current state of game */
-    private InGameState inGameState;
+    protected InGameState inGameState;
+    protected FileHandle fileNumFile;
+    protected int fileNum;
+    protected FileHandle dataFile;
+    protected JSONArray jsonArray;
     
     public static enum InGameState {
 		NORMAL,
 		SELECTION,
 		ATTACK,
+		PAUSED,
 		DONE
 	}
     
-    public GameplayController(MouseOverController moc){
+    public GameplayController(MouseOverController moc, FileHandle file, int fileNum){
     	mouseOverController = moc;
+    	fileNumFile = file;
+    	this.fileNum = fileNum;
     }
     
     public void resetGame(Level level){
     	inGameState = InGameState.NORMAL;
-		
-    	int boardWidth = level.getBoardWidth();
-    	int boardHeight = level.getBoardHeight();
-    	Texture boardMesh = level.getBoardTexture();
+    	fileNum++;
+		dataFile = GameEngine.dataGen ? new FileHandle(Constants.DATA_PATH+"data/data"+fileNum) : null;
+		jsonArray = new JSONArray();
     	
         // Create the models.
-        board = new GridBoard(boardWidth,boardHeight);
-        board.setTileTexture(boardMesh);
+        board = level.getBoard();
         this.characters = level.getCharacters();
         screen = new HighlightScreen();
         
@@ -68,9 +78,9 @@ public class GameplayController {
         actionController = new ActionController(board,characters,textMessages,animations);
         selectionMenuController = new SelectionMenuController(board,characters);
         actionBarController = new ActionBarController(characters);
-        aiController = new AIController(board,characters);
+        aiController = new AIController(board,characters,level.getTacticalManager());
         persistingController = new PersistingController(board,characters,textMessages,animations);
-        effectController = new EffectController(characters);
+        effectController = new EffectController();
         mouseOverController.init(screen, board);
     }
     
@@ -80,7 +90,7 @@ public class GameplayController {
     	case NORMAL:
     		// update the character models
     		characters.update();
-    		effectController.update();
+    		effectController.update(characters,board);
     		actionBarController.update();
     		persistingController.update();
     		mouseOverController.update(selectionMenuController.getMenu(),characters);
@@ -98,12 +108,11 @@ public class GameplayController {
     		mouseOverController.clearAll();
     		selectionMenuController.update();
     		mouseOverController.update(selectionMenuController.getMenu(),characters);
-    		prompt = "Choose an Action";
-    		selectionMenuController.setPrompt(prompt);
     		if (selectionMenuController.isDone()){
     			inGameState = InGameState.NORMAL;
     			prompt = null;
     			board.reset();
+    			aiController.outputData(jsonArray);
     		}
     		break;
     	case ATTACK:
@@ -123,6 +132,10 @@ public class GameplayController {
     	removeDead();
     	if (gameOver()){
     		inGameState = InGameState.DONE;
+    		if(GameEngine.dataGen){
+    			dataFile.writeString(jsonArray.toString(), false);
+        		fileNumFile.writeString(""+fileNum, false);
+    		}
     		ObjectLoader.getInstance().unloadCurrentLevel();
     	}
     }
@@ -141,7 +154,7 @@ public class GameplayController {
         screen.draw(canvas);
     	board.draw(canvas);
     	drawCharacters(canvas);
-        animations.draw(canvas,board);
+        animations.draw(canvas,board,inGameState);
         
         textMessages.draw(canvas,board);
         if (prompt != null){
@@ -155,7 +168,7 @@ public class GameplayController {
     //Change how i do this.
     //This needs to be done so characters below show over characters above and selection menu
     //shows over characters.
-    private void drawCharacters(GameCanvas canvas){
+    protected void drawCharacters(GameCanvas canvas){
 		boolean shouldDim = inGameState == InGameState.SELECTION || 
 				mouseOverController.isCharacterHighlighted();
     	characters.draw(canvas,shouldDim);
@@ -163,15 +176,15 @@ public class GameplayController {
     		for (Character c : characters){
     			
     			if (c.yPosition == i && c.isAlive()){
-    				c.drawCharacter(canvas,board,shouldDim);
+    				c.drawCharacter(canvas,board,shouldDim,this.inGameState);
     			}
     			if (c.getShadowY() == i && c.needShadow() && c.isAlive()){
-    				c.drawShadowCharacter(canvas,board);
+    				c.drawShadowCharacter(canvas,board,this.inGameState);
     			}
             }
     	}
         for (Character c : characters){
-        	c.draw(canvas,board);
+        	c.draw(canvas,board,inGameState);
         }
     }
     
@@ -182,9 +195,8 @@ public class GameplayController {
 			canvas.drawText("RED SIDE WINS", 400, 400, Color.BLACK);
 		} else if (rightsideDead()){
 			canvas.drawText("BLUE SIDE WINS", 400, 400, Color.BLACK);
-		} else {
-			System.out.println("SHOULD NEVER GET HERE");
-		}
+		} else 
+			
 	    canvas.drawText("Press R to return", 400, 360, Color.BLACK);
     }
     

@@ -1,0 +1,261 @@
+0:
+  text: "Welcome to Tutorial Level 1! This level will teach you about the basic
+  rules and controls of the game."
+  paused: true
+  finishGame: true
+  levelColor: WHITE
+  spaceToContinue: true
+
+
+1:
+  text: "You control the characters on the left side of the field."
+  spaceToContinue: true
+  paused: true
+  highlightRegions:
+    - xPos: 0.24
+      yPos: 0.15
+      width: 0.1
+      height: 0.22
+      arrow: down
+
+2:
+  text: "Each character is governed by their action bar."
+  spaceToContinue: true
+  paused: true
+  highlightRegions:
+    - xPos: 0.24
+      yPos: 0.15
+      width: 0.1
+      height: 0.22
+      arrow: down
+    - xPos: 0.24
+      yPos: 0.9
+      width: 0.46
+      height: 0.06
+      arrow: up
+
+3:
+  text: "Watch the action bar."
+  dontWriteText: true
+  paused: false
+  spaceToContinue: false
+  highlightRegions:
+    - xPos: 0.24
+      yPos: 0.15
+      width: 0.1
+      height: 0.22
+      arrow: down
+    - xPos: 0.24
+      yPos: 0.9
+      width: 0.46
+      height: 0.06
+      arrow: up
+
+4:
+  text: "When your character’s icon reaches the beginning of the red portion, the
+   game pauses and you can plan out your character’s next few actions.\nYou can choose from the available actions for this character on the menu here."
+  spaceToContinue: true
+  paused: true
+  highlightRegions:
+    - xPos: 0.
+      yPos: 0.15
+      width: 0.11
+      height: 0.4
+      arrow: left
+5:
+  text: "Descriptions of each action are displayed here."
+  spaceToContinue: true
+  paused: true
+  highlightRegions:
+    - xPos: 0.32
+      yPos: 0.6
+      width: 0.33
+      height: 0.06
+      arrow: left
+
+6:
+  text: "Try selecting \"Move\". Navigate to the \"Move\" option on the
+  selection menu using W/S or Up/Down and press Enter."
+  spaceToContinue: false
+  paused: false
+  confirm: false
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: RIGHT
+
+7:
+  text: "The yellow tiles indicate where your character can
+  move to, and the blue tile indicates the current selection.
+  \n\nMove right using WASD or the Arrow keys and press Enter to select."
+  spaceToContinue: false
+  paused: false
+  confirm: false
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: RIGHT
+
+8:
+  text: "Even though you've selected to move, your character hasn't moved just
+  yet! \nNote how Move appears over the first unit of the red portion of their cast bar."
+  spaceToContinue: true
+  paused: true
+  highlightRegions:
+      - xPos: 0.49
+        yPos: 0.89
+        width: 0.055
+        height: 0.07
+        arrow: up
+
+9:
+  text: "Your \"Move\" action will execute when your character's icon reaches
+   the end of this slot above when play resumes."
+  spaceToContinue: true
+  paused: true
+  highlightRegions:
+        - xPos: 0.535
+          yPos: 0.89
+          width: 0.015
+          height: 0.07
+          arrow: up
+
+10:
+  text: "You can continue to fill the cast bar with other actions, and then
+  they will be executed sequentially when the icon progresses past their points.
+  \n\nLet’s fill up your character's action bar with other actions before ending her turn.
+  \n\nSelect \"Straight\" and Press Enter"
+  spaceToContinue: false
+  paused: false
+  confirm: false
+  actions:
+    - actionId: 1
+      xPos: 0
+      yPos: 0
+      direction: NONE
+
+11:
+  text: "A straight attack fires a projectile along the highlighted path.
+  \n\nA projectile will hit the first opponent in its path and inflict damage on them.
+  \n\nIf there is no opponent in its path by the end of its range it will have no effect
+  \n\nPress Enter Again"
+  spaceToContinue: false
+  paused: false
+  confirm: false
+  actions:
+    - actionId: 1
+      xPos: 0
+      yPos: 0
+      direction: NONE
+
+12:
+  text: "Fill in your last action slot with a \"Move\" Up. Let's see if you can
+  do this on your own!"
+  spaceToContinue: false
+  paused: false
+  confirm: false
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: UP
+
+13:
+  text: "You know what to do!"
+  spaceToContinue: false
+  paused: false
+  confirm: false
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: UP
+
+14:
+  text: "Now that we have selected enough actions to fill all of our action slots
+  select \"Confirm\" to confirm these choices. \n\n(During actual gameplay you can go back on
+  any action by pressing Backspace)"
+  spaceToContinue: false
+  paused: false
+  confirm: true
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: RIGHT
+    - actionId: 1
+      xPos: 0
+      yPos: 0
+      direction: NONE
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: UP
+15:
+  text: "Well done! Press Spacebar when you are ready for play to resume. During
+  actual gameplay, play automatically resumes after you confirm your actions"
+  spaceToContinue: false
+  paused: true
+  timeToPause: 55
+
+16:
+  text: ""
+  spaceToContinue: false
+  paused: false
+
+17:
+  text: "As you can see your character has completed the move you planned when
+  her icon progressed across the first action slot. In actual gameplay, play will not
+  pause for actions to be completed, they will seamlessly occur while play is in progress"
+  spaceToContinue: true
+  paused: true
+
+18:
+  text: ""
+  spaceToContinue: false
+  paused: false
+
+19:
+  text: "Your opponent entered his red zone, so he is selecting his next few
+  moves now. You cannot see what he has chosen. In actual gameplay when you play
+  against an AI, play will not pause for opponents to choose their actions,
+  it will only pause for you to choose yours!"
+  spaceToContinue: true
+  paused: true
+  timeToPause: 55
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: RIGHT
+
+20:
+  text: ""
+  spaceToContinue: false
+  paused: false
+
+21:
+  text: "You’ve hit the opponent! Getting hit takes health points. When health
+  reaches 0 the character faints and disappears from the screen. When either side has
+  no characters left, the other side wins"
+  spaceToContinue: true
+  paused: true
+
+22:
+  text: "Notice also that hitting your opponent reduced the size of the blue phase of
+  his action bar. When you lose health, your cast time decreases, so you have to
+  wait less before you can make an action again”"
+  spaceToContinue: true
+  paused: true
+  highlightRegions:
+    - xPos: 0.24
+      yPos: 0.835
+      width: 0.48
+      height: 0.06
+      arrow: up
+
+
+# show what cast bar was like
+# draw arrows when you highlight things

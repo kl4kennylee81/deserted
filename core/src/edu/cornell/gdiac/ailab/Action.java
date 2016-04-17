@@ -8,10 +8,16 @@ public class Action implements GUIElement {
 	int cost;
 	int damage;
 	int range;
+	/** horizontal width of action, used for projectiles*/
+	int size;
+	boolean oneHit;
+	boolean canBlock;
+	boolean needsToggle;
 	Pattern pattern;
 	Effect effect;
 	String description;
 	Animation animation;
+	Animation projectileAnimation;
 	
 	TexturedMesh menuToken;
 	TexturedMesh barToken;
@@ -28,6 +34,7 @@ public class Action implements GUIElement {
 		MOVE,
 		SHIELD,
 		STRAIGHT,
+		HORIZONTAL,
 		DIAGONAL,
 		SINGLE,
 		NOP,
@@ -35,24 +42,22 @@ public class Action implements GUIElement {
 		INSTANT
 	}
 	
-	public Action(String name, int cost, int damage, int range, Pattern pattern, Effect effect, String description){
+	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, boolean oneHit, boolean canBlock,boolean needsToggle, Effect effect, String description){
 		this.name = name;
 		this.cost = cost;
 		this.damage = damage;
 		this.range = range;
+		this.size = size;
 		this.pattern = pattern;
+		this.oneHit = oneHit;
+		this.canBlock = canBlock;
+		this.needsToggle = needsToggle;
 		this.effect = effect;
 		this.description = description;
 	}
 	
-	public Action(String name, int cost, int damage, int range, Pattern pattern, Effect effect, String description, String strpath){
-		this.name = name;
-		this.cost = cost;
-		this.damage = damage;
-		this.range = range;
-		this.pattern = pattern;
-		this.effect = effect;
-		this.description = description;
+	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, boolean oneHit, boolean canBlock,boolean needsToggle, Effect effect, String description, String strpath){
+		this(name, cost, damage, range, size, pattern, oneHit, canBlock,needsToggle, effect, description);
 		
 		if ((this.pattern == Pattern.PROJECTILE||this.pattern == Pattern.INSTANT)&&strpath!=""){
 			// path string for a straight range 3 looks like this "0,0 1,0 2,0, 3,0" with 0,0 being the character current position"
@@ -75,6 +80,38 @@ public class Action implements GUIElement {
 		}
 	}
 	
+	
+	/**
+	 * helper function that tells if this action would hit (targetX, targetY) starting
+	 * from (startX, startY).
+	 */
+	public boolean hitsTarget(int startX, int startY, int targetX, int targetY, boolean leftside, GridBoard board){
+		if(pattern == pattern.MOVE || pattern == pattern.NOP || pattern == pattern.SHIELD){
+			return false;
+		}
+		switch(pattern){
+		case SINGLE:
+			return this.singleCanTarget(startX, startY, targetX, targetY);
+		case STRAIGHT:
+			return startY == targetY && (Math.abs(startX - targetX) <= range);
+		case HORIZONTAL:
+			return targetX == board.width - 1 - startX;
+		case DIAGONAL:
+			if(Math.abs(startX - targetX) > range){
+				return false;
+			}
+			if(leftside){
+				return Math.abs(startX + 1 - targetX) == Math.abs(startY - targetY);
+			}
+			else{
+				return Math.abs(startX - 1 - targetX) == Math.abs(startY - targetY);
+			}
+		default:
+			return isOnPath(startX, startY, targetX, targetY, leftside);
+		}		
+	}
+	
+	
 	/** helper function you pass in the starting location of the path startX and startY
 	 * returns if (targetX,targetY) is on the path trajectory
 	 * @param startX: starting x position of path
@@ -92,7 +129,7 @@ public class Action implements GUIElement {
 		if (leftside) {
 			for (int i = 0; i < path.length; i++){
 				int x = startX + path[i].x;
-				int y = startX + path[i].y;
+				int y = startY + path[i].y;
 				if (x == targetX && y == targetY){
 					return true;
 				}
@@ -101,7 +138,7 @@ public class Action implements GUIElement {
 		} else {
 			for (int i = 0; i < path.length; i++){
 				int x = startX - path[i].x;
-				int y = startX + path[i].y;
+				int y = startY + path[i].y;
 				if (x == targetX && y == targetY){
 					return true;
 				}
@@ -110,8 +147,25 @@ public class Action implements GUIElement {
 		}	
 	}
 	
+	public boolean getNeedsToggle(){
+		return this.needsToggle;
+	}
+	
+	public boolean singleCanTarget(int startX,int startY, int targetX,int targetY){
+		// check with range from epicenter
+		int diffX = Math.abs(targetX - startX);
+		int diffY = Math.abs(targetY - startY);
+		return (diffX+diffY) < this.range;
+	}
+	
 	public void setAnimation(Animation animation){
 		this.animation = animation;
+	}
+	
+	public void setProjectileAnimation(Animation projectileAnimation){
+		//System.out.println(name);
+		//System.out.println(projectileAnimation);
+		this.projectileAnimation = projectileAnimation;
 	}
 	
 	public void setX(float x){
@@ -136,12 +190,6 @@ public class Action implements GUIElement {
 	
 	
 	public boolean contains(float x, float y, GameCanvas canvas, GridBoard board){
-//		System.out.println("x is " + x);
-//		System.out.println("y is " + y);
-//		System.out.println("this.x is " + this.x);
-//		System.out.println("this.y is " + this.y);
-//		System.out.println("this.width is " + width);
-//		System.out.println("this.height is " + height);
 		return (x <= this.x+this.width && x >= this.x && y <= this.y + this.height && y >= this.y);
 	}
 }

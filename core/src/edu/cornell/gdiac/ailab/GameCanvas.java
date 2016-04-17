@@ -20,9 +20,12 @@ package edu.cornell.gdiac.ailab;
 import javax.swing.Action;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.*;
 
 /**
@@ -43,6 +46,9 @@ public class GameCanvas {
 	private GlyphLayout layout;
 	/** White texture */
 	private Texture white;
+	
+	/** white texture region that can be transformed **/
+	private TextureRegion whiteRegion;
 	
 	/** Value to cache window width (if we are currently full screen) */
 	int width;
@@ -66,6 +72,16 @@ public class GameCanvas {
 	/** Orthographic camera for the SpriteBatch layer */
 	private OrthographicCamera spriteCam;
 	
+	/**to draw lines for tutorial */
+	ShapeRenderer shapeRenderer;
+	
+	/** Arrows */
+	Texture upArrow = new Texture("models/upArrow.png");
+	Texture downArrow = new Texture("models/downArrow.png");
+	Texture leftArrow = new Texture("models/leftArrow.png");
+	
+	/** Tutorial font */
+	BitmapFont tutorialFont;
 	/**
 	 * Creates a new GameCanvas determined by the application configuration.
 	 * 
@@ -78,9 +94,11 @@ public class GameCanvas {
 
 		active = false;
 		spriteBatch = new SpriteBatch();
+		shapeRenderer = new ShapeRenderer();
 		
 		// Set the projection matrix (for proper scaling)
 		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
+		shapeRenderer.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
 		
 		layout = new GlyphLayout();
 		
@@ -91,6 +109,7 @@ public class GameCanvas {
 		spriteCam = new OrthographicCamera(getWidth(),getHeight());
 		spriteCam.setToOrtho(false);
 		spriteBatch.setProjectionMatrix(spriteCam.combined);
+		shapeRenderer.setProjectionMatrix(spriteCam.combined);
 	}
 	
 	/**
@@ -129,9 +148,11 @@ public class GameCanvas {
 		// Continue as normal
 		active = false;
 		spriteBatch = new SpriteBatch();
+		shapeRenderer = new ShapeRenderer();
 
 		// Set the projection matrix (for proper scaling)
 		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
+		shapeRenderer.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
 		
 		layout = new GlyphLayout();
 		
@@ -150,7 +171,9 @@ public class GameCanvas {
 			return;
 		}
 		spriteBatch.dispose();
+		shapeRenderer.dispose();
     	spriteBatch = null;
+    	shapeRenderer = null;
     	global = null;
     	local  = null;
     	holder = null;
@@ -163,6 +186,10 @@ public class GameCanvas {
 	 */
 	public void setFont(BitmapFont font) {
 		displayFont = font;
+	}
+	
+	public BitmapFont getFont() {
+		return displayFont;
 	}
 
 	/**
@@ -178,6 +205,7 @@ public class GameCanvas {
 	
 	public void setWhite(Texture white) {
 		this.white = white;
+		this.whiteRegion = new TextureRegion(white);
 	}
 	
 	/**
@@ -328,8 +356,10 @@ public class GameCanvas {
 	 public void resize() {
 		// Resizing screws up the spriteBatch projection matrix
 		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
+		shapeRenderer.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
 		spriteCam.setToOrtho(false,getWidth(),getHeight());
 		spriteBatch.setProjectionMatrix(spriteCam.combined);
+		shapeRenderer.setProjectionMatrix(spriteCam.combined);
 		this.width = Gdx.graphics.getWidth();
 		this.height = Gdx.graphics.getHeight();
 	}
@@ -384,6 +414,7 @@ public class GameCanvas {
 	 */
     public void begin() {
     	spriteBatch.begin();
+    	shapeRenderer.begin(ShapeType.Filled);
     	active = true;
     	drawBackground();
     }
@@ -401,6 +432,7 @@ public class GameCanvas {
     public void begin(Affine2 transform) {
     	global.set(transform);
     	spriteBatch.begin();
+    	shapeRenderer.begin(ShapeType.Line);
     	drawBackground();
     }
 
@@ -409,6 +441,7 @@ public class GameCanvas {
 	 */
     public void end() {
     	spriteBatch.end();
+    	shapeRenderer.end();
     	active = false;
     }
 
@@ -774,19 +807,26 @@ public class GameCanvas {
 		spriteBatch.draw(white, x, y, 600*ratio, 20);
 	}
 	
-	public void drawTile(float x, float y, Texture mesh, int width, int height, Color tint){
-		spriteBatch.setColor(tint);
-		spriteBatch.draw(mesh,x,y,width,height);
+	public void setShearBoard(float x,float y,float shearX,float shearY){
+		local.setToShearing(shearX, shearY);
+		local.translate(x, y);
 	}
 	
-	public void drawOption(float sx, float sy, Texture button,float x_size, float y_size, 
+	public void drawTile(float x, float y, TextureRegion mesh, int width, int height, Color tint){	
+		setShearBoard(x,y,Constants.TILE_SHEAR,0);
+		spriteBatch.setColor(tint);
+		spriteBatch.draw(mesh,width,height,local);
+	}
+	
+	public void drawOption(float sx, float sy, Texture button,float width, float height, 
 			Color tint, String text){
 		spriteBatch.setColor(tint);
-		spriteBatch.draw(button,sx,sy,x_size,y_size);
-		//displayFont.draw(spriteBatch, text, sx + x_size/2-65,sy + y_size/2+20);
-		drawCenteredText(text, sx+ x_size/2, sy + y_size/2+20, Color.WHITE);
+		spriteBatch.draw(button,sx,sy,width,height);
+			
+		displayFont.draw(spriteBatch, text, sx + width/2,sy + height/2);
 		//make positions in Option just multipliers of canvas.getWidth and Height for now
-		//TODO: change resizing in the long run
+		//TODO: we should get rid of any hardcoding going on with this what exactly are you trying
+		// to position it because it has to be extensible not just for one menu type.
 	}	
 	
 	public void drawScreen(float sx, float sy, Texture screen,float x_size, float y_size, 
@@ -863,11 +903,65 @@ public class GameCanvas {
 		spriteBatch.draw(white,x,y,width,height);
 	}
 	
+	/** we might change the guide to reflect the game properly **/
+	public void drawTileArrow(float x,float y,float width,float height,Color color){
+		this.setShearBoard(x,y,Constants.TILE_SHEAR,0);
+		spriteBatch.setColor(color);
+		spriteBatch.draw(whiteRegion,width,height,local);
+	}
+	
+	public void drawUpArrow(float x1, float y1, float x2, float y2, Color color){
+		shapeRenderer.setColor(color);
+		shapeRenderer.rectLine(x1, y1, x2, y2, 7f);
+		shapeRenderer.rectLine(x2-25, y2-16, x2-3, y2-3, 6f);
+		shapeRenderer.rectLine(x2+11, y2-21, x2-2, y2-2, 6f);
+	}
+	
+	public void drawUpArrow(float x, float y, Color color) {
+		spriteBatch.setColor(color);
+		spriteBatch.draw(upArrow, x-100, y-100, 135, 135);
+	}
+	
+	public void drawDownArrow(float x, float y, Color color){
+		spriteBatch.setColor(color);
+		spriteBatch.draw(downArrow, x-37, y+10, 135, 135);
+	}
+	
+	public void drawLeftArrow(float x, float y, Color color){
+		spriteBatch.setColor(color);
+		spriteBatch.draw(leftArrow, x-35, y-80, 135, 135);
+	}
+	
+	public GlyphLayout drawBoardWrapText(String msg, float x, float y, Color color) {
+		displayFont.getData().setScale(1);
+		displayFont.setColor(color);
+		float width = (GridBoard.BOARD_OFFSET_X - GridBoard.EXTRA_OFFSET)*getWidth();
+		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
+		return g;
+	}
+	
+	
 	public GlyphLayout drawText(String msg, float x, float y, Color color) {
 		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
-		float width = GridBoard.BOARD_OFFSET_X *getWidth()-GridBoard.EXTRA_OFFSET*getWidth();
+		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y);
+		return g;
+	}
+	
+	public GlyphLayout drawTutorialText(String msg, Color color) {
+		BitmapFont currFont = getFont();
+		displayFont.getData().setScale(1);
+		if (tutorialFont != null){
+			setFont(tutorialFont);
+		}
+		if (color != null){
+			displayFont.setColor(color);
+		}
+		float width = ((float)getWidth())/1.3f;
+		float x = getWidth()/2-width/2;
+		float y = ((float)getHeight())/1.7f;
 		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
+		setFont(currFont);
 		return g;
 	}
 	
@@ -903,7 +997,21 @@ public class GameCanvas {
 		ADDITIVE,
 		/** Color values are draw on top of one another with no transparency support */
 		OPAQUE
-	}	
+	}
+
+	public void drawWarningText(String warning) {
+		displayFont.getData().setScale(2);
+		displayFont.setColor(Color.SCARLET);
+		float width = ((float)getWidth())/2f;
+		float x = getWidth()/2-width/2;
+		float y = ((float)getHeight())/2f;
+		displayFont.draw(spriteBatch, warning, x,y, width, Align.center, true);
+	}
+
+	public void setTutorialFont(BitmapFont font) {
+		tutorialFont = font;
+	}
+	
 }
 //TODO: make draw message take positions rather than hardcoding
 //TODO: in the long run use GlyphLabels to put text in 

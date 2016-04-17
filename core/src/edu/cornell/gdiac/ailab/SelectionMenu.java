@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.utils.Align;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
@@ -30,6 +32,8 @@ public class SelectionMenu {
 
 	private static final float ACTION_POINTER_OFFSET_Y = 15;
 
+	public static final float TEXT_ACTION_OFFSET = 30f;
+
 	private static final float RELATIVE_DESCRIPTION_Y_POS = 0.65f;
 	
 	private static final float RELATIVE_DESCRIPTION_X_POS = 0.5f;
@@ -54,7 +58,6 @@ public class SelectionMenu {
 	
 	public SelectionMenu(Action[] actions){
 		this.actions = actions;
-//		System.out.println("Selection action set to 0");
 		selectedAction = 0;
 		takenSlots = 0;
 		choosingTarget = false;
@@ -179,10 +182,8 @@ public class SelectionMenu {
 	public boolean changeSelected(boolean up,int numSlots){
 		if (up){
 			for (int i = 0; i <= actions.length; i++){
-//				System.out.println("Selection action set to " + selectedAction);
 				selectedAction += 1;
 				selectedAction %= actions.length+1;
-//				System.out.println("Selection action set to " + selectedAction);
 				if (canDoAction(selectedAction,numSlots)){
 					return true;
 				}
@@ -193,7 +194,6 @@ public class SelectionMenu {
 				if (selectedAction < 0){
 					selectedAction += actions.length+1;
 				}
-//				System.out.println("Selection action set to " + selectedAction);
 				if (canDoAction(selectedAction,numSlots)){
 					return true;
 				}
@@ -210,7 +210,6 @@ public class SelectionMenu {
 		if (actions[selectedAction].cost > numSlots - takenSlots){
 			for (int i = 0; i <= actions.length; i++){
 				selectedAction = i;
-//				System.out.println("Selection action set to " + selectedAction);
 				if (canDoAction(selectedAction,numSlots)){
 					return true;
 				}
@@ -221,7 +220,6 @@ public class SelectionMenu {
 	
 	public void reset(){
 		selectedAction = 0;
-//		System.out.println("Selection action set to " + selectedAction);
 		takenSlots = 0;
 		choosingTarget = false;
 		while(selectedActions.peek() != null){
@@ -230,8 +228,10 @@ public class SelectionMenu {
 		}
 	}
 	
+	//TODO: update for dazed
 	public void draw(GameCanvas canvas,CharActionBar actionBar,int count){
-		int numSlots = actionBar.numSlots;
+		int totalNumSlots = actionBar.getTotalNumSlots();
+		int usableNumSlots = actionBar.getUsableNumSlots();
 		
 		if (increasing){
 			lerpVal+=0.02;
@@ -260,19 +260,18 @@ public class SelectionMenu {
 				offset_y += spacing_h + g.height/2;
 			}
 			
-//			System.out.println(action.name + " is at " + i);
 			if (i == selectedAction){
 				selectedPointerOffset = offset_y;
 			}
-			if (action.cost > numSlots - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
+			if (action.cost > usableNumSlots - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
 				Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.2f);
-				 g = canvas.drawText(action.name, text_x, text_y - offset_y, dimColor);
+				 g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, dimColor);
 			} 
 			else if (selectedAction < actions.length && actions[selectedAction].name == action.name){
-				 g = canvas.drawText(action.name, text_x, text_y - offset_y, Color.CORAL);
+				 g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, Color.CORAL);
 			}
 			else {
-				 g = canvas.drawText(action.name, text_x, text_y - offset_y, Color.BLACK);
+				 g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, Color.WHITE);
 			}
 		}
 		
@@ -280,15 +279,14 @@ public class SelectionMenu {
 		offset_y += spacing_h + g.height/2;
 		if (selectedAction == actions.length){
 			selectedPointerOffset = offset_y;
-			g = canvas.drawText("Confirm", text_x, text_y - offset_y, Color.CORAL);
+			g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.CORAL);
 		} else {
-			g = canvas.drawText("Confirm", text_x, text_y - offset_y, Color.GREEN);
+			g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.GREEN);
 		}
 		
 		float pointer_x = text_x - ACTION_POINTER_OFFSET_X;
 		float pointer_y = text_y - selectedPointerOffset -  ACTION_POINTER_OFFSET_Y;//spacing_h*selectedAction - ACTION_POINTER_OFFSET_Y;
 		//draws action name pointers
-//			System.out.println("Pointer is at " + selectedAction);
 		canvas.drawPointer(pointer_x,pointer_y, Color.CORAL);
 		
 		//Draw action bar with 3 black boxes to show 4 slots
@@ -299,13 +297,15 @@ public class SelectionMenu {
 		float slot_height = actionBar.getBarHeight(canvas);
 		
 		int offset = 0;
-		for (int i = 0; i < numSlots; i++){
+		for (int i = 0; i < totalNumSlots; i++){
 			float curSlot_x = actionSlot_x + ((slot_width) * i) + CharActionBar.BAR_DIVIDER_WIDTH;
 			float slot_w_space = slot_width-CharActionBar.BAR_DIVIDER_WIDTH;
 			if (i < takenSlots) {
 				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.RED);
 			} else if (selectedAction < actions.length && i < takenSlots+actions[selectedAction].cost){
 				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE.cpy().lerp(Color.RED,lerpVal));
+			} else if (i >= usableNumSlots){
+				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.GRAY);
 			} else {
 				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE);
 			}
@@ -315,7 +315,7 @@ public class SelectionMenu {
 		for (ActionNode an : selectedActions){
 			float x_pos = actionSlot_x + offset + (slot_width*an.action.cost/2);
 			float y_pos = actionSlot_y;
-			canvas.drawCenteredText(an.action.name, x_pos, y_pos, Color.BLACK);
+			canvas.drawCenteredText(an.action.name, x_pos, y_pos, Color.WHITE);
 			offset+=slot_width*an.action.cost;
 		}
 		
@@ -323,7 +323,7 @@ public class SelectionMenu {
 		if (selectedAction < actions.length){
 			float descript_x = RELATIVE_DESCRIPTION_X_POS *w;
 			float descript_y = RELATIVE_DESCRIPTION_Y_POS * h;
-			canvas.drawCenteredText(actions[selectedAction].description, descript_x,descript_y, Color.BLACK);
+			canvas.drawCenteredText(actions[selectedAction].description, descript_x,descript_y, Color.WHITE);
 		}
 	}
 	
@@ -337,14 +337,23 @@ public class SelectionMenu {
 		float text_x = RELATIVE_TEXT_X_POS * w;
 		float text_y = RELATIVE_TEXT_Y_POS * h;
 		float spacing_h = RELATIVE_TEXT_SPACING * h;
+		BitmapFont b = canvas.getFont();
+		float width = (GridBoard.BOARD_OFFSET_X - GridBoard.EXTRA_OFFSET)*canvas.getWidth();
+		GlyphLayout g = new GlyphLayout(b, actions[0].name, Color.WHITE, width, Align.left, true);
+		float offset_y = actions[0].height;
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
-			float offset_y = spacing_h * i;
-			action.setHeight(15);//TODO change
+			g.setText(b, action.name, Color.WHITE, width, Align.left, true);
+			if (i != 0){
+				 offset_y += spacing_h + g.height/2;
+			}
+			action.setHeight(g.height);//TODO change
 			action.setPosition(i);
-			action.setWidth(80);//TODO change
+			action.setWidth(g.width);//TODO change
 			action.setX(text_x);
 			action.setY(text_y-offset_y);
+//			canvas.drawPointer(text_x,text_y-offset_y-g.height/2, Color.YELLOW);
+//			canvas.drawPointer(text_x+g.width,text_y-offset_y+g.height/2, Color.MAGENTA);
 		}
 	}
 	

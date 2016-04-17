@@ -37,10 +37,10 @@ public class ActionBarController {
 				// Let characters select their attacks
 				c.needsSelection();
 				c.startingCast();
-
 				if (c.isAI){
 					this.isAISelection = true;
 				} else {
+					c.needsDataOutput = true;
 					this.isPlayerSelection = true;
 				}
 			} else if (c.hasAttacks() && c.castPosition >= c.getNextCast()){
@@ -52,6 +52,7 @@ public class ActionBarController {
 				// cast moved accounts for NOPing and stopping going through cast preemptively
 				if (c.castPosition < 1){
 					c.castMoved += Math.abs(1.0f - c.castPosition);
+//					System.out.println("SKIP ACTION BAR Controller "+c.castMoved);
 				}
 				
 				// Reset once done with attacks
