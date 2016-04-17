@@ -28,7 +28,7 @@ public abstract class Menu {
 	}
 	
 	public String getOption(int index){
-		if (this.options.length > index){
+		if (this.options.length > index && index >= 0){
 			return options[index].optionKey;
 		}
 		else{
@@ -44,20 +44,29 @@ public abstract class Menu {
 	}
 	
 	public String getCurOption(){
-		return this.getOption(this.selectedIndex);
+		if (this.selectedIndex >= 0){
+			return this.getOption(this.selectedIndex);
+		}
+		else{
+			return "";
+		}
 	}
 	
 	public void setOption(int newIndex){
-		if (newIndex < options.length){
-			options[selectedIndex].isSelected = false;
+		if (newIndex >= 0 && newIndex < options.length){
+			if (selectedIndex >= 0 && selectedIndex < options.length){
+				options[selectedIndex].isSelected = false;
+			}
 			options[newIndex].isSelected = true;
 			this.selectedIndex = newIndex;
 		}
 	}
 	
 	public void reset(){
-		if (this.options.length > 0){
-			selectedIndex = 0;
+		// reset all the options to be isSelected = false
+		for (Option o:options){
+			o.isSelected = false;
 		}
+		selectedIndex = -1;
 	}
 }

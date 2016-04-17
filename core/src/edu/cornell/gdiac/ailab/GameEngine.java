@@ -223,9 +223,9 @@ public class GameEngine implements Screen {
     }
     
     public void startGame(String levelName) throws IOException {
-    	initializeCanvas(Constants.BCKGD_TEXTURE, Constants.SELECT_FONT_FILE);
-    	Level level = null;
     	if (this.levelDefs.containsKey(levelName)){
+        	initializeCanvas(Constants.BCKGD_TEXTURE, Constants.SELECT_FONT_FILE);
+        	Level level = null;
     		level = this.getLevel(levelName);
     		
         	if (level.getTutorialSteps() == null){
@@ -238,9 +238,9 @@ public class GameEngine implements Screen {
         		gameState = GameState.PLAY;
         	}
     	}
-    	// start matching with keywords to get to levels, options, etc.
+    	// start matching with keywords to get to levels, options, etc. atm its just editors
     	else {
-    		this.startEditor(levelName);
+    		this.startKeyword(levelName);
     	}
     	
     }
@@ -287,6 +287,9 @@ public class GameEngine implements Screen {
 		// Allow the user to reset by pressing "R"
 		checkReset();
         canvas.begin();
+        
+        //update the input controller
+        InputController.update();
 		
 		// What we do depends on the game state
 		switch (gameState) {
@@ -389,10 +392,11 @@ public class GameEngine implements Screen {
 		}
 	}
 	
-	private void startEditor(String keyword) {
+	private void startKeyword(String keyword) {
 		if (keyword == "Action Editor") {
 			try {
 				editorController = new ActionEditorController();
+				gameState = gameState.EDITOR;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -400,6 +404,7 @@ public class GameEngine implements Screen {
 		}else if (keyword == "Character Editor") {
 			try {
 				editorController = new CharacterEditorController();
+				gameState = gameState.EDITOR;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -407,12 +412,12 @@ public class GameEngine implements Screen {
 		}else if (keyword == "Level Editor") {
 			try {
 				editorController = new LevelEditorController();
+				gameState = gameState.EDITOR;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		gameState = gameState.EDITOR;
 	}
 
 	private void loadNextMenu(String levelName) throws IOException {

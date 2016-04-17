@@ -20,6 +20,32 @@ import com.badlogic.gdx.Input;
 public class InputController {
 	
 	public static GameCanvas canvas;
+	
+	public static boolean leftMouseClickedLast = false;
+	
+	public static boolean leftMouseClicked = false;
+	
+	public static void update(){
+		if (leftMouseClickedLast){
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+				leftMouseClicked = false;
+			}
+			else{
+				leftMouseClicked = true;
+				leftMouseClickedLast = false;
+			}
+		}
+		else{
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
+				leftMouseClickedLast = true;
+				leftMouseClicked = false;
+			}
+			else{
+				leftMouseClickedLast = false;
+				leftMouseClicked = false;
+			}
+		}
+	}
     
     public static boolean pressedEnter() {
     	return Gdx.input.isKeyJustPressed(Input.Keys.ENTER);
@@ -76,7 +102,7 @@ public class InputController {
 	}
 	
 	public static boolean pressedLeftMouse(){
-		return Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+		return leftMouseClicked;
 	}
 	
 	public static boolean mouseJustMoved(){
