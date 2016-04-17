@@ -386,7 +386,6 @@ public class GameEngine implements Screen {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
 			loadNextMenu(mainMenuController.levelName);
-
 		}
 	}
 	

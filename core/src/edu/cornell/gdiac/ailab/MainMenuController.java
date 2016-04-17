@@ -257,7 +257,9 @@ public class MainMenuController {
 		}
 	}
 	public void resetMenu(){
-		isDone = false;
+		this.levelName = "";
+		this.menu.reset();
+		this.isDone = false;
 	}
 
 }
