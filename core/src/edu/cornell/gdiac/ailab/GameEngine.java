@@ -177,8 +177,7 @@ public class GameEngine implements Screen {
     	gameState = GameState.LOAD;
     	gameLoad  = 0.0f;
 		canvas = new GameCanvas();
-		
-		FileHandle file = dataGen ? new FileHandle(Constants.DATA_PATH+"data/fileinfo.txt") : null;
+		FileHandle file = Gdx.files.internal("data/fileinfo.txt");
 		fileNum = Integer.parseInt(file.readString());
 		
 		mouseOverController = new MouseOverController(canvas);
