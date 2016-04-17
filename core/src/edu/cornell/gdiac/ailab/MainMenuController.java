@@ -1,5 +1,7 @@
 package edu.cornell.gdiac.ailab;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -7,7 +9,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 public class MainMenuController {
 	/** Current target selection */
 	int selected;
-	public int gameNo;
+	public String levelName;
+	
+	private HashMap<String, HashMap<String, Object>> levelDefs;
+	
 	private boolean isDone;
 	private GameCanvas canvas;
 
@@ -15,30 +20,60 @@ public class MainMenuController {
 	private Menu menu;
 	private MouseOverController mouseOverController;
 	
-	private int LEVEL_SELECT_CODE = 0;
+	private static final String LEVEL_SELECT_NAME = "level select";
+	
+	private static final String MAIN_MENU_NAME = "main menu";
 	
 	
-	public MainMenuController(GameCanvas canvas, AssetManager manager, MouseOverController mouseOverController){
+	public MainMenuController(GameCanvas canvas, AssetManager manager, MouseOverController mouseOverController,
+			HashMap<String, HashMap<String,Object>> levelDefs){
 		this.canvas = canvas;
 		this.manager = manager;
-		Option[] default_options = makeDefaultOptions();
-		this.menu = new MainMenu(default_options);
-		if (default_options.length > 0){
-			menu.selectOption(0);
-		}
+		
+		// the levelDef is needed to create the options
+		this.levelDefs = levelDefs;
+		// initially create the main menu options
+		this.menu = this.createMainMenu();
 		this.mouseOverController = mouseOverController; 
 	}
 	
 	private Option[] makeDefaultOptions() {
-		// we will rearrange when i merge to master
-		Option [] default_options = new Option[3];
-		default_options[0] = new Option("LEVEL SELECT",0);
-		default_options[1] = new Option("TUTORIAL",4);
-		default_options[2] = new Option("LEVEL EDITOR",2);
-		return default_options;
+		if (this.levelDefs == null){
+			Option [] default_options = new Option[0];
+			return default_options;
+		}
+		Option [] default_options = new Option[this.levelDefs.size()];
 		
-		//make a method that sizes and positions them according to the number of options
-		//resize isn't affecting this
+		int i = 0;
+		for (String levelName:levelDefs.keySet()){
+			default_options[i] = new Option(levelName,levelName);
+			i++;
+		}
+		return default_options;
+	}
+	
+	private Option[] makeMainMenuOptions(){
+		Option[] options = new Option[1];
+		options[0] = new Option(LEVEL_SELECT_NAME,LEVEL_SELECT_NAME);
+		return options;
+	}
+	
+	private Option[] makeLevelSelectOptions(){
+		Option[] options;
+		if (this.levelDefs == null){
+			options = new Option[0];
+			return options;
+		}
+		
+		options = new Option[this.levelDefs.size()+1];
+		
+		options[0] = new Option("Back",MAIN_MENU_NAME);
+		int i = 1;
+		for (String levelName:levelDefs.keySet()){
+			options[i] = new Option(levelName,levelName);
+			i++;
+		}
+		return options;
 	}
 
 	public void drawMenu() {
@@ -51,54 +86,53 @@ public class MainMenuController {
 		
 		mouseOverController.update(menu.options, menu);
 		updateSelection();
-		drawMenu();		
+		drawMenu();
+		
+		// this is technically cheating this wont be allowed just used for fast testing
 		if (InputController.pressedP()){
-			done(3);
+			done("pvp");
 		}
 	}
 	
-	public void done(int doneCode){
+	public void done(String levelName){
 		if (menu instanceof MainMenu){
-			if (doneCode == LEVEL_SELECT_CODE){
+			if (levelName == LEVEL_SELECT_NAME){
 				this.menu = createLevelMenu();
 			}
 			else {
-				gameNo = doneCode;
+				this.levelName = levelName;
 				isDone = true;
 			}
 		}
 		else if (menu instanceof LevelMenu){
-			if (doneCode == LEVEL_SELECT_CODE){
+			if (levelName == MAIN_MENU_NAME){
 				this.menu = createMainMenu();
 			}
 			else{
-				gameNo = doneCode;
+				this.levelName = levelName;
 				isDone = true;
 			}
 		}
 	}
 	
 	public Menu createLevelMenu(){
-		Option [] default_options = new Option[4];
-		default_options[0] = new Option("Back",0);
-		default_options[1] = new Option("TUTORIAL 1",4);
-		default_options[2] = new Option("TUTORIAL 2",5);
-		default_options[3] = new Option("LEVEL 1",2);
+		Option [] default_options = this.makeLevelSelectOptions();
 		
 		Menu levelMenu = new LevelMenu(default_options);
 		if (default_options.length > 0){
-			menu.selectOption(0);
+			// DEFAULT FIXUP
+			levelMenu.setOption(0);
 		}
 		return levelMenu;
 	}
 	
 	public Menu createMainMenu(){
-		Option[] default_options = makeDefaultOptions();
-		MainMenu menu = new MainMenu(default_options);
+		Option[] default_options = this.makeMainMenuOptions();
+		MainMenu mainmenu = new MainMenu(default_options);
 		if (default_options.length > 0){
-			menu.selectOption(0);
+			mainmenu.setOption(0);
 		}
-		return menu;
+		return mainmenu;
 	}
 	
 	public boolean isDone(){
@@ -157,7 +191,9 @@ public class MainMenuController {
 		else if (menu instanceof LevelMenu){
 			LevelMenu levelMenu = (LevelMenu) menu;
 			if (InputController.pressedEnter() || InputController.pressedLeftMouse()){
-				done(levelMenu.selectedOption);
+				// fixup to get cur option string from the index
+				String levelKey = levelMenu.getCurOption();
+				done(levelKey);
 			}
 			
 		     else if (InputController.pressedRight() && !InputController.pressedLeft()){
@@ -170,8 +206,7 @@ public class MainMenuController {
 							(Math.abs(newSelection) % length) ) 
 							%length : (newSelection % 
 									length);
-			     int optionSrNo = levelMenu.getOptions()[toSelect].srNo;
-			     levelMenu.selectOption(optionSrNo);
+			     levelMenu.setOption(toSelect);
 		     }  
 		     else if (InputController.pressedLeft() && !InputController.pressedRight()){
 				//Actions go from up down, so we need to flip
@@ -181,15 +216,20 @@ public class MainMenuController {
 						(Math.abs(newSelection) % length) ) 
 						%length : (newSelection % 
 								length);
-		        int optionSrNo = levelMenu.getOptions()[toSelect].srNo;
-		        levelMenu.selectOption(optionSrNo);
+		        levelMenu.setOption(toSelect);
 			}
 		}
 	}
 	
 	private void updateSelectionMainMenu(MainMenu mainMenu){
+		if (mainMenu.getOptions().length <= 0){
+			return;
+		}
+		
 		if (InputController.pressedEnter() || InputController.pressedLeftMouse()){
-			done(mainMenu.selectedOption);
+			// fixup to get cur option string from the index
+			String levelKey = mainMenu.getCurOption();
+			done(levelKey);
 		}  else if (InputController.pressedDown() && !InputController.pressedUp()){
 	         //newSelection % length
 	         //(n < 0) ? (m - (abs(n) % m) ) %m : (n % m);
@@ -200,8 +240,9 @@ public class MainMenuController {
 						(Math.abs(newSelection) % length) ) 
 						%length : (newSelection % 
 								length);
-		     int optionSrNo = mainMenu.getOptions()[toSelect].srNo;
-		     mainMenu.selectOption(optionSrNo);
+
+		     mainMenu.setOption(toSelect);
+		     
 		}   else if (InputController.pressedUp() && !InputController.pressedDown()){
 	    	 int newSelection = mainMenu.getCurIndexOption() - 1;
 	        int length = mainMenu.getOptions().length;
@@ -209,9 +250,7 @@ public class MainMenuController {
 						(Math.abs(newSelection) % length) ) 
 						%length : (newSelection % 
 								length);
-	        // at the moment we are storing the srNo NOT THE INDEX!
-	        int optionSrNo = mainMenu.getOptions()[toSelect].srNo;
-	        mainMenu.selectOption(optionSrNo);
+	        mainMenu.setOption(toSelect);
 		}
 	}
 	public void resetMenu(){

@@ -6,8 +6,10 @@ public abstract class Menu {
 	/** Available options to use */
 	Option[] options;
 
-	/** Index of current option */
-	public int selectedOption;
+	/** Name of current option */
+	
+	/** will change to index again don't worry lads the calvary is here **/
+	public int selectedIndex;
 	
 	/** option texture **/
 	Texture optionTexture;
@@ -25,11 +27,31 @@ public abstract class Menu {
 		return optionTexture;
 	}
 	
-	public abstract void selectOption(int optionNo);
-	
-	/** return the index if found otehrwise return -1 **/
-	public abstract int getIndexOption(int optionNo);
+	public String getOption(int index){
+		if (this.options.length > index){
+			return options[index].optionKey;
+		}
+		else{
+			
+			// we will have empty string always be catched and just default to do nothing
+			return "";
+		}
+	}
 	
 	/** return the current index of the selected option otherwise return -1 **/
-	public abstract int getCurIndexOption();
+	public int getCurIndexOption(){
+		return this.selectedIndex;
+	}
+	
+	public String getCurOption(){
+		return this.getOption(this.selectedIndex);
+	}
+	
+	public void setOption(int newIndex){
+		if (newIndex < options.length){
+			options[selectedIndex].isSelected = false;
+			options[newIndex].isSelected = true;
+			this.selectedIndex = newIndex;
+		}
+	}
 }

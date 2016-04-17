@@ -222,37 +222,11 @@ public class GameEngine implements Screen {
 		scale = (sx < sy ? sx : sy);
     }
     
-    public void startGame(int type) throws IOException {
+    public void startGame(String levelName) throws IOException {
     	initializeCanvas(Constants.BCKGD_TEXTURE, Constants.SELECT_FONT_FILE);
     	Level level = null;
-
-    	switch (type) {
-    	case 0:
-    		level = getLevel("easy");
-    		break;
-    	case 1:
-    		level = getLevel("medium");
-    		break;
-    	case 2:
-    		level = getLevel("hard");
-    		break;
-    	case 3:
-    		level = getLevel("pvp");
-    		break;
-    	case 4:
-    		level = getLevel("tutorial1");
-    		if (manager.isLoaded(Constants.TUTORIAL_FONT_FILE)) {
-    			canvas.setTutorialFont(manager.get(Constants.TUTORIAL_FONT_FILE,BitmapFont.class));
-    		}
-    		break;
-    	case 5:
-    		level = getLevel("tutorial2");
-    		if (manager.isLoaded(Constants.TUTORIAL_FONT_FILE)) {
-    			canvas.setTutorialFont(manager.get(Constants.TUTORIAL_FONT_FILE,BitmapFont.class));
-    		}
-    		break;
-    	default:
-    		break;
+    	if (this.levelDefs.containsKey(levelName)){
+    		level = this.getLevel(levelName);
     	}
     	
     	if (level.getTutorialSteps() == null){
@@ -280,7 +254,12 @@ public class GameEngine implements Screen {
 	 * This is the equivalent of create() in Lab 1
 	 */
 	public void show() {
-		load();
+		try {
+			load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -402,9 +381,8 @@ public class GameEngine implements Screen {
 	private void updateMenu() throws IOException {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
-			loadNextMenu(mainMenuController.gameNo);
-			//to be added to when we add 2 beginning menus
-			//startGame(mainMenuController.gameNo);
+			loadNextMenu(mainMenuController.levelName);
+
 		}
 	}
 	
@@ -434,8 +412,8 @@ public class GameEngine implements Screen {
 		gameState = gameState.EDITOR;
 	}
 
-	private void loadNextMenu(int gameNo) throws IOException {
-		startGame(gameNo);
+	private void loadNextMenu(String levelName) throws IOException {
+		startGame(levelName);
 	}
 
 	/**
@@ -541,7 +519,15 @@ public class GameEngine implements Screen {
 		}
 		return ObjectLoader.getInstance().createLevel(targetLevelDef);
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	private void loadLevels() throws IOException{
+		Yaml yaml = new Yaml();
+		FileHandle levelFile = Gdx.files.internal("yaml/levels.yml");
+		try (InputStream iS = levelFile.read()){
+			this.levelDefs = (HashMap<String, HashMap<String, Object>>) yaml.load(iS);
+		}	
+	}
 	
 	// HELPER FUNCTIONS
 	
@@ -551,8 +537,9 @@ public class GameEngine implements Screen {
 	 * This method add all of the important assets to the asset manager.  However,
 	 * it does not block until the assets are loaded.  This allows us to draw a 
 	 * loading screen while we still wait.
+	 * @throws IOException 
 	 */
-    private void load() {
+    private void load() throws IOException {
 		manager = new AssetManager();
 		manager.setLoader(Mesh.class, new MeshLoader(new InternalFileHandleResolver()));
 		assets = new Array<String>();
@@ -599,10 +586,12 @@ public class GameEngine implements Screen {
 		manager.load(Constants.WHITE_BOX,Texture.class);
 		assets.add(Constants.WHITE_BOX);
 		
-		mainMenuController = new MainMenuController(canvas, manager, mouseOverController);
-		
-		
 		manager.finishLoading();
+		
+		// load all the level defs
+		loadLevels();
+		mainMenuController = new MainMenuController(canvas, manager, mouseOverController,levelDefs);
+		
 		//for some reason the font loading has to be after the call to manager.finishLoading();
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
 		size2Params.fontFileName = Constants.MENU_FONT_FILE;

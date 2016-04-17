@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Option implements GUIElement{
-	int srNo;
+	String optionKey;
 	boolean isSelected;
 	
 	/** relative width ex. 0.3f of the canvas's width **/
@@ -65,9 +65,9 @@ public class Option implements GUIElement{
 		isSelected = true;
 	}
 	
-	public Option(String text, int srNo){
+	public Option(String text,String key){
 		this.text = text;
-		this.srNo = srNo;
+		this.optionKey = key; 
 	}
 	
 	public void setBounds(float x,float y,float width,float height){
@@ -129,8 +129,8 @@ public class Option implements GUIElement{
 		float width_m = this.width * canvas.getWidth();
 		float height_m = this.height * canvas.getHeight();
 		
-		float x_m = this.xPosition*canvas.getWidth()-width_m/2;
-		float y_m = this.yPosition*canvas.getHeight()-height_m/2;
+		float x_m = this.xPosition*canvas.getWidth();
+		float y_m = this.yPosition*canvas.getHeight();
 		return (x <= x_m+width_m && x >= x_m && y <= y_m + height_m && y >= y_m);
 	}
 
