@@ -22,14 +22,16 @@ public class LevelEditor {
 	private SelectBox<String> nextSelect;
 	private TextField widthText;
 	private TextField heightText;
-	private TextField textureText;
-	private TextField aiText;
+	private SelectBox<String> textureSelect;
+	private DropDownTable aiTable;
 
 
 	private TextButton submit;
+	private TextButton back;
 	
 	public LevelEditor (String[] editOps, String[] charIds,
-						String[] addLabels) {
+						String[] addLabels, String[] models,
+						String[] ais) {
 		Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		
 		Label editLabel = new Label("Edit:", skin);
@@ -56,12 +58,14 @@ public class LevelEditor {
 		heightText = new TextField("", skin);
 	
 		Label textureLabel = new Label("Board Texture:", skin);
-		textureText = new TextField("", skin);
+		textureSelect = new SelectBox<String>(skin);
+		textureSelect.setItems(models);
 		
 		Label aiLabel = new Label("AI:", skin);
-		aiText = new TextField("", skin);
+		aiTable = new DropDownTable(ais, null);
 		
 		submit = new TextButton("Submit", skin);
+		back = new TextButton("Back", skin);
 		
 		table = new Table();
 		
@@ -94,15 +98,15 @@ public class LevelEditor {
 		table.row();
 		
 		table.add(textureLabel);
-		table.add(textureText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(textureSelect).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(aiLabel);
-		table.add(aiText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(aiTable).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(submit);
-		
+		table.add(back);
 	}
 	
 	
@@ -149,28 +153,32 @@ public class LevelEditor {
 	}
 	
 	public String getTexture() {
-		return textureText.getText();
+		return textureSelect.getSelected();
 	}
 	
-	public String getAI() {
-		return aiText.getText();
+	public String[] getAI() {
+		return aiTable.getStringValues();
 	}
 	
 	public boolean submitWasClicked() {
 		return submit.isPressed();
 	}
 	
+	public boolean backWasClicked() {
+		return back.isPressed();
+	}
+	
 	public void setUpEdit(String[] allies, String[][] alliesAddtl, String[] enemies, 
 						String[][] enemiesAddtl, String next, String width, 
-					String height, String texture, String ai) {
+					String height, String texture, String[] ai) {
 		idText.setText(editSelect.getSelected());
 		alliesTable.setValues(allies, alliesAddtl);
 		enemiesTable.setValues(enemies, enemiesAddtl);
 		nextSelect.setSelected(next);
 		widthText.setText(width);
 		heightText.setText(height);
-		textureText.setText(texture);
-		aiText.setText(ai);
+		textureSelect.setSelected(texture);
+		aiTable.setValues(ai, null);;
 	}
 	
 	public void setUpAdd() {
@@ -180,8 +188,8 @@ public class LevelEditor {
 		nextSelect.setSelected("");
 		widthText.setText("");
 		heightText.setText("");
-		textureText.setText("");
-		aiText.setText("");
+		textureSelect.setSelectedIndex(0);;
+		aiTable.setValues(null,null);
 	}
 	
 }

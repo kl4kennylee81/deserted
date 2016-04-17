@@ -33,6 +33,7 @@ public class ActionEditor {
 	
 	
 	private TextButton submit;
+	private TextButton back;
 	
 	public ActionEditor (String[] opts, String[] animIds, String newId) {
 		Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
@@ -95,6 +96,7 @@ public class ActionEditor {
 		animationSelect.setItems(animIds);
 
 		submit = new TextButton("Submit", skin);
+		back = new TextButton("Back", skin);
 		
 		table = new Table();
 		
@@ -159,6 +161,7 @@ public class ActionEditor {
 		table.row();
 		
 		table.add(submit);
+		table.add(back);
 	}
 	
 	public Table getTable(){
@@ -232,6 +235,10 @@ public class ActionEditor {
 	}
 	
 	
+	public boolean backWasClicked() {
+		return back.isPressed();
+	}
+
 	public void setUpEdit(String id, String name, String cost, String damage, String range,
 			String pattern, String type, String effectName, String rounds,
 			String magnitude, String description, Integer persistRound, 

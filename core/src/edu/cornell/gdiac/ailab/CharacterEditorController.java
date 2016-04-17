@@ -4,26 +4,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLDecoder;
+import java.security.CodeSource;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -37,6 +31,7 @@ public class CharacterEditorController implements EditorController {
 	private HashMap<Integer, HashMap<String, Object>> animations;
 	private HashMap<Integer, HashMap<String, Object>> actions;
 	private CharacterEditor charEdit;
+	private boolean isDone;
 	
 	public CharacterEditorController() throws IOException{
 		setRoot();
@@ -45,8 +40,9 @@ public class CharacterEditorController implements EditorController {
 		yaml = new Yaml(options);
 		loadChars();
 		stage = new Stage();
+		String[] models = listFiles("models", ".png");
 		charEdit = new CharacterEditor(getIds(), getAnimationIds(), 
-						getActions(), nextId.toString());
+						getActions(), models, nextId.toString());
 		
 		Table table = charEdit.getTable();
 		table.setFillParent(true);
@@ -54,7 +50,41 @@ public class CharacterEditorController implements EditorController {
 		Gdx.input.setInputProcessor(stage);
 		//table.setDebug(true);
 		currentSelection = "Add a new character";
+		isDone = false;
 	}
+	
+//	http://stackoverflow.com/questions/1429172/how-do-i-list-the-files-inside-a-jar-file
+	private String[] listFiles(String dir, String ext) throws IOException {
+		String uri = CharacterEditor.class.getResource("CharacterEditor.class").toString();
+		LinkedList<String> result = new LinkedList<String>();
+		if (!uri.substring(0, 3).equals("jar")) {
+			File directory = new File(ROOT,"core/assets/"+dir);
+			for (String item :directory.list()) {
+				result.add(dir+ "/" +item);
+			}
+			return result.toArray(new String[result.size()]);
+		}else{
+			CodeSource src = CharacterEditor.class.getProtectionDomain().getCodeSource();
+			if (src != null) {
+			  URL jar = src.getLocation();
+			  ZipInputStream zip = new ZipInputStream(jar.openStream());
+			  ZipEntry e = zip.getNextEntry();
+			  result = new LinkedList<String>();
+			  while(e !=null) {
+			    String name = e.getName();
+			    if (name.contains(dir) && name.contains(ext)) {
+			    	result.add(name);
+			      System.out.println(name);
+			    }
+			    e = zip.getNextEntry();
+			  }
+			  return result.toArray(new String[result.size()]);
+			} 
+		}
+		return null;
+		
+	}
+	
 	
 	/**Code taken from http://stackoverflow.com/questions/5527744/java-jar-writing-to-a-file 
 	 * @throws URISyntaxException */
@@ -67,7 +97,6 @@ public class CharacterEditorController implements EditorController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		//add to make work for eclipse
 		String uri = CharacterEditor.class.getResource("CharacterEditor.class").toString();
 		if (!uri.substring(0, 3).equals("jar")) {
@@ -91,9 +120,11 @@ public class CharacterEditorController implements EditorController {
 			Integer id = charEdit.getId();
 			addNewEntry(id);
 			writeCharsToFile();
-			if ( nextId.equals(id) ){
-				nextId++;
-			}
+			reset();
+		}
+		if ( charEdit.backWasClicked() ){
+			stage.dispose();
+			isDone=true;
 		}
 	}
 	
@@ -102,6 +133,37 @@ public class CharacterEditorController implements EditorController {
 		stage.draw();
 	}
 	
+	public boolean isDone() {
+		return isDone;
+	}
+	
+	private void reset() {
+		DumperOptions options = new DumperOptions();
+		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		yaml = new Yaml(options);
+		try {
+			loadChars();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		stage = new Stage();
+		try {
+			String[] models = listFiles("models", ".png");
+			charEdit = new CharacterEditor(getIds(), getAnimationIds(), 
+							getActions(), models, nextId.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Table table = charEdit.getTable();
+		table.setFillParent(true);
+		stage.addActor(table);
+		Gdx.input.setInputProcessor(stage);
+		//table.setDebug(true);
+		currentSelection = "Add a new character";
+	}
 	
 	@SuppressWarnings("unchecked")
 	private void loadChars() throws IOException{

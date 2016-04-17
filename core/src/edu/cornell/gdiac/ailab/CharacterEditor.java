@@ -25,16 +25,17 @@ public class CharacterEditor {
 	private TextField speedText;
 	private TextField castSpeedText;
 	private DropDownTable actionsTable;
-	private TextField textureText;
-	//private SelectBox<String> textureSelect;
-	private TextField iconText;
+	private SelectBox<String> textureSelect;
+	private SelectBox<String> iconSelect;
 	private SelectBox<String> animationSelect;
 	
 	
 	private TextButton submit;
+	private TextButton back;
 	
 	public CharacterEditor (String[] opts, String[] animIds, 
-							String[] actions, String newId) {
+							String[] actions, 
+							String[] models, String newId) {
 		Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		
 		Label editLabel = new Label("Edit:", skin);
@@ -68,18 +69,19 @@ public class CharacterEditor {
 		actionsTable = new DropDownTable(actions, null);
 		
 		Label textureLabel = new Label("Texture:", skin);
-		textureText = new TextField("", skin);
-		//textureSelect = new SelectBox<String>();
-		//textureSelect.setItems(newItems);
+		textureSelect = new SelectBox<String>(skin);
+		textureSelect.setItems(models);
 		
 		Label iconLabel = new Label("Icon:", skin);
-		iconText = new TextField("", skin);
+		iconSelect = new SelectBox<String>(skin);
+		iconSelect.setItems(models);
 		
 		Label animationLabel = new Label("Animation Id:", skin);
 		animationSelect = new SelectBox<String>(skin);
 		animationSelect.setItems(animIds);
 
 		submit = new TextButton("Submit", skin);
+		back = new TextButton("Back", skin);
 		
 		table = new Table();
 		
@@ -121,11 +123,11 @@ public class CharacterEditor {
 		table.row();
 		
 		table.add(textureLabel);
-		table.add(textureText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(textureSelect).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(iconLabel);
-		table.add(iconText).width(OBJ_WIDTH).pad(PADDING);
+		table.add(iconSelect).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(animationLabel);
@@ -133,7 +135,7 @@ public class CharacterEditor {
 		table.row();
 		
 		table.add(submit);
-		
+		table.add(back);
 	}
 	
 	public Table getTable() {
@@ -177,11 +179,11 @@ public class CharacterEditor {
 	}
 	
 	public String getTexture() {
-		return textureText.getText();
+		return textureSelect.getSelected();
 	}
 	
 	public String getIcon() {
-		return iconText.getText();
+		return iconSelect.getSelected();
 	}
 	
 	public String getAnimation() {
@@ -194,6 +196,9 @@ public class CharacterEditor {
 		return submit.isPressed();
 	}
 	
+	public boolean backWasClicked() {
+		return back.isPressed();
+	}
 	
 	public void setUpEdit(String id, String name, String health, String maxHealth, String hex, 
 					String speed, String castSpeed, String[] actions, 
@@ -206,8 +211,8 @@ public class CharacterEditor {
 		speedText.setText(speed);
 		castSpeedText.setText(castSpeed);
 		actionsTable.setValues(actions, null);
-		textureText.setText(texture);
-		iconText.setText(icon);
+		textureSelect.setSelected(texture);
+		iconSelect.setSelected(icon);
 		animationSelect.setSelected(animation);
 	}
 	
@@ -220,8 +225,8 @@ public class CharacterEditor {
 		speedText.setText("");
 		castSpeedText.setText("");
 		actionsTable.setValues(null, null);
-		textureText.setText("");
-		iconText.setText("");
+		textureSelect.setSelectedIndex(0);
+		iconSelect.setSelectedIndex(0);
 		animationSelect.setSelectedIndex(0);
 	}
 	

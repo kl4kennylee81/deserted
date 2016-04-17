@@ -6,10 +6,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
@@ -26,6 +31,7 @@ public class LevelEditorController implements EditorController {
 	private HashMap<String, HashMap<String, Object>> levels;
 	private HashMap<Integer, HashMap<String, Object>> characters;
 	private LevelEditor levelEdit;
+	private boolean isDone;
 	
 	public LevelEditorController() throws IOException{
 		setRoot();
@@ -37,7 +43,10 @@ public class LevelEditorController implements EditorController {
 		String[] labels = new String[2];
 		labels[0] = "X Pos:";
 		labels[1] = "Y Pos:";
-		levelEdit = new LevelEditor(getIds(), getCharIds(), labels);
+		String[] models = listFiles("models", ".png");
+		String[] ai = listFiles("AIyaml", ".yml");
+		levelEdit = new LevelEditor(getIds(), getCharIds(), labels,
+									models, ai);
 		
 		Table table = levelEdit.getTable();
 		table.setFillParent(true);
@@ -45,6 +54,39 @@ public class LevelEditorController implements EditorController {
 		Gdx.input.setInputProcessor(stage);
 		//table.setDebug(true);
 		currentSelection = "Add a new level";
+		isDone = false;
+	}
+	
+//	http://stackoverflow.com/questions/1429172/how-do-i-list-the-files-inside-a-jar-file
+	private String[] listFiles(String dir, String ext) throws IOException {
+		String uri = CharacterEditor.class.getResource("CharacterEditor.class").toString();
+		LinkedList<String> result = new LinkedList<String>();
+		if (!uri.substring(0, 3).equals("jar")) {
+			File directory = new File(ROOT,"core/assets/"+dir);
+			for (String item :directory.list()) {
+				result.add(dir+ "/" +item);
+			}
+			return result.toArray(new String[result.size()]);
+		}else{
+			CodeSource src = CharacterEditor.class.getProtectionDomain().getCodeSource();
+			if (src != null) {
+			  URL jar = src.getLocation();
+			  ZipInputStream zip = new ZipInputStream(jar.openStream());
+			  ZipEntry e = zip.getNextEntry();
+			  result = new LinkedList<String>();
+			  while(e !=null) {
+			    String name = e.getName();
+			    if (name.contains(dir) && name.contains(ext)) {
+			    	result.add(name);
+			      System.out.println(name);
+			    }
+			    e = zip.getNextEntry();
+			  }
+			  return result.toArray(new String[result.size()]);
+			} 
+		}
+		return null;
+		
 	}
 	
 	/**Code taken from http://stackoverflow.com/questions/5527744/java-jar-writing-to-a-file 
@@ -82,6 +124,11 @@ public class LevelEditorController implements EditorController {
 			String id = levelEdit.getId();
 			addNewEntry(id);
 			writeLevelsToFile();
+			reset();
+		}
+		if ( levelEdit.backWasClicked() ){
+			stage.dispose();
+			isDone=true;
 		}
 	}
 	
@@ -90,6 +137,43 @@ public class LevelEditorController implements EditorController {
 		stage.draw();
 	}
 	
+	public boolean isDone() {
+		return isDone;
+	}
+	
+	private void reset() {
+		DumperOptions options = new DumperOptions();
+		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		yaml = new Yaml(options);
+		try {
+			loadLevelsAndChars();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		stage = new Stage();
+		String[] labels = new String[2];
+		labels[0] = "X Pos:";
+		labels[1] = "Y Pos:";
+		String[] models=null;
+		String[] ai=null;
+		try {
+			models = listFiles("models", ".png");
+			ai = listFiles("AIyaml", ".yml");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		levelEdit = new LevelEditor(getIds(), getCharIds(), labels,
+									models, ai);
+		
+		Table table = levelEdit.getTable();
+		table.setFillParent(true);
+		stage.addActor(table);
+		Gdx.input.setInputProcessor(stage);
+		//table.setDebug(true);
+		currentSelection = "Add a new level";
+	}
 	
 	@SuppressWarnings("unchecked")
 	private void loadLevelsAndChars() throws IOException{
@@ -131,12 +215,12 @@ public class LevelEditorController implements EditorController {
 		return options;
 	}
 	
-	private ArrayList<HashMap<String, Object>> generateAlliesEnemyAL(Integer[] allies,
+	private ArrayList<HashMap<String, Object>> generateAlliesEnemyAL(Integer[] charIds,
 												Integer[] xPos, Integer[] yPos) {
 		ArrayList<HashMap<String, Object>> aL = new ArrayList<HashMap<String, Object>>();
-		for (int i=0; i < allies.length; i++) {
+		for (int i=0; i < charIds.length; i++) {
 			HashMap<String, Object> entry = new HashMap<String, Object>();
-			entry.put("id", allies[i]);
+			entry.put("id", charIds[i]);
 			entry.put("xPosition", xPos[i]);
 			entry.put("yPosition", yPos[i]);
 			aL.add(entry);
@@ -151,7 +235,7 @@ public class LevelEditorController implements EditorController {
 		Integer[] yPos = levelEdit.getAlliesAddIntField(1);
 		ArrayList<HashMap<String, Object>> allyList = generateAlliesEnemyAL(allies, xPos, yPos);
 		
-		Integer[] enemies = levelEdit.getAllies();
+		Integer[] enemies = levelEdit.getEnemies();
 		Integer[] enemyXPos = levelEdit.getEnemiesAddIntField(0);
 		Integer[] enemyYPos = levelEdit.getEnemiesAddIntField(1);
 		ArrayList<HashMap<String, Object>> enemyList = generateAlliesEnemyAL(enemies, 
@@ -161,7 +245,7 @@ public class LevelEditorController implements EditorController {
 		Integer width = levelEdit.getWidth();
 		Integer height = levelEdit.getHeight();
 		String texture = levelEdit.getTexture();
-		String ai = levelEdit.getAI();
+		String[] ai = levelEdit.getAI();
 		
 		HashMap<String, Object> entry = new HashMap<String, Object>();
 		entry.put("allies", allyList);
@@ -209,7 +293,7 @@ public class LevelEditorController implements EditorController {
 			String width = ((Integer) level.get("boardWidth")).toString();
 			String height = ((Integer) level.get("boardWidth")).toString();
 			String texture = (String) level.get("boardTexture");
-			String ai = (String) level.get("AI");
+			String[] ai = (String[]) level.get("AI");
 			
 
 			levelEdit.setUpEdit(allies, allyInfo, enemies, enemyInfo, next, width, height, texture, ai);

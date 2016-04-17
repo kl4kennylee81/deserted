@@ -6,4 +6,5 @@ public interface EditorController {
 	
 	public void draw();
 	
+	public boolean isDone();
 }

@@ -346,7 +346,8 @@ public class GameEngine implements Screen {
         }
 		
 		// If the player presses 'R', reset the game.
-        if (gameState != GameState.LOAD && InputController.pressedR()) {
+        if (gameState != GameState.LOAD && gameState != GameState.EDITOR
+        		&& InputController.pressedR()) {
         	mainMenuController.resetMenu();
             gameState = GameState.MENU;
             return true;
@@ -467,8 +468,9 @@ public class GameEngine implements Screen {
 	public void updateEditor() {
 		editorController.update();
 		editorController.draw();
-    	if (InputController.pressedR()) {
+    	if (editorController.isDone()) {
     		editorController = null;
+    		mainMenuController.resetMenu();
     		gameState = gameState.MENU;
     	}
 	}

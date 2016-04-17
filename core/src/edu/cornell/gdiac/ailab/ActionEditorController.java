@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -14,7 +13,6 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -28,6 +26,7 @@ public class ActionEditorController implements EditorController {
 	private HashMap<Integer, HashMap<String, Object>> actions;
 	private HashMap<Integer, HashMap<String, Object>> animations;
 	private ActionEditor actionEdit;
+	private boolean isDone;
 	
 	public ActionEditorController() throws IOException{
 		setRoot();
@@ -43,6 +42,7 @@ public class ActionEditorController implements EditorController {
 		stage.addActor(table);
 		Gdx.input.setInputProcessor(stage);
 		currentSelection = "Add a new action";
+		isDone=false;
 	}
 	
 	/**Code taken from http://stackoverflow.com/questions/5527744/java-jar-writing-to-a-file 
@@ -53,7 +53,6 @@ public class ActionEditorController implements EditorController {
 		try {
 			path = CharacterEditor.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -80,15 +79,46 @@ public class ActionEditorController implements EditorController {
 			Integer id = actionEdit.getId();
 			addNewEntry(id);
 			writeActionsToFile();
-			if ( nextId.equals(id) ){
-				nextId++;
-			}
+			reset();
+		}
+		
+		if ( actionEdit.backWasClicked() ){
+			stage.dispose();
+			isDone=true;
 		}
 	}
 	
 	public void draw() {
 		stage.act();
 		stage.draw();
+	}
+	
+	public boolean isDone() {
+		return isDone;
+	}
+	
+	private void reset() {
+		DumperOptions options = new DumperOptions();
+		options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+		yaml = new Yaml(options);
+		try {
+			loadActions();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		stage = new Stage();
+		try {
+			actionEdit = new ActionEditor(getIds(), getAnimationIds(), nextId.toString());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Table table = actionEdit.getTable();
+		table.setFillParent(true);
+		stage.addActor(table);
+		Gdx.input.setInputProcessor(stage);
+		currentSelection = "Add a new action";
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -143,9 +173,8 @@ public class ActionEditorController implements EditorController {
 		Integer rounds = Integer.parseInt(actionEdit.getRounds());
 		Integer magnitude = Integer.parseInt(actionEdit.getMagnitude());
 		String description = actionEdit.getDescription();
-		String animation = actionEdit.getAnimation();
-		Integer persistingRounds = Integer.parseInt(actionEdit.getPersistRound());
-		Float persistingSpeed = Float.parseFloat(actionEdit.getPersistSpeed());
+		Integer animation = Integer.parseInt(actionEdit.getAnimation());
+		
 		
 		HashMap<String, Object> entry = new HashMap<String, Object>();
 		entry.put("name", name);
@@ -162,10 +191,18 @@ public class ActionEditorController implements EditorController {
 		entry.put("effect", effect);
 		entry.put("description", description);
 		
-		HashMap<String, Object> persisting = new HashMap<String, Object>();
-		persisting.put("numRounds", persistingRounds);
-		persisting.put("moveSpeed", persistingSpeed);
-		entry.put("persisting_action", persisting);
+
+		
+		String persistR= actionEdit.getPersistRound();
+		if (!persistR.equals("")){
+			HashMap<String, Object> persisting = new HashMap<String, Object>();
+			Integer persistingRounds = Integer.parseInt(actionEdit.getPersistRound());
+			Float persistingSpeed = Float.parseFloat(actionEdit.getPersistSpeed());
+			persisting.put("numRounds", persistingRounds);
+			persisting.put("moveSpeed", persistingSpeed);
+			entry.put("persisting_action", persisting);
+		}
+
 		entry.put("animationId", animation);
 		actions.put(id, entry);
 	}
