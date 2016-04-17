@@ -227,16 +227,20 @@ public class GameEngine implements Screen {
     	Level level = null;
     	if (this.levelDefs.containsKey(levelName)){
     		level = this.getLevel(levelName);
+    		
+        	if (level.getTutorialSteps() == null){
+        		gameplayController.resetGame(level);
+        		curGameplayController = gameplayController;
+            	gameState = GameState.PLAY;
+        	} else {
+        		tutorialGameplayController.resetGame(level);
+        		curGameplayController = tutorialGameplayController;
+        		gameState = GameState.PLAY;
+        	}
     	}
-    	
-    	if (level.getTutorialSteps() == null){
-    		gameplayController.resetGame(level);
-    		curGameplayController = gameplayController;
-        	gameState = GameState.PLAY;
-    	} else {
-    		tutorialGameplayController.resetGame(level);
-    		curGameplayController = tutorialGameplayController;
-    		gameState = GameState.PLAY;
+    	// start matching with keywords to get to levels, options, etc.
+    	else {
+    		this.startEditor(levelName);
     	}
     	
     }
@@ -386,22 +390,22 @@ public class GameEngine implements Screen {
 		}
 	}
 	
-	private void startEditor(int gameNo) {
-		if (gameNo == 4) {
+	private void startEditor(String keyword) {
+		if (keyword == "Action Editor") {
 			try {
 				editorController = new ActionEditorController();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else if (gameNo == 5) {
+		}else if (keyword == "Character Editor") {
 			try {
 				editorController = new CharacterEditorController();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else if (gameNo == 6) {
+		}else if (keyword == "Level Editor") {
 			try {
 				editorController = new LevelEditorController();
 			} catch (IOException e) {
@@ -523,8 +527,8 @@ public class GameEngine implements Screen {
 	@SuppressWarnings("unchecked")
 	private void loadLevels() throws IOException{
 		Yaml yaml = new Yaml();
-		FileHandle levelFile = Gdx.files.internal("yaml/levels.yml");
-		try (InputStream iS = levelFile.read()){
+		File levelFile = new File(ROOT,"yaml/levels.yml");
+		try (InputStream iS = new FileInputStream(levelFile)){
 			this.levelDefs = (HashMap<String, HashMap<String, Object>>) yaml.load(iS);
 		}	
 	}

@@ -53,8 +53,11 @@ public class MainMenuController {
 	}
 	
 	private Option[] makeMainMenuOptions(){
-		Option[] options = new Option[1];
+		Option[] options = new Option[4];
 		options[0] = new Option(LEVEL_SELECT_NAME,LEVEL_SELECT_NAME);
+		options[1] = new Option("Action Editor","Action Editor");
+		options[2] = new Option("Character Editor","Action Editor");
+		options[3] = new Option("Level Editor","Action Editor");
 		return options;
 	}
 	
