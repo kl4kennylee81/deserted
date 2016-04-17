@@ -197,18 +197,21 @@ public class GridBoard {
 			float rimSx = this.getTileWidth(canvas)/this.bottomRimMesh.getRegionWidth();
 			float rimSy = 1;
 			float rimY = tileY - this.bottomRimMesh.getRegionHeight();
-			float rimX = tileX + 10;
+			float rimX = tileX + this.bottomRimMesh.getRegionHeight();
 			//FIXUP this hacky thing to get it to the right position figure out why its not aligned
-			canvas.drawTexture(this.bottomRimMesh,rimX, rimY,rimSx,rimSy, color,0,false);
+			canvas.drawBoardRim(bottomRimMesh, rimX, rimY, rimSx, rimSy, 0, 0, color);
 		}
 		// for the rightmost row draw rim
 		if (x == this.getWidth()-1){
-			float rimSx = this.getTileHeight(canvas)/this.bottomRimMesh.getRegionWidth();
-			float rimSy = 0.8f;
+			float rimSx = (this.getTileHeight(canvas)*Constants.TILE_SHEAR)/this.bottomRimMesh.getRegionWidth();
+			float rimSy = 1;
 			float rimY = tileY - this.bottomRimMesh.getRegionHeight();
-			float rimX = tileX + this.getTileWidth(canvas) + 10 + (4f*this.bottomRimMesh.getRegionHeight()*y);
-			//FIXUP this hacky thing to get it to the right position figure out why its not aligned
-			canvas.drawTexture(this.bottomRimMesh,rimX, rimY,rimSx,rimSy, color,57,true);
+			float rimX = tileX + this.getTileWidth(canvas) + this.bottomRimMesh.getRegionHeight() + (this.getTileHeight(canvas)*Constants.TILE_SHEAR*y);
+			
+			float shearX = 0;
+			float shearY = getTileHeight(canvas)/this.bottomRimMesh.getRegionWidth();
+
+			canvas.drawBoardRim(bottomRimMesh, rimX,rimY,rimSx,rimSy,shearX,shearY,color);
 		}
 	}
 	

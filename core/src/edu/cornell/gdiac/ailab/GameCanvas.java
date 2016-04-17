@@ -840,16 +840,11 @@ public class GameCanvas {
 		spriteBatch.draw(texture, x, y, width, height);
 	}
 	
-	public void drawTexture(TextureRegion region,float x,float y,float sx,float sy, Color color,float angle,boolean shearToBoard){
-		if (shearToBoard){
-			this.computeTransform(0, 0, x, y, angle, sx, sy);
-			local.shear(4f,0);
-			spriteBatch.draw(region,region.getRegionWidth(),region.getRegionHeight(),local);
-		}
-		else{
-			this.draw(region, color,0,0,
-					x, y,angle, sx,sy);
-		}
+	public void drawBoardRim(TextureRegion region,float x,float y,float sx,float sy,float shearX,float shearY,Color color){
+		spriteBatch.setColor(color);
+		computeTransform(0,0,x,y,0,sx,sy);
+		local.shear(shearX,shearY);
+		spriteBatch.draw(region,region.getRegionWidth(),region.getRegionHeight(),local);
 	}
 	
 	
