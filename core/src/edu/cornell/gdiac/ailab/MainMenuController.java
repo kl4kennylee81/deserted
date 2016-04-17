@@ -32,8 +32,9 @@ public class MainMenuController {
 		
 		// the levelDef is needed to create the options
 		this.levelDefs = levelDefs;
+		// initially create the main menu options
 		Option[] default_options = makeDefaultOptions();
-		this.menu = new MainMenu(default_options);
+		this.menu = new LevelMenu(default_options);
 		if (default_options.length > 0){
 			// FIXUP DEFAULT
 			menu.setOption(0);
@@ -57,9 +58,9 @@ public class MainMenuController {
 	}
 	
 	private Option[] makeMainMenuOptions(){
-//		Option[] options = new Option[3];
-//		for ()
-//		return null;
+		Option[] options = new Option[1];
+		options[0] = new Option(LEVEL_SELECT_NAME,LEVEL_SELECT_NAME);
+		return options;
 	}
 
 	public void drawMenu() {
@@ -113,7 +114,7 @@ public class MainMenuController {
 	}
 	
 	public Menu createMainMenu(){
-		Option[] default_options = makeDefaultOptions();
+		Option[] default_options = makeMainMenuOptions();
 		MainMenu menu = new MainMenu(default_options);
 		if (default_options.length > 0){
 			menu.setOption(0);
