@@ -35,7 +35,6 @@ public class PersistingController extends ActionController{
 				List<ActionNode> toDelete = new LinkedList<ActionNode>();
 				for (ActionNode an:actionNodes){
 					an.curRound+= c.castMoved;
-//					System.out.println("persisting controller line 38 "+an.curRound);
 					if (an.curRound >= ((PersistingAction) an.action).totalNumRounds){
 						toDelete.add(an);
 					} else {
@@ -44,7 +43,6 @@ public class PersistingController extends ActionController{
 					}
 				}
 				for (ActionNode an:toDelete){
-//					System.out.println("deleting here in persistingControll 46");
 					c.popPersistingCast(an);
 				}
 			}

@@ -74,7 +74,6 @@ public class CharacterEditorController implements EditorController {
 			    String name = e.getName();
 			    if (name.contains(dir) && name.contains(ext)) {
 			    	result.add(name);
-			      System.out.println(name);
 			    }
 			    e = zip.getNextEntry();
 			  }
