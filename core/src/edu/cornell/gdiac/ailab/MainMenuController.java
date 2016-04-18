@@ -20,9 +20,9 @@ public class MainMenuController {
 	private Menu menu;
 	private MouseOverController mouseOverController;
 	
-	private static final String LEVEL_SELECT_NAME = "level select";
+	private static final String LEVEL_SELECT_NAME = "Level Select";
 	
-	private static final String MAIN_MENU_NAME = "main menu";
+	private static final String MAIN_MENU_NAME = "Main Menu";
 	
 	
 	public MainMenuController(GameCanvas canvas, AssetManager manager, MouseOverController mouseOverController,

@@ -36,7 +36,7 @@ public class GridBoard {
 	private static final Color BROKEN_COLOR = Color.BLACK.cpy();
 	
 	
-	public static final float BOARD_WIDTH = 0.60f;
+	public static final float BOARD_WIDTH = 0.525f;
 	
 	public static final float BOARD_HEIGHT = 0.3f;
 
