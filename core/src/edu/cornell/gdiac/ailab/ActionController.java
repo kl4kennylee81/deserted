@@ -430,7 +430,7 @@ public class ActionController {
 					break;
 				}
 				// if same side stop checking
-				if (selected.leftside ==c.leftside){
+				if (selected.leftside ==c.leftside && a_node.action.pattern != Pattern.SINGLE){
 					continue;
 				}
 				if (c.xPosition == path[i].x && c.yPosition == path[i].y){

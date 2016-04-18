@@ -35,18 +35,18 @@
   animationId: 102
 
 0:
-  name: red
-  health: 10
-  maxHealth: 10
+  name: Enchantress Spirit
+  health: 8
+  maxHealth: 8
   hexColor: CD2626FF
   speed: 6.
   castSpeed: 6.5
   slots: 4
   availableActions:
     - 0
-    - 5
-    - 6
     - 20
+    - 21
+    - 22
 
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_5.png"
@@ -63,7 +63,7 @@
   availableActions:
     - 0
     - 4
-    - 7
+    - 15
     - 10
 
   texture: "models/CHARA_1.png"

@@ -286,19 +286,31 @@ public class SelectionMenuController {
 		} else if (InputController.pressedLeft() && !InputController.pressedRight()){
 			updateX = selectedX - 1;
 			updateY = selectedY;
-			if (leftside && updateX<boardWidth/2){
-				updateX+=boardWidth/2;
-			} else if (!leftside && selectedX<0){
-				updateX+=boardWidth/2;
+			if (updateX > boardWidth-1){
+				updateX -= boardWidth;
 			}
+			else if (updateX < 0){
+				updateX+=boardWidth;
+			}
+//			if (leftside && updateX<boardWidth/2){
+//				updateX+=boardWidth/2;
+//			} else if (!leftside && selectedX<0){
+//				updateX+=boardWidth/2;
+//			}
 		} else if (InputController.pressedRight() && !InputController.pressedLeft()){
 			updateX = selectedX + 1;
 			updateY = selectedY;
-			if (leftside && updateX> boardWidth-1){
-				updateX -= boardWidth/2;
-			} else if (!leftside && updateX > boardWidth/2-1){
-				updateX -= boardWidth/2;
+			if (updateX > boardWidth-1){
+				updateX -= boardWidth;
 			}
+			else if (updateX < 0){
+				updateX+=boardWidth;
+			}
+//			if (leftside && updateX> boardWidth-1){
+//				updateX -= boardWidth/2;
+//			} else if (!leftside && updateX > boardWidth/2-1){
+//				updateX -= boardWidth/2;
+//			}
 		}
 		
 		if (action.singleCanTarget(selected.getShadowX(), selected.getShadowY(), updateX,updateY)){
