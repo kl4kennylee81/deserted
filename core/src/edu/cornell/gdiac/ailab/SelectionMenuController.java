@@ -210,7 +210,7 @@ public class SelectionMenuController {
 		boolean hasFound = false;
 		for (int i =0;i<board.getWidth();i++){
 			for (int j=0;j<board.getHeight();j++){
-				if ((this.selected.leftside && i >= board.getWidth()/2)||(!this.selected.leftside && i < board.getWidth()/2)){
+				if ((this.selected.leftside && i >= board.getWidth()/2)||(!this.selected.leftside && i < board.getWidth()/2) || this.action.isBuff){
 					boolean canHit = this.action.hitsTarget(this.selected.getShadowX(),this.selected.getShadowY(),i,j,this.selected.leftside,board);
 					if (canHit){
 						this.selectedX = i;
@@ -313,7 +313,7 @@ public class SelectionMenuController {
 //			}
 		}
 		
-		if (action.singleCanTarget(selected.getShadowX(), selected.getShadowY(), updateX,updateY)){
+		if (action.singleCanTarget(selected.getShadowX(), selected.getShadowY(), updateX,updateY, selected.leftside, board)){
 			selectedX = updateX;
 			selectedY = updateY;
 		}
@@ -468,12 +468,15 @@ public class SelectionMenuController {
 		if (choosingTarget){
 				for (int i=0;i<board.getWidth();i++){
 					for (int j = 0;j<board.getHeight();j++){
-						if (this.action.singleCanTarget(selected.getShadowX(),selected.getShadowY(),i,j)){
+						if (this.action.singleCanTarget(selected.getShadowX(),selected.getShadowY(),i,j, selected.leftside, board)){
 							if (selected.leftside && i >= (int)board.getWidth()/2){
 								board.setCanTarget(i,j);
 							}
 							else if (!selected.leftside && i < (int)board.getWidth()/2){
 								board.setCanTarget(i,j);
+							}
+							else if(this.action.isBuff){
+								board.setCanTarget(i, j);
 							}
 						}
 					}
@@ -485,12 +488,15 @@ public class SelectionMenuController {
 			// range 3 around a radius.
 			for (int i = 0;i<board.getWidth();i++){
 				for (int j = 0;j<board.getHeight();j++){
-					if (this.action.singleCanTarget(selected.getShadowX(),selected.getShadowY(),i,j)){
+					if (this.action.singleCanTarget(selected.getShadowX(),selected.getShadowY(),i,j, selected.leftside, board)){
 						if (selected.leftside && i >= (int)board.getWidth()/2){
 							board.setCanTarget(i,j);
 						}
 						else if (!selected.leftside && i < (int)board.getWidth()/2){
 							board.setCanTarget(i,j);
+						}
+						else if(this.action.isBuff){
+							board.setCanTarget(i, j);
 						}
 					}
 				}

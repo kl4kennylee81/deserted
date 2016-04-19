@@ -363,7 +363,10 @@ public class ObjectLoader {
 			if (projectileAnimationId != null){
 				actionToAdd.setProjectileAnimation(availableAnimations.get(projectileAnimationId));
 			}
-
+			
+			if(action.containsKey("isBuff")){
+				actionToAdd.isBuff = ((Boolean) action.get("isBuff"));
+			}
 
 			availableActions.put(actionId, actionToAdd);
 

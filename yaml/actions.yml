@@ -59,6 +59,7 @@
   oneHit: true
   needsToggle: true
   canBlock: false
+  isBuff: false
   effect:
     type: REGULAR
     name: Regular
@@ -141,6 +142,7 @@
   oneHit: true
   needsToggle: true
   canBlock: false
+  isBuff: false
   effect:
     type: SPEED
     name: Slowed
@@ -369,6 +371,7 @@
   needsToggle: true
   oneHit: false
   canBlock: false
+  isBuff: false
   effect:
     type: BROKEN
     name: Break Tile
@@ -387,6 +390,7 @@
   oneHit: false
   needsToggle: true
   canBlock: false
+  isBuff: false
   effect:
     type: DAZED
     name: Dazed
@@ -443,6 +447,7 @@
   oneHit: true
   needsToggle: true
   canBlock: false
+  isBuff: true
   effect:
     type: SPEED
     name: Slowed
