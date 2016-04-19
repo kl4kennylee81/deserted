@@ -1,17 +1,20 @@
 package edu.cornell.gdiac.ailab;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
+import edu.cornell.gdiac.ailab.GameSaveState.LevelData;
 
 public class MainMenuController {
 	/** Current target selection */
 	int selected;
 	public String levelName;
 	
-	private HashMap<String, HashMap<String, Object>> levelDefs;
+	private List<LevelData> levelDefs;
 	
 	private boolean isDone;
 	private GameCanvas canvas;
@@ -26,7 +29,7 @@ public class MainMenuController {
 	
 	
 	public MainMenuController(GameCanvas canvas, AssetManager manager, MouseOverController mouseOverController,
-			HashMap<String, HashMap<String,Object>> levelDefs){
+			List<LevelData> levelDefs){
 		this.canvas = canvas;
 		this.manager = manager;
 		
@@ -45,19 +48,20 @@ public class MainMenuController {
 		Option [] default_options = new Option[this.levelDefs.size()];
 		
 		int i = 0;
-		for (String levelName:levelDefs.keySet()){
-			default_options[i] = new Option(levelName,levelName);
+		for (LevelData ld : levelDefs){
+			default_options[i] = new Option(ld.levelName,ld.levelName);
 			i++;
 		}
 		return default_options;
 	}
 	
 	private Option[] makeMainMenuOptions(){
-		Option[] options = new Option[4];
+		Option[] options = new Option[5];
 		options[0] = new Option(LEVEL_SELECT_NAME,LEVEL_SELECT_NAME);
 		options[1] = new Option("Action Editor","Action Editor");
 		options[2] = new Option("Character Editor","Action Editor");
 		options[3] = new Option("Level Editor","Action Editor");
+		options[4] = new Option("Skill Tree","Skill Tree");
 		return options;
 	}
 	
@@ -72,8 +76,8 @@ public class MainMenuController {
 		
 		options[0] = new Option("Back",MAIN_MENU_NAME);
 		int i = 1;
-		for (String levelName:levelDefs.keySet()){
-			options[i] = new Option(levelName,levelName);
+		for (LevelData ld : levelDefs){
+			options[i] = new Option(ld.levelName,ld.levelName);
 			i++;
 		}
 		return options;

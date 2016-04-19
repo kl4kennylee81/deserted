@@ -1,3 +1,39 @@
+0:
+  name: Main Character
+  health: 10
+  maxHealth: 10
+  hexColor: CD2626FF
+  speed: 6.
+  castSpeed: 6.5
+  slots: 4
+  availableActions:
+    - 0
+    - 5
+    - 6
+    - 20
+
+  texture: "models/CHARA_3.png"
+  icon: "models/CASTICON_5.png"
+  animationId: 101
+
+1:
+  name: Spirit
+  health: 10
+  maxHealth: 10
+  hexColor: 3299FFFF
+  speed: 6.
+  castSpeed: 6.5
+  slots: 4
+  availableActions:
+    - 0
+    - 4
+    - 7
+    - 10
+
+  texture: "models/CHARA_1.png"
+  icon: "models/CASTICON_1.png"
+  animationId: 104
+
 2:
   name: Rock Spirit
   health: 14
@@ -34,48 +70,12 @@
   icon: "models/mage_icon.png"
   animationId: 102
 
-0:
-  name: red
-  health: 10
-  maxHealth: 10
-  hexColor: CD2626FF
-  speed: 6.
-  castSpeed: 6.5
-  slots: 4
-  availableActions:
-    - 0
-    - 5
-    - 6
-    - 20
-
-  texture: "models/CHARA_3.png"
-  icon: "models/CASTICON_5.png"
-  animationId: 101
-
-1:
-  name: blue
-  health: 10
-  maxHealth: 10
-  hexColor: 3299FFFF
-  speed: 6.
-  castSpeed: 6.5
-  slots: 4
-  availableActions:
-    - 0
-    - 4
-    - 7
-    - 10
-
-  texture: "models/CHARA_1.png"
-  icon: "models/CASTICON_1.png"
-  animationId: 104
-
 90:
   name: green
   health: 10
   maxHealth: 10
   hexColor: 3299FFFF
-  speed: 4.
+  speed: 1.
   castSpeed: 4.2
   slots: 4
   availableActions:
