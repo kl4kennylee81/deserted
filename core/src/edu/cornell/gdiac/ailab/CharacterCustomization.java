@@ -65,7 +65,7 @@ public class CharacterCustomization extends Menu {
 			ActionUpgrade actionUpgrade = charData.actionUpgrades.get(j);
 			for (ActionUpgrade au : actionUpgrade.getActionUpgrades()){
 				float spacedY= (RELATIVE_Y_POS - RELATIVE_MENU_SPACING * i);
-				options[i] = new Option(actionMap.get(au).name, Integer.toString(au.actionId));
+				options[i] = new Option(actionMap.get(au).name+" ("+au.cost+")", Integer.toString(au.actionId));
 				options[i].setBounds(RELATIVE_X_POS, spacedY, RELATIVE_WIDTH, RELATIVE_HEIGHT);
 				options[i].setColor(Constants.MENU_COLOR);
 				i++;

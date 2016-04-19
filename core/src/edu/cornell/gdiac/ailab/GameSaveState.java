@@ -71,10 +71,17 @@ public class GameSaveState {
 		}
 		
 		public void setAction(int actionId){
+			int oldAction = 0;
+			int index = 0;
 			for (int i = 0; i < actionUpgrades.size(); i++){
 				if (actionUpgrades.get(i).hasAction(actionId)){
+					index = i;
+					oldAction = currentActions.get(i);
 					currentActions.set(i, actionId);
 				}
+			}
+			if (getRemainingSP() < 0){
+				currentActions.set(index,oldAction);
 			}
 		}
 		

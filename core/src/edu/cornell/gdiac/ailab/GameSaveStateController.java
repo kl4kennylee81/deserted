@@ -37,8 +37,7 @@ public class GameSaveStateController {
 		yaml = new Yaml(options);
 		
 		gameSaveState = new GameSaveState();
-		resetGameSaveState();
-		saveGameSaveState();
+		loadGameSaveState();
 	}
 	
 	public List<LevelData> getLevelData(){
@@ -58,7 +57,7 @@ public class GameSaveStateController {
 		return false;
 	}
 	
-	private void saveGameSaveState(){
+	public void saveGameSaveState(){
 		gameSaveState.save(gameSaveStateData);
 		
 		File saveFile = new File(ROOT, CURRENT_SAVE_FILE);

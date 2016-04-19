@@ -357,6 +357,7 @@ public class GameEngine implements Screen {
 	private void updateCustomization() {
 		characterCustomizationController.update();
 		if (characterCustomizationController.isDone()){
+			gameSaveStateController.saveGameSaveState();
 			gameState = GameState.MENU;
 		}
 	}

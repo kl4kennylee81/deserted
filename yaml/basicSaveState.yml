@@ -1,7 +1,7 @@
 characters:
   0:
     characterId: 0
-    totalSP: 3
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 5
@@ -26,7 +26,7 @@ characters:
     - 0
     - 5
     - 6
-    - 14
+    - 20
   1:
     characterId: 1
     totalSP: 0
