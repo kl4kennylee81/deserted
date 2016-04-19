@@ -63,7 +63,7 @@ import edu.cornell.gdiac.ailab.GameplayController.InGameState;
  */
 public class GameEngine implements Screen {
 	
-	public static final boolean dataGen = true;
+	public static final boolean dataGen = false;
 	
 	/** 
 	 * Enumeration defining the game state

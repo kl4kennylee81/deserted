@@ -187,14 +187,14 @@ public class GameplayController {
     
     public void drawAfter(GameCanvas canvas){
 	    if (leftsideDead() && rightsideDead()){
-			canvas.drawText("A tie?", 400, 400, Color.BLACK);
+			canvas.drawCenteredText("A tie Press R to Return", canvas.getWidth()/2, canvas.getHeight()/2, Color.BLACK);
 		} else if (leftsideDead()){
-			canvas.drawText("RED SIDE WINS", 400, 400, Color.BLACK);
+			canvas.drawCenteredText("RED SIDE WINS Press R to Return", canvas.getWidth()/2, canvas.getHeight()/2, Color.BLACK);
 		} else if (rightsideDead()){
-			canvas.drawText("BLUE SIDE WINS", 400, 400, Color.BLACK);
+			canvas.drawCenteredText("BLUE SIDE WINS Press R to Return", canvas.getWidth()/2, canvas.getHeight()/2, Color.BLACK);
 		} else 
 			
-	    canvas.drawText("Press R to return", 400, 360, Color.BLACK);
+	    canvas.drawCenteredText("Press R to return", canvas.getWidth()/2, canvas.getHeight()/2, Color.BLACK);
     }
     
     
