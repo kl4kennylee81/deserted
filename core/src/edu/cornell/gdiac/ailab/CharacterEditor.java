@@ -120,7 +120,7 @@ public class CharacterEditor {
 		
 		
 		table.add(actionsLabel);
-		table.add(actionsTable).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
+		table.add(actionsTable).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(textureLabel);

@@ -59,8 +59,8 @@ public class MainMenuController {
 		Option[] options = new Option[5];
 		options[0] = new Option(LEVEL_SELECT_NAME,LEVEL_SELECT_NAME);
 		options[1] = new Option("Action Editor","Action Editor");
-		options[2] = new Option("Character Editor","Action Editor");
-		options[3] = new Option("Level Editor","Action Editor");
+		options[2] = new Option("Character Editor","Character Editor");
+		options[3] = new Option("Level Editor","Level Editor");
 		options[4] = new Option("Skill Tree","Skill Tree");
 		return options;
 	}
