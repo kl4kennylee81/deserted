@@ -946,7 +946,7 @@ public class GameCanvas {
 		return g;
 	}
 	
-	public GlyphLayout drawTutorialText(String msg, Color color) {
+	public GlyphLayout drawTutorialText(String msg, Color color, int alignment) {
 		BitmapFont currFont = getFont();
 		displayFont.getData().setScale(1);
 		if (tutorialFont != null){
@@ -958,7 +958,7 @@ public class GameCanvas {
 		float width = ((float)getWidth())/1.3f;
 		float x = getWidth()/2-width/2;
 		float y = ((float)getHeight())/1.7f;
-		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
+		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, alignment, true);
 		setFont(currFont);
 		return g;
 	}

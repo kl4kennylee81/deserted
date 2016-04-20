@@ -8,6 +8,7 @@ import org.json.simple.JSONArray;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Align;
 
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.ailab.TutorialSteps.CurrentHighlight;
@@ -46,6 +47,7 @@ public class TutorialGameplayController extends GameplayController{
 		mouseOverController.update(selectionMenuController.getMenu(),characters);
 		pauseTimer = 0;
 		targetPauseTime = -1;
+        GameEngine.nextLevel = tutorialSteps.nextLevel;
 	}
 
 	public void update(){
@@ -102,7 +104,7 @@ public class TutorialGameplayController extends GameplayController{
     		mouseOverController.clearAll();
     		selectionMenuController.update();
     		mouseOverController.update(selectionMenuController.getMenu(),characters);
-    		prompt = "Choose an Action";
+    		prompt = "";//prompt = "Choose an Action";
     		selectionMenuController.setPrompt(prompt);
     		if (selectionMenuController.isDone()){
     			inGameState = InGameState.NORMAL;
@@ -136,6 +138,9 @@ public class TutorialGameplayController extends GameplayController{
     	removeDead();
     	if (gameOver()){
     		inGameState = InGameState.DONE;
+    		if (!tutorialSteps.levelName.equals("") && leftsideDead()){
+    			GameEngine.nextLevel = tutorialSteps.levelName;
+    		}
     		if(GameEngine.dataGen){
     			dataFile.writeString(jsonArray.toString(), false);
         		fileNumFile.writeString(""+fileNum, false);
@@ -153,7 +158,7 @@ public class TutorialGameplayController extends GameplayController{
 			return;
 		}
 		List<CurrentHighlight> highlights = tutorialSteps.getHighlights();
-		if(!tutorialSteps.step.text.equals("")) screen.setJustScreen();
+		if(tutorialSteps.step == null || !tutorialSteps.step.text.equals("")) screen.setJustScreen();
 		if (highlights != null && tutorialSteps.showHighlights){
 	    	for (CurrentHighlight highlight:highlights){
 	    		screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(),
@@ -211,7 +216,7 @@ public class TutorialGameplayController extends GameplayController{
 			tutorialSteps.nextStep();
 			return;
 		}
-		if (InputController.pressedSpace() && inGameState == InGameState.PAUSED){
+		if ((InputController.pressedSpace() || InputController.pressedLeftMouse()) && inGameState == InGameState.PAUSED){
 			if (tutorialSteps.textDone == tutorialSteps.step.text.length()){
 				pauseTimer = 0;
 				targetPauseTime = tutorialSteps.currStep().timeToPause;
@@ -249,7 +254,7 @@ public class TutorialGameplayController extends GameplayController{
     public void drawAfter(GameCanvas canvas){
 	    canvas.drawTutorialText("“Congratulations on completing Tutorial Level 1. "
 	    		+ "\n\nPress \'R\' to return to the main menu where you can "
-	    		+ "select another level \n\nor press Spacebar to move on to Tutorial Level 2", Color.BLACK);
+	    		+ "select another level \n\nor press Spacebar to move on to Tutorial Level 2", Color.BLACK, Align.center);
     }
 }
 

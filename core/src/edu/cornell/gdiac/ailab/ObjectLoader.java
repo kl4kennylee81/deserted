@@ -589,6 +589,18 @@ public class ObjectLoader {
 			if (finishGame != null){
 				ts.setFinishGame(finishGame);
 			}
+			
+			String nextLevel = (String) step.get("nextLevel");
+			if (nextLevel != null){
+				ts.setNextLevel(nextLevel);
+			}
+			
+			String levelName = (String) step.get("levelName");
+			if (levelName != null){
+				ts.setLevelName(levelName);
+			} else {
+				ts.setLevelName("");
+			}
 
 			String levelColor = (String) step.get("levelColor");
 			if (levelColor != null){
@@ -613,6 +625,8 @@ public class ObjectLoader {
 					String direction = (String)actionData.get("direction");
 					ts.addAction(actionId,xPos,yPos,direction);
 				}
+			} else {
+				ts.anyAction();
 			}
 
 			if (highlights != null){

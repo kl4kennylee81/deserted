@@ -180,6 +180,7 @@ public class ConditionalManager {
 				quickest = a;
 			}
 		}
+		if(quickest == null) return false;
 		for(Character c: enemies){
 			if(quickest.hitsTarget(selected.xPosition, selected.yPosition, c.xPosition, c.yPosition, selected.leftside, board)){
 				return true;
@@ -202,6 +203,7 @@ public class ConditionalManager {
 				quickest = a;
 			}
 		}
+		if(quickest == null) return false;
 		if(canHitEnemyFrom(selected, x+1, y) && board.canMove(selected.leftside, x+1, y)){
 			return true;
 		}
@@ -244,6 +246,7 @@ public class ConditionalManager {
 				quick = a;
 			}
 		}
+		if(quick == null) return false;
 		if(canHitEnemyFromAction(selected, x+1, y, quick) && board.canMove(selected.leftside, x+1, y)){
 
 			return true;

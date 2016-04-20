@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.utils.Align;
 
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
 
@@ -19,6 +20,8 @@ public class TutorialSteps {
 	Step step;
 	/** finish game or continue to next level */
 	boolean finishGame;
+	String nextLevel;
+	String levelName;
 	int prevTextDone;
 	int textDone;
 	boolean showHighlights;
@@ -29,8 +32,8 @@ public class TutorialSteps {
 	int warningTime;
 	Color levelColor;
 
-	/** Individual Step*/
-	class Step{
+	/** Individual Step */
+	class Step {
 		String text;
 		boolean paused;
 		List<TutorialAction> actions;
@@ -40,8 +43,8 @@ public class TutorialSteps {
 		boolean dontWriteText;
 		int timeToPause;
 
-		public Step (String text, boolean paused, boolean confirm,
-				boolean spaceToContinue, boolean dontWriteText, int timeToPause){
+		public Step(String text, boolean paused, boolean confirm, boolean spaceToContinue, boolean dontWriteText,
+				int timeToPause) {
 			this.text = text;
 			this.paused = paused;
 			this.confirm = confirm;
@@ -54,13 +57,13 @@ public class TutorialSteps {
 
 	}
 
-	public class TutorialAction{
+	public class TutorialAction {
 		int actionId;
 		int xPos;
 		int yPos;
 		Direction direction;
 
-		public TutorialAction (int actionId, int xPos, int yPos, String direction){
+		public TutorialAction(int actionId, int xPos, int yPos, String direction) {
 			this.actionId = actionId;
 			this.xPos = xPos;
 			this.yPos = yPos;
@@ -68,14 +71,14 @@ public class TutorialSteps {
 		}
 	}
 
-	public class CurrentHighlight{
+	public class CurrentHighlight {
 		double xPos;
 		double yPos;
 		double width;
 		double height;
 		String arrow;
 
-		public CurrentHighlight (double xPos, double yPos, double width, double height, String arrow){
+		public CurrentHighlight(double xPos, double yPos, double width, double height, String arrow) {
 			this.xPos = xPos;
 			this.yPos = yPos;
 			this.width = width;
@@ -84,10 +87,12 @@ public class TutorialSteps {
 		}
 	}
 
-	public TutorialSteps(){
+	public TutorialSteps() {
 		steps = new ArrayList<Step>();
 		curStep = 0;
 		finishGame = false;
+		nextLevel = "";
+		levelName = "";
 		this.textDone = 0;
 		this.prevTextDone = 0;
 		this.showHighlights = false;
@@ -97,44 +102,60 @@ public class TutorialSteps {
 		this.warningTime = 0;
 	}
 
-	public void addStep(String text, boolean paused, boolean confirm,
-			boolean spaceToContinue, boolean dontWriteText, int timeToPause){
+	public void addStep(String text, boolean paused, boolean confirm, boolean spaceToContinue, boolean dontWriteText,
+			int timeToPause) {
 		Step newStep = new Step(text, paused, confirm, spaceToContinue, dontWriteText, timeToPause);
 		steps.add(newStep);
-		if (steps.size() == 1){
+		if (steps.size() == 1) {
 			step = newStep;
 		}
 	}
 
-	public void addAction(int actionId, int xPos, int yPos, String direction){
-		TutorialAction ta = new TutorialAction(actionId,xPos,yPos,direction);
-		Step latestStep = steps.get(steps.size()-1);
+	public void addAction(int actionId, int xPos, int yPos, String direction) {
+		TutorialAction ta = new TutorialAction(actionId, xPos, yPos, direction);
+		Step latestStep = steps.get(steps.size() - 1);
 
-		if (latestStep.actions == null){
+		if (latestStep.actions == null) {
 			latestStep.actions = new ArrayList<TutorialAction>();
 		}
 		latestStep.actions.add(ta);
 	}
 
-	public void addHighlight(double xPos, double yPos, double width, double height, String arrow){
-		CurrentHighlight ch = new CurrentHighlight(xPos, yPos, width, height, arrow);
-		Step latestStep = steps.get(steps.size()-1);
+	public void anyAction() {
+		Step latestStep = steps.get(steps.size() - 1);
 
-		if (latestStep.highlights == null){
+		if (latestStep.actions == null) {
+			latestStep.actions = new ArrayList<TutorialAction>();
+		}
+	}
+
+	public void addHighlight(double xPos, double yPos, double width, double height, String arrow) {
+		CurrentHighlight ch = new CurrentHighlight(xPos, yPos, width, height, arrow);
+		Step latestStep = steps.get(steps.size() - 1);
+
+		if (latestStep.highlights == null) {
 			latestStep.highlights = new ArrayList<CurrentHighlight>();
 		}
 		latestStep.highlights.add(ch);
 	}
 
-	public void setFinishGame(boolean finishGame){
+	public void setFinishGame(boolean finishGame) {
 		this.finishGame = finishGame;
 	}
+	
+	public void setNextLevel(String nextLevel) {
+		this.nextLevel = nextLevel;
+	}
+	
+	public void setLevelName(String levelName) {
+		this.levelName = levelName;
+	}
 
-	public void setLevelColor(Color levelColor){
+	public void setLevelColor(Color levelColor) {
 		this.levelColor = levelColor;
 	}
 
-	public void nextStep(){
+	public void nextStep() {
 		startTime = false;
 		timeElapsed = 0;
 		writeTime = 0;
@@ -142,46 +163,48 @@ public class TutorialSteps {
 		textDone = 0;
 		prevTextDone = 0;
 		curStep += 1;
-		if (!isDone()){
+		if (!isDone()) {
 			step = steps.get(curStep);
 		} else {
 			step = null;
 		}
 	}
 
-	public boolean isDone(){
+	public boolean isDone() {
 		return curStep >= steps.size();
 	}
 
-	public boolean isPaused(){
+	public boolean isPaused() {
 		return step != null && step.paused;
 	}
 
-	public boolean needsAction(){
+	public boolean needsAction() {
 		return step != null && step.actions != null;
 	}
 
-	public List<TutorialAction> getActions(){
+	public List<TutorialAction> getActions() {
 		return step.actions;
 	}
 
-	public List<CurrentHighlight> getHighlights(){
-		if (step != null) return step.highlights;
-		else return null;
+	public List<CurrentHighlight> getHighlights() {
+		if (step != null)
+			return step.highlights;
+		else
+			return null;
 	}
 
-	public boolean needsConfirm(){
+	public boolean needsConfirm() {
 		return step != null && step.confirm;
 	}
 
-	public void drawText(GameCanvas canvas){
-		if (step!= null && !step.dontWriteText){
-			if (writeTime % 4 == 0){
-				if (textDone < step.text.length()){
-					if(step.text.charAt(textDone) != '\n'){
+	public void drawText(GameCanvas canvas) {
+		if (step != null && !step.dontWriteText) {
+			if (writeTime % 4 == 0) {
+				if (textDone < step.text.length()) {
+					if (step.text.charAt(textDone) != '\n') {
 						textDone++;
 					}
-				} else{
+				} else {
 					showHighlights = true;
 					startTime = true;
 				}
@@ -190,30 +213,41 @@ public class TutorialSteps {
 			startTime = true;
 		}
 		String toWrite = "";
-		if (step != null && step.text != null){
-			if (step.dontWriteText){
-				toWrite = step.text;//canvas.drawTutorialText(step.text, Color.WHITE);
+		if (step != null && step.text != null) {
+			if (step.dontWriteText) {
+				toWrite = step.text;// canvas.drawTutorialText(step.text,
+									// Color.WHITE);
 				showHighlights = true;
 			} else {
-				toWrite = step.text.substring(prevTextDone, textDone);//canvas.drawTutorialText(step.text.substring(0, textDone), Color.WHITE);
+				toWrite = step.text.substring(prevTextDone, textDone);// canvas.drawTutorialText(step.text.substring(0,
+																		// textDone),
+																		// Color.WHITE);
 			}
 		}
-		if (step != null && step.spaceToContinue && (textDone == step.text.length() || step.text.charAt(textDone) == '\n')){
-			//canvas.drawTutorialText("\n\n\nPress Spacebar to Continue", Color.WHITE);
-			toWrite +=  "... press Spacebar to continue";
+		if (step != null && curStep == 0 && step.spaceToContinue
+				&& (textDone == step.text.length() || step.text.charAt(textDone) == '\n')) {
+			// canvas.drawTutorialText("\n\n\nPress Spacebar to Continue",
+			// Color.WHITE);
+			toWrite += "\n\nPress Spacebar or Click anywhere to continue";
 		}
-		canvas.drawTutorialText(toWrite, levelColor == null? Color.WHITE: levelColor);
-		if (!warning.equals("")){
+		if (step != null) {
+			canvas.drawTutorialText(toWrite, levelColor == null ? Color.WHITE : levelColor,
+					step.text.length() > 10 ? Align.left : Align.center);
+		} else {
+			canvas.drawTutorialText(toWrite, levelColor == null ? Color.WHITE : levelColor, Align.left);
+		}
+
+		if (!warning.equals("")) {
 			canvas.drawWarningText(warning);
 			warningTime++;
-			if (warningTime == 40){
+			if (warningTime == 40) {
 				warningTime = 0;
 				warning = "";
 			}
 		}
 	}
 
-	public Step currStep(){
+	public Step currStep() {
 		return step;
 	}
 

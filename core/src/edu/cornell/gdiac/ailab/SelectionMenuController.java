@@ -69,7 +69,7 @@ public class SelectionMenuController {
 			}
 			if (!choosingTarget){
 				// prompt choose an action when not choosing target
-	    		prompt = "Choose an Action";
+	    		prompt = "";//prompt = "Choose an Action";
 	    		this.setPrompt(prompt);
 				updateNotChoosingTarget();
 			} else {

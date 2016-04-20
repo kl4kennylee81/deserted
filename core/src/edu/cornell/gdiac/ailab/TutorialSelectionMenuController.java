@@ -152,61 +152,64 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 	}
 
 	public boolean correctDirection(){
-		if (tutorialSteps.needsConfirm()){
-			return false;
-		}
-		List<TutorialAction> tas = tutorialSteps.getActions();
-		TutorialAction ta = tas.get(0);
-		if (ta.direction != Direction.NONE){
-			return ta.direction == direction;
-		}
-		if (ta.xPos != 0 || ta.yPos != 0){
-			return ta.xPos == selected.xPosition && ta.yPos == selected.yPosition;
-		}
 		return true;
+//		if (tutorialSteps.needsConfirm()){
+//			return false;
+//		}
+//		List<TutorialAction> tas = tutorialSteps.getActions();
+//		TutorialAction ta = tas.get(0);
+//		if (ta.direction != Direction.NONE){
+//			return ta.direction == direction;
+//		}
+//		if (ta.xPos != 0 || ta.yPos != 0){
+//			return ta.xPos == selected.xPosition && ta.yPos == selected.yPosition;
+//		}
+//		return true;
 	}
 
 	public boolean correctAction(){
-		if (tutorialSteps.needsConfirm()){
-			return false;
-		}
-		List<TutorialAction> tas = tutorialSteps.getActions();
-		if (tas.size() > 0){
-			TutorialAction ta = tas.get(0);
-			if (ta == null){
-				System.out.println("check why null tutorialselectionmenu line 168");
-				return false;
-			}
-			return action == selected.availableActions[ta.actionId];
-		}
-		else {
-			System.out.println("check why no tutorial step on line 165");
-			return false;
-		}
+		return true;
+//		if (tutorialSteps.needsConfirm()){
+//			return false;
+//		}
+//		List<TutorialAction> tas = tutorialSteps.getActions();
+//		if (tas.size() > 0){
+//			TutorialAction ta = tas.get(0);
+//			if (ta == null){
+//				System.out.println("check why null tutorialselectionmenu line 168");
+//				return false;
+//			}
+//			return action == selected.availableActions[ta.actionId];
+//		}
+//		else {
+//			System.out.println("check why no tutorial step on line 165");
+//			return true;//if tas.size() == 0 this means the user is choosing any action of their choice
+//		}
 	}
 
 	public boolean correctActions(){
-		if (!tutorialSteps.needsConfirm()){
-			return false;
-		}
-		List<ActionNode> selectedActions = menu.getQueuedActions();
-		List<TutorialAction> tas = tutorialSteps.getActions();
-		if (selectedActions.size() != tas.size()){
-			return false;
-		}
-		for (int i = 0; i < tas.size(); i++){
-			ActionNode an = selectedActions.get(i);
-			TutorialAction ta = tas.get(i);
-			if (an.action != selected.availableActions[ta.actionId]){
-				return false;
-			}
-			if (ta.direction != Direction.NONE && ta.direction != an.direction){
-				return false;
-			}
-			if ((ta.xPos != 0 || ta.yPos != 0) && (ta.xPos != an.xPosition || ta.yPos != an.yPosition)){
-				return false;
-			}
-		}
 		return true;
+//		if (!tutorialSteps.needsConfirm()){
+//			return false;
+//		}
+//		List<ActionNode> selectedActions = menu.getQueuedActions();
+//		List<TutorialAction> tas = tutorialSteps.getActions();
+//		if (selectedActions.size() != tas.size()){
+//			return false;
+//		}
+//		for (int i = 0; i < tas.size(); i++){
+//			ActionNode an = selectedActions.get(i);
+//			TutorialAction ta = tas.get(i);
+//			if (an.action != selected.availableActions[ta.actionId]){
+//				return false;
+//			}
+//			if (ta.direction != Direction.NONE && ta.direction != an.direction){
+//				return false;
+//			}
+//			if ((ta.xPos != 0 || ta.yPos != 0) && (ta.xPos != an.xPosition || ta.yPos != an.yPosition)){
+//				return false;
+//			}
+//		}
+//		return true;
 	}
 }

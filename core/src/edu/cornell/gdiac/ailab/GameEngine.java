@@ -64,6 +64,7 @@ import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 public class GameEngine implements Screen {
 	
 	public static final boolean dataGen = false;
+	public static String nextLevel = "";
 	
 	/** 
 	 * Enumeration defining the game state
@@ -332,8 +333,18 @@ public class GameEngine implements Screen {
 			break;
 		case AFTER:
 			//updateAfter();
-			drawAfter();
-			canvas.end();
+			if (!nextLevel.equals("")){
+				try {
+					canvas.end();
+					startGame(nextLevel);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				drawAfter();
+				canvas.end();
+			}
 			break;
 		case EDITOR:
 			canvas.end();
