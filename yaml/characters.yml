@@ -1,9 +1,9 @@
 2:
   name: Rock Spirit
-  health: 14
-  maxHealth: 14
+  health: 12
+  maxHealth: 12
   hexColor: 00cc00FF
-  speed: 1.5
+  speed: 1.
   castSpeed: 8.
   slots: 2
   availableActions:
@@ -40,8 +40,8 @@
   maxHealth: 8
   hexColor: CD2626FF
   speed: 6.
-  castSpeed: 5.5
-  slots: 4
+  castSpeed: 7.
+  slots: 5
   availableActions:
     - 0
     - 22
