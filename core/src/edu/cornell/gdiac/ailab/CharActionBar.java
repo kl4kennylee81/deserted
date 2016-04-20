@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 public class CharActionBar {
 
 	/** time all characters have to wait before they enter their casting period **/
-	public static final float STARTING_BUFFER_TIME = 2f;
+	public static final float STARTING_BUFFER_TIME = 3f;
 	
 	public static final float CHAR_VELOCITY_SCREEN_RATIO = 0.0011f;
 	
@@ -25,6 +25,8 @@ public class CharActionBar {
 	
 	// make this in terms of the max speed after applying speed modifier
 	public static float MAX_TIME = 30;
+	
+	public static float HEALTH_TIME_PROPORTION = 1.0f;
 	
 	// length of the cast bar in terms of the max bar length
 	// actual pixel length = MAX_BAR_SCREEN_RATIO * length * canvas.getWidth()
@@ -117,10 +119,12 @@ public class CharActionBar {
 		float castTime = totalTime - waitTime;
 		
 		// modify based on speed modifier
-		float modifiedWaitTime = waitTime/this.getSpeedModifier();
-		
+		float modifiedWaitTime = (waitTime+ STARTING_BUFFER_TIME)/this.getSpeedModifier();
+
 		// modify based on current health left
-		modifiedWaitTime = modifiedWaitTime * this.healthProportion  + STARTING_BUFFER_TIME;
+		float healthTime = modifiedWaitTime*HEALTH_TIME_PROPORTION;
+		float unmovedTime = modifiedWaitTime*(1-HEALTH_TIME_PROPORTION);
+		modifiedWaitTime = (healthTime* this.healthProportion) +unmovedTime;
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return newTotalTime/MAX_TIME;
@@ -169,9 +173,12 @@ public class CharActionBar {
 		float totalTime = this.length * MAX_TIME;
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
-		float modifiedWaitTime = waitTime/this.getSpeedModifier();
+		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
 		// modify based on current health left
-		modifiedWaitTime = modifiedWaitTime * this.healthProportion + STARTING_BUFFER_TIME;
+		// modify based on current health left
+		float healthTime = modifiedWaitTime*HEALTH_TIME_PROPORTION;
+		float unmovedTime = modifiedWaitTime*(1-HEALTH_TIME_PROPORTION);
+		modifiedWaitTime = (healthTime* this.healthProportion) +unmovedTime;
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return modifiedWaitTime/newTotalTime;

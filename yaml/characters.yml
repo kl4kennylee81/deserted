@@ -3,7 +3,7 @@
   health: 14
   maxHealth: 14
   hexColor: 00cc00FF
-  speed: 2.
+  speed: 1.5
   castSpeed: 8.
   slots: 2
   availableActions:
@@ -21,7 +21,7 @@
   health: 8
   maxHealth: 8
   hexColor: FF9900FF
-  speed: 5.
+  speed: 3.5
   castSpeed: 7.5
   slots: 5
   availableActions:
@@ -40,7 +40,7 @@
   maxHealth: 8
   hexColor: CD2626FF
   speed: 6.
-  castSpeed: 6.5
+  castSpeed: 5.5
   slots: 4
   availableActions:
     - 0
@@ -57,13 +57,13 @@
   health: 10
   maxHealth: 10
   hexColor: 3299FFFF
-  speed: 8.
-  castSpeed: 5.
+  speed: 3.
+  castSpeed: 9.
   slots: 4
   availableActions:
     - 0
     - 23
-    - 24
+    - 7
     - 9
 
   texture: "models/CHARA_1.png"
@@ -75,7 +75,7 @@
   health: 10
   maxHealth: 10
   hexColor: 3299FFFF
-  speed: 4.
+  speed: 1.
   castSpeed: 4.2
   slots: 4
   availableActions:

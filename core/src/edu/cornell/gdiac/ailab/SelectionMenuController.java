@@ -194,15 +194,23 @@ public class SelectionMenuController {
 			menu.setChoosingTarget(true);
 			break;
 		case INSTANT:
-			menu.setChoosingTarget(true);
-			break;
 		case PROJECTILE:
+			this.pathSetChoosingTarget();
 			menu.setChoosingTarget(true);
 			break;
 		case NOP:
 			break;
 		default:
 			break;
+		}
+	}
+	
+	private void pathSetChoosingTarget(){
+		if (this.selected.getShadowY() >= board.getHeight()/2){
+			this.direction = Direction.DOWN;
+		}
+		else{
+			this.direction = Direction.UP;
 		}
 	}
 	
