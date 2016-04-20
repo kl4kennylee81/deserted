@@ -451,7 +451,7 @@
   effect:
     type: SPEED
     name: Slowed
-    numRounds: 2
+    numRounds: 3
     magnitude: 4
   description: Target a single square to Hasten an ally
   animationId: 0
