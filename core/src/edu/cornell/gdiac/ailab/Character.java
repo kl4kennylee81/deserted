@@ -423,9 +423,6 @@ public class Character implements GUIElement {
 	 */
 	private void resetShieldedCoordinates(){
 		// add coordinates back to the pool
-		for (Coordinate c: shieldedCoordinates){
-			c.free();
-		}
 		shieldedCoordinates.clear();
 
 		for (ActionNode an : persistingActions){
@@ -495,6 +492,9 @@ public class Character implements GUIElement {
 	void popPersistingCast(ActionNode an){
 		persistingActions.remove(an);
 		if (an.action != null && an.action.pattern == Pattern.SHIELD){
+			for (Coordinate c: an.path){
+				c.free();
+			}
 			resetShieldedCoordinates();
 		}
 		an.free();
