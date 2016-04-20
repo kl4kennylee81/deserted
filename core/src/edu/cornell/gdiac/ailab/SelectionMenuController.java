@@ -250,8 +250,12 @@ public class SelectionMenuController {
 			} 
 			break;
 		case INSTANT:
-			break;
 		case PROJECTILE:
+			if (InputController.pressedUp() && !InputController.pressedDown()){
+				direction = Direction.UP;
+			} else if (InputController.pressedDown() && !InputController.pressedUp()){
+				direction = Direction.DOWN;
+			} 
 			break;
 		case NOP:
 			break;
@@ -440,7 +444,25 @@ public class SelectionMenuController {
 				else if ((!board.isInBounds(x, y)) && isProjectile){
 					break;
 				}
-				else if (choosingTarget){
+				else if (choosingTarget && this.direction == Direction.UP){
+					board.setHighlighted(x,y);
+				} else {
+					board.setCanTarget(x, y);
+				}
+				
+				
+			}
+			
+			for (int i = 0; i < path.length; i++){
+				int x = shadowX + path[i].x;
+				int y = shadowY - path[i].y;
+				if (shadowX == x && shadowY == y){
+					continue;
+				}
+				else if ((!board.isInBounds(x, y)) && isProjectile){
+					break;
+				}
+				else if (choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x,y);
 				} else {
 					board.setCanTarget(x, y);
@@ -456,7 +478,22 @@ public class SelectionMenuController {
 				else if ((!board.isInBounds(x, y)) && isProjectile){
 					break;
 				}
-				if (choosingTarget){
+				if (choosingTarget && this.direction == Direction.UP){
+					board.setHighlighted(x,y);
+				} else {
+					board.setCanTarget(x,y);
+				}
+			}
+			for (int i = 0; i < action.path.length; i++){
+				int x = shadowX - path[i].x;
+				int y = shadowY - path[i].y;
+				if (shadowX == x && shadowY == y){
+					continue;
+				}
+				else if ((!board.isInBounds(x, y)) && isProjectile){
+					break;
+				}
+				if (choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x,y);
 				} else {
 					board.setCanTarget(x,y);

@@ -45,7 +45,7 @@
   availableActions:
     - 0
     - 20
-    - 21
+    - 5
     - 22
 
   texture: "models/CHARA_3.png"
@@ -53,18 +53,18 @@
   animationId: 101
 
 1:
-  name: blue
+  name: Fighter Spirit
   health: 10
   maxHealth: 10
   hexColor: 3299FFFF
-  speed: 6.
-  castSpeed: 6.5
+  speed: 8.
+  castSpeed: 5.
   slots: 4
   availableActions:
     - 0
-    - 4
-    - 15
-    - 10
+    - 23
+    - 24
+    - 9
 
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"

@@ -194,11 +194,21 @@ public class ActionController {
 			int x;int y;
 			if (selected.leftside){
 				x = selected.xPosition + relativePath[i].x;
-				y = selected.yPosition + relativePath[i].y;
+				if (a_node.direction!= null && a_node.direction==Direction.DOWN){
+					y = selected.yPosition - relativePath[i].y;
+				}
+				else{
+					y = selected.yPosition + relativePath[i].y;
+				}
 			}
 			else{
 				x = selected.xPosition - relativePath[i].x;
-				y = selected.yPosition + relativePath[i].y;
+				if (a_node.direction!= null && a_node.direction==Direction.DOWN){
+					y = selected.yPosition - relativePath[i].y;
+				}
+				else{
+					y = selected.yPosition + relativePath[i].y;
+				}
 			}
 			absolutePath[i] = coords.obtain();
 			absolutePath[i].set(x, y);
