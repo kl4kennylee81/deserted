@@ -30,6 +30,9 @@ public class LevelEditor {
 	private TextButton submit;
 	private TextButton back;
 	
+	private boolean submitClicked;
+	private boolean backClicked;
+	
 	public LevelEditor (String[] editOps, String[] charIds,
 						String[] addLabels, String[] models,
 						String[] ais) {
@@ -162,11 +165,25 @@ public class LevelEditor {
 	}
 	
 	public boolean submitWasClicked() {
-		return submit.isPressed();
+		if (submit.isPressed()){
+			submitClicked = submit.isPressed();
+		}
+		if (InputController.pressedLeftMouse() &&submitClicked){
+			submitClicked = false;
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean backWasClicked() {
-		return back.isPressed();
+		if (back.isPressed()){
+			backClicked = back.isPressed();
+		}
+		if (InputController.pressedLeftMouse() && backClicked){
+			backClicked = false;
+			return true;
+		}
+		return false;
 	}
 	
 	public void setUpEdit(String[] allies, String[][] alliesAddtl, String[] enemies, 

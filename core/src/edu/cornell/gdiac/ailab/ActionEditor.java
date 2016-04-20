@@ -39,6 +39,9 @@ public class ActionEditor {
 	private TextButton submit;
 	private TextButton back;
 	
+	private boolean submitClicked;
+	private boolean backClicked;
+	
 	public ActionEditor (String[] opts, String[] animIds, String newId) {
 		Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		
@@ -271,12 +274,26 @@ public class ActionEditor {
 	}
 	
 	public boolean submitWasClicked() {
-		return submit.isPressed();
+		if (submit.isPressed()){
+			submitClicked = submit.isPressed();
+		}
+		if (InputController.pressedLeftMouse() &&submitClicked){
+			submitClicked = false;
+			return true;
+		}
+		return false;
 	}
 	
 	
 	public boolean backWasClicked() {
-		return back.isPressed();
+		if (back.isPressed()){
+			backClicked = back.isPressed();
+		}
+		if (InputController.pressedLeftMouse() && backClicked){
+			backClicked = false;
+			return true;
+		}
+		return false;
 	}
 
 	public void setUpEdit(String id, String name, String cost, String damage, String range,

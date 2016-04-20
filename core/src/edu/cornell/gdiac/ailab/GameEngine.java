@@ -293,8 +293,8 @@ public class GameEngine implements Screen {
 		checkReset();
         canvas.begin();
         
-        //update the input controller
-        InputController.update();
+	    //update the input controller
+	    InputController.update();
 		
 		// What we do depends on the game state
 		switch (gameState) {
