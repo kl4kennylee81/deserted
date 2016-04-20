@@ -494,7 +494,7 @@
     type: SPEED
     name: Slowed
     numRounds: 2
-    magnitude: -4
+    magnitude: -2
   description: Hits adjacent rows 2 squares forward for 2 damage.
   animationId: 0
 ...

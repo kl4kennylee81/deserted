@@ -109,8 +109,23 @@ public class PersistingController extends ActionController{
 			int curIntX = selectedActionNode.getCurInPath().x;
 			int curIntY = selectedActionNode.getCurInPath().y;
 			
+			boolean canBlock = false;
+			//last coordinate in the path
+			if (selectedActionNode.getLastInPath()!= null){
+				int lastIntX = selectedActionNode.getLastInPath().x;
+				int lastIntY = selectedActionNode.getLastInPath().y;
+				if (lastIntY == curIntY){
+					canBlock = true;
+				}
+				// to check if the diagonal can be blocked
+				else if (lastIntY != curIntY && isBlocked(curIntX,lastIntY) && lastIntX != curIntX){
+					System.out.println("we made it here");
+					canBlock = true;
+				}
+			}
+			
 			// Check if next position is out of bounds or blocked
-			if (!board.isInBounds(curIntX, curIntY) || isBlocked(curIntX, curIntY)){
+			if (!board.isInBounds(curIntX, curIntY) || (isBlocked(curIntX, curIntY) &&canBlock)){
 				selected.popPersistingCast(selectedActionNode);
 				return;
 			}
