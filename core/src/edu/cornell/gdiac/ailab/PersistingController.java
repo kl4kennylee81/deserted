@@ -66,7 +66,7 @@ public class PersistingController extends ActionController{
 	}
 	
 	/**
-	 * Returns ture if character is hit by the attack on the given coordinate
+	 * Returns true if character is hit by the attack on the given coordinate
 	 */
 	private boolean isHit(Character c, int curX, int curY){
 		return c.isAlive() && !c.equals(selected) && c.leftside != selected.leftside && c.xPosition == curX && c.yPosition == curY;
@@ -117,10 +117,12 @@ public class PersistingController extends ActionController{
 				if (lastIntY == curIntY){
 					canBlock = true;
 				}
-				// to check if the diagonal can be blocked
-				else if (lastIntY != curIntY && isBlocked(curIntX,lastIntY) && lastIntX != curIntX){
-					System.out.println("we made it here");
-					canBlock = true;
+				// this will check if diagonal can be blocked only if you shielded the adjacent
+				// tile that from the direction the projectile is approaching from.
+				else if (lastIntY != curIntY && lastIntX != curIntX){
+					if (this.isBlocked(curIntX,lastIntY)){
+						canBlock = true;
+					}
 				}
 			}
 			
