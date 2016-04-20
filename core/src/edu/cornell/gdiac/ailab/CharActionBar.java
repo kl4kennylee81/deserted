@@ -98,7 +98,7 @@ public class CharActionBar {
 			if (speedModifier < -2){
 				return 1/2f;
 			} else if (speedModifier > 2){
-				return 2f;
+				return 3f;
 			}
 			else{
 				return 1;
@@ -118,13 +118,13 @@ public class CharActionBar {
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
 		
-		// modify based on speed modifier
-		float modifiedWaitTime = (waitTime+ STARTING_BUFFER_TIME)/this.getSpeedModifier();
-
 		// modify based on current health left
-		float healthTime = modifiedWaitTime*HEALTH_TIME_PROPORTION;
-		float unmovedTime = modifiedWaitTime*(1-HEALTH_TIME_PROPORTION);
-		modifiedWaitTime = (healthTime* this.healthProportion) +unmovedTime;
+		float healthTime = waitTime*HEALTH_TIME_PROPORTION;
+		float unmovedTime = waitTime*(1-HEALTH_TIME_PROPORTION);
+		float modifiedWaitTime = (healthTime* this.healthProportion) +unmovedTime;
+		
+		// modify based on speed modifier
+		modifiedWaitTime = (modifiedWaitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return newTotalTime/MAX_TIME;
@@ -173,12 +173,14 @@ public class CharActionBar {
 		float totalTime = this.length * MAX_TIME;
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
-		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
+		
 		// modify based on current health left
-		// modify based on current health left
-		float healthTime = modifiedWaitTime*HEALTH_TIME_PROPORTION;
-		float unmovedTime = modifiedWaitTime*(1-HEALTH_TIME_PROPORTION);
-		modifiedWaitTime = (healthTime* this.healthProportion) +unmovedTime;
+		float healthTime = waitTime*HEALTH_TIME_PROPORTION;
+		float unmovedTime = waitTime*(1-HEALTH_TIME_PROPORTION);
+		float modifiedWaitTime = (healthTime* this.healthProportion) +unmovedTime;
+		
+		// modify based on speed modifier
+		modifiedWaitTime = (modifiedWaitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return modifiedWaitTime/newTotalTime;
