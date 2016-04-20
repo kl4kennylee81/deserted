@@ -44,9 +44,9 @@
   slots: 4
   availableActions:
     - 0
-    - 20
-    - 5
     - 22
+    - 5
+    - 24
 
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_5.png"
@@ -63,7 +63,7 @@
   availableActions:
     - 0
     - 23
-    - 7
+    - 20
     - 9
 
   texture: "models/CHARA_1.png"

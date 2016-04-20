@@ -452,6 +452,10 @@ public class SelectionMenuController {
 				else if ((!board.isInBounds(x, y)) && isProjectile){
 					break;
 				}
+				else if ((!board.isInBounds(x,y)) && !isProjectile){
+					continue;
+				}
+				
 				else if (choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x,y);
 				} else {
@@ -470,6 +474,10 @@ public class SelectionMenuController {
 				else if ((!board.isInBounds(x, y)) && isProjectile){
 					break;
 				}
+				else if ((!board.isInBounds(x,y)) && !isProjectile){
+					continue;
+				}
+				
 				else if (choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x,y);
 				} else {
@@ -486,6 +494,10 @@ public class SelectionMenuController {
 				else if ((!board.isInBounds(x, y)) && isProjectile){
 					break;
 				}
+				else if ((!board.isInBounds(x,y)) && !isProjectile){
+					continue;
+				}
+				
 				if (choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x,y);
 				} else {
@@ -501,6 +513,10 @@ public class SelectionMenuController {
 				else if ((!board.isInBounds(x, y)) && isProjectile){
 					break;
 				}
+				else if ((!board.isInBounds(x,y)) && !isProjectile){
+					continue;
+				}
+				
 				if (choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x,y);
 				} else {
