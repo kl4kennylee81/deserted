@@ -58,6 +58,7 @@ public class Character implements GUIElement {
 	AnimationNode animation;
 	SelectionMenu selectionMenu;
 	CharActionBar actionBar;
+	int numSlots;
 	
 	boolean leftside;
 	
@@ -149,25 +150,62 @@ public class Character implements GUIElement {
 		//float castTime = (float) (Math.random()*4 + 4);
 		float waitTime = speed;
 		float castTime = castSpeed;
+		this.numSlots = numSlots;
 		actionBar = new CharActionBar(numSlots,waitTime,castTime);
 		
 	}
 	
+	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
+			int health, int maxHealth, Color color, 
+			float speed, float castSpeed,  Action[] actions,int numSlots){
+		this.texture = texture;
+		this.icon = icon;
+		this.animation = animation;
+		this.name = name;
+		this.health = health;
+		this.maxHealth = maxHealth;
+
+		this.color = color;
+
+		/* Randomize so that its not always the same thing */
+		this.speed = speed;
+		this.castSpeed = castSpeed;
+
+		lastCastStart = 0;
+		castPosition = 0;
+		castMoved = 0;
+		queuedActions = new LinkedList<ActionNode>();
+		persistingActions = new LinkedList<ActionNode>();
+		effects = new ArrayList<Effect>();
+		shieldedCoordinates = new LinkedList<Coordinate>();
+		
+		this.availableActions = actions;
+		selectionMenu = new SelectionMenu(availableActions);
+
+//		float waitTime = (float) (Math.random()*3 + 2);
+//		float castTime = (float) (Math.random()*4 + 4);
+		float waitTime = speed;
+		float castTime = castSpeed;
+		this.numSlots = numSlots;
+		actionBar = new CharActionBar(numSlots,waitTime,castTime);
+
+	}
+	
+	
 	public Character(Character c){
 		this.texture = c.texture;
 		this.icon = c.icon;
+		this.animation = c.animation;
 		this.name = c.name;
 		this.health = c.health;
 		this.maxHealth = c.maxHealth;
+
+		this.color = c.color;
+
+		/* Randomize so that its not always the same thing */
 		this.speed = c.speed;
 		this.castSpeed = c.castSpeed;
 
-		this.color = c.color;	
-		
-		this.startingXPosition = this.xPosition = c.xPosition;
-		this.startingYPosition = this.yPosition = c.yPosition;
-		this.leftside = c.leftside;
-		
 		lastCastStart = 0;
 		castPosition = 0;
 		castMoved = 0;
@@ -178,6 +216,49 @@ public class Character implements GUIElement {
 		
 		this.availableActions = c.availableActions;
 		selectionMenu = new SelectionMenu(availableActions);
+
+//		float waitTime = (float) (Math.random()*3 + 2);
+//		float castTime = (float) (Math.random()*4 + 4);
+		float waitTime = c.speed;
+		float castTime = c.castSpeed;
+		actionBar = new CharActionBar(c.numSlots,waitTime,castTime);
+
+	}
+	
+	public Character(Character c, Action[] actions){
+		this.texture = c.texture;
+		this.icon = c.icon;
+		this.animation = c.animation;
+		this.name = c.name;
+		this.health = c.health;
+		this.maxHealth = c.maxHealth;
+
+		this.color = c.color;
+
+		/* Randomize so that its not always the same thing */
+		this.speed = c.speed;
+		this.castSpeed = c.castSpeed;
+
+		lastCastStart = 0;
+		castPosition = 0;
+		castMoved = 0;
+		queuedActions = new LinkedList<ActionNode>();
+		persistingActions = new LinkedList<ActionNode>();
+		effects = new ArrayList<Effect>();
+		shieldedCoordinates = new LinkedList<Coordinate>();
+		
+		this.availableActions = actions;
+		selectionMenu = new SelectionMenu(availableActions);
+
+//		float waitTime = (float) (Math.random()*3 + 2);
+//		float castTime = (float) (Math.random()*4 + 4);
+		float waitTime = c.speed;
+		float castTime = c.castSpeed;
+		actionBar = new CharActionBar(c.numSlots,waitTime,castTime);
+
+		this.availableActions = actions;
+		selectionMenu = new SelectionMenu(availableActions);
+		
 	}
 	
 	/** update the state of the character 
@@ -211,6 +292,15 @@ public class Character implements GUIElement {
 			}
 		}
 		}
+	
+	public void setLeftSide(boolean ls) {
+		leftside = ls;
+	}
+	
+	public void setStartPos(int x, int y) {
+		this.startingXPosition = this.xPosition = x;
+		this.startingYPosition = this.yPosition = y;
+	}
 	
 	public float getX(){
 		return this.xPosition;

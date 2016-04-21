@@ -42,6 +42,8 @@ public class ObjectLoader {
 	/** Container to track the assets loaded so far */
 	private Array<String> assets;
 
+	//Instances of characters being used for the level
+	private LinkedList<Character> characterList;
 	//hashmap used to load characters for level from yaml
 	private HashMap<Integer, Character> availableCharacters;
 	//hashmap used to load actions for level from yaml
@@ -100,6 +102,7 @@ public class ObjectLoader {
     		}
     	}
 		assets.clear();
+		characterList.clear();
 		availableCharacters=null;
 		availableActions = null;
 		availableAnimations = null;
@@ -120,7 +123,7 @@ public class ObjectLoader {
 	    availableActions = new HashMap<Integer, Action>();
 	    availableAnimations = new HashMap<Integer, Animation>();
 	    tacticalManager = new TacticalManager();
-
+	    characterList = new LinkedList<Character>();
 
 		ArrayList<HashMap<String, Object>> allies =  (ArrayList<HashMap<String, Object>>) levelDef.get("allies");
 		ArrayList<HashMap<String, Object>> enemies = (ArrayList<HashMap<String, Object>>) levelDef.get("enemies");
@@ -162,14 +165,20 @@ public class ObjectLoader {
 
 		loadAnimations(animations);
 		loadActions(actions);
-		loadCharacters(allies, characters, true, gameSaveState);
-		loadCharacters(enemies, characters, false, gameSaveState);
+//		loadCharacters(allies, characters, true, gameSaveState);
+//		loadCharacters(enemies, characters, false, gameSaveState);
+		
+		loadChars(characters);
+		loadLevelChars(allies, true, gameSaveState);
+		loadLevelChars(enemies, false, gameSaveState);
+		
 		loadAI(ai);
 
 		Level loadedLevel = new Level();
 
 		Characters chars = new Characters();
-		chars.addAll(availableCharacters.values());
+		//chars.addAll(availableCharacters.values());
+		chars.addAll(characterList);
 		loadedLevel.setCharacters(chars);
 		loadedLevel.setNextLevel(nextLevel);
 		loadedLevel.setTacticalManager(tacticalManager);
@@ -339,6 +348,83 @@ public class ObjectLoader {
 
 	}
 
+	private void loadLevelChars(ArrayList<HashMap<String, Object>> levelChars, 
+									boolean leftSide, GameSaveState gameSaveState) {
+		
+		for (HashMap<String, Object> levelChar : levelChars) {
+			Integer normalId = (Integer) levelChar.get("id");
+			Integer selectedId = (Integer) levelChar.get("selectedId");
+			Integer xPosition = (Integer) levelChar.get("xPosition");
+			Integer yPosition = (Integer) levelChar.get("yPosition");
+
+			Integer charId;
+			Action[] actionArray = null;
+			if (normalId != null){
+				charId = normalId;
+			} else {
+				charId = gameSaveState.selectedCharacters.get(selectedId);
+				ArrayList<Integer> actions = gameSaveState.getActionIds(charId);
+				actionArray = new Action[actions.size()];
+				int i=0;
+				for (Integer actionId : actions){
+					actionArray[i] = availableActions.get(actionId);
+					i++;
+				}
+			}
+			
+			Character modelChar = availableCharacters.get(charId);
+			Character charToAdd = null;
+			if (actionArray != null){
+				charToAdd = new Character(modelChar, actionArray);
+			}else{
+				charToAdd = new Character(modelChar);
+			}
+			charToAdd.setStartPos(xPosition, yPosition);
+			charToAdd.setLeftSide(leftSide);
+			characterList.add(charToAdd);
+		}
+	}
+	
+	private void loadChars(HashMap<Integer, HashMap<String, Object>> characters) {
+		for (Integer charId: availableCharacters.keySet()) {
+			HashMap<String, Object> character = characters.get(charId);;
+			Integer numSlots = (Integer) character.get("slots");
+			String name = (String) character.get("name");
+			Integer health = (Integer) character.get("health");
+			Integer maxHealth = (Integer) character.get("maxHealth");
+			String hexColor = (String) character.get("hexColor");
+			Float speed = (Float) ((Double) character.get("speed")).floatValue();
+			Float castSpeed = (Float) ((Double) character.get("castSpeed")).floatValue();
+			ArrayList<Integer> actions;
+			actions = (ArrayList<Integer>) character.get("availableActions");
+			Action[] actionArray = new Action[actions.size()];
+			int i=0;
+			for (Integer actionId : actions){
+				actionArray[i] = availableActions.get(actionId);
+				i++;
+			}
+			String charTextureName = (String) character.get("texture");
+			String iconTextureName = (String) character.get("icon");
+
+			manager.load(charTextureName,Texture.class);
+			assets.add(charTextureName);
+			manager.load(iconTextureName, Texture.class);
+			assets.add(iconTextureName);
+			manager.finishLoading();
+			Texture charTexture = manager.get(charTextureName,Texture.class);
+			Texture iconTexture = manager.get(iconTextureName,Texture.class);
+			Integer animationId = (Integer) character.get("animationId");
+			Animation anim = availableAnimations.get(animationId);
+			AnimationNode animNode = new AnimationNode(anim);
+			
+			Character characterToAdd = new Character(charTexture, iconTexture, animNode,
+					name, health, maxHealth, Color.valueOf(hexColor), speed,
+					castSpeed, actionArray,numSlots);
+
+			availableCharacters.put(charId, characterToAdd);
+		}
+	}
+	
 	/**Loads all target actions from their yaml specifications
 	 * @param actions
 	 */
