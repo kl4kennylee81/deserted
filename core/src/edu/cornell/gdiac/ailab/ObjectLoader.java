@@ -165,8 +165,6 @@ public class ObjectLoader {
 
 		loadAnimations(animations);
 		loadActions(actions);
-//		loadCharacters(allies, characters, true, gameSaveState);
-//		loadCharacters(enemies, characters, false, gameSaveState);
 		
 		loadChars(characters);
 		loadLevelChars(allies, true, gameSaveState);
@@ -177,7 +175,6 @@ public class ObjectLoader {
 		Level loadedLevel = new Level();
 
 		Characters chars = new Characters();
-		//chars.addAll(availableCharacters.values());
 		chars.addAll(characterList);
 		loadedLevel.setCharacters(chars);
 		loadedLevel.setNextLevel(nextLevel);
@@ -280,73 +277,6 @@ public class ObjectLoader {
 		}
 	}
 
-	/**Loads all target characters from their yaml specifications
-	 * @param levelChars
-	 * @param characters
-	 * @param leftSide
-	 */
-	@SuppressWarnings("unchecked")
-	private void loadCharacters(ArrayList<HashMap<String, Object>> levelChars,
-			HashMap<Integer, HashMap<String, Object>> characters, boolean leftSide, GameSaveState gameSaveState){
-		for (HashMap<String, Object> levelChar : levelChars) {
-			Integer normalId = (Integer) levelChar.get("id");
-			Integer selectedId = (Integer) levelChar.get("selectedId");
-			Integer xPosition = (Integer) levelChar.get("xPosition");
-			Integer yPosition = (Integer) levelChar.get("yPosition");
-
-			Integer charId;
-			if (normalId != null){
-				charId = normalId;
-			} else {
-				charId = gameSaveState.selectedCharacters.get(selectedId);
-			} 
-			HashMap<String, Object> character = characters.get(charId);;
-			Integer numSlots = (Integer) character.get("slots");
-			String name = (String) character.get("name");
-			Integer health = (Integer) character.get("health");
-			Integer maxHealth = (Integer) character.get("maxHealth");
-			String hexColor = (String) character.get("hexColor");
-			Float speed = (Float) ((Double) character.get("speed")).floatValue();
-			Float castSpeed = (Float) ((Double) character.get("castSpeed")).floatValue();
-			ArrayList<Integer> actions;
-			if (normalId != null){
-				actions = (ArrayList<Integer>) character.get("availableActions");
-			} else {
-				actions = gameSaveState.getActionIds(charId);
-			}
-			Action[] actionArray = new Action[actions.size()];
-			int i=0;
-			for (Integer actionId : actions){
-				actionArray[i] = availableActions.get(actionId);
-				i++;
-			}
-			String charTextureName = (String) character.get("texture");
-			String iconTextureName = (String) character.get("icon");
-
-			manager.load(charTextureName,Texture.class);
-			assets.add(charTextureName);
-			manager.load(iconTextureName, Texture.class);
-			assets.add(iconTextureName);
-			manager.finishLoading();
-			Texture charTexture = manager.get(charTextureName,Texture.class);
-			Texture iconTexture = manager.get(iconTextureName,Texture.class);
-			Integer animationId = (Integer) character.get("animationId");
-			Animation anim = availableAnimations.get(animationId);
-			AnimationNode animNode = new AnimationNode(anim);
-
-			Character characterToAdd = new Character(charTexture, iconTexture, animNode,
-					name, health, maxHealth, Color.valueOf(hexColor), speed,
-					castSpeed, xPosition, yPosition, leftSide, actionArray,numSlots);
-
-			//temporary difficulty ai code!!!
-			if (leftSide == false && levelChar.containsKey("difficulty")){
-				String difficulty = (String) levelChar.get("difficulty");
-				characterToAdd.setAI(Difficulty.valueOf(difficulty));
-			}
-			availableCharacters.put(charId, characterToAdd);
-		}
-
-	}
 
 	private void loadLevelChars(ArrayList<HashMap<String, Object>> levelChars, 
 									boolean leftSide, GameSaveState gameSaveState) {
