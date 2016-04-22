@@ -45,6 +45,9 @@ public class SelectionMenuController {
 	/** Attack direction values */
 	Direction direction;
 	
+	
+	// enum of Selecting (selecting an action) Targeting (selecting on the board)  Clicked (when you click)
+	
 	public SelectionMenuController(GridBoard board, List<Character> chars) {
 		this.board = board;
 		this.characters = chars;
@@ -61,8 +64,15 @@ public class SelectionMenuController {
 	}
 	
 	public void update(){
+		//@cameron
+		// loop through character if character has isClicked as true
+		// you then set a field in selectionMenuController clickedChar = that character
+		// do a switch case right here based on the enum
+		
+		// you actually have to split off into the enum of targeting and selecting
 		if (selected != null){
 			updateVariables();
+			
 			int numSlots = selected.getActionBar().getUsableNumSlots();
 			if (menu.canAct(numSlots) && action != null){
 				drawHighlights();
@@ -91,7 +101,15 @@ public class SelectionMenuController {
 					break;
 				}
 			}
-		}	
+		}
+		//@cameron
+		// in here write your code for handling case of enum clicked clicked character selectionmenu
+		// hints you can use our draw highlighting code don't forget that.
+		
+		// to exit out of this state you click backspace and when you do that have a
+		// exit function which sets the isClicked on the clickedChar to false and then sets ClickedChar = null
+		// switches the state to selecting
+		// check if backspace is called if it is then call the exit function.
 	}
 	
 	protected void updateVariables(){

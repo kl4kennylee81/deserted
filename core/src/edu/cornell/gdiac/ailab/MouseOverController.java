@@ -17,7 +17,7 @@ public class MouseOverController {
 	Action hAction;
 	SelectionMenu currMenu;
 	
-	private static boolean DISABLE_MOUSE = true;
+	private static boolean DISABLE_MOUSE = false;
 
 	public void update(Option[] options, Menu Menu){
 		float x = InputController.getMouseX();
@@ -49,6 +49,10 @@ public class MouseOverController {
 		screen.removeHighlight();
 		float x = InputController.getMouseX();
 		float y = InputController.getMouseY();
+		
+		//@cameron
+		// create variable clickedChar = null
+		
 		for(Character c: characters){
 			for (Action a: c.getSelectionMenu().getActions()){
 				if (a.contains(x,y,canvas,board)){
@@ -59,8 +63,17 @@ public class MouseOverController {
 			if (c.contains(x,y,canvas,board)){
 				highlighted = c;
 				highlighted.setHovering();
+				//@Cameron
+				
+				// you also have to actually check that the leftmouse button is clicked
+					// clickedChar = c;
 			}
 		}
+		
+		// if there is a clickedChar that is it is not null
+			// then you loop through characters and set isClicked equal to false for all characters
+			
+			// after reseting you then set clickedChar.isClicked = true;
 		
 		if (hAction != null){
 			currMenu.setSelectedAction(hAction.position);
