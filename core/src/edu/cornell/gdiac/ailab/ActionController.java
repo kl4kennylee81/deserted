@@ -26,6 +26,7 @@ import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.AnimationNode.CharacterState;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 
 import com.badlogic.gdx.graphics.*;
@@ -43,10 +44,14 @@ public class ActionController {
 	
 	/** Done executing actions */
 	boolean isDone;
+	/** Is animating a character's attack execution */
+	boolean isAnimating;
 	/** Current character that is executing */
 	Character selected;
 	/** Shielded coordinates against the selected character */
 	List<Coordinate> shieldedPaths;
+	
+	ActionNode curAction;
 
 	/**
 	 * Creates a GameplayController for the given models.
@@ -63,8 +68,10 @@ public class ActionController {
 		this.animations = animations;
 		
 		isDone = false;
+		isAnimating = false;
 		selected = null;
 		shieldedPaths = new LinkedList<Coordinate>();
+		curAction = null;
 	}
 	 
 	/** 
@@ -77,25 +84,25 @@ public class ActionController {
 	public void update() {
 		board.occupy(characters);
 		if (selected != null){
-			// Execute character's action;
-			ActionNode action = selected.popCast();
-			selected.needsAttack = false;
-			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
-				if (action.action.pattern != Pattern.MOVE){
+			if (selected.needsAttack){
+				// Execute character's action;
+				curAction = selected.popCast();
+				selected.needsAttack = false;
+				if (!curAction.isInterrupted || curAction.action.pattern == Pattern.MOVE){
 					selected.setExecute();
+				} else{
+					curAction.free();
+					selected = null;
 				}
-				// we want move to also reset the active state animation so we switch
-				// to idle first before it then gets set to active next frame
-				else {
-					selected.setExecute();
+			} 
+			if (selected.charState != CharacterState.EXECUTE){
+				if (!curAction.isInterrupted || curAction.action.pattern == Pattern.MOVE){
+					executeAction(curAction);
+				} else {
+					curAction.free();
 				}
-				executeAction(action);
+				selected = null;
 			}
-			else{
-				action.free();
-			}
-			selected = null;
-
 		} else {
 			isDone = true;
 			//Sort characters by speed then check their attacks
