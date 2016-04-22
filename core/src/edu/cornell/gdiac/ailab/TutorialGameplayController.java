@@ -51,6 +51,7 @@ public class TutorialGameplayController extends GameplayController{
 	}
 
 	public void update(){
+		System.out.println("heyooo");
 		tutorialSteps.writeTime += 2;
 		if (tutorialSteps.currStep() != null){
 			if (tutorialSteps.startTime){
@@ -61,6 +62,10 @@ public class TutorialGameplayController extends GameplayController{
 
 		if (tutorialSteps.isDone()){
 			super.update();
+			if (gameOver() && !tutorialSteps.levelName.equals("") && leftsideDead()){
+    			GameEngine.nextLevel = tutorialSteps.levelName;
+    			System.out.println("stfu");
+    		}//code duplication :(
 			return;
 		}
     	screen.noScreen();
@@ -137,9 +142,11 @@ public class TutorialGameplayController extends GameplayController{
     	updateTextMessages();
     	removeDead();
     	if (gameOver()){
+    		System.out.println("yoooo");
     		inGameState = InGameState.DONE;
     		if (!tutorialSteps.levelName.equals("") && leftsideDead()){
     			GameEngine.nextLevel = tutorialSteps.levelName;
+    			System.out.println("stfu");
     		}
     		if(GameEngine.dataGen){
     			dataFile.writeString(jsonArray.toString(), false);
