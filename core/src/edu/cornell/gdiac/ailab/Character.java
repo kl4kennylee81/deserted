@@ -971,6 +971,9 @@ public class Character implements GUIElement {
 		else if (shouldDim){
 			chosenColor = Color.LIGHT_GRAY.cpy().mul(1,1,1,0.8f);
 		}
+		else if (charState == CharacterState.EXECUTE){
+			chosenColor = Color.GOLD.cpy();
+		}
 		return chosenColor;
 	}
 	
@@ -984,7 +987,7 @@ public class Character implements GUIElement {
 		}
 		else if (shouldDim){
 			//
-		}
+		} 
 		return chosenColor;
 	}
 	
