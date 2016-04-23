@@ -433,7 +433,8 @@ public class ActionController {
 				animations.add(a_node.action.animation,path[i].x,path[i].y);
 			}
 			
-			boolean prev_hasHit = hasHit;
+			// if it had hit anything in a prior coordinate
+			boolean hitThisRound = false;
 			for (Character c:characters){
 				// if has hit one character and can only hit one stop checking characters
 				if (oneHit && hasHit){
@@ -445,17 +446,16 @@ public class ActionController {
 				}
 				if (c.xPosition == path[i].x && c.yPosition == path[i].y){
 					processHit(a_node,c);
-					hasHit = true;
+					hitThisRound = true;
 					break;
 				}
 			}
-			// if when checking this coordinate it hit the target do something
-			if (!prev_hasHit && hasHit){
-				//TODO
+			// set hasHit to true if it has hit someone this round
+			if (hitThisRound && !hasHit){
+				hasHit = true;
 			}
-			//in the case where at this coordinate it did not hit a target do something else
-			else{
-				// apply the tileEffect to all tiles in the hitpath
+			// if it has hit someone at that coordinate we don't break that tile
+			if (!hitThisRound){
 				applyTileEffect(a_node.action.effect,path[i].x,path[i].y);
 			}
 		}

@@ -489,7 +489,7 @@
   oneHit: false
   needsToggle: true
   canBlock: false
-  path: "0,0 3,0 3,1"
+  path: "3,0 3,1"
   effect:
     type: BROKEN
     name: Break Tile
