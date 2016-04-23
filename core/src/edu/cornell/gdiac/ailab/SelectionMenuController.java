@@ -89,13 +89,13 @@ public class SelectionMenuController {
 			case SELECTING:
 				checkForClicked();
 				if (clickedChar != null){
+					menu.setChoosingTarget(false);
 					menu = clickedChar.getSelectionMenu();
 					menuState = menuState.PEEKING;
 					
 					//test to see if selection menu removed
 					selected.setSelecting(false);
 					resetNeedsShadow();
-					menu.setChoosingTarget(false);
 					board.reset();
 					//end
 					
