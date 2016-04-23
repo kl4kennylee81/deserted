@@ -1,0 +1,9 @@
+0:
+  text: "Level 4"
+  paused: true
+  finishGame: false
+  levelColor: WHITE
+  spaceToContinue: true
+  restart: true
+  levelName: tutorial4
+  nextLevel: tutorial5

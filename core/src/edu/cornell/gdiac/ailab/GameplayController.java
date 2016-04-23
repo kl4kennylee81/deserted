@@ -132,7 +132,6 @@ public class GameplayController {
     	updateTextMessages();
     	removeDead();
     	if (gameOver()){
-    		System.out.println("hmmm");
     		inGameState = InGameState.DONE;
     		if(GameEngine.dataGen){
     			dataFile.writeString(jsonArray.toString(), false);
@@ -221,7 +220,6 @@ public class GameplayController {
     }
     
     public boolean gameOver(){
-    	System.out.println("game over: " + (leftsideDead() || rightsideDead()));
     	return leftsideDead() || rightsideDead();
     }
     

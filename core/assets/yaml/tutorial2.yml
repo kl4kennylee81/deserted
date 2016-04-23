@@ -1,13 +1,42 @@
 0:
   text: "Level 2"
   paused: true
-  finishGame: false
+  finishGame: true
   levelColor: WHITE
   spaceToContinue: true
   restart: true
   levelName: tutorial2
+  nextLevel: tutorial3
 
+1:
+  text: "Dodge enemy's attack"
+  paused: true
+  spaceToContinue: true
 
+2:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+3:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+4:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+5:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+6:
+  text: "Well Done!"
+  paused: false
+  spaceToContinue: true
 # 1:
 #   text: ""
 #   spaceToContinue: false

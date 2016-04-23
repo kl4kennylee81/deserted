@@ -58,19 +58,20 @@ public class TutorialGameplayController extends GameplayController{
 				tutorialSteps.timeElapsed += 1;
 			}
 		}
-
-
+		System.out.println(tutorialSteps.curStep);
 		if (tutorialSteps.isDone()){
-			super.update();
+			System.out.println("yoyoyoyoyo");
 			if (gameOver() && !tutorialSteps.levelName.equals("") && leftsideDead()){
     			GameEngine.nextLevel = tutorialSteps.levelName;
-    			System.out.println("stfu");
+    			tutorialSteps.setWarning("Your enemy is quicker than you! Dodge him!");
     		}//code duplication :(
+			super.update();
 			return;
 		}
     	screen.noScreen();
     	switch(inGameState){
     	case NORMAL:
+    		System.out.println("nononononon");
     		// update the character models
     		characters.update();
     		effectController.update(characters, board);
@@ -105,6 +106,7 @@ public class TutorialGameplayController extends GameplayController{
     		//updateTutorial();
     		break;
     	case SELECTION:
+    		System.out.println("zeusss");
     		screen.setJustScreen();
     		mouseOverController.clearAll();
     		selectionMenuController.update();
@@ -118,6 +120,7 @@ public class TutorialGameplayController extends GameplayController{
     		}
     		break;
     	case ATTACK:
+    		System.out.println("kickball");
     		actionController.update();
     		if (actionController.isDone()){
     			if (actionBarController.isPlayerSelection){
@@ -129,6 +132,7 @@ public class TutorialGameplayController extends GameplayController{
     		//updateTutorial();
     		break;
     	case PAUSED:
+    		System.out.println("austin");
     		if (regGameState == InGameState.SELECTION){
             	screen.setJustScreen();
             }
@@ -142,7 +146,7 @@ public class TutorialGameplayController extends GameplayController{
     	updateTextMessages();
     	removeDead();
     	if (gameOver()){
-    		System.out.println("yoooo");
+    		System.out.println("godzilla");
     		inGameState = InGameState.DONE;
     		if (!tutorialSteps.levelName.equals("") && leftsideDead()){
     			GameEngine.nextLevel = tutorialSteps.levelName;
@@ -204,6 +208,7 @@ public class TutorialGameplayController extends GameplayController{
     }
 
 	private void updateTutorial() {
+		System.out.println("stuff is japening");
 		pauseTimer++;
 		if (targetPauseTime != -1) {
 			//System.out.println(targetPauseTime);
