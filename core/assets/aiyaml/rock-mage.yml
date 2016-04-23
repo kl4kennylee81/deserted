@@ -1,5 +1,6 @@
 ROOT:
   type: index
+  first_move: RANDOM
   can_hit: ATTACK
   single_in_range: ATTACK
   default: POSITION
@@ -31,7 +32,7 @@ DEFAULT:
   my_tactic: SPECIFIC
   my_actions: [MOVE_GOAL, POWERFUL_ATTACK]
   
-  
-  
- 
-  
+RANDOM:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [RANDOM_DECENT, RANDOM_DECENT, RANDOM_DECENT, RANDOM_DECENT, RANDOM_DECENT]
