@@ -375,7 +375,7 @@
   effect:
     type: BROKEN
     name: Break Tile
-    numRounds: 1
+    numRounds: 2
     magnitude: 0
   description: Deal 3 damage to a particular tile and Breaks the tile.
   animationId: 0
@@ -450,7 +450,7 @@
   isBuff: true
   effect:
     type: SPEED
-    name: Slowed
+    name: Hasten
     numRounds: 3
     magnitude: 4
   description: Target a single square to Hasten an ally
