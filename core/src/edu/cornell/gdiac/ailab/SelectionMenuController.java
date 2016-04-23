@@ -96,6 +96,7 @@ public class SelectionMenuController {
 					selected.setSelecting(false);
 					resetNeedsShadow();
 					menu.setChoosingTarget(false);
+					board.reset();
 					//end
 					
 					break;
