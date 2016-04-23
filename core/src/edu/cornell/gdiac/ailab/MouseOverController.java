@@ -52,6 +52,7 @@ public class MouseOverController {
 		
 		//@cameron
 		// create variable clickedChar = null
+		Character clickedChar = null;
 		
 		for(Character c: characters){
 			for (Action a: c.getSelectionMenu().getActions()){
@@ -67,12 +68,20 @@ public class MouseOverController {
 				
 				// you also have to actually check that the leftmouse button is clicked
 					// clickedChar = c;
+				if (InputController.leftMouseClicked && !c.leftside) {
+					clickedChar = c;
+				}
 			}
 		}
 		
 		// if there is a clickedChar that is it is not null
 			// then you loop through characters and set isClicked equal to false for all characters
-			
+		if (clickedChar != null){
+			for (Character c : characters) {
+				c.isClicked = false;
+			}	
+			clickedChar.isClicked = true;
+		}
 			// after reseting you then set clickedChar.isClicked = true;
 		
 		if (hAction != null){
@@ -80,6 +89,7 @@ public class MouseOverController {
 		}
 		
 	}
+	
 	
 	public void init(HighlightScreen screen, GridBoard board){
 		this.screen = screen;

@@ -8,6 +8,19 @@ import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.Effect.Type;
 
 public class SelectionMenuController {
+	
+	public static enum menuState {
+		//choosing an action on the selection menu
+		SELECTING,
+//		//choosing an action's target path
+//		TARGETING,
+		//waiting for a character to need selecting
+		WAITING,
+		//looking at an enemy's selection menu
+		PEEKING
+	}
+	
+	private menuState menuState;
 	/** Models */
 	GridBoard board;
 	List<Character> characters;
@@ -17,6 +30,7 @@ public class SelectionMenuController {
 	Action nop;
 	
 	/** Controller variables */
+	Character clickedChar;
 	Character selected;
 	boolean isDone;
 	SelectionMenu menu;
@@ -49,9 +63,10 @@ public class SelectionMenuController {
 	// enum of Selecting (selecting an action) Targeting (selecting on the board)  Clicked (when you click)
 	
 	public SelectionMenuController(GridBoard board, List<Character> chars) {
+		clickedChar = null;
 		this.board = board;
 		this.characters = chars;
-		
+		menuState = menuState.WAITING;
 		isDone = false;
 		selected = null;
 		menu = null;
@@ -70,38 +85,67 @@ public class SelectionMenuController {
 		// do a switch case right here based on the enum
 		
 		// you actually have to split off into the enum of targeting and selecting
-		if (selected != null){
-			updateVariables();
-			
-			int numSlots = selected.getActionBar().getUsableNumSlots();
-			if (menu.canAct(numSlots) && action != null){
-				drawHighlights();
-			}
-			if (!choosingTarget){
-				// prompt choose an action when not choosing target
-	    		prompt = "Choose an Action";
-	    		this.setPrompt(prompt);
-				updateNotChoosingTarget();
-			} else {
-				updateChoosingTarget();
-			}
-			menu.setSelectedX(selectedX);
-			menu.setSelectedY(selectedY);
-		} else {
-			isDone = true;
-			for (Character c : characters){
-				if (c.needsSelection && c.isAlive() && !c.isAI){
-					isDone = false;
-					selected = c;
-					SelectionMenu menu = c.getSelectionMenu();
-					menu.reset();
-					c.needsSelection = false;
-					c.setSelecting(true);
-					setNeedsShadow();
+		switch (menuState) {
+			case SELECTING:
+				checkForClicked();
+				if (clickedChar != null){
+					menu = clickedChar.getSelectionMenu();
+					menuState = menuState.PEEKING;
+					
+					//test to see if selection menu removed
+					selected.setSelecting(false);
+					resetNeedsShadow();
+					menu.setChoosingTarget(false);
+					//end
+					
 					break;
 				}
-			}
+				
+				updateVariables();
+				
+				int numSlots = selected.getActionBar().getUsableNumSlots();
+				if (menu.canAct(numSlots) && action != null){
+					drawHighlights();
+				}
+				if (!choosingTarget){
+					// prompt choose an action when not choosing target
+		    		prompt = "Choose an Action";
+		    		this.setPrompt(prompt);
+					updateNotChoosingTarget();
+					if (selected == null) {
+						menuState = menuState.WAITING;
+					}
+				} else {
+					updateChoosingTarget();
+				}
+				menu.setSelectedX(selectedX);
+				menu.setSelectedY(selectedY);
+				break;
+			//case TARGETING:
+			
+			case WAITING:
+				isDone = true;
+				for (Character c : characters){
+					if (c.needsSelection && c.isAlive() && !c.isAI){
+						isDone = false;
+						selected = c;
+						SelectionMenu menu = c.getSelectionMenu();
+						menu.reset();
+						c.needsSelection = false;
+						c.setSelecting(true);
+						setNeedsShadow();
+						menuState = menuState.SELECTING;
+						break;
+					}
+				}
+				break;
+			case PEEKING:
+				updatePeeking();
+				
+				break;
+				
 		}
+		
 		//@cameron
 		// in here write your code for handling case of enum clicked clicked character selectionmenu
 		// hints you can use our draw highlighting code don't forget that.
@@ -111,6 +155,17 @@ public class SelectionMenuController {
 		// switches the state to selecting
 		// check if backspace is called if it is then call the exit function.
 	}
+	
+	private void checkForClicked(){
+		for (Character c : characters){
+			if (c.isClicked){
+				clickedChar = c;
+				break;
+			}
+		}
+	}
+	
+
 	
 	protected void updateVariables(){
 		menu = selected.getSelectionMenu();
@@ -122,6 +177,17 @@ public class SelectionMenuController {
 		selectedY = menu.getSelectedY();
 		leftside = selected.leftside;
 		board.reset();
+	}
+	
+	
+	private void updatePeeking() {
+		int numSlots = clickedChar.getActionBar().getUsableNumSlots();
+		if (InputController.pressedUp() && !InputController.pressedDown()){
+			//Actions go from up down, so we need to flip
+			menu.changeSelected(false,numSlots);
+		} else if (InputController.pressedDown() && !InputController.pressedUp()){
+			menu.changeSelected(true,numSlots);
+		}
 	}
 	
 	/**

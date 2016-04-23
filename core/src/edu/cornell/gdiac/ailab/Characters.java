@@ -36,13 +36,22 @@ public class Characters extends LinkedList<Character>{
 	public void drawSelectionMenu(GameCanvas canvas,boolean shouldDim){
 		// find if there is any character with isClicked == true
 		// if there is pass into drawSelection a boolean that there is a clickedCharacter
-		boolean clickedCharExist = false;
+		boolean clickedCharExist = clickedCharExists();
 		int count = 0;
         for (Character c : this){
         	count++;
     		c.drawSelection(canvas,count,clickedCharExist);
 			c.drawToken(canvas,count,shouldDim);
         }
+	}
+	
+	private boolean clickedCharExists() {
+		for (Character c : this){
+			if (c.isClicked){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public Characters(){

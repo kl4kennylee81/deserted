@@ -113,6 +113,9 @@ public class Character implements GUIElement {
 	/** Cast bar position of last cast (Used for animating) */
 	float lastCastStart;	
 	
+	/**Whether the character has been clicked. */
+	boolean isClicked;
+	
 	/**Constructor used by GameEngine to create characters from yaml input. */
 	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
 						int health, int maxHealth, Color color, 
@@ -582,7 +585,7 @@ public class Character implements GUIElement {
 	public void drawSelection(GameCanvas canvas,int count,boolean clickedCharExist){
 		//@cameron
 		// change this boolean condition to also draw character when he isClicked
-		if (isSelecting && !clickedCharExist && isAlive()){
+		if ((isSelecting && !clickedCharExist && isAlive()) || isClicked){
 			selectionMenu.draw(canvas,this.actionBar,count);
 		}
 	}
