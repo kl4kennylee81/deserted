@@ -41,6 +41,9 @@ public class DecisionNode {
 		MOVE_PROTECT, 
 		/** Try to move towards an optimal goal tile */
 		MOVE_GOAL,		
+		/** Try to pick a random decent action */
+		RANDOM_DECENT
+		
 	}
 	
 	public static enum Tactic {

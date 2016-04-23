@@ -3,6 +3,7 @@ package edu.cornell.gdiac.ailab;
 import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -32,6 +33,7 @@ public class TacticalManager extends ConditionalManager{
 	private Coordinate goal;
 	
 	public TacticalManager(){
+		firstMove = new HashSet<Character>();
 		preSelected = new HashMap<String, LeafNode>();
 		nodeMap = new HashMap<String, DecisionNode>();
 	}
@@ -214,6 +216,9 @@ public class TacticalManager extends ConditionalManager{
 					break;
 				case MOVE_GOAL:
 					a = moveGoal(c, startSlot, x, y);
+					break;
+				case RANDOM_DECENT:
+					a = randomDecentMove(c, startSlot, x, y);
 					break;
 				default:
 					//System.out.println("nopnode");
@@ -470,6 +475,7 @@ public class TacticalManager extends ConditionalManager{
 	}
 	
 	
+	
 	/**
 	 * Returns an attack node for any non-single-square attack
 	 */
@@ -600,7 +606,7 @@ public class TacticalManager extends ConditionalManager{
 				}
 			}
 		}
-		return nopNode(c, startPoint);
+		return moveDefensive(c, startPoint, xPos, yPos);
 	}
 	
 	/**
@@ -900,6 +906,88 @@ public class TacticalManager extends ConditionalManager{
 		Action a = nop();
 		return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.NONE);
 	}
+	
+	//=======================================================================//
+	//             +-----------------------+                                 //
+	//	           | Random Move Selection |						         //
+	//	           +-----------------------+						         //
+	//			             \   ^__^										 //
+	//			              \  (00)\_______							     //	
+	//			                 (__)\       )\/\							 //
+	//			                     ||----w |								 //
+	//			                     ||     ||								 //
+    //=======================================================================//
+	
+	public ActionNode randomDecentMove(Character c, int startPoint, int xPos, int yPos){
+		ArrayList<ActionNode> possibleActions = new ArrayList<ActionNode>();
+		possibleActions.addAll(attacksThatCanHit(c, startPoint, xPos, yPos));
+		int size = possibleActions.size();
+		
+		Random r = new Random();
+		for(int i = 0; i <= size; i++){
+			int j = r.nextInt(3);
+			if(j == 0){
+				possibleActions.add(moveGoal(c,startPoint,xPos,yPos));
+			}
+			if(j == 1){
+				possibleActions.add(moveAggressive(c,startPoint,xPos,yPos));
+			}
+			if(j == 2){
+				possibleActions.add(moveDefensive(c,startPoint,xPos,yPos));
+			}
+		}
+		return possibleActions.get((r.nextInt(possibleActions.size())));
+	}
+	
+	public List<ActionNode> attacksThatCanHit(Character c, int startPoint, int xPos, int yPos){
+		ActionNodes anPool = ActionNodes.getInstance();
+		ArrayList<ActionNode> attacks = new ArrayList<ActionNode>();
+		for(Action a: c.availableActions){
+			if(a.cost <= c.actionBar.getUsableNumSlots() - startPoint){
+				for(Character e: enemies){
+					if(a.hitsTarget(c.xPosition, c.yPosition, e.xPosition, e.yPosition, c.leftside, board)){
+						if(a.pattern == Pattern.SINGLE){
+							attacks.add(singleOptimal(c, startPoint, xPos, yPos));
+						}
+						else{
+							Direction d = e.yPosition < c.yPosition ? Direction.DOWN : Direction.UP;
+							attacks.add(anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, d));
+						}
+					}
+				}
+			}
+		}
+		return attacks;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
 	
 	
 	

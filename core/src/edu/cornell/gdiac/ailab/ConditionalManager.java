@@ -2,6 +2,7 @@ package edu.cornell.gdiac.ailab;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
@@ -16,6 +17,8 @@ public class ConditionalManager {
 	protected Character selected;
 	protected List<Character> friends;
 	protected List<Character> enemies;
+	
+	protected HashSet<Character> firstMove;
     
     protected final String[] conditions = {
     		"default",
@@ -52,7 +55,8 @@ public class ConditionalManager {
     		"ally_safe",
     		"ally_can_hit_enemy",
     		"ally_almost_done_waiting",
-    		"can_interrupt_enemy"
+    		"can_interrupt_enemy",
+    		"first_move"
     };
 
 	
@@ -99,12 +103,21 @@ public class ConditionalManager {
 		map.put("ally_can_hit_enemy", nextFriendCanHit());
 		map.put("ally_almost_done_waiting", friendWillEnterSoon());
 		map.put("can_interrupt_enemy", canInterruptEnemy());
+		map.put("first_move", firstMove());
 		map.put("default", true);
 		
 //		System.out.println("----------------------------------------------");
 //		for(String s: map.keySet()){
 //			System.out.println(s + ": "+ map.get(s));
 //		}
+	}
+	
+	public boolean firstMove(){
+		if(!firstMove.contains(selected)){
+			firstMove.add(selected);
+			return true;
+		}
+		return false;
 	}
 	
 	

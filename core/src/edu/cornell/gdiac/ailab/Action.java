@@ -136,6 +136,15 @@ public class Action implements GUIElement {
 					return true;
 				}
 			}
+			if(needsToggle){
+				for (int i = 0; i < path.length; i++){
+					int x = startX + path[i].x;
+					int y = startY - path[i].y;
+					if (x == targetX && y == targetY){
+						return true;
+					}
+				}
+			}
 			return false;
 		} else {
 			for (int i = 0; i < path.length; i++){
@@ -143,6 +152,15 @@ public class Action implements GUIElement {
 				int y = startY + path[i].y;
 				if (x == targetX && y == targetY){
 					return true;
+				}
+			}
+			if(needsToggle){
+				for (int i = 0; i < path.length; i++){
+					int x = startX - path[i].x;
+					int y = startY - path[i].y;
+					if (x == targetX && y == targetY){
+						return true;
+					}
 				}
 			}
 			return false;
