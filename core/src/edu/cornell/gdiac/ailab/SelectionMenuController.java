@@ -84,16 +84,7 @@ public class SelectionMenuController {
 				
 				checkForClicked();
 				if (clickedChar != null){
-					//menu.setChoosingTarget(false);
-					//menu = clickedChar.getSelectionMenu();
-					menuState = menuState.PEEKING;
-					
-					//test to see if selection menu removed
-					//selected.setSelecting(false);
-					//resetNeedsShadow();
-					//board.reset();
-					//end
-					
+					menuState = menuState.PEEKING;					
 					break;
 				}
 				
