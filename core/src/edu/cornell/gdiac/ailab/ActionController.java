@@ -85,14 +85,12 @@ public class ActionController {
 		board.occupy(characters);
 		if (selected != null){
 			if (selected.needsAttack){
-				// Execute character's action;
+				// set the character state to start the animation
 				curAction = selected.popCast();
 				selected.needsAttack = false;
-				if (!curAction.isInterrupted || curAction.action.pattern == Pattern.MOVE){
+				// we set to execute if action isn't interrupted and if it is not a move
+				if (!curAction.isInterrupted && curAction.action.pattern != Pattern.MOVE){
 					selected.setExecute();
-				} else{
-					curAction.free();
-					selected = null;
 				}
 			} 
 			if (selected.charState != CharacterState.EXECUTE){
