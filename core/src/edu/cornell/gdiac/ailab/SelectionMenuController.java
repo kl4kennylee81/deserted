@@ -9,7 +9,7 @@ import edu.cornell.gdiac.ailab.Effect.Type;
 
 public class SelectionMenuController {
 	
-	public static enum menuState {
+	public static enum MenuState {
 		//choosing an action on the selection menu
 		SELECTING,
 //		//choosing an action's target path
@@ -20,7 +20,7 @@ public class SelectionMenuController {
 		PEEKING
 	}
 	
-	private menuState menuState;
+	private MenuState menuState;
 	/** Models */
 	GridBoard board;
 	List<Character> characters;
@@ -66,7 +66,7 @@ public class SelectionMenuController {
 		clickedChar = null;
 		this.board = board;
 		this.characters = chars;
-		menuState = menuState.WAITING;
+		this.menuState = MenuState.WAITING;
 		isDone = false;
 		selected = null;
 		menu = null;
@@ -84,7 +84,7 @@ public class SelectionMenuController {
 				
 				checkForClicked();
 				if (clickedChar != null){
-					menuState = menuState.PEEKING;					
+					menuState = MenuState.PEEKING;					
 					break;
 				}
 				
@@ -100,7 +100,7 @@ public class SelectionMenuController {
 		    		this.setPrompt(prompt);
 					updateNotChoosingTarget();
 					if (selected == null) {
-						menuState = menuState.WAITING;
+						menuState = MenuState.WAITING;
 					}
 				} else {
 					updateChoosingTarget();
@@ -120,7 +120,7 @@ public class SelectionMenuController {
 						c.needsSelection = false;
 						c.setSelecting(true);
 						setNeedsShadow();
-						menuState = menuState.SELECTING;
+						menuState = MenuState.SELECTING;
 						break;
 					}
 				}
@@ -136,7 +136,7 @@ public class SelectionMenuController {
 				if (InputController.pressedBack()){
 					clickedChar.isClicked = false;
 					clickedChar = null;
-					menuState = menuState.SELECTING;
+					menuState = MenuState.SELECTING;
 				}
 				break;
 				
@@ -614,28 +614,11 @@ public class SelectionMenuController {
 		}	
 	}
 	public void drawSingle(){
-		if (choosingTarget){
-				for (int i=0;i<board.getWidth();i++){
-					for (int j = 0;j<board.getHeight();j++){
-						if (this.action.singleCanTarget(selected.getShadowX(),selected.getShadowY(),i,j, selected.leftside, board)){
-							if (selected.leftside && i >= (int)board.getWidth()/2){
-								board.setCanTarget(i,j);
-							}
-							else if (!selected.leftside && i < (int)board.getWidth()/2){
-								board.setCanTarget(i,j);
-							}
-							else if(this.action.isBuff){
-								board.setCanTarget(i, j);
-							}
-						}
-					}
-				}
-			board.setHighlighted(selectedX, selectedY);
-		} else {
-			
-			// we have to limit it by the range so for example he can only single target with
-			// range 3 around a radius.
-			for (int i = 0;i<board.getWidth();i++){
+		if (this.menuState != MenuState.PEEKING){
+			if (choosingTarget){
+				board.setHighlighted(selectedX, selectedY);
+			}
+			for (int i=0;i<board.getWidth();i++){
 				for (int j = 0;j<board.getHeight();j++){
 					if (this.action.singleCanTarget(selected.getShadowX(),selected.getShadowY(),i,j, selected.leftside, board)){
 						if (selected.leftside && i >= (int)board.getWidth()/2){
@@ -651,11 +634,31 @@ public class SelectionMenuController {
 				}
 			}
 		}
+		// when peeking at the enemy character movesets there moves are drawn from their current location
+		// not the shadows location because the player does not have the information of where the shadow is
+		else{
+			for (int i=0;i<board.getWidth();i++){
+				for (int j = 0;j<board.getHeight();j++){
+					if (this.action.singleCanTarget((int)clickedChar.getX(),(int)clickedChar.getY(),i,j, clickedChar.leftside, board)){
+						if (clickedChar.leftside && i >= (int)board.getWidth()/2){
+							board.setCanTarget(i,j);
+						}
+						else if (!clickedChar.leftside && i < (int)board.getWidth()/2){
+							board.setCanTarget(i,j);
+						}
+						else if(this.action.isBuff){
+							board.setCanTarget(i, j);
+						}
+					}
+				}
+			}			
+		}
+		
 	}
 	
 	public void drawMove(){
 		Character character = null;
-		if (menuState == menuState.PEEKING){
+		if (menuState == MenuState.PEEKING){
 			character = clickedChar;
 		}else{
 			character = selected;
