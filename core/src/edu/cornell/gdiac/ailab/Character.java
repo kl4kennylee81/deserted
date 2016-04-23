@@ -583,10 +583,8 @@ public class Character implements GUIElement {
 	
 	/** temporary while menu is blocked by characters */
 	public void drawSelection(GameCanvas canvas,int count,boolean clickedCharExist){
-		//@cameron
-		// change this boolean condition to also draw character when he isClicked
 		if ((isSelecting && !clickedCharExist && isAlive()) || isClicked){
-			selectionMenu.draw(canvas,this.actionBar,count);
+			selectionMenu.draw(canvas,this.actionBar,count, isClicked);
 		}
 	}
 	

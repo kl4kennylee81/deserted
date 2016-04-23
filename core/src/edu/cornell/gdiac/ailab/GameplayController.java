@@ -169,9 +169,10 @@ public class GameplayController {
     //This needs to be done so characters below show over characters above and selection menu
     //shows over characters.
     protected void drawCharacters(GameCanvas canvas){
+    	boolean inSelection = inGameState == InGameState.SELECTION;
 		boolean shouldDim = inGameState == InGameState.SELECTION || 
 				mouseOverController.isCharacterHighlighted();
-    	characters.draw(canvas,shouldDim);
+    	characters.draw(canvas,shouldDim, inSelection);
     	for (int i = board.height-1; i >= 0; i--){
     		for (Character c : characters){
     			

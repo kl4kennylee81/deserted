@@ -248,7 +248,7 @@ public class SelectionMenu {
 	}
 	
 	//TODO: update for dazed
-	public void draw(GameCanvas canvas,CharActionBar actionBar,int count){
+	public void draw(GameCanvas canvas,CharActionBar actionBar,int count, boolean charIsClicked){
 		int totalNumSlots = actionBar.getTotalNumSlots();
 		int usableNumSlots = actionBar.getUsableNumSlots();
 		
@@ -286,13 +286,15 @@ public class SelectionMenu {
 			g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, actionColor);
 		}
 		
-		//Draw confirm selection
-		offset_y += spacing_h + g.height/2;
-		if (selectedAction == actions.length){
-			selectedPointerOffset = offset_y;
-			g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.CORAL);
-		} else {
-			g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.GREEN);
+		if (!charIsClicked){
+			//Draw confirm selection
+			offset_y += spacing_h + g.height/2;
+			if (selectedAction == actions.length){
+				selectedPointerOffset = offset_y;
+				g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.CORAL);
+			} else {
+				g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.GREEN);
+			}
 		}
 		
 		float pointer_x = text_x - ACTION_POINTER_OFFSET_X;

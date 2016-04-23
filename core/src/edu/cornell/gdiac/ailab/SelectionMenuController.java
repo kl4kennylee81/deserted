@@ -60,7 +60,7 @@ public class SelectionMenuController {
 	Direction direction;
 	
 	
-	// enum of Selecting (selecting an action) Targeting (selecting on the board)  Clicked (when you click)
+
 	
 	public SelectionMenuController(GridBoard board, List<Character> chars) {
 		clickedChar = null;
@@ -79,24 +79,19 @@ public class SelectionMenuController {
 	}
 	
 	public void update(){
-		//@cameron
-		// loop through character if character has isClicked as true
-		// you then set a field in selectionMenuController clickedChar = that character
-		// do a switch case right here based on the enum
-		
-		// you actually have to split off into the enum of targeting and selecting
 		switch (menuState) {
 			case SELECTING:
+				
 				checkForClicked();
 				if (clickedChar != null){
-					menu.setChoosingTarget(false);
-					menu = clickedChar.getSelectionMenu();
+					//menu.setChoosingTarget(false);
+					//menu = clickedChar.getSelectionMenu();
 					menuState = menuState.PEEKING;
 					
 					//test to see if selection menu removed
-					selected.setSelecting(false);
-					resetNeedsShadow();
-					board.reset();
+					//selected.setSelecting(false);
+					//resetNeedsShadow();
+					//board.reset();
 					//end
 					
 					break;
@@ -122,7 +117,6 @@ public class SelectionMenuController {
 				menu.setSelectedX(selectedX);
 				menu.setSelectedY(selectedY);
 				break;
-			//case TARGETING:
 			
 			case WAITING:
 				isDone = true;
@@ -141,20 +135,22 @@ public class SelectionMenuController {
 				}
 				break;
 			case PEEKING:
+				checkForClicked();
+				updatePeekingVariables();
+				if (action != null){
+					drawHighlights();
+				}
 				updatePeeking();
 				
+				if (InputController.pressedBack()){
+					clickedChar.isClicked = false;
+					clickedChar = null;
+					menuState = menuState.SELECTING;
+				}
 				break;
 				
 		}
 		
-		//@cameron
-		// in here write your code for handling case of enum clicked clicked character selectionmenu
-		// hints you can use our draw highlighting code don't forget that.
-		
-		// to exit out of this state you click backspace and when you do that have a
-		// exit function which sets the isClicked on the clickedChar to false and then sets ClickedChar = null
-		// switches the state to selecting
-		// check if backspace is called if it is then call the exit function.
 	}
 	
 	private void checkForClicked(){
@@ -180,6 +176,22 @@ public class SelectionMenuController {
 		board.reset();
 	}
 	
+	private void updatePeekingVariables(){
+		menu = clickedChar.getSelectionMenu();
+		action = menu.getSelectedAction();
+		choosingTarget =  menu.getChoosingTarget();
+		//shadowX = clickedChar.getShadowX();
+		//shadowY = clickedChar.getShadowY();
+		
+		//use current positions for shadowx and y so the player doesn't get info
+		//on planned enemy moves
+		shadowX = clickedChar.xPosition;
+		shadowY = clickedChar.yPosition;
+		selectedX = menu.getSelectedX();
+		selectedY = menu.getSelectedY();
+		leftside = clickedChar.leftside;
+		board.reset();
+	}
 	
 	private void updatePeeking() {
 		int numSlots = clickedChar.getActionBar().getUsableNumSlots();
@@ -651,15 +663,22 @@ public class SelectionMenuController {
 	}
 	
 	public void drawMove(){
+		Character character = null;
+		if (menuState == menuState.PEEKING){
+			character = clickedChar;
+		}else{
+			character = selected;
+		}
+		
 		//if not leftside and at x=2 then draw
 		if (!(leftside && shadowX == boardWidth/2-1)){
-			board.setCanMove(selected.leftside,shadowX+1, shadowY);
+			board.setCanMove(character.leftside,shadowX+1, shadowY);
 		}
 		if (!(!leftside && shadowX == boardWidth/2)){
-			board.setCanMove(selected.leftside,shadowX-1, shadowY);
+			board.setCanMove(character.leftside,shadowX-1, shadowY);
 		}
-		board.setCanMove(selected.leftside,shadowX, shadowY-1);
-		board.setCanMove(selected.leftside,shadowX, shadowY+1);
+		board.setCanMove(character.leftside,shadowX, shadowY-1);
+		board.setCanMove(character.leftside,shadowX, shadowY+1);
 		if (choosingTarget){
 			switch (direction){
 			case UP:
