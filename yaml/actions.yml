@@ -375,7 +375,7 @@
   effect:
     type: BROKEN
     name: Break Tile
-    numRounds: 3
+    numRounds: 1
     magnitude: 0
   description: Deal 3 damage to a particular tile and Breaks the tile.
   animationId: 0
@@ -493,7 +493,7 @@
   effect:
     type: BROKEN
     name: Break Tile
-    numRounds: 3
+    numRounds: 1
     magnitude: 0
   description: Hits adjacent rows 2 squares forward for 2 damage.
   animationId: 0
