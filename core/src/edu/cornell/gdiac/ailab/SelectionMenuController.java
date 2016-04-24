@@ -90,8 +90,14 @@ public class SelectionMenuController {
 				checkForClicked();
 				// FIXUP will fix this conditions
 				if (clickedChar != null && !this.choosingTarget && !this.menu.getChoosingTarget()){
-					menuState = MenuState.PEEKING;					
-					break;
+					if (clickedChar == selected){
+						clickedChar.isClicked = false;
+						clickedChar = null;
+					}
+					else{
+						menuState = MenuState.PEEKING;					
+						break;
+					}
 				}
 				else{
 					if (clickedChar!=null){
@@ -145,7 +151,8 @@ public class SelectionMenuController {
 				}
 				updatePeeking();
 				
-				if (InputController.pressedBack()){
+				// when you click on your original character it goes back to his selection menu
+				if (InputController.pressedBack()||clickedChar == selected){
 					clickedChar.isClicked = false;
 					clickedChar = null;
 					menuState = MenuState.SELECTING;
