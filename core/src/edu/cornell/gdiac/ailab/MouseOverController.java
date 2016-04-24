@@ -64,7 +64,7 @@ public class MouseOverController {
 				highlighted = c;
 				highlighted.setHovering();
 
-				if (InputController.leftMouseClicked && !c.leftside) {
+				if (InputController.leftMouseClicked) {
 					clickedChar = c;
 				}
 			}
