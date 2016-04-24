@@ -74,6 +74,15 @@ public class GridBoard {
 		return BOARD_OFFSET_Y * canvas.getHeight();
 	}
 	
+	public boolean getIsHighlighted(int x,int y){
+		if (this.isInBounds(x, y)){
+			return tiles[x][y].isHighlighted;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	/** returns true if tile (x,y) is broken **/
 	public boolean IsBroken(int x,int y){
 		if (this.isInBounds(x, y)){
@@ -285,6 +294,27 @@ public class GridBoard {
 		boolean isLeft = leftside && (this.width/2 > x) && isInBounds(x, y);
 		boolean isRight = !leftside && (this.width/2 <= x) && isInBounds(x,y);
 		return isLeft||isRight;
+	}
+	
+	public Coordinate contains(float x, float y, GameCanvas canvas){
+		for (int i =0;i<this.getWidth();i++){
+			for (int j=0;j<this.getHeight();j++){
+				int tileW = (int) getTileWidth(canvas);
+				int tileH = (int) getTileHeight(canvas);
+				
+				int tileX =tileW*i;
+				int tileY = tileH*j;
+				Coordinate tilePos = this.offsetBoard(canvas, tileX, tileY);
+				
+				float tileXMax = tilePos.x + tileW;
+				float tileYMax = tilePos.y + tileH;
+				if (x>tilePos.x && x<=tileXMax && y>tilePos.y && y<=tileYMax){
+					tilePos.set(i, j);
+					return tilePos;
+				}
+			}
+		}
+		return null;
 	}
 	
 }

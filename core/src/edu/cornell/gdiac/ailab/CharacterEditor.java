@@ -34,6 +34,9 @@ public class CharacterEditor {
 	private TextButton submit;
 	private TextButton back;
 	
+	private boolean submitClicked;
+	private boolean backClicked;
+	
 	public CharacterEditor (String[] opts, String[] animIds, 
 							String[] actions, 
 							String[] models, String newId) {
@@ -120,7 +123,7 @@ public class CharacterEditor {
 		
 		
 		table.add(actionsLabel);
-		table.add(actionsTable).width(OBJ_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
+		table.add(actionsTable).width(OBJ_WIDTH).pad(PADDING);
 		table.row();
 		
 		table.add(textureLabel);
@@ -194,11 +197,25 @@ public class CharacterEditor {
 	}
 	
 	public boolean submitWasClicked() {
-		return submit.isPressed();
+		if (submit.isPressed()){
+			submitClicked = submit.isPressed();
+		}
+		if (InputController.pressedLeftMouse() &&submitClicked){
+			submitClicked = false;
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean backWasClicked() {
-		return back.isPressed();
+		if (back.isPressed()){
+			backClicked = back.isPressed();
+		}
+		if (InputController.pressedLeftMouse() && backClicked){
+			backClicked = false;
+			return true;
+		}
+		return false;
 	}
 	
 	public void setUpEdit(String id, String name, String health, String maxHealth, String hex, 

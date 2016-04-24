@@ -1,0 +1,77 @@
+characters:
+  0:
+    characterId: 0
+    totalSP: 1
+    actionTree:
+    - actionId: 0
+    - actionId: 5
+      nextAction:
+      - actionId: 10
+        cost: 1
+      - actionId: 11
+        cost: 1
+    - actionId: 6
+      nextAction:
+      - actionId: 12
+        cost: 1
+      - actionId: 13
+        cost: 1
+    - actionId: 20
+      nextAction:
+      - actionId: 14
+        cost: 1
+      - actionId: 15
+        cost: 1
+    currentActions:
+    - 0
+    - 5
+    - 6
+    - 20
+  1:
+    characterId: 1
+    totalSP: 0
+    actionTree:
+    - actionId: 0
+    - actionId: 4
+      nextAction:
+      - actionId: 10
+        cost: 1
+      - actionId: 11
+        cost: 1
+    - actionId: 7
+      nextAction:
+      - actionId: 12
+        cost: 1
+      - actionId: 13
+        cost: 1
+    - actionId: 10
+      nextAction:
+      - actionId: 14
+        cost: 1
+      - actionId: 15
+        cost: 1
+    currentActions:
+    - 0
+    - 4
+    - 7
+    - 10
+levels:
+  0:
+    levelName: tutorial1
+    beaten: false
+    boss: false
+  1:
+    levelName: tutorial2
+    beaten: false
+    boss: false
+  2:
+    levelName: pvp
+    beaten: false
+    boss: false
+  3:
+    levelName: Level1
+    beaten: false
+    boss: false
+selectedCharacters:
+- 0
+- 1

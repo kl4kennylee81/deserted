@@ -32,6 +32,8 @@ public class Character implements GUIElement {
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
 	float CHARACTER_PROPORTION = 0.7f;
+	
+	float PROJECTILE_PROPORTION = 0.7f;
 
 	/** Name of character */
 	String name;
@@ -58,6 +60,7 @@ public class Character implements GUIElement {
 	AnimationNode animation;
 	SelectionMenu selectionMenu;
 	CharActionBar actionBar;
+	int numSlots;
 	
 	boolean leftside;
 	
@@ -113,6 +116,9 @@ public class Character implements GUIElement {
 	/** Cast bar position of last cast (Used for animating) */
 	float lastCastStart;	
 	
+	/**Whether the character has been clicked. */
+	boolean isClicked;
+	
 	/**Constructor used by GameEngine to create characters from yaml input. */
 	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
 						int health, int maxHealth, Color color, 
@@ -149,25 +155,62 @@ public class Character implements GUIElement {
 		//float castTime = (float) (Math.random()*4 + 4);
 		float waitTime = speed;
 		float castTime = castSpeed;
+		this.numSlots = numSlots;
 		actionBar = new CharActionBar(numSlots,waitTime,castTime);
 		
 	}
 	
+	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
+			int health, int maxHealth, Color color, 
+			float speed, float castSpeed,  Action[] actions,int numSlots){
+		this.texture = texture;
+		this.icon = icon;
+		this.animation = animation;
+		this.name = name;
+		this.health = health;
+		this.maxHealth = maxHealth;
+
+		this.color = color;
+
+		/* Randomize so that its not always the same thing */
+		this.speed = speed;
+		this.castSpeed = castSpeed;
+
+		lastCastStart = 0;
+		castPosition = 0;
+		castMoved = 0;
+		queuedActions = new LinkedList<ActionNode>();
+		persistingActions = new LinkedList<ActionNode>();
+		effects = new ArrayList<Effect>();
+		shieldedCoordinates = new LinkedList<Coordinate>();
+		
+		this.availableActions = actions;
+		selectionMenu = new SelectionMenu(availableActions);
+
+//		float waitTime = (float) (Math.random()*3 + 2);
+//		float castTime = (float) (Math.random()*4 + 4);
+		float waitTime = speed;
+		float castTime = castSpeed;
+		this.numSlots = numSlots;
+		actionBar = new CharActionBar(numSlots,waitTime,castTime);
+
+	}
+	
+	
 	public Character(Character c){
 		this.texture = c.texture;
 		this.icon = c.icon;
+		this.animation = c.animation;
 		this.name = c.name;
 		this.health = c.health;
 		this.maxHealth = c.maxHealth;
+
+		this.color = c.color;
+
+		/* Randomize so that its not always the same thing */
 		this.speed = c.speed;
 		this.castSpeed = c.castSpeed;
 
-		this.color = c.color;	
-		
-		this.startingXPosition = this.xPosition = c.xPosition;
-		this.startingYPosition = this.yPosition = c.yPosition;
-		this.leftside = c.leftside;
-		
 		lastCastStart = 0;
 		castPosition = 0;
 		castMoved = 0;
@@ -178,6 +221,49 @@ public class Character implements GUIElement {
 		
 		this.availableActions = c.availableActions;
 		selectionMenu = new SelectionMenu(availableActions);
+
+//		float waitTime = (float) (Math.random()*3 + 2);
+//		float castTime = (float) (Math.random()*4 + 4);
+		float waitTime = c.speed;
+		float castTime = c.castSpeed;
+		actionBar = new CharActionBar(c.numSlots,waitTime,castTime);
+
+	}
+	
+	public Character(Character c, Action[] actions){
+		this.texture = c.texture;
+		this.icon = c.icon;
+		this.animation = c.animation;
+		this.name = c.name;
+		this.health = c.health;
+		this.maxHealth = c.maxHealth;
+
+		this.color = c.color;
+
+		/* Randomize so that its not always the same thing */
+		this.speed = c.speed;
+		this.castSpeed = c.castSpeed;
+
+		lastCastStart = 0;
+		castPosition = 0;
+		castMoved = 0;
+		queuedActions = new LinkedList<ActionNode>();
+		persistingActions = new LinkedList<ActionNode>();
+		effects = new ArrayList<Effect>();
+		shieldedCoordinates = new LinkedList<Coordinate>();
+		
+		this.availableActions = actions;
+		selectionMenu = new SelectionMenu(availableActions);
+
+//		float waitTime = (float) (Math.random()*3 + 2);
+//		float castTime = (float) (Math.random()*4 + 4);
+		float waitTime = c.speed;
+		float castTime = c.castSpeed;
+		actionBar = new CharActionBar(c.numSlots,waitTime,castTime);
+
+		this.availableActions = actions;
+		selectionMenu = new SelectionMenu(availableActions);
+		
 	}
 	
 	/** update the state of the character 
@@ -212,6 +298,15 @@ public class Character implements GUIElement {
 		}
 		}
 	
+	public void setLeftSide(boolean ls) {
+		leftside = ls;
+	}
+	
+	public void setStartPos(int x, int y) {
+		this.startingXPosition = this.xPosition = x;
+		this.startingYPosition = this.yPosition = y;
+	}
+	
 	public float getX(){
 		return this.xPosition;
 	}
@@ -222,7 +317,8 @@ public class Character implements GUIElement {
 	
 	public float getXMin(GameCanvas canvas, GridBoard board){
 		float tileW = board.getTileWidth(canvas);
-		float canvasX = board.offsetBoard(canvas,tileW*xPosition,0).x;
+		float tileH = board.getTileHeight(canvas);
+		float canvasX = board.offsetBoard(canvas,tileW*xPosition,tileH*yPosition).x;
 		return canvasX;
 	}
 	
@@ -233,13 +329,13 @@ public class Character implements GUIElement {
 	}
 	
 	public float getXMax(GameCanvas canvas, GridBoard board){
-		float charScale = getCharScale(canvas,texture,board);
-		return getXMin(canvas, board) + texture.getWidth()*charScale;
+		float charScale = getCharScale(canvas,getCurrentFilmStrip(),board);
+		return getXMin(canvas, board) + getCurrentFilmStrip().getRegionWidth()*charScale;
 	}
 	
 	public float getYMax(GameCanvas canvas, GridBoard board){
-		float charScale = getCharScale(canvas,texture,board);
-		return getYMin(canvas, board) + texture.getHeight()*charScale;
+		float charScale = getCharScale(canvas,getCurrentFilmStrip(),board);
+		return getYMin(canvas, board) + getCurrentFilmStrip().getRegionHeight()*charScale;
 	}
 	
 //	public float getTokenX(GameCanvas canvas){
@@ -334,8 +430,7 @@ public class Character implements GUIElement {
 	/**
 	 * Make an AI with the given difficulty
 	 */
-	public void setAI(Difficulty diff){
-		this.diff = diff;
+	public void setAI(){
 		this.isAI = true;
 	}
 	
@@ -424,9 +519,6 @@ public class Character implements GUIElement {
 	 */
 	private void resetShieldedCoordinates(){
 		// add coordinates back to the pool
-		for (Coordinate c: shieldedCoordinates){
-			c.free();
-		}
 		shieldedCoordinates.clear();
 
 		for (ActionNode an : persistingActions){
@@ -496,6 +588,9 @@ public class Character implements GUIElement {
 	void popPersistingCast(ActionNode an){
 		persistingActions.remove(an);
 		if (an.action != null && an.action.pattern == Pattern.SHIELD){
+			for (Coordinate c: an.path){
+				c.free();
+			}
 			resetShieldedCoordinates();
 		}
 		an.free();
@@ -580,9 +675,9 @@ public class Character implements GUIElement {
 	}
 	
 	/** temporary while menu is blocked by characters */
-	public void drawSelection(GameCanvas canvas,int count){
-		if (isSelecting && isAlive()){
-			selectionMenu.draw(canvas,this.actionBar,count);
+	public void drawSelection(GameCanvas canvas,int count,boolean clickedCharExist){
+		if ((isSelecting && !clickedCharExist && isAlive()) || isClicked){
+			selectionMenu.draw(canvas,this.actionBar,count, isClicked);
 		}
 	}
 	
@@ -616,6 +711,11 @@ public class Character implements GUIElement {
 	public float getCharScale(GameCanvas canvas, TextureRegion region,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		return (tileW*CHARACTER_PROPORTION)/region.getRegionWidth();
+	}
+	
+	public float getProjectileScale(GameCanvas canvas, TextureRegion region,GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		return (tileW*PROJECTILE_PROPORTION)/region.getRegionWidth();
 	}
 	
 	public void setExecute(){
@@ -827,7 +927,7 @@ public class Character implements GUIElement {
 	    	    if (toDraw == null){
 	    	    	toDraw = an.animation.getTexture(paused);
 	    	    }
-	    	    canvas.draw(toDraw, messageX,messageY);
+	    	    canvas.drawCharacter(toDraw, messageX, messageY, Color.WHITE, paused, this.getProjectileScale(canvas,toDraw , board));
 				break;
 			default:
 				break;
@@ -882,6 +982,9 @@ public class Character implements GUIElement {
 		else if (shouldDim){
 			chosenColor = Color.LIGHT_GRAY.cpy().mul(1,1,1,0.8f);
 		}
+		else if (charState == CharacterState.EXECUTE){
+			chosenColor = Color.GOLD.cpy();
+		}
 		return chosenColor;
 	}
 	
@@ -895,7 +998,7 @@ public class Character implements GUIElement {
 		}
 		else if (shouldDim){
 			//
-		}
+		} 
 		return chosenColor;
 	}
 	

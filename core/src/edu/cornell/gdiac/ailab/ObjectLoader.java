@@ -2,6 +2,7 @@ package edu.cornell.gdiac.ailab;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -25,6 +26,7 @@ import com.badlogic.gdx.utils.Array;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Effect.Type;
+import edu.cornell.gdiac.ailab.GameSaveState.ActionUpgrade;
 import edu.cornell.gdiac.ailab.Tile.TileState;
 import edu.cornell.gdiac.mesh.MeshLoader;
 import edu.cornell.gdiac.ailab.DecisionNode.*;
@@ -40,6 +42,8 @@ public class ObjectLoader {
 	/** Container to track the assets loaded so far */
 	private Array<String> assets;
 
+	//Instances of characters being used for the level
+	private LinkedList<Character> characterList;
 	//hashmap used to load characters for level from yaml
 	private HashMap<Integer, Character> availableCharacters;
 	//hashmap used to load actions for level from yaml
@@ -98,6 +102,7 @@ public class ObjectLoader {
     		}
     	}
 		assets.clear();
+		characterList.clear();
 		availableCharacters=null;
 		availableActions = null;
 		availableAnimations = null;
@@ -113,12 +118,12 @@ public class ObjectLoader {
 	 * @throws IOException
 	 */
 	@SuppressWarnings("unchecked")
-	public Level createLevel(HashMap<String, Object> levelDef) throws IOException {
+	public Level createLevel(HashMap<String, Object> levelDef, GameSaveState gameSaveState) throws IOException {
 		availableCharacters = new HashMap<Integer, Character>();
 	    availableActions = new HashMap<Integer, Action>();
 	    availableAnimations = new HashMap<Integer, Animation>();
 	    tacticalManager = new TacticalManager();
-
+	    characterList = new LinkedList<Character>();
 
 		ArrayList<HashMap<String, Object>> allies =  (ArrayList<HashMap<String, Object>>) levelDef.get("allies");
 		ArrayList<HashMap<String, Object>> enemies = (ArrayList<HashMap<String, Object>>) levelDef.get("enemies");
@@ -153,21 +158,28 @@ public class ObjectLoader {
 		}
 
 
-		loadKeysFromLevels(allies);
-		loadKeysFromLevels(enemies);
-		loadKeysFromCharacters(characters);
+		loadKeysFromLevels(allies, gameSaveState);
+		loadKeysFromLevels(enemies, gameSaveState);
+		loadKeysFromCharacters(characters, gameSaveState);
 		loadKeysFromActions(actions);
 
 		loadAnimations(animations);
 		loadActions(actions);
-		loadCharacters(allies, characters, true);
-		loadCharacters(enemies, characters, false);
+		
+		boolean levelHasAI = false;
+		if (ai.size() > 0){
+			levelHasAI = true;
+		}
+		loadChars(characters);
+		loadLevelChars(allies, true, gameSaveState, levelHasAI);
+		loadLevelChars(enemies, false, gameSaveState, levelHasAI);
+		
 		loadAI(ai);
 
 		Level loadedLevel = new Level();
 
 		Characters chars = new Characters();
-		chars.addAll(availableCharacters.values());
+		chars.addAll(characterList);
 		loadedLevel.setCharacters(chars);
 		loadedLevel.setNextLevel(nextLevel);
 		loadedLevel.setTacticalManager(tacticalManager);
@@ -218,10 +230,15 @@ public class ObjectLoader {
 	 * and adds the character ids to availableCharacters.
 	 * @param levelChars
 	 */
-	private void loadKeysFromLevels(ArrayList<HashMap<String, Object>> levelChars) {
+	private void loadKeysFromLevels(ArrayList<HashMap<String, Object>> levelChars, GameSaveState gameSaveState) {
 		for (HashMap<String, Object> character : levelChars) {
 			Integer charId = (Integer) character.get("id");
-			availableCharacters.put(charId, null);
+			Integer selectedId = (Integer) character.get("selectedId");
+			if (charId != null){
+				availableCharacters.put(charId, null);
+			} else {
+				availableCharacters.put(gameSaveState.selectedCharacters.get(selectedId), null);
+			} 
 		}
 	}
 
@@ -230,7 +247,7 @@ public class ObjectLoader {
 	 * @param characters
 	 */
 	@SuppressWarnings("unchecked")
-	private void loadKeysFromCharacters(HashMap<Integer, HashMap<String, Object>> characters) {
+	private void loadKeysFromCharacters(HashMap<Integer, HashMap<String, Object>> characters, GameSaveState gameSaveState) {
 		for (Integer charId: availableCharacters.keySet()) {
 			Integer animationId = (Integer) characters.get(charId).get("animationId");
 			availableAnimations.put(animationId, null);
@@ -238,6 +255,13 @@ public class ObjectLoader {
 			ArrayList<Integer> actionList = (ArrayList<Integer>) characters.get(charId).get("availableActions");
 			for (Integer actionId : actionList) {
 				availableActions.put(actionId, null);
+			}
+			
+			ArrayList<Integer> actionList2 = (ArrayList<Integer>) gameSaveState.getActionIds(charId);
+			if (actionList2 != null){
+				for (Integer actionId : actionList2) {
+					availableActions.put(actionId, null);
+				}
 			}
 		}
 	}
@@ -257,20 +281,55 @@ public class ObjectLoader {
 		}
 	}
 
-	/**Loads all target characters from their yaml specifications
-	 * @param levelChars
-	 * @param characters
-	 * @param leftSide
-	 */
-	@SuppressWarnings("unchecked")
-	private void loadCharacters(ArrayList<HashMap<String, Object>> levelChars,
-			HashMap<Integer, HashMap<String, Object>> characters, boolean leftSide){
+
+	private void loadLevelChars(ArrayList<HashMap<String, Object>> levelChars, 
+									boolean leftSide, GameSaveState gameSaveState,
+									boolean levelHasAI) {
+		
 		for (HashMap<String, Object> levelChar : levelChars) {
-			Integer charId = (Integer) levelChar.get("id");
+			Integer normalId = (Integer) levelChar.get("id");
+			Integer selectedId = (Integer) levelChar.get("selectedId");
 			Integer xPosition = (Integer) levelChar.get("xPosition");
 			Integer yPosition = (Integer) levelChar.get("yPosition");
 
-			HashMap<String, Object> character = characters.get(charId);
+			Integer charId;
+			Action[] actionArray = null;
+			if (normalId != null){
+				charId = normalId;
+			} else {
+				charId = gameSaveState.selectedCharacters.get(selectedId);
+				ArrayList<Integer> actions = gameSaveState.getActionIds(charId);
+				actionArray = new Action[actions.size()];
+				int i=0;
+				for (Integer actionId : actions){
+					actionArray[i] = availableActions.get(actionId);
+					i++;
+				}
+			}
+			
+			Character modelChar = availableCharacters.get(charId);
+			Character charToAdd = null;
+			if (actionArray != null){
+				charToAdd = new Character(modelChar, actionArray);
+			}else{
+				charToAdd = new Character(modelChar);
+			}
+			charToAdd.setStartPos(xPosition, yPosition);
+			charToAdd.setLeftSide(leftSide);
+			
+
+			//temporary difficulty ai code!!!
+			if (leftSide == false && levelHasAI){
+				charToAdd.setAI();
+			}
+	
+			characterList.add(charToAdd);
+		}
+	}
+	
+	private void loadChars(HashMap<Integer, HashMap<String, Object>> characters) {
+		for (Integer charId: availableCharacters.keySet()) {
+			HashMap<String, Object> character = characters.get(charId);;
 			Integer numSlots = (Integer) character.get("slots");
 			String name = (String) character.get("name");
 			Integer health = (Integer) character.get("health");
@@ -278,7 +337,8 @@ public class ObjectLoader {
 			String hexColor = (String) character.get("hexColor");
 			Float speed = (Float) ((Double) character.get("speed")).floatValue();
 			Float castSpeed = (Float) ((Double) character.get("castSpeed")).floatValue();
-			ArrayList<Integer> actions = (ArrayList<Integer>) character.get("availableActions");
+			ArrayList<Integer> actions;
+			actions = (ArrayList<Integer>) character.get("availableActions");
 			Action[] actionArray = new Action[actions.size()];
 			int i=0;
 			for (Integer actionId : actions){
@@ -298,22 +358,15 @@ public class ObjectLoader {
 			Integer animationId = (Integer) character.get("animationId");
 			Animation anim = availableAnimations.get(animationId);
 			AnimationNode animNode = new AnimationNode(anim);
-
+			
 			Character characterToAdd = new Character(charTexture, iconTexture, animNode,
 					name, health, maxHealth, Color.valueOf(hexColor), speed,
-					castSpeed, xPosition, yPosition, leftSide, actionArray,numSlots);
-
-			//temporary difficulty ai code!!!
-			if (leftSide == false && levelChar.containsKey("difficulty")){
-				String difficulty = (String) levelChar.get("difficulty");
-				characterToAdd.setAI(Difficulty.valueOf(difficulty));
-			}
-
+					castSpeed, actionArray,numSlots);
+			
 			availableCharacters.put(charId, characterToAdd);
 		}
-
 	}
-
+	
 	/**Loads all target actions from their yaml specifications
 	 * @param actions
 	 */
@@ -466,6 +519,38 @@ public class ObjectLoader {
 			moves.add(Specific.valueOf(s));
 		}
 		return moves;
+	}
+	
+	public HashMap<ActionUpgrade,Action> getActions(List<ActionUpgrade> aus) throws IOException{
+		HashMap<ActionUpgrade,Action> actionMap = new HashMap<ActionUpgrade,Action>();
+		availableActions = new HashMap<Integer, Action>();
+		availableAnimations = new HashMap<Integer, Animation>();
+		for (ActionUpgrade au : aus){
+			availableActions.put(au.actionId, null);
+		}
+		
+		Yaml yaml = new Yaml();
+		File animationFile = new File(ROOT, "yaml/animations.yml");
+		HashMap<Integer, HashMap<String, Object>> animations;
+		try (InputStream is = new FileInputStream(animationFile)){
+			animations = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
+		
+		File actionFile = new File(ROOT, "yaml/actions.yml");
+		HashMap<Integer, HashMap<String, Object>> actions;
+		try (InputStream is = new FileInputStream(actionFile)){
+			actions = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
+		
+		loadKeysFromActions(actions);
+		loadAnimations(animations);
+		loadActions(actions);
+		
+		for (ActionUpgrade au : aus){
+			actionMap.put(au, availableActions.get(au.actionId));
+		}
+		
+		return actionMap;
 	}
 
 

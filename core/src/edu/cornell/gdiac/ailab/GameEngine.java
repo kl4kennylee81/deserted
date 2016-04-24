@@ -83,7 +83,9 @@ public class GameEngine implements Screen {
 		/** When the game is over */
 		AFTER,
 		/** When we are using one of the editors */
-		EDITOR
+		EDITOR,
+		/** When we are customizing our actions */
+		CUSTOMIZE
 	}
 
 
@@ -136,6 +138,9 @@ public class GameEngine implements Screen {
     
     private EditorController editorController;
     
+    private GameSaveStateController gameSaveStateController;
+    
+    private CharacterCustomizationController characterCustomizationController;
     
     
 //	/** Default budget for asset loader (do nothing but load 60 fps) */
@@ -223,7 +228,7 @@ public class GameEngine implements Screen {
     }
     
     public void startGame(String levelName) throws IOException {
-    	if (this.levelDefs.containsKey(levelName)){
+    	if (this.gameSaveStateController.containsLevel(levelName)){
         	initializeCanvas(Constants.BCKGD_TEXTURE, Constants.SELECT_FONT_FILE);
         	Level level = null;
     		level = this.getLevel(levelName);
@@ -288,8 +293,8 @@ public class GameEngine implements Screen {
 		checkReset();
         canvas.begin();
         
-        //update the input controller
-        InputController.update();
+	    //update the input controller
+	    InputController.update();
 		
 		// What we do depends on the game state
 		switch (gameState) {
@@ -334,6 +339,12 @@ public class GameEngine implements Screen {
 			canvas.end();
 			updateEditor();
 			break;
+		case CUSTOMIZE:
+			updateCustomization();
+			characterCustomizationController.update();
+			characterCustomizationController.draw(canvas);
+			canvas.end();
+			break;
 		}
 		
 	}
@@ -341,6 +352,14 @@ public class GameEngine implements Screen {
 	private void updateLevelMenu() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void updateCustomization() {
+		characterCustomizationController.update();
+		if (characterCustomizationController.isDone()){
+			gameSaveStateController.saveGameSaveState();
+			gameState = GameState.MENU;
+		}
 	}
 
 	/** 
@@ -356,7 +375,8 @@ public class GameEngine implements Screen {
         }
 		
 		// If the player presses 'R', reset the game.
-        if (gameState != GameState.LOAD && InputController.pressedR()) {
+        if (gameState != GameState.LOAD && gameState != GameState.EDITOR
+        		&& InputController.pressedR()) {
         	mainMenuController.resetMenu();
             gameState = GameState.MENU;
             return true;
@@ -416,6 +436,9 @@ public class GameEngine implements Screen {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else if (keyword == "Skill Tree") {
+			characterCustomizationController = new CharacterCustomizationController(gameSaveStateController.getGameSaveState(), manager, mouseOverController);
+			gameState = gameState.CUSTOMIZE;
 		}
 	}
 
@@ -524,16 +547,7 @@ public class GameEngine implements Screen {
 			targetLevelDef= levelDefs.get(levelId);	
 			
 		}
-		return ObjectLoader.getInstance().createLevel(targetLevelDef);
-	}
-
-	@SuppressWarnings("unchecked")
-	private void loadLevels() throws IOException{
-		Yaml yaml = new Yaml();
-		File levelFile = new File(ROOT,"yaml/levels.yml");
-		try (InputStream iS = new FileInputStream(levelFile)){
-			this.levelDefs = (HashMap<String, HashMap<String, Object>>) yaml.load(iS);
-		}	
+		return ObjectLoader.getInstance().createLevel(targetLevelDef, gameSaveStateController.getGameSaveState());
 	}
 	
 	// HELPER FUNCTIONS
@@ -595,9 +609,9 @@ public class GameEngine implements Screen {
 		
 		manager.finishLoading();
 		
-		// load all the level defs
-		loadLevels();
-		mainMenuController = new MainMenuController(canvas, manager, mouseOverController,levelDefs);
+		// load all the level defs in GameSaveStateController
+		gameSaveStateController = new GameSaveStateController();
+		mainMenuController = new MainMenuController(canvas, manager, mouseOverController,gameSaveStateController.getLevelData());
 		
 		//for some reason the font loading has to be after the call to manager.finishLoading();
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();

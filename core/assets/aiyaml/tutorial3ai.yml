@@ -1,0 +1,23 @@
+ROOT:
+  type: index
+  can_hit: ATTACK
+  adjacent_attack_square: POSITION
+  default: POSITION2
+
+#-------------------------------------------
+
+ATTACK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, QUICK_ATTACK]
+
+POSITION:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK]
+  
+POSITION2:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, MOVE_AGGRESSIVE, QUICK_ATTACK]
+ 

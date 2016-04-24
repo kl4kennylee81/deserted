@@ -37,7 +37,7 @@ import com.badlogic.gdx.math.*;
  */
 public class GameCanvas {
 	/** Drawing context to handle textures as sprites */
-	private SpriteBatch spriteBatch;
+	public SpriteBatch spriteBatch;
 	/** Canvas background image. */
 	private Texture background;
 	/** Font object for displaying images */
