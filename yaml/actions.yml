@@ -136,7 +136,7 @@
   name: Slow
   cost: 2
   damage: 0
-  range: 5
+  range: 6
   size: 1
   pattern: SINGLE
   oneHit: true

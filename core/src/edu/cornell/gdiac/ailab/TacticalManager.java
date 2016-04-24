@@ -798,10 +798,13 @@ public class TacticalManager extends ConditionalManager{
 			directions.add(Direction.DOWN);
 		}
 		Random r = new Random();
-		if(directions.size() == 0){
-			return Direction.NONE;
+		//next int requires a positive size
+		if (directions.size() > 0){
+			return directions.get(r.nextInt(directions.size()));	
 		}
-		return directions.get(r.nextInt(directions.size()));	
+		else{
+			return Direction.UP;
+		}
 	}
 	
 	/**
