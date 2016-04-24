@@ -205,6 +205,10 @@ public class Action implements GUIElement {
 	
 	
 	public boolean contains(float x, float y, GameCanvas canvas, GridBoard board){
-		return (x <= this.x+this.width && x >= this.x && y <= this.y + this.height && y >= this.y);
+		float xMin = this.x;
+		float xMax = this.x + this.width;
+		float yMin = this.y;
+		float yMax = this.y + this.height;
+		return x <= xMax && x >= xMin && y <= yMax && y >= yMin;
 	}
 }

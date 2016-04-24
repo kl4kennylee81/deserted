@@ -54,8 +54,11 @@ public class MouseOverController {
 		Character clickedChar = null;
 		
 		for(Character c: characters){
-			for (Action a: c.getSelectionMenu().getActions()){
-				if (a.contains(x,y,canvas,board)){
+			SelectionMenu menu = c.getSelectionMenu();
+			for (Action a: menu.getActions()){
+				int usableNumSlots = c.getActionBar().getUsableNumSlots();
+				boolean actionInvalid = menu.isActionInvalid(usableNumSlots, a);
+				if (a.contains(x,y,canvas,board) && !actionInvalid){
 					hAction = a;
 					currMenu = currMenu1;
 				}
@@ -78,7 +81,8 @@ public class MouseOverController {
 			clickedChar.isClicked = true;
 		}
 		
-		if (hAction != null){
+		if (hAction != null && currMenu.getActions().length > currMenu.selectedAction && hAction!= currMenu.getSelectedAction()){
+			currMenu.setChoosingTarget(false);
 			currMenu.setSelectedAction(hAction.position);
 		}
 		

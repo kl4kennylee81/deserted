@@ -287,4 +287,25 @@ public class GridBoard {
 		return isLeft||isRight;
 	}
 	
+	public Coordinate contains(float x, float y, GameCanvas canvas){
+		for (int i =0;i<this.getWidth();i++){
+			for (int j=0;j<this.getHeight();j++){
+				int tileW = (int) getTileWidth(canvas);
+				int tileH = (int) getTileHeight(canvas);
+				
+				int tileX =tileW*i;
+				int tileY = tileH*j;
+				Coordinate tilePos = this.offsetBoard(canvas, tileX, tileY);
+				
+				float tileXMax = tilePos.x + tileW;
+				float tileYMax = tilePos.y + tileH;
+				if (x>tilePos.x && x<=tileXMax && y>tilePos.y && y<=tileYMax){
+					tilePos.set(i, j);
+					return tilePos;
+				}
+			}
+		}
+		return null;
+	}
+	
 }

@@ -198,11 +198,16 @@ public class SelectionMenuController {
 	 * Update when an action is not targeting yet
 	 */
 	private void updateNotChoosingTarget(){
-		boolean mouseCondition = InputController.pressedLeftMouse();// && 
-//				action.contains(InputController.getMouseX(), InputController.getMouseX(), InputController.getCanvas(), board);
+		// only allow mouse click to select if hovering over the action
+		boolean mouseCondition = InputController.pressedLeftMouse() &&
+				((action!= null && action.contains(InputController.getMouseX(), InputController.getMouseY(), InputController.getCanvas(), board))
+						||this.menu.confirmContain(InputController.getMouseX(), InputController.getMouseY()));
 		ActionNodes anPool = ActionNodes.getInstance();
 		int numSlots = selected.getActionBar().getUsableNumSlots();
 		if ((InputController.pressedEnter() || mouseCondition)){
+			if (this.menu.confirmContain(InputController.getMouseX(), InputController.getMouseY())){
+				action = null;
+			}
 			if (action != null && menu.canAct(numSlots)){
 				
 				// allows for bypassing the targetting phase
@@ -322,8 +327,38 @@ public class SelectionMenuController {
 		}
 	}
 	
-	protected void updateChoosingTarget(){
+	private void clickedAction(){
 		ActionNodes anPool = ActionNodes.getInstance();
+		int numSlots = selected.getActionBar().getUsableNumSlots();
+		for (int i =0;i<this.menu.getActions().length;i++){
+			Action menuAction = this.menu.getActions()[i];
+			boolean mouseCondition = InputController.pressedLeftMouse() && 
+					menuAction.contains(InputController.getMouseX(), InputController.getMouseY(), InputController.getCanvas(), board);
+			boolean actionInvalid = this.menu.isActionInvalid(this.selected.getActionBar().getUsableNumSlots(), menuAction);
+			if (mouseCondition && !actionInvalid){
+				if (menuAction.getNeedsToggle()){
+					this.menu.selectedAction = i;
+					this.action = menuAction;
+					this.updateTargetedAction();
+				}
+				else{
+					float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
+					menu.add(anPool.newActionNode(menuAction,actionExecute,selectedX,selectedY,direction),numSlots);
+					menu.resetPointer(numSlots);
+					menu.setChoosingTarget(false);
+					this.choosingTarget = false;
+				}
+				break;
+			}
+		}
+		
+	}
+	
+	protected void updateChoosingTarget(){
+		// null check
+		if (this.action == null){
+			return;
+		}
 		switch (action.pattern){
 		case SINGLE:
 			updateChoosingSingle();
@@ -359,17 +394,46 @@ public class SelectionMenuController {
 			break;
 		}
 		if (InputController.pressedEnter()){
-			float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
-			int numSlots = selected.getActionBar().getUsableNumSlots();
-			menu.add(anPool.newActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
-			menu.setChoosingTarget(false);
-			menu.resetPointer(numSlots);
+			confirmedAction();
+			// for moves we want to allow you to continue moving if possible
+			if (this.action.pattern == Pattern.MOVE 
+					&& this.menu.canAct(this.selected.getActionBar().getUsableNumSlots())){
+				this.updateTargetedAction();
+			}
 		} else if (InputController.pressedBack()){
 			menu.setChoosingTarget(false);
 		}
 	}
 	
+	private void confirmedAction(){
+		ActionNodes anPool = ActionNodes.getInstance();
+		float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
+		int numSlots = selected.getActionBar().getUsableNumSlots();
+		menu.add(anPool.newActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
+		menu.setChoosingTarget(false);
+		menu.resetPointer(numSlots);
+	}
+	
 	protected void updateChoosingSingle(){
+		// mouse controls for single
+		float mouseX = InputController.getMouseX();
+		float mouseY = InputController.getMouseY();
+		Coordinate chosenTile = this.board.contains(mouseX, mouseY, InputController.getCanvas());
+		if (chosenTile!= null){
+			int startX = this.selected.getShadowX();
+			int startY = this.selected.getShadowY();
+			boolean canHit = this.action.hitsTarget(startX, startY, chosenTile.x, chosenTile.y, leftside, board);
+			if (canHit){
+				this.selectedX = chosenTile.x;
+				this.selectedY = chosenTile.y;
+				if (InputController.pressedLeftMouse()){
+					this.confirmedAction();
+					chosenTile.free();
+				}
+				return;
+			}
+		}
+		
 		direction = Direction.NONE;
 		int updateX = selectedX;
 		int updateY = selectedY;
@@ -420,9 +484,45 @@ public class SelectionMenuController {
 	}
 	
 	protected void updateChoosingMove(){
-		
-		//Find out why moving is weird on right side
-		//System.out.println("choosing");
+		// allow for mouse controls for movement
+		// mouse controls for single
+		float mouseX = InputController.getMouseX();
+		float mouseY = InputController.getMouseY();
+		Coordinate chosenTile = this.board.contains(mouseX, mouseY, InputController.getCanvas());
+		if (chosenTile!= null){
+			int startX = this.selected.getShadowX();
+			int startY = this.selected.getShadowY();
+			int targetX = chosenTile.x;
+			int targetY = chosenTile.y;
+			chosenTile.free();
+			boolean oneAway = (Math.abs(startX - targetX) + Math.abs(startY - targetY)) == 1;
+			boolean canMove = this.board.canMove(this.leftside, targetX, targetY);
+			if (oneAway && canMove){
+				if (targetX - startX == 1){
+					this.direction = Direction.RIGHT;
+				}
+				else if (targetX - startX == -1){
+					this.direction = Direction.LEFT;
+				}
+				else if (targetY - startY == 1){
+					this.direction = Direction.UP;
+				}
+				else if (targetY - startY == -1){
+					this.direction = Direction.DOWN;
+				}
+				this.selectedX = targetX;
+				this.selectedY = targetY;
+				if (InputController.pressedLeftMouse()){
+					this.confirmedAction();
+					
+					// this will allow movement after locking in to go back to movement
+					if (this.menu.canAct(this.selected.getActionBar().getUsableNumSlots())){
+						this.updateTargetedAction();
+					}
+				}
+				return;
+			}
+		}
 		
 		//Need to check in all of these if its a valid move;
 		if (InputController.pressedUp() && !InputController.pressedDown()){

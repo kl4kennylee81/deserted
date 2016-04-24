@@ -106,8 +106,8 @@ public class GameplayController {
     	case SELECTION:
     		screen.setJustScreen();
     		mouseOverController.clearAll();
-    		selectionMenuController.update();
     		mouseOverController.update(selectionMenuController.getMenu(),characters);
+    		selectionMenuController.update();;
     		if (selectionMenuController.isDone()){
     			inGameState = InGameState.NORMAL;
     			prompt = null;
