@@ -72,6 +72,11 @@ levels:
     levelName: Level1
     beaten: false
     boss: false
+  4:
+    levelName: Level2
+    beaten: false
+    boss: false
+
 selectedCharacters:
 - 0
 - 1
