@@ -52,6 +52,7 @@ public class MouseOverController {
 		
 
 		Character clickedChar = null;
+		Character actionChar = null;
 		
 		for(Character c: characters){
 			SelectionMenu menu = c.getSelectionMenu();
@@ -61,8 +62,14 @@ public class MouseOverController {
 				if (a.contains(x,y,canvas,board) && !actionInvalid){
 					hAction = a;
 					currMenu = currMenu1;
+					actionChar = c;
 				}
 			}
+			if (c.getSelectionMenu().confirmContain(InputController.getMouseX(), InputController.getMouseY())){
+				menu.setChoosingTarget(false);
+				menu.selectedAction=menu.getActions().length;
+			}
+			
 			if (c.contains(x,y,canvas,board)){
 				highlighted = c;
 				highlighted.setHovering();
@@ -82,7 +89,7 @@ public class MouseOverController {
 		}
 		
 		if (hAction != null 
-				&& (currMenu.getSelectedAction() == null
+				&& ((currMenu.getSelectedAction() == null && !currMenu.isActionInvalid(actionChar.getActionBar().getUsableNumSlots(), hAction))
 						||currMenu.getActions().length > currMenu.selectedAction && hAction!= currMenu.getSelectedAction())){
 			currMenu.setChoosingTarget(false);
 			currMenu.setSelectedAction(hAction.position);

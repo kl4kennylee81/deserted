@@ -88,9 +88,13 @@ public class SelectionMenuController {
 			case SELECTING:
 				
 				checkForClicked();
-				if (clickedChar != null){
+				// FIXUP will fix this conditions
+				if (clickedChar != null && clickedChar != this.selected && !this.choosingTarget){
 					menuState = MenuState.PEEKING;					
 					break;
+				}
+				else{
+					clickedChar = null;
 				}
 				
 				updateVariables();
