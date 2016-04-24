@@ -85,7 +85,7 @@ public class ActionController {
 		board.occupy(characters);
 		if (selected != null){
 			if (selected.needsAttack){
-				// Execute character's action;
+				// set the character state to start the animation
 				curAction = selected.popCast();
 				selected.needsAttack = false;
 				if (curAction.action.pattern == Pattern.MOVE){
@@ -204,11 +204,21 @@ public class ActionController {
 			int x;int y;
 			if (selected.leftside){
 				x = selected.xPosition + relativePath[i].x;
-				y = selected.yPosition + relativePath[i].y;
+				if (a_node.direction!= null && a_node.direction==Direction.DOWN){
+					y = selected.yPosition - relativePath[i].y;
+				}
+				else{
+					y = selected.yPosition + relativePath[i].y;
+				}
 			}
 			else{
 				x = selected.xPosition - relativePath[i].x;
-				y = selected.yPosition + relativePath[i].y;
+				if (a_node.direction!= null && a_node.direction==Direction.DOWN){
+					y = selected.yPosition - relativePath[i].y;
+				}
+				else{
+					y = selected.yPosition + relativePath[i].y;
+				}
 			}
 			absolutePath[i] = coords.obtain();
 			absolutePath[i].set(x, y);
@@ -440,7 +450,7 @@ public class ActionController {
 					break;
 				}
 				// if same side stop checking
-				if (selected.leftside ==c.leftside){
+				if (selected.leftside ==c.leftside && a_node.action.pattern != Pattern.SINGLE){
 					continue;
 				}
 				if (c.xPosition == path[i].x && c.yPosition == path[i].y){

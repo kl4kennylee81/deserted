@@ -32,6 +32,8 @@ public class Character implements GUIElement {
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
 	float CHARACTER_PROPORTION = 0.7f;
+	
+	float PROJECTILE_PROPORTION = 0.7f;
 
 	/** Name of character */
 	String name;
@@ -113,6 +115,9 @@ public class Character implements GUIElement {
 	
 	/** Cast bar position of last cast (Used for animating) */
 	float lastCastStart;	
+	
+	/**Whether the character has been clicked. */
+	boolean isClicked;
 	
 	/**Constructor used by GameEngine to create characters from yaml input. */
 	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
@@ -312,7 +317,8 @@ public class Character implements GUIElement {
 	
 	public float getXMin(GameCanvas canvas, GridBoard board){
 		float tileW = board.getTileWidth(canvas);
-		float canvasX = board.offsetBoard(canvas,tileW*xPosition,0).x;
+		float tileH = board.getTileHeight(canvas);
+		float canvasX = board.offsetBoard(canvas,tileW*xPosition,tileH*yPosition).x;
 		return canvasX;
 	}
 	
@@ -323,13 +329,13 @@ public class Character implements GUIElement {
 	}
 	
 	public float getXMax(GameCanvas canvas, GridBoard board){
-		float charScale = getCharScale(canvas,texture,board);
-		return getXMin(canvas, board) + texture.getWidth()*charScale;
+		float charScale = getCharScale(canvas,getCurrentFilmStrip(),board);
+		return getXMin(canvas, board) + getCurrentFilmStrip().getRegionWidth()*charScale;
 	}
 	
 	public float getYMax(GameCanvas canvas, GridBoard board){
-		float charScale = getCharScale(canvas,texture,board);
-		return getYMin(canvas, board) + texture.getHeight()*charScale;
+		float charScale = getCharScale(canvas,getCurrentFilmStrip(),board);
+		return getYMin(canvas, board) + getCurrentFilmStrip().getRegionHeight()*charScale;
 	}
 	
 //	public float getTokenX(GameCanvas canvas){
@@ -669,9 +675,9 @@ public class Character implements GUIElement {
 	}
 	
 	/** temporary while menu is blocked by characters */
-	public void drawSelection(GameCanvas canvas,int count){
-		if (isSelecting && isAlive()){
-			selectionMenu.draw(canvas,this.actionBar,count);
+	public void drawSelection(GameCanvas canvas,int count,boolean clickedCharExist){
+		if ((isSelecting && !clickedCharExist && isAlive()) || isClicked){
+			selectionMenu.draw(canvas,this.actionBar,count, isClicked);
 		}
 	}
 	
@@ -705,6 +711,11 @@ public class Character implements GUIElement {
 	public float getCharScale(GameCanvas canvas, TextureRegion region,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		return (tileW*CHARACTER_PROPORTION)/region.getRegionWidth();
+	}
+	
+	public float getProjectileScale(GameCanvas canvas, TextureRegion region,GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		return (tileW*PROJECTILE_PROPORTION)/region.getRegionWidth();
 	}
 	
 	public void setExecute(){
@@ -916,7 +927,7 @@ public class Character implements GUIElement {
 	    	    if (toDraw == null){
 	    	    	toDraw = an.animation.getTexture(paused);
 	    	    }
-	    	    canvas.draw(toDraw, messageX,messageY);
+	    	    canvas.drawCharacter(toDraw, messageX, messageY, Color.WHITE, paused, this.getProjectileScale(canvas,toDraw , board));
 				break;
 			default:
 				break;
