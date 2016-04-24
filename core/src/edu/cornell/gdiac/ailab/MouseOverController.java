@@ -81,7 +81,9 @@ public class MouseOverController {
 			clickedChar.isClicked = true;
 		}
 		
-		if (hAction != null && currMenu.getActions().length > currMenu.selectedAction && hAction!= currMenu.getSelectedAction()){
+		if (hAction != null 
+				&& (currMenu.getSelectedAction() == null
+						||currMenu.getActions().length > currMenu.selectedAction && hAction!= currMenu.getSelectedAction())){
 			currMenu.setChoosingTarget(false);
 			currMenu.setSelectedAction(hAction.position);
 		}
