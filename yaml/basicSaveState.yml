@@ -55,6 +55,62 @@ characters:
     - 4
     - 7
     - 10
+  2:
+    characterId: 2
+    totalSP: 0
+    actionTree:
+    - actionId: 0
+    - actionId: 4
+      nextAction:
+      - actionId: 10
+        cost: 1
+      - actionId: 11
+        cost: 1
+    - actionId: 7
+      nextAction:
+      - actionId: 12
+        cost: 1
+      - actionId: 13
+        cost: 1
+    - actionId: 10
+      nextAction:
+      - actionId: 14
+        cost: 1
+      - actionId: 15
+        cost: 1
+    currentActions:
+    - 0
+    - 4
+    - 7
+    - 10
+  3:
+    characterId: 3
+    totalSP: 0
+    actionTree:
+    - actionId: 0
+    - actionId: 4
+      nextAction:
+      - actionId: 10
+        cost: 1
+      - actionId: 11
+        cost: 1
+    - actionId: 7
+      nextAction:
+      - actionId: 12
+        cost: 1
+      - actionId: 13
+        cost: 1
+    - actionId: 10
+      nextAction:
+      - actionId: 14
+        cost: 1
+      - actionId: 15
+        cost: 1
+    currentActions:
+    - 0
+    - 4
+    - 7
+    - 10
 levels:
   0:
     levelName: tutorial1
@@ -72,6 +128,11 @@ levels:
     levelName: Level1
     beaten: false
     boss: false
+availableCharacters:
+- 0
+- 1
+- 2
+- 3
 selectedCharacters:
 - 0
 - 1

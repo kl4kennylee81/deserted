@@ -190,11 +190,13 @@ public class GameSaveState {
 	
 	List<LevelData> levels;
 	List<CharacterData> characters;
+	List<Integer> availableCharacters;
 	List<Integer> selectedCharacters;
 	
 	public GameSaveState(){
 		this.levels = new ArrayList<LevelData>();
 		this.characters = new ArrayList<CharacterData>();
+		this.availableCharacters = new ArrayList<Integer>();
 		this.selectedCharacters = new ArrayList<Integer>();
 	}
 	
@@ -223,6 +225,7 @@ public class GameSaveState {
 	public void setState(HashMap<String, HashMap<String, Object>> gameSaveStateData){
 		this.characters.clear();
 		this.levels.clear();
+		this.availableCharacters.clear();
 		this.selectedCharacters.clear();
 		
 		HashMap<String, Object> characterData = gameSaveStateData.get("characters");
@@ -248,6 +251,9 @@ public class GameSaveState {
 			ld.boss = (boolean) levData.get("boss");
 			this.levels.add(ld);
 		}
+		
+		Object availChars = gameSaveStateData.get("availableCharacters");
+		availableCharacters = (ArrayList<Integer>) availChars;
 		
 		Object selChars = gameSaveStateData.get("selectedCharacters");
 		selectedCharacters = (ArrayList<Integer>) selChars;

@@ -37,12 +37,13 @@ public class CharacterCustomization extends Menu {
 	
 	public CharacterCustomization(GameSaveState gameSaveState){
 		this.gameSaveState = gameSaveState;
-		this.charData = gameSaveState.getCharacterData(0);
 		this.lerpVal = 0;
-		setOptions();
+		setOptions(0);
 	}
 	
-	public void setOptions(){
+	public void setOptions(int charId){
+		this.charData = gameSaveState.getCharacterData(charId);
+		
 		this.options = new Option[2 + charData.getTotalNumActionUpgrades()];
 		options[0] = new Option("Back","Back");
 		options[0].setBounds(0.1f, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
@@ -52,9 +53,11 @@ public class CharacterCustomization extends Menu {
 		options[1].setColor(Constants.MENU_COLOR);
 		
 		HashMap<ActionUpgrade,Action> actionMap = null;
+		HashMap<Integer,Character> charMap = null;
 		
 		try {
 			actionMap = ObjectLoader.getInstance().getActions(charData.getAllActionUpgrades());
+			//charMap = ObjectLoader.getInstance().getCharacters()
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -71,6 +74,7 @@ public class CharacterCustomization extends Menu {
 				i++;
 			}
 		}
+		System.out.println(gameSaveState.availableCharacters);
 	}
 	
 	public void setHighlight(Texture t){
