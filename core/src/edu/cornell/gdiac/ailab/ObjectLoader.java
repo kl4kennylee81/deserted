@@ -311,6 +311,14 @@ public class ObjectLoader {
 			}
 			charToAdd.setStartPos(xPosition, yPosition);
 			charToAdd.setLeftSide(leftSide);
+			
+			//temporary difficulty ai code!!!
+			if (leftSide == false && levelChar.containsKey("difficulty")){
+				String difficulty = (String) levelChar.get("difficulty");
+				charToAdd.setAI(Difficulty.valueOf(difficulty));
+			}
+
+			
 			characterList.add(charToAdd);
 		}
 	}
@@ -350,7 +358,7 @@ public class ObjectLoader {
 			Character characterToAdd = new Character(charTexture, iconTexture, animNode,
 					name, health, maxHealth, Color.valueOf(hexColor), speed,
 					castSpeed, actionArray,numSlots);
-
+			
 			availableCharacters.put(charId, characterToAdd);
 		}
 	}
