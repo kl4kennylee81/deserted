@@ -2,6 +2,7 @@ package edu.cornell.gdiac.ailab;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
@@ -16,6 +17,8 @@ public class ConditionalManager {
 	protected Character selected;
 	protected List<Character> friends;
 	protected List<Character> enemies;
+	
+	protected HashSet<Character> firstMove;
     
     protected final String[] conditions = {
     		"default",
@@ -52,7 +55,9 @@ public class ConditionalManager {
     		"ally_safe",
     		"ally_can_hit_enemy",
     		"ally_almost_done_waiting",
-    		"can_interrupt_enemy"
+    		"can_interrupt_enemy",
+    		"first_move",
+    		"not_hastened"
     };
 
 	
@@ -99,12 +104,29 @@ public class ConditionalManager {
 		map.put("ally_can_hit_enemy", nextFriendCanHit());
 		map.put("ally_almost_done_waiting", friendWillEnterSoon());
 		map.put("can_interrupt_enemy", canInterruptEnemy());
+		map.put("first_move", firstMove());
+		map.put("not_hastened", notHastened());
 		map.put("default", true);
 		
 //		System.out.println("----------------------------------------------");
 //		for(String s: map.keySet()){
 //			System.out.println(s + ": "+ map.get(s));
 //		}
+	}
+	
+	public boolean notHastened(){
+		for(Effect e: selected.getEffects()){
+			if(e.name.equals("Hasten")) return false;
+		}
+		return true;
+	}
+	
+	public boolean firstMove(){
+		if(!firstMove.contains(selected)){
+			firstMove.add(selected);
+			return true;
+		}
+		return false;
 	}
 	
 	
@@ -652,6 +674,7 @@ public class ConditionalManager {
 		}
 		else {
 			float distance = (c.lastCastStart + (c.getInterval() * slots)) - c.castPosition;
+			//System.out.println(c.name+" --- start: "+c.lastCastStart + "     position: " + c.castPosition +  "     interval: " + c.getInterval());
 			return Math.max(0, (int) (distance / c.getSpeed()));
 		}
 	}

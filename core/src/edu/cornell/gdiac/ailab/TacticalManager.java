@@ -3,6 +3,7 @@ package edu.cornell.gdiac.ailab;
 import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -32,6 +33,7 @@ public class TacticalManager extends ConditionalManager{
 	private Coordinate goal;
 	
 	public TacticalManager(){
+		firstMove = new HashSet<Character>();
 		preSelected = new HashMap<String, LeafNode>();
 		nodeMap = new HashMap<String, DecisionNode>();
 	}
@@ -160,7 +162,18 @@ public class TacticalManager extends ConditionalManager{
 				}
 			}
 			if(matched){
-				//System.out.println(selected.name+ ": " + conds.toString());
+//				DecisionNode x = nodeMap.get(index.decisions.get(i));
+//				if(x instanceof LeafNode){
+//					LeafNode l = (LeafNode) x;
+//					if(l.myTactic == Tactic.SPECIFIC){
+//						System.out.println(selected.name+ ": " + conds.toString());
+//						System.out.println(l.mySpecific.specificActions.toString());
+//						System.out.println("-----------------------------------------------");
+//					}
+//				}
+				if(nodeMap.get(index.decisions.get(i)) == null){
+					System.out.println(conds.toString());
+				}
 				return traverse(nodeMap.get(index.decisions.get(i)));
 			}
 		}
@@ -194,6 +207,9 @@ public class TacticalManager extends ConditionalManager{
 				case SINGLE_STRONGEST:
 					a = singleStrongest(c, startSlot, x, y);
 					break;
+				case SINGLE_SELF:
+					a = singleSelf(c, startSlot, x, y);
+					break;
 				case NORMAL_ATTACK:
 					a = attackNode(c, startSlot, x, y, normalAttack(c, x, y));
 					break;
@@ -214,6 +230,9 @@ public class TacticalManager extends ConditionalManager{
 					break;
 				case MOVE_GOAL:
 					a = moveGoal(c, startSlot, x, y);
+					break;
+				case RANDOM_DECENT:
+					a = randomDecentMove(c, startSlot, x, y);
 					break;
 				default:
 					//System.out.println("nopnode");
@@ -328,6 +347,13 @@ public class TacticalManager extends ConditionalManager{
 		return singleNode(attacker, startPoint, weakest.xPosition, weakest.yPosition);	
 	}
 	
+	/**
+	 * Returns a single square attack on the current square
+	 */
+	public ActionNode singleSelf(Character attacker, int startPoint, int xPos, int yPos){
+		return singleNode(attacker, startPoint, xPos, yPos);
+	}
+	
 	
 	/**
 	 * Returns a single square attack aimed at the enemy with highest health
@@ -386,17 +412,31 @@ public class TacticalManager extends ConditionalManager{
 		if(a.pattern == Pattern.SINGLE){
 			return singleOptimal(c, startPoint, xPos, yPos);
 		}
-		if(a.pattern == Pattern.DIAGONAL){
-			Direction d = findDiagonalDirection(c, a, xPos, yPos);
+		else if(a.pattern == Pattern.DIAGONAL){
+			Direction d = findToggleDirection(c, a, xPos, yPos);
 			return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
 		else{
-			return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.NONE);
+			Direction d = findToggleDirection(c, a, xPos, yPos);
+			return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
 	}
 	
 	
-	
+	private Direction findToggleDirection(Character c, Action a, int xPos, int yPos){
+		for(Character e: enemies){
+			//System.out.println("myPos: ("+xPos+","+yPos+")"+"   theirPos: ("+e.xPosition+","+e.yPosition+")");
+			if(a.hitsTarget(xPos, yPos, e.xPosition, e.yPosition, c.leftside, board)){
+				//System.out.println("my y: " + c.yPosition + "   their y: "+ e.yPosition);
+				if(yPos == e.yPosition){
+					return yPos == board.height - 1 ? Direction.DOWN : Direction.UP;
+				}
+				return e.yPosition < yPos ? Direction.DOWN : Direction.UP;
+			}
+		}
+		//System.out.println("none: "+a.name+" "+xPos+" "+yPos+"   "+a.getNeedsToggle());
+		return Direction.NONE;
+	}
 	/**
 	 * Find any normal attack from the character that can hit an opponent, assuming
 	 * the character is at (xPos,yPos)
@@ -468,6 +508,7 @@ public class TacticalManager extends ConditionalManager{
 		}
 		return Direction.NONE;
 	}
+	
 	
 	
 	/**
@@ -600,7 +641,7 @@ public class TacticalManager extends ConditionalManager{
 				}
 			}
 		}
-		return nopNode(c, startPoint);
+		return moveDefensive(c, startPoint, xPos, yPos);
 	}
 	
 	/**
@@ -770,7 +811,13 @@ public class TacticalManager extends ConditionalManager{
 			directions.add(Direction.DOWN);
 		}
 		Random r = new Random();
-		return directions.get(r.nextInt(directions.size()));	
+		//next int requires a positive size
+		if (directions.size() > 0){
+			return directions.get(r.nextInt(directions.size()));	
+		}
+		else{
+			return Direction.UP;
+		}
 	}
 	
 	/**
@@ -851,7 +898,7 @@ public class TacticalManager extends ConditionalManager{
 	 * Return the value in the cast bar where this action will go off
 	 */
 	private float getCastTime(Character c, Action a, int startPoint){
-		return c.actionBar.castPoint + (c.getInterval() * (startPoint + a.cost));
+		return c.actionBar.getCastPoint() + (c.getInterval() * (startPoint + a.cost));
 	}
 		
 	
@@ -900,6 +947,88 @@ public class TacticalManager extends ConditionalManager{
 		Action a = nop();
 		return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.NONE);
 	}
+	
+	//=======================================================================//
+	//             +-----------------------+                                 //
+	//	           | Random Move Selection |						         //
+	//	           +-----------------------+						         //
+	//			             \   ^__^										 //
+	//			              \  (00)\_______							     //	
+	//			                 (__)\       )\/\							 //
+	//			                     ||----w |								 //
+	//			                     ||     ||								 //
+    //=======================================================================//
+	
+	public ActionNode randomDecentMove(Character c, int startPoint, int xPos, int yPos){
+		ArrayList<ActionNode> possibleActions = new ArrayList<ActionNode>();
+		possibleActions.addAll(attacksThatCanHit(c, startPoint, xPos, yPos));
+		int size = possibleActions.size();
+		
+		Random r = new Random();
+		for(int i = 0; i <= size; i++){
+			int j = r.nextInt(3);
+			if(j == 0){
+				possibleActions.add(moveGoal(c,startPoint,xPos,yPos));
+			}
+			if(j == 1){
+				possibleActions.add(moveAggressive(c,startPoint,xPos,yPos));
+			}
+			if(j == 2){
+				possibleActions.add(moveDefensive(c,startPoint,xPos,yPos));
+			}
+		}
+		return possibleActions.get((r.nextInt(possibleActions.size())));
+	}
+	
+	public List<ActionNode> attacksThatCanHit(Character c, int startPoint, int xPos, int yPos){
+		ActionNodes anPool = ActionNodes.getInstance();
+		ArrayList<ActionNode> attacks = new ArrayList<ActionNode>();
+		for(Action a: c.availableActions){
+			if(a.cost <= c.actionBar.getUsableNumSlots() - startPoint){
+				for(Character e: enemies){
+					if(a.hitsTarget(xPos, yPos, e.xPosition, e.yPosition, c.leftside, board)){
+						if(a.pattern == Pattern.SINGLE){
+							attacks.add(singleOptimal(c, startPoint, xPos, yPos));
+						}
+						else{
+							Direction d = xPos < yPos ? Direction.DOWN : Direction.UP;
+							attacks.add(anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, d));
+						}
+					}
+				}
+			}
+		}
+		return attacks;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
 	
 	
 	
