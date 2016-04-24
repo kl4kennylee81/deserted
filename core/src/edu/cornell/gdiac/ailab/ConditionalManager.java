@@ -665,6 +665,7 @@ public class ConditionalManager {
 		}
 		else {
 			float distance = (c.lastCastStart + (c.getInterval() * slots)) - c.castPosition;
+			//System.out.println(c.name+" --- start: "+c.lastCastStart + "     position: " + c.castPosition +  "     interval: " + c.getInterval());
 			return Math.max(0, (int) (distance / c.getSpeed()));
 		}
 	}

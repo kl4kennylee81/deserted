@@ -1,0 +1,94 @@
+FIGHTER_ATTACK:
+  type: index
+  branch_type: ATTACK
+  no_interrupt_chance/safe/quick_attack_can_hit: FIGHTER_QUICK_QUICK
+  no_interrupt_chance/quick_attack_can_hit/single_in_range: FIGHTER_SLOW_QUICK
+  no_interrupt_chance/adjacent_safe_square: FIGHTER_POWER_MOVEDEF
+  no_interrupt_chance: FIGHTER_POWER_MOVEGOAL
+  low_interrupt_chance/quick_attack_can_hit/adjacent_safe_square: FIGHTER_QUICK_MOVE
+  low_interrupt_chance/quick_attack_can_hit: FIGHTER_QUICK_MOVE_MOVE
+  low_interrupt_chance/adjacent_attack_square_quick: FIGHTER_MOVE_QUICK_MOVE
+  low_interrupt_chance/adjacent_safe_square: FIGHTER_POWER_MOVEDEF
+  low_interrupt_chance/single_in_range: FIGHTER_SLOW_MOVE
+  low_interrupt_chance: FIGHTER_POWER_MOVEDEF
+  medium_interrupt_chance/adjacent_attack_square_quick: FIGHTER_MOVE_QUICK_MOVE
+  medium_interrupt_chance/single_in_range: FIGHTER_MOVE_SLOW_MOVE
+  medium_interrupt_chance: FIGHTER_MOVE_MOVE_SLOW
+  adjacent_attack_square/adjacent_safe_square: FIGHTER_MOVE_QUICK_MOVE
+  adjacent_safe_square/single_in_range: FIGHTER_MOVE_SLOW_MOVE
+  default: FIGHTER_MOVE_MOVE_QUICK
+  
+FIGHTER_POSITION:
+  type: index
+  branch_type: POSITION
+  attack_square_adjacent/safe_square_adjacent: FIGHTER_MOVE_QUICK
+  no_interrupt_chance/single_in_range: FIGHTER_SLOW_MOVE_MOVE
+  low_interrupt_chance/single_in_range: FIGHTER_SLOW_MOVE_MOVE
+  attack_square_adjacent_quick: FIGHTER_MOVE_QUICK_MOVE
+  attack_square_adjacent: FIGHTER_MOVE_POWER
+  default: FIGHTER_MOVE_MOVE_SLOW
+  
+FIGHTER_QUICK_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, QUICK_ATTACK]
+
+FIGHTER_SLOW_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_OPTIMAL, QUICK_ATTACK]
+  
+FIGHTER_POWER_MOVEDEF:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [POWERFUL_ATTACK, MOVE_DEFENSIVE]
+  
+FIGHTER_POWER_MOVEGOAL:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [POWERFUL_ATTACK, MOVE_GOAL]
+  
+FIGHTER_QUICK_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, MOVE_DEFENSIVE]
+  
+FIGHTER_SLOW_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_OPTIMAL, MOVE_DEFENSIVE]
+
+FIGHTER_QUICK_MOVE_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, MOVE_GOAL, MOVE_GOAL]  
+  
+FIGHTER_MOVE_QUICK_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, QUICK_ATTACK, MOVE_DEFENSIVE]
+  
+FIGHTER_MOVE_SLOW_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_DEFENSIVE, SINGLE_OPTIMAL, MOVE_GOAL]    
+
+FIGHTER_MOVE_MOVE_SLOW:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, MOVE_GOAL, SINGLE_OPTIMAL]   
+  
+FIGHTER_MOVE_MOVE_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, MOVE_GOAL, QUICK_ATTACK]  
+  
+FIGHTER_SLOW_MOVE_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_OPTIMAL, MOVE_GOAL, MOVE_GOAL]
+  
+FIGHTER_MOVE_POWER:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, POWERFUL_ATTACK]  

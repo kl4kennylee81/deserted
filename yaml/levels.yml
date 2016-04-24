@@ -4,12 +4,12 @@ Level1:
           xPosition: 0
           yPosition: 0
 
-        - id: 1
+        - id: 2
           xPosition: 0
           yPosition: 3
 
     enemies:
-        - id: 2
+        - id: 1
           xPosition: 5
           yPosition: 0
           aggression: 0.5
@@ -31,7 +31,7 @@ Level1:
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/rock-mage.yml", "aiyaml/rock.yml", "aiyaml/mage.yml"]
+    AI: ["aiyaml/fighter-mage.yml", "aiyaml/fighter.yml", "aiyaml/mage.yml"]
 
 pvp:
     allies:

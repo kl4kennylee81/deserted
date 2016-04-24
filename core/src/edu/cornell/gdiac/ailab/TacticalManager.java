@@ -162,7 +162,18 @@ public class TacticalManager extends ConditionalManager{
 				}
 			}
 			if(matched){
-				//System.out.println(selected.name+ ": " + conds.toString());
+				DecisionNode x = nodeMap.get(index.decisions.get(i));
+				if(x instanceof LeafNode){
+					LeafNode l = (LeafNode) x;
+					if(l.myTactic == Tactic.SPECIFIC){
+						System.out.println(selected.name+ ": " + conds.toString());
+						System.out.println(l.mySpecific.specificActions.toString());
+						System.out.println("-----------------------------------------------");
+					}
+				}
+				if(nodeMap.get(index.decisions.get(i)) == null){
+					System.out.println(conds.toString());
+				}
 				return traverse(nodeMap.get(index.decisions.get(i)));
 			}
 		}
@@ -396,12 +407,23 @@ public class TacticalManager extends ConditionalManager{
 			return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
 		else{
-			return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.NONE);
+			Direction d = findToggleDirection(c, a, xPos, yPos);
+			return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
 	}
 	
 	
-	
+	private Direction findToggleDirection(Character c, Action a, int xPos, int yPos){
+		for(Character e: enemies){
+			if(a.hitsTarget(c.xPosition, c.yPosition, e.xPosition, e.yPosition, c.leftside, board)){
+				if(c.yPosition == e.yPosition){
+					return c.yPosition == board.height - 1 ? Direction.DOWN : Direction.UP;
+				}
+				return e.yPosition < c.yPosition ? Direction.DOWN : Direction.UP;
+			}
+		}
+		return Direction.NONE;
+	}
 	/**
 	 * Find any normal attack from the character that can hit an opponent, assuming
 	 * the character is at (xPos,yPos)
@@ -776,6 +798,9 @@ public class TacticalManager extends ConditionalManager{
 			directions.add(Direction.DOWN);
 		}
 		Random r = new Random();
+		if(directions.size() == 0){
+			return Direction.NONE;
+		}
 		return directions.get(r.nextInt(directions.size()));	
 	}
 	
