@@ -162,15 +162,15 @@ public class TacticalManager extends ConditionalManager{
 				}
 			}
 			if(matched){
-				DecisionNode x = nodeMap.get(index.decisions.get(i));
-				if(x instanceof LeafNode){
-					LeafNode l = (LeafNode) x;
-					if(l.myTactic == Tactic.SPECIFIC){
-						System.out.println(selected.name+ ": " + conds.toString());
-						System.out.println(l.mySpecific.specificActions.toString());
-						System.out.println("-----------------------------------------------");
-					}
-				}
+//				DecisionNode x = nodeMap.get(index.decisions.get(i));
+//				if(x instanceof LeafNode){
+//					LeafNode l = (LeafNode) x;
+//					if(l.myTactic == Tactic.SPECIFIC){
+//						System.out.println(selected.name+ ": " + conds.toString());
+//						System.out.println(l.mySpecific.specificActions.toString());
+//						System.out.println("-----------------------------------------------");
+//					}
+//				}
 				if(nodeMap.get(index.decisions.get(i)) == null){
 					System.out.println(conds.toString());
 				}
