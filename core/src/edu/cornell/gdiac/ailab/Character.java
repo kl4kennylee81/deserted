@@ -430,8 +430,7 @@ public class Character implements GUIElement {
 	/**
 	 * Make an AI with the given difficulty
 	 */
-	public void setAI(Difficulty diff){
-		this.diff = diff;
+	public void setAI(){
 		this.isAI = true;
 	}
 	
