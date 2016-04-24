@@ -88,14 +88,17 @@ public class ActionController {
 				// Execute character's action;
 				curAction = selected.popCast();
 				selected.needsAttack = false;
-				if (!curAction.isInterrupted || curAction.action.pattern == Pattern.MOVE){
+				if (curAction.action.pattern == Pattern.MOVE){
+					executeAction(curAction);
+					selected = null;
+				} else if (!curAction.isInterrupted){
 					selected.setExecute();
 				} else{
 					curAction.free();
 					selected = null;
 				}
 			} 
-			if (selected.charState != CharacterState.EXECUTE){
+			if (selected != null && selected.charState != CharacterState.EXECUTE){
 				if (!curAction.isInterrupted || curAction.action.pattern == Pattern.MOVE){
 					executeAction(curAction);
 				} else {
