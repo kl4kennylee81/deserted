@@ -74,6 +74,15 @@ public class GridBoard {
 		return BOARD_OFFSET_Y * canvas.getHeight();
 	}
 	
+	public boolean getIsHighlighted(int x,int y){
+		if (this.isInBounds(x, y)){
+			return tiles[x][y].isHighlighted;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	/** returns true if tile (x,y) is broken **/
 	public boolean IsBroken(int x,int y){
 		if (this.isInBounds(x, y)){

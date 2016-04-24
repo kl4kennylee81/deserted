@@ -78,6 +78,11 @@ public class SelectionMenuController {
 		nop = new Action("NOP", 1, 0, 0, 1, Pattern.NOP, false, false,false, new Effect(0, Type.REGULAR, 0, "Nope"), "no action");
 	}
 	
+	private void setChoosingTarget(boolean isChoosingTarget){
+		this.choosingTarget = isChoosingTarget;
+		this.menu.setChoosingTarget(isChoosingTarget);
+	}
+	
 	public void update(){
 		switch (menuState) {
 			case SELECTING:
@@ -246,16 +251,16 @@ public class SelectionMenuController {
 	protected void updateTargetedAction(){
 		switch (action.pattern){
 		case STRAIGHT:
-			menu.setChoosingTarget(true);
+			this.setChoosingTarget(true);
 			break;
 		case SINGLE:
 			this.singleUpdateTargetedAction();
-			menu.setChoosingTarget(true);
+			this.setChoosingTarget(true);
 			break;
 		case HORIZONTAL:
 			selectedX = board.width - 1 - shadowX;
 			selectedY = 0;
-			menu.setChoosingTarget(true);
+			this.setChoosingTarget(true);
 		case MOVE:
 			if (board.canMove(selected.leftside,shadowX, shadowY+1)){
 				direction = Direction.UP;
@@ -268,7 +273,7 @@ public class SelectionMenuController {
 			} else {
 				System.out.println("do something to tell them they cant move");
 			}
-			menu.setChoosingTarget(true);
+			this.setChoosingTarget(true);
 			break;
 		case DIAGONAL:
 			if (shadowY < boardHeight/2){
@@ -276,7 +281,7 @@ public class SelectionMenuController {
 			} else {
 				direction = Direction.DOWN;
 			}
-			menu.setChoosingTarget(true);
+			this.setChoosingTarget(true);
 			break;
 		case SHIELD:
 			if (shadowY < boardHeight/2){
@@ -284,12 +289,12 @@ public class SelectionMenuController {
 			} else {
 				direction = Direction.DOWN;
 			}
-			menu.setChoosingTarget(true);
+			this.setChoosingTarget(true);
 			break;
 		case INSTANT:
 		case PROJECTILE:
 			this.pathSetChoosingTarget();
-			menu.setChoosingTarget(true);
+			this.setChoosingTarget(true);
 			break;
 		case NOP:
 			break;
@@ -345,7 +350,7 @@ public class SelectionMenuController {
 					float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
 					menu.add(anPool.newActionNode(menuAction,actionExecute,selectedX,selectedY,direction),numSlots);
 					menu.resetPointer(numSlots);
-					menu.setChoosingTarget(false);
+					this.setChoosingTarget(false);
 					this.choosingTarget = false;
 				}
 				break;
@@ -354,7 +359,34 @@ public class SelectionMenuController {
 		
 	}
 	
+	private void mouseHighlight(){
+		// mouse controls for single
+		float mouseX = InputController.getMouseX();
+		float mouseY = InputController.getMouseY();
+		Coordinate chosenTile = this.board.contains(mouseX, mouseY, InputController.getCanvas());
+		if (chosenTile!= null){
+			int chosenX = chosenTile.x;
+			int chosenY = chosenTile.y;
+			chosenTile.free();
+			boolean canHit = this.board.getIsHighlighted(chosenX,chosenY);
+			if (canHit){
+				this.selectedX = chosenX;
+				this.selectedY = chosenY;
+				if (InputController.pressedLeftMouse()){
+					confirmedAction();
+					if (this.action.pattern == Pattern.MOVE 
+							&& this.menu.canAct(this.selected.getActionBar().getUsableNumSlots())){
+						this.updateTargetedAction();
+						this.setChoosingTarget(true);
+					}
+				}
+				return;
+			}
+		}
+	}
+	
 	protected void updateChoosingTarget(){
+		this.mouseHighlight();
 		// null check
 		if (this.action == null){
 			return;
@@ -399,9 +431,10 @@ public class SelectionMenuController {
 			if (this.action.pattern == Pattern.MOVE 
 					&& this.menu.canAct(this.selected.getActionBar().getUsableNumSlots())){
 				this.updateTargetedAction();
+				this.setChoosingTarget(true);
 			}
 		} else if (InputController.pressedBack()){
-			menu.setChoosingTarget(false);
+			this.setChoosingTarget(false);
 		}
 	}
 	
@@ -410,7 +443,7 @@ public class SelectionMenuController {
 		float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
 		int numSlots = selected.getActionBar().getUsableNumSlots();
 		menu.add(anPool.newActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
-		menu.setChoosingTarget(false);
+		this.setChoosingTarget(false);
 		menu.resetPointer(numSlots);
 	}
 	
@@ -426,9 +459,9 @@ public class SelectionMenuController {
 			if (canHit){
 				this.selectedX = chosenTile.x;
 				this.selectedY = chosenTile.y;
+				chosenTile.free();
 				if (InputController.pressedLeftMouse()){
 					this.confirmedAction();
-					chosenTile.free();
 				}
 				return;
 			}
