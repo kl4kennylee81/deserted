@@ -776,7 +776,14 @@ public class TacticalManager extends ConditionalManager{
 			directions.add(Direction.DOWN);
 		}
 		Random r = new Random();
-		return directions.get(r.nextInt(directions.size()));	
+		//next int requires a positive size
+		if (directions.size() > 0){
+			return directions.get(r.nextInt(directions.size()));	
+		}
+		// this is temporary possibly return a null which then in your code where you call random direction do something else
+		else{
+			return Direction.UP;
+		}
 	}
 	
 	/**
