@@ -232,6 +232,7 @@ public class SelectionMenuController {
 			}
 		} else if (InputController.pressedBack()){
 			menu.removeLast();
+			menu.resetPointer(this.selected.getActionBar().getUsableNumSlots());
 		// this is the noping command
 //		} else if (InputController.pressedRight() && menu.canNop(numSlots)){
 			/*float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,0);

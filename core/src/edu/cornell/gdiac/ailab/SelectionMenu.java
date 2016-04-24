@@ -215,7 +215,7 @@ public class SelectionMenu {
 	 * @return
 	 */
 	public boolean resetPointer(int numSlots){
-		if (actions[selectedAction].cost > numSlots - takenSlots){
+		if (selectedAction < actions.length && actions[selectedAction].cost > numSlots - takenSlots){
 			for (int i = 0; i <= actions.length; i++){
 				selectedAction = i;
 				if (canDoAction(selectedAction,numSlots)){
