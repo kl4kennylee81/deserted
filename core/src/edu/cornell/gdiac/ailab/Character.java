@@ -510,7 +510,8 @@ public class Character implements GUIElement {
 	}
 	
 	public float getInterval(){
-		return (1f-actionBar.castPoint) / this.getActionBar().getTotalNumSlots();
+		//System.out.println(name+" "+actionBar.getCastPoint());
+		return (1f-actionBar.getCastPoint()) / this.getActionBar().getTotalNumSlots();
 	}
 	
 	/**

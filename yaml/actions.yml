@@ -135,8 +135,8 @@
 7:
   name: Slow
   cost: 2
-  damage: 1
-  range: 5
+  damage: 0
+  range: 6
   size: 1
   pattern: SINGLE
   oneHit: true
@@ -146,7 +146,7 @@
   effect:
     type: SPEED
     name: Slowed
-    numRounds: 2
+    numRounds: 3
     magnitude: -4
   description: Target a single square to slow down enemy
   animationId: 0
@@ -375,7 +375,7 @@
   effect:
     type: BROKEN
     name: Break Tile
-    numRounds: 1
+    numRounds: 2
     magnitude: 0
   description: Deal 3 damage to a particular tile and Breaks the tile.
   animationId: 0
@@ -450,7 +450,7 @@
   isBuff: true
   effect:
     type: SPEED
-    name: Slowed
+    name: Hasten
     numRounds: 3
     magnitude: 4
   description: Target a single square to Hasten an ally
@@ -489,12 +489,12 @@
   oneHit: false
   needsToggle: true
   canBlock: false
-  path: "0,0 2,0 3,0 3,1"
+  path: "3,0 3,1"
   effect:
-    type: SPEED
-    name: Slowed
-    numRounds: 2
-    magnitude: -2
+    type: BROKEN
+    name: Break Tile
+    numRounds: 1
+    magnitude: 0
   description: Hits adjacent rows 2 squares forward for 2 damage.
   animationId: 0
 ...

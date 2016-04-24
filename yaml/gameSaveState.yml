@@ -128,6 +128,14 @@ levels:
     levelName: Level1
     beaten: false
     boss: false
+  4:
+    levelName: Level2
+    beaten: false
+    boss: false
+  5:
+    levelName: Level3
+    beaten: false
+    boss: false
 availableCharacters:
 - 0
 - 1
