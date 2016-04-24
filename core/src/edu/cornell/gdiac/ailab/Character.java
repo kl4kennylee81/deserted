@@ -32,6 +32,8 @@ public class Character implements GUIElement {
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
 	float CHARACTER_PROPORTION = 0.7f;
+	
+	float PROJECTILE_PROPORTION = 0.7f;
 
 	/** Name of character */
 	String name;
@@ -707,6 +709,11 @@ public class Character implements GUIElement {
 		return (tileW*CHARACTER_PROPORTION)/region.getRegionWidth();
 	}
 	
+	public float getProjectileScale(GameCanvas canvas, TextureRegion region,GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		return (tileW*PROJECTILE_PROPORTION)/region.getRegionWidth();
+	}
+	
 	public void setExecute(){
 		charState = CharacterState.EXECUTE;
 	}
@@ -916,7 +923,7 @@ public class Character implements GUIElement {
 	    	    if (toDraw == null){
 	    	    	toDraw = an.animation.getTexture(paused);
 	    	    }
-	    	    canvas.draw(toDraw, messageX,messageY);
+	    	    canvas.drawCharacter(toDraw, messageX, messageY, Color.WHITE, paused, this.getProjectileScale(canvas,toDraw , board));
 				break;
 			default:
 				break;
