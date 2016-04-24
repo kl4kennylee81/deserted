@@ -89,7 +89,10 @@ public class SelectionMenuController {
 				
 				checkForClicked();
 				// FIXUP will fix this conditions
-				if (clickedChar != null && !this.choosingTarget && !this.menu.getChoosingTarget()){
+				if (clickedChar != null && !this.choosingTarget && 
+						this.menu != null && !this.menu.getChoosingTarget()){
+					
+					// if the clicked character is the selected don't switch
 					if (clickedChar == selected){
 						clickedChar.isClicked = false;
 						clickedChar = null;
