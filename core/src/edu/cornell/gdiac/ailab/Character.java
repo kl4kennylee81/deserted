@@ -225,7 +225,8 @@ public class Character implements GUIElement {
 	
 	public float getXMin(GameCanvas canvas, GridBoard board){
 		float tileW = board.getTileWidth(canvas);
-		float canvasX = board.offsetBoard(canvas,tileW*xPosition,0).x;
+		float tileH = board.getTileHeight(canvas);
+		float canvasX = board.offsetBoard(canvas,tileW*xPosition,tileH*yPosition).x;
 		return canvasX;
 	}
 	
@@ -236,13 +237,13 @@ public class Character implements GUIElement {
 	}
 	
 	public float getXMax(GameCanvas canvas, GridBoard board){
-		float charScale = getCharScale(canvas,texture,board);
-		return getXMin(canvas, board) + texture.getWidth()*charScale;
+		float charScale = getCharScale(canvas,getCurrentFilmStrip(),board);
+		return getXMin(canvas, board) + getCurrentFilmStrip().getRegionWidth()*charScale;
 	}
 	
 	public float getYMax(GameCanvas canvas, GridBoard board){
-		float charScale = getCharScale(canvas,texture,board);
-		return getYMin(canvas, board) + texture.getHeight()*charScale;
+		float charScale = getCharScale(canvas,getCurrentFilmStrip(),board);
+		return getYMin(canvas, board) + getCurrentFilmStrip().getRegionHeight()*charScale;
 	}
 	
 //	public float getTokenX(GameCanvas canvas){
