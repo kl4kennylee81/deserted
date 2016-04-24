@@ -207,6 +207,9 @@ public class TacticalManager extends ConditionalManager{
 				case SINGLE_STRONGEST:
 					a = singleStrongest(c, startSlot, x, y);
 					break;
+				case SINGLE_SELF:
+					a = singleSelf(c, startSlot, x, y);
+					break;
 				case NORMAL_ATTACK:
 					a = attackNode(c, startSlot, x, y, normalAttack(c, x, y));
 					break;
@@ -344,6 +347,13 @@ public class TacticalManager extends ConditionalManager{
 		return singleNode(attacker, startPoint, weakest.xPosition, weakest.yPosition);	
 	}
 	
+	/**
+	 * Returns a single square attack on the current square
+	 */
+	public ActionNode singleSelf(Character attacker, int startPoint, int xPos, int yPos){
+		return singleNode(attacker, startPoint, xPos, yPos);
+	}
+	
 	
 	/**
 	 * Returns a single square attack aimed at the enemy with highest health
@@ -402,8 +412,8 @@ public class TacticalManager extends ConditionalManager{
 		if(a.pattern == Pattern.SINGLE){
 			return singleOptimal(c, startPoint, xPos, yPos);
 		}
-		if(a.pattern == Pattern.DIAGONAL){
-			Direction d = findDiagonalDirection(c, a, xPos, yPos);
+		else if(a.pattern == Pattern.DIAGONAL){
+			Direction d = findToggleDirection(c, a, xPos, yPos);
 			return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
 		else{
@@ -415,13 +425,16 @@ public class TacticalManager extends ConditionalManager{
 	
 	private Direction findToggleDirection(Character c, Action a, int xPos, int yPos){
 		for(Character e: enemies){
-			if(a.hitsTarget(c.xPosition, c.yPosition, e.xPosition, e.yPosition, c.leftside, board)){
-				if(c.yPosition == e.yPosition){
-					return c.yPosition == board.height - 1 ? Direction.DOWN : Direction.UP;
+			//System.out.println("myPos: ("+xPos+","+yPos+")"+"   theirPos: ("+e.xPosition+","+e.yPosition+")");
+			if(a.hitsTarget(xPos, yPos, e.xPosition, e.yPosition, c.leftside, board)){
+				//System.out.println("my y: " + c.yPosition + "   their y: "+ e.yPosition);
+				if(yPos == e.yPosition){
+					return yPos == board.height - 1 ? Direction.DOWN : Direction.UP;
 				}
-				return e.yPosition < c.yPosition ? Direction.DOWN : Direction.UP;
+				return e.yPosition < yPos ? Direction.DOWN : Direction.UP;
 			}
 		}
+		//System.out.println("none: "+a.name+" "+xPos+" "+yPos+"   "+a.getNeedsToggle());
 		return Direction.NONE;
 	}
 	/**
@@ -885,7 +898,7 @@ public class TacticalManager extends ConditionalManager{
 	 * Return the value in the cast bar where this action will go off
 	 */
 	private float getCastTime(Character c, Action a, int startPoint){
-		return c.actionBar.castPoint + (c.getInterval() * (startPoint + a.cost));
+		return c.actionBar.getCastPoint() + (c.getInterval() * (startPoint + a.cost));
 	}
 		
 	
@@ -973,12 +986,12 @@ public class TacticalManager extends ConditionalManager{
 		for(Action a: c.availableActions){
 			if(a.cost <= c.actionBar.getUsableNumSlots() - startPoint){
 				for(Character e: enemies){
-					if(a.hitsTarget(c.xPosition, c.yPosition, e.xPosition, e.yPosition, c.leftside, board)){
+					if(a.hitsTarget(xPos, yPos, e.xPosition, e.yPosition, c.leftside, board)){
 						if(a.pattern == Pattern.SINGLE){
 							attacks.add(singleOptimal(c, startPoint, xPos, yPos));
 						}
 						else{
-							Direction d = e.yPosition < c.yPosition ? Direction.DOWN : Direction.UP;
+							Direction d = xPos < yPos ? Direction.DOWN : Direction.UP;
 							attacks.add(anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, d));
 						}
 					}

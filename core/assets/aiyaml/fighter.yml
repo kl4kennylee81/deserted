@@ -21,11 +21,12 @@ FIGHTER_ATTACK:
 FIGHTER_POSITION:
   type: index
   branch_type: POSITION
-  attack_square_adjacent/safe_square_adjacent: FIGHTER_MOVE_QUICK
+  first_move: FIGHTER_RANDOM_RANDOM_ATTACK
+  adjacent_attack_square/adjacent_safe_square: FIGHTER_MOVE_POWER
   no_interrupt_chance/single_in_range: FIGHTER_SLOW_MOVE_MOVE
   low_interrupt_chance/single_in_range: FIGHTER_SLOW_MOVE_MOVE
-  attack_square_adjacent_quick: FIGHTER_MOVE_QUICK_MOVE
-  attack_square_adjacent: FIGHTER_MOVE_POWER
+  adjacent_attack_square_quick: FIGHTER_MOVE_QUICK_MOVE
+  adjacent_attack_square: FIGHTER_MOVE_POWER
   default: FIGHTER_MOVE_MOVE_SLOW
   
 FIGHTER_QUICK_QUICK:
@@ -66,7 +67,12 @@ FIGHTER_QUICK_MOVE_MOVE:
 FIGHTER_MOVE_QUICK_MOVE:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_GOAL, QUICK_ATTACK, MOVE_DEFENSIVE]
+  my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK, MOVE_DEFENSIVE]
+
+FIGHTER_RANDOM_RANDOM_ATTACK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [RANDOM_DECENT, RANDOM_DECENT, QUICK_ATTACK]
   
 FIGHTER_MOVE_SLOW_MOVE:
   type: leaf
@@ -91,4 +97,4 @@ FIGHTER_SLOW_MOVE_MOVE:
 FIGHTER_MOVE_POWER:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_GOAL, POWERFUL_ATTACK]  
+  my_actions: [MOVE_AGGRESSIVE, POWERFUL_ATTACK]  

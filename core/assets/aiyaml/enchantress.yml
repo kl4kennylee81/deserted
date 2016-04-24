@@ -1,0 +1,119 @@
+ENCHANTRESS_ATTACK:
+  type: index
+  branch_type: ATTACK
+  first_move: ENCHANTRESS_HASTEN_ATTACK
+  no_interrupt_chance/safe/high_health/quick_attack_can_hit/not_hastened: ENCHANTRESS_HASTEN_ATTACK
+  no_interrupt_chance/safe/high_health/not_hastened: ENCHANTRESS_HASTEN_MOVE
+  no_interrupt_chance/safe/quick_attack_can_hit: ENCHANTRESS_QUICK_QUICK_MOVE
+  no_interrupt_chance/safe: ENCHANTRESS_POWER_MOVEDEF
+  no_interrupt_chance/adjacent_attack_square_quick/quick_attack_can_hit: ENCHANTRESS_QUICK_MOVE_QUICK
+  no_interrupt_chance/quick_attack_can_hit: ENCHANTRESS_QUICK_QUICK_MOVE 
+  no_interrupt_chance: ENCHANTRESS_POWER_MOVEDEF
+  low_interrupt_chance/high_health/not_hastened: ENCHANTRESS_HASTEN_MOVE
+  low_interrupt_chance/quick_attack_can_hit/adjacent_attack_square_quick/adjacent_safe_square: ENCHANTRESS_QUICK_MOVE_QUICK
+  low_interrupt_chance/quick_attack_can_hit/adjacent_safe_square: ENCHANTRESS_QUICK_QUICK_MOVE
+  low_interrupt_chance/quick_attack_can_hit: ENCHANTRESS_QUICK_MOVE_MOVE
+  low_interrupt_chance/adjacent_attack_square/adjacent_safe_square: ENCHANTRESS_MOVE_POWER
+  low_interrupt_chance/adjacent_attack_square_quick: ENCHANTRESS_MOVE_QUICK_MOVE
+  low_interrupt_chance: ENCHANTRESS_POWER_MOVEDEF
+  medium_interrupt_chance/adjacent_attack_square_quick/adjacent_safe_square: ENCHANTRESS_MOVE_QUICK_QUICK
+  medium_interrupt_chance/adjacent_attack_square/adjacent_safe_square: ENCHANTRESS_MOVE_POWER
+  medium_interrupt_chance/adjacent_attack_square_quick: ENCHANTRESS_MOVE_QUICK_MOVE
+  medium_interrupt_chance/adjacent_safe_square/high_health/not_hastened: ENCHANTRESS_MOVE_HASTEN
+  medium_interrupt_chance: ENCHANTRESS_MOVE_MOVE_QUICK
+  adjacent_attack_square/adjacent_safe_square: ENCHANTRESS_MOVE_POWER
+  adjacent_attack_square: ENCHANTRESS_MOVE_QUICK_MOVE
+  adjacent_safe_square/high_health/not_hastened: ENCHANTRESS_MOVE_HASTEN
+  default: ENCHANTRESS_MOVE_MOVE_QUICK
+  
+ENCHANTRESS_POSITION:
+  type: index
+  branch_type: POSITION
+  first_move/low_interrupt_chance: ENCHANTRESS_HASTEN_RANDOM
+  first_move: ENCHANTRESS_RANDOM_HASTEN
+  adjacent_attack_square/adjacent_safe_square: ENCHANTRESS_MOVE_POWER
+  no_interrupt_chance/high_health/not_hastened: ENCHANTRESS_HASTEN_MOVE
+  low_interrupt_chance/high_health/not_hastened/adjacent_safe_square: ENCHANTRESS_MOVE_HASTEN
+  adjacent_attack_square_quick: ENCHANTRESS_MOVE_QUICK_MOVE
+  adjacent_attack_square: ENCHANTRESS_MOVE_POWER
+  default: ENCHANTRESS_MOVE_MOVE_MOVE_QUICK
+  
+ENCHANTRESS_QUICK_QUICK_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, QUICK_ATTACK, MOVE_GOAL]
+  
+ENCHANTRESS_MOVE_QUICK_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK, QUICK_ATTACK]
+  
+ENCHANTRESS_QUICK_MOVE_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, MOVE_AGGRESSIVE, QUICK_ATTACK]
+
+ENCHANTRESS_HASTEN_ATTACK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_SELF, QUICK_ATTACK]
+  
+ENCHANTRESS_POWER_MOVEDEF:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [POWERFUL_ATTACK, MOVE_DEFENSIVE]
+  
+ENCHANTRESS_POWER_MOVEGOAL:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [POWERFUL_ATTACK, MOVE_GOAL]
+  
+ENCHANTRESS_HASTEN_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_SELF, MOVE_DEFENSIVE]
+  
+ENCHANTRESS_HASTEN_RANDOM:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_SELF, RANDOM_DECENT, RANDOM_DECENT]
+  
+ENCHANTRESS_RANDOM_HASTEN:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [RANDOM_DECENT, SINGLE_SELF, RANDOM_DECENT]
+  
+ENCHANTRESS_MOVE_HASTEN:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_DEFENSIVE, SINGLE_SELF]
+
+ENCHANTRESS_QUICK_QUICK_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, QUICK_ATTACK, MOVE_GOAL]  
+  
+ENCHANTRESS_QUICK_MOVE_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, MOVE_GOAL, MOVE_GOAL]  
+  
+ENCHANTRESS_MOVE_QUICK_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK, MOVE_DEFENSIVE]
+  
+ENCHANTRESS_MOVE_MOVE_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, MOVE_GOAL, QUICK_ATTACK]  
+  
+ENCHANTRESS_MOVE_MOVE_MOVE_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, MOVE_GOAL, MOVE_GOAL, QUICK_ATTACK]  
+  
+ENCHANTRESS_MOVE_POWER:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, POWERFUL_ATTACK, QUICK_ATTACK]  

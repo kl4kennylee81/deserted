@@ -1,0 +1,36 @@
+ROOT:
+  type: index
+  can_hit: ATTACK
+  default: POSITION
+
+#-------------------------------------------
+
+ATTACK:
+  type: leaf
+  my_tactic: ATTACK
+
+POSITION:
+  type: leaf
+  my_tactic: POSITION
+ 
+#--------------------------------------------- 
+
+Enchantress Spirit:
+  type: character
+  branches: [ENCHANTRESS_ATTACK, ENCHANTRESS_POSITION]
+
+Fighter Spirit:
+  type: character
+  branches: [FIGHTER_ATTACK, FIGHTER_POSITION]
+  
+#--------------------------------------------
+
+DEFAULT:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, POWERFUL_ATTACK]
+  
+RANDOM:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [RANDOM_DECENT, RANDOM_DECENT, RANDOM_DECENT, RANDOM_DECENT, RANDOM_DECENT]

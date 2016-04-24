@@ -88,7 +88,7 @@ public class Action implements GUIElement {
 	 * from (startX, startY).
 	 */
 	public boolean hitsTarget(int startX, int startY, int targetX, int targetY, boolean leftside, GridBoard board){
-		if(pattern == pattern.MOVE || pattern == pattern.NOP || pattern == pattern.SHIELD){
+		if(pattern == Pattern.MOVE || pattern == pattern.NOP || pattern == pattern.SHIELD){
 			return false;
 		}
 		switch(pattern){

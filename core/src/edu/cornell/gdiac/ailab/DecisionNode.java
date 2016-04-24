@@ -25,6 +25,8 @@ public class DecisionNode {
 		SINGLE_WEAKEST,
 		/** Target the opponent with the most health */
 		SINGLE_STRONGEST,
+		/** Target yourself */
+		SINGLE_SELF,
 		/** Launch a normal attack that can hit an opponent */
 		NORMAL_ATTACK,
 		/** Use attack with lowest cast time */

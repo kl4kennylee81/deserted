@@ -56,7 +56,8 @@ public class ConditionalManager {
     		"ally_can_hit_enemy",
     		"ally_almost_done_waiting",
     		"can_interrupt_enemy",
-    		"first_move"
+    		"first_move",
+    		"not_hastened"
     };
 
 	
@@ -104,12 +105,20 @@ public class ConditionalManager {
 		map.put("ally_almost_done_waiting", friendWillEnterSoon());
 		map.put("can_interrupt_enemy", canInterruptEnemy());
 		map.put("first_move", firstMove());
+		map.put("not_hastened", notHastened());
 		map.put("default", true);
 		
 //		System.out.println("----------------------------------------------");
 //		for(String s: map.keySet()){
 //			System.out.println(s + ": "+ map.get(s));
 //		}
+	}
+	
+	public boolean notHastened(){
+		for(Effect e: selected.getEffects()){
+			if(e.name.equals("Hasten")) return false;
+		}
+		return true;
 	}
 	
 	public boolean firstMove(){
