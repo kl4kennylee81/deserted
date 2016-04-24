@@ -311,6 +311,12 @@ public class ObjectLoader {
 			}
 			charToAdd.setStartPos(xPosition, yPosition);
 			charToAdd.setLeftSide(leftSide);
+			
+			if (leftSide == false && levelChar.containsKey("difficulty")){
+ 				String difficulty = (String) levelChar.get("difficulty");		 	
+ 				charToAdd.setAI(Difficulty.valueOf(difficulty));		 			
+ 			}
+			
 			characterList.add(charToAdd);
 		}
 	}
