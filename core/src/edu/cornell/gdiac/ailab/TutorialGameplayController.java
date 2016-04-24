@@ -16,8 +16,8 @@ import edu.cornell.gdiac.ailab.TutorialSteps.CurrentHighlight;
 public class TutorialGameplayController extends GameplayController{
 	TutorialSteps tutorialSteps;
 	boolean curPaused;
-	int pauseTimer;
-	int targetPauseTime;
+	public static int pauseTimer;
+	public static int targetPauseTime;
 
 	/** State when tutorial is not paused */
 	InGameState regGameState;
@@ -51,27 +51,29 @@ public class TutorialGameplayController extends GameplayController{
 	}
 
 	public void update(){
-		System.out.println("heyooo");
 		tutorialSteps.writeTime += 2;
 		if (tutorialSteps.currStep() != null){
 			if (tutorialSteps.startTime){
 				tutorialSteps.timeElapsed += 1;
 			}
 		}
-		System.out.println(tutorialSteps.curStep);
+		System.out.println("curstep is " + tutorialSteps.curStep);
 		if (tutorialSteps.isDone()){
-			System.out.println("yoyoyoyoyo");
 			if (gameOver() && !tutorialSteps.levelName.equals("") && leftsideDead()){
     			GameEngine.nextLevel = tutorialSteps.levelName;
-    			tutorialSteps.setWarning("Your enemy is quicker than you! Dodge him!");
-    		}//code duplication :(
+    			tutorialSteps.setWarning((tutorialSteps.wrongText.equals("")? "Try again!" : tutorialSteps.wrongText), false);
+    			System.out.println("TEST TEST TEST TEST TEST TEST1");
+    			inGameState = InGameState.WARNING;
+    		} else if (gameOver()){
+    			tutorialSteps.setWarning((tutorialSteps.rightText.equals("")? "Well Done!" : tutorialSteps.rightText), true);
+    			inGameState = InGameState.WARNING;
+    		}
 			super.update();
 			return;
 		}
     	screen.noScreen();
     	switch(inGameState){
     	case NORMAL:
-    		System.out.println("nononononon");
     		// update the character models
     		characters.update();
     		effectController.update(characters, board);
@@ -90,23 +92,23 @@ public class TutorialGameplayController extends GameplayController{
     			}
     			inGameState = InGameState.PAUSED;
     			//System.out.println(inGameState);
-    			aiController.update();
-    			System.out.println(tutorialSteps.curStep);
+    			if (tutorialSteps.currStep().actions.size() == 0) super.aiController.update(); 
+    			else aiController.update();
+    			System.out.println("from ai, curstep is " + tutorialSteps.curStep);
     		}
     		if (actionBarController.isAttack){
     			inGameState = InGameState.ATTACK;
     		} else if (actionBarController.isPlayerSelection) {
-    			pauseTimer = 0;
-    			targetPauseTime = tutorialSteps.currStep().timeToPause;
     			//System.out.println("next step 2");
     			tutorialSteps.nextStep();
+    			if (tutorialSteps.currStep() != null) targetPauseTime = tutorialSteps.currStep().timeToPause;
+    			pauseTimer = 0;
     			selectionMenuController.update();
     			inGameState = InGameState.SELECTION;
     		}
     		//updateTutorial();
     		break;
     	case SELECTION:
-    		System.out.println("zeusss");
     		screen.setJustScreen();
     		mouseOverController.clearAll();
     		selectionMenuController.update();
@@ -120,7 +122,6 @@ public class TutorialGameplayController extends GameplayController{
     		}
     		break;
     	case ATTACK:
-    		System.out.println("kickball");
     		actionController.update();
     		if (actionController.isDone()){
     			if (actionBarController.isPlayerSelection){
@@ -132,12 +133,19 @@ public class TutorialGameplayController extends GameplayController{
     		//updateTutorial();
     		break;
     	case PAUSED:
-    		System.out.println("austin");
     		if (regGameState == InGameState.SELECTION){
             	screen.setJustScreen();
             }
     		//updateTutorial();
     		break;
+    	case WARNING:
+    		warningTime++;
+    		System.out.println("warning time is " + warningTime + "donw time is " + WARNING_DONE_TIME);
+    		if (warningTime == WARNING_DONE_TIME || InputController.pressedSpace()){
+    			warningTime = 0;
+    			inGameState = InGameState.DONE;
+    		}
+    		return;
 		default:
 			//updateTutorial();
 			break;
@@ -146,11 +154,15 @@ public class TutorialGameplayController extends GameplayController{
     	updateTextMessages();
     	removeDead();
     	if (gameOver()){
-    		System.out.println("godzilla");
     		inGameState = InGameState.DONE;
     		if (!tutorialSteps.levelName.equals("") && leftsideDead()){
     			GameEngine.nextLevel = tutorialSteps.levelName;
-    			System.out.println("stfu");
+    			tutorialSteps.setWarning((tutorialSteps.wrongText.equals("")? "Try again!" : tutorialSteps.wrongText), false);
+    			System.out.println("TEST TEST TEST TEST TEST TEST2");
+    			inGameState = InGameState.WARNING;
+    		} else {
+    			tutorialSteps.setWarning((tutorialSteps.rightText.equals("")? "Well Done!" : tutorialSteps.rightText), true);
+    			inGameState = InGameState.WARNING;
     		}
     		if(GameEngine.dataGen){
     			dataFile.writeString(jsonArray.toString(), false);
@@ -161,7 +173,9 @@ public class TutorialGameplayController extends GameplayController{
     }
 
 	public boolean isDone(){
-		return tutorialSteps.finishGame && tutorialSteps.isDone() && inGameState != InGameState.PAUSED || super.isDone();
+//		System.out.println("isDone: " + (tutorialSteps.finishGame && tutorialSteps.isDone() && inGameState != InGameState.PAUSED || super.isDone()));
+		boolean endNow = false;//take this from the yaml file eventually
+		return (tutorialSteps.finishGame && tutorialSteps.isDone() && inGameState != InGameState.PAUSED || super.isDone()) || endNow;
 	}
 
 	public void drawPlay(GameCanvas canvas){
@@ -208,32 +222,32 @@ public class TutorialGameplayController extends GameplayController{
     }
 
 	private void updateTutorial() {
-		System.out.println("stuff is japening");
 		pauseTimer++;
 		if (targetPauseTime != -1) {
-			//System.out.println(targetPauseTime);
-			//System.out.println(pauseTimer);
+//			System.out.println("target pause time is " + targetPauseTime);
+//			System.out.println("pause timer is " + pauseTimer);
 		}
 		if (pauseTimer == targetPauseTime){
-			pauseTimer = 0;
+//			System.out.println("pause timer reached");
 			if (!curPaused){
 				curPaused = true;
 				regGameState = inGameState;
 			}
-			inGameState = InGameState.PAUSED;
+//			inGameState = InGameState.PAUSED;
 			//System.out.println("reality");
-			targetPauseTime = tutorialSteps.currStep().timeToPause;
 			//System.out.println(targetPauseTime);
 			//System.out.println("next step 3");
 			tutorialSteps.nextStep();
+			pauseTimer = 0;
+			if (tutorialSteps.currStep() != null) targetPauseTime = tutorialSteps.currStep().timeToPause;
 			return;
 		}
 		if ((InputController.pressedSpace() || InputController.pressedLeftMouse()) && inGameState == InGameState.PAUSED){
 			if (tutorialSteps.textDone == tutorialSteps.step.text.length()){
-				pauseTimer = 0;
-				targetPauseTime = tutorialSteps.currStep().timeToPause;
 				//System.out.println("next step 4");
 				tutorialSteps.nextStep();
+				if (tutorialSteps.currStep() != null) targetPauseTime = tutorialSteps.currStep().timeToPause;
+				pauseTimer = 0;
 
 			} else {
 				if (tutorialSteps.step.text.charAt(tutorialSteps.textDone) == '\n'){
@@ -264,9 +278,9 @@ public class TutorialGameplayController extends GameplayController{
 	}
 
     public void drawAfter(GameCanvas canvas){
-	    canvas.drawTutorialText("“Congratulations on completing Tutorial Level 1. "
+	    canvas.drawTutorialText("“Congratulations on completing this Tutorial segment. "
 	    		+ "\n\nPress \'R\' to return to the main menu where you can "
-	    		+ "select another level \n\nor press Spacebar to move on to Tutorial Level 2", Color.BLACK, Align.center);
+	    		+ "select another level \n\nor press Spacebar to move on to the next Tutorial segment", Color.BLACK, Align.center);
     }
 }
 

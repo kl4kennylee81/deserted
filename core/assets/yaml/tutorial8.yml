@@ -7,3 +7,14 @@
   restart: true
   levelName: tutorial8
   nextLevel: tutorial9
+
+1:
+  text: "He can bypass your shield! So beware"
+  paused: true
+  spaceToContinue: true
+  highlightRegions:
+    - xPos: 0.5
+      yPos: 0.15
+      width: 0.1
+      height: 0.22
+      arrow: down

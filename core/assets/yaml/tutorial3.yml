@@ -1,9 +1,41 @@
 0:
   text: "Level 3"
   paused: true
-  finishGame: false
+  finishGame: true
   levelColor: WHITE
   spaceToContinue: true
   restart: true
   levelName: tutorial3
   nextLevel: tutorial4
+  wrongText: "Try not to get interrupted!"
+  rightText: "Well done!"
+
+1:
+  text: "After planning an attack if you get hit before it goes off you get INTERRUPTED"
+  paused: true
+  spaceToContinue: true
+
+2:
+  text: "INTERRUPT your opponent"
+  paused: true
+  spaceToContinue: false
+
+3:
+  text: "Don't get INTERRUPTED yourself!"
+  paused: true
+  spaceToContinue: false
+
+4:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+5:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+6:
+  text: ""
+  paused: false
+  spaceToContinue: false

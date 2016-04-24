@@ -128,8 +128,10 @@ public class SelectionMenu {
 		return selectedY;
 	}
 	
-	public void setChoosingTarget(boolean ct){
+	public boolean setChoosingTarget(boolean ct){
+		boolean prev = choosingTarget;
 		choosingTarget = ct;
+		return prev;
 	}
 	
 	public void setSelectedX(int x){

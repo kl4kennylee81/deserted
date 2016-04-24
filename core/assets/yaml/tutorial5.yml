@@ -6,4 +6,9 @@
   spaceToContinue: true
   restart: true
   levelName: tutorial5
-  nextLevel: tutorial6
+
+
+1:
+  text: "Using what you have learnt defeat these opponents"
+  paused: true
+  spaceToContinue: true

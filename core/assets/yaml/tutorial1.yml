@@ -7,6 +7,8 @@
   spaceToContinue: true
   restart: true
   levelName: tutorial1
+  rightText: "Well Done!"
+  stepOnSelection: true
 
 
 1:
@@ -97,7 +99,7 @@
       arrow: up
 
 7:
-  text: "Select Action (WASD or Arrowkeys)"
+  text: "Select Action (WASD or Arrowkeys to navigate then Enter to select)"
   spaceToContinue: true
   paused: false
   highlightRegions:
@@ -113,14 +115,15 @@
 #       direction: NONE
 
 8:
-  text: ""
+  text: "Press Enter again"
   spaceToContinue: false
   paused: false
 
 9:
-  text: ""
+  text: "Actions are queued here"
   spaceToContinue: false
   paused: false
+  timeToPause: 150
   highlightRegions:
       - xPos: 0.49
         yPos: 0.89
@@ -129,6 +132,11 @@
         arrow: up
 
 10:
+  text: "Select 'Confirm' after choosing all actions"
+  spaceToContinue: false
+  paused: false
+
+11:
   text: ""
   spaceToContinue: false
   paused: false

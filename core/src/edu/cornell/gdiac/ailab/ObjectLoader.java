@@ -590,6 +590,11 @@ public class ObjectLoader {
 				ts.setFinishGame(finishGame);
 			}
 			
+			Boolean stepOnSelection = (Boolean) step.get("stepOnSelection");
+			if (stepOnSelection != null){
+				ts.setStepOnSelection(stepOnSelection);
+			}
+			
 			String nextLevel = (String) step.get("nextLevel");
 			if (nextLevel != null){
 				ts.setNextLevel(nextLevel);
@@ -597,11 +602,19 @@ public class ObjectLoader {
 			
 			String levelName = (String) step.get("levelName");
 			if (levelName != null){
-				ts.setLevelName(levelName);
-			} else {
-				ts.setLevelName("");
+				ts.setLevelName(levelName);	
 			}
-
+			
+			String rightText = (String) step.get("rightText");
+			if (rightText != null){
+				ts.setRightText(rightText);	
+			}
+			
+			String wrongText = (String) step.get("wrongText");
+			if (wrongText != null){
+				ts.setWrongText(wrongText);	
+			}
+			
 			String levelColor = (String) step.get("levelColor");
 			if (levelColor != null){
 				if (levelColor.equals("WHITE")){

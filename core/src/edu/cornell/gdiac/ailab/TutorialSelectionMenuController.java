@@ -71,10 +71,12 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 				if (correctAction()){
 					updateTargetedAction();
 					prompt = "Choose a Target";
-					tutorialSteps.nextStep();
+					if (tutorialSteps.stepOnSelection) tutorialSteps.nextStep();
+					if (tutorialSteps.currStep() != null) TutorialGameplayController.targetPauseTime = tutorialSteps.currStep().timeToPause;
+					TutorialGameplayController.pauseTimer = 0;
 				} else {
 					System.out.println("wrong attack");
-					tutorialSteps.setWarning("Please follow the instructions!");
+					tutorialSteps.setWarning("Please follow the instructions!", false);
 				}
 			} else {
 				if (correctActions()){
@@ -82,14 +84,18 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 					selected.setQueuedActions(menu.getQueuedActions());
 					selected = null;
 					resetNeedsShadow();
-					tutorialSteps.nextStep();
+					if (tutorialSteps.stepOnSelection) tutorialSteps.nextStep();
+					if (tutorialSteps.currStep() != null) TutorialGameplayController.targetPauseTime = tutorialSteps.currStep().timeToPause;
+					TutorialGameplayController.pauseTimer = 0;
 				} else {
 					System.out.println("can't confirm");
-					tutorialSteps.setWarning("You can\'t confirm that action just yet!");
+					tutorialSteps.setWarning("You can\'t confirm that action just yet!", false);
 				}
 			}
 		} else if (InputController.pressedBack()){
-			//menu.removeLast();
+			if (menu.removeLast() != null){
+				if (tutorialSteps.stepOnSelection) tutorialSteps.prevStep();
+			}
 //		} else if (InputController.pressedD() && menu.canNop(numSlots)){
 			/*float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,0);
 			menu.add(anPool.newActionNode(nop,actionExecute,0,0,Direction.NONE),numSlots);
@@ -141,13 +147,18 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 				menu.add(anPool.newActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 				menu.setChoosingTarget(false);
 				menu.resetPointer(numSlots);
-				tutorialSteps.nextStep();
+				if (tutorialSteps.stepOnSelection) tutorialSteps.nextStep();
+				if (tutorialSteps.currStep() != null) TutorialGameplayController.targetPauseTime = tutorialSteps.currStep().timeToPause;
+				TutorialGameplayController.pauseTimer = 0;
 			} else {
 				System.out.println("wrong target");
-				tutorialSteps.setWarning("Please follow the instructions!");
+				tutorialSteps.setWarning("Please follow the instructions!", false);
 			}
 		} else if (InputController.pressedBack()){
-			//menu.setChoosingTarget(false);
+			boolean choosingTarget = menu.setChoosingTarget(false);
+			if (choosingTarget){
+				if (tutorialSteps.stepOnSelection) tutorialSteps.prevStep();
+			}
 		}
 	}
 

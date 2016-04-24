@@ -22,6 +22,8 @@ public class TutorialSteps {
 	boolean finishGame;
 	String nextLevel;
 	String levelName;
+	String rightText;
+	String wrongText;
 	int prevTextDone;
 	int textDone;
 	boolean showHighlights;
@@ -29,8 +31,10 @@ public class TutorialSteps {
 	int writeTime;
 	boolean startTime;
 	String warning;
+	boolean warningGreen;
 	int warningTime;
 	Color levelColor;
+	boolean stepOnSelection;
 
 	/** Individual Step */
 	class Step {
@@ -91,8 +95,11 @@ public class TutorialSteps {
 		steps = new ArrayList<Step>();
 		curStep = 0;
 		finishGame = false;
+		stepOnSelection = false;
 		nextLevel = "";
 		levelName = "";
+		rightText = "";
+		wrongText = "";
 		this.textDone = 0;
 		this.prevTextDone = 0;
 		this.showHighlights = false;
@@ -100,6 +107,7 @@ public class TutorialSteps {
 		this.writeTime = 0;
 		this.warning = "";
 		this.warningTime = 0;
+		this.warningGreen = true;
 	}
 
 	public void addStep(String text, boolean paused, boolean confirm, boolean spaceToContinue, boolean dontWriteText,
@@ -169,8 +177,24 @@ public class TutorialSteps {
 			step = null;
 		}
 	}
+	
+	public void prevStep() {
+		startTime = false;
+		timeElapsed = 0;
+		writeTime = 0;
+		showHighlights = false;
+		textDone = 0;
+		prevTextDone = 0;
+		curStep -= 1;
+		if (!isDone()) {
+			step = steps.get(curStep);
+		} else {
+			step = null;
+		}
+	}
 
 	public boolean isDone() {
+		System.out.println("curStep: " + curStep + "steps size: " + steps.size());
 		return curStep >= steps.size();
 	}
 
@@ -238,9 +262,9 @@ public class TutorialSteps {
 		}
 
 		if (!warning.equals("")) {
-			canvas.drawWarningText(warning);
+			canvas.drawWarningText(warning, warningGreen);
 			warningTime++;
-			if (warningTime == 40) {
+			if (warningTime == GameplayController.WARNING_DONE_TIME) {
 				warningTime = 0;
 				warning = "";
 			}
@@ -251,10 +275,24 @@ public class TutorialSteps {
 		return step;
 	}
 
-	public void setWarning(String warning) {
+	public void setWarning(String warning, boolean green) {
 		this.warning = warning;
 		warningTime = 0;
+		warningGreen = green;
 
+	}
+
+	public void setRightText(String rightText) {
+		this.rightText = rightText;
+	}
+
+	public void setWrongText(String wrongText) {
+		this.wrongText = wrongText;
+	}
+
+	public void setStepOnSelection(boolean stepOnSelection) {
+		this.stepOnSelection = stepOnSelection;
+		
 	}
 
 }

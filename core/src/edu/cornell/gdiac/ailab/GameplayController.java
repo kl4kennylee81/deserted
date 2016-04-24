@@ -10,6 +10,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
+import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.ailab.TextMessage.Message;
 
 public class GameplayController {
@@ -39,6 +40,9 @@ public class GameplayController {
     
     protected String prompt;
     
+    public int warningTime;
+    public final static int WARNING_DONE_TIME = 80;
+    
     /** Current state of game */
     protected InGameState inGameState;
     protected FileHandle fileNumFile;
@@ -51,7 +55,8 @@ public class GameplayController {
 		SELECTION,
 		ATTACK,
 		PAUSED,
-		DONE
+		DONE,
+		WARNING
 	}
     
     public GameplayController(MouseOverController moc, FileHandle file, int fileNum){
@@ -82,10 +87,10 @@ public class GameplayController {
         persistingController = new PersistingController(board,characters,textMessages,animations);
         effectController = new EffectController();
         mouseOverController.init(screen, board);
+        warningTime = 0;
     }
     
     public void update(){
-    	System.out.println("heyooo222");
     	screen.noScreen();
     	switch(inGameState){
     	case NORMAL:
@@ -124,6 +129,13 @@ public class GameplayController {
     			} else {
     				inGameState = InGameState.NORMAL;
     			}
+    		}
+    		break;
+    	case WARNING:
+    		warningTime++;
+    		if (warningTime == WARNING_DONE_TIME){
+    			warningTime = 0;
+    			inGameState = InGameState.DONE;
     		}
     		break;
 		default:

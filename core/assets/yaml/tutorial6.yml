@@ -1,9 +1,39 @@
 0:
   text: "Level 6"
   paused: true
-  finishGame: false
+  finishGame: true
   levelColor: WHITE
   spaceToContinue: true
   restart: true
   levelName: tutorial6
   nextLevel: tutorial7
+
+1:
+  text: "When your opponents are too quick you can shield yourself!"
+  paused: true
+  spaceToContinue: true
+
+2:
+  text: "But beware because they now have diagonal attacks too!"
+  paused: true
+  spaceToContinue: false
+
+3:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+4:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+5:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+6:
+  text: ""
+  paused: false
+  spaceToContinue: false

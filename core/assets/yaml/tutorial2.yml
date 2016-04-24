@@ -7,6 +7,8 @@
   restart: true
   levelName: tutorial2
   nextLevel: tutorial3
+  wrongText: "You have to dodge your opponent's attack! Try again!"
+  rightText: "Well done!"
 
 1:
   text: "Dodge enemy's attack"
@@ -23,20 +25,15 @@
   paused: false
   spaceToContinue: false
 
-4:
-  text: ""
-  paused: false
-  spaceToContinue: false
+# 4:
+  # text: ""
+  # paused: false
+  # spaceToContinue: false
+  # timeToPause: 30
 
-5:
-  text: ""
-  paused: false
-  spaceToContinue: false
 
-6:
-  text: "Well Done!"
-  paused: false
-  spaceToContinue: true
+
+
 # 1:
 #   text: ""
 #   spaceToContinue: false

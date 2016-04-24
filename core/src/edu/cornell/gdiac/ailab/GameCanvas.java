@@ -997,9 +997,9 @@ public class GameCanvas {
 		OPAQUE
 	}
 
-	public void drawWarningText(String warning) {
+	public void drawWarningText(String warning, boolean green) {
 		displayFont.getData().setScale(2);
-		displayFont.setColor(Color.SCARLET);
+		displayFont.setColor(green? Color.GREEN : Color.SCARLET);
 		float width = ((float)getWidth())/2f;
 		float x = getWidth()/2-width/2;
 		float y = ((float)getHeight())/2f;
