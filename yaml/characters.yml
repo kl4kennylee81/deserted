@@ -36,10 +36,10 @@
 
 2:
   name: Rock Spirit
-  health: 14
-  maxHealth: 14
+  health: 12
+  maxHealth: 12
   hexColor: 00cc00FF
-  speed: 2.
+  speed: 1.
   castSpeed: 8.
   slots: 2
   availableActions:
@@ -57,7 +57,7 @@
   health: 8
   maxHealth: 8
   hexColor: FF9900FF
-  speed: 5.
+  speed: 3.5
   castSpeed: 7.5
   slots: 5
   availableActions:
@@ -69,6 +69,42 @@
   texture: "models/CHARA_4.png"
   icon: "models/mage_icon.png"
   animationId: 102
+
+4:
+  name: Enchantress Spirit
+  health: 8
+  maxHealth: 8
+  hexColor: CD2626FF
+  speed: 6.
+  castSpeed: 7.
+  slots: 5
+  availableActions:
+    - 0
+    - 22
+    - 5
+    - 24
+
+  texture: "models/CHARA_3.png"
+  icon: "models/CASTICON_5.png"
+  animationId: 101
+
+5:
+  name: Fighter Spirit
+  health: 10
+  maxHealth: 10
+  hexColor: 3299FFFF
+  speed: 3.
+  castSpeed: 9.
+  slots: 4
+  availableActions:
+    - 0
+    - 23
+    - 20
+    - 9
+
+  texture: "models/CHARA_1.png"
+  icon: "models/CASTICON_1.png"
+  animationId: 104
 
 90:
   name: green

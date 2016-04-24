@@ -116,6 +116,9 @@ public class Character implements GUIElement {
 	/** Cast bar position of last cast (Used for animating) */
 	float lastCastStart;	
 	
+	/**Whether the character has been clicked. */
+	boolean isClicked;
+	
 	/**Constructor used by GameEngine to create characters from yaml input. */
 	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
 						int health, int maxHealth, Color color, 
@@ -314,7 +317,8 @@ public class Character implements GUIElement {
 	
 	public float getXMin(GameCanvas canvas, GridBoard board){
 		float tileW = board.getTileWidth(canvas);
-		float canvasX = board.offsetBoard(canvas,tileW*xPosition,0).x;
+		float tileH = board.getTileHeight(canvas);
+		float canvasX = board.offsetBoard(canvas,tileW*xPosition,tileH*yPosition).x;
 		return canvasX;
 	}
 	
@@ -325,13 +329,13 @@ public class Character implements GUIElement {
 	}
 	
 	public float getXMax(GameCanvas canvas, GridBoard board){
-		float charScale = getCharScale(canvas,texture,board);
-		return getXMin(canvas, board) + texture.getWidth()*charScale;
+		float charScale = getCharScale(canvas,getCurrentFilmStrip(),board);
+		return getXMin(canvas, board) + getCurrentFilmStrip().getRegionWidth()*charScale;
 	}
 	
 	public float getYMax(GameCanvas canvas, GridBoard board){
-		float charScale = getCharScale(canvas,texture,board);
-		return getYMin(canvas, board) + texture.getHeight()*charScale;
+		float charScale = getCharScale(canvas,getCurrentFilmStrip(),board);
+		return getYMin(canvas, board) + getCurrentFilmStrip().getRegionHeight()*charScale;
 	}
 	
 //	public float getTokenX(GameCanvas canvas){
@@ -671,9 +675,9 @@ public class Character implements GUIElement {
 	}
 	
 	/** temporary while menu is blocked by characters */
-	public void drawSelection(GameCanvas canvas,int count){
-		if (isSelecting && isAlive()){
-			selectionMenu.draw(canvas,this.actionBar,count);
+	public void drawSelection(GameCanvas canvas,int count,boolean clickedCharExist){
+		if ((isSelecting && !clickedCharExist && isAlive()) || isClicked){
+			selectionMenu.draw(canvas,this.actionBar,count, isClicked);
 		}
 	}
 	

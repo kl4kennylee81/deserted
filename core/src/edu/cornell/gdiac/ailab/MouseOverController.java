@@ -17,7 +17,7 @@ public class MouseOverController {
 	Action hAction;
 	SelectionMenu currMenu;
 	
-	private static boolean DISABLE_MOUSE = true;
+	private static boolean DISABLE_MOUSE = false;
 
 	public void update(Option[] options, Menu Menu){
 		float x = InputController.getMouseX();
@@ -49,24 +49,54 @@ public class MouseOverController {
 		screen.removeHighlight();
 		float x = InputController.getMouseX();
 		float y = InputController.getMouseY();
+		
+
+		Character clickedChar = null;
+		Character actionChar = null;
+		
 		for(Character c: characters){
-			for (Action a: c.getSelectionMenu().getActions()){
-				if (a.contains(x,y,canvas,board)){
+			SelectionMenu menu = c.getSelectionMenu();
+			for (Action a: menu.getActions()){
+				int usableNumSlots = c.getActionBar().getUsableNumSlots();
+				boolean actionInvalid = menu.isActionInvalid(usableNumSlots, a);
+				if (a.contains(x,y,canvas,board) && !actionInvalid){
 					hAction = a;
 					currMenu = currMenu1;
+					actionChar = c;
 				}
 			}
+			if (c.getSelectionMenu().confirmContain(InputController.getMouseX(), InputController.getMouseY())){
+				menu.setChoosingTarget(false);
+				menu.selectedAction=menu.getActions().length;
+			}
+			
 			if (c.contains(x,y,canvas,board)){
 				highlighted = c;
 				highlighted.setHovering();
+
+				if (InputController.leftMouseClicked) {
+					clickedChar = c;
+				}
 			}
 		}
 		
-		if (hAction != null){
+
+		if (clickedChar != null){
+			for (Character c : characters) {
+				c.isClicked = false;
+			}	
+			clickedChar.isClicked = true;
+		}
+		
+		if (hAction != null 
+				&& ((currMenu.getSelectedAction() == null && !currMenu.isActionInvalid(actionChar.getActionBar().getUsableNumSlots(), hAction))
+						||currMenu.getActions().length > currMenu.selectedAction && hAction!= currMenu.getSelectedAction())){
+			currMenu.setChoosingTarget(false);
 			currMenu.setSelectedAction(hAction.position);
 		}
 		
 	}
+	
 	
 	public void init(HighlightScreen screen, GridBoard board){
 		this.screen = screen;

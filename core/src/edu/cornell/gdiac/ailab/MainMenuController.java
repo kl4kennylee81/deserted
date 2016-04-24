@@ -198,7 +198,13 @@ public class MainMenuController {
 		}
 		else if (menu instanceof LevelMenu){
 			LevelMenu levelMenu = (LevelMenu) menu;
-			if (InputController.pressedEnter() || InputController.pressedLeftMouse()){
+			boolean mouseCondition = false;
+			if (levelMenu.selectedIndex!=-1){
+				Option curOption = levelMenu.options[levelMenu.selectedIndex];
+				mouseCondition = curOption.contains(InputController.getMouseX(),InputController.getMouseY(),canvas,null)
+					&& (InputController.pressedLeftMouse());
+			}
+			if (InputController.pressedEnter() || mouseCondition){
 				// fixup to get cur option string from the index
 				String levelKey = levelMenu.getCurOption();
 				done(levelKey);
@@ -234,7 +240,14 @@ public class MainMenuController {
 			return;
 		}
 		
-		if (InputController.pressedEnter() || InputController.pressedLeftMouse()){
+		boolean mouseCondition = false;
+		if (mainMenu.selectedIndex!=-1){
+			Option curOption = mainMenu.options[mainMenu.selectedIndex];
+			mouseCondition = curOption.contains(InputController.getMouseX(),InputController.getMouseY(),canvas,null)
+				&& (InputController.pressedLeftMouse());
+		}
+		
+		if (InputController.pressedEnter() || mouseCondition){
 			// fixup to get cur option string from the index
 			String levelKey = mainMenu.getCurOption();
 			done(levelKey);
