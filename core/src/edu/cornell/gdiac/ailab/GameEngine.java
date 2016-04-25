@@ -229,9 +229,7 @@ public class GameEngine implements Screen {
     }
     
     public void startGame(String levelName) throws IOException {
-    	System.out.println("here now");
     	if (this.gameSaveStateController.containsLevel(levelName)){
-    		System.out.println("walker");
         	initializeCanvas(Constants.BCKGD_TEXTURE, Constants.SELECT_FONT_FILE);
         	Level level = null;
     		level = this.getLevel(levelName);
@@ -248,7 +246,6 @@ public class GameEngine implements Screen {
     	}
     	// start matching with keywords to get to levels, options, etc. atm its just editors
     	else {
-    		System.out.println("nicole roy");
     		this.startKeyword(levelName);
     	}
     	
