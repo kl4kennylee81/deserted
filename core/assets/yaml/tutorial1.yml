@@ -16,10 +16,10 @@
   spaceToContinue: true
   paused: true
   highlightRegions:
-    - xPos: 0.24
+    - xPos: 0.34
       yPos: 0.15
-      width: 0.1
-      height: 0.22
+      width: 0.12
+      height: 0.26
       arrow: down
       isChar: true
 
