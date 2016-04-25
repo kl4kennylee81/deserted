@@ -35,11 +35,11 @@ Level1:
 
 pvp:
     allies:
-        - id: 0
+        - id: 4
           xPosition: 0
           yPosition: 0
 
-        - id: 1
+        - id: 5
           xPosition: 0
           yPosition: 3
 
@@ -57,6 +57,56 @@ pvp:
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: []
+
+Level2:
+    allies:
+        - id: 4
+          xPosition: 0
+          yPosition: 0
+
+        - id: 5
+          xPosition: 0
+          yPosition: 3
+
+    enemies:
+        - id: 2
+          xPosition: 5
+          yPosition: 0
+
+        - id: 3
+          xPosition: 5
+          yPosition: 3
+    nextLevel:
+    boardWidth: 6
+    boardHeight: 4
+    boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
+    AI: ["aiyaml/rock-mage.yml", "aiyaml/rock.yml", "aiyaml/mage.yml"]
+
+Level3:
+    allies:
+        - id: 2
+          xPosition: 0
+          yPosition: 0
+
+        - id: 3
+          xPosition: 0
+          yPosition: 3
+
+    enemies:
+        - id: 4
+          xPosition: 5
+          yPosition: 0
+
+        - id: 5
+          xPosition: 5
+          yPosition: 3
+    nextLevel:
+    boardWidth: 6
+    boardHeight: 4
+    boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
+    AI: ["aiyaml/fighter.yml", "aiyaml/enchantress.yml", "aiyaml/fighter-enchantress.yml"]
 
 tutorial1:
     allies:
@@ -342,4 +392,4 @@ tutorial9:
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/nothing.yml"]
+    AI: ["aiyaml/tm.yml"]

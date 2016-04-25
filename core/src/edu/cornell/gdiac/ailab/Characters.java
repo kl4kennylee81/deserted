@@ -12,7 +12,7 @@ public class Characters extends LinkedList<Character>{
 		for (Character c:this){
 			count++;
 			
-			Color waitColor = c.getActionBarColor(shouldDim,c.color.cpy());
+			Color waitColor = c.getActionBarColor(shouldDim,Color.valueOf("66CC99"));
 			Color castColor = c.getActionBarColor(shouldDim, Color.RED.cpy());
 			Color bufferColor = c.getActionBarColor(shouldDim, Color.WHITE.cpy());
 			

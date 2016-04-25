@@ -1,8 +1,6 @@
 ROOT:
   type: index
-  first_move: RANDOM
   can_hit: ATTACK
-  single_in_range: ATTACK
   default: POSITION
 
 #-------------------------------------------
@@ -17,13 +15,13 @@ POSITION:
  
 #--------------------------------------------- 
 
-Mage Spirit:
+Enchantress Spirit:
   type: character
-  branches: [MAGE_ATTACK, MAGE_POSITION]
+  branches: [ENCHANTRESS_ATTACK, ENCHANTRESS_POSITION]
 
-Rock Spirit:
+Fighter Spirit:
   type: character
-  branches: [ROCK_ATTACK, ROCK_POSITION]
+  branches: [FIGHTER_ATTACK, FIGHTER_POSITION]
   
 #--------------------------------------------
 

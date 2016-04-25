@@ -95,7 +95,8 @@
     - 0
     - 23
     - 20
-    - 9
+    - 7
+
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"
   animationId: 104

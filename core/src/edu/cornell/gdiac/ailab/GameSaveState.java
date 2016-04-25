@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.Texture;
+
 /**
  * In yaml file gameSaveState.yaml
  * Also have basic state file basicSaveState.yaml
@@ -33,6 +35,7 @@ public class GameSaveState {
 			return size;
 		}
 		
+		/** Includes itself and its upgrades */
 		public List<ActionUpgrade> getActionUpgrades(){
 			ArrayList<ActionUpgrade> ids = new ArrayList<ActionUpgrade>();
 			ids.add(this);
@@ -63,11 +66,22 @@ public class GameSaveState {
 		int totalSP;
 		List<ActionUpgrade> actionUpgrades;
 		ArrayList<Integer> currentActions;
+		private Texture icon;
+		
+		
 		
 		public CharacterData(){
 			this.actionUpgrades = new ArrayList<ActionUpgrade>();
 			this.currentActions = new ArrayList<Integer>();
 			getUsedSP();
+		}
+		
+		public void setIconTexture(Texture icon){
+			this.icon = icon;
+		}
+		
+		public Texture getIcon(){
+			return this.icon;
 		}
 		
 		public void setAction(int actionId){
@@ -190,11 +204,13 @@ public class GameSaveState {
 	
 	List<LevelData> levels;
 	List<CharacterData> characters;
-	List<Integer> selectedCharacters;
+	List<Integer> availableCharacters;
+	ArrayList<Integer> selectedCharacters;
 	
 	public GameSaveState(){
 		this.levels = new ArrayList<LevelData>();
 		this.characters = new ArrayList<CharacterData>();
+		this.availableCharacters = new ArrayList<Integer>();
 		this.selectedCharacters = new ArrayList<Integer>();
 	}
 	
@@ -223,6 +239,7 @@ public class GameSaveState {
 	public void setState(HashMap<String, HashMap<String, Object>> gameSaveStateData){
 		this.characters.clear();
 		this.levels.clear();
+		this.availableCharacters.clear();
 		this.selectedCharacters.clear();
 		
 		HashMap<String, Object> characterData = gameSaveStateData.get("characters");
@@ -249,8 +266,38 @@ public class GameSaveState {
 			this.levels.add(ld);
 		}
 		
+		Object availChars = gameSaveStateData.get("availableCharacters");
+		availableCharacters = (ArrayList<Integer>) availChars;
+		
 		Object selChars = gameSaveStateData.get("selectedCharacters");
 		selectedCharacters = (ArrayList<Integer>) selChars;
+	}
+	
+	public ArrayList<CharacterData> getSelectedCharacters(){
+		ArrayList<CharacterData> selChars = new ArrayList<CharacterData>();
+		for (int i : selectedCharacters){
+			for (CharacterData cd : characters){
+				if (cd.characterId == i){
+					selChars.add(cd);
+					break;
+				}
+			}
+		}
+		return selChars;
+	}
+	
+	public void replaceSelectedCharacter(int selIndex, int charId){
+		if (selectedCharacters.contains(charId)){
+			//switch if not in right place
+			if (selectedCharacters.get(selIndex) != charId){
+				int oldIndex = selectedCharacters.indexOf(charId);
+				int otherCharId = selectedCharacters.get(selIndex);
+				selectedCharacters.set(oldIndex,otherCharId);
+				selectedCharacters.set(selIndex,charId);
+			}
+		} else {
+			selectedCharacters.set(selIndex, charId);
+		}
 	}
 	
 	public LevelData getLevelData (String levelName){

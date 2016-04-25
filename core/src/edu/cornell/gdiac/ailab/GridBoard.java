@@ -167,6 +167,42 @@ public class GridBoard {
 		}
 	}
 	
+	public void drawMini(GameCanvas canvas) {
+		if (increasing){
+			lerpVal+=0.03;
+			if (lerpVal >= 1){
+				increasing = false;
+			}
+		} else {
+			lerpVal -= 0.03;
+			if (lerpVal <= 0){
+				increasing = true;
+			}
+		}
+		for (int x = 0; x < width; x++) {
+			for (int y = 0; y < height; y++) {
+				drawMiniTile(x,y, canvas);
+			}
+		}
+	}
+	
+	public void drawMiniTile(int x, int y, GameCanvas canvas){
+		Tile tile = tiles[x][y];
+		float tileW = 0.06f*canvas.width;
+		float tileH = 0.06f*canvas.height;
+		float tileX = 0.57f*canvas.width+tileW*x;
+		float tileY = 0.35f*canvas.height+tileH*y;
+		
+		Color color = x<width/2 ? BASIC_COLOR1.cpy() : BASIC_COLOR2.cpy();
+		if (tile.isHighlighted){
+			color.lerp(HIGHLIGHT_COLOR,lerpVal);
+		} else if (tile.canTarget){
+			color = CAN_TARGET_COLOR;
+		} 
+		
+		canvas.draw(tileMesh, color, tileX, tileY, tileW, tileH);
+	}
+	
 	/**
 	 * Draws the individual tile at position (x,y). 
 	 *

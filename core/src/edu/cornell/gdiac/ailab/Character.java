@@ -430,8 +430,7 @@ public class Character implements GUIElement {
 	/**
 	 * Make an AI with the given difficulty
 	 */
-	public void setAI(Difficulty diff){
-		this.diff = diff;
+	public void setAI(){
 		this.isAI = true;
 	}
 	
@@ -511,7 +510,8 @@ public class Character implements GUIElement {
 	}
 	
 	public float getInterval(){
-		return (1f-actionBar.castPoint) / this.getActionBar().getTotalNumSlots();
+		//System.out.println(name+" "+actionBar.getCastPoint());
+		return (1f-actionBar.getCastPoint()) / this.getActionBar().getTotalNumSlots();
 	}
 	
 	/**

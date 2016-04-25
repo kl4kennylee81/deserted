@@ -26,7 +26,7 @@ characters:
     - 0
     - 5
     - 6
-    - 14
+    - 20
   1:
     characterId: 1
     totalSP: 0
@@ -34,7 +34,63 @@ characters:
     - actionId: 0
     - actionId: 4
       nextAction:
-      - actionId: 10
+      - actionId: 9
+        cost: 1
+      - actionId: 11
+        cost: 1
+    - actionId: 7
+      nextAction:
+      - actionId: 12
+        cost: 1
+      - actionId: 13
+        cost: 1
+    - actionId: 10
+      nextAction:
+      - actionId: 14
+        cost: 1
+      - actionId: 15
+        cost: 1
+    currentActions:
+    - 0
+    - 4
+    - 7
+    - 10
+  2:
+    characterId: 2
+    totalSP: 0
+    actionTree:
+    - actionId: 0
+    - actionId: 4
+      nextAction:
+      - actionId: 9
+        cost: 1
+      - actionId: 11
+        cost: 1
+    - actionId: 7
+      nextAction:
+      - actionId: 12
+        cost: 1
+      - actionId: 13
+        cost: 1
+    - actionId: 10
+      nextAction:
+      - actionId: 14
+        cost: 1
+      - actionId: 15
+        cost: 1
+    currentActions:
+    - 0
+    - 4
+    - 7
+    - 10
+  3:
+    characterId: 3
+    totalSP: 0
+    actionTree:
+    - actionId: 0
+    - actionId: 4
+      nextAction:
+      - actionId: 9
         cost: 1
       - actionId: 11
         cost: 1
@@ -101,6 +157,17 @@ levels:
     beaten: false
     boss: false
 
-selectedCharacters:
+  11:
+    levelName: Level2
+    beaten: false
+    boss: false
+  12:
+    levelName: Level3
+    beaten: false
+    boss: false
+
+availableCharacters:
 - 0
 - 1
+- 2
+- 3

@@ -89,9 +89,18 @@ public class SelectionMenuController {
 				
 				checkForClicked();
 				// FIXUP will fix this conditions
-				if (clickedChar != null && !this.choosingTarget && !this.menu.getChoosingTarget()){
-					menuState = MenuState.PEEKING;					
-					break;
+				if (clickedChar != null && !this.choosingTarget && 
+						this.menu != null && !this.menu.getChoosingTarget()){
+					
+					// if the clicked character is the selected don't switch
+					if (clickedChar == selected){
+						clickedChar.isClicked = false;
+						clickedChar = null;
+					}
+					else{
+						menuState = MenuState.PEEKING;					
+						break;
+					}
 				}
 				else{
 					if (clickedChar!=null){
@@ -145,7 +154,8 @@ public class SelectionMenuController {
 				}
 				updatePeeking();
 				
-				if (InputController.pressedBack()){
+				// when you click on your original character it goes back to his selection menu
+				if (InputController.pressedBack()||clickedChar == selected){
 					clickedChar.isClicked = false;
 					clickedChar = null;
 					menuState = MenuState.SELECTING;
@@ -492,30 +502,30 @@ public class SelectionMenuController {
 			updateX = selectedX - 1;
 			updateY = selectedY;
 			if (updateX > boardWidth-1){
-				updateX -= boardWidth;
+				updateX -= boardWidth/2;
 			}
 			else if (updateX < 0){
-				updateX+=boardWidth;
+				updateX+=boardWidth/2;
 			}
-//			if (leftside && updateX<boardWidth/2){
-//				updateX+=boardWidth/2;
-//			} else if (!leftside && selectedX<0){
-//				updateX+=boardWidth/2;
-//			}
+			if (((!this.action.isBuff && leftside)||(this.action.isBuff && !leftside)) && updateX<boardWidth/2){
+				updateX+=boardWidth/2;
+			} else if (((!this.action.isBuff && !leftside)||(this.action.isBuff && leftside)) && selectedX<0){
+				updateX+=boardWidth/2;
+			}
 		} else if (InputController.pressedRight() && !InputController.pressedLeft()){
 			updateX = selectedX + 1;
 			updateY = selectedY;
 			if (updateX > boardWidth-1){
-				updateX -= boardWidth;
+				updateX -= boardWidth/2;
 			}
 			else if (updateX < 0){
-				updateX+=boardWidth;
+				updateX+=boardWidth/2;
 			}
-//			if (leftside && updateX> boardWidth-1){
-//				updateX -= boardWidth/2;
-//			} else if (!leftside && updateX > boardWidth/2-1){
-//				updateX -= boardWidth/2;
-//			}
+			if (((!this.action.isBuff && leftside)||(this.action.isBuff && !leftside)) && updateX> boardWidth-1){
+				updateX -= boardWidth/2;
+			} else if (((!this.action.isBuff && !leftside)||(this.action.isBuff && leftside)) && updateX > boardWidth/2-1){
+				updateX -= boardWidth/2;
+			}
 		}
 		
 		if (action.singleCanTarget(selected.getShadowX(), selected.getShadowY(), updateX,updateY, selected.leftside, board)){

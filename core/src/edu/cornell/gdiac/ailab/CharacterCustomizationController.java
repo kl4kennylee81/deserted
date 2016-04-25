@@ -26,11 +26,18 @@ public class CharacterCustomizationController {
 	}
 	
 	public void update(){
-		mouseOverController.update(characterCustomization.options, characterCustomization);
+		mouseOverController.update(characterCustomization.options, characterCustomization, true);
+		String optionKey = characterCustomization.getCurOption();
 		if (InputController.pressedLeftMouse()){
 			// fixup to get cur option string from the index
-			String optionKey = characterCustomization.getCurOption();
 			handlePress(optionKey);
+		} 
+		if (InputController.leftMouseClickedLast){
+			handleCharacterPress(optionKey);
+		} else {
+			if (characterCustomization.pressingCharacter){
+				characterCustomization.dropCharacter();
+			}
 		}
 	}
 	
@@ -43,11 +50,25 @@ public class CharacterCustomizationController {
 			characterCustomization.resetSP();
 			return;
 		}
+		if (optionKey.equals("Select")){
+			characterCustomization.selectAction();
+			return;
+		}
 		try{
 			int actionId = Integer.parseInt(optionKey);
 			characterCustomization.setAction(actionId);
 		} catch (NumberFormatException e) {
 			// not an integer!
+		}
+	}
+	
+	public void handleCharacterPress(String optionKey){
+		if (optionKey.contains(characterCustomization.CHARACTER_ID_STRING)){
+			String charIdString = optionKey.substring(characterCustomization.CHARACTER_ID_STRING.length());
+			int charId = Integer.parseInt(charIdString);
+			characterCustomization.setCharacter(charId);
+			characterCustomization.pressingCharacter = true;
+			return;
 		}
 	}
 	

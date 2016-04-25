@@ -27,6 +27,7 @@ import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.ailab.GameSaveState.ActionUpgrade;
+import edu.cornell.gdiac.ailab.GameSaveState.CharacterData;
 import edu.cornell.gdiac.ailab.Tile.TileState;
 import edu.cornell.gdiac.mesh.MeshLoader;
 import edu.cornell.gdiac.ailab.DecisionNode.*;
@@ -166,9 +167,13 @@ public class ObjectLoader {
 		loadAnimations(animations);
 		loadActions(actions);
 		
+		boolean levelHasAI = false;
+		if (ai.size() > 0){
+			levelHasAI = true;
+		}
 		loadChars(characters);
-		loadLevelChars(allies, true, gameSaveState);
-		loadLevelChars(enemies, false, gameSaveState);
+		loadLevelChars(allies, true, gameSaveState, levelHasAI);
+		loadLevelChars(enemies, false, gameSaveState, levelHasAI);
 		
 		loadAI(ai);
 
@@ -279,7 +284,8 @@ public class ObjectLoader {
 
 
 	private void loadLevelChars(ArrayList<HashMap<String, Object>> levelChars, 
-									boolean leftSide, GameSaveState gameSaveState) {
+									boolean leftSide, GameSaveState gameSaveState,
+									boolean levelHasAI) {
 		
 		for (HashMap<String, Object> levelChar : levelChars) {
 			Integer normalId = (Integer) levelChar.get("id");
@@ -311,6 +317,13 @@ public class ObjectLoader {
 			}
 			charToAdd.setStartPos(xPosition, yPosition);
 			charToAdd.setLeftSide(leftSide);
+			
+
+			//temporary difficulty ai code!!!
+			if (leftSide == false && levelHasAI){
+				charToAdd.setAI();
+			}
+	
 			characterList.add(charToAdd);
 		}
 	}
@@ -350,7 +363,7 @@ public class ObjectLoader {
 			Character characterToAdd = new Character(charTexture, iconTexture, animNode,
 					name, health, maxHealth, Color.valueOf(hexColor), speed,
 					castSpeed, actionArray,numSlots);
-
+			
 			availableCharacters.put(charId, characterToAdd);
 		}
 	}
@@ -539,6 +552,24 @@ public class ObjectLoader {
 		}
 		
 		return actionMap;
+	}
+	
+	public void getCharacterInfo(List<CharacterData> charDatas) throws IOException{
+		Yaml yaml = new Yaml();
+		File charFile = new File(ROOT, "yaml/characters.yml");
+		HashMap<Integer, HashMap<String, Object>> characters;
+		try (InputStream is = new FileInputStream(charFile)){
+			characters = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
+		for (CharacterData cd : charDatas){
+			HashMap<String, Object> character = characters.get(cd.characterId);
+			String iconTextureName = (String) character.get("icon");
+			manager.load(iconTextureName, Texture.class);
+			assets.add(iconTextureName);
+			manager.finishLoading();
+			Texture iconTexture = manager.get(iconTextureName,Texture.class);
+			cd.setIconTexture(iconTexture);
+		}
 	}
 
 

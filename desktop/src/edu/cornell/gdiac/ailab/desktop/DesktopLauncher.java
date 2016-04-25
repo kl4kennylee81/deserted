@@ -32,7 +32,7 @@ public class DesktopLauncher {
 	 * LibGDX is built on top of LWJGL (this is not the case for Android).
 	 * 
 	 * @param arg Command line arguments
-	 */
+	 */ 
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width  = 800;
