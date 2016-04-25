@@ -11,7 +11,6 @@
     - 5
     - 6
     - 20
-
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_5.png"
   animationId: 101
@@ -29,7 +28,6 @@
     - 4
     - 7
     - 10
-
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"
   animationId: 104
@@ -47,7 +45,6 @@
     - 16
     - 17
     - 18
-
   texture: "models/CHARA_5.png"
   icon: "models/tutorial_icon.png"
   animationId: 103
@@ -65,7 +62,6 @@
     - 13
     - 14
     - 15
-
   texture: "models/CHARA_4.png"
   icon: "models/mage_icon.png"
   animationId: 102
@@ -83,7 +79,6 @@
     - 22
     - 5
     - 24
-
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_5.png"
   animationId: 101
@@ -101,7 +96,6 @@
     - 23
     - 20
     - 9
-
   texture: "models/CHARA_1.png"
   icon: "models/CASTICON_1.png"
   animationId: 104
@@ -117,7 +111,6 @@
   availableActions:
     - 0
     - 4
-
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
   animationId: 101
@@ -132,9 +125,8 @@
   slots: 4
   availableActions:
     - 0
-
-  texture: "models/UPDATED_original.png"
-  icon: "models/basic_icon.png"
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
   animationId: 103
 
 92:
@@ -148,7 +140,6 @@
   availableActions:
     - 0
     - 4
-
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
   animationId: 101
@@ -163,9 +154,8 @@
   slots: 2
   availableActions:
     - 4
-
-  texture: "models/UPDATED_original.png"
-  icon: "models/basic_icon.png"
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
   animationId: 103
 
 94:
@@ -179,7 +169,6 @@
   availableActions:
     - 0
     - 4
-
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
   animationId: 101
@@ -195,9 +184,8 @@
   availableActions:
     - 0
     - 4
-
-  texture: "models/UPDATED_original.png"
-  icon: "models/basic_icon.png"
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
   animationId: 103
 
 96:
@@ -212,9 +200,8 @@
   availableActions:
     - 0
     - 4
-
-  texture: "models/UPDATED_original.png"
-  icon: "models/basic_icon.png"
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
   animationId: 103
 
 97:
@@ -228,7 +215,6 @@
   availableActions:
     - 0
     - 4
-
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
   animationId: 101
@@ -245,9 +231,8 @@
   availableActions:
     - 0
     - 4
-
-  texture: "models/UPDATED_original.png"
-  icon: "models/basic_icon.png"
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
   animationId: 103
 
 99:
@@ -262,9 +247,8 @@
   availableActions:
     - 0
     - 4
-
-  texture: "models/UPDATED_original.png"
-  icon: "models/basic_icon.png"
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
   animationId: 103
 
 100:
@@ -279,9 +263,8 @@
   availableActions:
     - 0
     - 4
-
-  texture: "models/UPDATED_original.png"
-  icon: "models/basic_icon.png"
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
   animationId: 103
 
 101:
@@ -295,7 +278,6 @@
   availableActions:
     - 0
     - 4
-
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
   animationId: 101
@@ -311,9 +293,8 @@
   availableActions:
     - 0
     - 4
-
-  texture: "models/UPDATED_original.png"
-  icon: "models/basic_icon.png"
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
   animationId: 103
 
 103:
@@ -327,9 +308,8 @@
   availableActions:
     - 0
     - 4
-
-  texture: "models/UPDATED_original.png"
-  icon: "models/basic_icon.png"
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
   animationId: 103
 
 104:
@@ -344,7 +324,6 @@
     - 0
     - 4
     - 6
-
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
   animationId: 102
@@ -360,10 +339,9 @@
   availableActions:
     - 0
     - 4
-
-  texture: "models/UPDATED_spritesheet_blue.png"
-  icon: "models/basic_iconblue.png"
-  animationId: 105
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
+  animationId: 103
 
 106:
   name: Tutorial6Enemies
@@ -376,10 +354,9 @@
   availableActions:
     - 0
     - 4
-
-  texture: "models/UPDATED_spritesheet_blue.png"
-  icon: "models/basic_iconblue.png"
-  animationId: 105
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
+  animationId: 103
 
 107:
   name: Tutorial6Enemies
@@ -392,10 +369,9 @@
   availableActions:
     - 0
     - 4
-
-  texture: "models/UPDATED_spritesheet_blue.png"
-  icon: "models/basic_iconblue.png"
-  animationId: 105
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
+  animationId: 103
 
 108:
   name: Tutorial8Ally
@@ -410,7 +386,6 @@
     - 4
     - 2
     - 6
-
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
   animationId: 102
@@ -428,9 +403,8 @@
     - 3
     - 2
     - 9
-
-  texture: "models/UPDATED_spritesheet_blue.png"
-  icon: "models/basic_iconblue.png"
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_iconblue.png"
   animationId: 105
 
 110:
@@ -446,9 +420,8 @@
     - 4
     - 2
     - 9
-
-  texture: "models/UPDATED_spritesheet_blue.png"
-  icon: "models/basic_iconblue.png"
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_iconblue.png"
   animationId: 105
 
 111:
@@ -464,7 +437,6 @@
     - 4
     - 2
     - 6
-
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
   animationId: 102
@@ -482,9 +454,8 @@
     - 3
     - 2
     - 9
-
-  texture: "models/UPDATED_spritesheet_blue.png"
-  icon: "models/basic_iconblue.png"
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_iconblue.png"
   animationId: 105
 
 113:
@@ -500,9 +471,8 @@
     - 4
     - 2
     - 9
-
-  texture: "models/UPDATED_spritesheet_blue.png"
-  icon: "models/basic_iconblue.png"
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_iconblue.png"
   animationId: 105
 
 114:
@@ -516,10 +486,9 @@
   availableActions:
     - 0
     - 4
-
-  texture: "models/UPDATED_spritesheet_blue.png"
-  icon: "models/basic_iconblue.png"
-  animationId: 105
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
+  animationId: 103
 
 
 ...

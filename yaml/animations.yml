@@ -47,7 +47,7 @@
       - 8
 
 101:
-  name: Character1Strip
+  name: girl
   texture: "models/castanimation_spritesheet.png"
   rows: 1
   cols: 5
@@ -87,7 +87,7 @@
       frameData:
 
 102:
-  name: Character2Strip
+  name: testMage
   texture: "models/testAnimation.png"
   rows: 1
   cols: 25
@@ -152,11 +152,11 @@
       frameData:
 
 103:
-  name: Character3Strip
-  texture: "models/UPDATED_original.png"
+  name: Tutorial Original
+  texture: "models/tutorial_characters/tutorial_og_sprite.png"
   rows: 1
-  cols: 12
-  size: 12
+  cols: 17
+  size: 17
   segments:
     - segmentName: IDLE
       segmentId: 0
@@ -202,13 +202,18 @@
       - 5
     - segmentName: HURT
       segmentId: 4
-      startingIndex: 4
-      length: 1
+      startingIndex: 11
+      length: 6
       frameData:
-      - 10
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
 
 104:
-  name: Character4Strip
+  name: Temporary Girl
   texture: "models/spritesheetG1.png"
   rows: 1
   cols: 5
@@ -246,11 +251,11 @@
       - 10
 
 105:
-  name: Character3Strip
-  texture: "models/UPDATED_spritesheet_blue.png"
+  name: Tutorial Shield
+  texture: "models/tutorial_characters/tutorial_blue_sprite.png"
   rows: 1
-  cols: 12
-  size: 12
+  cols: 17
+  size: 17
   segments:
     - segmentName: IDLE
       segmentId: 0
@@ -296,17 +301,22 @@
       - 5
     - segmentName: HURT
       segmentId: 4
-      startingIndex: 4
-      length: 1
+      startingIndex: 11
+      length: 6
       frameData:
-      - 10
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
 
 106:
-  name: Character3Strip
-  texture: "models/UPDATED_spritesheet_red.png"
+  name: Tutorial Slow
+  texture: "models/tutorial_characters/tutorial_red_sprite.png"
   rows: 1
-  cols: 12
-  size: 12
+  cols: 17
+  size: 17
   segments:
     - segmentName: IDLE
       segmentId: 0
@@ -352,17 +362,22 @@
       - 5
     - segmentName: HURT
       segmentId: 4
-      startingIndex: 4
-      length: 1
+      startingIndex: 11
+      length: 6
       frameData:
-      - 10
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
 
 107:
-  name: Character3Strip
-  texture: "models/UPDATED_spritesheet_yellow.png"
+  name: Tutorial Single
+  texture: "models/tutorial_characters/tutorial_yellow_sprite.png"
   rows: 1
-  cols: 12
-  size: 12
+  cols: 17
+  size: 17
   segments:
     - segmentName: IDLE
       segmentId: 0
@@ -408,9 +423,14 @@
       - 5
     - segmentName: HURT
       segmentId: 4
-      startingIndex: 4
-      length: 1
+      startingIndex: 11
+      length: 6
       frameData:
-      - 10
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
 
 ...
