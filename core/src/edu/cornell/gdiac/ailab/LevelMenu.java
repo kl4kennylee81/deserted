@@ -13,9 +13,9 @@ public class LevelMenu extends Menu {
 	private static final float RELATIVE_X_POS = ((1-RELATIVE_WIDTH_ROW)/2);
 	
 	/** start position of the menu's options y Position going down **/
-	private static final float RELATIVE_Y_POS = 0.5f;
+	private static final float RELATIVE_Y_POS = 0.7f;
 	
-	private static final int NUM_ROWS_TOTAL = 2;
+	private static final int NUM_ROWS_TOTAL = 3;
 	
 	private static final int NUM_COLUMNS_TOTAL = 5; 
 	

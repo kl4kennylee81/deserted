@@ -46,7 +46,7 @@
     - 17
     - 18
   texture: "models/CHARA_5.png"
-  icon: "models/tutorial_icon.png"
+  icon: "models/tutorial_characters/basic_icon.png"
   animationId: 103
 
 3:

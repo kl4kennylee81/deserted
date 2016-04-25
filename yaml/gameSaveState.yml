@@ -96,6 +96,10 @@ levels:
     levelName: tutorial10
     beaten: false
     boss: false
+  10:
+    levelName: Level1
+    beaten: false
+    boss: false
 
 selectedCharacters:
 - 0
