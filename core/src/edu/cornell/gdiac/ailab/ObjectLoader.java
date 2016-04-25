@@ -27,6 +27,7 @@ import edu.cornell.gdiac.ailab.AIController.Difficulty;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.ailab.GameSaveState.ActionUpgrade;
+import edu.cornell.gdiac.ailab.GameSaveState.CharacterData;
 import edu.cornell.gdiac.ailab.Tile.TileState;
 import edu.cornell.gdiac.mesh.MeshLoader;
 import edu.cornell.gdiac.ailab.DecisionNode.*;
@@ -551,6 +552,24 @@ public class ObjectLoader {
 		}
 		
 		return actionMap;
+	}
+	
+	public void getCharacterInfo(List<CharacterData> charDatas) throws IOException{
+		Yaml yaml = new Yaml();
+		File charFile = new File(ROOT, "yaml/characters.yml");
+		HashMap<Integer, HashMap<String, Object>> characters;
+		try (InputStream is = new FileInputStream(charFile)){
+			characters = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
+		for (CharacterData cd : charDatas){
+			HashMap<String, Object> character = characters.get(cd.characterId);
+			String iconTextureName = (String) character.get("icon");
+			manager.load(iconTextureName, Texture.class);
+			assets.add(iconTextureName);
+			manager.finishLoading();
+			Texture iconTexture = manager.get(iconTextureName,Texture.class);
+			cd.setIconTexture(iconTexture);
+		}
 	}
 
 

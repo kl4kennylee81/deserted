@@ -21,9 +21,13 @@ public class Option implements GUIElement{
 	
 	Color color;
 	
+	Color imageColor;
+	
 	String text;
 	
 	Texture image;
+	
+	boolean sameWidthHeight;
 	
 	public void setImage(Texture t){
 		image = t;
@@ -95,6 +99,10 @@ public class Option implements GUIElement{
 		Color textColor = this.getColor();
 		canvas.drawText(this.text, x, y, textColor);
 		
+		if (sameWidthHeight){
+			height = width;
+		}
+		
 		if (image != null){
 			Color imageColor = this.getColorImages();
 			canvas.drawTexture(image, x, y, width,height, Color.WHITE);
@@ -106,13 +114,20 @@ public class Option implements GUIElement{
 		this.color = c;
 	}
 	
+	public void setImageColor(Color c){
+		this.imageColor = c;
+	}
+	
 	public Color getColorImages(){
 		if (this.isSelected){
 			return Color.BLACK.cpy().mul(1f, 1f, 1f, 0.5f);
 		}
-		else{
+		else if (this.imageColor != null) {
+			return this.imageColor.cpy();
+		} else {
 			return Color.WHITE.cpy();
 		}
+			
 	}
 	
 	public Color getColor(){
@@ -130,6 +145,9 @@ public class Option implements GUIElement{
 		if (image != null){
 			float width_m = this.width * canvas.getWidth();
 			float height_m = this.height * canvas.getHeight();
+			if (sameWidthHeight){
+				height_m = width_m;
+			}
 			
 			float x_m = this.xPosition*canvas.getWidth();
 			float y_m = this.yPosition*canvas.getHeight();

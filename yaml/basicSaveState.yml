@@ -34,7 +34,7 @@ characters:
     - actionId: 0
     - actionId: 4
       nextAction:
-      - actionId: 10
+      - actionId: 9
         cost: 1
       - actionId: 11
         cost: 1
@@ -62,7 +62,7 @@ characters:
     - actionId: 0
     - actionId: 4
       nextAction:
-      - actionId: 10
+      - actionId: 9
         cost: 1
       - actionId: 11
         cost: 1
@@ -90,7 +90,7 @@ characters:
     - actionId: 0
     - actionId: 4
       nextAction:
-      - actionId: 10
+      - actionId: 9
         cost: 1
       - actionId: 11
         cost: 1
@@ -126,6 +126,14 @@ levels:
     boss: false
   3:
     levelName: Level1
+    beaten: false
+    boss: false
+  4:
+    levelName: Level2
+    beaten: false
+    boss: false
+  5:
+    levelName: Level3
     beaten: false
     boss: false
 availableCharacters:

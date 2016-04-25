@@ -47,6 +47,10 @@ public class InputController {
 		}
 	}
     
+	public static boolean leftMouseDown(){
+		return Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+	}
+	
     public static boolean pressedEnter() {
     	return Gdx.input.isKeyJustPressed(Input.Keys.ENTER);
     }
@@ -99,6 +103,14 @@ public class InputController {
 
 	public static float getMouseY() {
 		return canvas.getHeight() - Gdx.input.getY();
+	}
+	
+	public static float getMouseXRelative(){
+		return getMouseX()/canvas.width;
+	}
+	
+	public static float getMouseYRelative(){
+		return getMouseY()/canvas.height;
 	}
 	
 	public static boolean pressedLeftMouse(){

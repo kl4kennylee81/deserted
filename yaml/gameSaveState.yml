@@ -1,6 +1,6 @@
 characters:
   0:
-    characterId: 3
+    characterId: 0
     totalSP: 1
     actionTree:
     - actionId: 0
@@ -34,7 +34,7 @@ characters:
     - actionId: 0
     - actionId: 4
       nextAction:
-      - actionId: 10
+      - actionId: 9
         cost: 1
       - actionId: 11
         cost: 1
@@ -62,7 +62,7 @@ characters:
     - actionId: 0
     - actionId: 4
       nextAction:
-      - actionId: 10
+      - actionId: 9
         cost: 1
       - actionId: 11
         cost: 1
@@ -90,7 +90,7 @@ characters:
     - actionId: 0
     - actionId: 4
       nextAction:
-      - actionId: 10
+      - actionId: 9
         cost: 1
       - actionId: 11
         cost: 1

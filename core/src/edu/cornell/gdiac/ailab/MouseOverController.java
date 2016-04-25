@@ -30,6 +30,21 @@ public class MouseOverController {
 		}
 		
 	}
+	
+	public void update(Option[] options, Menu Menu, boolean reset){
+		if (reset){
+			Menu.reset();
+		}
+		float x = InputController.getMouseX();
+		float y = InputController.getMouseY();
+		for (int i =0;i<options.length;i++){
+			Option o = options[i];
+			if (o.contains(x,y,canvas,board)){
+				Menu.setOption(i);
+			}
+		}
+		
+	}
 
 	public void update(SelectionMenu currMenu1,Characters characters){
 		if (DISABLE_MOUSE){

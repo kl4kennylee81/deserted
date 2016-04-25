@@ -79,6 +79,7 @@ public class GameCanvas {
 	Texture upArrow = new Texture("models/upArrow.png");
 	Texture downArrow = new Texture("models/downArrow.png");
 	Texture leftArrow = new Texture("models/leftArrow.png");
+	Texture whiteCircle = new Texture("images/white_circle.png");
 	
 	/** Tutorial font */
 	BitmapFont tutorialFont;
@@ -977,6 +978,10 @@ public class GameCanvas {
 		float width = layout.width;
 		displayFont.setColor(color);
 		displayFont.draw(spriteBatch, msg, x-width/2, y);
+	}
+	
+	public void drawCircle(float x, float y, float diam, Color color){
+		this.drawTexture(whiteCircle, x, y, diam, diam, color);
 	}
 
 	/**
