@@ -193,11 +193,11 @@ public class TutorialGameplayController extends GameplayController{
 		if (highlights != null && tutorialSteps.showHighlights){
 	    	for (CurrentHighlight highlight:highlights){
 	    		if (!highlight.isChar) {
-//	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(), 
-//	    					highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight());
+	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(), 
+	    					highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight());
 	    		} else {
-//	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(), 
-//	    					highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight(), canvas, board);
+	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(), 
+	    					highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight(), canvas, board);
 	    		}
 	    	}
 	    	screen.noScreen();
