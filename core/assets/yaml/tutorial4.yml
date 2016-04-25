@@ -9,7 +9,7 @@
   nextLevel: tutorial5
 
 1:
-  text: "INTERRUPT and then attack each opponent to win this level!"
+  text: "Use INTERRUPTs to your advantage!"
   paused: true
   spaceToContinue: true
   notes: each opponent should only attack once

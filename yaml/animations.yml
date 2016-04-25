@@ -6,7 +6,7 @@
   size: 2
   segments:
     - segmentName: IDLE
-      segmentId: 0 
+      segmentId: 0
       startingIndex: 0
       length: 2
       frameData:
@@ -20,7 +20,7 @@
   size: 4
   segments:
     - segmentName: IDLE
-      segmentId: 0 
+      segmentId: 0
       startingIndex: 0
       length: 4
       frameData:
@@ -36,7 +36,7 @@
   size: 5
   segments:
     - segmentName: IDLE
-      segmentId: 0 
+      segmentId: 0
       startingIndex: 0
       length: 5
       frameData:
@@ -54,7 +54,7 @@
   size: 5
   segments:
     - segmentName: IDLE
-      segmentId: 0 
+      segmentId: 0
       startingIndex: 0
       length: 1
       frameData:
@@ -94,7 +94,7 @@
   size: 25
   segments:
     - segmentName: IDLE
-      segmentId: 0 
+      segmentId: 0
       startingIndex: 17
       length: 5
       frameData:
@@ -153,13 +153,13 @@
 
 103:
   name: Character3Strip
-  texture: "models/tutorial_char.png"
+  texture: "models/UPDATED_original.png"
   rows: 1
   cols: 12
   size: 12
   segments:
     - segmentName: IDLE
-      segmentId: 0 
+      segmentId: 0
       startingIndex: 0
       length: 2
       frameData:
@@ -215,7 +215,7 @@
   size: 5
   segments:
     - segmentName: IDLE
-      segmentId: 0 
+      segmentId: 0
       startingIndex: 0
       length: 0
       frameData:
@@ -238,6 +238,174 @@
       length: 1
       frameData:
       - 15
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 4
+      length: 1
+      frameData:
+      - 10
+
+105:
+  name: Character3Strip
+  texture: "models/UPDATED_spritesheet_blue.png"
+  rows: 1
+  cols: 12
+  size: 12
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 2
+      frameData:
+      - 1
+      - 1
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 9
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 4
+      length: 8
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+      - 4
+      - 6
+      - 4
+      - 4
+
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 5
+      length: 7
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 5
+      - 5
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 4
+      length: 1
+      frameData:
+      - 10
+
+106:
+  name: Character3Strip
+  texture: "models/UPDATED_spritesheet_red.png"
+  rows: 1
+  cols: 12
+  size: 12
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 2
+      frameData:
+      - 1
+      - 1
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 9
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 4
+      length: 8
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+      - 4
+      - 6
+      - 4
+      - 4
+
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 5
+      length: 7
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 5
+      - 5
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 4
+      length: 1
+      frameData:
+      - 10
+
+107:
+  name: Character3Strip
+  texture: "models/UPDATED_spritesheet_yellow.png"
+  rows: 1
+  cols: 12
+  size: 12
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 2
+      frameData:
+      - 1
+      - 1
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 9
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 4
+      length: 8
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+      - 4
+      - 6
+      - 4
+      - 4
+
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 5
+      length: 7
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 5
+      - 5
     - segmentName: HURT
       segmentId: 4
       startingIndex: 4

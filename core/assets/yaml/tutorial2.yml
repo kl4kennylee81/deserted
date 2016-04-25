@@ -11,7 +11,7 @@
   rightText: "Well done!"
 
 1:
-  text: "Dodge enemy's attack"
+  text: "Sometimes moving is the best option"
   paused: true
   spaceToContinue: true
 

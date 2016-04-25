@@ -97,8 +97,8 @@
   availableActions:
     - 0
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
+  texture: "models/UPDATED_original.png"
+  icon: "models/basic_icon.png"
   animationId: 103
 
 92:
@@ -128,9 +128,9 @@
   availableActions:
     - 4
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_original.png"
+  icon: "models/basic_icon.png"
+  animationId: 103
 
 94:
   name: Tutorial3Ally
@@ -160,9 +160,9 @@
     - 0
     - 4
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_original.png"
+  icon: "models/basic_icon.png"
+  animationId: 103
 
 96:
   # identical to 95
@@ -177,13 +177,13 @@
     - 0
     - 4
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_original.png"
+  icon: "models/basic_icon.png"
+  animationId: 103
 
 97:
   name: Tutorial4Ally
-  health: 10
+  health: 2
   maxHealth: 10
   hexColor: 3299FFFF
   speed: 5.
@@ -200,53 +200,53 @@
 98:
   # identical to 96
   name: Tutorial4Enemies
-  health: 2
+  health: 6
   maxHealth: 10
   hexColor: FF9900FF
   speed: 4.9
-  castSpeed: 5.4
+  castSpeed: 7.
   slots: 2
   availableActions:
     - 0
     - 4
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_original.png"
+  icon: "models/basic_icon.png"
+  animationId: 103
 
 99:
   # identical to 96
   name: Tutorial4Enemies
-  health: 2
+  health: 6
   maxHealth: 10
   hexColor: FF9900FF
   speed: 4.9
-  castSpeed: 5.4
+  castSpeed: 7.
   slots: 2
   availableActions:
     - 0
     - 4
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_original.png"
+  icon: "models/basic_icon.png"
+  animationId: 103
 
 100:
   # identical to 96
   name: Tutorial4Enemies
-  health: 2
+  health: 6
   maxHealth: 10
   hexColor: FF9900FF
   speed: 4.9
-  castSpeed: 5.4
+  castSpeed: 7.
   slots: 2
   availableActions:
     - 0
     - 4
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_original.png"
+  icon: "models/basic_icon.png"
+  animationId: 103
 
 101:
   name: Tutorial5Ally
@@ -276,9 +276,9 @@
     - 0
     - 4
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_original.png"
+  icon: "models/basic_icon.png"
+  animationId: 103
 
 103:
   name: Tutorial5Enemies
@@ -292,9 +292,9 @@
     - 0
     - 4
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_original.png"
+  icon: "models/basic_icon.png"
+  animationId: 103
 
 104:
   name: Tutorial6Ally
@@ -303,7 +303,7 @@
   hexColor: FF9900FF
   speed: 2.5
   castSpeed: 3.
-  slots: 2
+  slots: 4
   availableActions:
     - 0
     - 4
@@ -324,11 +324,10 @@
   availableActions:
     - 0
     - 4
-    - 2
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_spritesheet_blue.png"
+  icon: "models/basic_iconblue.png"
+  animationId: 105
 
 106:
   name: Tutorial6Enemies
@@ -341,11 +340,10 @@
   availableActions:
     - 0
     - 4
-    - 2
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_spritesheet_blue.png"
+  icon: "models/basic_iconblue.png"
+  animationId: 105
 
 107:
   name: Tutorial6Enemies
@@ -358,11 +356,10 @@
   availableActions:
     - 0
     - 4
-    - 2
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_spritesheet_blue.png"
+  icon: "models/basic_iconblue.png"
+  animationId: 105
 
 108:
   name: Tutorial8Ally
@@ -396,9 +393,9 @@
     - 2
     - 9
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_spritesheet_blue.png"
+  icon: "models/basic_iconblue.png"
+  animationId: 105
 
 110:
   name: Tutorial8Enemy2
@@ -414,9 +411,9 @@
     - 2
     - 9
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_spritesheet_blue.png"
+  icon: "models/basic_iconblue.png"
+  animationId: 105
 
 111:
   name: Tutorial9Ally
@@ -450,9 +447,9 @@
     - 2
     - 9
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_spritesheet_blue.png"
+  icon: "models/basic_iconblue.png"
+  animationId: 105
 
 113:
   name: Tutorial9Enemy2
@@ -468,9 +465,9 @@
     - 2
     - 9
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_spritesheet_blue.png"
+  icon: "models/basic_iconblue.png"
+  animationId: 105
 
 114:
   name: Tutorial9Enemy3
@@ -484,9 +481,9 @@
     - 0
     - 4
 
-  texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
-  animationId: 102
+  texture: "models/UPDATED_spritesheet_blue.png"
+  icon: "models/basic_iconblue.png"
+  animationId: 105
 
 
 ...

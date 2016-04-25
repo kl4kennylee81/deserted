@@ -21,6 +21,7 @@
       width: 0.1
       height: 0.22
       arrow: down
+      isChar: true
 
 2:
   text: "Enemy"

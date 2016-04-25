@@ -31,7 +31,7 @@ public class Character implements GUIElement {
 	
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
-	float CHARACTER_PROPORTION = 0.7f;
+	public static float CHARACTER_PROPORTION = 0.7f;
 
 	/** Name of character */
 	String name;
@@ -607,12 +607,12 @@ public class Character implements GUIElement {
 		}
 	}
 	
-	public float getCharScale(GameCanvas canvas, Texture texture,GridBoard board){
+	public static float getCharScale(GameCanvas canvas, Texture texture,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		return (tileW*CHARACTER_PROPORTION)/texture.getWidth();
 	}
 	
-	public float getCharScale(GameCanvas canvas, TextureRegion region,GridBoard board){
+	public static float getCharScale(GameCanvas canvas, TextureRegion region,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		return (tileW*CHARACTER_PROPORTION)/region.getRegionWidth();
 	}

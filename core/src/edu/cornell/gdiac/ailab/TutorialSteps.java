@@ -20,19 +20,19 @@ public class TutorialSteps {
 	Step step;
 	/** finish game or continue to next level */
 	boolean finishGame;
-	String nextLevel;
-	String levelName;
-	String rightText;
-	String wrongText;
+	public static String nextLevel;
+	public static String levelName;
+	public static String rightText;
+	public static String wrongText;
 	int prevTextDone;
 	int textDone;
 	boolean showHighlights;
 	int timeElapsed;
 	int writeTime;
 	boolean startTime;
-	String warning;
-	boolean warningGreen;
-	int warningTime;
+	static String warning;
+	static boolean warningGreen;
+	static int warningTime;
 	Color levelColor;
 	boolean stepOnSelection;
 
@@ -81,13 +81,15 @@ public class TutorialSteps {
 		double width;
 		double height;
 		String arrow;
+		boolean isChar;
 
-		public CurrentHighlight(double xPos, double yPos, double width, double height, String arrow) {
+		public CurrentHighlight(double xPos, double yPos, double width, double height, String arrow, boolean isChar) {
 			this.xPos = xPos;
 			this.yPos = yPos;
 			this.width = width;
 			this.height = height;
 			this.arrow = arrow;
+			this.isChar = isChar;
 		}
 	}
 
@@ -105,9 +107,9 @@ public class TutorialSteps {
 		this.showHighlights = false;
 		this.timeElapsed = 0;
 		this.writeTime = 0;
-		this.warning = "";
-		this.warningTime = 0;
-		this.warningGreen = true;
+		warning = "";
+		warningTime = 0;
+		warningGreen = true;
 	}
 
 	public void addStep(String text, boolean paused, boolean confirm, boolean spaceToContinue, boolean dontWriteText,
@@ -137,8 +139,8 @@ public class TutorialSteps {
 		}
 	}
 
-	public void addHighlight(double xPos, double yPos, double width, double height, String arrow) {
-		CurrentHighlight ch = new CurrentHighlight(xPos, yPos, width, height, arrow);
+	public void addHighlight(double xPos, double yPos, double width, double height, String arrow, boolean isChar) {
+		CurrentHighlight ch = new CurrentHighlight(xPos, yPos, width, height, arrow, isChar);
 		Step latestStep = steps.get(steps.size() - 1);
 
 		if (latestStep.highlights == null) {
@@ -152,11 +154,11 @@ public class TutorialSteps {
 	}
 	
 	public void setNextLevel(String nextLevel) {
-		this.nextLevel = nextLevel;
+		TutorialSteps.nextLevel = nextLevel;
 	}
 	
 	public void setLevelName(String levelName) {
-		this.levelName = levelName;
+		TutorialSteps.levelName = levelName;
 	}
 
 	public void setLevelColor(Color levelColor) {
@@ -194,7 +196,7 @@ public class TutorialSteps {
 	}
 
 	public boolean isDone() {
-		System.out.println("curStep: " + curStep + "steps size: " + steps.size());
+		System.out.println("curStep: " + curStep + " steps size: " + steps.size());
 		return curStep >= steps.size();
 	}
 
@@ -261,6 +263,10 @@ public class TutorialSteps {
 			canvas.drawTutorialText(toWrite, levelColor == null ? Color.WHITE : levelColor, Align.left);
 		}
 
+		drawWarningText(canvas);
+	}
+	
+	public static void drawWarningText(GameCanvas canvas){
 		if (!warning.equals("")) {
 			canvas.drawWarningText(warning, warningGreen);
 			warningTime++;
@@ -275,19 +281,19 @@ public class TutorialSteps {
 		return step;
 	}
 
-	public void setWarning(String warning, boolean green) {
-		this.warning = warning;
+	public static void setWarning(String warning, boolean green) {
+		TutorialSteps.warning = warning;
 		warningTime = 0;
 		warningGreen = green;
 
 	}
 
 	public void setRightText(String rightText) {
-		this.rightText = rightText;
+		TutorialSteps.rightText = rightText;
 	}
 
 	public void setWrongText(String wrongText) {
-		this.wrongText = wrongText;
+		TutorialSteps.wrongText = wrongText;
 	}
 
 	public void setStepOnSelection(boolean stepOnSelection) {

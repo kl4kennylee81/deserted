@@ -88,6 +88,13 @@ public class HighlightScreen {
 		
 	}
 	
+	public void addCurrentHighlight(double x, double y, double x_width, double y_width, GameCanvas canvas, GridBoard board){
+		TextureRegion highlightTexture = new TextureRegion(screen,(int)x,(int)y,(int)x_width,(int)y_width);
+		float charScale = Character.getCharScale(canvas, highlightTexture, board);
+		currentHighlights.add(new TextureRegion(screen,(int)(x*charScale),(int)(y*charScale),
+				(int)(x_width*charScale),(int)(y_width*charScale)));
+	}
+	
 	public void removeHighlight(){
 		currentHighlights.clear();
 	}

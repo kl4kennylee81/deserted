@@ -8,6 +8,7 @@ import org.json.simple.JSONArray;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
@@ -47,7 +48,7 @@ public class TutorialGameplayController extends GameplayController{
 		mouseOverController.update(selectionMenuController.getMenu(),characters);
 		pauseTimer = 0;
 		targetPauseTime = -1;
-        GameEngine.nextLevel = tutorialSteps.nextLevel;
+        GameEngine.nextLevel = TutorialSteps.nextLevel;
 	}
 
 	public void update(){
@@ -59,19 +60,20 @@ public class TutorialGameplayController extends GameplayController{
 		}
 		System.out.println("curstep is " + tutorialSteps.curStep);
 		if (tutorialSteps.isDone()){
-			if (gameOver() && !tutorialSteps.levelName.equals("") && leftsideDead()){
-    			GameEngine.nextLevel = tutorialSteps.levelName;
-    			tutorialSteps.setWarning((tutorialSteps.wrongText.equals("")? "Try again!" : tutorialSteps.wrongText), false);
+			if (gameOver() && !TutorialSteps.levelName.equals("") && leftsideDead()){
+    			GameEngine.nextLevel = TutorialSteps.levelName;
+    			TutorialSteps.setWarning((TutorialSteps.wrongText.equals("")? "Try again!" : TutorialSteps.wrongText), false);
     			System.out.println("TEST TEST TEST TEST TEST TEST1");
     			inGameState = InGameState.WARNING;
     		} else if (gameOver()){
-    			tutorialSteps.setWarning((tutorialSteps.rightText.equals("")? "Well Done!" : tutorialSteps.rightText), true);
+    			TutorialSteps.setWarning((TutorialSteps.rightText.equals("")? "Well Done!" : TutorialSteps.rightText), true);
     			inGameState = InGameState.WARNING;
     		}
 			super.update();
 			return;
 		}
     	screen.noScreen();
+    	System.out.println("game state is " + inGameState);
     	switch(inGameState){
     	case NORMAL:
     		// update the character models
@@ -155,13 +157,13 @@ public class TutorialGameplayController extends GameplayController{
     	removeDead();
     	if (gameOver()){
     		inGameState = InGameState.DONE;
-    		if (!tutorialSteps.levelName.equals("") && leftsideDead()){
-    			GameEngine.nextLevel = tutorialSteps.levelName;
-    			tutorialSteps.setWarning((tutorialSteps.wrongText.equals("")? "Try again!" : tutorialSteps.wrongText), false);
+    		if (!TutorialSteps.levelName.equals("") && leftsideDead()){
+    			GameEngine.nextLevel = TutorialSteps.levelName;
+    			TutorialSteps.setWarning((TutorialSteps.wrongText.equals("")? "Try again!" : TutorialSteps.wrongText), false);
     			System.out.println("TEST TEST TEST TEST TEST TEST2");
     			inGameState = InGameState.WARNING;
     		} else {
-    			tutorialSteps.setWarning((tutorialSteps.rightText.equals("")? "Well Done!" : tutorialSteps.rightText), true);
+    			TutorialSteps.setWarning((TutorialSteps.rightText.equals("")? "Well Done!" : TutorialSteps.rightText), true);
     			inGameState = InGameState.WARNING;
     		}
     		if(GameEngine.dataGen){
@@ -179,6 +181,10 @@ public class TutorialGameplayController extends GameplayController{
 	}
 
 	public void drawPlay(GameCanvas canvas){
+		if (inGameState == InGameState.WARNING) {
+			TutorialSteps.drawWarningText(canvas);
+			return;
+		}
 		if (isDone()){
 			return;
 		}
@@ -186,8 +192,13 @@ public class TutorialGameplayController extends GameplayController{
 		if(tutorialSteps.step == null || !tutorialSteps.step.text.equals("")) screen.setJustScreen();
 		if (highlights != null && tutorialSteps.showHighlights){
 	    	for (CurrentHighlight highlight:highlights){
-	    		screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(),
-	    				highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight());
+	    		if (!highlight.isChar) {
+	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(), 
+	    					highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight());
+	    		} else {
+	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(), 
+	    					highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight(), canvas, board);
+	    		}
 	    	}
 	    	screen.noScreen();
 		}

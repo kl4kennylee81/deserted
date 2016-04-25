@@ -649,7 +649,9 @@ public class ObjectLoader {
 					Double width = (Double) highlightData.get("width");
 					Double height = (Double) highlightData.get("height");
 					String arrow = (String) highlightData.get("arrow");
-					ts.addHighlight(xPos,yPos,width, height, arrow);
+					Boolean isChar = (Boolean) highlightData.get("isChar");
+					if (isChar == null) isChar = false;
+					ts.addHighlight(xPos,yPos,width, height, arrow, isChar);
 				}
 			}
 		}

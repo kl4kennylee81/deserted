@@ -137,7 +137,7 @@ public class GameplayController {
     			warningTime = 0;
     			inGameState = InGameState.DONE;
     		}
-    		break;
+    		return;
 		default:
 			break;	
     	}
@@ -145,6 +145,15 @@ public class GameplayController {
     	removeDead();
     	if (gameOver()){
     		inGameState = InGameState.DONE;
+    		if (!TutorialSteps.levelName.equals("") && leftsideDead()){
+    			GameEngine.nextLevel = TutorialSteps.levelName;
+    			TutorialSteps.setWarning((TutorialSteps.wrongText.equals("")? "Try again!" : TutorialSteps.wrongText), false);
+    			System.out.println("TEST TEST TEST TEST TEST TEST2");
+    			inGameState = InGameState.WARNING;
+    		} else {
+    			TutorialSteps.setWarning((TutorialSteps.rightText.equals("")? "Well Done!" : TutorialSteps.rightText), true);
+    			inGameState = InGameState.WARNING;
+    		}
     		if(GameEngine.dataGen){
     			dataFile.writeString(jsonArray.toString(), false);
         		fileNumFile.writeString(""+fileNum, false);
@@ -164,6 +173,10 @@ public class GameplayController {
     }
     
     public void drawPlay(GameCanvas canvas){
+    	if (inGameState == InGameState.WARNING) {
+    		TutorialSteps.drawWarningText(canvas);
+    		return;
+    	}
         screen.draw(canvas);
     	board.draw(canvas);
     	drawCharacters(canvas);
