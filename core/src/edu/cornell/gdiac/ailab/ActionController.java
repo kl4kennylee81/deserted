@@ -26,6 +26,7 @@ import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.AnimationNode.CharacterState;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 
 import com.badlogic.gdx.graphics.*;
@@ -43,10 +44,14 @@ public class ActionController {
 	
 	/** Done executing actions */
 	boolean isDone;
+	/** Is animating a character's attack execution */
+	boolean isAnimating;
 	/** Current character that is executing */
 	Character selected;
 	/** Shielded coordinates against the selected character */
 	List<Coordinate> shieldedPaths;
+	
+	ActionNode curAction;
 
 	/**
 	 * Creates a GameplayController for the given models.
@@ -63,8 +68,10 @@ public class ActionController {
 		this.animations = animations;
 		
 		isDone = false;
+		isAnimating = false;
 		selected = null;
 		shieldedPaths = new LinkedList<Coordinate>();
+		curAction = null;
 	}
 	 
 	/** 
@@ -77,25 +84,28 @@ public class ActionController {
 	public void update() {
 		board.occupy(characters);
 		if (selected != null){
-			// Execute character's action;
-			ActionNode action = selected.popCast();
-			selected.needsAttack = false;
-			if (!action.isInterrupted || action.action.pattern == Pattern.MOVE){
-				if (action.action.pattern != Pattern.MOVE){
+			if (selected.needsAttack){
+				// set the character state to start the animation
+				curAction = selected.popCast();
+				selected.needsAttack = false;
+				if (curAction.action.pattern == Pattern.MOVE){
+					executeAction(curAction);
+					selected = null;
+				} else if (!curAction.isInterrupted){
 					selected.setExecute();
+					if (!Constants.PAUSE_ATTACK_ANIMATION){
+						executeAction(curAction);
+						selected = null;
+					}
+				} else{
+					curAction.free();
+					selected = null;
 				}
-				// we want move to also reset the active state animation so we switch
-				// to idle first before it then gets set to active next frame
-				else {
-					selected.setExecute();
-				}
-				executeAction(action);
+			} 
+			if (selected != null && selected.charState != CharacterState.EXECUTE){
+				executeAction(curAction);
+				selected = null;
 			}
-			else{
-				action.free();
-			}
-			selected = null;
-
 		} else {
 			isDone = true;
 			//Sort characters by speed then check their attacks
@@ -194,11 +204,21 @@ public class ActionController {
 			int x;int y;
 			if (selected.leftside){
 				x = selected.xPosition + relativePath[i].x;
-				y = selected.yPosition + relativePath[i].y;
+				if (a_node.direction!= null && a_node.direction==Direction.DOWN){
+					y = selected.yPosition - relativePath[i].y;
+				}
+				else{
+					y = selected.yPosition + relativePath[i].y;
+				}
 			}
 			else{
 				x = selected.xPosition - relativePath[i].x;
-				y = selected.yPosition + relativePath[i].y;
+				if (a_node.direction!= null && a_node.direction==Direction.DOWN){
+					y = selected.yPosition - relativePath[i].y;
+				}
+				else{
+					y = selected.yPosition + relativePath[i].y;
+				}
 			}
 			absolutePath[i] = coords.obtain();
 			absolutePath[i].set(x, y);
@@ -430,7 +450,7 @@ public class ActionController {
 					break;
 				}
 				// if same side stop checking
-				if (selected.leftside ==c.leftside){
+				if (selected.leftside ==c.leftside && a_node.action.pattern != Pattern.SINGLE){
 					continue;
 				}
 				if (c.xPosition == path[i].x && c.yPosition == path[i].y){

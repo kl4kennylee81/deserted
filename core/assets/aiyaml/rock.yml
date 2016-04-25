@@ -4,9 +4,9 @@ ROCK_ATTACK:
   no_interrupt_chance/safe: POWER
   no_interrupt_chance/quick_attack_can_hit: SHIELD_ATTACK
   no_interrupt_chance: POWER
-  low_interrupt_chance/quick_attack_can_hit: SHIELD_ATTACK
+  low_interrupt_chance/quick_attack_can_hit: QUICK_QUICK
   low_interrupt_chance/adjacent_attack_square_quick: MOVE_ATTACK
-  low_interrupt_chance/adjacent_safe_square: MOVE_DEFENSIVE_QUICK
+  low_interrupt_chance/adjacent_safe_square: MOVE_MOVE
   low_interrupt_chance: POWER
   medium_interrupt_chance/adjacent_attack_square_quick: MOVE_ATTACK
   medium_interrupt_chance/quick_attack_can_hit: QUICK_QUICK
@@ -42,7 +42,7 @@ MOVE_ATTACK2:
   my_tactic: SPECIFIC
   my_actions: [MOVE_GOAL, QUICK_ATTACK]
   
-MOVE_DEFENSIVE_QUICK:
+MOVE_MOVE:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_DEFENSIVE, QUICK_ATTACK]
+  my_actions: [MOVE_GOAL, MOVE_GOAL]

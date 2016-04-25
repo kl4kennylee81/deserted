@@ -24,9 +24,9 @@ characters:
         cost: 1
     currentActions:
     - 0
-    - 10
+    - 5
     - 6
-    - 20
+    - 14
   1:
     characterId: 1
     totalSP: 0

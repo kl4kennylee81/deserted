@@ -59,8 +59,8 @@ public class MainMenuController {
 		Option[] options = new Option[5];
 		options[0] = new Option(LEVEL_SELECT_NAME,LEVEL_SELECT_NAME);
 		options[1] = new Option("Action Editor","Action Editor");
-		options[2] = new Option("Character Editor","Action Editor");
-		options[3] = new Option("Level Editor","Action Editor");
+		options[2] = new Option("Character Editor","Character Editor");
+		options[3] = new Option("Level Editor","Level Editor");
 		options[4] = new Option("Skill Tree","Skill Tree");
 		return options;
 	}
@@ -198,7 +198,13 @@ public class MainMenuController {
 		}
 		else if (menu instanceof LevelMenu){
 			LevelMenu levelMenu = (LevelMenu) menu;
-			if (InputController.pressedEnter() || InputController.pressedLeftMouse()){
+			boolean mouseCondition = false;
+			if (levelMenu.selectedIndex!=-1){
+				Option curOption = levelMenu.options[levelMenu.selectedIndex];
+				mouseCondition = curOption.contains(InputController.getMouseX(),InputController.getMouseY(),canvas,null)
+					&& (InputController.pressedLeftMouse());
+			}
+			if (InputController.pressedEnter() || mouseCondition){
 				// fixup to get cur option string from the index
 				String levelKey = levelMenu.getCurOption();
 				done(levelKey);
@@ -234,7 +240,14 @@ public class MainMenuController {
 			return;
 		}
 		
-		if (InputController.pressedEnter() || InputController.pressedLeftMouse()){
+		boolean mouseCondition = false;
+		if (mainMenu.selectedIndex!=-1){
+			Option curOption = mainMenu.options[mainMenu.selectedIndex];
+			mouseCondition = curOption.contains(InputController.getMouseX(),InputController.getMouseY(),canvas,null)
+				&& (InputController.pressedLeftMouse());
+		}
+		
+		if (InputController.pressedEnter() || mouseCondition){
 			// fixup to get cur option string from the index
 			String levelKey = mainMenu.getCurOption();
 			done(levelKey);

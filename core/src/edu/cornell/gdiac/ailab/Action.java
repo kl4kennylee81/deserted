@@ -13,6 +13,7 @@ public class Action implements GUIElement {
 	boolean oneHit;
 	boolean canBlock;
 	boolean needsToggle;
+	boolean isBuff;
 	Pattern pattern;
 	Effect effect;
 	String description;
@@ -54,6 +55,7 @@ public class Action implements GUIElement {
 		this.needsToggle = needsToggle;
 		this.effect = effect;
 		this.description = description;
+		this.isBuff = false;
 	}
 	
 	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, boolean oneHit, boolean canBlock,boolean needsToggle, Effect effect, String description, String strpath){
@@ -91,7 +93,7 @@ public class Action implements GUIElement {
 		}
 		switch(pattern){
 		case SINGLE:
-			return this.singleCanTarget(startX, startY, targetX, targetY);
+			return this.singleCanTarget(startX, startY, targetX, targetY, leftside, board);
 		case STRAIGHT:
 			return startY == targetY && (Math.abs(startX - targetX) <= range);
 		case HORIZONTAL:
@@ -151,8 +153,21 @@ public class Action implements GUIElement {
 		return this.needsToggle;
 	}
 	
-	public boolean singleCanTarget(int startX,int startY, int targetX,int targetY){
+	public boolean singleCanTarget(int startX,int startY, int targetX,int targetY, boolean leftside, GridBoard board){
 		// check with range from epicenter
+		if(isBuff && leftside && targetX >= board.width / 2){
+//			if(isBuff){
+//				System.out.println("can hit "+ targetX+" "+startX+" "+false);
+//			}
+			return false;
+		}
+		if(isBuff && !leftside && targetX < board.width / 2){
+//			if(isBuff){
+//				System.out.println("can hit "+ targetX+" "+startX+" "+false);
+//			}
+			return false;
+		}
+		
 		int diffX = Math.abs(targetX - startX);
 		int diffY = Math.abs(targetY - startY);
 		return (diffX+diffY) < this.range;
@@ -190,6 +205,10 @@ public class Action implements GUIElement {
 	
 	
 	public boolean contains(float x, float y, GameCanvas canvas, GridBoard board){
-		return (x <= this.x+this.width && x >= this.x && y <= this.y + this.height && y >= this.y);
+		float xMin = this.x;
+		float xMax = this.x + this.width;
+		float yMin = this.y;
+		float yMax = this.y + this.height;
+		return x <= xMax && x >= xMin && y <= yMax && y >= yMin;
 	}
 }

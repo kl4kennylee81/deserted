@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class DropDownTable extends Table{
 	private static Float SMALL_WIDTH=50f;
+	private Float OBJECT_HEIGHT=20f;
 	private Float PADDING = 4f;
 	private LinkedList<SelectBox<String>> boxes; 
 	private Array<LinkedList<TextField>> additional;
@@ -34,7 +35,7 @@ public class DropDownTable extends Table{
 		SelectBox<String> box = new SelectBox<String>(skin);
 		boxes.add(box);
 		box.setItems(ops);
-		this.add(box).pad(PADDING);
+		this.add(box).height(OBJECT_HEIGHT).pad(PADDING);
 		
 		if (fieldLabels != null){
 			this.fieldLabels = fieldLabels;
@@ -46,8 +47,8 @@ public class DropDownTable extends Table{
 				TextField field = new TextField("", skin);
 				list.add(field);
 				Label fieldLabel = new Label(label, skin);
-				this.add(fieldLabel).pad(PADDING);
-				this.add(field).width(SMALL_WIDTH).pad(PADDING);
+				this.add(fieldLabel).height(OBJECT_HEIGHT).pad(PADDING);
+				this.add(field).width(SMALL_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 			}
 		}
 		
@@ -64,7 +65,7 @@ public class DropDownTable extends Table{
 				removeLastRow();
 			}
 		});
-		this.add(add).pad(PADDING);
+		this.add(add).height(OBJECT_HEIGHT).pad(PADDING);
 		this.row();
 		//this.debug();
 	}
@@ -89,36 +90,36 @@ public class DropDownTable extends Table{
 	
 	private void repopulateTable() {
 		this.clear();
-		this.add(boxes.get(0)).pad(PADDING);
+		this.add(boxes.get(0)).height(OBJECT_HEIGHT).pad(PADDING);
 		if (fieldLabels != null){
 			int k = 0;
 			for (String label : fieldLabels){
-				this.add(new Label(label, skin)).pad(PADDING);
+				this.add(new Label(label, skin)).height(OBJECT_HEIGHT).pad(PADDING);
 				TextField field = additional.get(k).getFirst();
-				this.add(field).width(SMALL_WIDTH).pad(PADDING);
+				this.add(field).width(SMALL_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 				k++;
 			}
 			
 			for (int i = 1; i < boxes.size(); i++) {
 				this.row();
-				this.add(boxes.get(i)).pad(PADDING);
+				this.add(boxes.get(i)).height(OBJECT_HEIGHT).pad(PADDING);
 				k=0;
 				for (String label : fieldLabels){
-					this.add(new Label(label, skin)).pad(PADDING);
+					this.add(new Label(label, skin)).height(OBJECT_HEIGHT).pad(PADDING);
 					TextField field = additional.get(k).get(i);
-					this.add(field).width(SMALL_WIDTH).pad(PADDING);
+					this.add(field).width(SMALL_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 					k++;
 				}
 			}
 		}else{
 			for (int i = 1; i < boxes.size(); i++) {
 				this.row();
-				this.add(boxes.get(i)).pad(PADDING);
+				this.add(boxes.get(i)).height(OBJECT_HEIGHT).pad(PADDING);
 			}
 		}		
-		this.add(add).pad(PADDING);
+		this.add(add).height(OBJECT_HEIGHT).pad(PADDING);
 		if (boxes.size() > 1){
-			this.add(remove).pad(PADDING);
+			this.add(remove).height(OBJECT_HEIGHT).pad(PADDING);
 		}
 		this.row();
 	}
@@ -131,18 +132,18 @@ public class DropDownTable extends Table{
 		boxes.add(box);
 		box.setItems(options);
 		
-		this.add(box).pad(PADDING);
+		this.add(box).height(OBJECT_HEIGHT).pad(PADDING);
 		if (fieldLabels != null){
 			for (int i=0; i < fieldLabels.length; i++){
-				this.add(new Label(fieldLabels[i], skin)).pad(PADDING);
+				this.add(new Label(fieldLabels[i], skin)).height(OBJECT_HEIGHT).pad(PADDING);
 				TextField field = new TextField("", skin);
 				additional.get(i).add(field);
-				this.add(field).width(SMALL_WIDTH).pad(PADDING);
+				this.add(field).width(SMALL_WIDTH).height(OBJECT_HEIGHT).pad(PADDING);
 			}
 		}
 		
-		this.add(add).pad(PADDING);
-		this.add(remove).pad(PADDING);
+		this.add(add).height(OBJECT_HEIGHT).pad(PADDING);
+		this.add(remove).height(OBJECT_HEIGHT).pad(PADDING);
 		this.row();
 		
 	}

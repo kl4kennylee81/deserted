@@ -123,6 +123,15 @@ public class ActionNodes{
 			}
 		}
 		
+		public Coordinate getLastInPath(){
+			if (this.path != null&&this.path.length > pathIndex -1 && pathIndex -1 >= 0){
+				return this.path[pathIndex-1];
+			}
+			else{
+				return null;
+			}			
+		}
+		
 		public Coordinate getCurInPath(){
 			if (this.path != null&&this.path.length > pathIndex){
 				return this.path[pathIndex];

@@ -297,8 +297,8 @@ public class GameEngine implements Screen {
 		checkReset();
         canvas.begin();
         
-        //update the input controller
-        InputController.update();
+	    //update the input controller
+	    InputController.update();
 		
 		// What we do depends on the game state
 		switch (gameState) {
@@ -389,7 +389,8 @@ public class GameEngine implements Screen {
         }
 		
 		// If the player presses 'R', reset the game.
-        if (gameState != GameState.LOAD && InputController.pressedR()) {
+        if (gameState != GameState.LOAD && gameState != GameState.EDITOR
+        		&& InputController.pressedR()) {
         	mainMenuController.resetMenu();
             gameState = GameState.MENU;
             return true;

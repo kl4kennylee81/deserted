@@ -15,9 +15,8 @@ POSITION:
   type: leaf
   my_tactic: SPECIFIC
   my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK]
-  
+
 POSITION2:
   type: leaf
   my_tactic: SPECIFIC
   my_actions: [MOVE_GOAL, MOVE_AGGRESSIVE, QUICK_ATTACK]
- 

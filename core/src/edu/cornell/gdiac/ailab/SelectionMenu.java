@@ -55,6 +55,14 @@ public class SelectionMenu {
 	
 	TexturedMesh menuMesh;
 	TexturedMesh menuBar;
+
+	private float confirmX;
+
+	private float confirmY;
+	
+	private float confirmHeight;
+	
+	private float confirmWidth;
 	
 	public SelectionMenu(Action[] actions){
 		this.actions = actions;
@@ -70,10 +78,10 @@ public class SelectionMenu {
 	 * Adds an action node to current queue
 	 */
 	public void add(ActionNode actionNode,int numSlots){
-		selectedActions.addLast(actionNode);
-		takenSlots += actionNode.action.cost;
-		if (takenSlots > numSlots){
-			System.out.println("Please check SelectionMenu");
+		int slots_taken = this.takenSlots + actionNode.action.cost;
+		if (slots_taken <= numSlots){
+			selectedActions.addLast(actionNode);
+			this.takenSlots+=actionNode.action.cost;
 		}
 	}
 	
@@ -209,7 +217,7 @@ public class SelectionMenu {
 	 * @return
 	 */
 	public boolean resetPointer(int numSlots){
-		if (actions[selectedAction].cost > numSlots - takenSlots){
+		if (selectedAction < actions.length && actions[selectedAction].cost > numSlots - takenSlots){
 			for (int i = 0; i <= actions.length; i++){
 				selectedAction = i;
 				if (canDoAction(selectedAction,numSlots)){
@@ -229,10 +237,14 @@ public class SelectionMenu {
 			freeAction.free();
 		}
 	}
+
+	public boolean isActionInvalid(int usableNumSlots,Action action){
+		return (action.cost > usableNumSlots - takenSlots || (!canMove() && action.pattern == Pattern.MOVE));
+	}
 	
 	/** determines the color for the action names in the selection menu while selecting **/
 	public Color getActionColor(int usableNumSlots,Action action){
-		if (action.cost > usableNumSlots - takenSlots || (!canMove() && action.pattern == Pattern.MOVE)){
+		if (this.isActionInvalid(usableNumSlots,action)){
 			Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.2f);
 			 return dimColor;
 		} 
@@ -250,7 +262,7 @@ public class SelectionMenu {
 	}
 	
 	//TODO: update for dazed
-	public void draw(GameCanvas canvas,CharActionBar actionBar,int count){
+	public void draw(GameCanvas canvas,CharActionBar actionBar,int count, boolean charIsClicked){
 		int totalNumSlots = actionBar.getTotalNumSlots();
 		int usableNumSlots = actionBar.getUsableNumSlots();
 		
@@ -288,13 +300,15 @@ public class SelectionMenu {
 			g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, actionColor);
 		}
 		
-		//Draw confirm selection
-		offset_y += spacing_h + g.height/2;
-		if (selectedAction == actions.length){
-			selectedPointerOffset = offset_y;
-			g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.CORAL);
-		} else {
-			g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.GREEN);
+		if (!charIsClicked){
+			//Draw confirm selection
+			offset_y += spacing_h + g.height/2;
+			if (selectedAction == actions.length){
+				selectedPointerOffset = offset_y;
+				g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.CORAL);
+			} else {
+				g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.GREEN);
+			}
 		}
 		
 		float pointer_x = text_x - ACTION_POINTER_OFFSET_X;
@@ -355,6 +369,7 @@ public class SelectionMenu {
 		BitmapFont b = canvas.getFont();
 		float width = (GridBoard.BOARD_OFFSET_X - GridBoard.EXTRA_OFFSET)*canvas.getWidth();
 		GlyphLayout g = new GlyphLayout(b, actions[0].name, Color.WHITE, width, Align.left, true);
+		float glyphWidth = g.width;
 		float offset_y = actions[0].height;
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
@@ -364,12 +379,25 @@ public class SelectionMenu {
 			}
 			action.setHeight(g.height);//TODO change
 			action.setPosition(i);
-			action.setWidth(g.width);//TODO change
+			glyphWidth = g.width;
+			action.setWidth(glyphWidth);//TODO change
 			action.setX(text_x);
 			action.setY(text_y-offset_y);
-//			canvas.drawPointer(text_x,text_y-offset_y-g.height/2, Color.YELLOW);
-//			canvas.drawPointer(text_x+g.width,text_y-offset_y+g.height/2, Color.MAGENTA);
 		}
+		offset_y += spacing_h + g.height/2;
+		this.confirmX = text_x;
+		this.confirmY = text_y - offset_y;
+		this.confirmHeight = g.height;
+		this.confirmWidth = glyphWidth;
+		
+	}
+	
+	public boolean confirmContain(float x, float y){
+		float xMin = this.confirmX;
+		float xMax = xMin + this.confirmWidth;
+		float yMin = this.confirmY;
+		float yMax = yMin + this.confirmHeight;
+		return (x>xMin && x<=xMax && y>yMin && y<=yMax);
 	}
 	
 }

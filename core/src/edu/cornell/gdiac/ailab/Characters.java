@@ -33,21 +33,33 @@ public class Characters extends LinkedList<Character>{
 		}
 	}
 	
-	public void drawSelectionMenu(GameCanvas canvas,boolean shouldDim){
+	public void drawSelectionMenu(GameCanvas canvas,boolean shouldDim, boolean inSelection){
+		boolean clickedCharExist = clickedCharExists();
 		int count = 0;
         for (Character c : this){
         	count++;
-    		c.drawSelection(canvas,count);
+        	if (inSelection){
+        		c.drawSelection(canvas,count,clickedCharExist);
+        	}
 			c.drawToken(canvas,count,shouldDim);
         }
+	}
+	
+	private boolean clickedCharExists() {
+		for (Character c : this){
+			if (c.isClicked){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public Characters(){
 		super();
 	}
 	
-	public void draw(GameCanvas canvas,boolean shouldDim){
+	public void draw(GameCanvas canvas,boolean shouldDim, boolean inSelection){
 		drawActionBars(canvas,shouldDim);
-		drawSelectionMenu(canvas,shouldDim);
+		drawSelectionMenu(canvas,shouldDim, inSelection);
 	}
 }
