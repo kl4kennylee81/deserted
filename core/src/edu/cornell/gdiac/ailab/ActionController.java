@@ -92,7 +92,7 @@ public class ActionController {
 					executeAction(curAction);
 					selected = null;
 				} else if (!curAction.isInterrupted){
-					selected.setExecute();
+					selected.setCast();
 					if (!Constants.PAUSE_ATTACK_ANIMATION){
 						executeAction(curAction);
 						selected = null;

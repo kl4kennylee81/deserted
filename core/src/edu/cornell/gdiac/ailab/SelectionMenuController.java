@@ -445,12 +445,6 @@ public class SelectionMenuController {
 		}
 		if (InputController.pressedEnter()){
 			confirmedAction();
-			// for moves we want to allow you to continue moving if possible
-			if (this.action.pattern == Pattern.MOVE 
-					&& this.menu.canAct(this.selected.getActionBar().getUsableNumSlots())){
-				this.updateTargetedAction();
-				this.setChoosingTarget(true);
-			}
 		} else if (InputController.pressedBack()){
 			this.setChoosingTarget(false);
 		}

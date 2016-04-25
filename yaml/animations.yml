@@ -122,7 +122,6 @@
       startingIndex: 8
       length: 9
       frameData:
-      - 120
       - 6
       - 6
       - 6
@@ -130,13 +129,15 @@
       - 6
       - 6
       - 6
-      - 120
+      - 6
+      - 6
 
     - segmentName: EXECUTE
       segmentId: 3
-      startingIndex: 16
+      startingIndex: 15
       length: 9
       frameData:
+      - 6
       - 8
       - 4
       - 4
@@ -147,9 +148,11 @@
       - 10
     - segmentName: HURT
       segmentId: 4
-      startingIndex: 0
-      length: 0
+      startingIndex: 2
+      length: 2
       frameData:
+      - 10
+      - 10
 
 103:
   name: Tutorial Original
@@ -161,56 +164,48 @@
     - segmentName: IDLE
       segmentId: 0
       startingIndex: 0
-      length: 2
+      length: 1
       frameData:
-      - 1
-      - 1
+      - 100
     - segmentName: ACTIVE
       segmentId: 1
       startingIndex: 0
       length: 4
       frameData:
-      - 6
-      - 6
-      - 6
       - 9
+      - 10
+      - 9
+      - 10
     - segmentName: CAST
       segmentId: 2
       startingIndex: 4
-      length: 8
+      length: 4
       frameData:
       - 6
       - 6
       - 6
       - 6
-      - 4
-      - 6
-      - 4
-      - 4
-
     - segmentName: EXECUTE
       segmentId: 3
-      startingIndex: 5
-      length: 7
+      startingIndex: 7
+      length: 5
       frameData:
+      - 4
       - 6
       - 6
-      - 6
-      - 6
-      - 6
-      - 5
-      - 5
+      - 8
+      - 4
     - segmentName: HURT
       segmentId: 4
       startingIndex: 11
       length: 6
       frameData:
-      - 7
-      - 7
-      - 7
-      - 7
-      - 7
-      - 7
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
 
 104:
   name: Temporary Girl
@@ -240,8 +235,9 @@
     - segmentName: EXECUTE
       segmentId: 3
       startingIndex: 3
-      length: 1
+      length: 2
       frameData:
+      - 15
       - 15
     - segmentName: HURT
       segmentId: 4
@@ -260,56 +256,48 @@
     - segmentName: IDLE
       segmentId: 0
       startingIndex: 0
-      length: 2
+      length: 1
       frameData:
-      - 1
-      - 1
+      - 100
     - segmentName: ACTIVE
       segmentId: 1
       startingIndex: 0
       length: 4
       frameData:
-      - 6
-      - 6
-      - 6
       - 9
+      - 10
+      - 9
+      - 10
     - segmentName: CAST
       segmentId: 2
       startingIndex: 4
-      length: 8
+      length: 4
       frameData:
       - 6
       - 6
       - 6
       - 6
-      - 4
-      - 6
-      - 4
-      - 4
-
     - segmentName: EXECUTE
       segmentId: 3
-      startingIndex: 5
-      length: 7
+      startingIndex: 7
+      length: 5
       frameData:
+      - 4
       - 6
       - 6
-      - 6
-      - 6
-      - 6
-      - 5
-      - 5
+      - 8
+      - 4
     - segmentName: HURT
       segmentId: 4
       startingIndex: 11
       length: 6
       frameData:
-      - 7
-      - 7
-      - 7
-      - 7
-      - 7
-      - 7
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
 
 106:
   name: Tutorial Slow
@@ -321,56 +309,48 @@
     - segmentName: IDLE
       segmentId: 0
       startingIndex: 0
-      length: 2
+      length: 1
       frameData:
-      - 1
-      - 1
+      - 100
     - segmentName: ACTIVE
       segmentId: 1
       startingIndex: 0
       length: 4
       frameData:
-      - 6
-      - 6
-      - 6
       - 9
+      - 10
+      - 9
+      - 10
     - segmentName: CAST
       segmentId: 2
       startingIndex: 4
-      length: 8
+      length: 4
       frameData:
       - 6
       - 6
       - 6
       - 6
-      - 4
-      - 6
-      - 4
-      - 4
-
     - segmentName: EXECUTE
       segmentId: 3
-      startingIndex: 5
-      length: 7
+      startingIndex: 7
+      length: 5
       frameData:
+      - 4
       - 6
       - 6
-      - 6
-      - 6
-      - 6
-      - 5
-      - 5
+      - 8
+      - 4
     - segmentName: HURT
       segmentId: 4
       startingIndex: 11
       length: 6
       frameData:
-      - 7
-      - 7
-      - 7
-      - 7
-      - 7
-      - 7
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
 
 107:
   name: Tutorial Single
@@ -382,55 +362,112 @@
     - segmentName: IDLE
       segmentId: 0
       startingIndex: 0
-      length: 2
+      length: 1
       frameData:
-      - 1
-      - 1
+      - 100
     - segmentName: ACTIVE
       segmentId: 1
       startingIndex: 0
       length: 4
       frameData:
-      - 6
-      - 6
-      - 6
       - 9
+      - 10
+      - 9
+      - 10
     - segmentName: CAST
       segmentId: 2
       startingIndex: 4
-      length: 8
+      length: 4
       frameData:
       - 6
       - 6
       - 6
       - 6
-      - 4
-      - 6
-      - 4
-      - 4
-
     - segmentName: EXECUTE
       segmentId: 3
-      startingIndex: 5
-      length: 7
+      startingIndex: 7
+      length: 5
       frameData:
+      - 4
       - 6
       - 6
-      - 6
-      - 6
-      - 6
-      - 5
-      - 5
+      - 8
+      - 4
     - segmentName: HURT
       segmentId: 4
       startingIndex: 11
       length: 6
       frameData:
-      - 7
-      - 7
-      - 7
-      - 7
-      - 7
-      - 7
-
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+108:
+  name: Bunny Mage
+  texture: "models/bunmage_spritesheet.png"
+  rows: 1
+  cols: 33
+  size: 33
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 1
+      frameData:
+      - 100
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 8
+      - 8
+      - 8
+      - 8
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 4
+      length: 21
+      frameData:
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 6
+      - 6
+      - 6
+      - 6
+      - 5
+      - 5
+      - 4
+      - 4
+      - 3
+      - 3
+      - 3
+      - 3
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 25
+      length: 3
+      frameData:
+      - 8
+      - 9
+      - 9
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 28
+      length: 5
+      frameData:
+      - 6
+      - 6
+      - 9
+      - 9
+      - 9
 ...

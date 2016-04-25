@@ -12,8 +12,8 @@ public class Characters extends LinkedList<Character>{
 		for (Character c:this){
 			count++;
 			
-			Color waitColor = c.getActionBarColor(shouldDim,Color.valueOf("66CC99"));
-			Color castColor = c.getActionBarColor(shouldDim, Color.RED.cpy());
+			Color waitColor = c.getActionBarColor(shouldDim,Color.valueOf("336699"));
+			Color castColor = c.getActionBarColor(shouldDim, Color.valueOf("990033"));
 			Color bufferColor = c.getActionBarColor(shouldDim, Color.WHITE.cpy());
 			
 			// drawing code for the waiting area and health action bar

@@ -52,17 +52,13 @@ public class AnimationNode {
 			return animation.filmStrip;
 		}
 		
-//		if (gameState == InGameState.ATTACK && charState != CharacterState.EXECUTE){
-//			return animation.filmStrip;
-//		}
-		
 		if (charState.id != curSegment){
 			curSegment = charState.id;
 			curFrameIndex = 0;
 			curFrameDuration = 0;
 		}
-		// executes the only action that doesn't loop around
-		else if (charState.id == curSegment && charState != CharacterState.EXECUTE
+		// only active and idle phase loop around
+		else if (charState.id == curSegment && (charState == CharacterState.ACTIVE||charState == CharacterState.IDLE)
 				&& curFrameIndex>=animation.segments.get(curSegment).length){
 			curFrameIndex = 0;
 			curFrameDuration = 0;			

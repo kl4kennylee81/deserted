@@ -330,9 +330,9 @@ public class SelectionMenu {
 			float curSlot_x = actionSlot_x + ((slot_width) * i) + CharActionBar.BAR_DIVIDER_WIDTH;
 			float slot_w_space = slot_width-CharActionBar.BAR_DIVIDER_WIDTH;
 			if (i < takenSlots) {
-				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.RED);
+				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.valueOf("990033"));
 			} else if (selectedAction < actions.length && i < takenSlots+actions[selectedAction].cost){
-				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE.cpy().lerp(Color.RED,lerpVal));
+				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE.cpy().lerp(Color.valueOf("990033"),lerpVal));
 			} else if (i >= usableNumSlots){
 				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.GRAY);
 			} else {

@@ -278,7 +278,16 @@ public class Character implements GUIElement {
 	}
 	
 	public void updateCharState(){
+		// execute is what finishes the animation after the pausing finishes
 		if (this.charState == CharacterState.EXECUTE){
+			return;
+		}
+		// cast is what is played when the game is paused
+		else if (this.charState == CharacterState.CAST){
+			return;
+		}
+		// when you are hit let your hurt animation play out
+		else if (this.charState == CharacterState.HURT){
 			return;
 		}
 		else if (queuedActions.isEmpty()){
@@ -288,11 +297,9 @@ public class Character implements GUIElement {
 			if (queuedActions.peek().isInterrupted){
 				//change to interrupted later maybe?
 				this.setIdle();
-			}
-			else if (castPosition > (this.getNextCast() - this.getActionBar().getSlotWidth()) 
-					&& (castPosition -lastCastStart) > this.getActionBar().getSlotWidth()){
-				this.setCast();
 			} else {
+				// active is the only state now until he cast his spell
+				// active is the only looping animation
 				this.setActive();
 			}
 		}
@@ -744,9 +751,13 @@ public class Character implements GUIElement {
 	 */
 	public FilmStrip getFilmStrip(InGameState gameState){
 		FilmStrip fs = animation.getTexture(charState,gameState);
-		// flip back when its in execute
-		if (fs == null && this.charState == CharacterState.EXECUTE){
+		// flip back whenever an animation node is done and not during casting phase
+		if (fs == null && queuedActions.isEmpty()){
 			this.setIdle();
+		}
+		// flip back to the active state
+		else if (fs == null && !queuedActions.isEmpty()){
+			this.setActive();
 		}
 		return fs;
 	}
