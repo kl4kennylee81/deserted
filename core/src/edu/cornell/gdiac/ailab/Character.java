@@ -751,8 +751,12 @@ public class Character implements GUIElement {
 	 */
 	public FilmStrip getFilmStrip(InGameState gameState){
 		FilmStrip fs = animation.getTexture(charState,gameState);
-		// flip back whenever an animation node is done and not during casting phase
-		if (fs == null && queuedActions.isEmpty()){
+		// after teh casting animation go straight to the execute animation
+		if (fs == null && this.charState == CharacterState.CAST){
+			this.setExecute();
+		}
+		// flip back to idle whenever an animation node is done and not during casting phase
+		else if (fs == null && queuedActions.isEmpty()){
 			this.setIdle();
 		}
 		// flip back to the active state

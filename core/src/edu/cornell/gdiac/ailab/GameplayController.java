@@ -35,6 +35,8 @@ public class GameplayController {
     protected TextMessage textMessages;
     protected AnimationPool animations;
     
+    protected boolean isTutorial;
+    
     
     protected HighlightScreen screen;
     
@@ -78,6 +80,7 @@ public class GameplayController {
         
         textMessages = new TextMessage();
         animations = new AnimationPool();
+        this.isTutorial = level.isTutorial();
         
 		// Create the subcontrollers
         actionController = new ActionController(board,characters,textMessages,animations);
@@ -145,14 +148,19 @@ public class GameplayController {
     	removeDead();
     	if (gameOver()){
     		inGameState = InGameState.DONE;
-    		if (!TutorialSteps.levelName.equals("") && leftsideDead()){
-    			GameEngine.nextLevel = TutorialSteps.levelName;
-    			TutorialSteps.setWarning((TutorialSteps.wrongText.equals("")? "Try again!" : TutorialSteps.wrongText), false);
-    			System.out.println("TEST TEST TEST TEST TEST TEST2");
-    			inGameState = InGameState.WARNING;
-    		} else {
-    			TutorialSteps.setWarning((TutorialSteps.rightText.equals("")? "Well Done!" : TutorialSteps.rightText), true);
-    			inGameState = InGameState.WARNING;
+    		if (this.isTutorial){
+    		// @ishaan shouldn't you only be doing this if your in a tutorial level
+    		// we shouldnt be checking this everytime. i'm getting a null pointer from this stuff
+	    		
+    			if (!TutorialSteps.levelName.equals("") && leftsideDead()){
+	    			GameEngine.nextLevel = TutorialSteps.levelName;
+	    			TutorialSteps.setWarning((TutorialSteps.wrongText.equals("")? "Try again!" : TutorialSteps.wrongText), false);
+	    			System.out.println("TEST TEST TEST TEST TEST TEST2");
+	    			inGameState = InGameState.WARNING;
+	    		} else {
+	    			TutorialSteps.setWarning((TutorialSteps.rightText.equals("")? "Well Done!" : TutorialSteps.rightText), true);
+	    			inGameState = InGameState.WARNING;
+	    		}
     		}
     		if(GameEngine.dataGen){
     			dataFile.writeString(jsonArray.toString(), false);

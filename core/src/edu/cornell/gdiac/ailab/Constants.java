@@ -46,7 +46,7 @@ public class Constants {
 	
 	public static final String LEVEL_SELECT_BOSS = "models/menu_tapestryboss.png";
 	
-	public static final boolean PAUSE_ATTACK_ANIMATION = false;
+	public static final boolean PAUSE_ATTACK_ANIMATION = true;
 	
 	
 	/** Tile Shearing constant **/

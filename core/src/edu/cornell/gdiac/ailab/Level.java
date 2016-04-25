@@ -22,6 +22,10 @@ public class Level {
     	return board;
     }
     
+    public boolean isTutorial(){
+    	return tutorialSteps != null;
+    }
+    
     public void setBoard(GridBoard board) {
     	this.board = board;
     }

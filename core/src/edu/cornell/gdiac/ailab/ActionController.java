@@ -102,7 +102,7 @@ public class ActionController {
 					selected = null;
 				}
 			} 
-			if (selected != null && selected.charState != CharacterState.EXECUTE){
+			if (selected != null && selected.charState == CharacterState.EXECUTE){
 				executeAction(curAction);
 				selected = null;
 			}
