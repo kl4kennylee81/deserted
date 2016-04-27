@@ -83,6 +83,16 @@ public class GridBoard {
 		}
 	}
 	
+	public boolean getcanTarget(int x,int y){
+		if (this.isInBounds(x, y)){
+			return tiles[x][y].canTarget;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	
 	/** returns true if tile (x,y) is broken **/
 	public boolean IsBroken(int x,int y){
 		if (this.isInBounds(x, y)){

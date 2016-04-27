@@ -337,6 +337,7 @@ public class GameEngine implements Screen {
 				try {
 					canvas.end();
 					startGame(nextLevel);
+		        	GameEngine.nextLevel = "";
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -388,6 +389,7 @@ public class GameEngine implements Screen {
 		// If the player presses 'R', reset the game.
         if (gameState != GameState.LOAD && gameState != GameState.EDITOR
         		&& InputController.pressedR()) {
+        	GameEngine.nextLevel = "";
         	mainMenuController.resetMenu();
             gameState = GameState.MENU;
             return true;
@@ -426,7 +428,7 @@ public class GameEngine implements Screen {
 		if (keyword == "Action Editor") {
 			try {
 				editorController = new ActionEditorController();
-				gameState = gameState.EDITOR;
+				gameState = GameState.EDITOR;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -434,7 +436,7 @@ public class GameEngine implements Screen {
 		}else if (keyword == "Character Editor") {
 			try {
 				editorController = new CharacterEditorController();
-				gameState = gameState.EDITOR;
+				gameState = GameState.EDITOR;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -442,14 +444,14 @@ public class GameEngine implements Screen {
 		}else if (keyword == "Level Editor") {
 			try {
 				editorController = new LevelEditorController();
-				gameState = gameState.EDITOR;
+				gameState = GameState.EDITOR;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		} else if (keyword == "Skill Tree") {
 			characterCustomizationController = new CharacterCustomizationController(gameSaveStateController.getGameSaveState(), manager, mouseOverController);
-			gameState = gameState.CUSTOMIZE;
+			gameState = GameState.CUSTOMIZE;
 		}
 	}
 
@@ -516,7 +518,7 @@ public class GameEngine implements Screen {
     	if (editorController.isDone()) {
     		editorController = null;
     		mainMenuController.resetMenu();
-    		gameState = gameState.MENU;
+    		gameState = GameState.MENU;
     	}
 	}
     

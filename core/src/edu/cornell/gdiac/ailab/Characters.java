@@ -15,13 +15,13 @@ public class Characters extends LinkedList<Character>{
 //			Color waitColor = c.getActionBarColor(shouldDim,Color.valueOf("336699"));
 //			Color castColor = c.getActionBarColor(shouldDim, Color.valueOf("990033"));
 //			Color bufferColor = c.getActionBarColor(shouldDim, Color.WHITE.cpy());
-//			drawing code for 2 color bar
+////			drawing code for 2 color bar
 //			c.actionBar.draw(canvas, count, waitColor, castColor);
 			
 			// drawing code for the waiting area and health action bar
 			//c.actionBar.draw(canvas,count,waitColor,castColor,bufferColor);
 			
-			// drawing for gauge style bar
+//			 drawing for gauge style bar
 			Color barColor = c.getActionBarColor(shouldDim, Color.WHITE.cpy());
 			Color fillColor= c.getActionBarColor(shouldDim, Color.RED.cpy());	
 			c.actionBar.draw(canvas, count, barColor,fillColor,c.castPosition);
