@@ -317,7 +317,7 @@ public class ObjectLoader {
 			}
 			charToAdd.setStartPos(xPosition, yPosition);
 			charToAdd.setLeftSide(leftSide);
-			
+			charToAdd.animation = new AnimationNode(modelChar.animation);
 
 			//temporary difficulty ai code!!!
 			if (leftSide == false && levelHasAI){
