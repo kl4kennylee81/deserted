@@ -675,10 +675,10 @@ public class Character implements GUIElement {
 		if (!isAlive()){
 			return;
 		}
+		this.drawCharacter(canvas, board, shouldDim, gameState);
 		if(hasPersisting()){
 			drawPersisting(canvas,board,gameState);
 		}
-		this.drawCharacter(canvas, board, shouldDim, gameState);
 	}
 	
 	/** temporary while menu is blocked by characters */

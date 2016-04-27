@@ -29,7 +29,7 @@
     - 6
     - 20
   texture: "models/CHARA_3.png"
-  icon: "models/CASTICON_5.png"
+  icon: "models/bunmage_icon.png"
   animationId: 108
 
 2:
