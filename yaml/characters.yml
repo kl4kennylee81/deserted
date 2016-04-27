@@ -30,7 +30,7 @@
     - 20
   texture: "models/CHARA_3.png"
   icon: "models/CASTICON_5.png"
-  animationId: 101
+  animationId: 108
 
 2:
   name: Rock Spirit
