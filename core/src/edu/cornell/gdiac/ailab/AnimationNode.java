@@ -29,6 +29,12 @@ public class AnimationNode {
 		curSegment = curFrameIndex = curFrameDuration = 0;
 	}
 	
+	public AnimationNode (AnimationNode an){
+		this.animation = an.animation;
+		xPos = yPos = 0;
+		curSegment = curFrameIndex = curFrameDuration = 0;
+	}
+	
 	public AnimationNode (Animation animation, int xPos, int yPos){
 		this.animation = animation;
 		this.xPos = xPos;
