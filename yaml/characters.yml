@@ -16,6 +16,23 @@
   animationId: 101
 
 1:
+  name: Spirit
+  health: 10
+  maxHealth: 10
+  hexColor: CD2626FF
+  speed: 6.
+  castSpeed: 6.5
+  slots: 4
+  availableActions:
+    - 0
+    - 5
+    - 6
+    - 20
+  texture: "models/CHARA_3.png"
+  icon: "models/CASTICON_5.png"
+  animationId: 101
+
+2:
   name: Rock Spirit
   health: 12
   maxHealth: 12
@@ -32,7 +49,7 @@
   icon: "models/tutorial_characters/basic_icon.png"
   animationId: 103
 
-2:
+3:
   name: Mage Spirit
   health: 8
   maxHealth: 8
@@ -49,7 +66,7 @@
   icon: "models/mage_icon.png"
   animationId: 102
 
-3:
+4:
   name: Enchantress Spirit
   health: 8
   maxHealth: 8
@@ -66,7 +83,7 @@
   icon: "models/bunmage_icon.png"
   animationId: 108
 
-4:
+5:
   name: Fighter Spirit
   health: 10
   maxHealth: 10

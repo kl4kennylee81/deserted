@@ -751,7 +751,7 @@ public class Character implements GUIElement {
 	 */
 	public FilmStrip getFilmStrip(InGameState gameState){
 		FilmStrip fs = animation.getTexture(charState,gameState);
-		// after teh casting animation go straight to the execute animation
+		// after the casting animation go straight to the execute animation
 		if (fs == null && this.charState == CharacterState.CAST){
 			this.setExecute();
 		}
