@@ -35,11 +35,11 @@ Level1:
 
 pvp:
     allies:
-        - id: 0
+        - selectedId: 0
           xPosition: 0
           yPosition: 0
 
-        - id: 1
+        - selectedId: 1
           xPosition: 0
           yPosition: 3
 

@@ -358,4 +358,39 @@ public class CharActionBar {
 		
 	}
 	
+	// draw gauge style 
+	public void draw(GameCanvas canvas,int count,Color barColor,Color fillColor, float castPosition){
+		float w = canvas.getWidth();
+		float h = canvas.getHeight();
+		
+		float xPosBar = getX(canvas);
+		float yPosBar = getY(canvas,count);
+		
+		// width of the bar unmodified by hp
+		float widthTotalBar = this.getWidth(canvas);
+		float heightBar = BAR_HEIGHT_RATIO * h;
+		
+		// draw the full bar
+		canvas.drawBox(xPosBar,yPosBar, widthTotalBar, heightBar, barColor);		
+		
+		// draw the gauge filled portion
+		float currentHealth = widthTotalBar * castPosition;
+		canvas.drawBox(xPosBar, yPosBar, currentHealth, heightBar, fillColor);
+		
+		float waitWidth = widthTotalBar * this.getCastPoint();
+		
+		//draw dazed slots as gray
+		float castTotalWidth = widthTotalBar - waitWidth;
+		float dazedWidth = (dazedSlots*1f/numSlots)*castTotalWidth;
+		float dazedxPos = xPosBar + widthTotalBar - dazedWidth;
+		canvas.drawBox(dazedxPos, yPosBar, dazedWidth, heightBar, Color.GRAY);
+	
+		for (int i = 0; i < this.getTotalNumSlots(); i++){
+			float intervalSize = this.getSlotWidth(canvas);
+			float startCastX = xPosBar + waitWidth;
+			canvas.drawBox(startCastX + i*intervalSize, yPosBar, BAR_DIVIDER_WIDTH, heightBar, Color.BLACK);
+		}	
+		
+	}
+	
 }
