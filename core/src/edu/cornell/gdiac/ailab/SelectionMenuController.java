@@ -417,20 +417,31 @@ public class SelectionMenuController {
 			updateChoosingMove();
 			break;
 		case DIAGONAL:
-			if (this.selectedY > this.selected.getShadowY()){
+			if (this.selectedY > this.selected.getShadowY() && this.selectedY> 0){
 				this.direction = Direction.UP;
+				this.selectedY = -1;
 			}
-			else if (this.selectedY <= this.selected.getShadowY()){
+			else if (this.selectedY <= this.selected.getShadowY() && this.selectedY> 0){
 				this.direction = Direction.DOWN;
+				this.selectedY = -1;
 			}
-			if (InputController.pressedUp() && !InputController.pressedDown()){
+			else if (InputController.pressedUp() && !InputController.pressedDown()){
 				direction = Direction.UP;
 			} else if (InputController.pressedDown() && !InputController.pressedUp()){
 				direction = Direction.DOWN;
 			} 
 			break;
 		case SHIELD:
-			if (InputController.pressedUp() && !InputController.pressedDown()){
+			if (this.selectedY > this.selected.getShadowY() && this.selectedY> 0){
+				this.direction = Direction.UP;
+				this.selectedY = -1;
+			}
+			else if (this.selectedY <= this.selected.getShadowY() && this.selectedY> 0){
+				this.direction = Direction.DOWN;
+				this.selectedY = -1;
+			}
+			
+			else if (InputController.pressedUp() && !InputController.pressedDown()){
 				direction = Direction.UP;
 			} else if (InputController.pressedDown() && !InputController.pressedUp()){
 				direction = Direction.DOWN;
@@ -438,7 +449,15 @@ public class SelectionMenuController {
 			break;
 		case INSTANT:
 		case PROJECTILE:
-			if (InputController.pressedUp() && !InputController.pressedDown()){
+			if (this.selectedY > this.selected.getShadowY() && this.selectedY> 0){
+				this.direction = Direction.UP;
+				this.selectedY = -1;
+			}
+			else if (this.selectedY <= this.selected.getShadowY() && this.selectedY> 0){
+				this.direction = Direction.DOWN;
+				this.selectedY = -1;
+			}
+			else if (InputController.pressedUp() && !InputController.pressedDown()){
 				direction = Direction.UP;
 			} else if (InputController.pressedDown() && !InputController.pressedUp()){
 				direction = Direction.DOWN;
