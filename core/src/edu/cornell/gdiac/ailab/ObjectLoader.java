@@ -328,6 +328,7 @@ public class ObjectLoader {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	private void loadChars(HashMap<Integer, HashMap<String, Object>> characters) {
 		for (Integer charId: availableCharacters.keySet()) {
 			HashMap<String, Object> character = characters.get(charId);;

@@ -9,7 +9,7 @@ Level1:
           yPosition: 3
 
     enemies:
-        - id: 1
+        - id: 3
           xPosition: 5
           yPosition: 0
           aggression: 0.5
