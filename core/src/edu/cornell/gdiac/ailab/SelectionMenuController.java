@@ -386,7 +386,7 @@ public class SelectionMenuController {
 			int chosenX = chosenTile.x;
 			int chosenY = chosenTile.y;
 			chosenTile.free();
-			boolean canHit = this.board.getIsHighlighted(chosenX,chosenY);
+			boolean canHit = this.board.getcanTarget(chosenX,chosenY);
 			if (canHit){
 				this.selectedX = chosenX;
 				this.selectedY = chosenY;
@@ -417,6 +417,12 @@ public class SelectionMenuController {
 			updateChoosingMove();
 			break;
 		case DIAGONAL:
+			if (this.selectedY > this.selected.getShadowY()){
+				this.direction = Direction.UP;
+			}
+			else if (this.selectedY <= this.selected.getShadowY()){
+				this.direction = Direction.DOWN;
+			}
 			if (InputController.pressedUp() && !InputController.pressedDown()){
 				direction = Direction.UP;
 			} else if (InputController.pressedDown() && !InputController.pressedUp()){
