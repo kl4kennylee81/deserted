@@ -599,8 +599,34 @@ public class GameEngine implements Screen {
 		manager.load(Constants.LEVEL_SELECT_REG,Texture.class);
 		assets.add(Constants.LEVEL_SELECT_REG);
 		
+		// load in actionbar assets
+		manager.load(Constants.ACTIONBAR_CENTER_TEXTURE,Texture.class);
+		assets.add(Constants.ACTIONBAR_CENTER_TEXTURE);
+		
+		manager.load(Constants.ACTIONBAR_FILL_TEXTURE,Texture.class);
+		assets.add(Constants.ACTIONBAR_FILL_TEXTURE);
+		
+		manager.load(Constants.ACTIONBAR_LEFT_TEXTURE,Texture.class);
+		assets.add(Constants.ACTIONBAR_LEFT_TEXTURE);
+		
+		manager.load(Constants.ACTIONBAR_RIGHT_TEXTURE,Texture.class);
+		assets.add(Constants.ACTIONBAR_LEFT_TEXTURE);
+		
+		manager.load(Constants.ACTIONBAR_LEFTBLUE_TEXTURE,Texture.class);
+		assets.add(Constants.ACTIONBAR_LEFTBLUE_TEXTURE);
+		
+		manager.load(Constants.ACTIONBAR_LEFTRED_TEXTURE,Texture.class);
+		assets.add(Constants.ACTIONBAR_LEFTRED_TEXTURE);
+		
+		manager.load(Constants.ACTIONBAR_RIGHTEND_TEXTURE,Texture.class);
+		assets.add(Constants.ACTIONBAR_RIGHTEND_TEXTURE);
+		
+		manager.load(Constants.ACTIONBAR_CENTER_POTRAIT, Texture.class);
+		assets.add(Constants.ACTIONBAR_CENTER_POTRAIT);
+		
 		manager.load(Constants.PRGRSBR_TEXTURE, Texture.class);
 		assets.add(Constants.PRGRSBR_TEXTURE);
+		
 		statusBar = new Texture(Constants.PRGRSBR_TEXTURE);
 		statusBkgLeft   = new TextureRegion(statusBar,0,0,PROGRESS_CAP,PROGRESS_HEIGHT);
 		statusBkgRight  = new TextureRegion(statusBar,statusBar.getWidth()-PROGRESS_CAP,0,PROGRESS_CAP,PROGRESS_HEIGHT);

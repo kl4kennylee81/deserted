@@ -156,8 +156,7 @@ public class Character implements GUIElement {
 		float waitTime = speed;
 		float castTime = castSpeed;
 		this.numSlots = numSlots;
-		actionBar = new CharActionBar(numSlots,waitTime,castTime);
-		
+		actionBar = new CharActionBar(numSlots,waitTime,castTime);	
 	}
 	
 	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
@@ -955,8 +954,10 @@ public class Character implements GUIElement {
 //		Color iconColor = this.getColor(shouldDim);
 //		Color waitColor = this.getActionBarColor(shouldDim, this.color.cpy());
 		
-		float tokenX = this.actionBar.getX(canvas);
-		float tokenY = this.actionBar.getY(canvas, count) + this.actionBar.getBarHeight(canvas);
+		float leftEndWidth = (CharActionBar.actionBar_leftBlue.getWidth()* this.actionBar.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_leftBlue.getHeight();
+		
+		float tokenX = this.actionBar.getX(canvas) - leftEndWidth/2;
+		float tokenY = this.actionBar.getY(canvas, count) + this.actionBar.getBarHeight(canvas)*0.94f;
 		String healthText = Integer.toString(this.health);
 		canvas.drawText(healthText, tokenX, tokenY, Color.BLACK.cpy());
 		
@@ -1031,21 +1032,16 @@ public class Character implements GUIElement {
 		return chosenColor;	
 	}
 	
+	// TODO commented out
 	public void drawToken(GameCanvas canvas, int count,boolean shouldDim){
-		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - this.icon.getWidth()/2;
+		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWaitWidth(canvas) - this.icon.getWidth()/2;
 		
 		// 2 is a random offset to center it
-		float tokenY = this.actionBar.getY(canvas, count) - 2;
+		float tokenY = this.actionBar.getY(canvas, count)*0.99f;
 		
 		Color c = getColor(shouldDim);
 		canvas.drawTexture(icon, tokenX, tokenY,icon.getWidth(),icon.getHeight(),c);
 		
-		
-		// code for ticks as the tokens
-		//float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - ACTIONBAR_TICK_SIZE/2;
-		//float actionBarHeight = this.actionBar.getBarHeight(canvas);
-		//Color c = actionBarTickColor(shouldDim);
-		//canvas.drawBox(tokenX, tokenY, ACTIONBAR_TICK_SIZE, actionBarHeight, c);
 	}
 
 	public boolean getHovering(){

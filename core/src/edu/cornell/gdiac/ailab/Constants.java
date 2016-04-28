@@ -51,4 +51,24 @@ public class Constants {
 	
 	/** Tile Shearing constant **/
 	public static final float TILE_SHEAR = 0.6f;
+	
+	
+	/** ACTION BAR ART ASSETS **/
+	public static final String ACTIONBAR_CENTER_TEXTURE = "images/actionBar/actionBar_center.png";
+	
+	public static final String ACTIONBAR_FILL_TEXTURE = "images/actionBar/actionBar_fill.png";
+	
+	public static final String ACTIONBAR_LEFTBLUE_TEXTURE = "images/actionBar/actionBar_leftBlue.png";
+	
+	public static final String ACTIONBAR_LEFTRED_TEXTURE = "images/actionBar/actionBar_leftRed.png";
+	
+	public static final String ACTIONBAR_LEFT_TEXTURE = "images/actionBar/actionBar_leftside.png";
+
+	public static final String ACTIONBAR_RIGHT_TEXTURE = "images/actionBar/actionBar_rightside.png";
+	
+	public static final String ACTIONBAR_RIGHTEND_TEXTURE = "images/actionBar/actionBar_rightend.png";
+	
+	public static final String ACTIONBAR_CENTER_POTRAIT = "images/actionBar/actionBar_potraitCircle.png";
+
+	public static final Color CAST_COLOR = Color.valueOf("ffe04e");
 }

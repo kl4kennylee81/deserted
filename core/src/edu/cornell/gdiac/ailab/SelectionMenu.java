@@ -320,10 +320,10 @@ public class SelectionMenu {
 		
 		//Draw action bar with 3 black boxes to show 4 slots
 		float actionSlot_x = actionBar.getBarCastPoint(canvas);
-		float actionSlot_y = actionBar.getY(canvas,count);
+		float actionSlot_y = actionBar.getFillY(canvas,count);
 		
 		float slot_width = actionBar.getSlotWidth(canvas);
-		float slot_height = actionBar.getBarHeight(canvas);
+		float slot_height = actionBar.getBarFillHeight(canvas);
 		
 		int offset = 0;
 		for (int i = 0; i < totalNumSlots; i++){
@@ -332,7 +332,7 @@ public class SelectionMenu {
 			if (i < takenSlots) {
 				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.RED);
 			} else if (selectedAction < actions.length && i < takenSlots+actions[selectedAction].cost){
-				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE.cpy().lerp(Color.RED,lerpVal));
+				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE.cpy().lerp(Constants.CAST_COLOR.cpy(),lerpVal));
 			} else if (i >= usableNumSlots){
 				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.GRAY);
 			} else {
