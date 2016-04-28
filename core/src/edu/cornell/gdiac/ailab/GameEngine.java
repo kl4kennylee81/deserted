@@ -624,6 +624,9 @@ public class GameEngine implements Screen {
 		manager.load(Constants.ACTIONBAR_CENTER_POTRAIT, Texture.class);
 		assets.add(Constants.ACTIONBAR_CENTER_POTRAIT);
 		
+		manager.load(Constants.DESCRIPTION_BOX_TEXTURE, Texture.class);
+		assets.add(Constants.DESCRIPTION_BOX_TEXTURE);
+		
 		manager.load(Constants.PRGRSBR_TEXTURE, Texture.class);
 		assets.add(Constants.PRGRSBR_TEXTURE);
 		

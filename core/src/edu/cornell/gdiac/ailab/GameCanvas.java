@@ -809,8 +809,13 @@ public class GameCanvas {
 	}
 	
 	public void setShearBoard(float x,float y,float shearX,float shearY){
-		local.setToShearing(shearX, shearY);
-		local.translate(x, y);
+		local.setToTranslation(x, y);
+		local.shear(shearX,shearY);
+		float xTranslate = y*shearX;
+		local.translate(xTranslate,0);
+		
+		float translateBack = -this.getWidth()*0.06f;
+		local.translate(translateBack,0);
 	}
 	
 	public void drawTile(float x, float y, TextureRegion mesh, float width, float height, Color tint){	

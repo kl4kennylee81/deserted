@@ -44,7 +44,7 @@ public class GridBoard {
 	
 	public static final float EXTRA_OFFSET = 0.02f;
 	
-	public static final float BOARD_OFFSET_Y = 0.025f;
+	public static final float BOARD_OFFSET_Y = 0.175f;
 	
 	public HashMap<String,Effect> getTileEffects(){
 		return this.tileEffects;

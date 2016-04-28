@@ -51,14 +51,14 @@ public class CharActionBar {
 	public static final float CAST_POINT_CENTERED = 0.5f;
 	
 	/** Ration of the bar height to the screen */
-	private static final float BAR_HEIGHT_RATIO = 0.035f;	
+	private static final float BAR_HEIGHT_RATIO = 0.032f;	
 	
 	/** the x position of the bar should start at the top 7/8 of the screen **/
 	private static final float BAR_RELATIVE_Y_POS = 1.0f;
 	
 	public static final float BAR_DIVIDER_WIDTH = 2f;
 	
-	private static final float Y_SPACING = 0.082f;
+	private static final float Y_SPACING = 0.08f;
 	
 	// make this in terms of the max speed after applying speed modifier
 	public static float MAX_TIME = 24;
@@ -462,7 +462,7 @@ public class CharActionBar {
 		float xPosBar = getX(canvas);
 		float yPosBar = getY(canvas,count);
 	
-		float leftsideWidth = this.getTotalWaitWidth(canvas);
+		float leftsideWidth = this.getWaitWidth(canvas);
 		
 		float leftsideHeight = this.getBarHeight(canvas);
 		

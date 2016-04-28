@@ -71,4 +71,15 @@ public class Constants {
 	public static final String ACTIONBAR_CENTER_POTRAIT = "images/actionBar/actionBar_potraitCircle.png";
 
 	public static final Color CAST_COLOR = Color.valueOf("ffe04e");
+	
+	// DESCRIPTION BOX CONSTANTS
+	public static final String DESCRIPTION_BOX_TEXTURE = "images/descriptionBox.png";
+	
+	public static final float DESCRIPTION_BOX_RELATIVE_Y_POS = 0.0f;
+	
+	public static final float DESCRIPTION_BOX_RELATIVE_X_POS = 0.0f;
+	
+	public static final float DESCRIPTION_BOX_RELATIVE_WIDTH = 1.0f;
+	
+	public static final float DESCRIPTION_BOX_RELATIVE_HEIGHT = 0.15f;
 }

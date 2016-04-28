@@ -52,6 +52,8 @@ public class GameplayController {
     protected FileHandle dataFile;
     protected JSONArray jsonArray;
     
+    private static Texture DESCRIPTION_BOX_TEXTURE;
+    
     public static enum InGameState {
 		NORMAL,
 		SELECTION,
@@ -65,6 +67,11 @@ public class GameplayController {
     	mouseOverController = moc;
     	fileNumFile = file;
     	this.fileNum = fileNum;
+    	
+    	// create the description box texture
+    	if (DESCRIPTION_BOX_TEXTURE == null){
+    		DESCRIPTION_BOX_TEXTURE = new Texture(Constants.DESCRIPTION_BOX_TEXTURE);
+    	}
     }
     
     public void resetGame(Level level){
@@ -178,6 +185,14 @@ public class GameplayController {
     	}
     }
     
+    public void drawDescriptionBox(GameCanvas canvas){
+    	float x_pos = Constants.DESCRIPTION_BOX_RELATIVE_X_POS*canvas.getWidth();
+    	float y_pos = Constants.DESCRIPTION_BOX_RELATIVE_Y_POS*canvas.getHeight();
+    	float box_width = Constants.DESCRIPTION_BOX_RELATIVE_WIDTH*canvas.getWidth();
+    	float box_height = Constants.DESCRIPTION_BOX_RELATIVE_HEIGHT*canvas.getHeight();
+    	canvas.drawTexture(DESCRIPTION_BOX_TEXTURE, x_pos, y_pos, box_width, box_height, Color.WHITE);
+    }
+    
     public void drawPlay(GameCanvas canvas){
     	// not sure why this is needed
 //    	if (this.isTutorial && inGameState == InGameState.WARNING) {
@@ -195,6 +210,10 @@ public class GameplayController {
 		
         screen.draw(canvas);
     	board.draw(canvas);
+    	
+    	// TODO draw the canvas kind of hacky now 
+    	this.drawDescriptionBox(canvas);
+    	
     	drawCharacters(canvas);
         animations.draw(canvas,board,inGameState);
         
