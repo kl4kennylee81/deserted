@@ -19,13 +19,13 @@ public class Constants {
 	
 	public static final String MENU_LOGO = "images/mainmenu/desertedLogo.png";
 	
-	public static final String SELECT_FONT_FILE  = "fonts/infini-romain.ttf";
+	public static final String SELECT_FONT_FILE  = "fonts/MarkerFelt.ttf";
 	/** The size of the messages */
 	static final int SELECT_FONT_SIZE = 20;
 	
 	/** tutorial font info */
-	public static final String TUTORIAL_FONT_FILE = "fonts/CandelaBook.ttf";
-	public static final int TUTORIAL_FONT_SIZE = 20;
+	public static final String TUTORIAL_FONT_FILE = "fonts/MarkerFelt.ttf";
+	public static final int TUTORIAL_FONT_SIZE = 18;
 	public static final Color TUTORIAL_FONT_COLOR = Color.WHITE;
 	
 	public static final String DATA_PATH = "../core/assets/";

@@ -953,11 +953,16 @@ public class Character implements GUIElement {
 	
 //		Color iconColor = this.getColor(shouldDim);
 //		Color waitColor = this.getActionBarColor(shouldDim, this.color.cpy());
-		
-		float leftEndWidth = (CharActionBar.actionBar_leftBlue.getWidth()* this.actionBar.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_leftBlue.getHeight();
-		
+		float leftEndWidth;
+		if (this.leftside){
+			leftEndWidth = (CharActionBar.actionBar_leftBlue.getWidth()* this.actionBar.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_leftBlue.getHeight();
+			
+		}
+		else {
+			leftEndWidth = 0.7f*(CharActionBar.actionBar_leftRed.getWidth()* this.actionBar.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_leftRed.getHeight();
+		}
 		float tokenX = this.actionBar.getX(canvas) - leftEndWidth/2;
-		float tokenY = this.actionBar.getY(canvas, count) + this.actionBar.getBarHeight(canvas)*0.94f;
+		float tokenY = this.actionBar.getY(canvas, count) + this.actionBar.getBarHeight(canvas)*0.92f;
 		String healthText = Integer.toString(this.health);
 		canvas.drawText(healthText, tokenX, tokenY, Color.BLACK.cpy());
 		
