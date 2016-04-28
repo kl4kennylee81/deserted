@@ -808,6 +808,7 @@ public class GameCanvas {
 		spriteBatch.draw(white, x, y, 600*ratio, 20);
 	}
 	
+	// TODO this is hacky
 	public void setShearBoard(float x,float y,float shearX,float shearY){
 		local.setToTranslation(x, y);
 		local.shear(shearX,shearY);

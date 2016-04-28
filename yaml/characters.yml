@@ -113,7 +113,7 @@
     - 4
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
-  animationId: 101
+  animationId: 108
 
 91:
   name: Tutorial1Enemy
@@ -143,7 +143,7 @@
     - 4
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
-  animationId: 101
+  animationId: 108
 
 93:
   name: Tutorial2Enemy
@@ -172,7 +172,7 @@
     - 4
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
-  animationId: 101
+  animationId: 108
 
 95:
   name: Tutorial3Enemies
@@ -202,7 +202,7 @@
     - 4
   texture: "models/CHARA_5.png"
   icon: "models/CASTICON_5.png"
-  animationId: 101
+  animationId: 108
 
 98:
   name: Tutorial4Enemies
@@ -233,7 +233,7 @@
     - 9
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
-  animationId: 101
+  animationId: 108
 
 105:
   name: Tutorial5Enemies
@@ -265,7 +265,7 @@
     - 2
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
-  animationId: 101
+  animationId: 108
 
 107:
   name: Tutorial6Shield
@@ -297,7 +297,7 @@
     - 6
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
-  animationId: 102
+  animationId: 108
 
 110:
   name: Tutorial7Single
@@ -346,7 +346,7 @@
     - 6
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
-  animationId: 102
+  animationId: 108
 
 113:
   name: Tutorial9Enemy1
