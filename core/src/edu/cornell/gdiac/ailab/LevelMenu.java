@@ -17,7 +17,7 @@ public class LevelMenu extends Menu {
 	
 	private static final int NUM_ROWS_TOTAL = 3;
 	
-	private static final int NUM_COLUMNS_TOTAL = 5; 
+	private static final int NUM_COLUMNS_TOTAL = 7; 
 	
 	/** relative spacing between options **/
 	private static final float RELATIVE_MENU_SPACING_X = 0.025f;
