@@ -1037,7 +1037,7 @@ public class Character implements GUIElement {
 		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWaitWidth(canvas) - this.icon.getWidth()/2;
 		
 		// 2 is a random offset to center it
-		float tokenY = this.actionBar.getY(canvas, count)*0.99f;
+		float tokenY = this.actionBar.getY(canvas, count);
 		
 		Color c = getColor(shouldDim);
 		canvas.drawTexture(icon, tokenX, tokenY,icon.getWidth(),icon.getHeight(),c);
