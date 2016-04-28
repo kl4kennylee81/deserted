@@ -23,7 +23,7 @@ public class Characters extends LinkedList<Character>{
 			
 //			 drawing for gauge style bar
 			Color barColor = c.getActionBarColor(shouldDim, Color.WHITE.cpy());
-			Color fillColor= c.getActionBarColor(shouldDim, Color.RED.cpy());	
+			Color fillColor= c.getActionBarColor(shouldDim, Color.WHITE.cpy());	
 			c.actionBar.draw(canvas, count, barColor,fillColor,c.castPosition);
 			
 			

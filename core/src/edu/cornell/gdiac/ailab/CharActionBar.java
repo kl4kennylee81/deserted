@@ -466,7 +466,7 @@ public class CharActionBar {
 		
 		float leftsideHeight = this.getBarHeight(canvas);
 		
-		canvas.drawTexture(CharActionBar.actionBar_left,xPosBar,yPosBar,leftsideWidth,leftsideHeight,Color.WHITE);
+		canvas.drawTexture(CharActionBar.actionBar_left,xPosBar,yPosBar,leftsideWidth,leftsideHeight,barColor);
 		
 		float rightsideWidth = this.getCastWidth(canvas);
 		// literally no idea why its x 10
@@ -475,7 +475,7 @@ public class CharActionBar {
 		float rightside_x = xPosBar + leftsideWidth;
 		float rightside_y = yPosBar;
 		
-		canvas.drawTexture(CharActionBar.actionBar_right,rightside_x,rightside_y,rightsideWidth,rightsideHeight,Color.WHITE);
+		canvas.drawTexture(CharActionBar.actionBar_right,rightside_x,rightside_y,rightsideWidth,rightsideHeight,barColor);
 		
 		float centerRingWidth = (CharActionBar.actionBar_center.getWidth()* this.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_center.getHeight();
 		float centerRingHeight = this.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER;
@@ -483,7 +483,7 @@ public class CharActionBar {
 		float centerX = this.getCastPointX(canvas) - centerRingWidth/2;
 		float centerY = yPosBar - centerRingHeight/3.7f;
 		
-		canvas.drawTexture(CharActionBar.actionBar_center, centerX, centerY,centerRingWidth,centerRingHeight,Color.WHITE);
+		canvas.drawTexture(CharActionBar.actionBar_center, centerX, centerY,centerRingWidth,centerRingHeight,barColor);
 		
 		// draw end point left
 		float leftEndWidth = (CharActionBar.actionBar_leftBlue.getWidth()* this.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_leftBlue.getHeight();
@@ -493,7 +493,7 @@ public class CharActionBar {
 		float leftEndY = yPosBar - leftEndHeight/4;
 		
 		// make this endpoint part of the curvature of the end filling
-		canvas.drawTexture(actionBar_leftBlue,leftEndX,leftEndY,leftEndWidth,leftEndHeight,Color.WHITE);
+		canvas.drawTexture(actionBar_leftBlue,leftEndX,leftEndY,leftEndWidth,leftEndHeight,barColor);
 		
 		float rightEndWidth = (CharActionBar.actionBar_center.getWidth()* this.getBarHeight(canvas)/ CharActionBar.actionBar_center.getHeight());
 		float rightEndHeight = this.getBarHeight(canvas);
@@ -501,7 +501,7 @@ public class CharActionBar {
 		float rightEndX = xPosBar + this.getWidth(canvas) - rightEndWidth/1.25f;
 		float rightEndY = yPosBar;
 		
-		canvas.drawTexture(actionBar_rightend, rightEndX, rightEndY, rightEndWidth, rightEndHeight, Color.WHITE);
+		canvas.drawTexture(actionBar_rightend, rightEndX, rightEndY, rightEndWidth, rightEndHeight, barColor);
 		
 		
 //		// draw the fill based on a percentage
@@ -530,7 +530,7 @@ public class CharActionBar {
 			
 			float leftFillY = (yPosBar + ((leftsideHeight- leftHeight))/1.48f);
 			// draw the wait fill
-			canvas.draw(actionBar_fill_left,Color.WHITE,xPosBar,leftFillY,leftWidth,leftHeight);
+			canvas.draw(actionBar_fill_left,barColor,xPosBar,leftFillY,leftWidth,leftHeight);
 			
 			// create the middle waiting period on the fly
 			int middleWidth = (int)(waitFillPercentMiddle * actionBar_fill_middleWait.getRegionWidth());
@@ -542,7 +542,7 @@ public class CharActionBar {
 			float middleWaitX = xPosBar + leftWidth;
 			float middleFillY = centerY + (centerRingHeight -middleHeightFill)/2;
 			
-			canvas.draw(curMiddleWait,Color.WHITE,middleWaitX,middleFillY,middleFillWidth,middleHeightFill);
+			canvas.draw(curMiddleWait,barColor,middleWaitX,middleFillY,middleFillWidth,middleHeightFill);
 			
 				if (castPosition >= this.getCastPoint()){
 					float rightFillX = middleWaitX + centerRingWidth/2;
@@ -555,10 +555,10 @@ public class CharActionBar {
 					float cast_height_fill = (rightsideHeight/(ACTIONBAR_HEIGHT_CONTAINER_FILL_RATIO-0.25f));
 					
 					// draw the wait fill
-					canvas.draw(actionBar_fill_right,Color.WHITE,rightFillX,rightFillY,cast_width_fill,cast_height_fill);
+					canvas.draw(actionBar_fill_right,barColor,rightFillX,rightFillY,cast_width_fill,cast_height_fill);
 				}
 				
-			canvas.draw(curMiddleWait,Color.WHITE,middleWaitX,middleFillY,middleFillWidth,middleHeightFill);
+			canvas.draw(curMiddleWait,barColor,middleWaitX,middleFillY,middleFillWidth,middleHeightFill);
 			
 			// draw center potrait 
 			float potraitWidth = (1.07f*CharActionBar.actionBar_center.getWidth()* this.getBarHeight(canvas))/ CharActionBar.actionBar_center.getHeight();
@@ -567,7 +567,7 @@ public class CharActionBar {
 			float potraitX = xPosBar + this.getWaitWidth(canvas) - potraitWidth/2.15f;
 			float potraitY = yPosBar - potraitHeight/5;
 			
-			canvas.drawTexture(actionBar_centerpotrait,potraitX,potraitY,potraitWidth,potraitHeight,Color.WHITE);
+			canvas.drawTexture(actionBar_centerpotrait,potraitX,potraitY,potraitWidth,potraitHeight,barColor);
 			
 			//draw dazed slots as gray
 			float castTotalWidth = this.getWidth(canvas) - this.getWaitWidth(canvas);
@@ -577,7 +577,7 @@ public class CharActionBar {
 			float tickHeight = this.getBarHeight(canvas)/CharActionBar.ACTIONBAR_HEIGHT_CONTAINER_FILL_RATIO;
 			float tickY = yPosBar + tickHeight/2;
 			
-			canvas.drawBox(dazedxPos, tickY, dazedWidth, tickHeight, Color.GRAY);
+			canvas.drawBox(dazedxPos, tickY, dazedWidth, tickHeight,barColor);
 			
 		
 			for (int i = 0; i < this.getTotalNumSlots(); i++){
