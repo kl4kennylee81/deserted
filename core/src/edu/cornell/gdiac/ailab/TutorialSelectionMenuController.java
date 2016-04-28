@@ -5,6 +5,7 @@ import java.util.List;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
+import edu.cornell.gdiac.ailab.SelectionMenuController.MenuState;
 import edu.cornell.gdiac.ailab.TutorialSteps.TutorialAction;
 
 public class TutorialSelectionMenuController extends SelectionMenuController{
@@ -18,6 +19,31 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 	}
 
 	public void update(){
+		if (this.menuState == MenuState.PEEKING){
+			super.update();
+			return;
+		}
+			checkForClicked();
+			// FIXUP will fix this conditions just need it for the playtest
+			if (clickedChar != null){
+				
+				// if the clicked character is the selected don't switch
+				if (clickedChar == selected){
+					clickedChar.isClicked = false;
+					clickedChar = null;
+				}
+				else{
+					menuState = MenuState.PEEKING;					
+					return;
+				}
+			}
+			else{
+				if (clickedChar!=null){
+					clickedChar.isClicked = false;
+					clickedChar = null;
+				}
+			}
+		
 //		if (!tutorialSteps.currStep().text.equals(prevText) && InputController.pressedEnter()){
 //			if (tutorialSteps.textDone < tutorialSteps.step.text.length()){
 //				if (tutorialSteps.step.text.charAt(tutorialSteps.textDone) == '\n'){

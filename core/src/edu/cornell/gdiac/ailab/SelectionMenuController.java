@@ -20,7 +20,7 @@ public class SelectionMenuController {
 		PEEKING
 	}
 	
-	private MenuState menuState;
+	protected MenuState menuState;
 	/** Models */
 	GridBoard board;
 	List<Character> characters;
@@ -109,8 +109,6 @@ public class SelectionMenuController {
 					}
 				}
 				
-				updateVariables();
-				
 				int numSlots = selected.getActionBar().getUsableNumSlots();
 				if (menu.canAct(numSlots) && action != null){
 					drawHighlights();
@@ -166,7 +164,7 @@ public class SelectionMenuController {
 		
 	}
 	
-	private void checkForClicked(){
+	protected void checkForClicked(){
 		for (Character c : characters){
 			if (c.isClicked){
 				clickedChar = c;

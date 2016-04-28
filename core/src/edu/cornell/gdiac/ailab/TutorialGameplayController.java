@@ -168,6 +168,7 @@ public class TutorialGameplayController extends GameplayController{
 	}
 
 	public void drawPlay(GameCanvas canvas){
+    	
     	// temporary hacky code to show that you have won without destroying the canvas
     	// will definately need to rewrite this portion
 		if (this.gameOver() && inGameState == InGameState.WARNING){
@@ -199,6 +200,9 @@ public class TutorialGameplayController extends GameplayController{
     	board.draw(canvas);
     	drawCharacters(canvas);
         animations.draw(canvas,board,inGameState);
+        
+		// draw the description box
+    	this.drawDescriptionBox(canvas);
 
         textMessages.draw(canvas,board);
         if (prompt != null){
