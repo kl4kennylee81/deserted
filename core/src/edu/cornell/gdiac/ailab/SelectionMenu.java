@@ -34,7 +34,7 @@ public class SelectionMenu {
 
 	public static final float TEXT_ACTION_OFFSET = 30f;
 
-	private static final float RELATIVE_DESCRIPTION_Y_POS = 0.65f;
+	private static final float RELATIVE_DESCRIPTION_Y_POS = Constants.DESCRIPTION_BOX_RELATIVE_HEIGHT*0.6f + Constants.DESCRIPTION_BOX_RELATIVE_Y_POS;
 	
 	private static final float RELATIVE_DESCRIPTION_X_POS = 0.5f;
 
@@ -352,7 +352,7 @@ public class SelectionMenu {
 		if (selectedAction < actions.length){
 			float descript_x = RELATIVE_DESCRIPTION_X_POS *w;
 			float descript_y = RELATIVE_DESCRIPTION_Y_POS * h;
-			canvas.drawCenteredText(actions[selectedAction].description, descript_x,descript_y, Color.WHITE);
+			canvas.drawCenteredText(actions[selectedAction].description, descript_x,descript_y, Color.DARK_GRAY);
 		}
 	}
 	
