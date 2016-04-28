@@ -102,11 +102,11 @@
 
 90:
   name: Tutorial1Ally
-  health: 10
-  maxHealth: 10
+  health: 2
+  maxHealth: 2
   hexColor: 3299FFFF
-  speed: 1.
-  castSpeed: 4.2
+  speed: 3.
+  castSpeed: 7.
   slots: 4
   availableActions:
     - 0
@@ -120,11 +120,12 @@
   health: 2
   maxHealth: 10
   hexColor: FF9900FF
-  speed: 6.
-  castSpeed: 5.5
-  slots: 4
+  speed: 2.
+  castSpeed: 7.
+  slots: 2
   availableActions:
     - 0
+    - 4
   texture: "models/CHARA_5.png"
   icon: "models/tutorial_characters/basic_icon.png"
   animationId: 103
@@ -132,10 +133,10 @@
 92:
   name: Tutorial2Ally
   health: 2
-  maxHealth: 10
+  maxHealth: 2
   hexColor: 3299FFFF
-  speed: 5.
-  castSpeed: 5.
+  speed: 4.5
+  castSpeed: 7.
   slots: 4
   availableActions:
     - 0
@@ -147,10 +148,10 @@
 93:
   name: Tutorial2Enemy
   health: 2
-  maxHealth: 10
+  maxHealth: 2
   hexColor: FF9900FF
-  speed: 2.
-  castSpeed: 2.
+  speed: 0.
+  castSpeed: 7.
   slots: 2
   availableActions:
     - 4
@@ -161,10 +162,10 @@
 94:
   name: Tutorial3Ally
   health: 4
-  maxHealth: 10
+  maxHealth: 4
   hexColor: 3299FFFF
-  speed: 5.
-  castSpeed: 5.
+  speed: 4.5
+  castSpeed: 7.
   slots: 4
   availableActions:
     - 0
@@ -175,27 +176,11 @@
 
 95:
   name: Tutorial3Enemies
-  health: 2
-  maxHealth: 10
+  health: 4
+  maxHealth: 4
   hexColor: FF9900FF
-  speed: 4.9
-  castSpeed: 5.4
-  slots: 2
-  availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
-  animationId: 103
-
-96:
-  # identical to 95
-  name: Tutorial3Enemies
-  health: 2
-  maxHealth: 10
-  hexColor: FF9900FF
-  speed: 4.9
-  castSpeed: 5.4
+  speed: 0.
+  castSpeed: 7.
   slots: 2
   availableActions:
     - 0
@@ -206,11 +191,11 @@
 
 97:
   name: Tutorial4Ally
-  health: 2
-  maxHealth: 10
+  health: 4
+  maxHealth: 4
   hexColor: 3299FFFF
-  speed: 5.
-  castSpeed: 5.
+  speed: 4.5
+  castSpeed: 7.
   slots: 4
   availableActions:
     - 0
@@ -220,90 +205,12 @@
   animationId: 101
 
 98:
-  # identical to 96
   name: Tutorial4Enemies
-  health: 6
-  maxHealth: 10
+  health: 4
+  maxHealth: 4
   hexColor: FF9900FF
-  speed: 4.9
+  speed: 2.
   castSpeed: 7.
-  slots: 2
-  availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
-  animationId: 103
-
-99:
-  # identical to 96
-  name: Tutorial4Enemies
-  health: 6
-  maxHealth: 10
-  hexColor: FF9900FF
-  speed: 4.9
-  castSpeed: 7.
-  slots: 2
-  availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
-  animationId: 103
-
-100:
-  # identical to 96
-  name: Tutorial4Enemies
-  health: 6
-  maxHealth: 10
-  hexColor: FF9900FF
-  speed: 4.9
-  castSpeed: 7.
-  slots: 2
-  availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
-  animationId: 103
-
-101:
-  name: Tutorial5Ally
-  health: 10
-  maxHealth: 10
-  hexColor: 3299FFFF
-  speed: 5.
-  castSpeed: 5.
-  slots: 4
-  availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/CASTICON_5.png"
-  animationId: 101
-
-102:
-  name: Tutorial5Enemies
-  health: 6
-  maxHealth: 10
-  hexColor: FF9900FF
-  speed: 4.9
-  castSpeed: 5.4
-  slots: 2
-  availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
-  animationId: 103
-
-103:
-  name: Tutorial5Enemies
-  health: 6
-  maxHealth: 10
-  hexColor: FF9900FF
-  speed: 4.9
-  castSpeed: 5.2
   slots: 2
   availableActions:
     - 0
@@ -313,28 +220,28 @@
   animationId: 103
 
 104:
-  name: Tutorial6Ally
-  health: 10
-  maxHealth: 10
+  name: Tutorial5Ally
+  health: 4
+  maxHealth: 4
   hexColor: FF9900FF
-  speed: 2.5
-  castSpeed: 3.
+  speed: 4.5
+  castSpeed: 7.
   slots: 4
   availableActions:
     - 0
     - 4
-    - 6
+    - 9
   texture: "models/CHARA_4.png"
   icon: "models/CASTICON_4.png"
-  animationId: 102
+  animationId: 101
 
 105:
-  name: Tutorial6Enemies
-  health: 6
-  maxHealth: 10
+  name: Tutorial5Enemies
+  health: 2
+  maxHealth: 2
   hexColor: FF9900FF
-  speed: 4.9
-  castSpeed: 2.
+  speed: 0.5
+  castSpeed: 7.
   slots: 2
   availableActions:
     - 0
@@ -344,42 +251,44 @@
   animationId: 103
 
 106:
-  name: Tutorial6Enemies
-  health: 6
-  maxHealth: 10
+  name: Tutorial6Ally
+  health: 4
+  maxHealth: 4
   hexColor: FF9900FF
-  speed: 4.9
-  castSpeed: 2.
-  slots: 2
+  speed: 4.5
+  castSpeed: 7.
+  slots: 4
   availableActions:
     - 0
     - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
-  animationId: 103
+    - 9
+    - 2
+  texture: "models/CHARA_4.png"
+  icon: "models/CASTICON_4.png"
+  animationId: 101
 
 107:
-  name: Tutorial6Enemies
-  health: 6
-  maxHealth: 10
+  name: Tutorial6Shield
+  health: 4
+  maxHealth: 4
   hexColor: FF9900FF
-  speed: 4.9
-  castSpeed:  2.
+  speed: 2.
+  castSpeed: 7.
   slots: 2
   availableActions:
     - 0
-    - 4
+    - 16
   texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
-  animationId: 103
+  icon: "models/tutorial_characters/basic_iconblue.png"
+  animationId: 105
 
-108:
-  name: Tutorial8Ally
-  health: 10
-  maxHealth: 10
+109:
+  name: Tutorial7Ally
+  health: 4
+  maxHealth: 4
   hexColor: FF9900FF
-  speed: 3.
-  castSpeed: 2.
+  speed: 4.5
+  castSpeed: 7.
   slots: 4
   availableActions:
     - 0
@@ -390,24 +299,22 @@
   icon: "models/CASTICON_4.png"
   animationId: 102
 
-109:
-  name: Tutorial8Enemy1
+110:
+  name: Tutorial7Single
   health: 4
   maxHealth: 10
   hexColor: FF9900FF
-  speed: 4.9
-  castSpeed:  2.
+  speed: 2.
+  castSpeed: 7.
   slots: 2
   availableActions:
     - 0
     - 3
-    - 2
-    - 9
   texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_iconblue.png"
-  animationId: 105
+  icon: "models/tutorial_characters/basic_iconyellow.png"
+  animationId: 107
 
-110:
+111:
   name: Tutorial8Enemy2
   health: 4
   maxHealth: 10
@@ -424,7 +331,7 @@
   icon: "models/tutorial_characters/basic_iconblue.png"
   animationId: 105
 
-111:
+112:
   name: Tutorial9Ally
   health: 10
   maxHealth: 10
@@ -441,7 +348,7 @@
   icon: "models/CASTICON_4.png"
   animationId: 102
 
-112:
+113:
   name: Tutorial9Enemy1
   health: 4
   maxHealth: 10
@@ -458,7 +365,7 @@
   icon: "models/tutorial_characters/basic_iconblue.png"
   animationId: 105
 
-113:
+114:
   name: Tutorial9Enemy2
   health: 4
   maxHealth: 10
@@ -475,7 +382,7 @@
   icon: "models/tutorial_characters/basic_iconblue.png"
   animationId: 105
 
-114:
+115:
   name: Tutorial9Enemy3
   health: 4
   maxHealth: 10

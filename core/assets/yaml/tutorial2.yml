@@ -1,29 +1,44 @@
 0:
   text: "Level 2"
   paused: true
-  finishGame: true
+  finishGame: false
   levelColor: WHITE
   spaceToContinue: true
   restart: true
   levelName: tutorial2
   nextLevel: tutorial3
-  wrongText: "You have to dodge your opponent's attack! Try again!"
+  wrongText: "You have to avoid your opponent's attack. Try again!"
   rightText: "Well done!"
+  note: player presses space
 
 1:
-  text: "Sometimes moving is the best option"
-  paused: true
-  spaceToContinue: true
+  text: ""
+  paused: false
+  spaceToContinue: false
+  note: when enemy reaches cast time
 
 2:
-  text: ""
+  text: "Click on an enemy to view his attacks"
   paused: false
   spaceToContinue: false
+  note: 
 
-3:
-  text: ""
-  paused: false
-  spaceToContinue: false
+
+
+# 2:
+#   text: "hi 2"
+#   paused: true
+#   spaceToContinue: true
+
+# 2:
+#   text: ""
+#   paused: false
+#   spaceToContinue: false
+
+# 3:
+#   text: ""
+#   paused: false
+#   spaceToContinue: false
 
 # 4:
   # text: ""

@@ -24,7 +24,7 @@ public class CharActionBar {
 	private static final float Y_SPACING = 0.065f;
 	
 	// make this in terms of the max speed after applying speed modifier
-	public static float MAX_TIME = 30;
+	public static float MAX_TIME = 24;
 	
 	public static float HEALTH_TIME_PROPORTION = 1.0f;
 	

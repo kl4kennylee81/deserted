@@ -6,7 +6,6 @@
   spaceToContinue: true
   restart: true
   levelName: tutorial4
-  nextLevel: tutorial5
 
 1:
   text: "Use INTERRUPTs to your advantage!"

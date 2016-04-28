@@ -9,23 +9,13 @@
   nextLevel: tutorial7
 
 1:
-  text: "When your opponents are too quick you can shield yourself!"
+  text: "Blue Shield Minions will protect their allies"
   paused: true
-  spaceToContinue: true
-
-2:
-  text: "But beware because they now have diagonal attacks too!"
-  paused: true
-  spaceToContinue: false
-
-3:
-  text: ""
-  paused: false
   spaceToContinue: false
 
 4:
-  text: ""
-  paused: false
+  text: "Diagonal attacks can hit shielded enemies from unprotected angles"
+  paused: true
   spaceToContinue: false
 
 5:

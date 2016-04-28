@@ -48,10 +48,10 @@
     numRounds: 0
     magnitude: 0
   description: Instant diagonal attack
-  animationId: 0
+  animationId: 1
 3:
   name: Single
-  cost: 4
+  cost: 2
   damage: 2
   range: 5
   size: 1
@@ -82,12 +82,8 @@
     name: Regular
     numRounds: 0
     magnitude: 0
-  description: Launch a projectile 4 tiles straight ahead for 2 damage
-  persisting_action:
-    numRounds: 10
-    moveSpeed: 0.05
-  animationId: 0
-  projectileAnimationId: 2
+  description: Hit 4 tiles straight ahead for 2 damage
+  animationId: 1
 
 5:
   name: Diagonal

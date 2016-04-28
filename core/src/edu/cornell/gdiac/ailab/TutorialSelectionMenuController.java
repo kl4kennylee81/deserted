@@ -8,6 +8,7 @@ import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.ailab.TutorialSteps.TutorialAction;
 
 public class TutorialSelectionMenuController extends SelectionMenuController{
+	private static String prevText = "";
 	TutorialSteps tutorialSteps;
 
 	public TutorialSelectionMenuController(GridBoard board, List<Character> chars, TutorialSteps tutorialSteps) {
@@ -17,20 +18,21 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 	}
 
 	public void update(){
-		if (InputController.pressedSpace()){
-			if (tutorialSteps.textDone < tutorialSteps.step.text.length()){
-				if (tutorialSteps.step.text.charAt(tutorialSteps.textDone) == '\n'){
-					tutorialSteps.prevTextDone = tutorialSteps.textDone;
-					tutorialSteps.textDone++;
-				} else {
-					int pt = tutorialSteps.step.text.indexOf('\n', tutorialSteps.prevTextDone);
-					int t = tutorialSteps.step.text.indexOf('\n', tutorialSteps.textDone);
-//					System.out.println("prevTextDone:"+tutorialSteps.prevTextDone + " textDone:" + tutorialSteps.textDone + " pt:" + pt + " t:" + t);
-					if (pt != -1) tutorialSteps.prevTextDone = pt == t? tutorialSteps.prevTextDone: pt;
-					tutorialSteps.textDone = t == -1? tutorialSteps.step.text.length(): t;
-				}
-			}
-		}
+//		if (!tutorialSteps.currStep().text.equals(prevText) && InputController.pressedEnter()){
+//			if (tutorialSteps.textDone < tutorialSteps.step.text.length()){
+//				if (tutorialSteps.step.text.charAt(tutorialSteps.textDone) == '\n'){
+//					tutorialSteps.prevTextDone = tutorialSteps.textDone;
+//					tutorialSteps.textDone++;
+//				} else {
+//					int pt = tutorialSteps.step.text.indexOf('\n', tutorialSteps.prevTextDone);
+//					int t = tutorialSteps.step.text.indexOf('\n', tutorialSteps.textDone);
+////					System.out.println("prevTextDone:"+tutorialSteps.prevTextDone + " textDone:" + tutorialSteps.textDone + " pt:" + pt + " t:" + t);
+//					if (pt != -1) tutorialSteps.prevTextDone = pt == t? tutorialSteps.prevTextDone: pt;
+//					tutorialSteps.textDone = t == -1? tutorialSteps.step.text.length(): t;
+//				}
+//			}
+//			return;
+//		}
 		if (selected != null){
 			updateVariables();
 			int numSlots = selected.getActionBar().getUsableNumSlots();
@@ -71,7 +73,10 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 				if (correctAction()){
 					updateTargetedAction();
 					prompt = "Choose a Target";
-					if (tutorialSteps.stepOnSelection) tutorialSteps.nextStep();
+					if (tutorialSteps.stepOnSelection) {
+						prevText = tutorialSteps.currStep().text;
+						tutorialSteps.nextStep();
+					}
 					if (tutorialSteps.currStep() != null) TutorialGameplayController.targetPauseTime = tutorialSteps.currStep().timeToPause;
 					TutorialGameplayController.pauseTimer = 0;
 				} else {
@@ -84,7 +89,11 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 					selected.setQueuedActions(menu.getQueuedActions());
 					selected = null;
 					resetNeedsShadow();
-					if (tutorialSteps.stepOnSelection) tutorialSteps.nextStep();
+					if (tutorialSteps.stepOnSelection) {
+						prevText = tutorialSteps.currStep().text;
+						tutorialSteps.nextStep();
+						
+					}
 					if (tutorialSteps.currStep() != null) TutorialGameplayController.targetPauseTime = tutorialSteps.currStep().timeToPause;
 					TutorialGameplayController.pauseTimer = 0;
 				} else {
@@ -147,7 +156,10 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 				menu.add(anPool.newActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 				menu.setChoosingTarget(false);
 				menu.resetPointer(numSlots);
-				if (tutorialSteps.stepOnSelection) tutorialSteps.nextStep();
+				if (tutorialSteps.stepOnSelection) {
+					prevText = tutorialSteps.currStep().text;
+					tutorialSteps.nextStep();
+				}
 				if (tutorialSteps.currStep() != null) TutorialGameplayController.targetPauseTime = tutorialSteps.currStep().timeToPause;
 				TutorialGameplayController.pauseTimer = 0;
 			} else {

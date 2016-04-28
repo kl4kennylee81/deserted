@@ -33,9 +33,6 @@ public class TutorialAIController {
 	}
 	
 	public void setActions(){
-		System.out.println("suck me balls");
-		System.out.println(tutorialSteps.getActions());
-		System.out.println(tutorialSteps.step.text);
 		if (tutorialSteps.getActions() == null){
 			return;
 		}

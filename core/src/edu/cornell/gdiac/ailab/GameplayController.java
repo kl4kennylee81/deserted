@@ -43,7 +43,7 @@ public class GameplayController {
     protected String prompt;
     
     public int warningTime;
-    public final static int WARNING_DONE_TIME = 80;
+    public final static int WARNING_DONE_TIME = 120;
     
     /** Current state of game */
     protected InGameState inGameState;
@@ -136,9 +136,17 @@ public class GameplayController {
     		break;
     	case WARNING:
     		warningTime++;
-    		if (warningTime == WARNING_DONE_TIME){
+    		if (warningTime == WARNING_DONE_TIME || InputController.pressedEnter()){
     			warningTime = 0;
     			inGameState = InGameState.DONE;
+    			if (this.isTutorial){
+	    			if (this.leftsideDead()){
+	    				GameEngine.nextLevel = TutorialSteps.levelName;
+	    			}
+	    			else if (this.rightsideDead()){
+	    				GameEngine.nextLevel = TutorialSteps.nextLevel;
+	    			}
+    			}
     		}
     		return;
 		default:
@@ -147,20 +155,10 @@ public class GameplayController {
     	updateTextMessages();
     	removeDead();
     	if (gameOver()){
-    		inGameState = InGameState.DONE;
-    		if (this.isTutorial){
-    		// @ishaan shouldn't you only be doing this if your in a tutorial level
-    		// we shouldnt be checking this everytime. i'm getting a null pointer from this stuff
-	    		
-    			if (!TutorialSteps.levelName.equals("") && leftsideDead()){
-	    			GameEngine.nextLevel = TutorialSteps.levelName;
-	    			TutorialSteps.setWarning((TutorialSteps.wrongText.equals("")? "Try again!" : TutorialSteps.wrongText), false);
-	    			System.out.println("TEST TEST TEST TEST TEST TEST2");
-	    			inGameState = InGameState.WARNING;
-	    		} else {
-	    			TutorialSteps.setWarning((TutorialSteps.rightText.equals("")? "Well Done!" : TutorialSteps.rightText), true);
-	    			inGameState = InGameState.WARNING;
-	    		}
+    		// you are set to done after the warning
+    		if (inGameState != InGameState.DONE){
+    			inGameState = InGameState.WARNING;
+    			return;
     		}
     		if(GameEngine.dataGen){
     			dataFile.writeString(jsonArray.toString(), false);
@@ -181,10 +179,20 @@ public class GameplayController {
     }
     
     public void drawPlay(GameCanvas canvas){
-    	if (inGameState == InGameState.WARNING) {
-    		TutorialSteps.drawWarningText(canvas);
-    		return;
+    	// not sure why this is needed
+//    	if (this.isTutorial && inGameState == InGameState.WARNING) {
+//    		TutorialSteps.drawWarningText(canvas);
+//    		return;
+//    	}
+    	// temporary hacky code to show that you have won without destroying the canvas
+    	// will definately need to rewrite this portion
+		if (this.gameOver() && this.rightsideDead() && inGameState == InGameState.WARNING){
+    		canvas.drawCenteredText("You have Won", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
     	}
+		else if (this.gameOver() && this.leftsideDead() && inGameState == InGameState.WARNING){
+    		canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);			
+		}
+		
         screen.draw(canvas);
     	board.draw(canvas);
     	drawCharacters(canvas);
@@ -254,7 +262,7 @@ public class GameplayController {
     }
     
     public boolean gameOver(){
-    	return leftsideDead() || rightsideDead();
+    	return (leftsideDead() || rightsideDead());
     }
     
     public boolean isDone(){

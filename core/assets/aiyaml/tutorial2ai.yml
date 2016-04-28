@@ -1,0 +1,4 @@
+ROOT:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK]

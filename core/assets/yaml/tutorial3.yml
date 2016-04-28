@@ -1,7 +1,7 @@
 0:
   text: "Level 3"
   paused: true
-  finishGame: true
+  finishGame: false
   levelColor: WHITE
   spaceToContinue: true
   restart: true
@@ -11,31 +11,22 @@
   rightText: "Well done!"
 
 1:
-  text: "After planning an attack if you get hit before it goes off you get INTERRUPTED"
+  text: "Hover over an enemy to highlight his action bar"
   paused: true
   spaceToContinue: true
 
 2:
-  text: "INTERRUPT your opponent"
-  paused: true
+  text: ""
+  paused: false
   spaceToContinue: false
+  note: enemy is faster so he reaches cast time
 
 3:
-  text: "Don't get INTERRUPTED yourself!"
+  text: "After planning an attack if you get hit before it goes off you get INTERRUPTED"
   paused: true
-  spaceToContinue: false
+  spaceToContinue: true
 
 4:
-  text: ""
-  paused: false
-  spaceToContinue: false
-
-5:
-  text: ""
-  paused: false
-  spaceToContinue: false
-
-6:
-  text: ""
-  paused: false
+  text: "Don't get INTERRUPTED yourself!"
+  paused: true
   spaceToContinue: false

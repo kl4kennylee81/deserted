@@ -151,6 +151,8 @@ public class TacticalManager extends ConditionalManager{
 			return (LeafNode) n;
 		}
 		IndexNode index = (IndexNode) n;
+		//System.out.println(index);
+		//System.out.println(index.conditions);
 		for(int i = 0; i < index.conditions.size(); i++){
 			List<String> conds = index.conditions.get(i);
 			//System.out.println(conds.toString());
@@ -162,6 +164,8 @@ public class TacticalManager extends ConditionalManager{
 				}
 			}
 			if(matched){
+//				System.out.println(conds.toString());
+//				System.out.println(index.decisions.get(i).toString());
 //				DecisionNode x = nodeMap.get(index.decisions.get(i));
 //				if(x instanceof LeafNode){
 //					LeafNode l = (LeafNode) x;
@@ -171,9 +175,9 @@ public class TacticalManager extends ConditionalManager{
 //						System.out.println("-----------------------------------------------");
 //					}
 //				}
-				if(nodeMap.get(index.decisions.get(i)) == null){
-					System.out.println(conds.toString());
-				}
+//				if(nodeMap.get(index.decisions.get(i)) == null){
+//					System.out.println(conds.toString());
+//				}
 				return traverse(nodeMap.get(index.decisions.get(i)));
 			}
 		}

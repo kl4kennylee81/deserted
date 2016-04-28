@@ -1,9 +1,20 @@
 0:
-  text: "Level 7"
+  text: "Level 8"
   paused: true
   finishGame: false
   levelColor: WHITE
   spaceToContinue: true
   restart: true
-  levelName: tutorial7
-  nextLevel: tutorial8
+  levelName: tutorial8
+  nextLevel: tutorial9
+
+1:
+  text: "Yellow Rock can bypass your shield! So beware"
+  paused: true
+  spaceToContinue: true
+  highlightRegions:
+    - xPos: 0.5
+      yPos: 0.15
+      width: 0.1
+      height: 0.22
+      arrow: down

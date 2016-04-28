@@ -19,7 +19,7 @@ ROCK_ATTACK:
 ROCK_POSITION:
   type: index
   branch_type: POSITION
-  attack_square_adjacent_quick: MOVE_ATTACK
+  adjacent_attack_square_quick: MOVE_ATTACK
   default: MOVE_GOAL_ATTACK
 
 QUICK_QUICK:

@@ -1,0 +1,52 @@
+ROOT:
+  type: index
+  no_interrupt_chance: FIGHTER_QUICK_SHIELD
+  low_interrupt_chance/quick_attack_can_hit: FIGHTER_QUICK_MOVE_SHIELD
+  low_interrupt_chance/adjacent_attack_square_quick: FIGHTER_MOVE_QUICK_SHIELD
+  low_interrupt_chance: FIGHTER_QUICK_MOVE_SHIELD
+  medium_interrupt_chance/adjacent_attack_square_quick: FIGHTER_MOVE_QUICK_SHIELD
+  medium_interrupt_chance: FIGHTER_MOVE_MOVE_SHIELD
+  adjacent_attack_square: FIGHTER_MOVE_QUICK_MOVE
+  default: FIGHTER_MOVE_MOVE_SHIELD
+  
+FIGHTER_POSITION:
+  type: index
+  branch_type: POSITION
+  attack_square_adjacent: FIGHTER_MOVE_QUICK_SHIELD
+  default: FIGHTER_MOVE_MOVE_SHIELD
+  
+FIGHTER_QUICK_SHIELD:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, SHIELD]
+
+FIGHTER_QUICK_MOVE_SHIELD:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, MOVE_DEFENSIVE, SHIELD]
+  
+FIGHTER_QUICK_MOVE_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, MOVE_GOAL, MOVE_GOAL]  
+  
+FIGHTER_MOVE_QUICK_SHIELD:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, QUICK_ATTACK, SHIELD]
+  
+
+FIGHTER_MOVE_MOVE_SHIELD:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, MOVE_GOAL, SHIELD]   
+  
+FIGHTER_MOVE_MOVE_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, MOVE_GOAL, QUICK_ATTACK]  
+  
+FIGHTER_MOVE_POWER:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, POWERFUL_ATTACK]  

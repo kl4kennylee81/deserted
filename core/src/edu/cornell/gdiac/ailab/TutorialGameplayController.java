@@ -19,6 +19,7 @@ public class TutorialGameplayController extends GameplayController{
 	boolean curPaused;
 	public static int pauseTimer;
 	public static int targetPauseTime;
+	
 
 	/** State when tutorial is not paused */
 	InGameState regGameState;
@@ -58,22 +59,11 @@ public class TutorialGameplayController extends GameplayController{
 				tutorialSteps.timeElapsed += 1;
 			}
 		}
-		System.out.println("curstep is " + tutorialSteps.curStep);
 		if (tutorialSteps.isDone()){
-			if (gameOver() && !TutorialSteps.levelName.equals("") && leftsideDead()){
-    			GameEngine.nextLevel = TutorialSteps.levelName;
-    			TutorialSteps.setWarning((TutorialSteps.wrongText.equals("")? "Try again!" : TutorialSteps.wrongText), false);
-    			System.out.println("TEST TEST TEST TEST TEST TEST1");
-    			inGameState = InGameState.WARNING;
-    		} else if (gameOver()){
-    			TutorialSteps.setWarning((TutorialSteps.rightText.equals("")? "Well Done!" : TutorialSteps.rightText), true);
-    			inGameState = InGameState.WARNING;
-    		}
 			super.update();
 			return;
 		}
     	screen.noScreen();
-    	System.out.println("game state is " + inGameState);
     	switch(inGameState){
     	case NORMAL:
     		// update the character models
@@ -93,10 +83,8 @@ public class TutorialGameplayController extends GameplayController{
     				regGameState = inGameState;
     			}
     			inGameState = InGameState.PAUSED;
-    			//System.out.println(inGameState);
     			if (tutorialSteps.currStep().actions.size() == 0) super.aiController.update(); 
     			else aiController.update();
-    			System.out.println("from ai, curstep is " + tutorialSteps.curStep);
     		}
     		if (actionBarController.isAttack){
     			inGameState = InGameState.ATTACK;
@@ -142,10 +130,15 @@ public class TutorialGameplayController extends GameplayController{
     		break;
     	case WARNING:
     		warningTime++;
-    		System.out.println("warning time is " + warningTime + "donw time is " + WARNING_DONE_TIME);
-    		if (warningTime == WARNING_DONE_TIME || InputController.pressedSpace()){
+    		if (warningTime == WARNING_DONE_TIME || InputController.pressedEnter()){
     			warningTime = 0;
     			inGameState = InGameState.DONE;
+    			if (this.leftsideDead()){
+    				GameEngine.nextLevel = TutorialSteps.levelName;
+    			}
+    			else if (this.rightsideDead()){
+    				GameEngine.nextLevel = TutorialSteps.nextLevel;
+    			}
     		}
     		return;
 		default:
@@ -156,15 +149,10 @@ public class TutorialGameplayController extends GameplayController{
     	updateTextMessages();
     	removeDead();
     	if (gameOver()){
-    		inGameState = InGameState.DONE;
-    		if (!TutorialSteps.levelName.equals("") && leftsideDead()){
-    			GameEngine.nextLevel = TutorialSteps.levelName;
-    			TutorialSteps.setWarning((TutorialSteps.wrongText.equals("")? "Try again!" : TutorialSteps.wrongText), false);
-    			System.out.println("TEST TEST TEST TEST TEST TEST2");
+    		// you are set to done state after the warning time has elapsed
+    		if (inGameState != InGameState.DONE){
     			inGameState = InGameState.WARNING;
-    		} else {
-    			TutorialSteps.setWarning((TutorialSteps.rightText.equals("")? "Well Done!" : TutorialSteps.rightText), true);
-    			inGameState = InGameState.WARNING;
+    			return;
     		}
     		if(GameEngine.dataGen){
     			dataFile.writeString(jsonArray.toString(), false);
@@ -175,16 +163,21 @@ public class TutorialGameplayController extends GameplayController{
     }
 
 	public boolean isDone(){
-//		System.out.println("isDone: " + (tutorialSteps.finishGame && tutorialSteps.isDone() && inGameState != InGameState.PAUSED || super.isDone()));
 		boolean endNow = false;//take this from the yaml file eventually
 		return (tutorialSteps.finishGame && tutorialSteps.isDone() && inGameState != InGameState.PAUSED || super.isDone()) || endNow;
 	}
 
 	public void drawPlay(GameCanvas canvas){
-		if (inGameState == InGameState.WARNING) {
-			TutorialSteps.drawWarningText(canvas);
+    	// temporary hacky code to show that you have won without destroying the canvas
+    	// will definately need to rewrite this portion
+		if (this.gameOver() && inGameState == InGameState.WARNING){
+			super.drawPlay(canvas);
 			return;
 		}
+    	else if (this.isTutorial && inGameState == InGameState.WARNING) {
+    		TutorialSteps.drawWarningText(canvas);
+    		return;
+    	}
 		if (isDone()){
 			return;
 		}
@@ -253,7 +246,7 @@ public class TutorialGameplayController extends GameplayController{
 			if (tutorialSteps.currStep() != null) targetPauseTime = tutorialSteps.currStep().timeToPause;
 			return;
 		}
-		if ((InputController.pressedSpace() || InputController.pressedLeftMouse()) && inGameState == InGameState.PAUSED){
+		if ((InputController.pressedEnter() || InputController.pressedLeftMouse()) && inGameState == InGameState.PAUSED){
 			if (tutorialSteps.textDone == tutorialSteps.step.text.length()){
 				//System.out.println("next step 4");
 				tutorialSteps.nextStep();
@@ -291,7 +284,7 @@ public class TutorialGameplayController extends GameplayController{
     public void drawAfter(GameCanvas canvas){
 	    canvas.drawTutorialText("“Congratulations on completing this Tutorial segment. "
 	    		+ "\n\nPress \'R\' to return to the main menu where you can "
-	    		+ "select another level \n\nor press Spacebar to move on to the next Tutorial segment", Color.BLACK, Align.center);
+	    		+ "select another level \n\nor Press Enter to move on to the next Tutorial segment", Color.BLACK, Align.center);
     }
 }
 

@@ -196,7 +196,6 @@ public class TutorialSteps {
 	}
 
 	public boolean isDone() {
-		System.out.println("curStep: " + curStep + " steps size: " + steps.size());
 		return curStep >= steps.size();
 	}
 
@@ -254,7 +253,7 @@ public class TutorialSteps {
 				&& (textDone == step.text.length() || step.text.charAt(textDone) == '\n')) {
 			// canvas.drawTutorialText("\n\n\nPress Spacebar to Continue",
 			// Color.WHITE);
-			toWrite += "\n\nPress Spacebar or Click anywhere to continue";
+			toWrite += "\n\nPress Enter or Click anywhere to continue";
 		}
 		if (step != null) {
 			canvas.drawTutorialText(toWrite, levelColor == null ? Color.WHITE : levelColor,
