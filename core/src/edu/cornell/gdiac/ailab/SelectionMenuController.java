@@ -109,6 +109,7 @@ public class SelectionMenuController {
 					}
 				}
 				
+				updateVariables();
 				int numSlots = selected.getActionBar().getUsableNumSlots();
 				if (menu.canAct(numSlots) && action != null){
 					drawHighlights();
