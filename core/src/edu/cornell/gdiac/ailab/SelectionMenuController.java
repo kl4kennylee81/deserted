@@ -257,27 +257,29 @@ public class SelectionMenuController {
 		} else if (InputController.pressedUp() && !InputController.pressedDown()){
 			//Actions go from up down, so we need to flip
 			menu.changeSelected(false,numSlots);
+			this.setTargetedAction();
 		} else if (InputController.pressedDown() && !InputController.pressedUp()){
 			menu.changeSelected(true,numSlots);
+			this.setTargetedAction();
 		}
 	}
 	
 	/** 
-	 * Select an action to start targeting
+	 * set one of the targetable squares to targeting so you can
+	 * differentiate between an AOE vs singles
 	 */
-	protected void updateTargetedAction(){
+	protected void setTargetedAction(){
+		if (!action.needsToggle){
+			return;
+		}
 		switch (action.pattern){
 		case STRAIGHT:
-			this.setChoosingTarget(true);
 			break;
 		case SINGLE:
 			this.singleUpdateTargetedAction();
-			this.setChoosingTarget(true);
 			break;
 		case HORIZONTAL:
-			selectedX = board.width - 1 - shadowX;
-			selectedY = 0;
-			this.setChoosingTarget(true);
+			break;
 		case MOVE:
 			if (board.canMove(selected.leftside,shadowX, shadowY+1)){
 				direction = Direction.UP;
@@ -290,7 +292,6 @@ public class SelectionMenuController {
 			} else {
 				System.out.println("do something to tell them they cant move");
 			}
-			this.setChoosingTarget(true);
 			break;
 		case DIAGONAL:
 			if (shadowY < boardHeight/2){
@@ -298,7 +299,6 @@ public class SelectionMenuController {
 			} else {
 				direction = Direction.DOWN;
 			}
-			this.setChoosingTarget(true);
 			break;
 		case SHIELD:
 			if (shadowY < boardHeight/2){
@@ -306,18 +306,24 @@ public class SelectionMenuController {
 			} else {
 				direction = Direction.DOWN;
 			}
-			this.setChoosingTarget(true);
 			break;
 		case INSTANT:
 		case PROJECTILE:
 			this.pathSetChoosingTarget();
-			this.setChoosingTarget(true);
 			break;
 		case NOP:
 			break;
 		default:
 			break;
 		}
+	}
+	
+	/** 
+	 * Select an action to start targeting
+	 */
+	protected void updateTargetedAction(){
+		this.setTargetedAction();
+		this.setChoosingTarget(true);
 	}
 	
 	private void pathSetChoosingTarget(){
@@ -715,7 +721,11 @@ public class SelectionMenuController {
 				
 				else if (choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x,y);
-				} else {
+				} 
+				else if (!choosingTarget && this.direction == Direction.UP){
+					board.setHighlighted(x, y);
+				}
+				else{
 					board.setCanTarget(x, y);
 				}
 				
@@ -737,7 +747,11 @@ public class SelectionMenuController {
 				
 				else if (choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x,y);
-				} else {
+				} 
+				else if (!choosingTarget && this.direction == Direction.DOWN){
+					board.setHighlighted(x, y);
+				}
+				else{
 					board.setCanTarget(x, y);
 				}
 			}
@@ -755,10 +769,14 @@ public class SelectionMenuController {
 					continue;
 				}
 				
-				if (choosingTarget && this.direction == Direction.UP){
+				else if (choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x,y);
-				} else {
-					board.setCanTarget(x,y);
+				} 
+				else if (!choosingTarget && this.direction == Direction.UP){
+					board.setHighlighted(x, y);
+				}
+				else{
+					board.setCanTarget(x, y);
 				}
 			}
 			for (int i = 0; i < action.path.length; i++){
@@ -774,19 +792,21 @@ public class SelectionMenuController {
 					continue;
 				}
 				
-				if (choosingTarget && this.direction == Direction.DOWN){
+				else if (choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x,y);
-				} else {
-					board.setCanTarget(x,y);
+				} 
+				else if (!choosingTarget && this.direction == Direction.DOWN){
+					board.setHighlighted(x, y);
+				}
+				else{
+					board.setCanTarget(x, y);
 				}
 			}
 		}	
 	}
 	public void drawSingle(){
 		if (this.menuState != MenuState.PEEKING){
-			if (choosingTarget){
-				board.setHighlighted(selectedX, selectedY);
-			}
+			board.setHighlighted(selectedX, selectedY);
 			for (int i=0;i<board.getWidth();i++){
 				for (int j = 0;j<board.getHeight();j++){
 					if (this.action.singleCanTarget(selected.getShadowX(),selected.getShadowY(),i,j, selected.leftside, board)){
@@ -842,7 +862,9 @@ public class SelectionMenuController {
 		}
 		board.setCanMove(character.leftside,shadowX, shadowY-1);
 		board.setCanMove(character.leftside,shadowX, shadowY+1);
-		if (choosingTarget){
+		if (direction == null){
+			return;
+		}
 			switch (direction){
 			case UP:
 				board.setHighlighted(shadowX, shadowY+1);
@@ -860,7 +882,6 @@ public class SelectionMenuController {
 				break;
 			}
 		}
-	}
 	
 	public void drawDiagonal(){
 		if (leftside){
@@ -869,28 +890,31 @@ public class SelectionMenuController {
 				board.setCanTarget(shadowX+i, shadowY+i);
 				board.setCanTarget(shadowX+i, shadowY-i);
 			}
-			if (choosingTarget){
-				for (int i = 0; i < action.range; i++){
-					if (direction == Direction.UP){
-						board.setHighlighted(shadowX+i, shadowY+i);
-					} else {
-						board.setHighlighted(shadowX+i, shadowY-i);
-					}
+			if (direction == null){
+				return;
+			}
+			for (int i = 0; i < action.range; i++){
+				if (direction == Direction.UP){
+					board.setHighlighted(shadowX+i, shadowY+i);
+				} else {
+					board.setHighlighted(shadowX+i, shadowY-i);
 				}
 			}
+
 		} else {
 			shadowX--;
 			for (int i = 0; i < action.range; i++){
 				board.setCanTarget(shadowX-i, shadowY+i);
 				board.setCanTarget(shadowX-i, shadowY-i);
 			}
-			if (choosingTarget){
-				for (int i = 0; i < action.range; i++){
-					if (direction == Direction.UP){
-						board.setHighlighted(shadowX-i, shadowY+i);
-					} else {
-						board.setHighlighted(shadowX-i, shadowY-i);
-					}
+			if (direction == null){
+				return;
+			}
+			for (int i = 0; i < action.range; i++){
+				if (direction == Direction.UP){
+					board.setHighlighted(shadowX-i, shadowY+i);
+				} else {
+					board.setHighlighted(shadowX-i, shadowY-i);
 				}
 			}
 		}
@@ -910,7 +934,9 @@ public class SelectionMenuController {
 				board.setCanTarget(shadowX, shadowY-i);
 			}
 		}
-		if (choosingTarget){
+			if (direction == null){
+				return;
+			}
 			// for even you can choose where to position the shield
 			if (action.range % 2 == 0){
 				if (direction == Direction.UP){
@@ -927,7 +953,6 @@ public class SelectionMenuController {
 					board.setHighlighted(shadowX, shadowY-i);
 				}				
 			}
-		}
 	}
 	
 	public boolean isDone(){
