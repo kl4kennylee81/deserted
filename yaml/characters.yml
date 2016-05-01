@@ -112,7 +112,7 @@
     - 0
     - 4
   texture: "models/CHARA_5.png"
-  icon: "models/CASTICON_5.png"
+  icon: "models/bunmage_icon.png"
   animationId: 108
 
 91:
@@ -142,7 +142,7 @@
     - 0
     - 4
   texture: "models/CHARA_5.png"
-  icon: "models/CASTICON_5.png"
+  icon: "models/bunmage_icon.png"
   animationId: 108
 
 93:
@@ -171,7 +171,7 @@
     - 0
     - 4
   texture: "models/CHARA_5.png"
-  icon: "models/CASTICON_5.png"
+  icon: "models/bunmage_icon.png"
   animationId: 108
 
 95:
@@ -201,7 +201,7 @@
     - 0
     - 4
   texture: "models/CHARA_5.png"
-  icon: "models/CASTICON_5.png"
+  icon: "models/bunmage_icon.png"
   animationId: 108
 
 98:
@@ -232,7 +232,7 @@
     - 4
     - 9
   texture: "models/CHARA_4.png"
-  icon: "models/CASTICON_4.png"
+  icon: "models/bunmage_icon.png"
   animationId: 108
 
 105:
