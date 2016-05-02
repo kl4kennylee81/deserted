@@ -16,10 +16,10 @@
   description: Move your character one unit
   animationId: 0
 1:
-  name: Straight
-  cost: 2
+  name: Straight - Tutorial
+  cost: 1
   damage: 2
-  range: 5
+  range: 4
   size: 1
   pattern: STRAIGHT
   oneHit: true
