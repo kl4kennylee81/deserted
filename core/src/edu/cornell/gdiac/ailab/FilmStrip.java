@@ -61,6 +61,15 @@ public class FilmStrip extends TextureRegion {
 		this(texture,rows,cols,rows*cols);
 	}
 	
+	public FilmStrip(FilmStrip fs) {
+		super((TextureRegion) fs);
+		this.cols = fs.cols;
+		this.size = fs.size;
+		this.rwidth = fs.rwidth;
+		this.rheight = fs.rheight;
+		setFrame(0);
+	}
+	
 	/**
 	 * Creates a new filmstrip from the given texture.
 	 * 

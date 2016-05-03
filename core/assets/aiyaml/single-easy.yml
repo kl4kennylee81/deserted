@@ -1,0 +1,17 @@
+SINGLE_BRANCH:
+  branch_type: ATTACK
+  type: index
+  single_in_range: SINGLE
+  default: MOVE_SINGLE
+
+SINGLE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_OPTIMAL]
+  
+MOVE_SINGLE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL]
+
+

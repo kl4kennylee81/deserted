@@ -30,7 +30,7 @@ public class AnimationNode {
 	}
 	
 	public AnimationNode (AnimationNode an){
-		this.animation = an.animation;
+		this.animation = new Animation(an.animation);
 		xPos = yPos = 0;
 		curSegment = curFrameIndex = curFrameDuration = 0;
 	}

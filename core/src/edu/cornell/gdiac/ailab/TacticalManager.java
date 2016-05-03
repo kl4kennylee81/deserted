@@ -155,7 +155,7 @@ public class TacticalManager extends ConditionalManager{
 		//System.out.println(index.conditions);
 		for(int i = 0; i < index.conditions.size(); i++){
 			List<String> conds = index.conditions.get(i);
-			//System.out.println(conds.toString());
+			System.out.println(conds.toString());
 			boolean matched = true;
 			for(String s: conds){
 				if(!map.containsKey(s) || !map.get(s)){
@@ -165,16 +165,16 @@ public class TacticalManager extends ConditionalManager{
 			}
 			if(matched){
 //				System.out.println(conds.toString());
-//				System.out.println(index.decisions.get(i).toString());
-//				DecisionNode x = nodeMap.get(index.decisions.get(i));
-//				if(x instanceof LeafNode){
-//					LeafNode l = (LeafNode) x;
-//					if(l.myTactic == Tactic.SPECIFIC){
-//						System.out.println(selected.name+ ": " + conds.toString());
-//						System.out.println(l.mySpecific.specificActions.toString());
-//						System.out.println("-----------------------------------------------");
-//					}
-//				}
+				System.out.println(index.decisions.get(i).toString());
+				DecisionNode x = nodeMap.get(index.decisions.get(i));
+				if(x instanceof LeafNode){
+					LeafNode l = (LeafNode) x;
+					if(l.myTactic == Tactic.SPECIFIC){
+						System.out.println(selected.name+ ": " + conds.toString());
+						System.out.println(l.mySpecific.specificActions.toString());
+						System.out.println("-----------------------------------------------");
+					}
+				}
 //				if(nodeMap.get(index.decisions.get(i)) == null){
 //					System.out.println(conds.toString());
 //				}
@@ -235,6 +235,8 @@ public class TacticalManager extends ConditionalManager{
 				case MOVE_GOAL:
 					a = moveGoal(c, startSlot, x, y);
 					break;
+				case MOVE_PROTECT:
+					a = moveProtect(c, startSlot, x, y);
 				case RANDOM_DECENT:
 					a = randomDecentMove(c, startSlot, x, y);
 					break;
@@ -689,6 +691,52 @@ public class TacticalManager extends ConditionalManager{
 			return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
 		return anPool.newActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(c, xPos, yPos));
+	}
+	
+	/** 
+	 * Try to move to a square where you could protect an ally with a shield
+	 */
+	private ActionNode moveProtect(Character c, int startPoint, int xPos, int yPos){
+		Action a = move(c);
+		ActionNodes anPool = ActionNodes.getInstance();
+		Direction d = protectDirection(c, xPos, yPos);
+		if(d != Direction.NONE){
+			return anPool.newActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
+		}
+		d = attackingDirection(c, xPos, yPos);
+		if(d != Direction.NONE){
+			d = xPos < board.width/2 ? Direction.RIGHT : Direction.LEFT;
+		}
+		return anPool.newActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, d);
+	}
+	
+	
+	private Direction protectDirection(Character c, int xPos, int yPos){
+		for(Character ally: friends){
+			if(c.leftside){
+				if(ally.xPosition == xPos+1 && Math.abs(ally.yPosition - yPos) == 1 && board.canMove(c.leftside,xPos+1, yPos)){
+					return Direction.RIGHT;
+				}
+				else if(ally.xPosition <= xPos && ally.yPosition - yPos == 2 && board.canMove(c.leftside, xPos, yPos+1)){
+					return Direction.UP;
+				}
+				else if(ally.xPosition <= xPos && yPos - ally.yPosition == 2 && board.canMove(c.leftside,xPos, yPos-1)){
+					return Direction.DOWN;
+				}
+			}
+			else{
+				if(ally.xPosition == xPos -1 && Math.abs(ally.yPosition - yPos) == 1 && board.canMove(c.leftside,xPos - 1, yPos)){
+					return Direction.LEFT;
+				}
+				else if(ally.xPosition >= xPos && ally.yPosition - yPos == 2 && board.canMove(c.leftside, xPos, yPos+1)){
+					return Direction.UP;
+				}
+				else if(ally.xPosition >= xPos && yPos - ally.yPosition == 2 && board.canMove(c.leftside,xPos, yPos-1)){
+					return Direction.DOWN;
+				}
+			}
+		}
+		return Direction.NONE;
 	}
 	
 	
