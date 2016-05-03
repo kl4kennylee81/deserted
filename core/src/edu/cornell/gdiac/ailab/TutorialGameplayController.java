@@ -19,26 +19,25 @@ public class TutorialGameplayController extends GameplayController{
 	boolean curPaused;
 	public static int pauseTimer;
 	public static int targetPauseTime;
-	
+
 
 	/** State when tutorial is not paused */
 	InGameState regGameState;
 
-	/** Subcontroller for selection menu (CONTROLLER CLASS) */
-    protected TutorialSelectionMenuController selectionMenuController;
-
     /** Subcontroller for AI selection (CONTROLLER CLASS) */
     protected TutorialAIController aiController;
 
+    public static int highlight_action = 0;
+
 	public TutorialGameplayController(MouseOverController moc, FileHandle file, int fileNum) {
-		super(moc, file, fileNum);
+		super(moc, file, fileNum, true);
 		// TODO Auto-generated constructor stub
 	}
 
 	public void resetGame(Level level){
 		super.resetGame(level);
 		tutorialSteps = level.getTutorialSteps();
-		selectionMenuController = new TutorialSelectionMenuController(board,characters,tutorialSteps);
+		this.selectionMenuController = new TutorialSelectionMenuController(board,characters,tutorialSteps);
         aiController = new TutorialAIController(board,characters,tutorialSteps);
 		curPaused = false;
 		// update the character models
@@ -60,6 +59,7 @@ public class TutorialGameplayController extends GameplayController{
 			}
 		}
 		if (tutorialSteps.isDone()){
+			//if problem persists, have conditions for if SELECTION mode
 			super.update();
 			return;
 		}
@@ -83,7 +83,7 @@ public class TutorialGameplayController extends GameplayController{
     				regGameState = inGameState;
     			}
     			inGameState = InGameState.PAUSED;
-    			if (tutorialSteps.currStep().actions.size() == 0) super.aiController.update(); 
+    			if (tutorialSteps.currStep().actions.size() == 0) super.aiController.update();
     			else aiController.update();
     		}
     		if (actionBarController.isAttack){
@@ -168,7 +168,7 @@ public class TutorialGameplayController extends GameplayController{
 	}
 
 	public void drawPlay(GameCanvas canvas){
-    	
+
     	// temporary hacky code to show that you have won without destroying the canvas
     	// will definately need to rewrite this portion
 		if (this.gameOver() && inGameState == InGameState.WARNING){
@@ -187,20 +187,41 @@ public class TutorialGameplayController extends GameplayController{
 		if (highlights != null && tutorialSteps.showHighlights){
 	    	for (CurrentHighlight highlight:highlights){
 	    		if (!highlight.isChar) {
-	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(), 
+	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(),
 	    					highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight());
 	    		} else {
-	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(), 
+	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(),
 	    					highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight(), canvas, board);
 	    		}
 	    	}
 	    	screen.noScreen();
 		}
+		if (highlight_action > 0){
+			//make a custom highlight and shift it by highlight_action
+
+    		Character selectedChar = selectionMenuController.selected;
+    		if (selectedChar != null){
+    			int count = 0;
+    			for (int i=0; i< characters.size();i++){
+    				Character c = characters.get(i);
+    				if (c == selectedChar){
+    					count = i+1;
+    					break;
+    				}
+    			}
+    			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + highlight_action*selectedChar.actionBar.getSlotWidth(canvas);
+    			float highlightY = selectedChar.actionBar.getY(canvas, count) - selectedChar.actionBar.getBarHeight(canvas);//characters.indexOf(selectedChar));
+    			screen.addCurrentHighlight(highlightX, highlightY,
+    					0.01f*canvas.getWidth(), 0.1f*canvas.getHeight());
+    			canvas.drawDownTextArrow(highlightX, highlightY, Color.GOLD, "This is where this move will go off");
+    		}
+			//getY: iterate over characters, and when character matches selected character thats the number to pass to getY
+		}
         screen.draw(canvas);
     	board.draw(canvas);
     	drawCharacters(canvas);
         animations.draw(canvas,board,inGameState);
-        
+
 		// draw the description box
     	this.drawDescriptionBox(canvas);
 

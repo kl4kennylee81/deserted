@@ -30,3 +30,18 @@
   text: "Don't get INTERRUPTED yourself!"
   paused: true
   spaceToContinue: false
+
+5:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+6:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+7:
+  text: ""
+  paused: false
+  spaceToContinue: false

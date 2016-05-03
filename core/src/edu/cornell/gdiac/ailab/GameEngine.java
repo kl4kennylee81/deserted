@@ -189,7 +189,7 @@ public class GameEngine implements Screen {
 		mouseOverController = new MouseOverController(canvas);
 
 		editorController = null;
-		gameplayController = new GameplayController(mouseOverController, file, fileNum);
+		gameplayController = new GameplayController(mouseOverController, file, fileNum, false);
 		tutorialGameplayController = new TutorialGameplayController(mouseOverController, file, fileNum);
 		
 		updateMeasures();

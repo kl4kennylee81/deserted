@@ -63,7 +63,7 @@ public class GameplayController {
 		WARNING
 	}
     
-    public GameplayController(MouseOverController moc, FileHandle file, int fileNum){
+    public GameplayController(MouseOverController moc, FileHandle file, int fileNum, boolean isTutorial){
     	mouseOverController = moc;
     	fileNumFile = file;
     	this.fileNum = fileNum;
@@ -123,7 +123,7 @@ public class GameplayController {
     		screen.setJustScreen();
     		mouseOverController.clearAll();
     		mouseOverController.update(selectionMenuController.getMenu(),characters);
-    		selectionMenuController.update();;
+    		selectionMenuController.update();
     		if (selectionMenuController.isDone()){
     			inGameState = InGameState.NORMAL;
     			prompt = null;
@@ -208,6 +208,26 @@ public class GameplayController {
     		canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);			
 		}
 		
+		if (TutorialGameplayController.highlight_action > 0){
+			//make a custom highlight and shift it by highlight_action
+			 
+    		Character selectedChar = selectionMenuController.selected;
+    		if (selectedChar != null){
+    			int count = 0;
+    			for (int i=0; i< characters.size();i++){
+    				Character c = characters.get(i);
+    				if (c == selectedChar){
+    					count = i+1;
+    					break;
+    				}
+    			}
+    			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + selectedChar.actionBar.getSlotWidth(canvas);
+    			float highlightY = selectedChar.actionBar.getY(canvas, count) - selectedChar.actionBar.getBarHeight(canvas);//characters.indexOf(selectedChar));
+    			screen.addCurrentHighlight(highlightX, highlightY, 
+    					0.01f*canvas.getWidth(), 0.1f*canvas.getHeight());
+    		}
+			//getY: iterate over characters, and when character matches selected character thats the number to pass to getY
+		}
         screen.draw(canvas);
     	board.draw(canvas);
     	

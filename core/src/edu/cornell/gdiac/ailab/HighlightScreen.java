@@ -76,14 +76,6 @@ public class HighlightScreen {
 	
 	public void addCurrentHighlight(double x, double y, double x_width, double y_width){
 		currentHighlights.add(new TextureRegion(screen,(int)x,(int)y,(int)x_width,(int)y_width));
-		if ((int)y < minY){
-			minY = (int)y;
-		}
-		if ((int)y > maxY){
-			maxY = (int)y;
-		}
-		x_s.add((int)x);
-		x_s.add((int)x+(int)x_width);
 		
 		
 	}

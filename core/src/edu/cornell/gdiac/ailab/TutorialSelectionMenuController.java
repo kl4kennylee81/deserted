@@ -2,6 +2,8 @@ package edu.cornell.gdiac.ailab;
 
 import java.util.List;
 
+import org.omg.CORBA.SystemException;
+
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
@@ -23,27 +25,50 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 			super.update();
 			return;
 		}
-			checkForClicked();
-			// FIXUP will fix this conditions just need it for the playtest
-			if (clickedChar != null){
-				
-				// if the clicked character is the selected don't switch
-				if (clickedChar == selected){
-					clickedChar.isClicked = false;
-					clickedChar = null;
+		switch (super.menuState) {
+		case SELECTING:
+			if (!choosingTarget){
+				if (selected == null) {
+					super.menuState = MenuState.WAITING;
 				}
-				else{
-					menuState = MenuState.PEEKING;					
-					return;
+			}
+			break;
+		case WAITING:
+			for (Character c : characters){
+				if (c.needsSelection && c.isAlive() && !c.isAI){
+					super.menuState = MenuState.SELECTING;
+					break;
 				}
+			}
+			break;
+		case PEEKING:
+			// when you click on your original character it goes back to his selection menu
+			if (InputController.pressedBack()||clickedChar == selected){
+				super.menuState = MenuState.SELECTING;
+			}
+			break;
+		}
+		checkForClicked();
+		// FIXUP will fix this conditions just need it for the playtest
+		if (clickedChar != null){
+
+			// if the clicked character is the selected don't switch
+			if (clickedChar == selected){
+				clickedChar.isClicked = false;
+				clickedChar = null;
 			}
 			else{
-				if (clickedChar!=null){
-					clickedChar.isClicked = false;
-					clickedChar = null;
-				}
+				this.menuState = MenuState.PEEKING;
+				return;
 			}
-		
+		}
+		else{
+			if (clickedChar!=null){
+				clickedChar.isClicked = false;
+				clickedChar = null;
+			}
+		}
+
 //		if (!tutorialSteps.currStep().text.equals(prevText) && InputController.pressedEnter()){
 //			if (tutorialSteps.textDone < tutorialSteps.step.text.length()){
 //				if (tutorialSteps.step.text.charAt(tutorialSteps.textDone) == '\n'){
@@ -118,7 +143,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 					if (tutorialSteps.stepOnSelection) {
 						prevText = tutorialSteps.currStep().text;
 						tutorialSteps.nextStep();
-						
+
 					}
 					if (tutorialSteps.currStep() != null) TutorialGameplayController.targetPauseTime = tutorialSteps.currStep().timeToPause;
 					TutorialGameplayController.pauseTimer = 0;
@@ -147,12 +172,15 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 		ActionNodes anPool = ActionNodes.getInstance();
 		switch (action.pattern){
 		case SINGLE:
+			TutorialGameplayController.highlight_action = 2;
 			updateChoosingSingle();
 			break;
 		case MOVE:
+			TutorialGameplayController.highlight_action = 1;
 			updateChoosingMove();
 			break;
 		case DIAGONAL:
+			TutorialGameplayController.highlight_action = 2;
 			if (InputController.pressedUp() && !InputController.pressedDown()){
 				direction = Direction.UP;
 			} else if (InputController.pressedDown() && !InputController.pressedUp()){
@@ -160,6 +188,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 			}
 			break;
 		case SHIELD:
+			TutorialGameplayController.highlight_action = 2;
 			if (InputController.pressedUp() && !InputController.pressedDown()){
 				direction = Direction.UP;
 			} else if (InputController.pressedDown() && !InputController.pressedUp()){
@@ -167,10 +196,13 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 			}
 			break;
 		case INSTANT:
+			TutorialGameplayController.highlight_action = 3;
 			break;
 		case PROJECTILE:
+			TutorialGameplayController.highlight_action = 2;
 			break;
 		case NOP:
+			TutorialGameplayController.highlight_action = 0;
 			break;
 		default:
 			break;
