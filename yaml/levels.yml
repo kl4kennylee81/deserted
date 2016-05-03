@@ -28,7 +28,7 @@ Level1:
           difficulty: HARD
     nextLevel:
     boardWidth: 6
-    boardHeight: 5
+    boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/rock-mage.yml", "aiyaml/rock.yml", "aiyaml/mage.yml"]
@@ -125,7 +125,7 @@ tutorial1:
           difficulty: EASY
 
     nextLevel:
-    # tutorialFileName: "yaml/tutorial1.yml"
+    tutorialFileName: "yaml/tutorial1.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
@@ -149,7 +149,7 @@ tutorial2:
           difficulty: EASY
 
     nextLevel:
-    # tutorialFileName: "yaml/tutorial2.yml"
+    tutorialFileName: "yaml/tutorial2.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
@@ -181,7 +181,7 @@ tutorial3:
           difficulty: EASY
 
     nextLevel:
-    # tutorialFileName: "yaml/tutorial3.yml"
+    tutorialFileName: "yaml/tutorial3.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
@@ -220,7 +220,7 @@ tutorial4:
           intelligence: 0.3
           difficulty: EASY
     nextLevel:
-    # tutorialFileName: "yaml/tutorial5.yml"
+    tutorialFileName: "yaml/tutorial4.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
@@ -260,7 +260,7 @@ tutorial5:
           difficulty: EASY
 
     nextLevel:
-    # tutorialFileName: "yaml/tutorial6.yml"
+    tutorialFileName: "yaml/tutorial5.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
@@ -300,7 +300,7 @@ tutorial6:
           difficulty: EASY
 
     nextLevel:
-    # tutorialFileName: "yaml/tutorial7.yml"
+    tutorialFileName: "yaml/tutorial6.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
@@ -376,7 +376,7 @@ tutorial8:
           defensiveness: 0.5
           intelligence: 0.3
           difficulty: EASY
-    # tutorialFileName: "yaml/tutorial9.yml"
+    tutorialFileName: "yaml/tutorial8.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"

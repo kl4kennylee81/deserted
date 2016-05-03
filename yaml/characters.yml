@@ -120,7 +120,7 @@
   health: 2
   maxHealth: 2
   hexColor: FF9900FF
-  speed: 4.
+  speed: 5.
   castSpeed: 7.
   slots: 2
   availableActions:

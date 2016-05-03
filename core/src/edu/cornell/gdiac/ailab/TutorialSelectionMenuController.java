@@ -140,7 +140,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 					selected.setQueuedActions(menu.getQueuedActions());
 					selected = null;
 					resetNeedsShadow();
-					if (tutorialSteps.stepOnSelection) {
+					if (tutorialSteps.stepOnSelection && tutorialSteps.currStep() != null) {
 						prevText = tutorialSteps.currStep().text;
 						tutorialSteps.nextStep();
 

@@ -1,14 +1,34 @@
 0:
-  text: "Level 4"
+  text: "Level 5"
   paused: true
   finishGame: false
   levelColor: WHITE
   spaceToContinue: true
   restart: true
-  levelName: tutorial4
+  levelName: tutorial5
+  nextLevel: tutorial6
 
 1:
-  text: "Use INTERRUPTs to your advantage!"
-  paused: true
-  spaceToContinue: true
-  notes: each opponent should only attack once
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+2:
+  text: "When you are overwhelmed you can shield yourself!"
+  paused: false
+  spaceToContinue: false
+
+3:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+4:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+5:
+  text: ""
+  paused: false
+  spaceToContinue: false
