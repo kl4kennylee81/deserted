@@ -36,6 +36,14 @@ public class Animation {
 		
 	}
 	
+	public Animation(Animation a){
+		if (a!=null){
+			this.name = a.name;
+			this.filmStrip = new FilmStrip(a.filmStrip);
+			segments = a.segments;
+		}
+	}
+	
 	public Animation(String name, Texture texture, int rows, int cols, int size){
 		this.name = name;
 		this.filmStrip = new FilmStrip(texture, rows, cols, size);
