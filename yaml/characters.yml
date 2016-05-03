@@ -272,8 +272,8 @@
   
 101:
   name: Tutorial_Fast
-  health: 4
-  maxHealth: 4
+  health: 2
+  maxHealth: 2
   hexColor: FF9900FF
   speed: 1.
   castSpeed: 3.
@@ -287,8 +287,8 @@
   
 102:
   name: Tutorial_Slow
-  health: 4
-  maxHealth: 4
+  health: 2
+  maxHealth: 2
   hexColor: FF9900FF
   speed: 1.
   castSpeed: 4.
