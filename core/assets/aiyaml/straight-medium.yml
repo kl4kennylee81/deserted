@@ -1,7 +1,7 @@
-ROOT:
+ATTACK_BRANCH:
   type: index
+  branch_type: ATTACK
   can_hit: ATTACK
-  adjacent_attack_square: POSITION
   default: POSITION
 
 #-------------------------------------------
@@ -14,5 +14,5 @@ ATTACK:
 POSITION:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_GOAL,MOVE_GOAL]
+  my_actions: [MOVE_AGGRESSIVE]
 

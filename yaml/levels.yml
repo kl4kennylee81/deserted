@@ -130,7 +130,7 @@ tutorial1:
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/straight_easy.yml"]
+    AI: ["aiyaml/straight-easy.yml"]
 
 tutorial2:
     allies:
@@ -154,7 +154,7 @@ tutorial2:
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/straight_easy.yml"]
+    AI: ["aiyaml/straight-easy.yml"]
 
 tutorial3:
     allies:
@@ -186,7 +186,7 @@ tutorial3:
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/straight_easy.yml"]
+    AI: ["aiyaml/straight-easy.yml"]
 
 tutorial4:
     allies:
@@ -225,7 +225,7 @@ tutorial4:
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/straight_easy.yml"]
+    AI: ["aiyaml/straight-easy.yml"]
 
 tutorial5:
     allies:
@@ -236,14 +236,6 @@ tutorial5:
     enemies:
         - id: 93
           xPosition: 4
-          yPosition: 1
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-        - id: 93
-          xPosition: 5
           yPosition: 1
           aggression: 0.5
           risk: 0.5
@@ -265,7 +257,7 @@ tutorial5:
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: []
+    AI: ["aiyaml/tutorial5ai.yml","aiyaml/shield-easy.yml","aiyaml/straight-medium.yml"]
 
 tutorial6:
     allies:
@@ -290,14 +282,6 @@ tutorial6:
           defensiveness: 0.5
           intelligence: 0.3
           difficulty: EASY
-        - id: 93
-          xPosition: 4
-          yPosition: 1
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
 
     nextLevel:
     # tutorialFileName: "yaml/tutorial7.yml"
@@ -305,18 +289,18 @@ tutorial6:
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: []
+    AI: ["aiyaml/tutorial6ai.yml","aiyaml/single-easy.yml","aiyaml/straight-medium.yml"]
 
 tutorial7:
     allies:
         - id: 96
           xPosition: 1
-          yPosition: 1
+          yPosition: 2
 
     enemies:
         - id: 97
           xPosition: 3
-          yPosition: 2
+          yPosition: 1
           aggression: 0.5
           risk: 0.5
           defensiveness: 0.5
@@ -324,15 +308,15 @@ tutorial7:
           difficulty: EASY
         - id: 98
           xPosition: 4
-          yPosition: 2
+          yPosition: 1
           aggression: 0.5
           risk: 0.5
           defensiveness: 0.5
           intelligence: 0.3
           difficulty: EASY
-        - id: 94
+        - id: 93
           xPosition: 4
-          yPosition: 1
+          yPosition: 2
           aggression: 0.5
           risk: 0.5
           defensiveness: 0.5
@@ -343,7 +327,7 @@ tutorial7:
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: []
+    AI: ["aiyaml/tutorial7ai.yml","aiyaml/single-easy.yml","aiyaml/straight-medium.yml","aiyaml/shield-easy.yml"]
 
 tutorial8:
     allies:
@@ -381,7 +365,7 @@ tutorial8:
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: []
+    AI: ["aiyaml/tutorial7ai.yml","aiyaml/single-easy.yml","aiyaml/straight-medium.yml","aiyaml/shield-easy.yml"]
 
 tutorial9:
     allies:

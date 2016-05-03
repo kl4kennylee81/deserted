@@ -1,0 +1,22 @@
+ROOT:
+  type: index
+  default: HELLO
+
+#-------------------------------------------
+
+HELLO:
+  type: leaf
+  my_tactic: ATTACK
+ 
+#--------------------------------------------- 
+
+Tutorial_Single:
+  type: character
+  branches: [SINGLE_BRANCH]
+
+
+Tutorial3_straight:
+  type: character
+  branches: [ATTACK_BRANCH]
+  
+#--------------------------------------------
