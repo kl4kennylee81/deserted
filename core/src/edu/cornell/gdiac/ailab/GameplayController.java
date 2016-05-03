@@ -133,7 +133,8 @@ public class GameplayController {
     		break;
     	case ATTACK:
     		actionController.update();
-    		if (actionController.isDone()){
+    		persistingController.updateProjs();
+    		if (actionController.isDone() && persistingController.isDone()){
     			if (actionBarController.isPlayerSelection){
     				inGameState = InGameState.SELECTION;
     			} else {

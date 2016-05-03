@@ -551,6 +551,6 @@ public class ActionController {
 	
 	// make isDone true when every character who needs to attack has attacked
 	public boolean isDone() {
-		return isDone;
+		return animations.pool.isEmpty() && isDone;
 	}
 }
