@@ -58,6 +58,10 @@ public class AnimationNode {
 			return animation.filmStrip;
 		}
 		
+		if (gameState == InGameState.ATTACK && shouldStopInAttack(charState)){
+ 			return animation.filmStrip;
+ 		}
+		
 		if (charState.id != curSegment){
 			curSegment = charState.id;
 			curFrameIndex = 0;
@@ -70,6 +74,10 @@ public class AnimationNode {
 			curFrameDuration = 0;			
 		}
 		return getTextureHelper(charState.id, false);
+	}
+	
+	public boolean shouldStopInAttack(CharacterState charState){
+		return charState != CharacterState.CAST && charState != CharacterState.EXECUTE && charState != CharacterState.HURT;
 	}
 	
 	/**
