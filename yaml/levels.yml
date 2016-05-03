@@ -28,7 +28,7 @@ Level1:
           difficulty: HARD
     nextLevel:
     boardWidth: 6
-    boardHeight: 4
+    boardHeight: 5
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/rock-mage.yml", "aiyaml/rock.yml", "aiyaml/mage.yml"]
@@ -234,7 +234,7 @@ tutorial5:
           yPosition: 1
 
     enemies:
-        - id: 92
+        - id: 93
           xPosition: 4
           yPosition: 1
           aggression: 0.5
@@ -242,7 +242,7 @@ tutorial5:
           defensiveness: 0.5
           intelligence: 0.3
           difficulty: EASY
-        - id: 92
+        - id: 93
           xPosition: 5
           yPosition: 1
           aggression: 0.5
@@ -274,7 +274,7 @@ tutorial6:
           yPosition: 1
 
     enemies:
-        - id: 92
+        - id: 93
           xPosition: 3
           yPosition: 2
           aggression: 0.5
@@ -290,7 +290,7 @@ tutorial6:
           defensiveness: 0.5
           intelligence: 0.3
           difficulty: EASY
-        - id: 92
+        - id: 93
           xPosition: 4
           yPosition: 1
           aggression: 0.5
@@ -369,6 +369,76 @@ tutorial8:
           intelligence: 0.3
           difficulty: EASY
         - id: 94
+          xPosition: 4
+          yPosition: 1
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
+          difficulty: EASY
+    # tutorialFileName: "yaml/tutorial9.yml"
+    boardWidth: 6
+    boardHeight: 4
+    boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
+    AI: []
+
+tutorial9:
+    allies:
+        - id: 96
+          xPosition: 1
+          yPosition: 1
+
+    enemies:
+        - id: 100
+          xPosition: 3
+          yPosition: 1
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
+          difficulty: EASY
+        - id: 99
+          xPosition: 4
+          yPosition: 1
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
+          difficulty: EASY
+    # tutorialFileName: "yaml/tutorial9.yml"
+    boardWidth: 6
+    boardHeight: 4
+    boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
+    AI: []
+
+tutorial10:
+    allies:
+        - id: 96
+          xPosition: 1
+          yPosition: 1
+        - id: 96
+          xPosition: 1
+          yPosition: 2
+    enemies:
+        - id: 99
+          xPosition: 3
+          yPosition: 2
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
+          difficulty: EASY
+        - id: 100
+          xPosition: 4
+          yPosition: 2
+          aggression: 0.5
+          risk: 0.5
+          defensiveness: 0.5
+          intelligence: 0.3
+          difficulty: EASY
+        - id: 100
           xPosition: 4
           yPosition: 1
           aggression: 0.5
