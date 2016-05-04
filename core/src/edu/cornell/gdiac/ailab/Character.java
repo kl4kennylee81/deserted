@@ -103,7 +103,7 @@ public class Character implements GUIElement {
 	/** Lists of queued and persisting actions */
 	LinkedList<ActionNode> queuedActions;
 	
-	
+	LinkedList<ActionNode> castActions;
 	
 	LinkedList<ActionNode> persistingActions;
 	ArrayList<Effect> effects;
@@ -148,6 +148,7 @@ public class Character implements GUIElement {
 		castMoved = 0;
 		queuedActions = new LinkedList<ActionNode>();
 		persistingActions = new LinkedList<ActionNode>();
+		this.castActions = new LinkedList<ActionNode>();
 		effects = new ArrayList<Effect>();
 		shieldedCoordinates = new LinkedList<Coordinate>();
 		
@@ -183,6 +184,7 @@ public class Character implements GUIElement {
 		castMoved = 0;
 		queuedActions = new LinkedList<ActionNode>();
 		persistingActions = new LinkedList<ActionNode>();
+		this.castActions = new LinkedList<ActionNode>();
 		effects = new ArrayList<Effect>();
 		shieldedCoordinates = new LinkedList<Coordinate>();
 		
@@ -218,6 +220,7 @@ public class Character implements GUIElement {
 		castMoved = 0;
 		queuedActions = new LinkedList<ActionNode>();
 		persistingActions = new LinkedList<ActionNode>();
+		this.castActions = new LinkedList<ActionNode>();
 		effects = new ArrayList<Effect>();
 		shieldedCoordinates = new LinkedList<Coordinate>();
 		
@@ -251,6 +254,7 @@ public class Character implements GUIElement {
 		castMoved = 0;
 		queuedActions = new LinkedList<ActionNode>();
 		persistingActions = new LinkedList<ActionNode>();
+		this.castActions = new LinkedList<ActionNode>();
 		effects = new ArrayList<Effect>();
 		shieldedCoordinates = new LinkedList<Coordinate>();
 		
@@ -477,6 +481,7 @@ public class Character implements GUIElement {
 		if (anode!= null){
 			if ((anode.isInterrupted && anode.action.pattern != Pattern.MOVE) && queuedActions.size() == 1){
 				queuedActions.poll();
+				this.castActions.add(anode);
 				return false;
 			}
 			else{
@@ -635,7 +640,15 @@ public class Character implements GUIElement {
 	}
 	
 	public ActionNode popCast(){
-		return queuedActions.poll();
+		ActionNode an = queuedActions.poll();
+		this.castActions.add(an);
+		return an;
+	}
+	
+	/** resets the cast position and clears the cast actions **/
+	public void resetCastPosition(){
+		this.castPosition = 0;
+		this.castActions.clear();
 	}
 	
 	public void updateRoundLengths(){

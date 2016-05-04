@@ -564,8 +564,8 @@ public class CharActionBar {
 		canvas.drawTexture(actionBar_centerpotrait,potraitX,potraitY,potraitWidth,potraitHeight,barColor);
 	}
 	
-	public void drawSlots(GameCanvas canvas,List<ActionNode> queuedActions,
-		float xPosBar,float yPosBar,Color barColor){
+	public void drawSlots(GameCanvas canvas,List<ActionNode> castActions,
+			List<ActionNode> queuedActions,float xPosBar,float yPosBar,Color barColor){
 		//draw dazed slots as gray
 		float castTotalWidth = this.getWidth(canvas) - this.getWaitWidth(canvas);
 		float dazedWidth = (dazedSlots*1f/numSlots)*castTotalWidth;
@@ -585,11 +585,22 @@ public class CharActionBar {
 		}
 		else{
 			int curSlot = 0;
+			for (ActionNode an:castActions){
+				float intervalSize = this.getSlotWidth(canvas);
+				float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlot;
+				canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
+				curSlot+=an.action.cost;				
+			}
 			for (ActionNode an:queuedActions){
 				float intervalSize = this.getSlotWidth(canvas);
 				float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlot;
 				canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
 				curSlot+=an.action.cost;
+			}
+			for (int i = curSlot; i < this.getTotalNumSlots(); i++){
+				float intervalSize = this.getSlotWidth(canvas);
+				float startCastX = xPosBar + this.getWaitWidth(canvas);
+				canvas.drawBox(startCastX + i*intervalSize, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
 			}
 		}
 		
@@ -615,7 +626,8 @@ public class CharActionBar {
 	// draw gauge style 
 	public void draw(GameCanvas canvas,int count,Color barColor,Color fillColor, 
 			float castPosition,boolean leftside,List<ActionNode> selectingActions, 
-			Action curSelectingAction, List<ActionNode> queuedActions){
+			Action curSelectingAction, List<ActionNode> queuedActions,
+			List<ActionNode> castActions){
 		
 		float xPosBar = getX(canvas);
 		float yPosBar = getY(canvas,count);
@@ -631,7 +643,7 @@ public class CharActionBar {
 		
 		// draw action queuing
 		this.drawQueuedActions(canvas,count,queuedActions);
-		this.drawSlots(canvas, queuedActions,xPosBar, yPosBar, barColor);
+		this.drawSlots(canvas, castActions,queuedActions,xPosBar, yPosBar, barColor);
 		
 	
 	}

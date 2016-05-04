@@ -56,7 +56,7 @@ public class ActionBarController {
 				}
 				
 				// Reset once done with attacks
-				c.castPosition = 0;
+				c.resetCastPosition();
 			}
 		}
 	}
