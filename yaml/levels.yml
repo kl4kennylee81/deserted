@@ -333,12 +333,12 @@ tutorial8:
     allies:
         - id: 96
           xPosition: 1
-          yPosition: 1
+          yPosition: 2
 
     enemies:
         - id: 97
           xPosition: 3
-          yPosition: 2
+          yPosition: 1
           aggression: 0.5
           risk: 0.5
           defensiveness: 0.5
@@ -346,7 +346,7 @@ tutorial8:
           difficulty: EASY
         - id: 99
           xPosition: 4
-          yPosition: 2
+          yPosition: 1
           aggression: 0.5
           risk: 0.5
           defensiveness: 0.5
@@ -354,7 +354,7 @@ tutorial8:
           difficulty: EASY
         - id: 93
           xPosition: 4
-          yPosition: 1
+          yPosition: 2
           aggression: 0.5
           risk: 0.5
           defensiveness: 0.5
