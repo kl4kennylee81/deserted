@@ -102,6 +102,9 @@ public class Character implements GUIElement {
 	
 	/** Lists of queued and persisting actions */
 	LinkedList<ActionNode> queuedActions;
+	
+	
+	
 	LinkedList<ActionNode> persistingActions;
 	ArrayList<Effect> effects;
 	
@@ -709,7 +712,7 @@ public class Character implements GUIElement {
 			
 			float y_pos = actionSlot_y;
 			String text = a.action.name;
-			canvas.drawCenteredText(text,x_pos,y_pos,Color.BLACK);
+			canvas.drawCenteredText(text,x_pos,y_pos,Color.WHITE);
 		}
 	}
 	

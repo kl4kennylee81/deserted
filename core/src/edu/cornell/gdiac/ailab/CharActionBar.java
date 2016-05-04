@@ -564,7 +564,8 @@ public class CharActionBar {
 		canvas.drawTexture(actionBar_centerpotrait,potraitX,potraitY,potraitWidth,potraitHeight,barColor);
 	}
 	
-	public void drawSlots(GameCanvas canvas,float xPosBar,float yPosBar,Color barColor){
+	public void drawSlots(GameCanvas canvas,List<ActionNode> queuedActions,
+		float xPosBar,float yPosBar,Color barColor){
 		//draw dazed slots as gray
 		float castTotalWidth = this.getWidth(canvas) - this.getWaitWidth(canvas);
 		float dazedWidth = (dazedSlots*1f/numSlots)*castTotalWidth;
@@ -575,11 +576,38 @@ public class CharActionBar {
 		
 		canvas.drawBox(dazedxPos, tickY, dazedWidth, tickHeight,barColor);
 		
+		if (queuedActions.isEmpty()){
+			for (int i = 0; i < this.getTotalNumSlots(); i++){
+				float intervalSize = this.getSlotWidth(canvas);
+				float startCastX = xPosBar + this.getWaitWidth(canvas);
+				canvas.drawBox(startCastX + i*intervalSize, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
+			}
+		}
+		else{
+			int curSlot = 0;
+			for (ActionNode an:queuedActions){
+				float intervalSize = this.getSlotWidth(canvas);
+				float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlot;
+				canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
+				curSlot+=an.action.cost;
+			}
+		}
+		
+	}
 	
-		for (int i = 0; i < this.getTotalNumSlots(); i++){
-			float intervalSize = this.getSlotWidth(canvas);
-			float startCastX = xPosBar + this.getWaitWidth(canvas);
-			canvas.drawBox(startCastX + i*intervalSize, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
+	public void drawQueuedActions(GameCanvas canvas,int count,List<ActionNode> queuedActions){
+		// draw queuedActions
+		float actionSlot_x = this.getX(canvas);
+		float actionSlot_y = this.getY(canvas, count);
+
+		for (ActionNode a: queuedActions){
+			// length relative 
+			float centeredCast = this.getCenteredActionX(canvas, a.executePoint, a.action.cost);
+			float x_pos = actionSlot_x + centeredCast;
+			
+			float y_pos = actionSlot_y;
+			String text = a.action.name;
+			canvas.drawCenteredText(text,x_pos,y_pos,Color.WHITE);
 		}
 	}
 	
@@ -600,7 +628,11 @@ public class CharActionBar {
 		
 		this.drawFill(canvas, castPosition, xPosBar, yPosBar, barColor);
 		this.drawCenterPotrait(canvas, xPosBar, yPosBar, barColor);
-		this.drawSlots(canvas, xPosBar, yPosBar, barColor);
+		
+		// draw action queuing
+		this.drawQueuedActions(canvas,count,queuedActions);
+		this.drawSlots(canvas, queuedActions,xPosBar, yPosBar, barColor);
+		
 	
 	}
 	
