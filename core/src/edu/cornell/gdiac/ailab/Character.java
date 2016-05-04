@@ -420,6 +420,10 @@ public class Character implements GUIElement {
 		this.queuedActions = (LinkedList<ActionNode>) actions;
 	}
 	
+	public List<ActionNode> getQueuedActions(){
+		return this.queuedActions;
+	}
+	
 	/** 
 	 * prompts the players selection screen to pop up next frame
 	 * resets any variables used in the last round selection screen
