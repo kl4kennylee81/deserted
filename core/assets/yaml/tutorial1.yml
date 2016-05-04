@@ -36,7 +36,7 @@
       isChar: true
 
 3:
-  text: "Action bar"
+  text: "The Action Bar determines when you are allowed to attack."
   spaceToContinue: true
   paused: true
   highlightRegions:
@@ -53,7 +53,7 @@
       arrow: up
 
 4:
-  text: "Wait phase"
+  text: "Wait during this phase."
   spaceToContinue: true
   paused: true
   highlightRegions:
@@ -64,7 +64,7 @@
       arrow: up
 
 5:
-  text: "Cast phase"
+  text: "Attack during this phase."
   spaceToContinue: true
   paused: true
   highlightRegions:
@@ -91,8 +91,29 @@
       width: 0.66
       height: 0.1
       arrow: up
-
+      
 7:
+  text: "When the meter reaches the center, the character must select actions."
+  dontWriteText: true
+  paused: false
+  spaceToContinue: true
+  highlightRegions:
+    - xPos: 0.43
+      yPos: 0.35
+      width: 0.09
+      height: 0.23
+      arrow: down
+      isChar: true
+    - xPos: 0.14
+      yPos: 0.88
+      width: 0.66
+      height: 0.1
+      arrow: up
+
+
+
+
+8:
   text: "Select Action (WASD or Arrowkeys to navigate then Enter to select)"
   spaceToContinue: true
   paused: false
@@ -108,24 +129,19 @@
 #       yPos: 0
 #       direction: NONE
 
-8:
+9:
   text: "Press Enter again"
   spaceToContinue: false
   paused: false
 
-9:
-  text: "Actions are queued here"
-  spaceToContinue: false
+10:
+  text: "The slots on the Action Bar determine when your actions will execute"
+  spaceToContinue: true
   paused: false
   timeToPause: 150
 
-10:
-  text: "Select 'Confirm' after choosing all actions"
-  spaceToContinue: false
-  paused: false
-
 11:
-  text: ""
+  text: "Select 'Confirm' after choosing all actions"
   spaceToContinue: false
   paused: false
 
@@ -149,6 +165,11 @@
   spaceToContinue: false
   paused: false
 
+16:
+  text: ""
+  spaceToContinue: false
+  paused: false
+
 #
 # 9:
 #   text: "Your \"Move\" action will execute when your character's icon reaches
@@ -165,7 +186,7 @@
 # 10:
 #   text: "You can continue to fill the cast bar with other actions, and then
 #   they will be executed sequentially when the icon progresses past their points.
-#   \n\nLet’s fill up your character's action bar with other actions before ending her turn.
+#   \n\nLetâ€™s fill up your character's action bar with other actions before ending her turn.
 #   \n\nSelect \"Straight\" and Press Enter"
 #   spaceToContinue: false
 #   paused: false
@@ -277,7 +298,7 @@
 #   paused: false
 #
 # 21:
-#   text: "You’ve hit the opponent! Getting hit takes health points. When health
+#   text: "Youâ€™ve hit the opponent! Getting hit takes health points. When health
 #   reaches 0 the character faints and disappears from the screen. When either side has
 #   no characters left, the other side wins"
 #   spaceToContinue: true
@@ -286,7 +307,7 @@
 # 22:
 #   text: "Notice also that hitting your opponent reduced the size of the blue phase of
 #   his action bar. When you lose health, your cast time decreases, so you have to
-#   wait less before you can make an action again”"
+#   wait less before you can make an action againâ€�"
 #   spaceToContinue: true
 #   paused: true
 #   highlightRegions:

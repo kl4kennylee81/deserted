@@ -3,52 +3,49 @@
   health: 10
   maxHealth: 10
   hexColor: CD2626FF
-  speed: 6.
+  speed: 6.0
   castSpeed: 6.5
   slots: 4
   availableActions:
-    - 0
-    - 5
-    - 6
-    - 20
-  texture: "models/CHARA_3.png"
-  icon: "models/CASTICON_5.png"
+  - 0
+  - 5
+  - 6
+  - 20
+  texture: models/CHARA_3.png
+  icon: models/CASTICON_5.png
   animationId: 101
-
 1:
   name: Spirit
   health: 10
   maxHealth: 10
   hexColor: CD2626FF
-  speed: 6.
+  speed: 6.0
   castSpeed: 6.5
   slots: 4
   availableActions:
-    - 0
-    - 5
-    - 6
-    - 20
-  texture: "models/CHARA_3.png"
-  icon: "models/bunmage_icon.png"
+  - 0
+  - 5
+  - 6
+  - 20
+  texture: models/CHARA_3.png
+  icon: models/bunmage_icon.png
   animationId: 108
-
 2:
   name: Rock Spirit
   health: 12
   maxHealth: 12
   hexColor: 00cc00FF
-  speed: 1.
-  castSpeed: 8.
+  speed: 1.0
+  castSpeed: 8.0
   slots: 2
   availableActions:
-    - 0
-    - 16
-    - 17
-    - 18
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
+  - 0
+  - 16
+  - 17
+  - 18
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
   animationId: 103
-
 3:
   name: Mage Spirit
   health: 8
@@ -58,295 +55,337 @@
   castSpeed: 7.5
   slots: 5
   availableActions:
-    - 0
-    - 13
-    - 14
-    - 15
-  texture: "models/CHARA_4.png"
-  icon: "models/mage_icon.png"
+  - 0
+  - 13
+  - 14
+  - 15
+  texture: models/CHARA_4.png
+  icon: models/mage_icon.png
   animationId: 102
-
 4:
   name: Enchantress Spirit
   health: 8
   maxHealth: 8
   hexColor: CD2626FF
-  speed: 6.
-  castSpeed: 7.
+  speed: 6.0
+  castSpeed: 7.0
   slots: 5
   availableActions:
-    - 0
-    - 22
-    - 5
-    - 24
-  texture: "models/CHARA_3.png"
-  icon: "models/bunmage_icon.png"
+  - 0
+  - 22
+  - 5
+  - 24
+  texture: models/CHARA_3.png
+  icon: models/bunmage_icon.png
   animationId: 108
-
 5:
   name: Fighter Spirit
   health: 10
   maxHealth: 10
   hexColor: 3299FFFF
-  speed: 3.
-  castSpeed: 9.
+  speed: 3.0
+  castSpeed: 9.0
   slots: 4
   availableActions:
-    - 0
-    - 23
-    - 20
-    - 7
-  texture: "models/CHARA_1.png"
-  icon: "models/tutorial_characters/basic_iconred.png"
+  - 0
+  - 23
+  - 20
+  - 7
+  texture: models/CHARA_1.png
+  icon: models/tutorial_characters/basic_iconred.png
   animationId: 106
-
 89:
   name: Tutorial_part_3
   health: 6
   maxHealth: 6
   hexColor: 3299FFFF
   speed: 5.5
-  castSpeed: 7.
+  castSpeed: 7.0
   slots: 4
   availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/bunmage_icon.png"
+  - 0
+  - 4
+  texture: models/CHARA_5.png
+  icon: models/bunmage_icon.png
   animationId: 108
-
-
 90:
   name: Tutorial_part_1
   health: 2
   maxHealth: 2
   hexColor: 3299FFFF
-  speed: 4.5
-  castSpeed: 7.
+  speed: 3.0
+  castSpeed: 7.0
   slots: 4
   availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/bunmage_icon.png"
+  - 0
+  - 4
+  texture: models/CHARA_5.png
+  icon: models/bunmage_icon.png
   animationId: 108
-  
-
 91:
   name: Tutorial1_straight
   health: 2
   maxHealth: 2
   hexColor: FF9900FF
-  speed: 5.
-  castSpeed: 7.
+  speed: 5.0
+  castSpeed: 7.0
   slots: 2
   availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
+  - 0
+  - 4
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
   animationId: 103
-
 92:
   name: Tutorial2_straight
   health: 4
   maxHealth: 4
   hexColor: FF9900FF
-  speed: 0.
-  castSpeed: 7.
+  speed: 0.0
+  castSpeed: 7.0
   slots: 4
   availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
+  - 0
+  - 4
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
   animationId: 103
-
 93:
   name: Tutorial3_straight
   health: 4
   maxHealth: 4
   hexColor: FF9900FF
-  speed: 0.
-  castSpeed: 7.
+  speed: 0.0
+  castSpeed: 7.0
   slots: 2
   availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
+  - 0
+  - 4
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
   animationId: 103
-
 94:
   name: Tutorial4_straight
   health: 2
   maxHealth: 2
   hexColor: FF9900FF
-  speed: 0.
-  castSpeed: 7.
+  speed: 0.0
+  castSpeed: 7.0
   slots: 2
   availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
+  - 0
+  - 4
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
   animationId: 103
-
 95:
   name: Tutorial_part_2
   health: 2
   maxHealth: 2
   hexColor: FF9900FF
   speed: 4.5
-  castSpeed: 7.
+  castSpeed: 7.0
   slots: 4
   availableActions:
-    - 0
-    - 4
-    - 9
-  texture: "models/CHARA_4.png"
-  icon: "models/bunmage_icon.png"
+  - 0
+  - 4
+  - 9
+  texture: models/CHARA_4.png
+  icon: models/bunmage_icon.png
   animationId: 108
-
 96:
   name: Tutorial_part_3
   health: 4
   maxHealth: 4
   hexColor: FF9900FF
   speed: 4.5
-  castSpeed: 7.
+  castSpeed: 7.0
   slots: 4
   availableActions:
-    - 0
-    - 4
-    - 9
-    - 5
-  texture: "models/CHARA_4.png"
-  icon: "models/bunmage_icon.png"
+  - 0
+  - 4
+  - 9
+  - 5
+  texture: models/CHARA_4.png
+  icon: models/bunmage_icon.png
   animationId: 108
-
 97:
   name: Tutorial_Shield
   health: 2
   maxHealth: 2
   hexColor: FF9900FF
-  speed: 0.
-  castSpeed: 7.
+  speed: 0.0
+  castSpeed: 7.0
   slots: 2
   availableActions:
-    - 0
-    - 9
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_iconblue.png"
+  - 0
+  - 9
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconblue.png
   animationId: 105
-
 98:
   name: Tutorial_Single
   health: 4
   maxHealth: 4
   hexColor: FF9900FF
-  speed: 0.
-  castSpeed: 7.
+  speed: 0.0
+  castSpeed: 7.0
   slots: 2
   availableActions:
-    - 0
-    - 3
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_iconyellow.png"
+  - 0
+  - 3
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconyellow.png
   animationId: 107
-
 99:
   name: Tutorial_Single_Straight
   health: 4
   maxHealth: 4
   hexColor: 3299FFFF
   speed: 4.5
-  castSpeed: 7.
+  castSpeed: 7.0
   slots: 4
   availableActions:
-    - 0
-    - 3
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/bunmage_icon.png"
+  - 0
+  - 3
+  - 4
+  texture: models/CHARA_5.png
+  icon: models/bunmage_icon.png
   animationId: 108
-
 100:
   name: Tutorial_Straight_Shield
   health: 4
   maxHealth: 4
   hexColor: FF9900FF
-  speed: 2.
-  castSpeed: 7.
+  speed: 2.0
+  castSpeed: 7.0
   slots: 3
   availableActions:
-    - 0
-    - 9
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_iconblue.png"
+  - 0
+  - 9
+  - 4
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconblue.png
   animationId: 105
-  
 101:
   name: Tutorial_Fast
   health: 2
   maxHealth: 2
   hexColor: FF9900FF
-  speed: 1.
-  castSpeed: 3.
+  speed: 1.0
+  castSpeed: 3.0
   slots: 2
   availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_iconyellow.png"
+  - 0
+  - 4
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconyellow.png
   animationId: 107
-  
 102:
   name: Tutorial_Slow
   health: 2
   maxHealth: 2
   hexColor: FF9900FF
-  speed: 1.
-  castSpeed: 4.
+  speed: 1.0
+  castSpeed: 4.0
   slots: 2
   availableActions:
-    - 0
-    - 7
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
+  - 0
+  - 7
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
   animationId: 105
-  
 103:
   name: Tutorial6_straight
   health: 2
   maxHealth: 2
   hexColor: FF9900FF
   speed: 5.5
-  castSpeed: 7.
+  castSpeed: 7.0
   slots: 2
   availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/tutorial_characters/basic_icon.png"
+  - 0
+  - 4
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
   animationId: 103
-  
 104:
   name: Tutorial3_user
   health: 4
   maxHealth: 4
   hexColor: FF9900FF
   speed: 2.0
-  castSpeed: 7.
+  castSpeed: 7.0
   slots: 4
   availableActions:
-    - 0
-    - 4
-  texture: "models/CHARA_5.png"
-  icon: "models/bunmage_icon.png"
+  - 0
+  - 4
+  texture: models/CHARA_5.png
+  icon: models/bunmage_icon.png
   animationId: 108
-
-
-
-...
+105:
+  name: Tutorial7_main
+  health: 10
+  maxHealth: 10
+  hexColor: FF9900FF
+  speed: 4.5
+  castSpeed: 7.0
+  slots: 4
+  availableActions:
+  - 0
+  - 4
+  - 9
+  - 25
+  texture: models/CHARA_5.png
+  icon: models/bunmage_icon.png
+  animationId: 108
+106:
+  name: Tutorial7_ally
+  health: 10
+  maxHealth: 10
+  hexColor: FF9900FF
+  speed: 3.0
+  castSpeed: 8.0
+  slots: 3
+  availableActions:
+  - 0
+  - 7
+  - 5
+  - 10
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconyellow.png
+  animationId: 107
+  
+24:
+  name: Rock Spirit
+  health: 7
+  maxHealth: 12
+  hexColor: 00cc00FF
+  speed: 1.0
+  castSpeed: 8.0
+  slots: 2
+  availableActions:
+  - 0
+  - 16
+  - 17
+  - 26
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconblue.png
+  animationId: 105
+  
+25:
+  name: Fighter Spirit
+  health: 4
+  maxHealth: 5
+  hexColor: 3299FFFF
+  speed: 3.0
+  castSpeed: 9.0
+  slots: 4
+  availableActions:
+  - 0
+  - 20
+  - 27
+  - 7
+  texture: models/CHARA_1.png
+  icon: models/tutorial_characters/basic_iconred.png
+  animationId: 106
