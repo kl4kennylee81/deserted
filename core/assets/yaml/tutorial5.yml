@@ -1,12 +1,12 @@
 0:
-  text: "Level 6"
+  text: "Level 5"
   paused: true
   finishGame: false
   levelColor: WHITE
   spaceToContinue: true
   restart: true
-  levelName: tutorial6
-  nextLevel: tutorial7
+  levelName: tutorial5
+  nextLevel: tutorial6
 
 1:
   text: "Blue Shield Minions will protect their allies"
@@ -14,7 +14,7 @@
   spaceToContinue: false
 
 4:
-  text: "Diagonal attacks can hit shielded enemies from unprotected angles"
+  text: "Single-target attacks can hit shielded enemies!"
   paused: true
   spaceToContinue: false
 

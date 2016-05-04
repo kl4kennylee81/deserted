@@ -239,7 +239,7 @@
   animationId: 107
 
 99:
-  name: Tutorial_Single_Slow
+  name: Tutorial_Single_Straight
   health: 4
   maxHealth: 4
   hexColor: FF9900FF
@@ -248,8 +248,8 @@
   slots: 3
   availableActions:
     - 0
-    - 7
     - 3
+    - 4
   texture: "models/CHARA_5.png"
   icon: "models/tutorial_characters/basic_iconred.png"
   animationId: 106
@@ -269,6 +269,52 @@
   texture: "models/CHARA_5.png"
   icon: "models/tutorial_characters/basic_iconblue.png"
   animationId: 105
+  
+101:
+  name: Tutorial_Fast
+  health: 2
+  maxHealth: 2
+  hexColor: FF9900FF
+  speed: 1.
+  castSpeed: 3.
+  slots: 2
+  availableActions:
+    - 0
+    - 4
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_iconyellow.png"
+  animationId: 107
+  
+102:
+  name: Tutorial_Slow
+  health: 2
+  maxHealth: 2
+  hexColor: FF9900FF
+  speed: 1.
+  castSpeed: 4.
+  slots: 2
+  availableActions:
+    - 0
+    - 7
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
+  animationId: 105
+  
+103:
+  name: Tutorial6_straight
+  health: 4
+  maxHealth: 4
+  hexColor: FF9900FF
+  speed: 7.
+  castSpeed: 8.
+  slots: 2
+  availableActions:
+    - 0
+    - 4
+  texture: "models/CHARA_5.png"
+  icon: "models/tutorial_characters/basic_icon.png"
+  animationId: 103
+
 
 
 ...
