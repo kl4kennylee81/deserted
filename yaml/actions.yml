@@ -52,7 +52,7 @@
 3:
   name: Single
   cost: 2
-  damage: 2
+  damage: 1
   range: 5
   size: 1
   pattern: SINGLE

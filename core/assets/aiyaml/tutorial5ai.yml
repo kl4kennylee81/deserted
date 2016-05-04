@@ -15,7 +15,7 @@ Tutorial_Shield:
   branches: [SHIELD_BRANCH]
 
 
-Tutorial3_straight:
+Tutorial6_straight:
   type: character
   branches: [ATTACK_BRANCH]
   
