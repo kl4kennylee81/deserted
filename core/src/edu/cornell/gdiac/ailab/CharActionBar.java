@@ -565,10 +565,10 @@ public class CharActionBar {
 	}
 	
 	public int drawSlots(GameCanvas canvas,int curSlot,
-			List<ActionNode> listActions,float xPosBar,float yPosBar,Color barColor){
+			List<ActionNode> listActions,float xPosBar,float yPosBar,Color barColor,boolean drawBoxes){
 		int numberSlots = curSlot;
 		for (ActionNode an:listActions){
-			numberSlots = this.drawSlot(canvas,numberSlots,an.action,xPosBar,yPosBar,barColor);
+			numberSlots = this.drawSlot(canvas,numberSlots,an.action,xPosBar,yPosBar,barColor,drawBoxes);
 		}
 		return numberSlots;
 	}
@@ -592,21 +592,47 @@ public class CharActionBar {
 		float actionSlotWidth = intervalSize*curAction.cost;
 		float actionSlotHeight = this.getBarFillHeight(canvas);
 		
-		canvas.drawBox(slotX,yPosBar,actionSlotWidth,actionSlotHeight,Constants.CAST_COLOR.cpy());
+		canvas.drawBox(slotX,yPosBar,actionSlotWidth,actionSlotHeight,Color.CORAL.cpy());
 	}
 	
 	public int drawSlot(GameCanvas canvas,int curSlots,
-			Action curAction,float xPosBar,float yPosBar,Color barColor){
+			Action curAction,float xPosBar,float yPosBar,Color barColor,boolean drawBoxes){
 		if (curAction != null && curSlots + curAction.cost <= this.getTotalNumSlots()){
 			float tickHeight = this.getBarHeight(canvas)/CharActionBar.ACTIONBAR_HEIGHT_CONTAINER_FILL_RATIO;
 			float tickY = yPosBar;
 			float intervalSize = this.getSlotWidth(canvas);
 			float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlots;
 			
-			this.drawSlotBox(canvas,curSlots,curAction,xPosBar,yPosBar,barColor);
+			if (drawBoxes){
+				this.drawSlotBox(canvas,curSlots,curAction,xPosBar,yPosBar,barColor);
+			}
 			
 			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);		
 			
+			return curSlots + curAction.cost;
+		}
+		else{
+			return curSlots;
+		}
+	}
+	
+	public int drawSelectingActionSlot(GameCanvas canvas,int curSlots,
+			Action curAction,float xPosBar,float yPosBar,Color barColor,boolean drawBoxes){
+		
+		if (curAction != null && curSlots + curAction.cost <= this.getTotalNumSlots()){
+			float tickHeight = this.getBarHeight(canvas)/CharActionBar.ACTIONBAR_HEIGHT_CONTAINER_FILL_RATIO;
+			float tickY = yPosBar;
+			float intervalSize = this.getSlotWidth(canvas);
+			
+			for (int i=0;i<curAction.cost;i++){
+				float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*(curSlots+i);
+				
+				if (drawBoxes){
+					this.drawSlotBox(canvas,curSlots,curAction,xPosBar,yPosBar,barColor);
+				}
+				
+				canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);		
+			}
 			return curSlots + curAction.cost;
 		}
 		else{
@@ -639,7 +665,7 @@ public class CharActionBar {
 	
 	public void drawSlots(GameCanvas canvas,List<ActionNode> castActions,
 			List<ActionNode> queuedActions,List<ActionNode> selectingActions,Action curAction,
-			int count,Color barColor,boolean isSelecting){
+			int count,Color barColor,boolean isSelecting,boolean drawBoxes){
 		
 		float xPosBar = getX(canvas);
 		float yPosBar = getFillY(canvas,count);
@@ -647,11 +673,11 @@ public class CharActionBar {
 		this.drawDazedSlots(canvas,xPosBar,yPosBar,barColor);
 			
 		int curSlots = 0;
-		curSlots = drawSlots(canvas,curSlots,castActions,xPosBar,yPosBar,barColor);
-		curSlots = drawSlots(canvas,curSlots,queuedActions,xPosBar,yPosBar,barColor);
+		curSlots = drawSlots(canvas,curSlots,castActions,xPosBar,yPosBar,barColor,drawBoxes);
+		curSlots = drawSlots(canvas,curSlots,queuedActions,xPosBar,yPosBar,barColor,drawBoxes);
 		if (isSelecting && curSlots < this.getTotalNumSlots()){
-			curSlots = drawSlots(canvas,curSlots,selectingActions,xPosBar,yPosBar,barColor);
-			curSlots = drawSlot(canvas,curSlots,curAction,xPosBar,yPosBar,barColor);
+			curSlots = drawSlots(canvas,curSlots,selectingActions,xPosBar,yPosBar,barColor,drawBoxes);
+			curSlots = this.drawSelectingActionSlot(canvas, curSlots, curAction, xPosBar, yPosBar, barColor, drawBoxes);
 		}
 		this.drawRemainingSlots(canvas, curSlots, xPosBar, yPosBar, barColor);
 	}
@@ -688,16 +714,19 @@ public class CharActionBar {
 		this.drawCenterRing(canvas, xPosBar, yPosBar, barColor);
 		this.drawRightEndpoint(canvas, xPosBar, yPosBar, barColor);
 		
-		// fill will have to be drawn ontop with a bit of transparency
-		this.drawFill(canvas, castPosition, xPosBar, yPosBar, barColor);
-		this.drawCenterPotrait(canvas, xPosBar, yPosBar, barColor);
-		
 		// draw action queuing
 		this.drawQueuedActions(canvas, count, selectingActions);
 		this.drawQueuedActions(canvas,count,queuedActions);
 		this.drawQueuedActions(canvas, count, castActions);
 		this.drawSlots(canvas, castActions,queuedActions,
-				selectingActions,curSelectedAction,count, barColor,isSelecting);
+				selectingActions,curSelectedAction,count, barColor,isSelecting,true);
+		
+		// fill will have to be drawn ontop with a bit of transparency
+		this.drawFill(canvas, castPosition, xPosBar, yPosBar, barColor);
+		this.drawCenterPotrait(canvas, xPosBar, yPosBar, barColor);
+		
+		this.drawSlots(canvas, castActions,queuedActions,
+				selectingActions,curSelectedAction,count, barColor,isSelecting,false);
 	}
 	
 }
