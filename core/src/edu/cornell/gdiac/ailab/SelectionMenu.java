@@ -108,6 +108,10 @@ public class SelectionMenu {
 		return an;
 	}
 	
+	public float getLerpVal(){
+		return this.lerpVal;
+	}
+	
 	public List<ActionNode> getQueuedActions(){
 		return selectedActions;
 	}
