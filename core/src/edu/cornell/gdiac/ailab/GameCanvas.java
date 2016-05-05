@@ -932,6 +932,15 @@ public class GameCanvas {
 		spriteBatch.draw(downArrow, x-37, y+10, 135, 135);
 	}
 	
+	public void drawDownTextArrow(float x, float y, Color color, String text){
+		spriteBatch.setColor(color);
+		spriteBatch.draw(downArrow, x-37, y+10, 75, 75);
+		displayFont.getData().setScale(1);
+		displayFont.setColor(color);
+		displayFont.draw(spriteBatch, text, x,y, width, Align.left, true);
+		
+	}
+	
 	public void drawLeftArrow(float x, float y, Color color){
 		spriteBatch.setColor(color);
 		spriteBatch.draw(leftArrow, x-35, y-80, 135, 135);

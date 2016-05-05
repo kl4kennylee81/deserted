@@ -9,26 +9,21 @@
   nextLevel: tutorial6
 
 1:
-  text: ""
-  paused: false
-  spaceToContinue: false
-
-2:
-  text: "When you are overwhelmed you can shield yourself!"
-  paused: false
-  spaceToContinue: false
-
-3:
-  text: ""
-  paused: false
+  text: "Blue Shield Minions will protect their allies"
+  paused: true
   spaceToContinue: false
 
 4:
+  text: "Single-target attacks can hit shielded enemies!"
+  paused: true
+  spaceToContinue: false
+
+5:
   text: ""
   paused: false
   spaceToContinue: false
 
-5:
+6:
   text: ""
   paused: false
   spaceToContinue: false

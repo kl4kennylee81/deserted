@@ -10,7 +10,7 @@ HELLO:
  
 #--------------------------------------------- 
 
-Tutorial_Single:
+Tutorial_Single_Slow:
   type: character
   branches: [SINGLE_BRANCH]
   

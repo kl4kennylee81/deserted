@@ -10,15 +10,12 @@ HELLO:
  
 #--------------------------------------------- 
 
-Tutorial_Single:
-  type: character
-  branches: [SINGLE_BRANCH]
-  
 Tutorial_Shield:
   type: character
   branches: [SHIELD_BRANCH]
 
-Tutorial3_straight:
+
+Tutorial6_straight:
   type: character
   branches: [ATTACK_BRANCH]
   

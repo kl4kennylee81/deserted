@@ -9,21 +9,12 @@
   nextLevel: tutorial7
 
 1:
-  text: "Blue Shield Minions will protect their allies"
+  text: "Slow down an enemy to gain an advantage!"
   paused: true
-  spaceToContinue: false
-
-4:
-  text: "Diagonal attacks can hit shielded enemies from unprotected angles"
-  paused: true
-  spaceToContinue: false
-
-5:
-  text: ""
-  paused: false
-  spaceToContinue: false
-
-6:
-  text: ""
-  paused: false
-  spaceToContinue: false
+  spaceToContinue: true
+  #highlightRegions:
+  #  - xPos: 0.5
+  #    yPos: 0.15
+  #    width: 0.1
+  #    height: 0.22
+  #    arrow: down

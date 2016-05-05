@@ -10,8 +10,8 @@
       startingIndex: 0
       length: 2
       frameData:
-      - 50
-      - 50
+      - 20
+      - 20
 1:
   name: Ground Fire
   texture: "actions/flame_sim_spritesheet.png"

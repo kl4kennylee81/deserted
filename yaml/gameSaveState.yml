@@ -20,12 +20,12 @@ characters:
       nextAction:
       - actionId: 14
         cost: 1
-      - actionId: 15
+      - actionId: 25
         cost: 1
     currentActions:
     - 0
     - 5
-    - 6
+    - 13
     - 20
   1:
     characterId: 1

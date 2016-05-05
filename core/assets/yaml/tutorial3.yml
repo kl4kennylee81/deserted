@@ -22,11 +22,26 @@
   note: enemy is faster so he reaches cast time
 
 3:
-  text: "After planning an attack if you get hit before it goes off you get INTERRUPTED"
+  text: "Try to INTERRUPT your opponent!"
   paused: true
   spaceToContinue: true
 
 4:
   text: "Don't get INTERRUPTED yourself!"
   paused: true
+  spaceToContinue: false
+
+5:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+6:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+7:
+  text: ""
+  paused: false
   spaceToContinue: false

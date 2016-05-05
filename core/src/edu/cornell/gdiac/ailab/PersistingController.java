@@ -6,6 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.math.Vector2;
 
 import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 
@@ -34,6 +35,9 @@ public class PersistingController extends ActionController{
 				List<ActionNode> actionNodes = c.getPersistingActions();
 				List<ActionNode> toDelete = new LinkedList<ActionNode>();
 				for (ActionNode an:actionNodes){
+					if (an.action.pattern != Pattern.SHIELD){
+						continue;
+					}
 					an.curRound+= c.castMoved;
 					if (an.curRound >= ((PersistingAction) an.action).totalNumRounds){
 						toDelete.add(an);
@@ -47,6 +51,37 @@ public class PersistingController extends ActionController{
 				}
 			}
 		}
+	}
+	
+	public void updateProjs(){
+		isDone = true;
+		//TODO: Sort by cast times
+		for (Character c : characters){
+			// Choose a character and execute his persisting actions
+			if (c.hasPersisting()){
+				selected = c;
+				updateShieldedPath();
+				List<ActionNode> actionNodes = c.getPersistingActions();
+				List<ActionNode> toDelete = new LinkedList<ActionNode>();
+				for (ActionNode an:actionNodes){
+					if (an.action.pattern == Pattern.SHIELD){
+						continue;
+					}
+					isDone = false;
+					an.curRound+= c.castMoved;
+					if (an.curRound >= ((PersistingAction) an.action).totalNumRounds){
+						toDelete.add(an);
+					} else {
+						selectedActionNode = an;
+						executeAction();
+					}
+				}
+				for (ActionNode an:toDelete){
+					c.popPersistingCast(an);
+				}
+			}
+		}
+		
 	}
 	
 	public void executeAction(){

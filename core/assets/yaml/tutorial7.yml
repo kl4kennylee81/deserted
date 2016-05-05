@@ -9,7 +9,7 @@
   nextLevel: tutorial9
 
 1:
-  text: "Yellow Rock can bypass your shield! So beware"
+  text: "He can bypass your shield! So beware"
   paused: true
   spaceToContinue: true
   highlightRegions:
