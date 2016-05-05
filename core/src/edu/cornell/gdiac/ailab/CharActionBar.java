@@ -573,14 +573,39 @@ public class CharActionBar {
 		return numberSlots;
 	}
 	
+//	float curSlot_x = actionSlot_x + ((slot_width) * i) + CharActionBar.BAR_DIVIDER_WIDTH;
+//	float slot_w_space = slot_width-CharActionBar.BAR_DIVIDER_WIDTH;
+//	if (i < takenSlots) {
+//		canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Constants.CAST_COLOR.cpy());
+//	} else if (selectedAction < actions.length && i < takenSlots+actions[selectedAction].cost){
+//		canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE.cpy().lerp(Constants.CAST_COLOR.cpy(),lerpVal));
+//	} else if (i >= usableNumSlots){
+//		canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.GRAY);
+//	} else {
+//		canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE);
+//	}
+	
+	public void drawSlotBox(GameCanvas canvas,int curSlots,
+			Action curAction,float xPosBar,float yPosBar,Color barColor){
+		float intervalSize = this.getSlotWidth(canvas);
+		float slotX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlots;
+		float actionSlotWidth = intervalSize*curAction.cost;
+		float actionSlotHeight = this.getBarFillHeight(canvas);
+		
+		canvas.drawBox(slotX,yPosBar,actionSlotWidth,actionSlotHeight,Constants.CAST_COLOR.cpy());
+	}
+	
 	public int drawSlot(GameCanvas canvas,int curSlots,
 			Action curAction,float xPosBar,float yPosBar,Color barColor){
 		if (curAction != null && curSlots + curAction.cost <= this.getTotalNumSlots()){
 			float tickHeight = this.getBarHeight(canvas)/CharActionBar.ACTIONBAR_HEIGHT_CONTAINER_FILL_RATIO;
-			float tickY = yPosBar + tickHeight/2;
+			float tickY = yPosBar;
 			float intervalSize = this.getSlotWidth(canvas);
 			float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlots;
-			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
+			
+			this.drawSlotBox(canvas,curSlots,curAction,xPosBar,yPosBar,barColor);
+			
+			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);		
 			
 			return curSlots + curAction.cost;
 		}
@@ -603,7 +628,7 @@ public class CharActionBar {
 	
 	public void drawRemainingSlots(GameCanvas canvas,int curSlots, float xPosBar, float yPosBar, Color barColor){
 		float tickHeight = this.getBarHeight(canvas)/CharActionBar.ACTIONBAR_HEIGHT_CONTAINER_FILL_RATIO;
-		float tickY = yPosBar + tickHeight/2;
+		float tickY = yPosBar;
 		
 		for (int i = curSlots; i < this.getTotalNumSlots(); i++){
 			float intervalSize = this.getSlotWidth(canvas);
@@ -614,14 +639,17 @@ public class CharActionBar {
 	
 	public void drawSlots(GameCanvas canvas,List<ActionNode> castActions,
 			List<ActionNode> queuedActions,List<ActionNode> selectingActions,Action curAction,
-			float xPosBar,float yPosBar,Color barColor){
+			int count,Color barColor,boolean isSelecting){
+		
+		float xPosBar = getX(canvas);
+		float yPosBar = getFillY(canvas,count);
 		
 		this.drawDazedSlots(canvas,xPosBar,yPosBar,barColor);
 			
 		int curSlots = 0;
 		curSlots = drawSlots(canvas,curSlots,castActions,xPosBar,yPosBar,barColor);
 		curSlots = drawSlots(canvas,curSlots,queuedActions,xPosBar,yPosBar,barColor);
-		if (curSlots < this.getTotalNumSlots()){
+		if (isSelecting && curSlots < this.getTotalNumSlots()){
 			curSlots = drawSlots(canvas,curSlots,selectingActions,xPosBar,yPosBar,barColor);
 			curSlots = drawSlot(canvas,curSlots,curAction,xPosBar,yPosBar,barColor);
 		}
@@ -647,7 +675,7 @@ public class CharActionBar {
 	
 	// draw gauge style 
 	public void draw(GameCanvas canvas,int count,Color barColor,Color fillColor, 
-			float castPosition,boolean leftside,List<ActionNode> selectingActions, 
+			float castPosition,boolean leftside,boolean isSelecting,List<ActionNode> selectingActions, 
 			Action curSelectedAction, List<ActionNode> queuedActions,
 			List<ActionNode> castActions){
 		
@@ -669,7 +697,7 @@ public class CharActionBar {
 		this.drawQueuedActions(canvas,count,queuedActions);
 		this.drawQueuedActions(canvas, count, castActions);
 		this.drawSlots(canvas, castActions,queuedActions,
-				selectingActions,curSelectedAction,xPosBar, yPosBar, barColor);
+				selectingActions,curSelectedAction,count, barColor,isSelecting);
 	}
 	
 }
