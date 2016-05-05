@@ -119,7 +119,7 @@ public class InputController {
 	
 	public static boolean mouseJustMoved(){
 		//TODO: Make this better
-		return Gdx.input.getDeltaY() > 0f || Gdx.input.getDeltaX() > 0f;
+		return Gdx.input.getDeltaY() != 0f || Gdx.input.getDeltaX() != 0f;
 	}
 
 	public static boolean pressedSpace() {

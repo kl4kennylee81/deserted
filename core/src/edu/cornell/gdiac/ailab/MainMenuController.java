@@ -91,7 +91,6 @@ public class MainMenuController {
 	public void update(){
 		this.isDone = false;
 		updateMenuAssets();
-		
 		mouseOverController.update(menu.options, menu);
 		updateSelection();
 		drawMenu();

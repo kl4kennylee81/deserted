@@ -20,6 +20,7 @@ public class MouseOverController {
 	private static boolean DISABLE_MOUSE = false;
 
 	public void update(Option[] options, Menu Menu){
+		if (!InputController.mouseJustMoved()) return;
 		float x = InputController.getMouseX();
 		float y = InputController.getMouseY();
 		for (int i =0;i<options.length;i++){
@@ -32,6 +33,7 @@ public class MouseOverController {
 	}
 	
 	public void update(Option[] options, Menu Menu, boolean reset){
+		if (!InputController.mouseJustMoved()) return;
 		if (reset){
 			Menu.reset();
 		}
@@ -71,21 +73,27 @@ public class MouseOverController {
 		
 		for(Character c: characters){
 			SelectionMenu menu = c.getSelectionMenu();
-			for (Action a: menu.getActions()){
-				int usableNumSlots = c.getActionBar().getUsableNumSlots();
-				boolean actionInvalid = menu.isActionInvalid(usableNumSlots, a);
-				if (a.contains(x,y,canvas,board) && !actionInvalid){
-					hAction = a;
-					currMenu = currMenu1;
-					actionChar = c;
+			if (InputController.mouseJustMoved()){
+				for (Action a: menu.getActions()){
+					int usableNumSlots = c.getActionBar().getUsableNumSlots();
+					boolean actionInvalid = menu.isActionInvalid(usableNumSlots, a);
+					if (a.contains(x,y,canvas,board) && !actionInvalid){
+						hAction = a;
+						currMenu = currMenu1;
+						actionChar = c;
+					}
 				}
-			}
-			if (c.getSelectionMenu().confirmContain(InputController.getMouseX(), InputController.getMouseY())){
-				menu.setChoosingTarget(false);
-				menu.selectedAction=menu.getActions().length;
+				
+				if (c.getSelectionMenu().confirmContain(InputController.getMouseX(), InputController.getMouseY())){
+					menu.setChoosingTarget(false);
+					menu.selectedAction=menu.getActions().length;
+				}
 			}
 			
 			if (c.contains(x,y,canvas,board)){
+				if (highlighted != null){
+					highlighted.removeHovering();
+				}
 				highlighted = c;
 				highlighted.setHovering();
 

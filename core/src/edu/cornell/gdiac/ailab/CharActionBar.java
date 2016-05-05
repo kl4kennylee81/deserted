@@ -48,7 +48,7 @@ public class CharActionBar {
 	/** time all characters have to wait before they enter their casting period **/
 	public static final float STARTING_BUFFER_TIME = 3f;
 	
-	public static final float CHAR_VELOCITY_SCREEN_RATIO = 0.0011f;
+	public static final float CHAR_VELOCITY_SCREEN_RATIO = 0.0008f;
 	
 	public static final float MAX_BAR_SCREEN_RATIO = 0.9f;
 	

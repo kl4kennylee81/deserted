@@ -124,7 +124,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 					updateTargetedAction();
 					prompt = "Choose a Target";
 					if (tutorialSteps.stepOnSelection) {
-						prevText = tutorialSteps.currStep().text;
+						if (tutorialSteps.currStep() != null) prevText = tutorialSteps.currStep().text;
 						tutorialSteps.nextStep();
 					}
 					if (tutorialSteps.currStep() != null) TutorialGameplayController.targetPauseTime = tutorialSteps.currStep().timeToPause;
@@ -140,7 +140,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 					selected = null;
 					resetNeedsShadow();
 					if (tutorialSteps.stepOnSelection && tutorialSteps.currStep() != null) {
-						prevText = tutorialSteps.currStep().text;
+						if (tutorialSteps.currStep() != null) prevText = tutorialSteps.currStep().text;
 						tutorialSteps.nextStep();
 
 					}
@@ -213,7 +213,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 				menu.setChoosingTarget(false);
 				menu.resetPointer(numSlots);
 				if (tutorialSteps.stepOnSelection) {
-					prevText = tutorialSteps.currStep().text;
+					if (tutorialSteps.currStep() != null ) prevText = tutorialSteps.currStep().text;
 					tutorialSteps.nextStep();
 				}
 				if (tutorialSteps.currStep() != null) TutorialGameplayController.targetPauseTime = tutorialSteps.currStep().timeToPause;

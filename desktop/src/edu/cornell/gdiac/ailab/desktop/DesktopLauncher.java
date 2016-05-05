@@ -1,6 +1,6 @@
 /*
  * DesktopLauncher.java
- * 
+ * s
  * LibGDX is a cross-platform development library. You write all of your code in 
  * the core project.  However, you still need some extra classes if you want to
  * deploy on a specific platform (e.g. PC, Android, Web).  That is the purpose
