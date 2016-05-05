@@ -269,10 +269,11 @@ public class SelectionMenuController {
 	 * differentiate between an AOE vs singles
 	 */
 	protected void setTargetedAction(){
-		if (!action.needsToggle){
+		Action selectedAction = menu.getSelectedAction();
+		if (selectedAction == null|| !selectedAction.needsToggle){
 			return;
 		}
-		switch (action.pattern){
+		switch (selectedAction.pattern){
 		case STRAIGHT:
 			break;
 		case SINGLE:
@@ -719,10 +720,10 @@ public class SelectionMenuController {
 					continue;
 				}
 				
-				else if (choosingTarget && this.direction == Direction.UP){
+				else if (this.action.needsToggle && choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x,y);
 				} 
-				else if (!choosingTarget && this.direction == Direction.UP){
+				else if (this.action.needsToggle && !choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x, y);
 				}
 				else{
@@ -745,10 +746,10 @@ public class SelectionMenuController {
 					continue;
 				}
 				
-				else if (choosingTarget && this.direction == Direction.DOWN){
+				else if (this.action.needsToggle && choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x,y);
 				} 
-				else if (!choosingTarget && this.direction == Direction.DOWN){
+				else if (this.action.needsToggle && !choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x, y);
 				}
 				else{
@@ -769,10 +770,10 @@ public class SelectionMenuController {
 					continue;
 				}
 				
-				else if (choosingTarget && this.direction == Direction.UP){
+				else if (this.action.needsToggle && choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x,y);
 				} 
-				else if (!choosingTarget && this.direction == Direction.UP){
+				else if (this.action.needsToggle && !choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x, y);
 				}
 				else{
@@ -792,10 +793,10 @@ public class SelectionMenuController {
 					continue;
 				}
 				
-				else if (choosingTarget && this.direction == Direction.DOWN){
+				else if (this.action.needsToggle && choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x,y);
 				} 
-				else if (!choosingTarget && this.direction == Direction.DOWN){
+				else if (this.action.needsToggle && !choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x, y);
 				}
 				else{
