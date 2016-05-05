@@ -86,6 +86,9 @@ public class MouseOverController {
 			}
 			
 			if (c.contains(x,y,canvas,board)){
+				if (highlighted != null){
+					highlighted.removeHovering();
+				}
 				highlighted = c;
 				highlighted.setHovering();
 

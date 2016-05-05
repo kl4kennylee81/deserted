@@ -512,5 +512,47 @@
     magnitude: 0
   description: Fire a Cross shape for 2 damage
   animationId: 0
+  
+26:
+  name: Shattering Earth
+  cost: 2
+  damage: 3
+  range: 5
+  size: 1
+  pattern: SINGLE
+  needsToggle: true
+  oneHit: false
+  canBlock: false
+  isBuff: false
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Deal 3 damage to a single target.
+  animationId: 0
+  
+27:
+  name: SideShot
+  cost: 2
+  damage: 2
+  range: 10
+  size: 1
+  pattern: PROJECTILE
+  oneHit: true
+  needsToggle: true
+  canBlock: true
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  path: "0,0 1,1 2,1"
+  description: Fire a 3 range projectile on an adjacent row for 2 damage.
+  persisting_action:
+    numRounds: 10
+    moveSpeed: 0.05
+  animationId: 0
+  projectileAnimationId: 2
 ...
 
