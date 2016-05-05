@@ -1,5 +1,7 @@
 package edu.cornell.gdiac.ailab;
 
+import com.badlogic.gdx.graphics.Texture;
+
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.mesh.TexturedMesh;
 
@@ -20,9 +22,9 @@ public class Action implements GUIElement {
 	Animation animation;
 	Animation projectileAnimation;
 	
-	TexturedMesh menuToken;
-	TexturedMesh barToken;
-	TexturedMesh actionEffects;
+	Texture menuIcon;
+	Texture barIcon;
+	Texture actionEffects;
 	float x;
 	float y;
 	float width;
@@ -43,7 +45,9 @@ public class Action implements GUIElement {
 		INSTANT
 	}
 	
-	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, boolean oneHit, boolean canBlock,boolean needsToggle, Effect effect, String description){
+	public Action(String name, int cost, int damage, int range, int size, 
+			Pattern pattern, boolean oneHit, boolean canBlock,boolean needsToggle, 
+			Effect effect, String description,Texture icon){
 		this.name = name;
 		this.cost = cost;
 		this.damage = damage;
@@ -56,10 +60,13 @@ public class Action implements GUIElement {
 		this.effect = effect;
 		this.description = description;
 		this.isBuff = false;
+		this.barIcon = icon;
 	}
 	
-	public Action(String name, int cost, int damage, int range, int size, Pattern pattern, boolean oneHit, boolean canBlock,boolean needsToggle, Effect effect, String description, String strpath){
-		this(name, cost, damage, range, size, pattern, oneHit, canBlock,needsToggle, effect, description);
+	public Action(String name, int cost, int damage, int range, int size, 
+			Pattern pattern, boolean oneHit, boolean canBlock,boolean needsToggle,
+			Effect effect, String description, String strpath,Texture icon){
+		this(name, cost, damage, range, size, pattern, oneHit, canBlock,needsToggle, effect, description,icon);
 		
 		if ((this.pattern == Pattern.PROJECTILE||this.pattern == Pattern.INSTANT)&&strpath!=""){
 			// path string for a straight range 3 looks like this "0,0 1,0 2,0, 3,0" with 0,0 being the character current position"

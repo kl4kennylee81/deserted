@@ -396,6 +396,13 @@ public class ObjectLoader {
 			String effectName = (String) effect.get("name");
 			Integer effectNumRounds = (Integer) effect.get("numRounds");
 			Integer magnitude = (Integer) effect.get("magnitude");
+			
+			String iconTextureName = (String) action.get("icon");
+			manager.load(iconTextureName, Texture.class);
+			assets.add(iconTextureName);
+			manager.finishLoading();
+			Texture iconTexture = manager.get(iconTextureName,Texture.class);
+			
 
 			Action actionToAdd;
 			if (persisting != null){
@@ -403,10 +410,10 @@ public class ObjectLoader {
 				Float moveSpeed = (Float) ((Double) persisting.get("moveSpeed")).floatValue();
 					actionToAdd = new PersistingAction(name, cost, damage, range, size,
 							Pattern.valueOf(pattern), path, oneHit, canBlock,needsToggle, new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName),
-							description, persistingNumRounds, moveSpeed);
+							description, persistingNumRounds, moveSpeed,iconTexture);
 			}else{
 				actionToAdd = new Action(name, cost, damage, range, size, Pattern.valueOf(pattern), oneHit, canBlock,needsToggle,
-						new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), description,path);
+						new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), description,path,iconTexture);
 			}
 
 			Integer animationId = (Integer) action.get("animationId");

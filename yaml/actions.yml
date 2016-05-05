@@ -15,6 +15,7 @@
     magnitude: 0
   description: Move your character one unit
   animationId: 0
+  icon: models/action_tokens/movement_icon.png
 1:
   name: Straight - Tutorial
   cost: 1
@@ -32,6 +33,7 @@
     magnitude: 0
   description: Instant straight attack
   animationId: 0
+  icon: models/action_tokens/attack_icon.png
 2:
   name: Diagonal
   cost: 2
@@ -49,6 +51,7 @@
     magnitude: 0
   description: Instant diagonal attack
   animationId: 1
+  icon: models/action_tokens/attack_icon.png
 3:
   name: Single
   cost: 2
@@ -67,6 +70,7 @@
     magnitude: 0
   description: Target a single square for 3 damage
   animationId: 0
+  icon: models/action_tokens/attack_icon.png
 4:
   name: Straight - 4
   cost: 2
@@ -84,6 +88,7 @@
     magnitude: 0
   description: Hit 4 tiles straight ahead for 2 damage
   animationId: 1
+  icon: models/action_tokens/attack_icon.png
 
 5:
   name: Diagonal
@@ -106,6 +111,7 @@
     moveSpeed: 0.05
   animationId: 0
   projectileAnimationId: 2
+  icon: models/action_tokens/attack_icon.png
 
 6:
   name: Shield-3
@@ -128,6 +134,8 @@
     moveSpeed: 0.0
   animationId: 0
   projectileAnimationId: 2
+  icon: models/action_tokens/attack_icon.png
+
 7:
   name: Slow
   cost: 2
@@ -146,6 +154,8 @@
     magnitude: -4
   description: Target a single square to slow down enemy
   animationId: 0
+  icon: models/action_tokens/attack_icon.png
+
 8:
   name: Straight Slow
   cost: 3
@@ -167,6 +177,7 @@
   description: Launch a projectile 3 tiles straight ahead for 2 damage and slows
   animationId: 0
   projectileAnimationId: 2
+  icon: models/action_tokens/attack_icon.png
 
 9:
   name: Shield2
@@ -189,6 +200,7 @@
     moveSpeed: 0.0
   animationId: 0
   projectileAnimationId: 2
+  icon: models/action_tokens/attack_icon.png
 
 10:
   name: Straight - 2
@@ -211,6 +223,7 @@
     moveSpeed: 0.05
   animationId: 0
   projectileAnimationId: 2
+  icon: models/action_tokens/attack_icon.png
 
 11:
   name: L - PATH
@@ -234,6 +247,7 @@
     moveSpeed: 0.05
   animationId: 0
   projectileAnimationId: 2
+  icon: models/action_tokens/attack_icon.png
 
 12:
   name: zigzag - INSTANT
@@ -253,6 +267,7 @@
     magnitude: 0
   description: instant zig zag hit path 1 damage
   animationId: 0
+  icon: models/action_tokens/attack_icon.png
 
 13:
   name: Lightning Column
@@ -271,6 +286,7 @@
     magnitude: 0
   description: Send Lightning Down on the same row as this character's on the enemy's side
   animationId: 0
+  icon: models/action_tokens/attack_icon.png
 
 14:
   name: Firebolt
@@ -293,6 +309,7 @@
     moveSpeed: 0.06
   animationId: 0
   projectileAnimationId: 2
+  icon: models/action_tokens/attack_icon.png
 
 15:
   name: Spirit Barrier
@@ -315,6 +332,7 @@
     moveSpeed: 0.0
   animationId: 0
   projectileAnimationId: 2
+  icon: models/action_tokens/attack_icon.png
 
 16:
   name: Guardian Shield
@@ -337,6 +355,7 @@
     moveSpeed: 0.0
   animationId: 0
   projectileAnimationId: 2
+  icon: models/action_tokens/attack_icon.png
 
 17:
   name: Avalanche
@@ -356,6 +375,7 @@
     magnitude: 0
   description: Deal 2 damage in a cone shaped T.
   animationId: 0
+  icon: models/action_tokens/attack_icon.png
 
 18:
   name: Shattering Earth
@@ -375,6 +395,7 @@
     magnitude: 0
   description: Deal 3 damage to a particular tile and Breaks the tile.
   animationId: 0
+  icon: models/action_tokens/attack_icon.png
 
 19:
   name: Lose a Slot
@@ -394,6 +415,7 @@
     magnitude: 1
   description: Daze your opponent loses a slot.
   animationId: 0
+  icon: models/action_tokens/attack_icon.png
 
 20:
   name: Eruption
@@ -413,6 +435,7 @@
     magnitude: 0
   description: Invoke fire on the tile 2 squares in front and the square behind it.
   animationId: 1
+  icon: models/action_tokens/attack_icon.png
 
 21:
   name: V Destroy
@@ -432,6 +455,7 @@
     magnitude: 0
   description: Invoke fire in a V shape in front of you deal 2 damage.
   animationId: 1
+  icon: models/action_tokens/attack_icon.png
 
 22:
   name: Hasten
@@ -451,6 +475,7 @@
     magnitude: 4
   description: Target a single square to Hasten an ally
   animationId: 0
+  icon: models/action_tokens/attack_icon.png
 
 23:
   name: SideShot
@@ -474,6 +499,7 @@
     moveSpeed: 0.05
   animationId: 0
   projectileAnimationId: 2
+  icon: models/action_tokens/attack_icon.png
 
 24:
   name: ScatterShot
@@ -493,6 +519,7 @@
     magnitude: 0
   description: Hits adjacent rows 2 squares forward for 2 damage.
   animationId: 0
+  icon: models/action_tokens/attack_icon.png
 
 25:
   name: Splash
@@ -512,7 +539,8 @@
     magnitude: 0
   description: Fire a Cross shape for 2 damage
   animationId: 0
-  
+  icon: models/action_tokens/attack_icon.png
+
 26:
   name: Shattering Earth
   cost: 2
@@ -531,7 +559,8 @@
     magnitude: 0
   description: Deal 3 damage to a single target.
   animationId: 0
-  
+  icon: models/action_tokens/attack_icon.png
+
 27:
   name: SideShot
   cost: 2
@@ -554,5 +583,6 @@
     moveSpeed: 0.05
   animationId: 0
   projectileAnimationId: 2
+  icon: models/action_tokens/attack_icon.png
 ...
 

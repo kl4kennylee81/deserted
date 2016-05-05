@@ -675,7 +675,7 @@ public class CharActionBar {
 			
 		int curSlots = 0;
 		curSlots = drawSlots(canvas,curSlots,castActions,xPosBar,yPosBar,Constants.CAST_COLOR.cpy(),drawBoxes);
-		curSlots = drawSlots(canvas,curSlots,queuedActions,xPosBar,yPosBar,barColor,drawBoxes);
+		curSlots = drawSlots(canvas,curSlots,queuedActions,xPosBar,yPosBar,Color.WHITE.cpy(),drawBoxes);
 		if (isSelecting && curSlots < this.getTotalNumSlots()){
 			curSlots = drawSlots(canvas,curSlots,selectingActions,xPosBar,yPosBar,Constants.CAST_COLOR.cpy(),drawBoxes);
 			curSlots = this.drawSelectingActionSlot(canvas, curSlots, curAction, xPosBar, yPosBar, Constants.CAST_COLOR.cpy(), drawBoxes,lerpVal);
@@ -696,6 +696,13 @@ public class CharActionBar {
 			float y_pos = actionSlot_y;
 			String text = a.action.name;
 			canvas.drawCenteredText(text,x_pos,y_pos,Color.WHITE);
+			
+			float y_icon = this.getFillY(canvas, count);
+			
+			float scale = this.getBarFillHeight(canvas)/a.action.barIcon.getHeight();
+			float width_icon = a.action.barIcon.getWidth() * scale;
+			float height_icon = a.action.barIcon.getHeight() * scale;
+			canvas.drawTexture(a.action.barIcon, x_pos, y_icon, width_icon,height_icon, Color.WHITE);
 		}
 	}
 	
@@ -716,9 +723,6 @@ public class CharActionBar {
 		this.drawRightEndpoint(canvas, xPosBar, yPosBar, barColor);
 		
 		// draw action queuing
-		this.drawQueuedActions(canvas, count, selectingActions);
-		this.drawQueuedActions(canvas,count,queuedActions);
-		this.drawQueuedActions(canvas, count, castActions);
 		this.drawSlots(canvas, castActions,queuedActions,
 				selectingActions,curSelectedAction,count, barColor,isSelecting,true,lerpVal);
 		
@@ -728,6 +732,10 @@ public class CharActionBar {
 		
 		this.drawSlots(canvas, castActions,queuedActions,
 				selectingActions,curSelectedAction,count, barColor,isSelecting,false,lerpVal);
+		
+		this.drawQueuedActions(canvas, count, selectingActions);
+		this.drawQueuedActions(canvas,count,queuedActions);
+		this.drawQueuedActions(canvas, count, castActions);
 	}
 	
 }
