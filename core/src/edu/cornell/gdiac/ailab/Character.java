@@ -423,8 +423,12 @@ public class Character implements GUIElement {
 				// throw it away from the list
 				iter.remove();
 			}
+			else{
+				queuedActions.add(an);
+			}
 		}
-		this.queuedActions = (LinkedList<ActionNode>) actions;
+		// clear the actions in the selection menu
+		actions.clear();
 	}
 	
 	public List<ActionNode> getQueuedActions(){

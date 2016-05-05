@@ -564,8 +564,32 @@ public class CharActionBar {
 		canvas.drawTexture(actionBar_centerpotrait,potraitX,potraitY,potraitWidth,potraitHeight,barColor);
 	}
 	
-	public void drawSlots(GameCanvas canvas,List<ActionNode> castActions,
-			List<ActionNode> queuedActions,float xPosBar,float yPosBar,Color barColor){
+	public int drawSlots(GameCanvas canvas,int curSlot,
+			List<ActionNode> listActions,float xPosBar,float yPosBar,Color barColor){
+		int numberSlots = curSlot;
+		for (ActionNode an:listActions){
+			numberSlots = this.drawSlot(canvas,numberSlots,an.action,xPosBar,yPosBar,barColor);
+		}
+		return numberSlots;
+	}
+	
+	public int drawSlot(GameCanvas canvas,int curSlots,
+			Action curAction,float xPosBar,float yPosBar,Color barColor){
+		if (curAction != null && curSlots + curAction.cost <= this.getTotalNumSlots()){
+			float tickHeight = this.getBarHeight(canvas)/CharActionBar.ACTIONBAR_HEIGHT_CONTAINER_FILL_RATIO;
+			float tickY = yPosBar + tickHeight/2;
+			float intervalSize = this.getSlotWidth(canvas);
+			float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlots;
+			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
+			
+			return curSlots + curAction.cost;
+		}
+		else{
+			return curSlots;
+		}
+	}
+	
+	public void drawDazedSlots(GameCanvas canvas,float xPosBar,float yPosBar,Color barColor){
 		//draw dazed slots as gray
 		float castTotalWidth = this.getWidth(canvas) - this.getWaitWidth(canvas);
 		float dazedWidth = (dazedSlots*1f/numSlots)*castTotalWidth;
@@ -575,57 +599,33 @@ public class CharActionBar {
 		float tickY = yPosBar + tickHeight/2;
 		
 		canvas.drawBox(dazedxPos, tickY, dazedWidth, tickHeight,barColor);
+	}
+	
+	public void drawRemainingSlots(GameCanvas canvas,int curSlots, float xPosBar, float yPosBar, Color barColor){
+		float tickHeight = this.getBarHeight(canvas)/CharActionBar.ACTIONBAR_HEIGHT_CONTAINER_FILL_RATIO;
+		float tickY = yPosBar + tickHeight/2;
 		
-		int curSlot = 0;
-		for (ActionNode an:castActions){
-			float intervalSize = this.getSlotWidth(canvas);
-			float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlot;
-			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
-			curSlot+=an.action.cost;
-		}
-		for (ActionNode an:queuedActions){
-			float intervalSize = this.getSlotWidth(canvas);
-			float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlot;
-			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
-			curSlot+=an.action.cost;
-		}
-		for (int i = curSlot; i < this.getTotalNumSlots(); i++){
+		for (int i = curSlots; i < this.getTotalNumSlots(); i++){
 			float intervalSize = this.getSlotWidth(canvas);
 			float startCastX = xPosBar + this.getWaitWidth(canvas);
 			canvas.drawBox(startCastX + i*intervalSize, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
 		}	
 	}
 	
-	public void drawSlots(GameCanvas canvas,List<ActionNode> selectingActions,
-			Action curAction,float xPosBar,float yPosBar,Color barColor){
-		//draw dazed slots as gray
-		float castTotalWidth = this.getWidth(canvas) - this.getWaitWidth(canvas);
-		float dazedWidth = (dazedSlots*1f/numSlots)*castTotalWidth;
-		float dazedxPos = xPosBar + this.getWidth(canvas) - dazedWidth;
+	public void drawSlots(GameCanvas canvas,List<ActionNode> castActions,
+			List<ActionNode> queuedActions,List<ActionNode> selectingActions,Action curAction,
+			float xPosBar,float yPosBar,Color barColor){
 		
-		float tickHeight = this.getBarHeight(canvas)/CharActionBar.ACTIONBAR_HEIGHT_CONTAINER_FILL_RATIO;
-		float tickY = yPosBar + tickHeight/2;
-		
-		canvas.drawBox(dazedxPos, tickY, dazedWidth, tickHeight,barColor);
-		
-		int curSlot = 0;
-		for (ActionNode an:selectingActions){
-			float intervalSize = this.getSlotWidth(canvas);
-			float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlot;
-			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
-			curSlot+=an.action.cost;
+		this.drawDazedSlots(canvas,xPosBar,yPosBar,barColor);
+			
+		int curSlots = 0;
+		curSlots = drawSlots(canvas,curSlots,castActions,xPosBar,yPosBar,barColor);
+		curSlots = drawSlots(canvas,curSlots,queuedActions,xPosBar,yPosBar,barColor);
+		if (curSlots < this.getTotalNumSlots()){
+			curSlots = drawSlots(canvas,curSlots,selectingActions,xPosBar,yPosBar,barColor);
+			curSlots = drawSlot(canvas,curSlots,curAction,xPosBar,yPosBar,barColor);
 		}
-		if (curAction != null){
-			float intervalSize = this.getSlotWidth(canvas);
-			float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlot;
-			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
-			curSlot+= curAction.cost;			
-		}
-		for (int i = curSlot; i < this.getTotalNumSlots(); i++){
-			float intervalSize = this.getSlotWidth(canvas);
-			float startCastX = xPosBar + this.getWaitWidth(canvas);
-			canvas.drawBox(startCastX + i*intervalSize, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
-		}	
+		this.drawRemainingSlots(canvas, curSlots, xPosBar, yPosBar, barColor);
 	}
 	
 	public void drawQueuedActions(GameCanvas canvas,int count,List<ActionNode> queuedActions){
@@ -668,12 +668,8 @@ public class CharActionBar {
 		this.drawQueuedActions(canvas, count, selectingActions);
 		this.drawQueuedActions(canvas,count,queuedActions);
 		this.drawQueuedActions(canvas, count, castActions);
-		if (selectingActions.isEmpty() && curSelectedAction == null){
-			this.drawSlots(canvas, castActions,queuedActions,xPosBar, yPosBar, barColor);
-		}
-		else{
-			this.drawSlots(canvas, selectingActions, curSelectedAction, xPosBar, yPosBar, barColor);
-		}
+		this.drawSlots(canvas, castActions,queuedActions,
+				selectingActions,curSelectedAction,xPosBar, yPosBar, barColor);
 	}
 	
 }
