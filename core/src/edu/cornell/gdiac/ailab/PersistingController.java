@@ -5,9 +5,9 @@ import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
 
-import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.ActionNode.Direction;
 import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
+import edu.cornell.gdiac.ailab.ActionNode;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 
 public class PersistingController extends ActionController{

@@ -11,11 +11,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.ActionNode.Direction;
 import edu.cornell.gdiac.ailab.AnimationNode.CharacterState;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
-import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
+import edu.cornell.gdiac.ailab.ActionNode;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
 
 public class Character implements GUIElement {
@@ -611,7 +611,6 @@ public class Character implements GUIElement {
 			}
 			resetShieldedCoordinates();
 		}
-		an.free();
 	}
 	
 	List<ActionNode> getPersistingActions(){

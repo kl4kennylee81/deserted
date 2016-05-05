@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.omg.CORBA.SystemException;
 
-import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
-import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.ActionNode;
+import edu.cornell.gdiac.ailab.ActionNode.Direction;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.ailab.SelectionMenuController.MenuState;
 import edu.cornell.gdiac.ailab.TutorialSteps.TutorialAction;
@@ -117,7 +117,6 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 	private void updateNotChoosingTarget(){
 		boolean mouseCondition = InputController.pressedLeftMouse();// &&
 //				action.contains(InputController.getMouseX(), InputController.getMouseX(), InputController.getCanvas(), board);
-		ActionNodes anPool = ActionNodes.getInstance();
 		int numSlots = selected.getActionBar().getUsableNumSlots();
 		if ((InputController.pressedEnter() || mouseCondition)){
 			if (action != null && menu.canAct(numSlots)){
@@ -158,7 +157,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 			}
 //		} else if (InputController.pressedD() && menu.canNop(numSlots)){
 			/*float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,0);
-			menu.add(anPool.newActionNode(nop,actionExecute,0,0,Direction.NONE),numSlots);
+			menu.add(new ActionNode(nop,actionExecute,0,0,Direction.NONE),numSlots);
 			menu.resetPointer(numSlots);*/
 		} else if (InputController.pressedUp() && !InputController.pressedDown()){
 			//Actions go from up down, so we need to flip
@@ -169,7 +168,6 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 	}
 
 	protected void updateChoosingTarget(){
-		ActionNodes anPool = ActionNodes.getInstance();
 		switch (action.pattern){
 		case SINGLE:
 			TutorialGameplayController.highlight_action = 2;
@@ -211,7 +209,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 			if (correctDirection()){
 				float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
 				int numSlots = selected.actionBar.getUsableNumSlots();
-				menu.add(anPool.newActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
+				menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 				menu.setChoosingTarget(false);
 				menu.resetPointer(numSlots);
 				if (tutorialSteps.stepOnSelection) {

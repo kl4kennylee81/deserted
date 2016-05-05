@@ -3,7 +3,7 @@ package edu.cornell.gdiac.ailab;
 import java.util.List;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.ActionNode.Direction;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.Effect.Type;
 
@@ -222,7 +222,6 @@ public class SelectionMenuController {
 		boolean mouseCondition = InputController.pressedLeftMouse() &&
 				((action!= null && action.contains(InputController.getMouseX(), InputController.getMouseY(), InputController.getCanvas(), board))
 						||this.menu.confirmContain(InputController.getMouseX(), InputController.getMouseY()));
-		ActionNodes anPool = ActionNodes.getInstance();
 		int numSlots = selected.getActionBar().getUsableNumSlots();
 		if ((InputController.pressedEnter() || mouseCondition)){
 			if (this.menu.confirmContain(InputController.getMouseX(), InputController.getMouseY())){
@@ -236,7 +235,7 @@ public class SelectionMenuController {
 					prompt = "Choose a Target";
 				} else {
 					float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
-					menu.add(anPool.newActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
+					menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 					menu.resetPointer(numSlots);
 				}
 			} else {
@@ -349,7 +348,6 @@ public class SelectionMenuController {
 	}
 
 	private void clickedAction(){
-		ActionNodes anPool = ActionNodes.getInstance();
 		int numSlots = selected.getActionBar().getUsableNumSlots();
 		for (int i =0;i<this.menu.getActions().length;i++){
 			Action menuAction = this.menu.getActions()[i];
@@ -364,7 +362,7 @@ public class SelectionMenuController {
 				}
 				else{
 					float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
-					menu.add(anPool.newActionNode(menuAction,actionExecute,selectedX,selectedY,direction),numSlots);
+					menu.add(new ActionNode(menuAction,actionExecute,selectedX,selectedY,direction),numSlots);
 					menu.resetPointer(numSlots);
 					this.setChoosingTarget(false);
 					this.choosingTarget = false;
@@ -474,10 +472,9 @@ public class SelectionMenuController {
 	}
 
 	private void confirmedAction(){
-		ActionNodes anPool = ActionNodes.getInstance();
 		float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
 		int numSlots = selected.getActionBar().getUsableNumSlots();
-		menu.add(anPool.newActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
+		menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 		this.setChoosingTarget(false);
 		menu.resetPointer(numSlots);
 	}

@@ -24,7 +24,9 @@ public class ActionBarController {
 			if (!c.isAlive()){
 				continue;
 			}
-			c.castPosition %= 1;
+			if (c.castPosition > 1){
+				c.resetCastPosition();
+			}
 			float oldCastPosition = c.castPosition;
 			
 			// Increase characters cast position by their normal speed or cast speed

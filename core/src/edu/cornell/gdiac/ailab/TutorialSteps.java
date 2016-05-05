@@ -6,7 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Align;
 
-import edu.cornell.gdiac.ailab.ActionNodes.Direction;
+import edu.cornell.gdiac.ailab.ActionNode.Direction;
 
 /**
  * TutorialSteps Class

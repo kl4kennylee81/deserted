@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
+import edu.cornell.gdiac.ailab.ActionNode;
 
 public class CharActionBar {
 	
@@ -576,34 +576,56 @@ public class CharActionBar {
 		
 		canvas.drawBox(dazedxPos, tickY, dazedWidth, tickHeight,barColor);
 		
-		if (queuedActions.isEmpty()){
-			for (int i = 0; i < this.getTotalNumSlots(); i++){
-				float intervalSize = this.getSlotWidth(canvas);
-				float startCastX = xPosBar + this.getWaitWidth(canvas);
-				canvas.drawBox(startCastX + i*intervalSize, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
-			}
+		int curSlot = 0;
+		for (ActionNode an:castActions){
+			float intervalSize = this.getSlotWidth(canvas);
+			float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlot;
+			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
+			curSlot+=an.action.cost;
 		}
-		else{
-			int curSlot = 0;
-			for (ActionNode an:castActions){
-				float intervalSize = this.getSlotWidth(canvas);
-				float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlot;
-				canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
-				curSlot+=an.action.cost;				
-			}
-			for (ActionNode an:queuedActions){
-				float intervalSize = this.getSlotWidth(canvas);
-				float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlot;
-				canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
-				curSlot+=an.action.cost;
-			}
-			for (int i = curSlot; i < this.getTotalNumSlots(); i++){
-				float intervalSize = this.getSlotWidth(canvas);
-				float startCastX = xPosBar + this.getWaitWidth(canvas);
-				canvas.drawBox(startCastX + i*intervalSize, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
-			}
+		for (ActionNode an:queuedActions){
+			float intervalSize = this.getSlotWidth(canvas);
+			float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlot;
+			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
+			curSlot+=an.action.cost;
 		}
+		for (int i = curSlot; i < this.getTotalNumSlots(); i++){
+			float intervalSize = this.getSlotWidth(canvas);
+			float startCastX = xPosBar + this.getWaitWidth(canvas);
+			canvas.drawBox(startCastX + i*intervalSize, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
+		}	
+	}
+	
+	public void drawSlots(GameCanvas canvas,List<ActionNode> selectingActions,
+			Action curAction,float xPosBar,float yPosBar,Color barColor){
+		//draw dazed slots as gray
+		float castTotalWidth = this.getWidth(canvas) - this.getWaitWidth(canvas);
+		float dazedWidth = (dazedSlots*1f/numSlots)*castTotalWidth;
+		float dazedxPos = xPosBar + this.getWidth(canvas) - dazedWidth;
 		
+		float tickHeight = this.getBarHeight(canvas)/CharActionBar.ACTIONBAR_HEIGHT_CONTAINER_FILL_RATIO;
+		float tickY = yPosBar + tickHeight/2;
+		
+		canvas.drawBox(dazedxPos, tickY, dazedWidth, tickHeight,barColor);
+		
+		int curSlot = 0;
+		for (ActionNode an:selectingActions){
+			float intervalSize = this.getSlotWidth(canvas);
+			float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlot;
+			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
+			curSlot+=an.action.cost;
+		}
+		if (curAction != null){
+			float intervalSize = this.getSlotWidth(canvas);
+			float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlot;
+			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
+			curSlot+= curAction.cost;			
+		}
+		for (int i = curSlot; i < this.getTotalNumSlots(); i++){
+			float intervalSize = this.getSlotWidth(canvas);
+			float startCastX = xPosBar + this.getWaitWidth(canvas);
+			canvas.drawBox(startCastX + i*intervalSize, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);
+		}	
 	}
 	
 	public void drawQueuedActions(GameCanvas canvas,int count,List<ActionNode> queuedActions){
@@ -626,7 +648,7 @@ public class CharActionBar {
 	// draw gauge style 
 	public void draw(GameCanvas canvas,int count,Color barColor,Color fillColor, 
 			float castPosition,boolean leftside,List<ActionNode> selectingActions, 
-			Action curSelectingAction, List<ActionNode> queuedActions,
+			Action curSelectedAction, List<ActionNode> queuedActions,
 			List<ActionNode> castActions){
 		
 		float xPosBar = getX(canvas);
@@ -638,14 +660,20 @@ public class CharActionBar {
 		this.drawCenterRing(canvas, xPosBar, yPosBar, barColor);
 		this.drawRightEndpoint(canvas, xPosBar, yPosBar, barColor);
 		
+		// fill will have to be drawn ontop with a bit of transparency
 		this.drawFill(canvas, castPosition, xPosBar, yPosBar, barColor);
 		this.drawCenterPotrait(canvas, xPosBar, yPosBar, barColor);
 		
 		// draw action queuing
+		this.drawQueuedActions(canvas, count, selectingActions);
 		this.drawQueuedActions(canvas,count,queuedActions);
-		this.drawSlots(canvas, castActions,queuedActions,xPosBar, yPosBar, barColor);
-		
-	
+		this.drawQueuedActions(canvas, count, castActions);
+		if (selectingActions.isEmpty() && curSelectedAction == null){
+			this.drawSlots(canvas, castActions,queuedActions,xPosBar, yPosBar, barColor);
+		}
+		else{
+			this.drawSlots(canvas, selectingActions, curSelectedAction, xPosBar, yPosBar, barColor);
+		}
 	}
 	
 }

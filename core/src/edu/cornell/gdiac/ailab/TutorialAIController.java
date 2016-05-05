@@ -3,7 +3,9 @@ package edu.cornell.gdiac.ailab;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
+import edu.cornell.gdiac.ailab.ActionNode;
+import edu.cornell.gdiac.ailab.ActionNode.Direction;
+
 import edu.cornell.gdiac.ailab.TutorialSteps.TutorialAction;
 
 public class TutorialAIController {
@@ -38,13 +40,12 @@ public class TutorialAIController {
 		}
 		
 		List<ActionNode> actions = new LinkedList<ActionNode>();
-		ActionNodes anPool = ActionNodes.getInstance();
 		int startPoint = 0;
 	
 		for (TutorialAction ta : tutorialSteps.getActions()){
 			Action action = selected.availableActions[ta.actionId];
 			float executePoint = selected.actionBar.castPoint + (selected.getInterval() * (startPoint + action.cost));
-			ActionNode a = anPool.newActionNode(action, executePoint, ta.xPos, ta.yPos, ta.direction);
+			ActionNode a = new ActionNode(action, executePoint, ta.xPos, ta.yPos, ta.direction);
 			startPoint += action.cost;
 			actions.add(a);
 		}

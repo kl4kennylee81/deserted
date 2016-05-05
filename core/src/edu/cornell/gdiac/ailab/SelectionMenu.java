@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.Align;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
+import edu.cornell.gdiac.ailab.ActionNode;
 import edu.cornell.gdiac.mesh.TexturedMesh;
 
 public class SelectionMenu {
@@ -104,7 +104,6 @@ public class SelectionMenu {
 		ActionNode an = selectedActions.pollLast();
 		if (an != null) {
 			takenSlots -= an.action.cost;
-			an.free();
 		}
 		return an;
 	}
@@ -114,7 +113,7 @@ public class SelectionMenu {
 	}
 	
 	public Action getSelectedAction(){
-		if (selectedAction < actions.length){
+		if (selectedAction >= 0 && selectedAction < actions.length){
 			return actions[selectedAction];
 		}
 		return null;
@@ -217,7 +216,7 @@ public class SelectionMenu {
 	 * @return
 	 */
 	public boolean resetPointer(int numSlots){
-		if (selectedAction < actions.length && actions[selectedAction].cost > numSlots - takenSlots){
+		if (selectedAction >= 0 && selectedAction < actions.length && actions[selectedAction].cost > numSlots - takenSlots){
 			for (int i = 0; i <= actions.length; i++){
 				selectedAction = i;
 				if (canDoAction(selectedAction,numSlots)){
@@ -233,8 +232,7 @@ public class SelectionMenu {
 		takenSlots = 0;
 		choosingTarget = false;
 		while(selectedActions.peek() != null){
-			ActionNode freeAction = selectedActions.poll();
-			freeAction.free();
+			selectedActions.poll();
 		}
 	}
 
@@ -248,7 +246,7 @@ public class SelectionMenu {
 			Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.2f);
 			 return dimColor;
 		} 
-		else if (selectedAction < actions.length && actions[selectedAction].name == action.name){
+		else if (selectedAction < actions.length &&selectedAction >= 0 && actions[selectedAction].name == action.name){
 			 if (this.choosingTarget){
 				return Color.CORAL.cpy();
 			 }
@@ -319,37 +317,37 @@ public class SelectionMenu {
 		}
 		
 		//Draw action bar with 3 black boxes to show 4 slots
-		float actionSlot_x = actionBar.getBarCastPoint(canvas);
-		float actionSlot_y = actionBar.getFillY(canvas,count);
-		
-		float slot_width = actionBar.getSlotWidth(canvas);
-		float slot_height = actionBar.getBarFillHeight(canvas);
-		
-		int offset = 0;
-		for (int i = 0; i < totalNumSlots; i++){
-			float curSlot_x = actionSlot_x + ((slot_width) * i) + CharActionBar.BAR_DIVIDER_WIDTH;
-			float slot_w_space = slot_width-CharActionBar.BAR_DIVIDER_WIDTH;
-			if (i < takenSlots) {
-				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Constants.CAST_COLOR.cpy());
-			} else if (selectedAction < actions.length && i < takenSlots+actions[selectedAction].cost){
-				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE.cpy().lerp(Constants.CAST_COLOR.cpy(),lerpVal));
-			} else if (i >= usableNumSlots){
-				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.GRAY);
-			} else {
-				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE);
-			}
-		}
+//		float actionSlot_x = actionBar.getBarCastPoint(canvas);
+//		float actionSlot_y = actionBar.getFillY(canvas,count);
+//		
+//		float slot_width = actionBar.getSlotWidth(canvas);
+//		float slot_height = actionBar.getBarFillHeight(canvas);
+//		
+//		int offset = 0;
+//		for (int i = 0; i < totalNumSlots; i++){
+//			float curSlot_x = actionSlot_x + ((slot_width) * i) + CharActionBar.BAR_DIVIDER_WIDTH;
+//			float slot_w_space = slot_width-CharActionBar.BAR_DIVIDER_WIDTH;
+//			if (i < takenSlots) {
+//				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Constants.CAST_COLOR.cpy());
+//			} else if (selectedAction < actions.length && i < takenSlots+actions[selectedAction].cost){
+//				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE.cpy().lerp(Constants.CAST_COLOR.cpy(),lerpVal));
+//			} else if (i >= usableNumSlots){
+//				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.GRAY);
+//			} else {
+//				canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE);
+//			}
+//		}
 		
 		//Write the names of selected action
-		for (ActionNode an : selectedActions){
-			float x_pos = actionSlot_x + offset + (slot_width*an.action.cost/2);
-			float y_pos = actionSlot_y;
-			canvas.drawCenteredText(an.action.name, x_pos, y_pos, Color.WHITE);
-			offset+=slot_width*an.action.cost;
-		}
+//		for (ActionNode an : selectedActions){
+//			float x_pos = actionSlot_x + offset + (slot_width*an.action.cost/2);
+//			float y_pos = actionSlot_y;
+//			canvas.drawCenteredText(an.action.name, x_pos, y_pos, Color.WHITE);
+//			offset+=slot_width*an.action.cost;
+//		}
 		
 		//Write description
-		if (selectedAction < actions.length){
+		if (selectedAction < actions.length && selectedAction >= 0){
 			float descript_x = RELATIVE_DESCRIPTION_X_POS *w;
 			float descript_y = RELATIVE_DESCRIPTION_Y_POS * h;
 			canvas.drawCenteredText(actions[selectedAction].description, descript_x,descript_y, Color.DARK_GRAY);

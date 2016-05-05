@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 
-import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
+import edu.cornell.gdiac.ailab.ActionNode;
 
 public class MouseOverController {
 	

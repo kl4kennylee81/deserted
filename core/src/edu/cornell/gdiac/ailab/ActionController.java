@@ -25,9 +25,9 @@ import edu.cornell.gdiac.ailab.Character;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.ActionNodes.Direction;
 import edu.cornell.gdiac.ailab.AnimationNode.CharacterState;
-import edu.cornell.gdiac.ailab.ActionNodes.ActionNode;
+import edu.cornell.gdiac.ailab.ActionNode;
+import edu.cornell.gdiac.ailab.ActionNode.Direction;
 
 import com.badlogic.gdx.graphics.*;
 
@@ -98,7 +98,6 @@ public class ActionController {
 						selected = null;
 					}
 				} else{
-					curAction.free();
 					selected = null;
 				}
 			}
@@ -404,7 +403,6 @@ public class ActionController {
 			selected.xPosition = nextX;
 			selected.yPosition = nextY;
 		}
-		a_node.free();
 	}
 
 	private void executeStraight(ActionNode a_node){
@@ -470,7 +468,6 @@ public class ActionController {
 				applyTileEffect(a_node.action.effect,path[i].x,path[i].y);
 			}
 		}
-		a_node.free();
 		// free Coordinates back into the Pool
 		for (int j = 0;j<path.length;j++){
 			path[j].free();
