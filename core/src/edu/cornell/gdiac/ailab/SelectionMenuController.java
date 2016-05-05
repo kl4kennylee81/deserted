@@ -215,6 +215,42 @@ public class SelectionMenuController {
 		}
 	}
 	
+	/** returns if the action can toggle between meaningful options
+	 *  checking if on the edges thus cannot effectively toggle */
+	private boolean isActionToggleable(){
+		if (action == null){
+			return false;
+		}
+		switch(action.pattern){
+		case MOVE:
+			if (board.canMove(selected.leftside,shadowX, shadowY+1)){
+				return true;
+			} else if (board.canMove(selected.leftside,shadowX+1, shadowY)){
+				return true;
+			} else if (board.canMove(selected.leftside,shadowX-1, shadowY)){
+				return true;
+			} else if (board.canMove(selected.leftside,shadowX, shadowY-1)){
+				return true;
+			} else {
+				return false;
+			}
+		case PROJECTILE:
+		case INSTANT:
+		case DIAGONAL:
+		case SHIELD:
+			if (this.selected.getShadowY() == 0||this.selected.getShadowY() == this.board.getHeight()-1){
+				return false;
+			}
+			else{
+				return true;
+			}
+		case SINGLE:
+			return true;
+		default:
+			return false;
+		}
+	}
+	
 	/**
 	 * Update when an action is not targeting yet
 	 */
@@ -232,7 +268,7 @@ public class SelectionMenuController {
 			if (action != null && menu.canAct(numSlots)){
 				
 				// allows for bypassing the targetting phase
-				if (action.getNeedsToggle()){
+				if (action.getNeedsToggle() && this.isActionToggleable()){
 					updateTargetedAction();
 					prompt = "Choose a Target";
 				} else {
@@ -337,11 +373,15 @@ public class SelectionMenuController {
 	}
 	
 	protected void singleUpdateTargetedAction(){
+		Action selectedAction = this.menu.getSelectedAction();
+		if (this.selected == null||selectedAction == null){
+			return;
+		}
 		boolean hasFound = false;
 		for (int i =0;i<board.getWidth();i++){
 			for (int j=0;j<board.getHeight();j++){
-				if ((this.selected.leftside && i >= board.getWidth()/2)||(!this.selected.leftside && i < board.getWidth()/2) || this.action.isBuff){
-					boolean canHit = this.action.hitsTarget(this.selected.getShadowX(),this.selected.getShadowY(),i,j,this.selected.leftside,board);
+				if ((this.selected.leftside && i >= board.getWidth()/2)||(!this.selected.leftside && i < board.getWidth()/2) || selectedAction.isBuff){
+					boolean canHit = selectedAction.hitsTarget(this.selected.getShadowX(),this.selected.getShadowY(),i,j,this.selected.leftside,board);
 					if (canHit){
 						this.selectedX = i;
 						this.selectedY = j;
