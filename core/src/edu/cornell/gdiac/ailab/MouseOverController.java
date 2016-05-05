@@ -52,7 +52,6 @@ public class MouseOverController {
 		if (DISABLE_MOUSE){
 			return;
 		}
-		if (!InputController.mouseJustMoved()) return;
 		hAction = null;
 		currMenu = null;
 		if (currMenu1 != null){
@@ -74,18 +73,21 @@ public class MouseOverController {
 		
 		for(Character c: characters){
 			SelectionMenu menu = c.getSelectionMenu();
-			for (Action a: menu.getActions()){
-				int usableNumSlots = c.getActionBar().getUsableNumSlots();
-				boolean actionInvalid = menu.isActionInvalid(usableNumSlots, a);
-				if (a.contains(x,y,canvas,board) && !actionInvalid){
-					hAction = a;
-					currMenu = currMenu1;
-					actionChar = c;
+			if (InputController.mouseJustMoved()){
+				for (Action a: menu.getActions()){
+					int usableNumSlots = c.getActionBar().getUsableNumSlots();
+					boolean actionInvalid = menu.isActionInvalid(usableNumSlots, a);
+					if (a.contains(x,y,canvas,board) && !actionInvalid){
+						hAction = a;
+						currMenu = currMenu1;
+						actionChar = c;
+					}
 				}
-			}
-			if (c.getSelectionMenu().confirmContain(InputController.getMouseX(), InputController.getMouseY())){
-				menu.setChoosingTarget(false);
-				menu.selectedAction=menu.getActions().length;
+				
+				if (c.getSelectionMenu().confirmContain(InputController.getMouseX(), InputController.getMouseY())){
+					menu.setChoosingTarget(false);
+					menu.selectedAction=menu.getActions().length;
+				}
 			}
 			
 			if (c.contains(x,y,canvas,board)){
