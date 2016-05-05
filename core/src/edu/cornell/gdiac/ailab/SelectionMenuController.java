@@ -379,7 +379,8 @@ public class SelectionMenuController {
 		// mouse controls for single
 		float mouseX = InputController.getMouseX();
 		float mouseY = InputController.getMouseY();
-		Coordinate chosenTile = this.board.contains(mouseX, mouseY, InputController.getCanvas());
+		Coordinate chosenTile = null;
+		if (InputController.mouseJustMoved()) chosenTile = this.board.contains(mouseX, mouseY, InputController.getCanvas());
 		if (chosenTile!= null){
 			int chosenX = chosenTile.x;
 			int chosenY = chosenTile.y;
@@ -556,7 +557,8 @@ public class SelectionMenuController {
 		// mouse controls for single
 		float mouseX = InputController.getMouseX();
 		float mouseY = InputController.getMouseY();
-		Coordinate chosenTile = this.board.contains(mouseX, mouseY, InputController.getCanvas());
+		Coordinate chosenTile = null;
+		if (InputController.mouseJustMoved()) chosenTile = this.board.contains(mouseX, mouseY, InputController.getCanvas());
 		if (chosenTile!= null){
 			int startX = this.selected.getShadowX();
 			int startY = this.selected.getShadowY();

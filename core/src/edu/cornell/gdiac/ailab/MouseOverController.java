@@ -20,6 +20,7 @@ public class MouseOverController {
 	private static boolean DISABLE_MOUSE = false;
 
 	public void update(Option[] options, Menu Menu){
+		if (!InputController.mouseJustMoved()) return;
 		float x = InputController.getMouseX();
 		float y = InputController.getMouseY();
 		for (int i =0;i<options.length;i++){
@@ -32,6 +33,7 @@ public class MouseOverController {
 	}
 	
 	public void update(Option[] options, Menu Menu, boolean reset){
+		if (!InputController.mouseJustMoved()) return;
 		if (reset){
 			Menu.reset();
 		}
@@ -50,6 +52,7 @@ public class MouseOverController {
 		if (DISABLE_MOUSE){
 			return;
 		}
+		if (!InputController.mouseJustMoved()) return;
 		hAction = null;
 		currMenu = null;
 		if (currMenu1 != null){

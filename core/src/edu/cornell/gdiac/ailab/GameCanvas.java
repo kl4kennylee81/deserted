@@ -22,6 +22,9 @@ import javax.swing.Action;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Align;
+
+import edu.cornell.gdiac.ailab.Character;
+
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -932,12 +935,19 @@ public class GameCanvas {
 		spriteBatch.draw(downArrow, x-37, y+10, 135, 135);
 	}
 	
+	public void drawCharArrow(Texture screen, float x, float y, float x_width, float y_width, Color color, GridBoard board){
+		TextureRegion arrowTexture = new TextureRegion(screen,(int)x,(int)y,(int)x_width,(int)y_width);
+		float charScale = Character.getCharScale(this, arrowTexture, board);
+		spriteBatch.setColor(color);
+		spriteBatch.draw(downArrow, (int)(x*charScale + x_width) - 37,(int)(y*charScale + y_width), 135, 135);
+	}
+	
 	public void drawDownTextArrow(float x, float y, Color color, String text){
 		spriteBatch.setColor(color);
 		spriteBatch.draw(downArrow, x-37, y+10, 75, 75);
 		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
-		displayFont.draw(spriteBatch, text, x,y, width, Align.left, true);
+		displayFont.draw(spriteBatch, text, x+60, y+60, 80, Align.left, true);
 		
 	}
 	
