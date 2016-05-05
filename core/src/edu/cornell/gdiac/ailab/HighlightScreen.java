@@ -77,7 +77,6 @@ public class HighlightScreen {
 	public void addCurrentHighlight(double x, double y, double x_width, double y_width){
 		currentHighlights.add(new TextureRegion(screen,(int)x,(int)y,(int)x_width,(int)y_width));
 		
-		
 	}
 	
 	public void addCurrentHighlight(double x, double y, double x_width, double y_width, GameCanvas canvas, GridBoard board){

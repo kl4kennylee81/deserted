@@ -196,6 +196,10 @@ public class TutorialGameplayController extends GameplayController{
 	    	}
 	    	screen.noScreen();
 		}
+        screen.draw(canvas);
+    	board.draw(canvas);
+    	drawCharacters(canvas);
+        animations.draw(canvas,board,inGameState);
 		if (highlight_action > 0){
 			//make a custom highlight and shift it by highlight_action
 
@@ -209,18 +213,12 @@ public class TutorialGameplayController extends GameplayController{
     					break;
     				}
     			}
-    			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + highlight_action*selectedChar.actionBar.getSlotWidth(canvas);
+    			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + (highlight_action+1)*selectedChar.actionBar.getSlotWidth(canvas);
     			float highlightY = selectedChar.actionBar.getY(canvas, count) - selectedChar.actionBar.getBarHeight(canvas);//characters.indexOf(selectedChar));
-    			screen.addCurrentHighlight(highlightX, highlightY,
-    					0.01f*canvas.getWidth(), 0.1f*canvas.getHeight());
     			canvas.drawDownTextArrow(highlightX, highlightY, Color.GOLD, "This is where this move will go off");
     		}
 			//getY: iterate over characters, and when character matches selected character thats the number to pass to getY
 		}
-        screen.draw(canvas);
-    	board.draw(canvas);
-    	drawCharacters(canvas);
-        animations.draw(canvas,board,inGameState);
 
 		// draw the description box
     	this.drawDescriptionBox(canvas);
@@ -231,6 +229,15 @@ public class TutorialGameplayController extends GameplayController{
         }
         if (highlights != null && tutorialSteps.showHighlights){
 	    	for (CurrentHighlight highlight:highlights){
+	    		if (highlight.isChar){
+	    			canvas.drawCharArrow(screen.screen, 
+	    					(float)highlight.xPos*canvas.getWidth(),
+	    					(float)highlight.width*canvas.getWidth(), 
+	    					(float)highlight.yPos*canvas.getHeight(),
+	    					(float)highlight.height*canvas.getHeight(),
+	    					Color.GOLD, board);
+	    			continue;
+	    		}
 	    		if (highlight.arrow.equals("up")){
 		    		canvas.drawUpArrow((float)(highlight.xPos*canvas.getWidth() + (highlight.width*canvas.getWidth())/2f),
 		    				(float)highlight.yPos*canvas.getHeight(),
