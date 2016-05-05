@@ -213,7 +213,7 @@ public class TutorialGameplayController extends GameplayController{
     					break;
     				}
     			}
-    			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + (highlight_action+1)*selectedChar.actionBar.getSlotWidth(canvas);
+    			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + (highlight_action)*selectedChar.actionBar.getSlotWidth(canvas);
     			float highlightY = selectedChar.actionBar.getY(canvas, count) - selectedChar.actionBar.getBarHeight(canvas);//characters.indexOf(selectedChar));
     			canvas.drawDownTextArrow(highlightX, highlightY, Color.GOLD, "This is where this move will go off");
     		}
