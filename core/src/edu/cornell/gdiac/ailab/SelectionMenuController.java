@@ -284,11 +284,7 @@ public class SelectionMenuController {
 		} else if (InputController.pressedBack()){
 			menu.removeLast();
 			menu.resetPointer(this.selected.getActionBar().getUsableNumSlots());
-		// this is the noping command
-//		} else if (InputController.pressedRight() && menu.canNop(numSlots)){
-			/*float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,0);
-			menu.add(anPool.newActionNode(nop,actionExecute,0,0,Direction.NONE),numSlots);
-			menu.resetPointer(numSlots);*/
+			this.setTargetedAction();
 		} else if (InputController.pressedUp() && !InputController.pressedDown()){
 			//Actions go from up down, so we need to flip
 			menu.changeSelected(false,numSlots);
