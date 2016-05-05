@@ -722,7 +722,7 @@ public class CharActionBar {
 				selectingActions,curSelectedAction,count, barColor,isSelecting,true);
 		
 		// fill will have to be drawn ontop with a bit of transparency
-		this.drawFill(canvas, castPosition, xPosBar, yPosBar, barColor);
+		this.drawFill(canvas, castPosition, xPosBar, yPosBar, barColor.mul(1,1,1,0.85f));
 		this.drawCenterPotrait(canvas, xPosBar, yPosBar, barColor);
 		
 		this.drawSlots(canvas, castActions,queuedActions,
