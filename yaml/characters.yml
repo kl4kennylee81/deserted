@@ -105,9 +105,9 @@
   slots: 3
   availableActions:
   - 0
-  - 16
+  - 11
   - 28
-  - 18
+  - 5
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
   animationId: 103

@@ -44,7 +44,7 @@ pvp:
           yPosition: 3
 
     enemies:
-        - id: 4
+        - id: 6
           xPosition: 5
           yPosition: 0
 

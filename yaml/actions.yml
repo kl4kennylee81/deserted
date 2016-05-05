@@ -335,10 +335,10 @@
   icon: models/action_tokens/attack_icon.png
 
 16:
-  name: Shield
+  name: Guard
   cost: 1
   damage: 0
-  range: 2
+  range: 1
   size: 1
   pattern: SHIELD
   needsToggle: false
