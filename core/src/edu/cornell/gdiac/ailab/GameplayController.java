@@ -54,6 +54,7 @@ public class GameplayController {
     
     private static Texture DESCRIPTION_BOX_TEXTURE;
     
+    
     public static enum InGameState {
 		NORMAL,
 		SELECTION,
@@ -168,6 +169,7 @@ public class GameplayController {
     			inGameState = InGameState.WARNING;
     			return;
     		}
+    		
     		if(GameEngine.dataGen){
     			dataFile.writeString(jsonArray.toString(), false);
         		fileNumFile.writeString(""+fileNum, false);
@@ -202,12 +204,18 @@ public class GameplayController {
 //    	}
     	// temporary hacky code to show that you have won without destroying the canvas
     	// will definately need to rewrite this portion
-		if (this.gameOver() && this.rightsideDead() && inGameState == InGameState.WARNING){
-    		canvas.drawCenteredText("You have Won", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
-    	}
-		else if (this.gameOver() && this.leftsideDead() && inGameState == InGameState.WARNING){
-    		canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);			
-		}
+//		if (this.gameOver() && this.rightsideDead() && inGameState == InGameState.WARNING){
+//    		//canvas.drawCenteredText("You have Won", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
+//    		CompletionScreen cs = CompletionScreen.getInstance();
+//    		cs.setIsWin(true);
+//    		cs.draw(canvas);
+//    	}
+//		else if (this.gameOver() && this.leftsideDead() && inGameState == InGameState.WARNING){
+//    		//canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);	
+//			CompletionScreen cs = CompletionScreen.getInstance();
+//			cs.setIsWin(false);
+//			cs.draw(canvas);
+//		}
 		
 		if (TutorialGameplayController.highlight_action > 0){
 			//make a custom highlight and shift it by highlight_action
@@ -244,6 +252,20 @@ public class GameplayController {
         }
         //screen should be drawn after greyed out characters
         //but before selected characters
+        
+        
+		if (this.gameOver() && this.rightsideDead() && inGameState == InGameState.WARNING){
+    		//canvas.drawCenteredText("You have Won", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
+    		CompletionScreen cs = CompletionScreen.getInstance();
+    		cs.setIsWin(true);
+    		cs.draw(canvas);
+    	}
+		else if (this.gameOver() && this.leftsideDead() && inGameState == InGameState.WARNING){
+    		//canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);	
+			CompletionScreen cs = CompletionScreen.getInstance();
+			cs.setIsWin(false);
+			cs.draw(canvas);
+		}
     }
     
     

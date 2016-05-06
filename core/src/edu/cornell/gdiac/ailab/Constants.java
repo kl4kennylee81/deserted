@@ -3,6 +3,9 @@ package edu.cornell.gdiac.ailab;
 import com.badlogic.gdx.graphics.Color;
 
 public class Constants {
+	
+	public static final String COMPLETION_TEXTURE = "images/wat.jpg";
+	
 	public static final String TILE_TEXTURE = "models/Tile.png";
 	
 	public static final String TILE_BOTTOM_TEXTURE = "models/tiles_bottomrim.png";
