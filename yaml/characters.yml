@@ -67,8 +67,8 @@
   health: 8
   maxHealth: 8
   hexColor: CD2626FF
-  speed: 6.0
-  castSpeed: 7.0
+  speed: 5.0
+  castSpeed: 7.5
   slots: 5
   availableActions:
   - 0
@@ -105,9 +105,9 @@
   slots: 3
   availableActions:
   - 0
-  - 11
+  - 16
   - 28
-  - 5
+  - 18
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
   animationId: 103
