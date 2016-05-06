@@ -129,15 +129,15 @@ public class TutorialGameplayController extends GameplayController{
     		//updateTutorial();
     		break;
     	case WARNING:
-    		warningTime++;
-    		if (warningTime == WARNING_DONE_TIME || InputController.pressedEnter()){
-    			warningTime = 0;
+    		if (InputController.pressedEnter()){
     			inGameState = InGameState.DONE;
-    			if (this.leftsideDead()){
-    				GameEngine.nextLevel = TutorialSteps.levelName;
-    			}
-    			else if (this.rightsideDead()){
-    				GameEngine.nextLevel = TutorialSteps.nextLevel;
+    			if (this.isTutorial){
+	    			if (this.leftsideDead()){
+	    				GameEngine.nextLevel = TutorialSteps.levelName;
+	    			}
+	    			else if (this.rightsideDead()){
+	    				GameEngine.nextLevel = TutorialSteps.nextLevel;
+	    			}
     			}
     		}
     		return;

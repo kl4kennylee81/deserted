@@ -144,9 +144,8 @@ public class GameplayController {
     		}
     		break;
     	case WARNING:
-    		warningTime++;
-    		if (warningTime == WARNING_DONE_TIME || InputController.pressedEnter()){
-    			warningTime = 0;
+    		
+    		if (InputController.pressedEnter()){
     			inGameState = InGameState.DONE;
     			if (this.isTutorial){
 	    			if (this.leftsideDead()){
