@@ -131,14 +131,13 @@ public class TutorialGameplayController extends GameplayController{
     	case WARNING:
     		if (InputController.pressedEnter()){
     			inGameState = InGameState.DONE;
-    			if (this.isTutorial){
-	    			if (this.leftsideDead()){
-	    				GameEngine.nextLevel = TutorialSteps.levelName;
-	    			}
-	    			else if (this.rightsideDead()){
-	    				GameEngine.nextLevel = TutorialSteps.nextLevel;
-	    			}
-    			}
+	    		if (this.leftsideDead()){
+	    			GameEngine.nextLevel = TutorialSteps.levelName;
+	    		}
+	    		else if (this.rightsideDead()){
+	    			GameEngine.nextLevel = TutorialSteps.nextLevel;
+	    		}
+    			
     		}
     		return;
 		default:
