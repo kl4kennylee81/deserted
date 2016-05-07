@@ -55,7 +55,6 @@ public class SelectionMenuController {
 	private static final int SINGLE_Y = 3;
 	protected String prompt;
 
-	//TODO: Change to be 0 for down and anything else is up
 	/** Attack direction values */
 	Direction direction;
 

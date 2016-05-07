@@ -37,6 +37,8 @@ public class SelectionMenu {
 	private static final float RELATIVE_DESCRIPTION_Y_POS = Constants.DESCRIPTION_BOX_RELATIVE_HEIGHT*0.6f + Constants.DESCRIPTION_BOX_RELATIVE_Y_POS;
 	
 	private static final float RELATIVE_DESCRIPTION_X_POS = 0.5f;
+	
+	private static final float RADIUS_CONSTANT = 1.5f;
 
 	/** Currently used up slots */
 	int takenSlots;
@@ -64,14 +66,26 @@ public class SelectionMenu {
 	
 	private float confirmWidth;
 	
+	private Option[] options;
+	
 	public SelectionMenu(Action[] actions){
 		this.actions = actions;
+		this.options = new Option[actions.length+1];
+		setOptions();
 		selectedAction = 0;
 		takenSlots = 0;
 		choosingTarget = false;
 		selectedActions = new LinkedList<ActionNode>();
 		lerpVal = 0;
 		increasing = true;
+	}
+	
+	public void setOptions(){
+		for (int i = 0; i < actions.length; i++){
+			options[i] = new Option("",String.valueOf(i));
+			options[i].setImage(actions[i].menuIcon);
+		}
+		options[actions.length] = new Option("Confirm","Confirm");
 	}
 	
 	/**
@@ -106,6 +120,10 @@ public class SelectionMenu {
 			takenSlots -= an.action.cost;
 		}
 		return an;
+	}
+	
+	public Option[] getOptions(){
+		return options;
 	}
 	
 	public float getLerpVal(){
@@ -264,7 +282,8 @@ public class SelectionMenu {
 	}
 	
 	//TODO: update for dazed
-	public void draw(GameCanvas canvas,CharActionBar actionBar,int count, boolean charIsClicked){
+	public void draw(GameCanvas canvas,CharActionBar actionBar,int count, boolean charIsClicked, float centerX, float centerY,
+			float radius){
 		int totalNumSlots = actionBar.getTotalNumSlots();
 		int usableNumSlots = actionBar.getUsableNumSlots();
 		
@@ -288,6 +307,7 @@ public class SelectionMenu {
 		GlyphLayout g = null;
 		float offset_y = 0f;
 		float selectedPointerOffset = 0f;
+		radius *= RADIUS_CONSTANT;
 		
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
@@ -299,8 +319,31 @@ public class SelectionMenu {
 				selectedPointerOffset = offset_y;
 			}
 			Color actionColor = this.getActionColor(usableNumSlots, action);
-			g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, actionColor);
+			g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, actionColor);	
 		}
+		
+		for (int i = 0; i < actions.length; i++){
+			float frac = (i+1f)/(actions.length+1);
+			Action action = actions[i];
+			Option option = options[i];
+			float iconWidth = action.menuIcon.getWidth()*1f/canvas.width;
+			float iconHeight = action.menuIcon.getHeight()*1f/canvas.height;
+			float x = (float) (centerX + radius*Math.sin(frac*Math.PI));
+			float y = (float) (centerY + radius*Math.cos(frac*Math.PI));
+			x /= canvas.width;
+			y /= canvas.height;
+			
+			option.setBounds(x-iconWidth/2, y-iconHeight/2, iconWidth, iconHeight);
+			
+			if (i == selectedAction){
+				option.setImageColor(getActionColor(usableNumSlots,action));
+			} else {
+				option.setImageColor(Color.WHITE);
+			}
+			option.draw(canvas);
+		}
+		
+		
 		
 		if (!charIsClicked){
 			//Draw confirm selection

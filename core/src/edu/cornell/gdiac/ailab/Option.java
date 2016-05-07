@@ -134,8 +134,10 @@ public class Option implements GUIElement{
 		if (this.isSelected){
 			return Color.BLACK.cpy();
 		}
-		else{
+		else if (this.color != null) {
 			return this.color.cpy();
+		} else {
+			return Color.WHITE.cpy();
 		}
 	}
 
