@@ -119,7 +119,7 @@ public class ObjectLoader {
 	 * @throws IOException
 	 */
 	@SuppressWarnings("unchecked")
-	public Level createLevel(HashMap<String, Object> levelDef, GameSaveState gameSaveState) throws IOException {
+	public Level createLevel(String levelName, HashMap<String, Object> levelDef, GameSaveState gameSaveState) throws IOException {
 		availableCharacters = new HashMap<Integer, Character>();
 	    availableActions = new HashMap<Integer, Action>();
 	    availableAnimations = new HashMap<Integer, Animation>();
@@ -179,6 +179,8 @@ public class ObjectLoader {
 
 		Level loadedLevel = new Level();
 
+		loadedLevel.setName(levelName);
+		
 		Characters chars = new Characters();
 		chars.addAll(characterList);
 		loadedLevel.setCharacters(chars);

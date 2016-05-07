@@ -52,6 +52,7 @@ public class GameplayController {
     protected FileHandle dataFile;
     protected JSONArray jsonArray;
     
+    protected String levelName;
     private static Texture DESCRIPTION_BOX_TEXTURE;
     
     public static enum InGameState {
@@ -79,6 +80,7 @@ public class GameplayController {
     	fileNum++;
 		dataFile = GameEngine.dataGen ? new FileHandle(Constants.DATA_PATH+"data/data"+fileNum) : null;
 		jsonArray = new JSONArray();
+		levelName = level.getName();
     	
         // Create the models.
         board = level.getBoard();
@@ -303,6 +305,10 @@ public class GameplayController {
     
     public boolean gameOver(){
     	return (leftsideDead() || rightsideDead());
+    }
+    
+    public boolean playerWon(){
+    	return rightsideDead() && !leftsideDead();
     }
     
     public boolean isDone(){

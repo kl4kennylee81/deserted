@@ -465,6 +465,10 @@ public class GameEngine implements Screen {
     public void updatePlay() {
     	curGameplayController.update();
     	if (curGameplayController.isDone()){
+    		//check if levelb eaten and update savestate
+    		if (curGameplayController.playerWon()){
+    			gameSaveStateController.beatLevel(curGameplayController.levelName);
+    		}
 			gameState = GameState.AFTER;
     	}
     	if (InputController.pressedP()){
@@ -560,7 +564,7 @@ public class GameEngine implements Screen {
 			targetLevelDef= levelDefs.get(levelId);	
 			
 		}
-		return ObjectLoader.getInstance().createLevel(targetLevelDef, gameSaveStateController.getGameSaveState());
+		return ObjectLoader.getInstance().createLevel(levelId, targetLevelDef, gameSaveStateController.getGameSaveState());
 	}
 	
 	// HELPER FUNCTIONS

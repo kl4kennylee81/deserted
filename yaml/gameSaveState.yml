@@ -1,7 +1,7 @@
 characters:
   0:
     characterId: 0
-    totalSP: 1
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 5
@@ -25,7 +25,7 @@ characters:
     currentActions:
     - 0
     - 5
-    - 13
+    - 6
     - 20
   1:
     characterId: 1
@@ -116,10 +116,14 @@ levels:
     levelName: tutorial1
     beaten: false
     boss: false
+    gainedSP: 1
+    unlockableCharacter: 2
   1:
     levelName: tutorial2
     beaten: false
     boss: false
+    gainedSP: 1
+    unlockableCharacter: 3
   2:
     levelName: tutorial3
     beaten: false
@@ -171,10 +175,9 @@ levels:
 availableCharacters:
 - 0
 - 1
+unlockableCharacters:
 - 2
 - 3
-- 4
-- 5
 selectedCharacters:
 - 0
 - 1
