@@ -147,7 +147,7 @@ public class MainMenuController {
 	}
 	
 	public void updateMenuAssets(){
-		
+
 		if (menu instanceof MainMenu){
 			MainMenu mainMenu = (MainMenu) menu;
 		
