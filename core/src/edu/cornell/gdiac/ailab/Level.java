@@ -8,6 +8,7 @@ public class Level {
 
 	private Characters characters;
     
+	private String name;
     private String nextLevel;
     private GridBoard board;
     private TacticalManager tacticalManager;
@@ -28,6 +29,14 @@ public class Level {
     
     public void setBoard(GridBoard board) {
     	this.board = board;
+    }
+    
+    public void setName(String name){
+    	this.name = name;
+    }
+    
+    public String getName(){
+    	return name;
     }
 
 	public String getNextLevel() {

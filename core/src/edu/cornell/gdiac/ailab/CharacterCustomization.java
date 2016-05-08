@@ -3,6 +3,7 @@ package edu.cornell.gdiac.ailab;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -92,19 +93,37 @@ public class CharacterCustomization extends Menu {
 		
 		characterOptions = new ArrayList<Option>();
 		
+		List<CharacterData> availableCharacters = gameSaveState.getAvailableCharactersData();
+		List<CharacterData> unlockableCharacters = gameSaveState.getUnlockableCharactersData();
 		int i = 3;
+		int j, k;
 		float curX = 0.6f;
 		float incrX = 0.1f;
 		float curY = 0.68f;
-		for (int j = 0; j < gameSaveState.characters.size(); j++){
+		for (j = 0; j < availableCharacters.size(); j++){
 			float relX = curX + incrX*j;
-			CharacterData cd = gameSaveState.characters.get(j);
+			CharacterData cd = availableCharacters.get(j);
 			Texture toDraw = cd.getIcon();
 			Color col = Color.WHITE;
 			if (cd.characterId == selectedCharacterId){
 				col = SELECTED_CHARACTER_COLOR;
 			}
 			options[i] = new Option("",CHARACTER_ID_STRING+cd.characterId);
+			options[i].setBounds(relX, curY, 0.06f, 0.06f);
+			options[i].sameWidthHeight = true;
+			options[i].setColor(col);;
+			options[i].setImageColor(col);
+			options[i].setImage(toDraw);
+			characterOptions.add(options[i]);
+			i++;
+		}
+		
+		for (k = 0; k < unlockableCharacters.size(); k++){
+			float relX = curX + incrX*(k+j);
+			CharacterData cd = unlockableCharacters.get(k);
+			Texture toDraw = cd.getIcon();
+			Color col = Color.GRAY;
+			options[i] = new Option("","");
 			options[i].setBounds(relX, curY, 0.06f, 0.06f);
 			options[i].sameWidthHeight = true;
 			options[i].setColor(col);;
@@ -121,8 +140,7 @@ public class CharacterCustomization extends Menu {
 			e.printStackTrace();
 		}
 		
-		int k;
-		for (int j = 0; j < charData.actionUpgrades.size(); j++){
+		for (j = 0; j < charData.actionUpgrades.size(); j++){
 			float spacedY= (RELATIVE_Y_POS - RELATIVE_MENU_SPACING * j);
 			ActionUpgrade actionUpgrade = charData.actionUpgrades.get(j);
 			options[i] = new Option(actionMap.get(actionUpgrade).name, Integer.toString(actionUpgrade.actionId));
@@ -160,15 +178,20 @@ public class CharacterCustomization extends Menu {
 	}
 	
 	public void setCharacter(int charId){
+		if (charId == selectedCharacterId){
+			return;
+		}
+		int oldSelectedChar = this.selectedCharacterId;
 		this.selectedCharacterId = charId;
 		selectedActionId = null;
 		setOptions();
 		for (Option o : characterOptions){
 			if (o.optionKey.equals(CHARACTER_ID_STRING+charId)){
 				o.setImageColor(SELECTED_CHARACTER_COLOR);
-			} else {
+			} 
+			if (o.optionKey.equals(CHARACTER_ID_STRING+oldSelectedChar)){
 				o.setImageColor(Color.WHITE);
-			}
+			} 
 		}
 	}
 	
