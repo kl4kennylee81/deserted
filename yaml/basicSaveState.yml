@@ -1,7 +1,7 @@
 characters:
   0:
     characterId: 0
-    totalSP: 1
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 5
@@ -20,7 +20,7 @@ characters:
       nextAction:
       - actionId: 14
         cost: 1
-      - actionId: 15
+      - actionId: 25
         cost: 1
     currentActions:
     - 0
@@ -116,32 +116,68 @@ levels:
     levelName: tutorial1
     beaten: false
     boss: false
+    gainedSP: 1
+    unlockableCharacter: 2
   1:
     levelName: tutorial2
     beaten: false
     boss: false
+    gainedSP: 1
+    unlockableCharacter: 3
   2:
-    levelName: pvp
+    levelName: tutorial3
     beaten: false
     boss: false
   3:
-    levelName: Level1
+    levelName: tutorial4
     beaten: false
     boss: false
   4:
-    levelName: Level2
+    levelName: tutorial5
     beaten: false
     boss: false
   5:
+    levelName: tutorial6
+    beaten: false
+    boss: false
+  6:
+    levelName: tutorial7
+    beaten: false
+    boss: false
+  7:
+    levelName: tutorial8
+    beaten: false
+    boss: false
+  8:
+    levelName: tutorial9
+    beaten: false
+    boss: false
+  9:
+    levelName: tutorial10
+    beaten: false
+    boss: false
+  10:
+    levelName: Level1
+    beaten: false
+    boss: false
+  11:
+    levelName: Level2
+    beaten: false
+    boss: false
+  12:
     levelName: Level3
+    beaten: false
+    boss: false
+  13:
+    levelName: pvp
     beaten: false
     boss: false
 availableCharacters:
 - 0
 - 1
+unlockableCharacters:
 - 2
 - 3
-- 4
 selectedCharacters:
 - 0
 - 1

@@ -200,17 +200,21 @@ public class GameSaveState {
 		String levelName;
 		boolean beaten;
 		boolean boss;
+		int gainedSP;
+		Integer unlockableCharacter;
 	}
 	
 	List<LevelData> levels;
 	List<CharacterData> characters;
 	List<Integer> availableCharacters;
+	List<Integer> unlockableCharacters;
 	ArrayList<Integer> selectedCharacters;
 	
 	public GameSaveState(){
 		this.levels = new ArrayList<LevelData>();
 		this.characters = new ArrayList<CharacterData>();
 		this.availableCharacters = new ArrayList<Integer>();
+		this.unlockableCharacters = new ArrayList<Integer>();
 		this.selectedCharacters = new ArrayList<Integer>();
 	}
 	
@@ -263,14 +267,63 @@ public class GameSaveState {
 			ld.levelName = (String) levData.get("levelName");
 			ld.beaten = (boolean) levData.get("beaten");
 			ld.boss = (boolean) levData.get("boss");
+			ld.gainedSP = levData.get("gainedSP") == null ? 0 : (int) levData.get("gainedSP");
+			ld.unlockableCharacter = (Integer) levData.get("unlockableCharacter");
 			this.levels.add(ld);
 		}
 		
 		Object availChars = gameSaveStateData.get("availableCharacters");
 		availableCharacters = (ArrayList<Integer>) availChars;
+
+		Object unlockChars = gameSaveStateData.get("unlockableCharacters");
+		unlockableCharacters = (ArrayList<Integer>) unlockChars;
 		
 		Object selChars = gameSaveStateData.get("selectedCharacters");
 		selectedCharacters = (ArrayList<Integer>) selChars;
+	}
+	
+	public void beatLevel(String levelName){
+		for (LevelData ld : levels){
+			if (ld.levelName.equals(levelName)){
+				if (!ld.beaten){
+					ld.beaten = true;
+					for (CharacterData cd : characters){
+						cd.totalSP += ld.gainedSP;
+					}
+					if (ld.unlockableCharacter != null){
+						unlockableCharacters.remove(ld.unlockableCharacter);
+						availableCharacters.add(ld.unlockableCharacter);
+					}
+				}	
+				break;
+			}
+		}
+	}
+	
+	public ArrayList<CharacterData> getAvailableCharactersData(){
+		ArrayList<CharacterData> availChars = new ArrayList<CharacterData>();
+		for (int i : availableCharacters){
+			for (CharacterData cd : characters){
+				if (cd.characterId == i){
+					availChars.add(cd);
+					break;
+				}
+			}
+		}
+		return availChars;
+	}
+	
+	public ArrayList<CharacterData> getUnlockableCharactersData(){
+		ArrayList<CharacterData> unlockChars = new ArrayList<CharacterData>();
+		for (int i : unlockableCharacters){
+			for (CharacterData cd : characters){
+				if (cd.characterId == i){
+					unlockChars.add(cd);
+					break;
+				}
+			}
+		}
+		return unlockChars;
 	}
 	
 	public ArrayList<CharacterData> getSelectedCharacters(){

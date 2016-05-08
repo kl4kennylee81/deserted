@@ -92,6 +92,11 @@ public class GameSaveStateController {
 		gameSaveState.setState(gameSaveStateData);
 	}
 	
+	public void beatLevel(String levelName){
+		gameSaveState.beatLevel(levelName);
+		saveGameSaveState();
+	}
+	
 	/**Code taken from http://stackoverflow.com/questions/5527744/java-jar-writing-to-a-file 
 	 * @throws URISyntaxException */
 	public void setRoot() {

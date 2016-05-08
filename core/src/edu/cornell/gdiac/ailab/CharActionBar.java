@@ -158,7 +158,7 @@ public class CharActionBar {
 			if (speedModifier < -2){
 				return 1/2f;
 			} else if (speedModifier > 2){
-				return 3f;
+				return 2f;
 			}
 			else{
 				return 1;

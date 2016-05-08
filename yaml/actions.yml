@@ -335,10 +335,10 @@
   icon: models/action_tokens/attack_icon.png
 
 16:
-  name: Guardian Shield
+  name: Guard
   cost: 1
   damage: 0
-  range: 1
+  range: 2
   size: 1
   pattern: SHIELD
   needsToggle: false
@@ -380,7 +380,7 @@
 18:
   name: Shattering Earth
   cost: 2
-  damage: 3
+  damage: 2
   range: 5
   size: 1
   pattern: SINGLE
@@ -583,6 +583,26 @@
     moveSpeed: 0.05
   animationId: 0
   projectileAnimationId: 2
+  icon: models/action_tokens/attack_icon.png
+
+28:
+  name: Avalanche
+  cost: 2
+  damage: 2
+  range: 1
+  size: 1
+  pattern: INSTANT
+  path: "0,0 1,0 2,0 2,1 2,-1"
+  oneHit: false
+  needsToggle: false
+  canBlock: true
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Deal 2 damage in a cone shaped T.
+  animationId: 0
   icon: models/action_tokens/attack_icon.png
 ...
 

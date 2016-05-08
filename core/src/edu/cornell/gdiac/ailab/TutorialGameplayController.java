@@ -52,6 +52,7 @@ public class TutorialGameplayController extends GameplayController{
 	}
 
 	public void update(){
+		System.out.println("current state: " + inGameState);
 		tutorialSteps.writeTime += 2;
 		if (tutorialSteps.currStep() != null){
 			if (tutorialSteps.startTime){
@@ -135,13 +136,15 @@ public class TutorialGameplayController extends GameplayController{
     		warningTime++;
     		if (warningTime == WARNING_DONE_TIME || InputController.pressedEnter()){
     			warningTime = 0;
+//    		if (InputController.pressedEnter()){
     			inGameState = InGameState.DONE;
-    			if (this.leftsideDead()){
-    				GameEngine.nextLevel = TutorialSteps.levelName;
-    			}
-    			else if (this.rightsideDead()){
-    				GameEngine.nextLevel = TutorialSteps.nextLevel;
-    			}
+	    		if (this.leftsideDead()){
+	    			GameEngine.nextLevel = TutorialSteps.levelName;
+	    		}
+	    		else if (this.rightsideDead()){
+	    			GameEngine.nextLevel = TutorialSteps.nextLevel;
+	    		}
+    			
     		}
     		return;
 		default:

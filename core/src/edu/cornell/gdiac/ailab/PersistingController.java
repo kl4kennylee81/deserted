@@ -162,7 +162,7 @@ public class PersistingController extends ActionController{
 			}
 			
 			// Check if next position is out of bounds or blocked
-			if (!board.isInBounds(curIntX, curIntY) || (isBlocked(curIntX, curIntY) &&canBlock)){
+			if (!board.isInBounds((int)Math.floor(selectedActionNode.curX),(int)Math.floor(selectedActionNode.curY)) || (isBlocked(curIntX, curIntY) && canBlock)){
 				selected.popPersistingCast(selectedActionNode);
 				return;
 			}

@@ -465,6 +465,10 @@ public class GameEngine implements Screen {
     public void updatePlay() {
     	curGameplayController.update();
     	if (curGameplayController.isDone()){
+    		//check if levelb eaten and update savestate
+    		if (curGameplayController.playerWon()){
+    			gameSaveStateController.beatLevel(curGameplayController.levelName);
+    		}
 			gameState = GameState.AFTER;
     	}
     	if (InputController.pressedP()){
@@ -560,7 +564,7 @@ public class GameEngine implements Screen {
 			targetLevelDef= levelDefs.get(levelId);	
 			
 		}
-		return ObjectLoader.getInstance().createLevel(targetLevelDef, gameSaveStateController.getGameSaveState());
+		return ObjectLoader.getInstance().createLevel(levelId, targetLevelDef, gameSaveStateController.getGameSaveState());
 	}
 	
 	// HELPER FUNCTIONS
@@ -577,6 +581,9 @@ public class GameEngine implements Screen {
 		manager = new AssetManager();
 		manager.setLoader(Mesh.class, new MeshLoader(new InternalFileHandleResolver()));
 		assets = new Array<String>();
+		
+		manager.load(Constants.COMPLETION_TEXTURE, Texture.class);
+		assets.add(Constants.COMPLETION_TEXTURE);
 		
 		manager.load(Constants.BCKGD_TEXTURE,Texture.class);
 		assets.add(Constants.BCKGD_TEXTURE);
@@ -650,6 +657,8 @@ public class GameEngine implements Screen {
 		assets.add(Constants.WHITE_BOX);
 		
 		manager.finishLoading();
+		
+		CompletionScreen.getInstance().setImage(manager.get(Constants.COMPLETION_TEXTURE,Texture.class));
 		
 		// load all the level defs in GameSaveStateController
 		gameSaveStateController = new GameSaveStateController();

@@ -35,20 +35,20 @@ Level1:
 
 pvp:
     allies:
-        - selectedId: 0
+        - id: 6
           xPosition: 0
           yPosition: 0
 
-        - selectedId: 1
+        - id: 3
           xPosition: 0
           yPosition: 3
 
     enemies:
-        - id: 95
+        - id: 4
           xPosition: 5
           yPosition: 0
 
-        - id: 95
+        - id: 5
           xPosition: 5
           yPosition: 3
     nextLevel:
@@ -85,7 +85,7 @@ Level2:
 
 Level3:
     allies:
-        - id: 2
+        - id: 6
           xPosition: 0
           yPosition: 0
 
@@ -171,7 +171,7 @@ tutorial3:
           defensiveness: 0.5
           intelligence: 0.3
           difficulty: EASY
-        - id: 93
+        - id: 1000
           xPosition: 4
           yPosition: 2
           aggression: 0.5

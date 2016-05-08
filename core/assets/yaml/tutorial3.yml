@@ -27,9 +27,10 @@
   spaceToContinue: true
 
 4:
-  text: "Don't get INTERRUPTED yourself!"
+  text: "Click on an enemy to view his attacks"
   paused: true
   spaceToContinue: false
+  note:
 
 5:
   text: ""
