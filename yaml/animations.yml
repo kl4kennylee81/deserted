@@ -47,11 +47,11 @@
       - 8
 
 101:
-  name: girl
-  texture: "models/castanimation_spritesheet.png"
+  name: Sulus
+  texture: "models/sulus_spritesheet.png"
   rows: 1
-  cols: 5
-  size: 5
+  cols: 27
+  size: 27
   segments:
     - segmentName: IDLE
       segmentId: 0
@@ -62,29 +62,50 @@
     - segmentName: ACTIVE
       segmentId: 1
       startingIndex: 0
-      length: 1
+      length: 4
       frameData:
-      - 300
+      - 7
+      - 7
+      - 7
+      - 7
     - segmentName: CAST
       segmentId: 2
-      startingIndex: 0
-      length: 3
+      startingIndex: 4
+      length: 12
       frameData:
-      - 10
-      - 10
-      - 10
+      - 4
+      - 4
+      - 5
+      - 5
+      - 5
+      - 5
+      - 6
+      - 6
+      - 6
+      - 6
+      - 5
+      - 5
     - segmentName: EXECUTE
       segmentId: 3
-      startingIndex: 3
-      length: 2
+      startingIndex: 16
+      length: 6
       frameData:
-      - 10
-      - 10
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
     - segmentName: HURT
       segmentId: 4
-      startingIndex: 0
-      length: 0
+      startingIndex: 22
+      length: 5
       frameData:
+      - 6
+      - 6
+      - 8
+      - 8
+      - 8
 
 102:
   name: testMage
