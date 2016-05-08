@@ -126,6 +126,7 @@ public class SelectionMenuController {
 				}
 				menu.setSelectedX(selectedX);
 				menu.setSelectedY(selectedY);
+				System.out.println(menu.getChoosingTarget());
 				break;
 
 			case WAITING:
@@ -161,7 +162,6 @@ public class SelectionMenuController {
 				break;
 
 		}
-
 	}
 
 	protected void checkForClicked(){
@@ -262,9 +262,8 @@ public class SelectionMenuController {
 	 */
 	private void updateNotChoosingTarget(){
 		// only allow mouse click to select if hovering over the action
-		boolean mouseCondition = InputController.pressedLeftMouse() &&
-				((action!= null && action.contains(InputController.getMouseX(), InputController.getMouseY(), InputController.getCanvas(), board))
-						||this.menu.confirmContain(InputController.getMouseX(), InputController.getMouseY()));
+		boolean mouseCondition = InputController.pressedLeftMouse() && action!= null && 
+				menu.contains(InputController.getMouseX(),InputController.getMouseY(), InputController.getCanvas(), board);
 		int numSlots = selected.getActionBar().getUsableNumSlots();
 		if ((InputController.pressedEnter() || mouseCondition)){
 			if (this.menu.confirmContain(InputController.getMouseX(), InputController.getMouseY())){

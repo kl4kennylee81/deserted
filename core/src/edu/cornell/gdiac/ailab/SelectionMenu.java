@@ -82,7 +82,7 @@ public class SelectionMenu {
 	
 	public void setOptions(){
 		for (int i = 0; i < actions.length; i++){
-			options[i] = new Option("",String.valueOf(i));
+			options[i] = new Option(actions[i].name,String.valueOf(i));
 			options[i].setImage(actions[i].menuIcon);
 		}
 		options[actions.length] = new Option("Confirm","Confirm");
@@ -266,7 +266,7 @@ public class SelectionMenu {
 	public Color getActionColor(int usableNumSlots,Action action){
 		if (this.isActionInvalid(usableNumSlots,action)){
 			Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.2f);
-			 return dimColor;
+			return dimColor;
 		} 
 		else if (selectedAction < actions.length &&selectedAction >= 0 && actions[selectedAction].name == action.name){
 			 if (this.choosingTarget){
@@ -321,26 +321,22 @@ public class SelectionMenu {
 			Color actionColor = this.getActionColor(usableNumSlots, action);
 			g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, actionColor);	
 		}
-		
-		for (int i = 0; i < actions.length; i++){
-			float frac = (i+1f)/(actions.length+1);
-			Action action = actions[i];
-			Option option = options[i];
-			float iconWidth = action.menuIcon.getWidth()*1f/canvas.width;
-			float iconHeight = action.menuIcon.getHeight()*1f/canvas.height;
-			float x = (float) (centerX + radius*Math.sin(frac*Math.PI));
-			float y = (float) (centerY + radius*Math.cos(frac*Math.PI));
-			x /= canvas.width;
-			y /= canvas.height;
-			
-			option.setBounds(x-iconWidth/2, y-iconHeight/2, iconWidth, iconHeight);
-			
-			if (i == selectedAction){
+		if (!this.choosingTarget){
+			for (int i = 0; i < actions.length; i++){
+				float frac = (i+1f)/(actions.length+1);
+				Action action = actions[i];
+				Option option = options[i];
+				float iconWidth = action.menuIcon.getWidth()*1f/canvas.width;
+				float iconHeight = action.menuIcon.getHeight()*1f/canvas.height;
+				float x = (float) (centerX + radius*Math.sin(frac*Math.PI));
+				float y = (float) (centerY + radius*Math.cos(frac*Math.PI));
+				x /= canvas.width;
+				y /= canvas.height;
+				
+				option.setBounds(x-iconWidth/2, y-iconHeight/2, iconWidth, iconHeight);
 				option.setImageColor(getActionColor(usableNumSlots,action));
-			} else {
-				option.setImageColor(Color.WHITE);
+				option.draw(canvas);
 			}
-			option.draw(canvas);
 		}
 		
 		
@@ -443,6 +439,15 @@ public class SelectionMenu {
 		float yMin = this.confirmY;
 		float yMax = yMin + this.confirmHeight;
 		return (x>xMin && x<=xMax && y>yMin && y<=yMax);
+	}
+	
+	public boolean contains(float x, float y, GameCanvas canvas, GridBoard board){
+		for (Option o : options){
+			if (o.contains(x, y, canvas, board)){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

@@ -256,7 +256,6 @@ public class GameplayController {
     	boolean inSelection = inGameState == InGameState.SELECTION;
 		boolean shouldDim = inGameState == InGameState.SELECTION || 
 				mouseOverController.isCharacterHighlighted();
-    	characters.draw(canvas,board,shouldDim, inSelection);
     	for (int i = board.height-1; i >= 0; i--){
     		for (Character c : characters){
     			
@@ -268,6 +267,7 @@ public class GameplayController {
     			}
             }
     	}
+    	characters.draw(canvas,board,shouldDim, inSelection);
     }
     
     public void drawAfter(GameCanvas canvas){

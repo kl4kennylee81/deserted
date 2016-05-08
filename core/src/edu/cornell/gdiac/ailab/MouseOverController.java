@@ -84,21 +84,23 @@ public class MouseOverController {
 					}
 				}
 				
-				Option[] options = menu.getOptions();
-				for (int i =0;i<options.length;i++){
-					Option o = options[i];
-					if (o.contains(x,y,canvas,board)){
-						menu.setChoosingTarget(false);
-						menu.selectedAction = i;
+				if (!menu.getChoosingTarget()){
+					Option[] options = menu.getOptions();
+					for (int i =0;i<options.length;i++){
+						Option o = options[i];
+						if (o.contains(x,y,canvas,board)){
+							menu.setChoosingTarget(false);
+							menu.selectedAction = i;
+						}
 					}
 				}
 				
 				
-				if (c.getSelectionMenu().confirmContain(InputController.getMouseX(), InputController.getMouseY())){
+				/*if (c.getSelectionMenu().confirmContain(InputController.getMouseX(), InputController.getMouseY())){
 					
 					menu.setChoosingTarget(false);
 					menu.selectedAction=menu.getActions().length;
-				}
+				}*/
 			}
 			
 			if (c.contains(x,y,canvas,board)){
