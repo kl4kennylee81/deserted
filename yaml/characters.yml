@@ -182,6 +182,22 @@
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
   animationId: 103
+  
+1000:
+  name: Tutorial3_straight
+  health: 4
+  maxHealth: 4
+  hexColor: FF9900FF
+  speed: 0.0
+  castSpeed: 7.0
+  slots: 2
+  availableActions:
+  - 0
+  - 4
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconred.png
+  animationId: 106
+  
 94:
   name: Tutorial4_straight
   health: 2

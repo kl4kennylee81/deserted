@@ -75,7 +75,7 @@
       arrow: up
 
 6:
-  text: "Watch the action bar."
+  text: "When the meter reaches the center, the character must select actions."
   dontWriteText: true
   paused: false
   spaceToContinue: false
@@ -92,30 +92,39 @@
       height: 0.1
       arrow: up
       
+
+#7:
+#  text: "When the meter reaches the center, the character must select actions."
+#  dontWriteText: true
+#  paused: true
+#  spaceToContinue: false
+#  highlightRegions:
+#    - xPos: 0.43
+#      yPos: 0.35
+#      width: 0.09
+#      height: 0.23
+#      arrow: down
+#      isChar: true
+#    - xPos: 0.14
+#      yPos: 0.88
+#      width: 0.66
+#      height: 0.1
+#      arrow: up
+
 7:
   text: "When the meter reaches the center, the character must select actions."
   dontWriteText: true
-  paused: false
-  spaceToContinue: true
-  highlightRegions:
-    - xPos: 0.43
-      yPos: 0.35
-      width: 0.09
-      height: 0.23
-      arrow: down
-      isChar: true
-    - xPos: 0.14
-      yPos: 0.88
-      width: 0.66
-      height: 0.1
-      arrow: up
-
-
-
+  spaceToContinue: false
+  paused: true
+  
+#8:
+#  text: ""
+#  spaceToContinue: false
+#  paused: false
 
 8:
   text: "Select Action (WASD or Arrowkeys to navigate then Enter to select)"
-  spaceToContinue: true
+  spaceToContinue: false
   paused: false
   highlightRegions:
     - xPos: 0.
