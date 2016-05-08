@@ -148,6 +148,7 @@ public class GameplayController {
     	case WARNING:
     		
     		if (InputController.pressedEnter()){
+    			System.out.println("ENTER 1");
     			inGameState = InGameState.DONE;
     			if (this.isTutorial){
 	    			if (this.leftsideDead()){

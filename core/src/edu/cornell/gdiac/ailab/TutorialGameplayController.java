@@ -52,7 +52,7 @@ public class TutorialGameplayController extends GameplayController{
 	}
 
 	public void update(){
-		System.out.println("current state: " + inGameState);
+//		System.out.println("current step: " + tutorialSteps.curStep);
 		tutorialSteps.writeTime += 2;
 		if (tutorialSteps.currStep() != null){
 			if (tutorialSteps.startTime){
@@ -129,12 +129,14 @@ public class TutorialGameplayController extends GameplayController{
     		if (regGameState == InGameState.SELECTION){
             	screen.setJustScreen();
             }
+//    		System.out.println("we are here");
     		//updateTutorial();
     		break;
     	case WARNING:
     		highlight_action = 0;
     		warningTime++;
     		if (warningTime == WARNING_DONE_TIME || InputController.pressedEnter()){
+    			System.out.println("ENTER 2");
     			warningTime = 0;
 //    		if (InputController.pressedEnter()){
     			inGameState = InGameState.DONE;
@@ -286,8 +288,9 @@ public class TutorialGameplayController extends GameplayController{
 			return;
 		}
 		if ((InputController.pressedEnter() || InputController.pressedLeftMouse()) && inGameState == InGameState.PAUSED){
-			if (tutorialSteps.textDone == tutorialSteps.step.text.length()){
-				//System.out.println("next step 4");
+			System.out.println("ENTER 3");
+			if (tutorialSteps.textDone == tutorialSteps.step.text.length() || tutorialSteps.currStep().ignoreTextDone){
+				System.out.println("next step 4");
 				tutorialSteps.nextStep();
 				if (tutorialSteps.currStep() != null) targetPauseTime = tutorialSteps.currStep().timeToPause;
 				pauseTimer = 0;

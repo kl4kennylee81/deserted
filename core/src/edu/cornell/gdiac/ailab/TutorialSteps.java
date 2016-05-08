@@ -46,9 +46,10 @@ public class TutorialSteps {
 		boolean spaceToContinue;
 		boolean dontWriteText;
 		int timeToPause;
+		boolean ignoreTextDone;
 
 		public Step(String text, boolean paused, boolean confirm, boolean spaceToContinue, boolean dontWriteText,
-				int timeToPause) {
+				int timeToPause, boolean ignoreTextDone) {
 			this.text = text;
 			this.paused = paused;
 			this.confirm = confirm;
@@ -57,6 +58,7 @@ public class TutorialSteps {
 			this.spaceToContinue = spaceToContinue;
 			this.dontWriteText = dontWriteText;
 			this.timeToPause = timeToPause;
+			this.ignoreTextDone = ignoreTextDone;
 		}
 
 	}
@@ -113,8 +115,8 @@ public class TutorialSteps {
 	}
 
 	public void addStep(String text, boolean paused, boolean confirm, boolean spaceToContinue, boolean dontWriteText,
-			int timeToPause) {
-		Step newStep = new Step(text, paused, confirm, spaceToContinue, dontWriteText, timeToPause);
+			int timeToPause, boolean ignoreTextDone) {
+		Step newStep = new Step(text, paused, confirm, spaceToContinue, dontWriteText, timeToPause, ignoreTextDone);
 		steps.add(newStep);
 		if (steps.size() == 1) {
 			step = newStep;

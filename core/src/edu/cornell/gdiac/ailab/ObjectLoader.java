@@ -632,6 +632,7 @@ public class ObjectLoader {
 			String text = (String) step.get("text");
 			Boolean paused = (Boolean) step.get("paused");
 			Boolean spaceToContinue = (Boolean) step.get("spaceToContinue");
+			Boolean ignoreTextDone = (Boolean) step.get("ignoreTextDone");
 			Boolean dontWriteText = (Boolean) step.get("dontWriteText");
 			Integer timeToPause = (Integer) step.get("timeToPause");
 			if (dontWriteText == null){
@@ -639,6 +640,9 @@ public class ObjectLoader {
 			}
 			if (timeToPause == null){
 				timeToPause = -1;
+			}
+			if (ignoreTextDone == null){
+				ignoreTextDone = false;
 			}
 
 
@@ -684,7 +688,7 @@ public class ObjectLoader {
 				}
 			}
 
-			ts.addStep(text, paused, confirm, spaceToContinue, dontWriteText, timeToPause);
+			ts.addStep(text, paused, confirm, spaceToContinue, dontWriteText, timeToPause, ignoreTextDone);
 
 			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) step.get("actions");
 
