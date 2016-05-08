@@ -82,7 +82,7 @@ public class SelectionMenuController {
 		this.menu.setChoosingTarget(isChoosingTarget);
 	}
 
-	public void update(){
+	public void update(){	
 		switch (menuState) {
 			case SELECTING:
 				checkForClicked();
@@ -185,21 +185,28 @@ public class SelectionMenuController {
 		selectedY = menu.getSelectedY();
 		leftside = selected.leftside;
 		board.reset();
+		
+		// reset/updates the highlighted flashing square on the board to the proper action
+		// only do this when not choosing a target so we don't keep resetting the selected squares back to default
+		if (!this.choosingTarget){
+			this.setTargetedAction();
+		}
 	}
 
 	private void updatePeekingVariables(){
 		menu = clickedChar.getSelectionMenu();
 		action = menu.getSelectedAction();
 		choosingTarget =  menu.getChoosingTarget();
-		//shadowX = clickedChar.getShadowX();
-		//shadowY = clickedChar.getShadowY();
 
-		//use current positions for shadowx and y so the player doesn't get info
+		//use current positions for shadow x and y so the player doesn't get info
 		//on planned enemy moves
 		shadowX = clickedChar.xPosition;
 		shadowY = clickedChar.yPosition;
 		leftside = clickedChar.leftside;
 		board.reset();
+		
+		// reset the highlighted tile
+		this.setTargetedAction();
 	}
 
 	private void updatePeeking() {
@@ -396,7 +403,7 @@ public class SelectionMenuController {
 		float mouseX = InputController.getMouseX();
 		float mouseY = InputController.getMouseY();
 		Coordinate chosenTile = null;
-		if (InputController.mouseJustMoved()){
+		if (InputController.mouseJustMoved()||InputController.pressedLeftMouse()){
 			chosenTile = this.board.contains(mouseX, mouseY, InputController.getCanvas());
 		}
 		if (chosenTile!= null){
@@ -498,6 +505,9 @@ public class SelectionMenuController {
 		menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 		this.setChoosingTarget(false);
 		menu.resetPointer(numSlots);
+		
+		// reset the highlighted flashing tile on the board
+		this.setTargetedAction();
 	}
 
 	protected void updateChoosingSingle(){
