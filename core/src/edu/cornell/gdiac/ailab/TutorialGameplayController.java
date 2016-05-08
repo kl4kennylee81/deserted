@@ -66,6 +66,7 @@ public class TutorialGameplayController extends GameplayController{
     	screen.noScreen();
     	switch(inGameState){
     	case NORMAL:
+    		highlight_action = 0;
     		// update the character models
     		characters.update();
     		effectController.update(characters, board);
@@ -112,6 +113,7 @@ public class TutorialGameplayController extends GameplayController{
     		}
     		break;
     	case ATTACK:
+    		highlight_action = 0;
     		actionController.update();
     		if (actionController.isDone()){
     			if (actionBarController.isPlayerSelection){
@@ -129,6 +131,7 @@ public class TutorialGameplayController extends GameplayController{
     		//updateTutorial();
     		break;
     	case WARNING:
+    		highlight_action = 0;
     		warningTime++;
     		if (warningTime == WARNING_DONE_TIME || InputController.pressedEnter()){
     			warningTime = 0;
@@ -215,7 +218,7 @@ public class TutorialGameplayController extends GameplayController{
     			}
     			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + (highlight_action)*selectedChar.actionBar.getSlotWidth(canvas);
     			float highlightY = selectedChar.actionBar.getY(canvas, count) - selectedChar.actionBar.getBarHeight(canvas);//characters.indexOf(selectedChar));
-    			canvas.drawDownTextArrow(highlightX, highlightY, Color.GOLD, "This is where this move will go off");
+    			canvas.drawDownTextArrow(highlightX, highlightY, Color.BLACK, "This is where this move will go off");
     		}
 			//getY: iterate over characters, and when character matches selected character thats the number to pass to getY
 		}
@@ -230,6 +233,7 @@ public class TutorialGameplayController extends GameplayController{
         if (highlights != null && tutorialSteps.showHighlights){
 	    	for (CurrentHighlight highlight:highlights){
 	    		if (highlight.isChar){
+//	    			System.out.println(highlight.xPos*canvas.getWidth());
 	    			canvas.drawCharArrow(screen.screen, 
 	    					(float)highlight.xPos*canvas.getWidth(),
 	    					(float)highlight.width*canvas.getWidth(), 

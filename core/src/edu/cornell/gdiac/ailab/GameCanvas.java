@@ -939,7 +939,7 @@ public class GameCanvas {
 		TextureRegion arrowTexture = new TextureRegion(screen,(int)x,(int)y,(int)x_width,(int)y_width);
 		float charScale = Character.getCharScale(this, arrowTexture, board);
 		spriteBatch.setColor(color);
-		spriteBatch.draw(downArrow, (int)(x*charScale + x_width) - 37,(int)(y*charScale + y_width), 135, 135);
+		spriteBatch.draw(downArrow, (int)(x), (int)(y + y_width), 135, 135);
 	}
 	
 	public void drawDownTextArrow(float x, float y, Color color, String text){
@@ -947,7 +947,7 @@ public class GameCanvas {
 		spriteBatch.draw(downArrow, x-37, y+10, 75, 75);
 		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
-		displayFont.draw(spriteBatch, text, x+60, y+60, 80, Align.left, true);
+		displayFont.draw(spriteBatch, text, x+60, y+60, getWidth()-(x+60), Align.left, true);
 		
 	}
 	

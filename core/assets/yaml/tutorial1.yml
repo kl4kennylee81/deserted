@@ -16,8 +16,8 @@
   spaceToContinue: true
   paused: true
   highlightRegions:
-    - xPos: 0.43
-      yPos: 0.35
+    - xPos: 0.3
+      yPos: 0.22
       width: 0.09
       height: 0.23
       arrow: down
@@ -28,8 +28,8 @@
   spaceToContinue: true
   paused: true
   highlightRegions:
-    - xPos: 0.91
-      yPos: 0.38
+    - xPos: 0.56
+      yPos: 0.24
       width: 0.1
       height: 0.2
       arrow: down
@@ -91,7 +91,7 @@
       width: 0.66
       height: 0.1
       arrow: up
-      
+
 7:
   text: "When the meter reaches the center, the character must select actions."
   dontWriteText: true
