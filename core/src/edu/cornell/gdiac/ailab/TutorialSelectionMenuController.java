@@ -105,8 +105,8 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 
 
     private void updateNotChoosingTarget(){
-		boolean mouseCondition = InputController.pressedLeftMouse();// &&
-//		action.contains(InputController.getMouseX(), InputController.getMouseX(), InputController.getCanvas(), board);
+		boolean mouseCondition = InputController.pressedLeftMouse() &&
+				menu.contains(InputController.getMouseX(),InputController.getMouseY(), InputController.getCanvas(), board);
 		int numSlots = selected.getActionBar().getUsableNumSlots();
 		if ((InputController.pressedEnter() || mouseCondition)){
 			if (action != null && menu.canAct(numSlots)){
