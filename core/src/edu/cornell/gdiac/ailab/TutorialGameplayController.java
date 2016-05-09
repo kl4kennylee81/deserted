@@ -134,11 +134,8 @@ public class TutorialGameplayController extends GameplayController{
     		break;
     	case WARNING:
     		highlight_action = 0;
-    		warningTime++;
-    		if (warningTime == WARNING_DONE_TIME || InputController.pressedEnter()){
+    		if ( InputController.pressedEnter()){
     			System.out.println("ENTER 2");
-    			warningTime = 0;
-//    		if (InputController.pressedEnter()){
     			inGameState = InGameState.DONE;
 	    		if (this.leftsideDead()){
 	    			GameEngine.nextLevel = TutorialSteps.levelName;
