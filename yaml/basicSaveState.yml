@@ -4,19 +4,19 @@ characters:
     totalSP: 0
     actionTree:
     - actionId: 0
-    - actionId: 5
+    - actionId: 4
       nextAction:
       - actionId: 10
         cost: 1
       - actionId: 11
         cost: 1
-    - actionId: 6
+    - actionId: 3
       nextAction:
       - actionId: 12
         cost: 1
       - actionId: 13
         cost: 1
-    - actionId: 20
+    - actionId: 6
       nextAction:
       - actionId: 14
         cost: 1
@@ -24,106 +24,60 @@ characters:
         cost: 1
     currentActions:
     - 0
-    - 5
+    - 4
+    - 3
     - 6
-    - 20
   1:
     characterId: 1
     totalSP: 0
     actionTree:
     - actionId: 0
-    - actionId: 4
-      nextAction:
-      - actionId: 9
-        cost: 1
-      - actionId: 11
-        cost: 1
     - actionId: 7
-      nextAction:
-      - actionId: 12
-        cost: 1
-      - actionId: 13
-        cost: 1
     - actionId: 10
-      nextAction:
-      - actionId: 14
-        cost: 1
-      - actionId: 15
-        cost: 1
+    - actionId: 30
     currentActions:
     - 0
-    - 4
     - 7
     - 10
+    - 30
   2:
     characterId: 2
     totalSP: 0
     actionTree:
     - actionId: 0
-    - actionId: 4
-      nextAction:
-      - actionId: 9
-        cost: 1
-      - actionId: 11
-        cost: 1
-    - actionId: 7
-      nextAction:
-      - actionId: 12
-        cost: 1
-      - actionId: 13
-        cost: 1
-    - actionId: 10
-      nextAction:
-      - actionId: 14
-        cost: 1
-      - actionId: 15
-        cost: 1
+    - actionId: 16
+    - actionId: 17
+    - actionId: 18
     currentActions:
     - 0
-    - 4
-    - 7
-    - 10
+    - 16
+    - 17
+    - 18
   3:
-    characterId: 3
+    characterId: 5
     totalSP: 0
     actionTree:
     - actionId: 0
-    - actionId: 4
-      nextAction:
-      - actionId: 9
-        cost: 1
-      - actionId: 11
-        cost: 1
+    - actionId: 23
+    - actionId: 20
     - actionId: 7
-      nextAction:
-      - actionId: 12
-        cost: 1
-      - actionId: 13
-        cost: 1
-    - actionId: 10
-      nextAction:
-      - actionId: 14
-        cost: 1
-      - actionId: 15
-        cost: 1
     currentActions:
     - 0
-    - 4
+    - 23
+    - 20
     - 7
-    - 10
+    
 levels:
   0:
     levelName: tutorial1
     beaten: false
     boss: false
     gainedSP: 1
-    unlockableCharacter: 2
   1:
     levelName: tutorial2
     beaten: false
     boss: false
     gainedSP: 1
-    unlockableCharacter: 3
   2:
     levelName: tutorial3
     beaten: false
@@ -140,31 +94,33 @@ levels:
     levelName: tutorial6
     beaten: false
     boss: false
-  10:
+  6:
     levelName: Level1
     beaten: false
     boss: false
-  11:
+    unlockableCharacter: 2
+  7:
     levelName: Level2
     beaten: false
     boss: false
-  12:
+  8:
     levelName: Level3
     beaten: false
     boss: false
-  13:
+  9:
     levelName: Level4
     beaten: false
     boss: false
-  14:
+  10:
     levelName: Level5
     beaten: false
     boss: false
-  15:
+    unlockableCharacter: 3
+  11:
     levelName: Level6
     beaten: false
     boss: false
-  16:
+  12:
     levelName: pvp
     beaten: false
     boss: false
