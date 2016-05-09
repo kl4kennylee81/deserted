@@ -6,21 +6,21 @@ characters:
     - actionId: 0
     - actionId: 4
       nextAction:
-      - actionId: 10
+      - actionId: 23
         cost: 1
       - actionId: 11
         cost: 1
     - actionId: 3
       nextAction:
-      - actionId: 12
+      - actionId: 18
         cost: 1
       - actionId: 13
         cost: 1
     - actionId: 6
       nextAction:
-      - actionId: 14
+      - actionId: 22
         cost: 1
-      - actionId: 25
+      - actionId: 7
         cost: 1
     currentActions:
     - 0
@@ -129,7 +129,7 @@ availableCharacters:
 - 1
 unlockableCharacters:
 - 2
-- 3
+- 5
 selectedCharacters:
 - 0
 - 1
