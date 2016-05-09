@@ -134,6 +134,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 					tutorialSteps.setWarning("Please follow the instructions!", false);
 				}
 			} else {
+				TutorialGameplayController.highlight_action = 0;
 				if (correctActions()){
 					selected.setSelecting(false);
 					selected.setQueuedActions(menu.getQueuedActions());

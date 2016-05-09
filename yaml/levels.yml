@@ -99,7 +99,7 @@ Level4:
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/fighter.yml", "aiyaml/rock.yml", "aiyaml/fighter-rock.yml"]
-    
+
 Level3:
     allies:
         - id: 0
@@ -134,7 +134,7 @@ tutorial1:
     enemies:
         - id: 91
           xPosition: 4
-          yPosition: 1
+          yPosition: 2
           aggression: 0.5
           risk: 0.5
           defensiveness: 0.5
