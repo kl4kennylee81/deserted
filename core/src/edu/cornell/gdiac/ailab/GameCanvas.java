@@ -1016,6 +1016,10 @@ public class GameCanvas {
 		displayFont.draw(spriteBatch, msg, x-width/2, y);
 	}
 	
+	public void drawCenteredTexture(Texture texture, float x, float y, float width, float height, Color color){
+		this.drawTexture(texture, x-width/2, y-height/2, width, height, color);
+	}
+	
 	public void drawCircle(float x, float y, float diam, Color color){
 		this.drawTexture(whiteCircle, x, y, diam, diam, color);
 	}

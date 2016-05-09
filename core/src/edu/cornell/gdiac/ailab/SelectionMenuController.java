@@ -55,7 +55,6 @@ public class SelectionMenuController {
 	private static final int SINGLE_Y = 3;
 	protected String prompt;
 
-	//TODO: Change to be 0 for down and anything else is up
 	/** Attack direction values */
 	Direction direction;
 
@@ -113,6 +112,7 @@ public class SelectionMenuController {
 
 				updateVariables();
 				int numSlots = selected.getActionBar().getUsableNumSlots();
+				
 				if (menu.canAct(numSlots) && action != null){
 					drawHighlights();
 				}
@@ -156,7 +156,7 @@ public class SelectionMenuController {
 				updatePeeking();
 
 				// when you click on your original character it goes back to his selection menu
-				if (InputController.pressedBack()||clickedChar == selected){
+				if (InputController.pressedBack()||InputController.pressedRightMouse()||clickedChar == selected){
 					clickedChar.isClicked = false;
 					clickedChar = null;
 					menuState = MenuState.SELECTING;
@@ -164,13 +164,14 @@ public class SelectionMenuController {
 				break;
 
 		}
-
 	}
 
 	protected void checkForClicked(){
 		for (Character c : characters){
 			if (c.isClicked){
-				clickedChar = c;
+				if (!this.choosingTarget){
+					clickedChar = c;
+				}
 				break;
 			}
 		}
@@ -266,8 +267,7 @@ public class SelectionMenuController {
 	private void updateNotChoosingTarget(){
 		// only allow mouse click to select if hovering over the action
 		boolean mouseCondition = InputController.pressedLeftMouse() &&
-				((action!= null && action.contains(InputController.getMouseX(), InputController.getMouseY(), InputController.getCanvas(), board))
-						||this.menu.confirmContain(InputController.getMouseX(), InputController.getMouseY()));
+				menu.contains(InputController.getMouseX(),InputController.getMouseY(), InputController.getCanvas(), board);
 		int numSlots = selected.getActionBar().getUsableNumSlots();
 		if ((InputController.pressedEnter() || mouseCondition)){
 			if (this.menu.confirmContain(InputController.getMouseX(), InputController.getMouseY())){
@@ -290,7 +290,7 @@ public class SelectionMenuController {
 				selected = null;
 				resetNeedsShadow();
 			}
-		} else if (InputController.pressedBack()){
+		} else if (InputController.pressedBack() || InputController.pressedRightMouse()){
 			menu.removeLast();
 			menu.resetPointer(this.selected.getActionBar().getUsableNumSlots());
 			this.setTargetedAction();
@@ -413,17 +413,16 @@ public class SelectionMenuController {
 			int chosenX = chosenTile.x;
 			int chosenY = chosenTile.y;
 			chosenTile.free();
+			//System.out.println(chosenX+" "+chosenY);
 			boolean canHit = this.board.getcanTarget(chosenX,chosenY);
+			//System.out.println(canHit);
 			if (canHit){
+				//System.out.println("haha");
 				this.selectedX = chosenX;
 				this.selectedY = chosenY;
 				if (InputController.pressedLeftMouse()){
+					//System.out.println("PRESSED");
 					confirmedAction();
-					if (this.action.pattern == Pattern.MOVE
-							&& this.menu.canAct(this.selected.getActionBar().getUsableNumSlots())){
-						this.updateTargetedAction();
-						this.setChoosingTarget(true);
-					}
 				}
 				return;
 			}
@@ -497,7 +496,7 @@ public class SelectionMenuController {
 		}
 		if (InputController.pressedEnter()){
 			confirmedAction();
-		} else if (InputController.pressedBack()){
+		} else if (InputController.pressedBack() || InputController.pressedRightMouse()){
 			this.setChoosingTarget(false);
 		}
 	}

@@ -21,11 +21,15 @@ public class InputController {
 	
 	public static GameCanvas canvas;
 	
+	public static boolean rightMouseClickedLast = false;
+	
+	public static boolean rightMouseClicked = false;
+	
 	public static boolean leftMouseClickedLast = false;
 	
 	public static boolean leftMouseClicked = false;
 	
-	public static void update(){
+	public static void update(){	
 		if (leftMouseClickedLast){
 			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
 				leftMouseClicked = false;
@@ -45,10 +49,34 @@ public class InputController {
 				leftMouseClicked = false;
 			}
 		}
+		
+		if (rightMouseClickedLast){
+			if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
+				rightMouseClicked = false;
+			}
+			else{
+				rightMouseClicked = true;
+				rightMouseClickedLast = false;
+			}
+		}
+		else{
+			if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)){
+				rightMouseClickedLast = true;
+				rightMouseClicked = false;
+			}
+			else{
+				rightMouseClickedLast = false;
+				rightMouseClicked = false;
+			}
+		}
 	}
     
 	public static boolean leftMouseDown(){
 		return Gdx.input.isButtonPressed(Input.Buttons.LEFT);
+	}
+	
+	public static boolean pressedRightMouse(){
+		return rightMouseClicked;
 	}
 	
     public static boolean pressedEnter() {

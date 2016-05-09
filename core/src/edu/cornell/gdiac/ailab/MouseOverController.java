@@ -71,44 +71,72 @@ public class MouseOverController {
 		Character clickedChar = null;
 		Character actionChar = null;
 		
+		boolean isHovering = false;
+		
 		for(Character c: characters){
 			SelectionMenu menu = c.getSelectionMenu();
-			if (InputController.mouseJustMoved()){
-				for (Action a: menu.getActions()){
-					int usableNumSlots = c.getActionBar().getUsableNumSlots();
-					boolean actionInvalid = menu.isActionInvalid(usableNumSlots, a);
-					if (a.contains(x,y,canvas,board) && !actionInvalid){
-						hAction = a;
-						currMenu = currMenu1;
-						actionChar = c;
+			
+			// this will check if mouse is hovering over any action
+			if (!menu.getChoosingTarget() && (c.isSelecting || c.isClicked)){
+				Option[] options = menu.getOptions();
+				for (int i =0;i<options.length;i++){
+					Option o = options[i];
+					o.currentlyHovered = false;
+					if (o.contains(x,y,canvas,board)){
+						isHovering = true;
 					}
-				}
-				
-				if (c.getSelectionMenu().confirmContain(InputController.getMouseX(), InputController.getMouseY())){
-					menu.setChoosingTarget(false);
-					menu.selectedAction=menu.getActions().length;
 				}
 			}
 			
+			if (InputController.mouseJustMoved()){
+				
+				if (!menu.getChoosingTarget() && (c.isSelecting || c.isClicked)){
+					Option[] options = menu.getOptions();
+					for (int i =0;i<options.length;i++){
+						Option o = options[i];
+						o.currentlyHovered = false;
+						if (o.contains(x,y,canvas,board)){
+							menu.trySelectingAction(c.getActionBar(),i);
+							actionChar = c;
+							o.currentlyHovered = true;
+							//menu.setChoosingTarget(false);
+							//menu.selectedAction = i;
+						}
+					}
+				}
+				
+				
+				/*if (c.getSelectionMenu().confirmContain(InputController.getMouseX(), InputController.getMouseY())){
+					
+					menu.setChoosingTarget(false);
+					menu.selectedAction=menu.getActions().length;
+				}*/
+			}
+		}
+		for (Character c : characters){
 			if (c.contains(x,y,canvas,board)){
 				if (highlighted != null){
 					highlighted.removeHovering();
 				}
 				highlighted = c;
 				highlighted.setHovering();
-
-				if (InputController.leftMouseClicked) {
+				
+				if (InputController.leftMouseClicked && !isHovering
+						&& !currMenu1.getChoosingTarget() && actionChar == null) {
 					clickedChar = c;
+					c.selectionMenu.selectedAction = -1;
 				}
 			}
 		}
-		
 
 		if (clickedChar != null){
 			for (Character c : characters) {
 				c.isClicked = false;
 			}	
 			clickedChar.isClicked = true;
+			if (!clickedChar.selectionMenu.equals(currMenu1) && currMenu1 != null && !currMenu1.getChoosingTarget()){
+				currMenu1.selectedAction = -1;
+			}
 		}
 		
 		if (hAction != null 

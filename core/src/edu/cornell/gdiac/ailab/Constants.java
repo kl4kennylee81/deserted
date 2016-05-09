@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 
 public class Constants {
 	
-	public static final String COMPLETION_TEXTURE = "images/wat.jpg";
+	public static final String COMPLETION_TEXTURE = "images/completed.png";
 	
 	public static final String TILE_TEXTURE = "models/Tile.png";
 	
@@ -59,20 +59,18 @@ public class Constants {
 	/** ACTION BAR ART ASSETS **/
 	public static final String ACTIONBAR_CENTER_TEXTURE = "images/actionBar/actionBar_center.png";
 	
-	public static final String ACTIONBAR_FILL_TEXTURE = "images/actionBar/actionBar_fill.png";
+	public static final String ACTIONBAR_FILLWAIT_TEXTURE = "images/actionBar/actionBar_fillWait.png";
+	
+	public static final String ACTIONBAR_FILLCAST_TEXTURE = "images/actionBar/actionBar_fillCast.png";
 	
 	public static final String ACTIONBAR_LEFTBLUE_TEXTURE = "images/actionBar/actionBar_leftBlue.png";
 	
 	public static final String ACTIONBAR_LEFTRED_TEXTURE = "images/actionBar/actionBar_leftRed.png";
 	
-	public static final String ACTIONBAR_LEFT_TEXTURE = "images/actionBar/actionBar_leftside.png";
-
-	public static final String ACTIONBAR_RIGHT_TEXTURE = "images/actionBar/actionBar_rightside.png";
-	
 	public static final String ACTIONBAR_RIGHTEND_TEXTURE = "images/actionBar/actionBar_rightend.png";
-	
-	public static final String ACTIONBAR_CENTER_POTRAIT = "images/actionBar/actionBar_potraitCircle.png";
 
+	public static final String ACTIONBAR_ICON = "images/actionBar/actionBar_centerIcon.png";
+	
 	public static final Color CAST_COLOR = Color.valueOf("ffe04e");
 	
 	// DESCRIPTION BOX CONSTANTS
@@ -85,4 +83,7 @@ public class Constants {
 	public static final float DESCRIPTION_BOX_RELATIVE_WIDTH = 1.0f;
 	
 	public static final float DESCRIPTION_BOX_RELATIVE_HEIGHT = 0.15f;
+	
+	//Cancel Token
+	public static final String CANCEL_TOKEN = "models/action_tokens/cancel_token.png";
 }
