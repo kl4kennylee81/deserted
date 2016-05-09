@@ -1,5 +1,8 @@
 package edu.cornell.gdiac.ailab;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -23,8 +26,31 @@ public class CompletionScreen {
 	
 	private static final float BOTTOM_Y_POS = 0.3f;
 	
+	private static final float CHEST_X_POS = 0.75f;
+	
+	private static final float CHEST_Y_POS = 0.5f;
+	
+	private static final float CHEST_WIDTH = 0.2f;
+	
+	private static final float CHEST_HEIGHT = 0.2f;
+	
+	private static final float STAR_X_POS = 0.1f;
+	
+	private static final float STAR_Y_POS = 0.5f;
+	
+	private static final float STAR_WIDTH = 0.2f;
+	
+	private static final float STAR_HEIGHT = 0.2f;
+	
 	Texture image;
 	
+	Texture star;
+	
+	Texture chest;
+	
+	List<Character> characters_unlocked;
+	
+	int skill_point;
 	
 	private String topText;
 	
@@ -32,6 +58,8 @@ public class CompletionScreen {
 	
 	protected CompletionScreen(){
 		bottomText = "Press Enter to Continue or R to Return";
+		characters_unlocked = new LinkedList<Character>();
+		int skill_point = 0;
 	}
 	
 	public static CompletionScreen getInstance(){
@@ -43,6 +71,14 @@ public class CompletionScreen {
 	
 	public void setImage(Texture im){
 		this.image = im;
+	}
+	
+	public void setStar(Texture st){
+		star = st;
+	}
+	
+	public void setChest(Texture ch){
+		chest = ch;
 	}
 	
 	public void setIsWin(boolean newVal){
@@ -58,6 +94,13 @@ public class CompletionScreen {
 		drawTopText(canvas);
 		drawImage(canvas);
 		drawBottomText(canvas);
+		
+		if (skill_point > 0){
+			drawChest(canvas);
+		}
+		if (characters_unlocked.size() > 0){
+			drawStar(canvas);
+		}
 	}
 	
 	public void drawImage(GameCanvas canvas){
@@ -79,6 +122,24 @@ public class CompletionScreen {
 		float x = BOTTOM_X_POS * canvas.getWidth();
 		float y = BOTTOM_Y_POS * canvas.getHeight();
 		canvas.drawCenteredText(bottomText, x, y, Color.WHITE, 1.2f);
+	}
+	
+	private void drawStar(GameCanvas canvas){
+		float x = STAR_X_POS * canvas.getWidth();
+		float y = STAR_Y_POS * canvas.getHeight();
+		float width = STAR_WIDTH * canvas.getWidth();
+		float height = STAR_HEIGHT * canvas.getHeight();
+		
+		canvas.drawTexture(star, x, y, width, height, Color.WHITE);
+	}
+	
+	private void drawChest(GameCanvas canvas){
+		float x = CHEST_X_POS * canvas.getWidth();
+		float y = CHEST_Y_POS * canvas.getHeight();
+		float width = CHEST_WIDTH * canvas.getWidth();
+		float height = CHEST_HEIGHT * canvas.getHeight();
+		
+		canvas.drawTexture(chest, x, y, width, height, Color.WHITE);
 	}
 	
 }
