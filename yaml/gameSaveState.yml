@@ -1,7 +1,7 @@
 characters:
   0:
     characterId: 0
-    totalSP: 1
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -29,7 +29,7 @@ characters:
     - 6
   1:
     characterId: 1
-    totalSP: 1
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -42,7 +42,7 @@ characters:
     - 30
   2:
     characterId: 2
-    totalSP: 1
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 16
@@ -55,7 +55,7 @@ characters:
     - 18
   3:
     characterId: 5
-    totalSP: 1
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -69,7 +69,7 @@ characters:
 levels:
   0:
     levelName: tutorial1
-    beaten: true
+    beaten: false
     boss: false
   1:
     levelName: tutorial2
@@ -127,8 +127,8 @@ levels:
 availableCharacters:
 - 0
 - 1
-- 2
 unlockableCharacters:
+- 2
 - 5
 selectedCharacters:
 - 0
