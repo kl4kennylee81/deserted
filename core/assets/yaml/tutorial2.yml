@@ -11,13 +11,13 @@
   rightText: "Well done!"
   note: player presses space
 
-    
+
 1:
   text: ""
   paused: false
   spaceToContinue: false
   timeToPause: 200
-  
+
 2:
   text: "When you get hit, your wait time decreases."
   paused: true
@@ -39,14 +39,17 @@
       width: 0.36
       height: 0.1
       arrow: up
-  
+
 4:
   text: "If you get hit while charging an attack, your attack gets CANCELLED!"
   paused: true
   spaceToContinue: false
   note:
-  
 
+5:
+  text: "Try not to get hit!"
+  paused: false
+  spaceToContinue: false
 
 # 2:
 #   text: "hi 2"

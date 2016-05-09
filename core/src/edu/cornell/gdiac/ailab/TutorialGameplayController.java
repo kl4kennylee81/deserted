@@ -189,7 +189,6 @@ public class TutorialGameplayController extends GameplayController{
 		List<CurrentHighlight> highlights = tutorialSteps.getHighlights();
 		if(tutorialSteps.step == null || !tutorialSteps.step.text.equals("")) screen.setJustScreen();
 		if (highlights != null && tutorialSteps.showHighlights){
-			System.out.println("yo yo yo");
 	    	for (CurrentHighlight highlight:highlights){
     			CurrentHighlight current = new CurrentHighlight(highlight.xPos * canvas.getWidth(),
     			highlight.yPos * canvas.getHeight(), highlight.width * canvas.getWidth(),
@@ -221,7 +220,7 @@ public class TutorialGameplayController extends GameplayController{
     			}
     			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + (highlight_action)*selectedChar.actionBar.getSlotWidth(canvas);
     			float highlightY = selectedChar.actionBar.getY(canvas, count) - selectedChar.actionBar.getBarHeight(canvas);//characters.indexOf(selectedChar));
-    			if(selectionMenuController.menu.selectedAction != selectionMenuController.menu.actions.length){
+    			if(selectionMenuController.menu.actions != null && selectionMenuController.menu.selectedAction != selectionMenuController.menu.actions.length){
         			canvas.drawDownTextArrow(highlightX, highlightY, Color.GOLDENROD, "Action executes here");
     			}
     		}
@@ -256,6 +255,8 @@ public class TutorialGameplayController extends GameplayController{
 		    		canvas.drawDownArrow((float)(highlight.xPos*canvas.getWidth() + highlight.width*canvas.getWidth()),
 		    				(float)(highlight.yPos*canvas.getHeight() + (highlight.height*canvas.getHeight())/2f),
 		    				Color.GOLD);
+	    		} else if (highlight.arrow.equals("none")) {
+		    		continue;
 	    		} else {
 		    		canvas.drawLeftArrow((float)(highlight.xPos*canvas.getWidth() + highlight.width*canvas.getWidth()),
 		    				(float)(highlight.yPos*canvas.getHeight() + (highlight.height*canvas.getHeight())/2f),
