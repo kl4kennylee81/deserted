@@ -194,7 +194,7 @@ public class SelectionMenuController {
 		}
 	}
 
-	private void updatePeekingVariables(){
+	protected void updatePeekingVariables(){
 		menu = clickedChar.getSelectionMenu();
 		action = menu.getSelectedAction();
 		choosingTarget =  menu.getChoosingTarget();
@@ -210,7 +210,7 @@ public class SelectionMenuController {
 		this.setTargetedAction();
 	}
 
-	private void updatePeeking() {
+	protected void updatePeeking() {
 		int numSlots = clickedChar.getActionBar().getUsableNumSlots();
 		if (InputController.pressedUp() && !InputController.pressedDown()){
 			//Actions go from up down, so we need to flip
