@@ -169,9 +169,19 @@
   #    xPos: 0
   #    yPos: 0
   #    direction: NONE
-
-
+  
 12:
+  text: "Press Enter again to confirm."
+  spaceToContinue: false
+  paused: false
+  #actions:
+  #  - actionId: 1
+  #    xPos: 0
+  #    yPos: 0
+  #    direction: NONE
+
+
+13:
   text: "You have now filled your action slots. Select \"Confirm\" to lock in your actions."
   spaceToContinue: false
   paused: false

@@ -16,7 +16,7 @@
   text: ""
   paused: false
   spaceToContinue: false
-  timeToPause: 200
+  timeToPause: 175
   
 2:
   text: "When you get hit, your wait time decreases."
