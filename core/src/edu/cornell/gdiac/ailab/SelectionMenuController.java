@@ -126,7 +126,6 @@ public class SelectionMenuController {
 				}
 				menu.setSelectedX(selectedX);
 				menu.setSelectedY(selectedY);
-				System.out.println(menu.getChoosingTarget());
 				break;
 
 			case WAITING:
@@ -154,7 +153,7 @@ public class SelectionMenuController {
 				updatePeeking();
 
 				// when you click on your original character it goes back to his selection menu
-				if (InputController.pressedBack()||clickedChar == selected){
+				if (InputController.pressedBack()||InputController.pressedRightMouse()||clickedChar == selected){
 					clickedChar.isClicked = false;
 					clickedChar = null;
 					menuState = MenuState.SELECTING;
@@ -262,7 +261,7 @@ public class SelectionMenuController {
 	 */
 	private void updateNotChoosingTarget(){
 		// only allow mouse click to select if hovering over the action
-		boolean mouseCondition = InputController.pressedLeftMouse() && action!= null && 
+		boolean mouseCondition = InputController.pressedLeftMouse() &&
 				menu.contains(InputController.getMouseX(),InputController.getMouseY(), InputController.getCanvas(), board);
 		int numSlots = selected.getActionBar().getUsableNumSlots();
 		if ((InputController.pressedEnter() || mouseCondition)){
@@ -286,7 +285,7 @@ public class SelectionMenuController {
 				selected = null;
 				resetNeedsShadow();
 			}
-		} else if (InputController.pressedBack()){
+		} else if (InputController.pressedBack() || InputController.pressedRightMouse()){
 			menu.removeLast();
 			menu.resetPointer(this.selected.getActionBar().getUsableNumSlots());
 			this.setTargetedAction();
@@ -415,11 +414,11 @@ public class SelectionMenuController {
 				this.selectedY = chosenY;
 				if (InputController.pressedLeftMouse()){
 					confirmedAction();
-					if (this.action.pattern == Pattern.MOVE
+					/*if (this.action.pattern == Pattern.MOVE
 							&& this.menu.canAct(this.selected.getActionBar().getUsableNumSlots())){
 						this.updateTargetedAction();
 						this.setChoosingTarget(true);
-					}
+					}*/
 				}
 				return;
 			}
@@ -493,7 +492,7 @@ public class SelectionMenuController {
 		}
 		if (InputController.pressedEnter()){
 			confirmedAction();
-		} else if (InputController.pressedBack()){
+		} else if (InputController.pressedBack() || InputController.pressedRightMouse()){
 			this.setChoosingTarget(false);
 		}
 	}

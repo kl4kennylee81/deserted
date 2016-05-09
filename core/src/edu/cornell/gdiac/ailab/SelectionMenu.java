@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.Align;
@@ -34,11 +35,21 @@ public class SelectionMenu {
 
 	public static final float TEXT_ACTION_OFFSET = 30f;
 
-	private static final float RELATIVE_DESCRIPTION_Y_POS = Constants.DESCRIPTION_BOX_RELATIVE_HEIGHT*0.6f + Constants.DESCRIPTION_BOX_RELATIVE_Y_POS;
+	private static final float RELATIVE_DESCRIPTION_Y_POS = 0.33f;
 	
-	private static final float RELATIVE_DESCRIPTION_X_POS = 0.5f;
+	private static final float RELATIVE_DESCRIPTION_X_POS = 0.035f;
+	
+	private static final float RELATIVE_DESCRIPTION_WIDTH = 0.15f;
+	
+	private static final float RELATIVE_DESCRIPTION_HEIGHT = 0.25f;
 	
 	private static final float RADIUS_CONSTANT = 1.5f;
+	
+	private static final Texture CONFIRM_BUTTON_UNPRESSED = new Texture("models/confirmbutton_unpressed.png");
+	
+	private static final Texture CONFIRM_BUTTON_PRESSED = new Texture("models/confirmbutton_pressed.png");
+	
+	private static final Texture DESCRIPTION_BACKGROUND = new Texture("models/description_background.png");
 
 	/** Currently used up slots */
 	int takenSlots;
@@ -82,10 +93,14 @@ public class SelectionMenu {
 	
 	public void setOptions(){
 		for (int i = 0; i < actions.length; i++){
-			options[i] = new Option(actions[i].name,String.valueOf(i));
+			options[i] = new Option("",String.valueOf(i));
 			options[i].setImage(actions[i].menuIcon);
 		}
-		options[actions.length] = new Option("Confirm","Confirm");
+		Option confirm = new Option("","Confirm");
+		confirm.setImage(CONFIRM_BUTTON_UNPRESSED);
+		confirm.setImageColor(Color.WHITE);
+		confirm.setBounds(0.43f, 0.55f, 0.14f, 0.05f);
+		options[actions.length] = confirm;
 	}
 	
 	/**
@@ -169,6 +184,17 @@ public class SelectionMenu {
 	
 	public void setSelectedY(int y){
 		selectedY = y;
+	}
+	
+	public void trySelectingAction(CharActionBar actionBar, int i){
+		int usableNumSlots = actionBar.getUsableNumSlots();
+		if (i == actions.length){
+			selectedAction = i;
+		}
+		else if (canDoAction(actions[i], usableNumSlots)){
+			setChoosingTarget(false);
+			selectedAction = i;
+		}
 	}
 	
 	/**
@@ -283,7 +309,7 @@ public class SelectionMenu {
 	
 	//TODO: update for dazed
 	public void draw(GameCanvas canvas,CharActionBar actionBar,int count, boolean charIsClicked, float centerX, float centerY,
-			float radius){
+			float radius, boolean leftside, boolean writeDescription){
 		int totalNumSlots = actionBar.getTotalNumSlots();
 		int usableNumSlots = actionBar.getUsableNumSlots();
 		
@@ -309,6 +335,52 @@ public class SelectionMenu {
 		float selectedPointerOffset = 0f;
 		radius *= RADIUS_CONSTANT;
 		
+		if (!this.choosingTarget){
+			for (int i = 0; i < actions.length; i++){
+				float frac = (i+1f)/(actions.length+1);
+				Action action = actions[i];
+				Option option = options[i];
+				float iconWidth = action.menuIcon.getWidth()*1f/canvas.width;
+				float iconHeight = action.menuIcon.getHeight()*1f/canvas.height;
+				float x;
+				if (leftside){
+					x = (float) (centerX + radius*Math.sin(frac*Math.PI));
+				} else {
+					x = (float) (centerX - radius*Math.sin(frac*Math.PI));
+				}
+				float y = (float) (centerY + radius*Math.cos(frac*Math.PI));
+				x /= canvas.width;
+				y /= canvas.height;
+				
+				option.setBounds(x-iconWidth/2, y-iconHeight/2, iconWidth, iconHeight);
+				option.setImageColor(getActionColor(usableNumSlots,action));
+				option.draw(canvas);
+			}
+		}
+		
+		Option confirm = options[actions.length];
+		float x = confirm.getX(canvas);
+		float y = confirm.getY(canvas);
+		float width = confirm.getWidth(canvas);
+		float height = confirm.getHeight(canvas);
+		canvas.drawBox(x, y, width, height, Color.BLACK);
+		
+		if (confirm.currentlyHovered){
+			confirm.setImage(CONFIRM_BUTTON_PRESSED);
+		} else {
+			confirm.setImage(CONFIRM_BUTTON_UNPRESSED);
+		}
+		
+		if (canAct(usableNumSlots)){
+			confirm.setImageColor(Color.WHITE);
+		} else {
+			confirm.setImageColor(Color.WHITE.cpy().lerp(Color.GOLD,lerpVal));
+		}
+		
+		confirm.draw(canvas);
+		
+		/*
+		 * 
 		for (int i = 0; i < actions.length; i++){
 			Action action = actions[i];
 			if (g != null) {
@@ -321,25 +393,6 @@ public class SelectionMenu {
 			Color actionColor = this.getActionColor(usableNumSlots, action);
 			g = canvas.drawBoardWrapText(action.name, text_x, text_y - offset_y, actionColor);	
 		}
-		if (!this.choosingTarget){
-			for (int i = 0; i < actions.length; i++){
-				float frac = (i+1f)/(actions.length+1);
-				Action action = actions[i];
-				Option option = options[i];
-				float iconWidth = action.menuIcon.getWidth()*1f/canvas.width;
-				float iconHeight = action.menuIcon.getHeight()*1f/canvas.height;
-				float x = (float) (centerX + radius*Math.sin(frac*Math.PI));
-				float y = (float) (centerY + radius*Math.cos(frac*Math.PI));
-				x /= canvas.width;
-				y /= canvas.height;
-				
-				option.setBounds(x-iconWidth/2, y-iconHeight/2, iconWidth, iconHeight);
-				option.setImageColor(getActionColor(usableNumSlots,action));
-				option.draw(canvas);
-			}
-		}
-		
-		
 		
 		if (!charIsClicked){
 			//Draw confirm selection
@@ -358,6 +411,8 @@ public class SelectionMenu {
 		if (!this.choosingTarget){
 			canvas.drawPointer(pointer_x,pointer_y, Color.CORAL);
 		}
+		
+		*/
 		
 		//Draw action bar with 3 black boxes to show 4 slots
 //		float actionSlot_x = actionBar.getBarCastPoint(canvas);
@@ -389,11 +444,28 @@ public class SelectionMenu {
 //			offset+=slot_width*an.action.cost;
 //		}
 		
+		float relative_offset = 0.065f;
+		
 		//Write description
-		if (selectedAction < actions.length && selectedAction >= 0){
-			float descript_x = RELATIVE_DESCRIPTION_X_POS *w;
-			float descript_y = RELATIVE_DESCRIPTION_Y_POS * h;
-			canvas.drawCenteredText(actions[selectedAction].description, descript_x,descript_y, Color.DARK_GRAY);
+		if (writeDescription){
+			if (selectedAction < actions.length && selectedAction >= 0){
+				Action action = actions[selectedAction];
+				float descript_x = RELATIVE_DESCRIPTION_X_POS *w;
+				float descript_y = RELATIVE_DESCRIPTION_Y_POS * h;
+				float descript_width = RELATIVE_DESCRIPTION_WIDTH *w;
+				float descript_height = RELATIVE_DESCRIPTION_HEIGHT * h;
+				float middle_x = descript_x + descript_width/2;
+				canvas.drawTexture(DESCRIPTION_BACKGROUND, descript_x, descript_y, descript_width, descript_height, Color.WHITE);
+				canvas.drawCenteredTexture(action.menuIcon, middle_x, descript_y+descript_height,50,50, Color.WHITE);
+				//canvas.drawCenteredText(action, descript_x, descript_y, Color.WHITE);
+				float name_y = (RELATIVE_DESCRIPTION_Y_POS+relative_offset*3)*h;
+				canvas.drawCenteredText(action.name, middle_x,name_y, Color.WHITE);
+				float dmg_y = (RELATIVE_DESCRIPTION_Y_POS+relative_offset*2)*h;
+				canvas.drawCenteredText("DMG: "+action.damage, middle_x,dmg_y, Color.WHITE);
+				float cost_y = (RELATIVE_DESCRIPTION_Y_POS+relative_offset*1)*h;
+				canvas.drawCenteredText("COST: "+action.cost, middle_x,cost_y, Color.WHITE);
+				
+			}
 		}
 	}
 	

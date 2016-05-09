@@ -29,6 +29,8 @@ public class Option implements GUIElement{
 	
 	boolean sameWidthHeight;
 	
+	boolean currentlyHovered;
+	
 	public void setImage(Texture t){
 		image = t;
 	}
