@@ -468,9 +468,9 @@ public class SelectionMenu {
 				float name_y = (RELATIVE_DESCRIPTION_Y_POS+relative_offset*3)*h;
 				canvas.drawCenteredText(action.name, middle_x,name_y, Color.WHITE);
 				float dmg_y = (RELATIVE_DESCRIPTION_Y_POS+relative_offset*2)*h;
-				canvas.drawCenteredText("DMG: "+action.damage, middle_x,dmg_y, Color.WHITE);
+				canvas.drawCenteredText("Damage: "+action.damage, middle_x,dmg_y, Color.WHITE);
 				float cost_y = (RELATIVE_DESCRIPTION_Y_POS+relative_offset*1)*h;
-				canvas.drawCenteredText("COST: "+action.cost, middle_x,cost_y, Color.WHITE);
+				canvas.drawCenteredText("Slots: "+action.cost, middle_x,cost_y, Color.WHITE);
 				
 			}
 		}

@@ -87,7 +87,7 @@
     numRounds: 0
     magnitude: 0
   description: Hit 4 tiles straight ahead for 2 damage.
-  animationId: 2
+  animationId: 1
   icon: models/action_tokens/attack_icon.png
 
 5:
@@ -376,7 +376,7 @@
 18:
   name: Shattering Earth
   cost: 2
-  damage: 2
+  damage: 3
   range: 5
   size: 1
   pattern: SINGLE
@@ -623,7 +623,7 @@
   
 30:
   name: Diagonal Bolt
-  cost: 3
+  cost: 2
   damage: 2
   range: 10
   size: 1
