@@ -117,6 +117,7 @@ public class MouseOverController {
 				highlighted.setHovering();
 	
 				if (InputController.leftMouseClicked) {
+					System.out.println("comeon");
 					clickedChar = c;
 					c.selectionMenu.selectedAction = -1;
 				}

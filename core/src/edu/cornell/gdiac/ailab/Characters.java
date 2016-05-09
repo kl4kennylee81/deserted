@@ -48,7 +48,7 @@ public class Characters extends LinkedList<Character>{
         for (Character c : this){
         	count++;
         	if (inSelection){
-        		// if no character is clicked we let the drawselection determine if the character can draw.
+        		// if no character is clicked we let the drawSelection determine if the character can draw.
         		// if there is a clicked char only the character equal to the clicked one will pass through
         		if (clickedChar == null||c == clickedChar){
         			c.drawSelection(canvas,board,count,clickedCharExist);
