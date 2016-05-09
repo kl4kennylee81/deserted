@@ -71,12 +71,10 @@ levels:
     levelName: tutorial1
     beaten: false
     boss: false
-    gainedSP: 1
   1:
     levelName: tutorial2
     beaten: false
     boss: false
-    gainedSP: 1
   2:
     levelName: tutorial3
     beaten: false
@@ -93,6 +91,7 @@ levels:
     levelName: tutorial6
     beaten: false
     boss: false
+    gainedSP: 1
   10:
     levelName: Level1
     beaten: false
@@ -105,6 +104,7 @@ levels:
     levelName: Level3
     beaten: false
     boss: false
+    gainedSP: 1
     unlockableCharacter: 2
   13:
     levelName: Level4
@@ -114,6 +114,7 @@ levels:
     levelName: Level5
     beaten: false
     boss: false
+    gainedSP: 1
     unlockableCharacter: 5
   15:
     levelName: Level6

@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import edu.cornell.gdiac.ailab.GameSaveState.CharacterData;
 
 public class CompletionScreen {
 	
@@ -48,7 +49,7 @@ public class CompletionScreen {
 	
 	Texture chest;
 	
-	List<Character> characters_unlocked;
+	List<CharacterData> characters_unlocked;
 	
 	int skill_point;
 	
@@ -58,7 +59,7 @@ public class CompletionScreen {
 	
 	protected CompletionScreen(){
 		bottomText = "Press Enter to Continue or R to Return";
-		characters_unlocked = new LinkedList<Character>();
+		characters_unlocked = new LinkedList<CharacterData>();
 		int skill_point = 0;
 	}
 	
@@ -131,6 +132,7 @@ public class CompletionScreen {
 		float height = STAR_HEIGHT * canvas.getHeight();
 		
 		canvas.drawTexture(star, x, y, width, height, Color.WHITE);
+		canvas.drawText(String.valueOf(skill_point), x, y, Color.WHITE);
 	}
 	
 	private void drawChest(GameCanvas canvas){
@@ -140,6 +142,8 @@ public class CompletionScreen {
 		float height = CHEST_HEIGHT * canvas.getHeight();
 		
 		canvas.drawTexture(chest, x, y, width, height, Color.WHITE);
+		CharacterData cd = characters_unlocked.get(0);
+		canvas.drawTexture(cd.getIcon(), x, y, width, height, Color.WHITE);
 	}
 	
 }
