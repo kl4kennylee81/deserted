@@ -87,7 +87,7 @@
     numRounds: 0
     magnitude: 0
   description: Hit 4 tiles straight ahead for 2 damage.
-  animationId: 2
+  animationId: 1
   icon: models/action_tokens/attack_icon.png
 
 5:
