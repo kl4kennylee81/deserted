@@ -85,4 +85,7 @@ public class Constants {
 	public static final float DESCRIPTION_BOX_RELATIVE_WIDTH = 1.0f;
 	
 	public static final float DESCRIPTION_BOX_RELATIVE_HEIGHT = 0.15f;
+	
+	//Cancel Token
+	public static final String CANCEL_TOKEN = "models/action_tokens/cancel_token.png";
 }

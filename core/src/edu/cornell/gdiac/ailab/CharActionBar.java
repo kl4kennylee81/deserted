@@ -10,6 +10,8 @@ import edu.cornell.gdiac.ailab.ActionNode;
 
 public class CharActionBar {
 	
+	public static String INTERRUPT_TEXT = "Interrupted";
+	
 	public static Texture actionBar_center;
 	public static Texture actionBar_right;
 	public static Texture actionBar_left;
@@ -23,6 +25,8 @@ public class CharActionBar {
 	public static TextureRegion actionBar_fill_middleWait;
 	public static TextureRegion actionBar_fill_middleCast;
 	public static Texture actionBar_centerpotrait;
+	
+	public static Texture cancel_token;
 	
 	public static final int ACTIONBAR_MIDDLE_WAIT_WIDTH = 144;
 	
@@ -115,6 +119,8 @@ public class CharActionBar {
 		
 		int fill_rightX = fill_midX + ACTIONBAR_MIDDLE_WIDTH;
 		actionBar_fill_right = new TextureRegion(actionBar_fill,fill_rightX,ACTIONBAR_FILL_Y_OFFSET,ACTIONBAR_RIGHT_FILL,ACTIONBAR_FILL_HEIGHT);
+		
+		cancel_token = new Texture(Constants.CANCEL_TOKEN);
 	}
 	
 	public int getTotalNumSlots(){
@@ -691,18 +697,28 @@ public class CharActionBar {
 		for (ActionNode a: queuedActions){
 			// length relative 
 			float centeredCast = this.getCenteredActionX(canvas, a.executePoint, a.action.cost);
+			
 			float x_pos = actionSlot_x + centeredCast;
-			
 			float y_pos = actionSlot_y;
-			String text = a.action.name;
-			canvas.drawCenteredText(text,x_pos,y_pos,Color.WHITE);
-			
 			float y_icon = this.getFillY(canvas, count);
 			
-			float scale = this.getBarFillHeight(canvas)/a.action.barIcon.getHeight();
-			float width_icon = a.action.barIcon.getWidth() * scale;
-			float height_icon = a.action.barIcon.getHeight() * scale;
-			canvas.drawTexture(a.action.barIcon, x_pos, y_icon, width_icon,height_icon, Color.WHITE);
+			if (a.isInterrupted){
+				canvas.drawCenteredText(INTERRUPT_TEXT,x_pos,y_pos,Color.WHITE);
+				
+				float scale =this.getBarFillHeight(canvas)/cancel_token.getHeight();
+				float width_icon = cancel_token.getWidth() * scale;
+				float height_icon = cancel_token.getHeight() * scale;
+				canvas.drawTexture(cancel_token, x_pos, y_icon, width_icon,height_icon, Color.WHITE);
+			}
+			else{
+				String text = a.action.name;
+				canvas.drawCenteredText(text,x_pos,y_pos,Color.WHITE);
+				
+				float scale = this.getBarFillHeight(canvas)/a.action.barIcon.getHeight();
+				float width_icon = a.action.barIcon.getWidth() * scale;
+				float height_icon = a.action.barIcon.getHeight() * scale;
+				canvas.drawTexture(a.action.barIcon, x_pos, y_icon, width_icon,height_icon, Color.WHITE);
+			}
 		}
 	}
 	
