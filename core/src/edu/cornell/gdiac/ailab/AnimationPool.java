@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 
-public class AnimationPool {
+public class AnimationPool{
 	//List of AnimationNodes to draw
 	List<AnimationNode> pool;
 	
@@ -25,6 +26,11 @@ public class AnimationPool {
 	public float getBoardScale(GameCanvas canvas,float textureWidth,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		return tileW/textureWidth;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void sort(){
+		Collections.sort(this.pool);
 	}
 	
 	/**
@@ -54,4 +60,5 @@ public class AnimationPool {
     	    }
     	}
 	}
+
 }

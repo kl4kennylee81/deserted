@@ -799,6 +799,17 @@ public class GameCanvas {
 		spriteBatch.draw(region, x,  y, width, height);
 	}
 	
+	public void draw(Texture image, Color tint, float x, float y, float width, float height) {
+		if (!active) {
+			Gdx.app.error("GameCanvas", "Cannot draw without active begin()", new IllegalStateException());
+			return;
+		}
+		
+		// Unlike Lab 1, we can shortcut without a master drawing method
+    	spriteBatch.setColor(tint);
+		spriteBatch.draw(image, x,  y, width, height);
+	}
+	
 	public void drawMessage(String msg1, String msg2){
 		displayFont.draw(spriteBatch, msg1, 400,300);
 		displayFont.draw(spriteBatch, msg2, 400,500);
@@ -818,8 +829,9 @@ public class GameCanvas {
 		float xTranslate = y*shearX;
 		local.translate(xTranslate,0);
 		
-		float translateBack = -this.getWidth()*0.061f;
-		local.translate(translateBack,0);
+//		float translateBack = -this.getWidth()*0.055f;
+//		local.translate(translateBack,0);
+
 	}
 	
 	public void drawTile(float x, float y, TextureRegion mesh, float width, float height, Color tint){	

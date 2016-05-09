@@ -44,12 +44,12 @@ SHIELD_NOP:
 MOVE_GOAL_ATTACK:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_GOAL, MOVE_GOAL, MOVE_GOAL, QUICK_ATTACK]
+  my_actions: [MOVE_GOAL, MOVE_GOAL, QUICK_ATTACK]
 
 MOVE_GOAL_SHIELD:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_GOAL, MOVE_GOAL, MOVE_GOAL, SHIELD]
+  my_actions: [MOVE_GOAL, MOVE_GOAL, SHIELD]
 
 MOVE_SHIELD_ATTACK:
   type: leaf

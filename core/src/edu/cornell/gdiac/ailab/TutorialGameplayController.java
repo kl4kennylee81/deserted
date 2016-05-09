@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
-import edu.cornell.gdiac.ailab.TutorialSteps.CurrentHighlight;
+import edu.cornell.gdiac.ailab.CurrentHighlight;
 
 public class TutorialGameplayController extends GameplayController{
 	TutorialSteps tutorialSteps;
@@ -67,7 +67,6 @@ public class TutorialGameplayController extends GameplayController{
     	screen.noScreen();
     	switch(inGameState){
     	case NORMAL:
-    		highlight_action = 0;
     		// update the character models
     		characters.update();
     		effectController.update(characters, board);
@@ -114,7 +113,6 @@ public class TutorialGameplayController extends GameplayController{
     		}
     		break;
     	case ATTACK:
-    		highlight_action = 0;
     		actionController.update();
     		if (actionController.isDone()){
     			if (actionBarController.isPlayerSelection){
@@ -133,10 +131,8 @@ public class TutorialGameplayController extends GameplayController{
     		//updateTutorial();
     		break;
     	case WARNING:
-    		highlight_action = 0;
     		warningTime++;
     		if (warningTime == WARNING_DONE_TIME || InputController.pressedEnter()){
-    			System.out.println("ENTER 2");
     			warningTime = 0;
 //    		if (InputController.pressedEnter()){
     			inGameState = InGameState.DONE;
@@ -194,12 +190,13 @@ public class TutorialGameplayController extends GameplayController{
 		if(tutorialSteps.step == null || !tutorialSteps.step.text.equals("")) screen.setJustScreen();
 		if (highlights != null && tutorialSteps.showHighlights){
 	    	for (CurrentHighlight highlight:highlights){
+    			CurrentHighlight current = new CurrentHighlight(highlight.xPos * canvas.getWidth(),
+    			highlight.yPos * canvas.getHeight(), highlight.width * canvas.getWidth(),
+				highlight.height * canvas.getHeight(), highlight.arrow, highlight.isChar, highlight.isSquare);
 	    		if (!highlight.isChar) {
-	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(),
-	    					highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight());
+	    			screen.addCurrentHighlight(current);
 	    		} else {
-	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(),
-	    					highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight(), canvas, board);
+	    			screen.addCurrentHighlight(current,canvas, board);
 	    		}
 	    	}
 	    	screen.noScreen();
@@ -208,7 +205,7 @@ public class TutorialGameplayController extends GameplayController{
     	board.draw(canvas);
     	drawCharacters(canvas);
         animations.draw(canvas,board,inGameState);
-		if (highlight_action > 0){
+		if (highlight_action > 0){//must change
 			//make a custom highlight and shift it by highlight_action
 
     		Character selectedChar = selectionMenuController.selected;
@@ -223,13 +220,12 @@ public class TutorialGameplayController extends GameplayController{
     			}
     			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + (highlight_action)*selectedChar.actionBar.getSlotWidth(canvas);
     			float highlightY = selectedChar.actionBar.getY(canvas, count) - selectedChar.actionBar.getBarHeight(canvas);//characters.indexOf(selectedChar));
-    			canvas.drawDownTextArrow(highlightX, highlightY, Color.BLACK, "This is where this move will go off");
+    			if(selectionMenuController.menu != null && selectionMenuController.menu.selectedAction != selectionMenuController.menu.actions.length){
+        			canvas.drawDownTextArrow(highlightX, highlightY, Color.GOLDENROD, "Action executes here");
+    			}
     		}
 			//getY: iterate over characters, and when character matches selected character thats the number to pass to getY
 		}
-
-		// draw the description box
-    	this.drawDescriptionBox(canvas);
 
         textMessages.draw(canvas,board);
         if (prompt != null){
@@ -288,9 +284,7 @@ public class TutorialGameplayController extends GameplayController{
 			return;
 		}
 		if ((InputController.pressedEnter() || InputController.pressedLeftMouse()) && inGameState == InGameState.PAUSED){
-			System.out.println("ENTER 3");
 			if (tutorialSteps.textDone == tutorialSteps.step.text.length() || tutorialSteps.currStep().ignoreTextDone){
-				System.out.println("next step 4");
 				tutorialSteps.nextStep();
 				if (tutorialSteps.currStep() != null) targetPauseTime = tutorialSteps.currStep().timeToPause;
 				pauseTimer = 0;

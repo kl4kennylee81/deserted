@@ -77,24 +77,6 @@ public class TutorialSteps {
 		}
 	}
 
-	public class CurrentHighlight {
-		double xPos;
-		double yPos;
-		double width;
-		double height;
-		String arrow;
-		boolean isChar;
-
-		public CurrentHighlight(double xPos, double yPos, double width, double height, String arrow, boolean isChar) {
-			this.xPos = xPos;
-			this.yPos = yPos;
-			this.width = width;
-			this.height = height;
-			this.arrow = arrow;
-			this.isChar = isChar;
-		}
-	}
-
 	public TutorialSteps() {
 		steps = new ArrayList<Step>();
 		curStep = 0;
@@ -141,8 +123,8 @@ public class TutorialSteps {
 		}
 	}
 
-	public void addHighlight(double xPos, double yPos, double width, double height, String arrow, boolean isChar) {
-		CurrentHighlight ch = new CurrentHighlight(xPos, yPos, width, height, arrow, isChar);
+	public void addHighlight(double xPos, double yPos, double width, double height, String arrow, boolean isChar, boolean isSquare) {
+		CurrentHighlight ch = new CurrentHighlight(xPos, yPos, width, height, arrow, isChar, isSquare);
 		Step latestStep = steps.get(steps.size() - 1);
 
 		if (latestStep.highlights == null) {
@@ -210,6 +192,9 @@ public class TutorialSteps {
 	}
 
 	public List<TutorialAction> getActions() {
+		if(step == null){
+			return new ArrayList<TutorialAction>();
+		}
 		return step.actions;
 	}
 

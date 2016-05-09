@@ -28,10 +28,10 @@
   spaceToContinue: true
   paused: true
   highlightRegions:
-    - xPos: 0.56
-      yPos: 0.24
-      width: 0.1
-      height: 0.2
+    - xPos: 0.59
+      yPos: 0.32
+      width: 0.18
+      height: 0.28
       arrow: down
       isChar: true
 
@@ -40,14 +40,14 @@
   spaceToContinue: true
   paused: true
   highlightRegions:
-    - xPos: 0.43
-      yPos: 0.35
+    - xPos: 0.3
+      yPos: 0.22
       width: 0.09
-      height: 0.23
+      height: 0.24
       arrow: down
       isChar: true
     - xPos: 0.14
-      yPos: 0.88
+      yPos: 0.89
       width: 0.66
       height: 0.1
       arrow: up
@@ -58,7 +58,7 @@
   paused: true
   highlightRegions:
     - xPos: 0.14
-      yPos: 0.88
+      yPos: 0.89
       width: 0.36
       height: 0.1
       arrow: up
@@ -69,25 +69,25 @@
   paused: true
   highlightRegions:
     - xPos: 0.5
-      yPos: 0.88
+      yPos: 0.89
       width: 0.30
       height: 0.1
       arrow: up
 
 6:
-  text: "When the meter reaches the center, the character must select actions."
+  text: "When the meter reaches the center, the character must plan actions."
   dontWriteText: true
   paused: false
   spaceToContinue: false
   highlightRegions:
-    - xPos: 0.43
-      yPos: 0.35
+    - xPos: 0.3
+      yPos: 0.22
       width: 0.09
       height: 0.23
       arrow: down
       isChar: true
     - xPos: 0.14
-      yPos: 0.88
+      yPos: 0.89
       width: 0.66
       height: 0.1
       arrow: up
@@ -111,19 +111,30 @@
 #      arrow: up
 
 7:
-  text: "When the meter reaches the center, the character must select actions."
+  text: "When the meter reaches the center, the character must plan actions."
   dontWriteText: true
   spaceToContinue: true
   paused: true
   ignoreTextDone: true
+  
+8:
+  text: "Slots on the Action Bar determine when actions execute."
+  spaceToContinue: true
+  paused: true
+  highlightRegions:
+    - xPos: 0.5
+      yPos: 0.88
+      width: 0.30
+      height: 0.1
+      arrow: up
 
 #8:
 #  text: ""
 #  spaceToContinue: false
 #  paused: false
 
-8:
-  text: "Select Action (WASD or Arrowkeys to navigate then Enter to select)"
+9:
+  text: "Use WASD or Arrowkeys to navigate. Go to \"Move\" and press Enter."
   spaceToContinue: false
   paused: false
   highlightRegions:
@@ -132,52 +143,79 @@
       width: 0.11
       height: 0.4
       arrow: left
+      isSquare: true
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: UP
+
+10:
+  text: "Use WASD or Arrowkeys to select direction. Select Up and press Enter."
+  spaceToContinue: false
+  paused: false
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: UP
+
+11:
+  text: "Now, go to \"Straight\" and press Enter."
+  spaceToContinue: false
+  paused: false
+  actions:
+    - actionId: 1
+      xPos: 0
+      yPos: 0
+      direction: NONE
+
+12:
+  text: "Press enter again to confirm."
+  spaceToContinue: false
+  paused: false
+  actions:
+    - actionId: 1
+      xPos: 0
+      yPos: 0
+      direction: NONE
+
+13:
+  text: "You have now filled your action slots. Select \"Done\" to lock in your actions."
+  spaceToContinue: false
+  paused: false
+  confirm: true
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: UP
+    - actionId: 1
+      xPos: 0
+      yPos: 0
+      direction: NONE
+
+# 14:
+#   text: "Now that we have selected enough actions to fill all of our action slots
+#   select \"Confirm\" to confirm these choices. \n\n(During actual gameplay you can go back on
+#   any action by pressing Backspace)"
+#   spaceToContinue: false
+#   paused: false
+#   confirm: true
 #   actions:
+#     - actionId: 0
+#       xPos: 0
+#       yPos: 0
+#       direction: RIGHT
 #     - actionId: 1
 #       xPos: 0
 #       yPos: 0
 #       direction: NONE
+#     - actionId: 0
+#       xPos: 0
+#       yPos: 0
+#       direction: UP
 
-9:
-  text: "Press Enter again"
-  spaceToContinue: false
-  paused: false
-
-10:
-  text: "The slots on the Action Bar determine when your actions will execute"
-  spaceToContinue: true
-  paused: false
-  timeToPause: 150
-
-11:
-  text: "Select 'Confirm' after choosing all actions"
-  spaceToContinue: false
-  paused: false
-
-12:
-  text: ""
-  spaceToContinue: false
-  paused: false
-
-13:
-  text: ""
-  spaceToContinue: false
-  paused: false
-
-14:
-  text: ""
-  spaceToContinue: false
-  paused: false
-
-15:
-  text: ""
-  spaceToContinue: false
-  paused: false
-
-16:
-  text: ""
-  spaceToContinue: false
-  paused: false
 
 #
 # 9:
