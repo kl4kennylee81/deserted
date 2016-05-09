@@ -181,7 +181,7 @@
       direction: NONE
 
 13:
-  text: "You have now filled your action slots. Select \"Done\" to lock in your actions."
+  text: "You have now filled your action slots. Select \"Confirm\" to lock in your actions."
   spaceToContinue: false
   paused: false
   confirm: true
