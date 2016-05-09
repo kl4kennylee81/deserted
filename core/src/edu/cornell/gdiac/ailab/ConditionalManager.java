@@ -443,11 +443,11 @@ public class ConditionalManager {
 	public boolean projectileCouldBeBlocked(){
 		for(Character c: enemies){
 			if(c.hasShield()){
-				if(c.castPosition > c.actionBar.castPoint){
+				if(c.castPosition > c.actionBar.getCastPoint()){
 					return true;
 				}
 				else{
-					int framesLeft = (int) ((c.actionBar.castPoint - c.castPosition) / c.getSpeed());
+					int framesLeft = (int) ((c.actionBar.getCastPoint() - c.castPosition) / c.getSpeed());
 					int slots = fastestMoveThatCanHit(c);
 					int framesToCast = (int) ((selected.getInterval() * slots) / selected.getSpeed());
 					if(framesLeft > framesToCast){
@@ -631,7 +631,7 @@ public class ConditionalManager {
 	 */
 	public boolean friendWillEnterSoon(){
 		Character c = findNextFriend();
-		return c != null && c.castPosition < c.actionBar.castPoint && c.castPosition > c.actionBar.castPoint * .75f;
+		return c != null && c.castPosition < c.actionBar.getCastPoint() && c.castPosition > c.actionBar.getCastPoint() * .75f;
 	}
 	
 	
@@ -670,8 +670,8 @@ public class ConditionalManager {
 	 * a certain number of slots. 
 	 */
 	public int framesToAction(Character c, int slots){
-		if(c.castPosition < c.actionBar.castPoint){
-			int waitFrames = (int) ((c.actionBar.castPoint - c.castPosition) / c.getSpeed());
+		if(c.castPosition < c.actionBar.getCastPoint()){
+			int waitFrames = (int) ((c.actionBar.getCastPoint() - c.castPosition) / c.getSpeed());
 			int castFrames = (int) ((c.getInterval() * slots) / c.getSpeed());
 			return waitFrames + castFrames;
 		}
@@ -940,11 +940,11 @@ public class ConditionalManager {
 		for(Character ch: friends){
 			if(ch == selected || !ch.isAI) continue; 
 			int framesLeft;
-			if(ch.castPosition < ch.actionBar.castPoint){
-				framesLeft = (int) ((ch.actionBar.castPoint - ch.castPosition) / ch.getSpeed()); 
+			if(ch.castPosition < ch.actionBar.getCastPoint()){
+				framesLeft = (int) ((ch.actionBar.getCastPoint() - ch.castPosition) / ch.getSpeed()); 
 			}
 			else{
-				int waitFrames = (int) (ch.actionBar.castPoint / ch.getSpeed());
+				int waitFrames = (int) (ch.actionBar.getCastPoint() / ch.getSpeed());
 				int castFrames = (int) ((1f - ch.castPosition) / ch.getSpeed());
 				framesLeft = waitFrames + castFrames;
 			}

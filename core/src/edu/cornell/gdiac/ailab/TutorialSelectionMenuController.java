@@ -32,10 +32,8 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
                     if (clickedChar == selected){
                         clickedChar.isClicked = false;
                         clickedChar = null;
-                        System.out.println("hello world");
                     }
                     else{
-                      System.out.println("entering peeking now 1");
                         menuState = MenuState.PEEKING;
                         this.setTargetedAction();
                         break;

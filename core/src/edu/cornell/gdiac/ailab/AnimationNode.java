@@ -108,7 +108,6 @@ public class AnimationNode implements Comparable{
 	@Override
 	public int compareTo(Object o) {
 		AnimationNode otherNode = (AnimationNode) o;
-		System.out.println("hi");
 		return otherNode.yPos - this.yPos;
 	}
 }

@@ -247,6 +247,7 @@ public class GridBoard {
 		// Draw
 		canvas.drawTile(tileX, tileY, tileMesh, tileW, tileH,color);
 		
+		
 		// for the bottom row draw the tile rim
 		if (y == 0){
 			float rimSx = this.getTileWidth(canvas)/this.bottomRimMesh.getRegionWidth();

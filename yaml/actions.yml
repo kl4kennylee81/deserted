@@ -32,7 +32,11 @@
     numRounds: 0
     magnitude: 0
   description: Instant straight attack
+  persisting_action:
+    numRounds: 10
+    moveSpeed: 0.06
   animationId: 0
+  projectileAnimationId: 2
   icon: models/action_tokens/attack_icon.png
 2:
   name: Diagonal

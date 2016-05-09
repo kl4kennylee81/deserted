@@ -831,6 +831,7 @@ public class GameCanvas {
 		
 //		float translateBack = -this.getWidth()*0.055f;
 //		local.translate(translateBack,0);
+
 	}
 	
 	public void drawTile(float x, float y, TextureRegion mesh, float width, float height, Color tint){	

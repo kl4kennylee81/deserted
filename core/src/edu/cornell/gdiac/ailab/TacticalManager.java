@@ -949,19 +949,19 @@ public class TacticalManager extends ConditionalManager{
 	 * Returns the number of frames until this character could potentially move
 	 */
 	private int minFramesToMove(Character c){
-		if(c.hasShield() && c.castPosition > c.actionBar.castPoint){
-			int waitFrames = (int) ((c.actionBar.castPoint) / c.getSpeed());
+		if(c.hasShield() && c.castPosition > c.actionBar.getCastPoint()){
+			int waitFrames = (int) ((c.actionBar.getCastPoint()) / c.getSpeed());
 			int castFrames = (int) ((1f - c.castPosition) / c.getSpeed());
 			return waitFrames + castFrames;
 		}
 		
-		else if(c.castPosition <= c.actionBar.castPoint){
-			int waitFrames = (int) ((c.actionBar.castPoint - c.castPosition) / c.getSpeed());
+		else if(c.castPosition <= c.actionBar.getCastPoint()){
+			int waitFrames = (int) ((c.actionBar.getCastPoint() - c.castPosition) / c.getSpeed());
 			int castFrames = (int) (c.getInterval() / c.getSpeed());
 			return waitFrames + castFrames;
 		}
 		else{
-			float nextCastPoint = c.actionBar.castPoint;
+			float nextCastPoint = c.actionBar.getCastPoint();
 			while(nextCastPoint < c.castPosition){
 				nextCastPoint += c.getInterval();
 			}
