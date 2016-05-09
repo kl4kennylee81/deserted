@@ -167,7 +167,9 @@ public class SelectionMenuController {
 	protected void checkForClicked(){
 		for (Character c : characters){
 			if (c.isClicked){
-				clickedChar = c;
+				if (!this.choosingTarget){
+					clickedChar = c;
+				}
 				break;
 			}
 		}
@@ -419,11 +421,6 @@ public class SelectionMenuController {
 				if (InputController.pressedLeftMouse()){
 					//System.out.println("PRESSED");
 					confirmedAction();
-					/*if (this.action.pattern == Pattern.MOVE
-							&& this.menu.canAct(this.selected.getActionBar().getUsableNumSlots())){
-						this.updateTargetedAction();
-						this.setChoosingTarget(true);
-					}*/
 				}
 				return;
 			}

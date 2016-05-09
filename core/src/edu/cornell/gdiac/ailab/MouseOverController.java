@@ -92,7 +92,6 @@ public class MouseOverController {
 						if (o.contains(x,y,canvas,board)){
 							menu.trySelectingAction(c.getActionBar(),i);
 							actionChar = c;
-							clickedChar = c;
 							o.currentlyHovered = true;
 							//menu.setChoosingTarget(false);
 							//menu.selectedAction = i;
@@ -115,9 +114,9 @@ public class MouseOverController {
 				}
 				highlighted = c;
 				highlighted.setHovering();
-	
-				if (InputController.leftMouseClicked) {
-					System.out.println("comeon");
+				
+				if (InputController.leftMouseClicked && InputController.mouseJustMoved()
+						&& !currMenu1.getChoosingTarget() && actionChar == null) {
 					clickedChar = c;
 					c.selectionMenu.selectedAction = -1;
 				}
