@@ -189,10 +189,12 @@ public class SelectionMenu {
 		selectedY = y;
 	}
 	
-	public void trySelectingAction(CharActionBar actionBar, int i){
+	public void trySelectingAction(CharActionBar actionBar, int i, boolean isSelecting){
 		int usableNumSlots = actionBar.getUsableNumSlots();
 		if (i == actions.length){
-			selectedAction = i;
+			if (isSelecting){
+				selectedAction = i;
+			}
 		}
 		else if (canDoAction(actions[i], usableNumSlots)){
 			setChoosingTarget(false);
@@ -239,6 +241,32 @@ public class SelectionMenu {
 	/**
 	 * Change selected action to the next available either up or down
 	 */
+	public boolean changeSelected(boolean up,int numSlots, boolean isSelecting){
+		int modVar = isSelecting ? actions.length+1 : actions.length;
+		if (up){
+			for (int i = 0; i <= actions.length; i++){
+				selectedAction += 1;
+				selectedAction %= modVar;
+				if (canDoAction(selectedAction,numSlots)){
+					if (this.getSelectedAction() != null) TutorialGameplayController.highlight_action = this.getSelectedAction().cost;
+					return true;
+				}
+			}
+		} else {
+			for (int i = 0; i <= actions.length; i++){
+				selectedAction -= 1;
+				if (selectedAction < 0){
+					selectedAction += modVar;
+				}
+				if (canDoAction(selectedAction,numSlots)){
+					if (this.getSelectedAction() != null) TutorialGameplayController.highlight_action = this.getSelectedAction().cost;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public boolean changeSelected(boolean up,int numSlots){
 		if (up){
 			for (int i = 0; i <= actions.length; i++){
@@ -314,7 +342,7 @@ public class SelectionMenu {
 	
 	//TODO: update for dazed
 	public void draw(GameCanvas canvas,CharActionBar actionBar,int count, boolean charIsClicked, float centerX, float centerY,
-			float radius, boolean leftside, boolean writeDescription){
+			float radius, boolean leftside, boolean writeDescription, boolean isSelecting){
 		int totalNumSlots = actionBar.getTotalNumSlots();
 		int usableNumSlots = actionBar.getUsableNumSlots();
 		
@@ -356,35 +384,38 @@ public class SelectionMenu {
 				y /= canvas.height;
 				
 				option.setBounds(x-RELATIVE_ICON_LENGTH/2, y-RELATIVE_ICON_LENGTH/2, RELATIVE_ICON_LENGTH, RELATIVE_ICON_LENGTH);
-				if (charIsClicked){
+				/*if (charIsClicked){
 					option.setImageColor(Color.WHITE);
 				} else {
 					option.setImageColor(getActionColor(usableNumSlots,action));
-				}
+				}*/
+				option.setImageColor(getActionColor(usableNumSlots,action));
 				option.draw(canvas);
 			}
 		}
 		
-		Option confirm = options[actions.length];
-		float x = confirm.getX(canvas);
-		float y = confirm.getY(canvas);
-		float width = confirm.getWidth(canvas);
-		float height = confirm.getHeight(canvas);
-		canvas.drawBox(x, y, width, height, Color.BLACK);
-		
-		if (confirm.currentlyHovered || selectedAction == actions.length){
-			confirm.setImage(CONFIRM_BUTTON_PRESSED);
-		} else {
-			confirm.setImage(CONFIRM_BUTTON_UNPRESSED);
+		if (isSelecting){
+			Option confirm = options[actions.length];
+			float x = confirm.getX(canvas);
+			float y = confirm.getY(canvas);
+			float width = confirm.getWidth(canvas);
+			float height = confirm.getHeight(canvas);
+			canvas.drawBox(x, y, width, height, Color.BLACK);
+			
+			if (confirm.currentlyHovered || selectedAction == actions.length){
+				confirm.setImage(CONFIRM_BUTTON_PRESSED);
+			} else {
+				confirm.setImage(CONFIRM_BUTTON_UNPRESSED);
+			}
+			
+			if (canAct(usableNumSlots)){
+				confirm.setImageColor(Color.WHITE);
+			} else {
+				confirm.setImageColor(Color.WHITE.cpy().lerp(Color.GOLD,lerpVal));
+			}
+			
+			confirm.draw(canvas);
 		}
-		
-		if (canAct(usableNumSlots)){
-			confirm.setImageColor(Color.WHITE);
-		} else {
-			confirm.setImageColor(Color.WHITE.cpy().lerp(Color.GOLD,lerpVal));
-		}
-		
-		confirm.draw(canvas);
 		
 		/*
 		 * 

@@ -217,10 +217,10 @@ public class SelectionMenuController {
 		int numSlots = clickedChar.getActionBar().getUsableNumSlots();
 		if (InputController.pressedUp() && !InputController.pressedDown()){
 			//Actions go from up down, so we need to flip
-			menu.changeSelected(false,numSlots);
+			menu.changeSelected(false,numSlots,clickedChar.isSelecting);
 			this.setTargetedAction();
 		} else if (InputController.pressedDown() && !InputController.pressedUp()){
-			menu.changeSelected(true,numSlots);
+			menu.changeSelected(true,numSlots,clickedChar.isSelecting);
 			this.setTargetedAction();
 		}
 	}

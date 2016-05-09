@@ -90,13 +90,13 @@ public class MouseOverController {
 			
 			if (InputController.mouseJustMoved()){
 				
-				if (!menu.getChoosingTarget() && (c.isSelecting || c.isClicked)){
+				if (!menu.getChoosingTarget() && (c.isClicked || (c.isSelecting && characters.clickedCharExists() == null))){
 					Option[] options = menu.getOptions();
 					for (int i =0;i<options.length;i++){
 						Option o = options[i];
 						o.currentlyHovered = false;
 						if (o.contains(x,y,canvas,board)){
-							menu.trySelectingAction(c.getActionBar(),i);
+							menu.trySelectingAction(c.getActionBar(),i,c.isSelecting);
 							actionChar = c;
 							o.currentlyHovered = true;
 							//menu.setChoosingTarget(false);

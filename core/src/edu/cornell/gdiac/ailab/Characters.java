@@ -58,7 +58,7 @@ public class Characters extends LinkedList<Character>{
         }
 	}
 	
-	private Character clickedCharExists() {
+	public Character clickedCharExists() {
 		for (Character c : this){
 			if (c.isClicked){
 				return c;
