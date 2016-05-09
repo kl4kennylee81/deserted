@@ -61,6 +61,7 @@ public class Action implements GUIElement {
 		this.description = description;
 		this.isBuff = false;
 		this.barIcon = icon;
+		this.menuIcon = icon;
 	}
 	
 	public Action(String name, int cost, int damage, int range, int size, 

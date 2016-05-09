@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 
 public class Constants {
 	
-	public static final String COMPLETION_TEXTURE = "images/wat.jpg";
+	public static final String COMPLETION_TEXTURE = "images/completed.png";
 	
 	public static final String TILE_TEXTURE = "models/Tile.png";
 	

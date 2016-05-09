@@ -141,34 +141,22 @@ levels:
     beaten: true
     boss: false
   6:
-    levelName: tutorial7
+    levelName: Level1
     beaten: true
     boss: false
   7:
-    levelName: tutorial8
-    beaten: false
-    boss: false
-  8:
-    levelName: tutorial9
-    beaten: false
-    boss: false
-  9:
-    levelName: tutorial10
-    beaten: false
-    boss: false
-  10:
-    levelName: Level1
-    beaten: false
-    boss: false
-  11:
     levelName: Level2
     beaten: false
     boss: false
-  12:
+  8:
     levelName: Level3
     beaten: false
     boss: false
-  13:
+  9:
+    levelName: Level4
+    beaten: false
+    boss: false
+  10:
     levelName: pvp
     beaten: false
     boss: false

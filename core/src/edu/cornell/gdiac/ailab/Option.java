@@ -29,6 +29,8 @@ public class Option implements GUIElement{
 	
 	boolean sameWidthHeight;
 	
+	boolean currentlyHovered;
+	
 	public void setImage(Texture t){
 		image = t;
 	}
@@ -105,7 +107,7 @@ public class Option implements GUIElement{
 		
 		if (image != null){
 			Color imageColor = this.getColorImages();
-			canvas.drawTexture(image, x, y, width,height, Color.WHITE);
+			//canvas.drawTexture(image, x, y, width,height, Color.WHITE);
 			canvas.drawTexture(image, x, y, width,height, imageColor);
 		}
 	}
@@ -120,7 +122,7 @@ public class Option implements GUIElement{
 	
 	public Color getColorImages(){
 		if (this.isSelected){
-			return Color.BLACK.cpy().mul(1f, 1f, 1f, 0.5f);
+			return Color.WHITE.cpy().add(Color.BLACK);
 		}
 		else if (this.imageColor != null) {
 			return this.imageColor.cpy();
@@ -134,8 +136,10 @@ public class Option implements GUIElement{
 		if (this.isSelected){
 			return Color.BLACK.cpy();
 		}
-		else{
+		else if (this.color != null) {
 			return this.color.cpy();
+		} else {
+			return Color.WHITE.cpy();
 		}
 	}
 

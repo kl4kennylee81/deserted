@@ -74,7 +74,7 @@ public class MouseOverController {
 		for(Character c: characters){
 			SelectionMenu menu = c.getSelectionMenu();
 			if (InputController.mouseJustMoved()){
-				for (Action a: menu.getActions()){
+				/*for (Action a: menu.getActions()){
 					int usableNumSlots = c.getActionBar().getUsableNumSlots();
 					boolean actionInvalid = menu.isActionInvalid(usableNumSlots, a);
 					if (a.contains(x,y,canvas,board) && !actionInvalid){
@@ -82,12 +82,30 @@ public class MouseOverController {
 						currMenu = currMenu1;
 						actionChar = c;
 					}
+				}*/
+				
+				if (!menu.getChoosingTarget() && (c.isSelecting || c.isClicked)){
+					Option[] options = menu.getOptions();
+					for (int i =0;i<options.length;i++){
+						Option o = options[i];
+						o.currentlyHovered = false;
+						if (o.contains(x,y,canvas,board)){
+							menu.trySelectingAction(c.getActionBar(),i);
+							actionChar = c;
+							clickedChar = c;
+							o.currentlyHovered = true;
+							//menu.setChoosingTarget(false);
+							//menu.selectedAction = i;
+						}
+					}
 				}
 				
-				if (c.getSelectionMenu().confirmContain(InputController.getMouseX(), InputController.getMouseY())){
+				
+				/*if (c.getSelectionMenu().confirmContain(InputController.getMouseX(), InputController.getMouseY())){
+					
 					menu.setChoosingTarget(false);
 					menu.selectedAction=menu.getActions().length;
-				}
+				}*/
 			}
 			
 			if (c.contains(x,y,canvas,board)){
@@ -99,6 +117,7 @@ public class MouseOverController {
 
 				if (InputController.leftMouseClicked) {
 					clickedChar = c;
+					c.selectionMenu.selectedAction = -1;
 				}
 			}
 		}
@@ -109,6 +128,9 @@ public class MouseOverController {
 				c.isClicked = false;
 			}	
 			clickedChar.isClicked = true;
+			if (!clickedChar.selectionMenu.equals(currMenu1) && currMenu1 != null){
+				currMenu1.selectedAction = -1;
+			}
 		}
 		
 		if (hAction != null 
