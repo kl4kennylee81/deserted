@@ -136,8 +136,8 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
                     System.out.println("wrong attack");
                     TutorialSteps.setWarning("Please follow the instructions!", false);
                 }
-            } else {       	
-                if (correctActions()||!this.getMenu().canAct(this.getMenu().takenSlots)){
+            } else {
+                if (correctActions()||!this.getMenu().canAct(numSlots - this.getMenu().takenSlots)){
     				selected.setSelecting(false);
     				selected.setQueuedActions(menu.getQueuedActions());
     				selected = null;
@@ -306,6 +306,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
         				return false;
         			}
         		}
+        		System.out.println("we went into here line 309");
         		return true;
     }
 }
