@@ -116,7 +116,7 @@
   spaceToContinue: true
   paused: true
   ignoreTextDone: true
-  
+
 8:
   text: "Slots on the Action Bar determine when actions execute."
   spaceToContinue: true
@@ -139,10 +139,10 @@
   paused: false
   highlightRegions:
     - xPos: 0.
-      yPos: 0.15
+      yPos: 0.28
       width: 0.11
-      height: 0.4
-      arrow: left
+      height: 0.27
+      arrow: none
       isSquare: true
   actions:
     - actionId: 0
