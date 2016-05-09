@@ -631,7 +631,7 @@
   
 30:
   name: Diagonal Bolt
-  cost: 3
+  cost: 2
   damage: 2
   range: 10
   size: 1
