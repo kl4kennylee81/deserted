@@ -9,12 +9,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
-
+import edu.cornell.gdiac.ailab.GameSaveState.CharacterData;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -22,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import edu.cornell.gdiac.ailab.GameSaveState.LevelData;
 
 public class GameSaveStateController {
+	private static  GameSaveStateController instance = null;
 	private static File ROOT;
 	private Yaml yaml;
 	private GameSaveState gameSaveState;
@@ -38,6 +40,18 @@ public class GameSaveStateController {
 		
 		gameSaveState = new GameSaveState();
 		loadGameSaveState();
+	}
+	
+	public static GameSaveStateController getInstance(){
+		if (instance == null) {
+			try {
+				instance = new GameSaveStateController();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return instance;
 	}
 	
 	public List<LevelData> getLevelData(){
@@ -95,6 +109,24 @@ public class GameSaveStateController {
 	public void beatLevel(String levelName){
 		gameSaveState.beatLevel(levelName);
 		saveGameSaveState();
+	}
+	
+	public int getLevelSP(String levelName){
+		LevelData ld = gameSaveState.getLevelData(levelName);
+		if (!ld.beaten){
+			return gameSaveState.getLevelData(levelName).gainedSP;
+		} else {
+			return 0;
+		}
+	}
+	
+	public List<CharacterData> getLevelUnlockedChars(String levelName){
+		LevelData ld = gameSaveState.getLevelData(levelName);
+		if (!ld.beaten){
+			return gameSaveState.getLevelUnlockedChars(levelName);
+		} else {
+			return new ArrayList<CharacterData>();
+		}
 	}
 	
 	/**Code taken from http://stackoverflow.com/questions/5527744/java-jar-writing-to-a-file 

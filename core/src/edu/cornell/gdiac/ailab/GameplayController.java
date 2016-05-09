@@ -250,6 +250,9 @@ public class GameplayController {
 		if (this.gameOver() && this.rightsideDead() && inGameState == InGameState.WARNING){
     		//canvas.drawCenteredText("You have Won", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
     		CompletionScreen cs = CompletionScreen.getInstance();
+    		GameSaveStateController gss = GameSaveStateController.getInstance();
+    		cs.skill_point = gss.getLevelSP(levelName);
+    		cs.characters_unlocked = gss.getLevelUnlockedChars(levelName);
     		cs.setIsWin(true);
     		cs.draw(canvas);
     	}

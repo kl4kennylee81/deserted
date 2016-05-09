@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -374,6 +375,22 @@ public class GameSaveState {
 	public ArrayList<Integer> getActionIds(int characterId){
 		CharacterData cd = getCharacterData(characterId);
 		return cd == null ? null : cd.currentActions;
+	}
+	
+	public List<CharacterData> getLevelUnlockedChars(String levelName){
+		List<CharacterData> unlockChars = new ArrayList<CharacterData>();
+		LevelData ld = getLevelData(levelName);
+		if (ld.unlockableCharacter != null){
+			unlockChars.add(getCharacterData(ld.unlockableCharacter));
+		}
+		try {
+			ObjectLoader.getInstance().getCharacterInfo(unlockChars);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return unlockChars;
+		
 	}
 	
 }
