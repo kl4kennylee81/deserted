@@ -35,6 +35,7 @@ public class TutorialSteps {
 	static int warningTime;
 	Color levelColor;
 	boolean stepOnSelection;
+	boolean disableBack;
 
 	/** Individual Step */
 	class Step {
@@ -82,6 +83,7 @@ public class TutorialSteps {
 		curStep = 0;
 		finishGame = false;
 		stepOnSelection = false;
+		disableBack = false;
 		nextLevel = "";
 		levelName = "";
 		rightText = "";
@@ -284,6 +286,11 @@ public class TutorialSteps {
 
 	public void setStepOnSelection(boolean stepOnSelection) {
 		this.stepOnSelection = stepOnSelection;
+		
+	}
+
+	public void setDisableBack(Boolean disableBack) {
+		this.disableBack = disableBack;
 		
 	}
 

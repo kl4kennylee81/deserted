@@ -152,6 +152,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 //        		System.out.println("highlight action is set to " + TutorialGameplayController.highlight_action);
 //        	}
         } else if (InputController.pressedBack()){
+        	if (tutorialSteps.disableBack) return;
             if (menu.removeLast() != null){
                 if (tutorialSteps.stepOnSelection) tutorialSteps.prevStep();
             }

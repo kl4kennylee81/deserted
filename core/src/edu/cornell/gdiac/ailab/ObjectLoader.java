@@ -659,6 +659,11 @@ public class ObjectLoader {
 				ts.setStepOnSelection(stepOnSelection);
 			}
 			
+			Boolean disableBack = (Boolean) step.get("disableBack");
+			if (disableBack != null){
+				ts.setDisableBack(disableBack);
+			}
+			
 			String nextLevel = (String) step.get("nextLevel");
 			if (nextLevel != null){
 				ts.setNextLevel(nextLevel);

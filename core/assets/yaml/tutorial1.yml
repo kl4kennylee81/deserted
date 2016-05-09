@@ -9,6 +9,7 @@
   levelName: tutorial1
   rightText: "Well Done!"
   stepOnSelection: true
+  disableBack: true
 
 
 1:
