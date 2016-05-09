@@ -959,7 +959,7 @@ public class GameCanvas {
 		spriteBatch.draw(downArrow, x-37, y+10, 75, 75);
 		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
-		displayFont.draw(spriteBatch, text, x+60, y+60, getWidth()-(x+60), Align.left, true);
+		displayFont.draw(spriteBatch, text, x+25, y+70, getWidth()-(x+60), Align.left, true);
 		
 	}
 	
