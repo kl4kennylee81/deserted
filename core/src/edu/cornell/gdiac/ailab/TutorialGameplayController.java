@@ -223,7 +223,7 @@ public class TutorialGameplayController extends GameplayController{
     			}
     			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + (highlight_action)*selectedChar.actionBar.getSlotWidth(canvas);
     			float highlightY = selectedChar.actionBar.getY(canvas, count) - selectedChar.actionBar.getBarHeight(canvas);//characters.indexOf(selectedChar));
-    			canvas.drawDownTextArrow(highlightX, highlightY, Color.BLACK, "Action executes here");
+    			canvas.drawDownTextArrow(highlightX, highlightY, Color.GOLDENROD, "Action executes here");
     		}
 			//getY: iterate over characters, and when character matches selected character thats the number to pass to getY
 		}
