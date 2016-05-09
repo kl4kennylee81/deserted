@@ -309,9 +309,9 @@ public class SelectionMenu {
 			offset_y += spacing_h + g.height/2;
 			if (selectedAction == actions.length){
 				selectedPointerOffset = offset_y;
-				g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.CORAL);
+				g = canvas.drawBoardWrapText("Done", text_x, text_y - offset_y, Color.CORAL);
 			} else {
-				g = canvas.drawBoardWrapText("Confirm", text_x, text_y - offset_y, Color.GREEN);
+				g = canvas.drawBoardWrapText("Done", text_x, text_y - offset_y, Color.GREEN);
 			}
 		}
 		

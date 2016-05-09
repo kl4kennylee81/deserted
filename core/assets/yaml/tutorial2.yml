@@ -41,7 +41,7 @@
       arrow: up
   
 4:
-  text: "If you get hit while charging an attack, your attack gets INTERRUPTED!"
+  text: "If you get hit while charging an attack, your attack gets CANCELLED!"
   paused: true
   spaceToContinue: false
   note:
