@@ -356,7 +356,11 @@ public class SelectionMenu {
 				y /= canvas.height;
 				
 				option.setBounds(x-RELATIVE_ICON_LENGTH/2, y-RELATIVE_ICON_LENGTH/2, RELATIVE_ICON_LENGTH, RELATIVE_ICON_LENGTH);
-				option.setImageColor(getActionColor(usableNumSlots,action));
+				if (charIsClicked){
+					option.setImageColor(Color.WHITE);
+				} else {
+					option.setImageColor(getActionColor(usableNumSlots,action));
+				}
 				option.draw(canvas);
 			}
 		}
