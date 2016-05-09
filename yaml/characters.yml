@@ -19,7 +19,7 @@
   health: 7
   maxHealth: 7
   hexColor: CD2626FF
-  speed: 4.5
+  speed: 3.5
   castSpeed: 7.5
   slots: 4
   availableActions:
@@ -158,9 +158,9 @@
   availableActions:
   - 0
   - 4
-  texture: models/CHARA_5.png
-  icon: models/bunmage_icon.png
-  animationId: 108
+  texture: models/CHARA_3.png
+  icon: models/sulus_icon.png
+  animationId: 101
 90:
   name: Tutorial_part_1
   health: 2
@@ -168,13 +168,13 @@
   hexColor: 3299FFFF
   speed: 3.0
   castSpeed: 7.0
-  slots: 3
+  slots: 4
   availableActions:
   - 0
   - 4
-  texture: models/CHARA_5.png
-  icon: models/bunmage_icon.png
-  animationId: 108
+  texture: models/CHARA_3.png
+  icon: models/sulus_icon.png
+  animationId: 101
 91:
   name: Tutorial1_straight
   health: 2
@@ -259,9 +259,9 @@
   - 0
   - 4
   - 9
-  texture: models/CHARA_4.png
-  icon: models/bunmage_icon.png
-  animationId: 108
+  texture: models/CHARA_3.png
+  icon: models/sulus_icon.png
+  animationId: 101
 96:
   name: Tutorial_part_3
   health: 4
@@ -274,10 +274,9 @@
   - 0
   - 4
   - 9
-  - 5
-  texture: models/CHARA_4.png
-  icon: models/bunmage_icon.png
-  animationId: 108
+  texture: models/CHARA_3.png
+  icon: models/sulus_icon.png
+  animationId: 101
 97:
   name: Tutorial_Shield
   health: 2
@@ -318,9 +317,9 @@
   - 0
   - 3
   - 4
-  texture: models/CHARA_5.png
-  icon: models/bunmage_icon.png
-  animationId: 108
+  texture: models/CHARA_3.png
+  icon: models/sulus_icon.png
+  animationId: 101
 100:
   name: Tutorial_Straight_Shield
   health: 4
@@ -361,9 +360,9 @@
   availableActions:
   - 0
   - 7
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_icon.png
-  animationId: 105
+  texture: models/CHARA_3.png
+  icon: models/bunmage_icon.png
+  animationId: 108
 103:
   name: Tutorial6_straight
   health: 2
@@ -389,9 +388,9 @@
   availableActions:
   - 0
   - 4
-  texture: models/CHARA_5.png
-  icon: models/bunmage_icon.png
-  animationId: 108
+  texture: models/CHARA_3.png
+  icon: models/sulus_icon.png
+  animationId: 101
 105:
   name: Tutorial7_main
   health: 10
