@@ -140,22 +140,6 @@ levels:
     levelName: tutorial6
     beaten: false
     boss: false
-  6:
-    levelName: tutorial7
-    beaten: false
-    boss: false
-  7:
-    levelName: tutorial8
-    beaten: false
-    boss: false
-  8:
-    levelName: tutorial9
-    beaten: false
-    boss: false
-  9:
-    levelName: tutorial10
-    beaten: false
-    boss: false
   10:
     levelName: Level1
     beaten: false
