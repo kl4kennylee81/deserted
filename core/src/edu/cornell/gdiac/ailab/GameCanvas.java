@@ -818,7 +818,7 @@ public class GameCanvas {
 		float xTranslate = y*shearX;
 		local.translate(xTranslate,0);
 		
-		float translateBack = -this.getWidth()*0.055f;
+		float translateBack = -this.getWidth()*0.061f;
 		local.translate(translateBack,0);
 	}
 	
