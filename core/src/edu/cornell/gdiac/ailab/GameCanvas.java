@@ -995,8 +995,9 @@ public class GameCanvas {
 		}
 		float width = ((float)getWidth())/1.3f;
 		float x = getWidth()/2-width/2;
-		float y = ((float)getHeight())/1.7f;
-		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, alignment, true);
+		float y = ((float)getHeight())/2f;
+//		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, alignment, true);
+		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, Align.center, true);
 		setFont(currFont);
 		return g;
 	}
