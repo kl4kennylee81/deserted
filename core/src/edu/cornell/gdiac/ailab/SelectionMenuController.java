@@ -227,7 +227,7 @@ public class SelectionMenuController {
 
 	/** returns if the action can toggle between meaningful options
 	 *  checking if on the edges thus cannot effectively toggle */
-	private boolean isActionToggleable(){
+	protected boolean isActionToggleable(){
 		if (action == null){
 			return false;
 		}

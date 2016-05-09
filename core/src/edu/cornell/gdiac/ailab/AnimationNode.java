@@ -3,7 +3,7 @@ package edu.cornell.gdiac.ailab;
 import edu.cornell.gdiac.ailab.Animation.Segment;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 
-public class AnimationNode {
+public class AnimationNode implements Comparable{
 	/** Animation to draw */
 	Animation animation;
 	/** Current frame information */
@@ -103,5 +103,12 @@ public class AnimationNode {
 		animation.filmStrip.setFrame(s.startingIndex+curFrameIndex);
 		return animation.filmStrip;
 		
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		AnimationNode otherNode = (AnimationNode) o;
+		System.out.println("hi");
+		return otherNode.yPos - this.yPos;
 	}
 }

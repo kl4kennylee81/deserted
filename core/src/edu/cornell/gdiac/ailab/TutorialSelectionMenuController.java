@@ -108,15 +108,14 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 
     private void updateNotChoosingTarget(){
       boolean mouseCondition = InputController.pressedLeftMouse() &&
-  				((action!= null && action.contains(InputController.getMouseX(), InputController.getMouseY(), InputController.getCanvas(), board))
-  						||this.menu.confirmContain(InputController.getMouseX(), InputController.getMouseY()));
+				menu.contains(InputController.getMouseX(),InputController.getMouseY(), InputController.getCanvas(), board);
         int numSlots = selected.getActionBar().getUsableNumSlots();
         if ((InputController.pressedEnter() || mouseCondition)){
-          if (this.menu.confirmContain(InputController.getMouseX(), InputController.getMouseY())){
-            action = null;
-          }
-            if (action != null && menu.canAct(numSlots)){
-                if (correctAction()){
+			if (this.menu.confirmContain(InputController.getMouseX(), InputController.getMouseY())){
+				action = null;
+			}
+           if (action != null && menu.canAct(numSlots)){
+        	   if (correctAction()){
                     updateTargetedAction();
                     prompt = "Choose a Target";
                     if (tutorialSteps.stepOnSelection) {
@@ -125,16 +124,26 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
                     }
                     if (tutorialSteps.currStep() != null) TutorialGameplayController.targetPauseTime = tutorialSteps.currStep().timeToPause;
                     TutorialGameplayController.pauseTimer = 0;
+                    
+    				// allows for bypassing the targetting phase
+    				if (action.getNeedsToggle() && this.isActionToggleable()){
+    					updateTargetedAction();
+    					prompt = "Choose a Target";
+    				} else {
+    					float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
+    					menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
+    					menu.resetPointer(numSlots);
+    				}
                 } else {
                     System.out.println("wrong attack");
-                    tutorialSteps.setWarning("Please follow the instructions!", false);
+                    TutorialSteps.setWarning("Please follow the instructions!", false);
                 }
-            } else {
-                if (correctActions()){
-                    selected.setSelecting(false);
-                    selected.setQueuedActions(menu.getQueuedActions());
-                    selected = null;
-                    resetNeedsShadow();
+            } else {       	
+                if (correctActions()||!this.getMenu().canAct(this.getMenu().takenSlots)){
+    				selected.setSelecting(false);
+    				selected.setQueuedActions(menu.getQueuedActions());
+    				selected = null;
+    				resetNeedsShadow();
                     if (tutorialSteps.stepOnSelection && tutorialSteps.currStep() != null) {
                         if (tutorialSteps.currStep() != null) prevText = tutorialSteps.currStep().text;
                         tutorialSteps.nextStep();
@@ -144,7 +153,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
                     TutorialGameplayController.pauseTimer = 0;
                 } else {
                     System.out.println("can't confirm");
-                    tutorialSteps.setWarning("You can\'t confirm that action just yet!", false);
+                    TutorialSteps.setWarning("You can\'t confirm that action just yet!", false);
                 }
             }
 //            if (selected != null) {

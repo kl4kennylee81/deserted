@@ -145,6 +145,7 @@ public class GameplayController {
     				inGameState = InGameState.NORMAL;
     			}
     		}
+    		this.animations.sort();
     		break;
     	case WARNING:
     		
@@ -191,14 +192,6 @@ public class GameplayController {
     	}
     }
     
-    public void drawDescriptionBox(GameCanvas canvas){
-    	float x_pos = Constants.DESCRIPTION_BOX_RELATIVE_X_POS*canvas.getWidth();
-    	float y_pos = Constants.DESCRIPTION_BOX_RELATIVE_Y_POS*canvas.getHeight();
-    	float box_width = Constants.DESCRIPTION_BOX_RELATIVE_WIDTH*canvas.getWidth();
-    	float box_height = Constants.DESCRIPTION_BOX_RELATIVE_HEIGHT*canvas.getHeight();
-    	canvas.drawTexture(DESCRIPTION_BOX_TEXTURE, x_pos, y_pos, box_width, box_height, Color.WHITE);
-    }
-    
     public void drawPlay(GameCanvas canvas){
     	// not sure why this is needed
 //    	if (this.isTutorial && inGameState == InGameState.WARNING) {
@@ -242,9 +235,6 @@ public class GameplayController {
 		}
         screen.draw(canvas);
     	board.draw(canvas);
-    	
-    	// TODO draw the canvas kind of hacky now 
-    	this.drawDescriptionBox(canvas);
     	
     	drawCharacters(canvas);
         animations.draw(canvas,board,inGameState);

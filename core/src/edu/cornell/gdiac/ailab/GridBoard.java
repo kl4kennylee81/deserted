@@ -36,15 +36,15 @@ public class GridBoard {
 	private static final Color BROKEN_COLOR = Color.BLACK.cpy();
 	
 	
-	public static final float BOARD_WIDTH = 0.525f;
+	public static final float BOARD_WIDTH = 0.6f;
 	
-	public static final float BOARD_HEIGHT = 0.3f;
+	public static final float BOARD_HEIGHT = 0.35f;
 
 	public static final float BOARD_OFFSET_X = (1-BOARD_WIDTH - BOARD_HEIGHT*Constants.TILE_SHEAR)/2;
 	
 	public static final float EXTRA_OFFSET = 0.02f;
 	
-	public static final float BOARD_OFFSET_Y = 0.165f;
+	public static final float BOARD_OFFSET_Y = 0.02f;
 	
 	public HashMap<String,Effect> getTileEffects(){
 		return this.tileEffects;
