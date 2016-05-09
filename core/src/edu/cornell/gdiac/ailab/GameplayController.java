@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.ailab.TextMessage.Message;
+import edu.cornell.gdiac.ailab.CurrentHighlight;
 
 public class GameplayController {
 	/** Subcontroller for actions (CONTROLLER CLASS) */
@@ -234,8 +235,8 @@ public class GameplayController {
     			}
     			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + selectedChar.actionBar.getSlotWidth(canvas);
     			float highlightY = selectedChar.actionBar.getY(canvas, count) - selectedChar.actionBar.getBarHeight(canvas);//characters.indexOf(selectedChar));
-    			screen.addCurrentHighlight(highlightX, highlightY, 
-    					0.01f*canvas.getWidth(), 0.1f*canvas.getHeight());
+    			CurrentHighlight current = new CurrentHighlight(highlightX, highlightY, 0.01f*canvas.getWidth(), 0.1f*canvas.getHeight(), "down", true, false);
+    			screen.addCurrentHighlight(current);
     		}
 			//getY: iterate over characters, and when character matches selected character thats the number to pass to getY
 		}

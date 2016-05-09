@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
-import edu.cornell.gdiac.ailab.TutorialSteps.CurrentHighlight;
+import edu.cornell.gdiac.ailab.CurrentHighlight;
 
 public class TutorialGameplayController extends GameplayController{
 	TutorialSteps tutorialSteps;
@@ -189,13 +189,15 @@ public class TutorialGameplayController extends GameplayController{
 		List<CurrentHighlight> highlights = tutorialSteps.getHighlights();
 		if(tutorialSteps.step == null || !tutorialSteps.step.text.equals("")) screen.setJustScreen();
 		if (highlights != null && tutorialSteps.showHighlights){
+			System.out.println("yo yo yo");
 	    	for (CurrentHighlight highlight:highlights){
+    			CurrentHighlight current = new CurrentHighlight(highlight.xPos * canvas.getWidth(),
+    			highlight.yPos * canvas.getHeight(), highlight.width * canvas.getWidth(),
+				highlight.height * canvas.getHeight(), highlight.arrow, highlight.isChar, highlight.isSquare);
 	    		if (!highlight.isChar) {
-	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(),
-	    					highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight());
+	    			screen.addCurrentHighlight(current);
 	    		} else {
-	    			screen.addCurrentHighlight(highlight.xPos*canvas.getWidth(), highlight.yPos*canvas.getHeight(),
-	    					highlight.width*canvas.getWidth(), highlight.height*canvas.getHeight(), canvas, board);
+	    			screen.addCurrentHighlight(current,canvas, board);
 	    		}
 	    	}
 	    	screen.noScreen();

@@ -7,13 +7,18 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import edu.cornell.gdiac.ailab.CurrentHighlight;
+import edu.cornell.gdiac.ailab.TutorialSteps.TutorialAction;
+
 public class HighlightScreen {
 	
 	Texture screen;
 	/** image for the highlight screen  */
 	private static final String HIGHLIGHT_TEXTURE = "images/white.png";
+	private static final String HIGHLIGHT_CIRCLE_TEXTURE = "images/white_circle_2.png";
+	private static final String HIGHLIGHT_RECTANGLE_TEXTURE = "images/rounded_rectangle.png";
 	private static Color color;
-	private static List<TextureRegion> currentHighlights;
+	private static List<CurrentHighlight> currentHighlights;
 	private static Color highlightColor;
 	private static boolean justScreen;
 	private static float SCREEN_OPACITY = 0.55f;
@@ -22,14 +27,18 @@ public class HighlightScreen {
 	int maxY;
 	int minY;
 	ArrayList<Integer> x_s;
+	Texture highlight_circle;
+	Texture highlight_rect;
 	
 	public HighlightScreen(){
 		screen = new Texture(HIGHLIGHT_TEXTURE);
+		highlight_circle = new Texture(HIGHLIGHT_CIRCLE_TEXTURE);
+		highlight_rect = new Texture(HIGHLIGHT_RECTANGLE_TEXTURE);
 		color = Color.BLACK.cpy();
 		color.mul(1,1,1,SCREEN_OPACITY);
 		highlightColor = new Color(255f/255f, 221f/255f, 153f/255f, 1f);
 		highlightColor.set(highlightColor.r, highlightColor.g, highlightColor.b, 0.4f);
-		currentHighlights = new ArrayList<TextureRegion>();
+		currentHighlights = new ArrayList<CurrentHighlight>();
 		lerpVal = 0f;
 		increasing = true;
 		maxY = Integer.MAX_VALUE;
@@ -67,23 +76,25 @@ public class HighlightScreen {
 		Color toColor = Color.ORANGE.cpy();
 		toColor = toColor.lerp(Color.WHITE.cpy(), lerpVal);
 		canvas.drawScreen(0, 0, screen, canvas.getWidth(), canvas.getHeight(), color);
-		for (TextureRegion currentHighlight:currentHighlights){
-			canvas.draw(currentHighlight, toColor, currentHighlight.getRegionX(), 
-					currentHighlight.getRegionY(), currentHighlight.getRegionWidth(), 
-					currentHighlight.getRegionHeight());	
+		for (CurrentHighlight currentHighlight:currentHighlights){
+			canvas.draw(currentHighlight.isSquare? highlight_rect : highlight_circle, toColor, (float)currentHighlight.xPos, 
+					(float)currentHighlight.yPos, (float)currentHighlight.width, 
+					(float)currentHighlight.height);
+			
 		}
 	}
 	
-	public void addCurrentHighlight(double x, double y, double x_width, double y_width){
-		currentHighlights.add(new TextureRegion(screen,(int)x,(int)y,(int)x_width,(int)y_width));
+	public void addCurrentHighlight(CurrentHighlight current){
+		currentHighlights.add(current);
 		
 	}
 	
-	public void addCurrentHighlight(double x, double y, double x_width, double y_width, GameCanvas canvas, GridBoard board){
-		TextureRegion highlightTexture = new TextureRegion(screen,(int)x,(int)y,(int)x_width,(int)y_width);
+	public void addCurrentHighlight(CurrentHighlight current, GameCanvas canvas, GridBoard board){
+		TextureRegion highlightTexture = new TextureRegion(screen,(int)current.xPos,(int)current.yPos,(int)current.width,(int)current.height);
 		float charScale = Character.getCharScale(canvas, highlightTexture, board);
-		currentHighlights.add(new TextureRegion(screen,(int)(x),(int)(y),
-				(int)(x_width*charScale),(int)(y_width*charScale)));
+		current.width = (int)(current.width * charScale);
+		current.height = (int)(current.height * charScale);
+		currentHighlights.add(current);
 	}
 	
 	public void removeHighlight(){

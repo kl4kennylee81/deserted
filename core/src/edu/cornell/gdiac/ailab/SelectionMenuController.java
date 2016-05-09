@@ -83,13 +83,14 @@ public class SelectionMenuController {
 		this.menu.setChoosingTarget(isChoosingTarget);
 	}
 
-	public void update(){	
+	public void update(){
 		switch (menuState) {
 			case SELECTING:
 				checkForClicked();
 				// FIXUP will fix this conditions
 				if (clickedChar != null && !this.choosingTarget &&
 						this.menu != null && !this.menu.getChoosingTarget()){
+							System.out.println("this is never true");
 
 					// if the clicked character is the selected don't switch
 					if (clickedChar == selected){
@@ -97,6 +98,7 @@ public class SelectionMenuController {
 						clickedChar = null;
 					}
 					else{
+						System.out.println("entering peeking now 2");
 						menuState = MenuState.PEEKING;
 						this.setTargetedAction();
 						break;
@@ -186,7 +188,7 @@ public class SelectionMenuController {
 		selectedY = menu.getSelectedY();
 		leftside = selected.leftside;
 		board.reset();
-		
+
 		// reset/updates the highlighted flashing square on the board to the proper action
 		// only do this when not choosing a target so we don't keep resetting the selected squares back to default
 		if (!this.choosingTarget){
@@ -205,7 +207,7 @@ public class SelectionMenuController {
 		shadowY = clickedChar.yPosition;
 		leftside = clickedChar.leftside;
 		board.reset();
-		
+
 		// reset the highlighted tile
 		this.setTargetedAction();
 	}
@@ -221,7 +223,7 @@ public class SelectionMenuController {
 			this.setTargetedAction();
 		}
 	}
-	
+
 	/** returns if the action can toggle between meaningful options
 	 *  checking if on the edges thus cannot effectively toggle */
 	private boolean isActionToggleable(){
@@ -257,7 +259,7 @@ public class SelectionMenuController {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Update when an action is not targeting yet
 	 */
@@ -301,8 +303,8 @@ public class SelectionMenuController {
 			this.setTargetedAction();
 		}
 	}
-	
-	/** 
+
+	/**
 	 * set one of the targetable squares to targeting so you can
 	 * differentiate between an AOE vs singles
 	 */
@@ -357,15 +359,15 @@ public class SelectionMenuController {
 			break;
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Select an action to start targeting
 	 */
 	protected void updateTargetedAction(){
 		this.setTargetedAction();
 		this.setChoosingTarget(true);
 	}
-	
+
 	private void pathSetChoosingTarget(Character curChar){
 		if (curChar.getShadowY() >= board.getHeight()/2){
 			this.direction = Direction.DOWN;
@@ -399,7 +401,7 @@ public class SelectionMenuController {
 		}
 	}
 
-	private void mouseHighlight(){
+	protected void mouseHighlight(){
 		// mouse controls for single
 		float mouseX = InputController.getMouseX();
 		float mouseY = InputController.getMouseY();
@@ -506,7 +508,7 @@ public class SelectionMenuController {
 		menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 		this.setChoosingTarget(false);
 		menu.resetPointer(numSlots);
-		
+
 		// reset the highlighted flashing tile on the board
 		this.setTargetedAction();
 	}
@@ -726,7 +728,7 @@ public class SelectionMenuController {
 				}
 				else if (this.action.needsToggle && choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x,y);
-				} 
+				}
 				else if (this.action.needsToggle && !choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x, y);
 				}
@@ -751,7 +753,7 @@ public class SelectionMenuController {
 				}
 				else if (this.action.needsToggle && choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x,y);
-				} 
+				}
 				else if (this.action.needsToggle && !choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x, y);
 				}
@@ -772,10 +774,10 @@ public class SelectionMenuController {
 				else if ((!board.isInBounds(x,y)) && !isProjectile){
 					continue;
 				}
-				
+
 				else if (this.action.needsToggle && choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x,y);
-				} 
+				}
 				else if (this.action.needsToggle && !choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x, y);
 				}
@@ -795,10 +797,10 @@ public class SelectionMenuController {
 				else if ((!board.isInBounds(x,y)) && !isProjectile){
 					continue;
 				}
-				
+
 				else if (this.action.needsToggle && choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x,y);
-				} 
+				}
 				else if (this.action.needsToggle && !choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x, y);
 				}

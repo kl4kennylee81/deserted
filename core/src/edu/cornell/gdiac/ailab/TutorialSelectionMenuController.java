@@ -13,13 +13,13 @@ import edu.cornell.gdiac.ailab.TutorialSteps.TutorialAction;
 public class TutorialSelectionMenuController extends SelectionMenuController{
     private static String prevText = "";
     TutorialSteps tutorialSteps;
-    
+
     public TutorialSelectionMenuController(GridBoard board, List<Character> chars, TutorialSteps tutorialSteps) {
         super(board, chars);
         // TODO Auto-generated constructor stub
         this.tutorialSteps = tutorialSteps;
     }
-    
+
     public void update(){
         switch (menuState) {
             case SELECTING:
@@ -27,13 +27,15 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
                 // FIXUP will fix this conditions
                 if (clickedChar != null && !this.choosingTarget &&
                     this.menu != null && !this.menu.getChoosingTarget()){
-                    
+
                     // if the clicked character is the selected don't switch
                     if (clickedChar == selected){
                         clickedChar.isClicked = false;
                         clickedChar = null;
+                        System.out.println("hello world");
                     }
                     else{
+                      System.out.println("entering peeking now 1");
                         menuState = MenuState.PEEKING;
                         this.setTargetedAction();
                         break;
@@ -45,7 +47,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
                         clickedChar = null;
                     }
                 }
-                
+
                 updateVariables();
                 int numSlots = selected.getActionBar().getUsableNumSlots();
                 if (menu.canAct(numSlots) && action != null){
@@ -65,7 +67,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
                 menu.setSelectedX(selectedX);
                 menu.setSelectedY(selectedY);
                 break;
-                
+
             case WAITING:
                 isDone = true;
                 for (Character c : characters){
@@ -89,7 +91,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
                     drawHighlights();
                 }
                 updatePeeking();
-                
+
                 // when you click on your original character it goes back to his selection menu
                 if (InputController.pressedBack()||clickedChar == selected){
                     clickedChar.isClicked = false;
@@ -97,18 +99,22 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
                     menuState = MenuState.SELECTING;
                 }
                 break;
-                
+
         }
-        
+
     }
-    
-    
-    
+
+
+
     private void updateNotChoosingTarget(){
-        boolean mouseCondition = InputController.pressedLeftMouse();// &&
-        //				action.contains(InputController.getMouseX(), InputController.getMouseX(), InputController.getCanvas(), board);
+      boolean mouseCondition = InputController.pressedLeftMouse() &&
+  				((action!= null && action.contains(InputController.getMouseX(), InputController.getMouseY(), InputController.getCanvas(), board))
+  						||this.menu.confirmContain(InputController.getMouseX(), InputController.getMouseY()));
         int numSlots = selected.getActionBar().getUsableNumSlots();
         if ((InputController.pressedEnter() || mouseCondition)){
+          if (this.menu.confirmContain(InputController.getMouseX(), InputController.getMouseY())){
+            action = null;
+          }
             if (action != null && menu.canAct(numSlots)){
                 if (correctAction()){
                     updateTargetedAction();
@@ -132,7 +138,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
                     if (tutorialSteps.stepOnSelection && tutorialSteps.currStep() != null) {
                         if (tutorialSteps.currStep() != null) prevText = tutorialSteps.currStep().text;
                         tutorialSteps.nextStep();
-                        
+
                     }
                     if (tutorialSteps.currStep() != null) TutorialGameplayController.targetPauseTime = tutorialSteps.currStep().timeToPause;
                     TutorialGameplayController.pauseTimer = 0;
@@ -160,8 +166,13 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
             menu.changeSelected(true,numSlots);
         }
     }
-    
+
     protected void updateChoosingTarget(){
+      this.mouseHighlight();
+      // null check
+      if (this.action == null){
+        return;
+      }
         switch (action.pattern){
             case SINGLE:
                 TutorialGameplayController.highlight_action = menu.takenSlots + 2;
@@ -226,7 +237,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
             }
         }
     }
-    
+
     public boolean correctDirection(){
         		if (tutorialSteps.needsConfirm()){
         			return false;
@@ -241,7 +252,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
         		}
         		return true;
     }
-    
+
     public boolean correctAction(){
         		if (tutorialSteps.needsConfirm()){
         			return false;
@@ -260,7 +271,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
         			return true;//if tas.size() == 0 this means the user is choosing any action of their choice
         		}
     }
-    
+
     public boolean correctActions(){
         		if (!tutorialSteps.needsConfirm()){
         			return false;
