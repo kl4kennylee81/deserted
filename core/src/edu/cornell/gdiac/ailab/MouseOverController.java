@@ -107,28 +107,28 @@ public class MouseOverController {
 					menu.selectedAction=menu.getActions().length;
 				}*/
 			}
-			
+		}
+		for (Character c : characters){
 			if (c.contains(x,y,canvas,board)){
 				if (highlighted != null){
 					highlighted.removeHovering();
 				}
 				highlighted = c;
 				highlighted.setHovering();
-
+	
 				if (InputController.leftMouseClicked) {
 					clickedChar = c;
 					c.selectionMenu.selectedAction = -1;
 				}
 			}
 		}
-		
 
 		if (clickedChar != null){
 			for (Character c : characters) {
 				c.isClicked = false;
 			}	
 			clickedChar.isClicked = true;
-			if (!clickedChar.selectionMenu.equals(currMenu1) && currMenu1 != null){
+			if (!clickedChar.selectionMenu.equals(currMenu1) && currMenu1 != null && !currMenu1.getChoosingTarget()){
 				currMenu1.selectedAction = -1;
 			}
 		}

@@ -102,7 +102,7 @@ public class SelectionMenu {
 		Option confirm = new Option("","Confirm");
 		confirm.setImage(CONFIRM_BUTTON_UNPRESSED);
 		confirm.setImageColor(Color.WHITE);
-		confirm.setBounds(0.43f, 0.55f, 0.14f, 0.05f);
+		confirm.setBounds(0.43f, 0.58f, 0.14f, 0.05f);
 		options[actions.length] = confirm;
 	}
 	
