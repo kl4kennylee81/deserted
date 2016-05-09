@@ -132,11 +132,11 @@
       width: 0.11
       height: 0.4
       arrow: left
-#   actions:
-#     - actionId: 1
-#       xPos: 0
-#       yPos: 0
-#       direction: NONE
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: UP
 
 9:
   text: "Press Enter again"
