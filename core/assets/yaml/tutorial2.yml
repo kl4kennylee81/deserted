@@ -11,15 +11,36 @@
   rightText: "Well done!"
   note: player presses space
 
-
-  
-2:
+    
+1:
   text: ""
   paused: false
   spaceToContinue: false
-  note: when enemy reaches cast time
+  timeToPause: 200
   
+2:
+  text: "When you get hit, your wait time decreases."
+  paused: true
+  spaceToContinue: true
+  highlightRegions:
+    - xPos: 0.14
+      yPos: 0.88
+      width: 0.36
+      height: 0.1
+      arrow: up
+
 3:
+  text: ""
+  paused: false
+  spaceToContinue: false
+  highlightRegions:
+    - xPos: 0.14
+      yPos: 0.88
+      width: 0.36
+      height: 0.1
+      arrow: up
+  
+4:
   text: "If you get hit while charging an attack, your attack gets INTERRUPTED!"
   paused: true
   spaceToContinue: false

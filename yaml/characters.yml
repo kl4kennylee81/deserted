@@ -133,8 +133,8 @@
   maxHealth: 2
   hexColor: 3299FFFF
   speed: 3.0
-  castSpeed: 6.0
-  slots: 3
+  castSpeed: 7.0
+  slots: 4
   availableActions:
   - 0
   - 4

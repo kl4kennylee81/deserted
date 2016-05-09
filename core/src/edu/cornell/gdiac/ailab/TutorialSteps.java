@@ -210,6 +210,9 @@ public class TutorialSteps {
 	}
 
 	public List<TutorialAction> getActions() {
+		if(step == null){
+			return new ArrayList<TutorialAction>();
+		}
 		return step.actions;
 	}
 

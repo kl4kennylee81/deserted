@@ -172,21 +172,38 @@
   text: "You have now filled your action slots. Select \"Done\" to lock in your actions."
   spaceToContinue: false
   paused: false
+  confirm: true
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: UP
+    - actionId: 1
+      xPos: 0
+      yPos: 0
+      direction: NONE
 
-13:
-  text: ""
-  spaceToContinue: false
-  paused: false
+# 14:
+#   text: "Now that we have selected enough actions to fill all of our action slots
+#   select \"Confirm\" to confirm these choices. \n\n(During actual gameplay you can go back on
+#   any action by pressing Backspace)"
+#   spaceToContinue: false
+#   paused: false
+#   confirm: true
+#   actions:
+#     - actionId: 0
+#       xPos: 0
+#       yPos: 0
+#       direction: RIGHT
+#     - actionId: 1
+#       xPos: 0
+#       yPos: 0
+#       direction: NONE
+#     - actionId: 0
+#       xPos: 0
+#       yPos: 0
+#       direction: UP
 
-14:
-  text: ""
-  spaceToContinue: false
-  paused: false
-
-15:
-  text: ""
-  spaceToContinue: false
-  paused: false
 
 #
 # 9:
