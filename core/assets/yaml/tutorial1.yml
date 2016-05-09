@@ -17,7 +17,7 @@
   paused: true
   highlightRegions:
     - xPos: 0.25
-      yPos: 0.15
+      yPos: 0.12
       width: 0.09
       height: 0.23
       arrow: down
@@ -28,12 +28,13 @@
   spaceToContinue: true
   paused: true
   highlightRegions:
-    - xPos: 0.59
+    - xPos: 0.58
       yPos: 0.25
-      width: 0.18
-      height: 0.28
+      width: 0.35
+      height: 0.5
       arrow: down
       isChar: true
+      isSquare: true
 
 3:
   text: "The Action Bar determines when you are allowed to attack."
@@ -41,7 +42,7 @@
   paused: true
   highlightRegions:
     - xPos: 0.25
-      yPos: 0.15
+      yPos: 0.12
       width: 0.09
       height: 0.23
       arrow: down
@@ -81,7 +82,7 @@
   spaceToContinue: false
   highlightRegions:
     - xPos: 0.25
-      yPos: 0.15
+      yPos: 0.12
       width: 0.09
       height: 0.23
       arrow: down
@@ -138,12 +139,12 @@
   spaceToContinue: false
   paused: false
   highlightRegions:
-    - xPos: 0.3
-      yPos: 0.3
-      width: 0.1
+    - xPos: 0.35
+      yPos: 0.275
+      width: 0.05
       height: 0.1
       arrow: left
-      isSquare: true
+      isSquare: false
   actions:
     - actionId: 0
       xPos: 0
