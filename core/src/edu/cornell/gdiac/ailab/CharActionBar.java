@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNode;
 
 public class CharActionBar {
@@ -621,7 +622,7 @@ public class CharActionBar {
 			float y_pos = actionSlot_y;
 			float y_icon = this.getFillY(canvas, count);
 			
-			if (a.isInterrupted){
+			if (a.isInterrupted && a.action.pattern != Pattern.MOVE){
 				canvas.drawCenteredText(INTERRUPT_TEXT,x_pos,y_pos,Color.WHITE);
 				
 				float scale =this.getBarFillHeight(canvas)/cancel_token.getHeight();
