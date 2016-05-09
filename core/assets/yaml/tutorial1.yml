@@ -123,7 +123,7 @@
 #  paused: false
 
 8:
-  text: "Select Action (WASD or Arrowkeys to navigate then Enter to select)"
+  text: "Use WASD or Arrowkeys to navigate. Go to \"Move\" and press Enter"
   spaceToContinue: false
   paused: false
   highlightRegions:
@@ -139,9 +139,14 @@
       direction: UP
 
 9:
-  text: "Press Enter again"
+  text: "Use WASD or Arrowkeys to select direction. Select Up and press Enter"
   spaceToContinue: false
   paused: false
+  actions:
+    - actionId: 0
+      xPos: 0
+      yPos: 0
+      direction: UP
 
 10:
   text: "The slots on the Action Bar determine when your actions will execute"
