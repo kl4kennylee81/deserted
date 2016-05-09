@@ -71,18 +71,24 @@ public class MouseOverController {
 		Character clickedChar = null;
 		Character actionChar = null;
 		
+		boolean isHovering = false;
+		
 		for(Character c: characters){
 			SelectionMenu menu = c.getSelectionMenu();
-			if (InputController.mouseJustMoved()){
-				/*for (Action a: menu.getActions()){
-					int usableNumSlots = c.getActionBar().getUsableNumSlots();
-					boolean actionInvalid = menu.isActionInvalid(usableNumSlots, a);
-					if (a.contains(x,y,canvas,board) && !actionInvalid){
-						hAction = a;
-						currMenu = currMenu1;
-						actionChar = c;
+			
+			// this will check if mouse is hovering over any action
+			if (!menu.getChoosingTarget() && (c.isSelecting || c.isClicked)){
+				Option[] options = menu.getOptions();
+				for (int i =0;i<options.length;i++){
+					Option o = options[i];
+					o.currentlyHovered = false;
+					if (o.contains(x,y,canvas,board)){
+						isHovering = true;
 					}
-				}*/
+				}
+			}
+			
+			if (InputController.mouseJustMoved()){
 				
 				if (!menu.getChoosingTarget() && (c.isSelecting || c.isClicked)){
 					Option[] options = menu.getOptions();
@@ -115,7 +121,7 @@ public class MouseOverController {
 				highlighted = c;
 				highlighted.setHovering();
 				
-				if (InputController.leftMouseClicked && InputController.mouseJustMoved()
+				if (InputController.leftMouseClicked && !isHovering
 						&& !currMenu1.getChoosingTarget() && actionChar == null) {
 					clickedChar = c;
 					c.selectionMenu.selectedAction = -1;
