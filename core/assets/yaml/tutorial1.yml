@@ -75,7 +75,7 @@
       arrow: up
 
 6:
-  text: "When the meter reaches the center, the character must select actions."
+  text: "When the meter reaches the center, the character must plan actions."
   dontWriteText: true
   paused: false
   spaceToContinue: false
@@ -111,18 +111,29 @@
 #      arrow: up
 
 7:
-  text: "When the meter reaches the center, the character must select actions."
+  text: "When the meter reaches the center, the character must plan actions."
   dontWriteText: true
   spaceToContinue: true
   paused: true
   ignoreTextDone: true
+  
+8:
+  text: "Slots on the Action Bar determine when actions execute."
+  spaceToContinue: true
+  paused: true
+  highlightRegions:
+    - xPos: 0.5
+      yPos: 0.88
+      width: 0.30
+      height: 0.1
+      arrow: up
 
 #8:
 #  text: ""
 #  spaceToContinue: false
 #  paused: false
 
-8:
+9:
   text: "Use WASD or Arrowkeys to navigate. Go to \"Move\" and press Enter."
   spaceToContinue: false
   paused: false
@@ -139,7 +150,7 @@
       yPos: 0
       direction: UP
 
-9:
+10:
   text: "Use WASD or Arrowkeys to select direction. Select Up and press Enter."
   spaceToContinue: false
   paused: false
@@ -149,7 +160,7 @@
       yPos: 0
       direction: UP
 
-10:
+11:
   text: "Now, go to \"Straight\" and press Enter."
   spaceToContinue: false
   paused: false
@@ -159,7 +170,7 @@
       yPos: 0
       direction: NONE
 
-11:
+12:
   text: "Press enter again to confirm."
   spaceToContinue: false
   paused: false
@@ -169,7 +180,7 @@
       yPos: 0
       direction: NONE
 
-12:
+13:
   text: "You have now filled your action slots. Select \"Done\" to lock in your actions."
   spaceToContinue: false
   paused: false

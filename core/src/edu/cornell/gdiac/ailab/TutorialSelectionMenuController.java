@@ -239,16 +239,18 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
     }
 
     public boolean correctDirection(){
-        		if (tutorialSteps.needsConfirm()){
+    			if (tutorialSteps.needsConfirm()){
         			return false;
         		}
         		List<TutorialAction> tas = tutorialSteps.getActions();
-        		TutorialAction ta = tas.get(0);
-        		if (ta.direction != Direction.NONE){
-        			return ta.direction == direction;
-        		}
-        		if (ta.xPos != 0 || ta.yPos != 0){
-        			return ta.xPos == selected.xPosition && ta.yPos == selected.yPosition;
+        		if(tas.size() > 0){
+        			TutorialAction ta = tas.get(0);
+            		if (ta.direction != Direction.NONE){
+            			return ta.direction == direction;
+            		}
+            		if (ta.xPos != 0 || ta.yPos != 0){
+            			return ta.xPos == selected.xPosition && ta.yPos == selected.yPosition;
+            		}
         		}
         		return true;
     }
@@ -273,6 +275,9 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
     }
 
     public boolean correctActions(){
+    			if(tutorialSteps.getActions().size() == 0){
+    				return true;
+    			}
         		if (!tutorialSteps.needsConfirm()){
         			return false;
         		}

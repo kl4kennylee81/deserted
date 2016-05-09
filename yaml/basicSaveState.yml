@@ -153,6 +153,18 @@ levels:
     beaten: false
     boss: false
   13:
+    levelName: Level4
+    beaten: false
+    boss: false
+  14:
+    levelName: Level5
+    beaten: false
+    boss: false
+  15:
+    levelName: Level6
+    beaten: false
+    boss: false
+  16:
     levelName: pvp
     beaten: false
     boss: false
