@@ -365,7 +365,7 @@ public class SelectionMenu {
 		float height = confirm.getHeight(canvas);
 		canvas.drawBox(x, y, width, height, Color.BLACK);
 		
-		if (confirm.currentlyHovered){
+		if (confirm.currentlyHovered || selectedAction == actions.length){
 			confirm.setImage(CONFIRM_BUTTON_PRESSED);
 		} else {
 			confirm.setImage(CONFIRM_BUTTON_UNPRESSED);
