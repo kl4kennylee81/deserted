@@ -54,8 +54,8 @@
   icon: models/action_tokens/attack_icon.png
 3:
   name: Single
-  cost: 2
-  damage: 1
+  cost: 3
+  damage: 3
   range: 5
   size: 1
   pattern: SINGLE
@@ -68,11 +68,11 @@
     name: Regular
     numRounds: 2
     magnitude: 0
-  description: Target a single square for 3 damage
+  description: Target a single square for 3 damage. Breaks enemy shield.
   animationId: 0
   icon: models/action_tokens/attack_icon.png
 4:
-  name: Straight - 4
+  name: Straight
   cost: 2
   damage: 2
   range: 4
@@ -86,7 +86,7 @@
     name: Regular
     numRounds: 0
     magnitude: 0
-  description: Hit 4 tiles straight ahead for 2 damage
+  description: Hit 4 tiles straight ahead for 2 damage.
   animationId: 1
   icon: models/action_tokens/attack_icon.png
 
@@ -576,7 +576,7 @@
     name: Regular
     numRounds: 0
     magnitude: 0
-  path: "0,0 1,1 2,1"
+  path: "0,0 1,1 2,1 3,1"
   description: Fire a 3 range projectile on an adjacent row for 2 damage.
   persisting_action:
     numRounds: 10
@@ -602,6 +602,46 @@
     numRounds: 0
     magnitude: 0
   description: Deal 2 damage in a cone shaped T.
+  animationId: 0
+  icon: models/action_tokens/attack_icon.png
+  
+29:
+  name: Single-Slow
+  cost: 3
+  damage: 1
+  range: 6
+  size: 1
+  pattern: SINGLE
+  oneHit: true
+  needsToggle: true
+  canBlock: false
+  isBuff: false
+  effect:
+    type: SPEED
+    name: Slowed
+    numRounds: 3
+    magnitude: -4
+  description: Target a single square to slow down enemy
+  animationId: 0
+  icon: models/action_tokens/attack_icon.png
+  
+30:
+  name: Diagonal Bolt
+  cost: 3
+  damage: 2
+  range: 10
+  size: 1
+  pattern: INSTANT
+  oneHit: false
+  needsToggle: true
+  canBlock: false
+  path: "0,0 2,1 3,2 4,3"
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Lightning strike in a diagonal pattern, breaks enemy shield.
   animationId: 0
   icon: models/action_tokens/attack_icon.png
 ...
