@@ -81,12 +81,12 @@ Level3:
           xPosition: 0
           yPosition: 0
 
-        - id: 1
+        - selectedId: 1
           xPosition: 0
           yPosition: 3
 
     enemies:
-        - selectedId: 6
+        - id: 6
           xPosition: 5
           yPosition: 0
           difficulty: HARD
@@ -134,16 +134,16 @@ Level6:
           xPosition: 0
           yPosition: 0
 
-        - id: 1
+        - selectedId: 1
           xPosition: 0
           yPosition: 3
 
     enemies:
-        - selectedId: 4
+        - id: 4
           xPosition: 5
           yPosition: 0
 
-        - selectedId: 5
+        - id: 5
           xPosition: 5
           yPosition: 3
     nextLevel:

@@ -14,7 +14,7 @@ characters:
       nextAction:
       - actionId: 18
         cost: 1
-      - actionId: 13
+      - actionId: 24
         cost: 1
     - actionId: 6
       nextAction:
