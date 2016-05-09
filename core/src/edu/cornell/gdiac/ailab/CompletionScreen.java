@@ -97,10 +97,10 @@ public class CompletionScreen {
 		drawBottomText(canvas);
 		
 		if (skill_point > 0){
-			drawChest(canvas);
+			drawStar(canvas);
 		}
 		if (characters_unlocked.size() > 0){
-			drawStar(canvas);
+			drawChest(canvas);
 		}
 	}
 	

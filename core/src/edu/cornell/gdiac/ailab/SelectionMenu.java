@@ -101,8 +101,8 @@ public class SelectionMenu {
 		}
 		Option confirm = new Option("","Confirm");
 		confirm.setImage(CONFIRM_BUTTON_UNPRESSED);
+		confirm.sameWidthHeight = true;
 		confirm.setImageColor(Color.WHITE);
-		confirm.setBounds(0.43f, 0.58f, 0.14f, 0.05f);
 		options[actions.length] = confirm;
 	}
 	
@@ -322,18 +322,19 @@ public class SelectionMenu {
 	}
 	
 	/** determines the color for the action names in the selection menu while selecting **/
-	public Color getActionColor(int usableNumSlots,Action action){
-		if (this.isActionInvalid(usableNumSlots,action)){
+	public Color getActionColor(int usableNumSlots,Action action, boolean isSelecting){
+		if (this.isActionInvalid(usableNumSlots,action) && isSelecting){
 			Color dimColor = Color.WHITE.cpy().mul(1f,1f,1f,0.2f);
 			return dimColor;
 		} 
 		else if (selectedAction < actions.length &&selectedAction >= 0 && actions[selectedAction].name == action.name){
-			 if (this.choosingTarget){
+			 /*if (this.choosingTarget){
 				return Color.CORAL.cpy();
 			 }
 			 else{
 				 return Color.WHITE.cpy().lerp(Color.CORAL,lerpVal);
-			 }
+			 }*/
+			 return Color.CORAL.cpy();
 		}
 		else {
 			return Color.WHITE;
@@ -368,7 +369,47 @@ public class SelectionMenu {
 		float selectedPointerOffset = 0f;
 		radius *= RADIUS_CONSTANT;
 		
-		if (!this.choosingTarget){
+		if (isSelecting){
+			if (!this.choosingTarget){
+				for (int i = 0; i < actions.length; i++){
+					float frac = (i+1f)/(actions.length+1);
+					Action action = actions[i];
+					Option option = options[i];
+					float x;
+					if (leftside){
+						x = (float) (centerX + radius*Math.sin(frac*Math.PI));
+					} else {
+						x = (float) (centerX - radius*Math.sin(frac*Math.PI));
+					}
+					float y = (float) (centerY + radius*Math.cos(frac*Math.PI));
+					x /= canvas.width;
+					y /= canvas.height;
+					
+					option.setBounds(x-RELATIVE_ICON_LENGTH/2, y-RELATIVE_ICON_LENGTH/2, RELATIVE_ICON_LENGTH, RELATIVE_ICON_LENGTH);
+					option.setImageColor(getActionColor(usableNumSlots,action,isSelecting));
+					option.draw(canvas);
+				}
+
+				Option confirm = options[actions.length];
+				float x = centerX/canvas.width;
+				float y = (centerY - radius)/canvas.height;
+				confirm.setBounds(x-RELATIVE_ICON_LENGTH/2, y-RELATIVE_ICON_LENGTH/2, RELATIVE_ICON_LENGTH, RELATIVE_ICON_LENGTH);
+				
+				if (confirm.currentlyHovered || selectedAction == actions.length){
+					confirm.setImage(CONFIRM_BUTTON_PRESSED);
+				} else {
+					confirm.setImage(CONFIRM_BUTTON_UNPRESSED);
+				}
+				
+				if (canAct(usableNumSlots)){
+					confirm.setImageColor(Color.WHITE);
+				} else {
+					confirm.setImageColor(Color.WHITE.cpy().lerp(Color.GOLD,lerpVal));
+				}
+				
+				confirm.draw(canvas);
+			}
+		} else {
 			for (int i = 0; i < actions.length; i++){
 				float frac = (i+1f)/(actions.length+1);
 				Action action = actions[i];
@@ -389,32 +430,9 @@ public class SelectionMenu {
 				} else {
 					option.setImageColor(getActionColor(usableNumSlots,action));
 				}*/
-				option.setImageColor(getActionColor(usableNumSlots,action));
+				option.setImageColor(getActionColor(usableNumSlots,action,isSelecting));
 				option.draw(canvas);
 			}
-		}
-		
-		if (isSelecting){
-			Option confirm = options[actions.length];
-			float x = confirm.getX(canvas);
-			float y = confirm.getY(canvas);
-			float width = confirm.getWidth(canvas);
-			float height = confirm.getHeight(canvas);
-			canvas.drawBox(x, y, width, height, Color.BLACK);
-			
-			if (confirm.currentlyHovered || selectedAction == actions.length){
-				confirm.setImage(CONFIRM_BUTTON_PRESSED);
-			} else {
-				confirm.setImage(CONFIRM_BUTTON_UNPRESSED);
-			}
-			
-			if (canAct(usableNumSlots)){
-				confirm.setImageColor(Color.WHITE);
-			} else {
-				confirm.setImageColor(Color.WHITE.cpy().lerp(Color.GOLD,lerpVal));
-			}
-			
-			confirm.draw(canvas);
 		}
 		
 		/*

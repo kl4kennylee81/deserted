@@ -76,7 +76,7 @@
   animationId: 0
   icon: models/action_tokens/attack_icon.png
 4:
-  name: Straight
+  name: Firebolt
   cost: 2
   damage: 2
   range: 4
@@ -207,7 +207,7 @@
   icon: models/action_tokens/attack_icon.png
 
 10:
-  name: Straight - 2
+  name: Shiv
   cost: 1
   damage: 1
   range: 2
