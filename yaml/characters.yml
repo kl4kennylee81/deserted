@@ -45,8 +45,8 @@
   - 17
   - 18
   texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_icon.png
-  animationId: 103
+  icon: models/tutorial_characters/basic_iconblue.png
+  animationId: 105
 3:
   name: Mage Spirit
   health: 8
@@ -60,9 +60,9 @@
   - 13
   - 14
   - 15
-  texture: models/CHARA_4.png
-  icon: models/mage_icon.png
-  animationId: 102
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconyellow.png
+  animationId: 107
 4:
   name: Enchantress Spirit
   health: 8
@@ -76,9 +76,9 @@
   - 22
   - 5
   - 24
-  texture: models/CHARA_3.png
-  icon: models/bunmage_icon.png
-  animationId: 108
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
+  animationId: 103
 5:
   name: Fighter Spirit
   health: 10
@@ -98,8 +98,8 @@
 
 6:
   name: Rock Spirit
-  health: 9
-  maxHealth: 9
+  health: 8
+  maxHealth: 8
   hexColor: 00cc00FF
   speed: 0.0
   castSpeed: 6.0
@@ -110,8 +110,42 @@
   - 17
   - 18
   texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_icon.png
-  animationId: 103
+  icon: models/tutorial_characters/basic_iconblue.png
+  animationId: 105
+  
+7:
+  name: Fighter Spirit
+  health: 6
+  maxHealth: 6
+  hexColor: 3299FFFF
+  speed: 3.0
+  castSpeed: 9.0
+  slots: 4
+  availableActions:
+  - 0
+  - 23
+  - 20
+  - 7
+  texture: models/CHARA_1.png
+  icon: models/tutorial_characters/basic_iconred.png
+  animationId: 106
+  
+8:
+  name: Mage Spirit
+  health: 5
+  maxHealth: 5
+  hexColor: FF9900FF
+  speed: 3.5
+  castSpeed: 7.5
+  slots: 5
+  availableActions:
+  - 0
+  - 13
+  - 14
+  - 15
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconyellow.png
+  animationId: 107
 
 89:
   name: Tutorial_part_3
@@ -393,8 +427,8 @@
   
 24:
   name: Rock Spirit
-  health: 7
-  maxHealth: 7
+  health: 5
+  maxHealth: 5
   hexColor: 00cc00FF
   speed: 1.0
   castSpeed: 6.0
@@ -403,7 +437,7 @@
   - 0
   - 16
   - 17
-  - 26
+  - 18
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconblue.png
   animationId: 105
@@ -444,8 +478,8 @@
   
 27:
   name: Enchantress Spirit
-  health: 6
-  maxHealth: 6
+  health: 4
+  maxHealth: 4
   hexColor: CD2626FF
   speed: 5.0
   castSpeed: 7.5
