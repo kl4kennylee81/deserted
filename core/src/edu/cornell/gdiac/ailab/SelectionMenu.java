@@ -198,7 +198,7 @@ public class SelectionMenu {
 				selectedAction += 1;
 				selectedAction %= actions.length+1;
 				if (canDoAction(selectedAction,numSlots)){
-					if (this.getSelectedAction() != null) TutorialGameplayController.highlight_action = this.getSelectedAction().cost;
+					if (this.getSelectedAction() != null) TutorialGameplayController.highlight_action = takenSlots + this.getSelectedAction().cost;
 					return true;
 				}
 			}
@@ -209,7 +209,7 @@ public class SelectionMenu {
 					selectedAction += actions.length+1;
 				}
 				if (canDoAction(selectedAction,numSlots)){
-					if (this.getSelectedAction() != null) TutorialGameplayController.highlight_action = this.getSelectedAction().cost;
+					if (this.getSelectedAction() != null) TutorialGameplayController.highlight_action = takenSlots + this.getSelectedAction().cost;
 					return true;
 				}
 			}
