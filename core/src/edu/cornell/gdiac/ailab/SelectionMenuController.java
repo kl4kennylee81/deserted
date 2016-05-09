@@ -110,6 +110,7 @@ public class SelectionMenuController {
 
 				updateVariables();
 				int numSlots = selected.getActionBar().getUsableNumSlots();
+				
 				if (menu.canAct(numSlots) && action != null){
 					drawHighlights();
 				}
@@ -408,11 +409,15 @@ public class SelectionMenuController {
 			int chosenX = chosenTile.x;
 			int chosenY = chosenTile.y;
 			chosenTile.free();
+			//System.out.println(chosenX+" "+chosenY);
 			boolean canHit = this.board.getcanTarget(chosenX,chosenY);
+			//System.out.println(canHit);
 			if (canHit){
+				//System.out.println("haha");
 				this.selectedX = chosenX;
 				this.selectedY = chosenY;
 				if (InputController.pressedLeftMouse()){
+					//System.out.println("PRESSED");
 					confirmedAction();
 					/*if (this.action.pattern == Pattern.MOVE
 							&& this.menu.canAct(this.selected.getActionBar().getUsableNumSlots())){
