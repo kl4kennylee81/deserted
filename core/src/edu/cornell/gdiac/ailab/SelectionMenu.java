@@ -28,6 +28,8 @@ public class SelectionMenu {
 	private static final float RELATIVE_TEXT_Y_POS = 0.5f;
 
 	public static final float RELATIVE_TEXT_SPACING = 0.0625f;
+	
+	public static final float RELATIVE_ICON_LENGTH = 0.04f;
 
 	private static final float ACTION_POINTER_OFFSET_X = 15;
 
@@ -94,6 +96,7 @@ public class SelectionMenu {
 	public void setOptions(){
 		for (int i = 0; i < actions.length; i++){
 			options[i] = new Option("",String.valueOf(i));
+			options[i].sameWidthHeight = true;
 			options[i].setImage(actions[i].menuIcon);
 		}
 		Option confirm = new Option("","Confirm");
@@ -316,13 +319,13 @@ public class SelectionMenu {
 		int usableNumSlots = actionBar.getUsableNumSlots();
 		
 		if (increasing){
-			lerpVal+=0.02;
+			lerpVal+=0.012;
 			if (lerpVal >= 1){
 				increasing = false;
 			}
 		} else {
-			lerpVal -= 0.02;
-			if (lerpVal <= 0){
+			lerpVal -= 0.012;
+			if (lerpVal <= 0.4){
 				increasing = true;
 			}
 		}
@@ -342,8 +345,6 @@ public class SelectionMenu {
 				float frac = (i+1f)/(actions.length+1);
 				Action action = actions[i];
 				Option option = options[i];
-				float iconWidth = action.menuIcon.getWidth()*1f/canvas.width;
-				float iconHeight = action.menuIcon.getHeight()*1f/canvas.height;
 				float x;
 				if (leftside){
 					x = (float) (centerX + radius*Math.sin(frac*Math.PI));
@@ -354,7 +355,7 @@ public class SelectionMenu {
 				x /= canvas.width;
 				y /= canvas.height;
 				
-				option.setBounds(x-iconWidth/2, y-iconHeight/2, iconWidth, iconHeight);
+				option.setBounds(x-RELATIVE_ICON_LENGTH/2, y-RELATIVE_ICON_LENGTH/2, RELATIVE_ICON_LENGTH, RELATIVE_ICON_LENGTH);
 				option.setImageColor(getActionColor(usableNumSlots,action));
 				option.draw(canvas);
 			}
