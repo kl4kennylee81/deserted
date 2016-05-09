@@ -37,13 +37,15 @@ public class ActionBarController {
 			
 			if (c.castPosition >= c.getCastPoint() && oldCastPosition < c.getCastPoint()) {
 				// Let characters select their attacks
-				c.needsSelection();
-				c.startingCast();
-				if (c.isAI){
-					this.isAISelection = true;
-				} else {
-					c.needsDataOutput = true;
-					this.isPlayerSelection = true;
+				if (c.getQueuedActions().isEmpty()){
+					c.needsSelection();
+					c.startingCast();
+					if (c.isAI){
+						this.isAISelection = true;
+					} else {
+						c.needsDataOutput = true;
+						this.isPlayerSelection = true;
+					}
 				}
 			} else if (c.hasAttacks() && c.castPosition >= c.getNextCast()){
 				// Character uses action
