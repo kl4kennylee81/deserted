@@ -1054,7 +1054,7 @@ public class Character implements GUIElement {
 			chosenColor = chosenColor.lerp(this.color.cpy(), lerpVal);
 		}
 		else if (shouldDim){
-			chosenColor = Color.LIGHT_GRAY.cpy().mul(1,1,1,0.8f);
+			chosenColor = Color.LIGHT_GRAY.cpy().mul(1,1,1,0.9f);
 		}
 		else if (charState == CharacterState.CAST || charState == CharacterState.EXECUTE){
 			chosenColor = Color.GOLD.cpy();
@@ -1092,14 +1092,13 @@ public class Character implements GUIElement {
 	
 	// TODO commented out
 	public void drawToken(GameCanvas canvas, int count,boolean shouldDim){
-		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWaitWidth(canvas) - this.icon.getWidth()/2;
+		float tokenX = this.actionBar.getX(canvas) + this.actionBar.getWidth(canvas)*this.castPosition - this.icon.getWidth()/2;
 		
 		// 2 is a random offset to center it
-		float tokenY = this.actionBar.getY(canvas, count);
+		float tokenY = this.actionBar.getY(canvas, count) - 2;
 		
 		Color c = getColor(shouldDim);
 		canvas.drawTexture(icon, tokenX, tokenY,icon.getWidth(),icon.getHeight(),c);
-		
 	}
 
 	public boolean getHovering(){

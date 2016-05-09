@@ -610,14 +610,11 @@ public class GameEngine implements Screen {
 		manager.load(Constants.ACTIONBAR_CENTER_TEXTURE,Texture.class);
 		assets.add(Constants.ACTIONBAR_CENTER_TEXTURE);
 		
-		manager.load(Constants.ACTIONBAR_FILL_TEXTURE,Texture.class);
-		assets.add(Constants.ACTIONBAR_FILL_TEXTURE);
+		manager.load(Constants.ACTIONBAR_FILLWAIT_TEXTURE,Texture.class);
+		assets.add(Constants.ACTIONBAR_FILLWAIT_TEXTURE);
 		
-		manager.load(Constants.ACTIONBAR_LEFT_TEXTURE,Texture.class);
-		assets.add(Constants.ACTIONBAR_LEFT_TEXTURE);
-		
-		manager.load(Constants.ACTIONBAR_RIGHT_TEXTURE,Texture.class);
-		assets.add(Constants.ACTIONBAR_LEFT_TEXTURE);
+		manager.load(Constants.ACTIONBAR_FILLCAST_TEXTURE,Texture.class);
+		assets.add(Constants.ACTIONBAR_FILLCAST_TEXTURE);
 		
 		manager.load(Constants.ACTIONBAR_LEFTBLUE_TEXTURE,Texture.class);
 		assets.add(Constants.ACTIONBAR_LEFTBLUE_TEXTURE);
@@ -628,8 +625,8 @@ public class GameEngine implements Screen {
 		manager.load(Constants.ACTIONBAR_RIGHTEND_TEXTURE,Texture.class);
 		assets.add(Constants.ACTIONBAR_RIGHTEND_TEXTURE);
 		
-		manager.load(Constants.ACTIONBAR_CENTER_POTRAIT, Texture.class);
-		assets.add(Constants.ACTIONBAR_CENTER_POTRAIT);
+		manager.load(Constants.ACTIONBAR_ICON, Texture.class);
+		assets.add(Constants.ACTIONBAR_ICON);
 		
 		manager.load(Constants.DESCRIPTION_BOX_TEXTURE, Texture.class);
 		assets.add(Constants.DESCRIPTION_BOX_TEXTURE);
