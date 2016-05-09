@@ -585,6 +585,12 @@ public class GameEngine implements Screen {
 		manager.load(Constants.COMPLETION_TEXTURE, Texture.class);
 		assets.add(Constants.COMPLETION_TEXTURE);
 		
+		manager.load(Constants.STAR_TEXTURE, Texture.class);
+		assets.add(Constants.STAR_TEXTURE);
+		
+		manager.load(Constants.CHEST_TEXTURE, Texture.class);
+		assets.add(Constants.CHEST_TEXTURE);
+		
 		manager.load(Constants.BCKGD_TEXTURE,Texture.class);
 		assets.add(Constants.BCKGD_TEXTURE);
 		
@@ -659,6 +665,10 @@ public class GameEngine implements Screen {
 		manager.finishLoading();
 		
 		CompletionScreen.getInstance().setImage(manager.get(Constants.COMPLETION_TEXTURE,Texture.class));
+		
+		CompletionScreen.getInstance().setStar(manager.get(Constants.STAR_TEXTURE, Texture.class));
+		
+		CompletionScreen.getInstance().setChest(manager.get(Constants.CHEST_TEXTURE, Texture.class));
 		
 		// load all the level defs in GameSaveStateController
 		gameSaveStateController = new GameSaveStateController();
