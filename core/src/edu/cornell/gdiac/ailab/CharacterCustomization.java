@@ -80,7 +80,8 @@ public class CharacterCustomization extends Menu {
 	public void setOptions(){
 		this.charData = gameSaveState.getCharacterData(selectedCharacterId);
 		
-		this.options = new Option[3 + gameSaveState.characters.size() + charData.getTotalNumActionUpgrades()];
+		//this.options = new Option[3 + gameSaveState.characters.size() + charData.getTotalNumActionUpgrades()];
+		this.options = new Option[3 + gameSaveState.availableCharacters.size() + charData.getTotalNumActionUpgrades()];
 		options[0] = new Option("Back","Back");
 		options[0].setBounds(0.08f, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
 		options[0].setColor(Constants.MENU_COLOR);
@@ -118,6 +119,7 @@ public class CharacterCustomization extends Menu {
 			i++;
 		}
 		
+		/*
 		for (k = 0; k < unlockableCharacters.size(); k++){
 			float relX = curX + incrX*(k+j);
 			CharacterData cd = unlockableCharacters.get(k);
@@ -132,7 +134,7 @@ public class CharacterCustomization extends Menu {
 			characterOptions.add(options[i]);
 			i++;
 		}
-		
+		*/
 		try {
 			actionMap = ObjectLoader.getInstance().getActions(charData.getAllActionUpgrades());
 		} catch (IOException e) {

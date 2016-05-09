@@ -103,7 +103,7 @@ levels:
     boss: false
   12:
     levelName: Level3
-    beaten: false
+    beaten: true
     boss: false
     unlockableCharacter: 2
   13:
@@ -126,9 +126,9 @@ levels:
 availableCharacters:
 - 0
 - 1
-unlockableCharacters:
 - 2
+unlockableCharacters:
 - 5
 selectedCharacters:
-- 0
 - 1
+- 2
