@@ -87,7 +87,7 @@
     numRounds: 0
     magnitude: 0
   description: Hit 4 tiles straight ahead for 2 damage.
-  animationId: 1
+  animationId: 2
   icon: models/action_tokens/attack_icon.png
 
 5:
@@ -218,11 +218,7 @@
     numRounds: 0
     magnitude: 0
   description: Launch a projectile 2 tiles straight ahead for 1 damage
-  persisting_action:
-    numRounds: 10
-    moveSpeed: 0.05
-  animationId: 0
-  projectileAnimationId: 2
+  animationId: 1
   icon: models/action_tokens/attack_icon.png
 
 11:
@@ -374,7 +370,7 @@
     numRounds: 0
     magnitude: 0
   description: Deal 2 damage in a cone shaped T.
-  animationId: 0
+  animationId: 1
   icon: models/action_tokens/attack_icon.png
 
 18:
@@ -434,7 +430,7 @@
     numRounds: 0
     magnitude: 0
   description: Invoke fire on the tile 2 squares in front and the square behind it.
-  animationId: 1
+  animationId: 0
   icon: models/action_tokens/attack_icon.png
 
 21:
