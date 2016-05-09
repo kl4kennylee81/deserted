@@ -85,7 +85,6 @@ public class Character implements GUIElement {
 
 	CharacterState charState;
 	
-	//TODO: Change to pass this in from GameEngine
 	/** Starting x and y positions */
 	int startingXPosition;
 	int startingYPosition;
@@ -121,6 +120,11 @@ public class Character implements GUIElement {
 	
 	/**Whether the character has been clicked. */
 	boolean isClicked;
+	
+	/**Center of texture and radius*/
+	float centerX;
+	float centerY;
+	float radius;
 	
 	/**Constructor used by GameEngine to create characters from yaml input. */
 	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
@@ -704,9 +708,10 @@ public class Character implements GUIElement {
 	}
 	
 	/** temporary while menu is blocked by characters */
-	public void drawSelection(GameCanvas canvas,int count,boolean clickedCharExist){
-		if ((isSelecting && !clickedCharExist && isAlive()) || isClicked){
-			selectionMenu.draw(canvas,this.actionBar,count, isClicked);
+	public void drawSelection(GameCanvas canvas,GridBoard board,int count,boolean clickedCharExist){
+		if ((isSelecting && isAlive()) || isClicked){
+			boolean writeDescription = isClicked || (isSelecting && !clickedCharExist);
+			selectionMenu.draw(canvas,this.actionBar,count, isClicked, centerX, centerY, radius, leftside, writeDescription);
 		}
 	}
 	
@@ -826,11 +831,25 @@ public class Character implements GUIElement {
 		//go back to initial texture (current idle texture)
 		if (toDraw != null){
 			float charScale = getCharScale(canvas,toDraw,board);
+			if (!needShadow()){
+				float halfWidth = toDraw.getRegionWidth()*charScale/2;
+				float halfHeight = toDraw.getRegionHeight()*charScale/2;
+				centerX = canvasX+halfWidth;
+				centerY = canvasY+halfHeight;
+				radius = Math.max(halfWidth, halfHeight);
+			}
 			// draw once character normally then draw character again with tint
 			canvas.drawCharacter(toDraw, canvasX, canvasY, color, leftside,charScale);
 			canvas.drawCharacter(toDraw, canvasX, canvasY, highlightColor, leftside,charScale);
 		} else {
 			float charScale = getCharScale(canvas,texture,board);
+			if (!needShadow()){
+				float halfWidth = texture.getWidth()*charScale/2;
+				float halfHeight = texture.getHeight()*charScale/2;
+				centerX = canvasX+halfWidth;
+				centerY = canvasY+halfHeight;
+				radius = Math.max(halfWidth, halfHeight);
+			}
 			canvas.drawCharacter(texture, canvasX, canvasY, color, leftside,charScale);
 			canvas.drawCharacter(texture, canvasX, canvasY, highlightColor, leftside,charScale);
 		}
@@ -860,11 +879,22 @@ public class Character implements GUIElement {
 		//go back to initial texture (current idle texture)
 		if (toDraw != null){
 			float charScale = getCharScale(canvas,toDraw,board);
+			float halfWidth = toDraw.getRegionWidth()*charScale/2;
+			float halfHeight = toDraw.getRegionHeight()*charScale/2;
+			centerX = canvasX+halfWidth;
+			centerY = canvasY+halfHeight;
+			radius = Math.max(halfWidth, halfHeight);
+			
 			// draw once character normally then draw character again with tint
 			canvas.drawCharacter(toDraw, canvasX, canvasY, color, leftside,charScale);
 			canvas.drawCharacter(toDraw, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside,charScale);
 		} else {
 			float charScale = getCharScale(canvas,texture,board);
+			float halfWidth = texture.getWidth()*charScale/2;
+			float halfHeight = texture.getHeight()*charScale/2;
+			centerX = canvasX+halfWidth;
+			centerY = canvasY+halfHeight;
+			radius = Math.max(halfWidth, halfHeight);
 			canvas.drawCharacter(texture, canvasX, canvasY, color, leftside,charScale);
 			canvas.drawCharacter(texture, canvasX, canvasY, Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f), leftside,charScale);
 		}
