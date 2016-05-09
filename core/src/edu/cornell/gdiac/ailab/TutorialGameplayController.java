@@ -189,7 +189,6 @@ public class TutorialGameplayController extends GameplayController{
 		List<CurrentHighlight> highlights = tutorialSteps.getHighlights();
 		if(tutorialSteps.step == null || !tutorialSteps.step.text.equals("")) screen.setJustScreen();
 		if (highlights != null && tutorialSteps.showHighlights){
-			System.out.println("yo yo yo");
 	    	for (CurrentHighlight highlight:highlights){
     			CurrentHighlight current = new CurrentHighlight(highlight.xPos * canvas.getWidth(),
     			highlight.yPos * canvas.getHeight(), highlight.width * canvas.getWidth(),
@@ -221,8 +220,8 @@ public class TutorialGameplayController extends GameplayController{
     			}
     			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + (highlight_action)*selectedChar.actionBar.getSlotWidth(canvas);
     			float highlightY = selectedChar.actionBar.getY(canvas, count) - selectedChar.actionBar.getBarHeight(canvas);//characters.indexOf(selectedChar));
-    			if(selectionMenuController.menu.selectedAction != selectionMenuController.menu.actions.length){
-        			canvas.drawDownTextArrow(highlightX, highlightY, Color.GOLDENROD, "Action executes here");
+    			if(selectionMenuController.menu != null && selectionMenuController.menu.actions != null && selectionMenuController.menu.selectedAction != selectionMenuController.menu.actions.length){
+        			canvas.drawDownTextArrow(highlightX, highlightY, Color.YELLOW, "Action executes here");
     			}
     		}
 			//getY: iterate over characters, and when character matches selected character thats the number to pass to getY

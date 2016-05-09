@@ -139,12 +139,12 @@
   spaceToContinue: false
   paused: false
   highlightRegions:
-    - xPos: 0.
-      yPos: 0.15
-      width: 0.11
-      height: 0.4
+    - xPos: 0.375
+      yPos: 0.375
+      width: 0.08
+      height: 0.08
       arrow: left
-      isSquare: true
+      isSquare: false
   actions:
     - actionId: 0
       xPos: 0
