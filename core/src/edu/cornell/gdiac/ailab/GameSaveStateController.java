@@ -86,7 +86,7 @@ public class GameSaveStateController {
 	}
 	
 	@SuppressWarnings("resource")
-	private void resetGameSaveState() throws IOException {
+	public void resetGameSaveState() throws IOException {
 		FileChannel src = new FileInputStream(new File(ROOT, BASIC_SAVE_FILE)).getChannel();
 		FileChannel dest = new FileOutputStream(new File(ROOT, CURRENT_SAVE_FILE)).getChannel();
 		dest.transferFrom(src, 0, src.size());
