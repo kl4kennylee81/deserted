@@ -41,6 +41,8 @@ public class ActionController {
 	public List<Character> characters;
 	public TextMessage textMessages;
 	public AnimationPool animations;
+	
+	public Shields shields;
 
 	/** Done executing actions */
 	boolean isDone;
@@ -61,11 +63,13 @@ public class ActionController {
 	 * @param bar The action bar
 	 */
 	public ActionController(GridBoard board, List<Character> chars,
-			TextMessage textMsgs, AnimationPool animations) {
+			TextMessage textMsgs, AnimationPool animations, Shields shields) {
 		this.board = board;
 		this.characters = chars;
 		this.textMessages = textMsgs;
 		this.animations = animations;
+		
+		this.shields = shields;
 
 		isDone = false;
 		isAnimating = false;
@@ -124,12 +128,17 @@ public class ActionController {
 	private void executeAction(ActionNode a_node){
 		// If persisting, then add to character
 		if (a_node.action instanceof PersistingAction){
-			Coordinate[] path = getPath(a_node);
-			if (path != null){
-				selected.addPersisting(a_node,path);
-			}
-			else{
-				selected.addPersisting(a_node);
+			if (a_node.action.pattern == Pattern.SHIELD){
+				Coordinate[] path = getPath(a_node);
+				shields.addShield(selected,a_node,path);
+			} else {
+				Coordinate[] path = getPath(a_node);
+				if (path != null){
+					selected.addPersisting(a_node,path);
+				}
+				else{
+					selected.addPersisting(a_node);
+				}
 			}
 			return;
 		}
@@ -363,10 +372,10 @@ public class ActionController {
 
 	protected void updateShieldedPath(){
 		shieldedPaths.clear();
-		for (Character c : characters){
-			if (c.leftside != selected.leftside && c.hasShield()) {
-				shieldedPaths.addAll(c.getShieldedCoords());
-			}
+		if (selected.leftside){
+			shieldedPaths.addAll(shields.rightShieldedCoordinates);
+		} else {
+			shieldedPaths.addAll(shields.leftShieldedCoordinates);
 		}
 	}
 
@@ -430,33 +439,36 @@ public class ActionController {
 
 	private void processHitPath(ActionNode a_node, Coordinate[] path, boolean oneHit, boolean canBlock){
 		boolean hasHit = false;
+		shields.resetShieldsHitThisRound();
 		for (int i=0;i<path.length;i++){
 			// if you have already hit one character and you only can hit one break out of checking path
 			if (oneHit && hasHit){
 				break;
 			}
-			if (canBlock && isBlocked(path[i].x, path[i].y)){
-				break;
-			}
+			
+			// if it had hit anything in a prior coordinate
+			boolean hitThisRound = false;
+			
 			if (board.isInBounds(path[i].x,path[i].y) && !(path[i].x == selected.xPosition && path[i].y == selected.yPosition)){
 				animations.add(a_node.action.animation,path[i].x,path[i].y);
 			}
-
-			// if it had hit anything in a prior coordinate
-			boolean hitThisRound = false;
-			for (Character c:characters){
-				// if has hit one character and can only hit one stop checking characters
-				if (oneHit && hasHit){
-					break;
+			
+			if (isBlocked(path[i].x, path[i].y)){
+				if (a_node.action.damage > 0){
+					shields.hitShield(path[i].x, path[i].y, selected.leftside);
 				}
-				// if same side stop checking
-				if (selected.leftside ==c.leftside && a_node.action.pattern != Pattern.SINGLE){
-					continue;
-				}
-				if (c.xPosition == path[i].x && c.yPosition == path[i].y){
-					processHit(a_node,c);
-					hitThisRound = true;
-					break;
+				hitThisRound = true;
+			} else {
+				for (Character c:characters){
+					// if same side stop checking
+					if (selected.leftside ==c.leftside && a_node.action.pattern != Pattern.SINGLE){
+						continue;
+					}
+					if (c.xPosition == path[i].x && c.yPosition == path[i].y){
+						processHit(a_node,c);
+						hitThisRound = true;
+						break;
+					}
 				}
 			}
 			// set hasHit to true if it has hit someone this round
@@ -509,19 +521,6 @@ public class ActionController {
 			textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
 			target.setHurt();
 			ActionNode nextAttack = target.queuedActions.peek();
-
-			LinkedList<ActionNode> temp = new LinkedList<ActionNode>();
-			// handle breaking of shield
-			// only if damage was greater than 0
-			for (ActionNode an:target.persistingActions){
-				if (an.action.pattern == Pattern.SHIELD){
-					temp.add(an);
-				}
-			}
-			// have to avoid concurrent modification exception can't remove while iterating
-			for (ActionNode an: temp){
-				target.popPersistingCast(an);
-			}
 
 			//handle interruption
 			// if an attack does 0 damage it doesn't interrupt for example slows
