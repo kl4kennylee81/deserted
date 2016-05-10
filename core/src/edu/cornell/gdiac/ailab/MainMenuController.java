@@ -39,6 +39,10 @@ public class MainMenuController {
 		this.mouseOverController = mouseOverController; 
 	}
 	
+	public void setLevelSelect(){
+		this.menu = this.createLevelMenu();
+	}
+	
 	private Option[] makeDefaultOptions() {
 		if (this.levelDefs == null){
 			Option [] default_options = new Option[0];
@@ -273,7 +277,6 @@ public class MainMenuController {
 		}
 		
 		if (InputController.pressedEnter() || mouseCondition){
-			System.out.println(InputController.pressedEnter());
 			// fixup to get cur option string from the index
 			String levelKey = mainMenu.getCurOption();
 			done(levelKey);

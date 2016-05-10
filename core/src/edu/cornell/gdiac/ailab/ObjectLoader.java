@@ -571,14 +571,47 @@ public class ObjectLoader {
 		try (InputStream is = new FileInputStream(charFile)){
 			characters = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
+		File animationFile = new File(ROOT, "yaml/animations.yml");
+		HashMap<Integer, HashMap<String, Object>> animations;
+		try (InputStream is = new FileInputStream(animationFile)){
+			animations = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
+		
 		for (CharacterData cd : charDatas){
 			HashMap<String, Object> character = characters.get(cd.characterId);
-			String iconTextureName = (String) character.get("icon");
-			manager.load(iconTextureName, Texture.class);
-			assets.add(iconTextureName);
-			manager.finishLoading();
-			Texture iconTexture = manager.get(iconTextureName,Texture.class);
-			cd.setIconTexture(iconTexture);
+			if (cd.getIcon() == null){
+				String iconTextureName = (String) character.get("icon");
+				manager.load(iconTextureName, Texture.class);
+				assets.add(iconTextureName);
+				manager.finishLoading();
+				Texture iconTexture = manager.get(iconTextureName,Texture.class);
+				cd.setIconTexture(iconTexture);
+			}
+			if (cd.getAnimation() == null){
+				Integer animationId = (Integer) character.get("animationId");
+				HashMap<String, Object> animation = animations.get(animationId);
+				String name = (String) animation.get("name");
+				String textureName = (String) animation.get("texture");
+				Integer rows = (Integer) animation.get("rows");
+				Integer cols = (Integer) animation.get("cols");
+				Integer size = (Integer) animation.get("size");
+				manager.load(textureName, Texture.class);
+				assets.add(textureName);
+				manager.finishLoading();
+				Texture animationTexture = manager.get(textureName,Texture.class);
+				Animation anim = new Animation(name,animationTexture,rows,cols,size);
+
+				ArrayList<HashMap<String, Object>> segments = (ArrayList<HashMap<String, Object>>) animation.get("segments");
+				for (HashMap<String, Object> segmentData : segments){
+					Integer segmentId = (Integer) segmentData.get("segmentId");
+					Integer startingIndex = (Integer) segmentData.get("startingIndex");
+					List<Integer> frameLengths = (List<Integer>) segmentData.get("frameData");
+
+					anim.addSegment(segmentId,startingIndex,frameLengths);
+				}
+				AnimationNode animNode = new AnimationNode(anim);
+				cd.setAnimation(animNode);
+			}
 		}
 	}
 

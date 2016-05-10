@@ -58,8 +58,16 @@ public class GameSaveStateController {
 		return gameSaveState.levels;
 	}
 	
+	public LevelData getLevelData(String levelName){
+		return gameSaveState.getLevelData(levelName);
+	}
+	
 	public GameSaveState getGameSaveState(){
 		return gameSaveState;
+	}
+	
+	public List<CharacterData> getAvailableCharactersData(){
+		return gameSaveState.getAvailableCharactersData();
 	}
 	
 	public boolean containsLevel(String levelName){

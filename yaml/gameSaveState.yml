@@ -110,6 +110,7 @@ levels:
     levelName: Level4
     beaten: false
     boss: false
+    needsSelect: true
   14:
     levelName: Level5
     beaten: false
@@ -120,6 +121,7 @@ levels:
     levelName: Level6
     beaten: false
     boss: false
+    needsSelect: true
   16:
     levelName: pvp
     beaten: false

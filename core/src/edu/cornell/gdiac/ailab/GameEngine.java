@@ -48,6 +48,8 @@ import com.badlogic.gdx.utils.*;
 //import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.mesh.*;
 import edu.cornell.gdiac.ailab.GameCanvas;
+import edu.cornell.gdiac.ailab.GameEngine.GameState;
+import edu.cornell.gdiac.ailab.GameSaveState.LevelData;
 //import edu.cornell.gdiac.util.*;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 
@@ -86,7 +88,9 @@ public class GameEngine implements Screen {
 		/** When we are using one of the editors */
 		EDITOR,
 		/** When we are customizing our actions */
-		CUSTOMIZE
+		CUSTOMIZE,
+		/** When we are in character select */
+		SELECT
 	}
 
 
@@ -140,8 +144,8 @@ public class GameEngine implements Screen {
     private EditorController editorController;
     
     private GameSaveStateController gameSaveStateController;
-    
     private CharacterCustomizationController characterCustomizationController;
+    private CharacterSelectController characterSelectController;
     
     
 //	/** Default budget for asset loader (do nothing but load 60 fps) */
@@ -228,25 +232,31 @@ public class GameEngine implements Screen {
 		scale = (sx < sy ? sx : sy);
     }
     
-    public void startGame(String levelName) throws IOException {
+    public void startGame(String levelName, String backLevelName, boolean needsSelect) throws IOException {
     	if (this.gameSaveStateController.containsLevel(levelName)){
-        	initializeCanvas(Constants.BCKGD_TEXTURE, Constants.SELECT_FONT_FILE);
-        	Level level = null;
-    		level = this.getLevel(levelName);
-    		
-        	if (level.getTutorialSteps() == null){
-        		gameplayController.resetGame(level);
-        		curGameplayController = gameplayController;
-            	gameState = GameState.PLAY;
-        	} else {
-        		tutorialGameplayController.resetGame(level);
-        		curGameplayController = tutorialGameplayController;
-        		gameState = GameState.PLAY;
-        	}
+    		LevelData ld = this.gameSaveStateController.getLevelData(levelName);
+    		if (ld.needsSelect() && needsSelect){
+    			characterSelectController.reset();
+    			gameState = GameState.SELECT;
+    		} else {
+	        	initializeCanvas(Constants.BCKGD_TEXTURE, Constants.SELECT_FONT_FILE);
+	        	Level level = null;
+	    		level = this.getLevel(levelName);
+	    		
+	        	if (level.getTutorialSteps() == null){
+	        		gameplayController.resetGame(level);
+	        		curGameplayController = gameplayController;
+	            	gameState = GameState.PLAY;
+	        	} else {
+	        		tutorialGameplayController.resetGame(level);
+	        		curGameplayController = tutorialGameplayController;
+	        		gameState = GameState.PLAY;
+	        	}
+    		}
     	}
     	// start matching with keywords to get to levels, options, etc. atm its just editors
     	else {
-    		this.startKeyword(levelName);
+    		this.startKeyword(levelName, backLevelName);
     	}
     	
     }
@@ -336,7 +346,7 @@ public class GameEngine implements Screen {
 			if (!nextLevel.equals("")){
 				try {
 					canvas.end();
-					startGame(nextLevel);
+					startGame(nextLevel,"",false);
 		        	GameEngine.nextLevel = "";
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -353,8 +363,10 @@ public class GameEngine implements Screen {
 			break;
 		case CUSTOMIZE:
 			updateCustomization();
-			characterCustomizationController.update();
-			characterCustomizationController.draw(canvas);
+			canvas.end();
+			break;
+		case SELECT:
+			updateCharacterSelectMenu();
 			canvas.end();
 			break;
 		}
@@ -366,11 +378,42 @@ public class GameEngine implements Screen {
 		
 	}
 	
+	private void updateCharacterSelectMenu(){
+		characterSelectController.update();
+		characterSelectController.draw(canvas);
+		if (characterSelectController.isDone()){
+			gameSaveStateController.saveGameSaveState();
+			
+			try {
+				if (characterSelectController.nextLevelName.equals("Start Level")){
+					loadNextMenu(mainMenuController.levelName, "", false);
+				} else {
+					loadNextMenu(characterSelectController.nextLevelName, "Character Select",false);
+					if (characterSelectController.nextLevelName.equals("Skill Tree")){
+						characterCustomizationController.setCharacter(characterSelectController.getSelectedCharacterId());
+					}
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	private void updateCustomization() {
 		characterCustomizationController.update();
+		characterCustomizationController.draw(canvas);
 		if (characterCustomizationController.isDone()){
 			gameSaveStateController.saveGameSaveState();
-			gameState = GameState.MENU;
+			switch (characterCustomizationController.backLevelName){
+			case "Character Select":
+				characterSelectController.reset();
+				gameState = GameState.SELECT;
+				break;
+			case "Main Menu":
+				gameState = GameState.MENU;
+				break;
+			}
 		}
 	}
 
@@ -420,11 +463,11 @@ public class GameEngine implements Screen {
 	private void updateMenu() throws IOException {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
-			loadNextMenu(mainMenuController.levelName);
+			loadNextMenu(mainMenuController.levelName, "Main Menu",true);
 		}
 	}
 	
-	private void startKeyword(String keyword) {
+	private void startKeyword(String keyword, String backLevelName) {
 		if (keyword == "Action Editor") {
 			try {
 				editorController = new ActionEditorController();
@@ -450,13 +493,16 @@ public class GameEngine implements Screen {
 				e.printStackTrace();
 			}
 		} else if (keyword == "Skill Tree") {
-			characterCustomizationController = new CharacterCustomizationController(gameSaveStateController.getGameSaveState(), manager, mouseOverController);
+			characterCustomizationController = new CharacterCustomizationController(gameSaveStateController.getGameSaveState(), manager, mouseOverController, backLevelName);
 			gameState = GameState.CUSTOMIZE;
+		} else if (keyword == "Level Select") {
+        	mainMenuController.setLevelSelect();
+            gameState = GameState.MENU;
 		}
 	}
 
-	private void loadNextMenu(String levelName) throws IOException {
-		startGame(levelName);
+	private void loadNextMenu(String levelName, String backLevelName, boolean needsSelect) throws IOException {
+		startGame(levelName, backLevelName, needsSelect);
 	}
 
 	/**
@@ -673,6 +719,7 @@ public class GameEngine implements Screen {
 		// load all the level defs in GameSaveStateController
 		gameSaveStateController = new GameSaveStateController();
 		mainMenuController = new MainMenuController(canvas, manager, mouseOverController,gameSaveStateController.getLevelData());
+		characterSelectController = new CharacterSelectController(canvas, manager, mouseOverController, gameSaveStateController);
 		
 		//for some reason the font loading has to be after the call to manager.finishLoading();
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();

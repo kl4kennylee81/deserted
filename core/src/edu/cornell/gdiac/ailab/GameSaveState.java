@@ -68,7 +68,7 @@ public class GameSaveState {
 		List<ActionUpgrade> actionUpgrades;
 		ArrayList<Integer> currentActions;
 		private Texture icon;
-		
+		AnimationNode animation;
 		
 		
 		public CharacterData(){
@@ -83,6 +83,14 @@ public class GameSaveState {
 		
 		public Texture getIcon(){
 			return this.icon;
+		}
+		
+		public void setAnimation(AnimationNode animation){
+			this.animation = animation;
+		}
+		
+		public AnimationNode getAnimation(){
+			return this.animation;
 		}
 		
 		public void setAction(int actionId){
@@ -203,6 +211,13 @@ public class GameSaveState {
 		boolean boss;
 		int gainedSP;
 		Integer unlockableCharacter;
+		boolean needsSelect;
+		
+		public boolean needsSelect(){
+			boolean ns = needsSelect;
+			//needsSelect = false;
+			return ns;
+		}
 	}
 	
 	List<LevelData> levels;
@@ -235,6 +250,7 @@ public class GameSaveState {
 			String levelName = (String) levData.get("levelName");
 			LevelData ld = getLevelData(levelName);
 			levData.put("beaten", ld.beaten);
+			levData.put("needsSelect", ld.needsSelect);
 		}
 		
 		Object selChars = gameSaveStateData.get("selectedCharacters");
@@ -270,6 +286,7 @@ public class GameSaveState {
 			ld.boss = (boolean) levData.get("boss");
 			ld.gainedSP = levData.get("gainedSP") == null ? 0 : (int) levData.get("gainedSP");
 			ld.unlockableCharacter = (Integer) levData.get("unlockableCharacter");
+			ld.needsSelect = levData.get("needsSelect") == null ? false : (boolean) levData.get("needsSelect");
 			this.levels.add(ld);
 		}
 		
