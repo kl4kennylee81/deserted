@@ -31,6 +31,8 @@ public class Option implements GUIElement{
 	
 	boolean currentlyHovered;
 	
+	boolean isHighlighted;
+	
 	public void setImage(Texture t){
 		image = t;
 	}
@@ -103,12 +105,16 @@ public class Option implements GUIElement{
 		
 		if (sameWidthHeight){
 			height = width;
-		}
+		} 
 		
 		if (image != null){
 			Color imageColor = this.getColorImages();
 			//canvas.drawTexture(image, x, y, width,height, Color.WHITE);
 			canvas.drawTexture(image, x, y, width,height, imageColor);
+			if(isHighlighted){
+				//canvas.drawHighlightToken(image, x, y, width, height, Color.GOLD);
+				canvas.drawLeftArrow(x + (width + 10), y + (width / 2) + 10, Color.GOLD);
+			}
 		}
 	}
 	

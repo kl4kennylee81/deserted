@@ -259,6 +259,29 @@ public class TutorialGameplayController extends GameplayController{
 	    		}
 	    	}
 		}
+        if(tutorialSteps.currStep() != null){
+        	List<String> highlightChars = tutorialSteps.currStep().highlightChars;
+        	List<String> highlightTokens = tutorialSteps.currStep().highlightTokens;
+        	for(Character c: characters){
+        		if(highlightChars != null && highlightChars.contains(c.name) && tutorialSteps.showHighlights){
+        			c.isHighlighted = true;
+        		}
+        		else{
+        			c.isHighlighted = false;
+        		}
+        	}
+        	if(selectionMenuController.menu != null){
+            	for(Option o: selectionMenuController.menu.getOptions()){
+            		if(highlightTokens != null && highlightTokens.contains(o.optionKey) && tutorialSteps.showHighlights){
+            			o.isHighlighted = true;
+            		}
+            		else{
+            			o.isHighlighted = false;
+            		}
+            	}
+
+        	}
+        }
         tutorialSteps.drawText(canvas);
     }
 

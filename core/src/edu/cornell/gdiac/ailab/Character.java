@@ -62,6 +62,8 @@ public class Character implements GUIElement {
 	CharActionBar actionBar;
 	int numSlots;
 	
+	int id;
+	
 	boolean leftside;
 	
 	/** Do I need to select my actions */
@@ -83,6 +85,8 @@ public class Character implements GUIElement {
 	/** Do I need to output data about my selected actions? */
 	boolean needsDataOutput;
 
+	boolean isHighlighted = false;
+	
 	CharacterState charState;
 	
 	/** Starting x and y positions */
@@ -852,6 +856,10 @@ public class Character implements GUIElement {
 			}
 			canvas.drawCharacter(texture, canvasX, canvasY, color, leftside,charScale);
 			canvas.drawCharacter(texture, canvasX, canvasY, highlightColor, leftside,charScale);
+		}
+		
+		if(isHighlighted){
+			canvas.drawHighlightCharacter(texture, canvasX, canvasY, Color.YELLOW);
 		}
 		//use Jons logic for getting textures and then continue doing the same thing with the textures
 	}

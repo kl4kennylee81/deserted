@@ -366,7 +366,7 @@ public class ObjectLoader {
 			Character characterToAdd = new Character(charTexture, iconTexture, animNode,
 					name, health, maxHealth, Color.valueOf(hexColor), speed,
 					castSpeed, actionArray,numSlots);
-			
+			characterToAdd.id = charId;
 			availableCharacters.put(charId, characterToAdd);
 		}
 	}
@@ -693,6 +693,16 @@ public class ObjectLoader {
 			ArrayList<HashMap<String, Object>> actions = (ArrayList<HashMap<String, Object>>) step.get("actions");
 
 			ArrayList<HashMap<String, Object>> highlights = (ArrayList<HashMap<String, Object>>) step.get("highlightRegions");
+			
+			ArrayList<String> highlightChars = (ArrayList<String>) step.get("highlightCharacters");
+			ArrayList<String> highlightTokens = (ArrayList<String>) step.get("highlightTokens");
+			
+			if(highlightChars != null){
+				ts.addHighlightChars(highlightChars);
+			}
+			if(highlightTokens != null){
+				ts.addHighlightTokens(highlightTokens);
+			}
 
 			if (actions != null){
 				for (HashMap<String, Object> actionData : actions){
