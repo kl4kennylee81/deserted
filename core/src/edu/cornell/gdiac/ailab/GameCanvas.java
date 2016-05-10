@@ -1026,9 +1026,12 @@ public class GameCanvas {
 		this.drawTexture(whiteCircle, x, y, diam, diam, color);
 	}
 	
-	public void drawHighlightCharacter(Texture texture, float x, float y, Color color){
+	public void drawHighlightCharacter(Texture texture, float x, float y, Color color, float scale){
 		spriteBatch.setColor(color.r, color.g, color.b, 0.4f);
-		spriteBatch.draw(whiteCircle, x - 27, y - 25, texture.getWidth() - 20, texture.getHeight() - 90);
+		float width = texture.getWidth() * scale;
+		float height = texture.getHeight() * scale;
+		width += 34;
+		spriteBatch.draw(whiteCircle, x - 17, y - 13, width, height);
 	}
 	
 	public void drawHighlightToken(Texture texture, float x, float y, float width, float height, Color color){

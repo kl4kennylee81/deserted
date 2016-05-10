@@ -859,7 +859,8 @@ public class Character implements GUIElement {
 		}
 		
 		if(isHighlighted){
-			canvas.drawHighlightCharacter(texture, canvasX, canvasY, Color.YELLOW);
+			float charScale = getCharScale(canvas,texture,board);
+			canvas.drawHighlightCharacter(texture, canvasX, canvasY, Color.YELLOW, charScale);
 		}
 		//use Jons logic for getting textures and then continue doing the same thing with the textures
 	}
