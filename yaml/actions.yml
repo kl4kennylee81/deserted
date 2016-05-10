@@ -124,6 +124,9 @@
   range: 3
   size: 1
   pattern: SHIELD
+  shieldNumberHits: 1
+  shieldTextureTile2State1: "TODO"
+  shieldTextureTile3State1: "TODO"
   oneHit: false
   needsToggle: false
   canBlock: false
@@ -190,6 +193,8 @@
   range: 2
   size: 1
   pattern: SHIELD
+  shieldNumberHits: 1
+  shieldTextureTile2State1: "TODO"
   needsToggle: true
   oneHit: false
   canBlock: false
@@ -198,7 +203,7 @@
     name: Regular
     numRounds: 0
     magnitude: 0
-  description: Creates a 2-tile wide shield (Cannot move after)
+  description: Creates a 2-tile wide shield (Cannot move after) 
   persisting_action:
     numRounds: 1
     moveSpeed: 0.0
@@ -318,6 +323,8 @@
   range: 2
   size: 1
   pattern: SHIELD
+  shieldNumberHits: 1
+  shieldTextureTile2State1: "TODO"
   needsToggle: true
   oneHit: false
   canBlock: false
@@ -341,7 +348,9 @@
   range: 2
   size: 1
   pattern: SHIELD
-  needsToggle: false
+  shieldNumberHits: 1
+  shieldTextureTile2State1: "TODO"
+  needsToggle: true
   oneHit: false
   canBlock: false
   effect:

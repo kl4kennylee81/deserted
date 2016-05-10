@@ -32,7 +32,7 @@ characters:
     totalSP: 0
     actionTree:
     - actionId: 0
-    - actionId: 4
+    - actionId: 7
     - actionId: 10
     - actionId: 30
     currentActions:
@@ -77,15 +77,15 @@ levels:
     boss: false
   2:
     levelName: tutorial3
-    beaten: true
+    beaten: false
     boss: false
   3:
     levelName: tutorial4
-    beaten: true
+    beaten: false
     boss: false
   4:
     levelName: tutorial5
-    beaten: true
+    beaten: false
     boss: false
   5:
     levelName: tutorial6
@@ -110,6 +110,7 @@ levels:
     levelName: Level4
     beaten: false
     boss: false
+    needsSelect: true
   14:
     levelName: Level5
     beaten: false
@@ -120,6 +121,7 @@ levels:
     levelName: Level6
     beaten: false
     boss: false
+    needsSelect: true
   16:
     levelName: pvp
     beaten: false

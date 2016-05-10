@@ -14,14 +14,16 @@ public class CharacterCustomizationController {
 	MouseOverController mouseOverController;
 	private AssetManager manager;
 	boolean isDone;
+	public String backLevelName;
 	
-	public CharacterCustomizationController(GameSaveState gameSaveState, AssetManager manager, MouseOverController mouseOverController){
+	public CharacterCustomizationController(GameSaveState gameSaveState, AssetManager manager, MouseOverController mouseOverController, String backLevelName){
 		this.characterCustomization = new CharacterCustomization(gameSaveState);
 		this.manager = manager;
 		if (manager.isLoaded(Constants.MENU_HIGHLIGHT_TEXTURE) && characterCustomization.optionHighlight == null){
 			characterCustomization.setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class));
 		}
 		this.mouseOverController = mouseOverController;
+		this.backLevelName = backLevelName;
 		isDone = false;
 	}
 	
@@ -39,6 +41,10 @@ public class CharacterCustomizationController {
 				characterCustomization.dropCharacter();
 			}
 		}
+	}
+	
+	public void setCharacter(int charId){
+		characterCustomization.setCharacter(charId);
 	}
 	
 	public void handlePress(String optionKey){

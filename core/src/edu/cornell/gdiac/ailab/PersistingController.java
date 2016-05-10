@@ -16,8 +16,9 @@ public class PersistingController extends ActionController{
 	ActionNode selectedActionNode;
 	
 	
-	public PersistingController(GridBoard board, List<Character> chars,TextMessage textMsgs,AnimationPool animations) {
-		super(board, chars, textMsgs, animations);
+	public PersistingController(GridBoard board, List<Character> chars,TextMessage textMsgs,AnimationPool animations,
+			Shields shields) {
+		super(board, chars, textMsgs, animations, shields);
 		
 		this.selected = null;
 		this.selectedActionNode = null;
@@ -77,6 +78,7 @@ public class PersistingController extends ActionController{
 					}
 				}
 				for (ActionNode an:toDelete){
+					System.out.println("DOES THIS EVER HAPPEN?? PersistingController updateProjs");
 					c.popPersistingCast(an);
 				}
 			}
@@ -140,6 +142,8 @@ public class PersistingController extends ActionController{
 		else {
 			moveAlongPath();
 			
+			shields.resetShieldsHitThisRound();
+			
 			// check based on a rounding of the current X and current Y
 			int curIntX = selectedActionNode.getCurInPath().x;
 			int curIntY = selectedActionNode.getCurInPath().y;
@@ -162,7 +166,13 @@ public class PersistingController extends ActionController{
 			}
 			
 			// Check if next position is out of bounds or blocked
-			if (!board.isInBounds((int)Math.floor(selectedActionNode.curX),(int)Math.floor(selectedActionNode.curY)) || (isBlocked(curIntX, curIntY) && canBlock)){
+			if (!board.isInBounds((int)Math.floor(selectedActionNode.curX),(int)Math.floor(selectedActionNode.curY))){
+				selected.popPersistingCast(selectedActionNode);
+				return;
+			}
+			
+			if ((isBlocked(curIntX, curIntY) && canBlock)){
+				shields.hitShield(curIntX, curIntY, selected.leftside);
 				selected.popPersistingCast(selectedActionNode);
 				return;
 			}

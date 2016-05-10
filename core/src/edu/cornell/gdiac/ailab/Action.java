@@ -21,6 +21,7 @@ public class Action implements GUIElement {
 	String description;
 	Animation animation;
 	Animation projectileAnimation;
+	Integer shieldNumberHits;
 	
 	Texture menuIcon;
 	Texture barIcon;
@@ -32,6 +33,13 @@ public class Action implements GUIElement {
 	int position;
 	
 	Coordinate[] path;
+	
+	Texture shieldTextureTile1State1;
+	Texture shieldTextureTile1State2;
+	Texture shieldTextureTile2State1;
+	Texture shieldTextureTile2State2;
+	Texture shieldTextureTile3State1;
+	Texture shieldTextureTile3State2;
 
 	public static enum Pattern {
 		MOVE,
@@ -207,6 +215,10 @@ public class Action implements GUIElement {
 		//System.out.println(name);
 		//System.out.println(projectileAnimation);
 		this.projectileAnimation = projectileAnimation;
+	}
+	
+	public void setShieldNumberHits(int num){
+		this.shieldNumberHits = num;
 	}
 	
 	public void setX(float x){

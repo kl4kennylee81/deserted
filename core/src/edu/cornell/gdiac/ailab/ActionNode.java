@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
+import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 
 public class ActionNode {
@@ -35,6 +36,9 @@ public class ActionNode {
 	//projectile animation
 	AnimationNode animation;
 	
+	int shieldHitsLeft;
+	boolean hitThisRound;
+	
 	public ActionNode(Action action, float executePoint, int xPos, int yPos){
 		this.action = action;
 		this.executePoint = executePoint;
@@ -42,6 +46,10 @@ public class ActionNode {
 		this.yPosition = yPos;
 		this.isInterrupted = false;
 		this.pathIndex = 0;
+		
+		if (action.pattern == Pattern.SHIELD && action.shieldNumberHits != null){
+			this.shieldHitsLeft = action.shieldNumberHits;
+		}
 	}
 	
 	public ActionNode(Action action, float executePoint, int xPos, int yPos, Direction direction){
@@ -52,6 +60,10 @@ public class ActionNode {
 		this.isInterrupted = false;
 		this.direction = direction;
 		this.pathIndex = 0;
+		
+		if (action.pattern == Pattern.SHIELD && action.shieldNumberHits != null){
+			this.shieldHitsLeft = action.shieldNumberHits;
+		}
 	}
 	
 	public void setPersisting(float castPosition, int curX, int curY){

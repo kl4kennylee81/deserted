@@ -417,7 +417,62 @@ public class ObjectLoader {
 				actionToAdd = new Action(name, cost, damage, range, size, Pattern.valueOf(pattern), oneHit, canBlock,needsToggle,
 						new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), description,path,iconTexture);
 			}
-
+			
+			Integer shieldNumberHits = (Integer) action.get("shieldNumberHits");
+			if (shieldNumberHits != null && pattern.equals("SHIELD")){
+				actionToAdd.setShieldNumberHits(shieldNumberHits);
+			}
+			
+			/*
+			if (size == 1){
+				String shieldTextureTile1State1Name = (String) action.get("shieldTextureTile1State1");
+				manager.load(shieldTextureTile1State1Name,Texture.class);
+				assets.add(shieldTextureTile1State1Name);
+				manager.finishLoading();
+				Texture shieldTextureTile1State1 = manager.get(shieldTextureTile1State1Name,Texture.class);
+				actionToAdd.shieldTextureTile1State1 = shieldTextureTile1State1;
+				if (shieldNumberHits > 1){
+					String shieldTextureTile1State2Name = (String) action.get("shieldTextureTile1State2");
+					manager.load(shieldTextureTile1State2Name,Texture.class);
+					assets.add(shieldTextureTile1State2Name);
+					manager.finishLoading();
+					Texture shieldTextureTile1State2 = manager.get(shieldTextureTile1State2Name,Texture.class);
+					actionToAdd.shieldTextureTile1State2 = shieldTextureTile1State2;
+				}
+			}
+			if (size == 2 || size == 3){
+				String shieldTextureTile2State1Name = (String) action.get("shieldTextureTile2State1");
+				manager.load(shieldTextureTile2State1Name,Texture.class);
+				assets.add(shieldTextureTile2State1Name);
+				manager.finishLoading();
+				Texture shieldTextureTile2State1 = manager.get(shieldTextureTile2State1Name,Texture.class);
+				actionToAdd.shieldTextureTile2State1 = shieldTextureTile2State1;
+				if (shieldNumberHits > 1){
+					String shieldTextureTile2State2Name = (String) action.get("shieldTextureTile2State2");
+					manager.load(shieldTextureTile2State2Name,Texture.class);
+					assets.add(shieldTextureTile2State2Name);
+					manager.finishLoading();
+					Texture shieldTextureTile2State2 = manager.get(shieldTextureTile2State2Name,Texture.class);
+					actionToAdd.shieldTextureTile2State2 = shieldTextureTile2State2;
+				}
+			}
+			if (size == 3){
+				String shieldTextureTile3State1Name = (String) action.get("shieldTextureTile3State1");
+				manager.load(shieldTextureTile3State1Name,Texture.class);
+				assets.add(shieldTextureTile3State1Name);
+				manager.finishLoading();
+				Texture shieldTextureTile3State1 = manager.get(shieldTextureTile3State1Name,Texture.class);
+				actionToAdd.shieldTextureTile3State1 = shieldTextureTile3State1;
+				if (shieldNumberHits > 1){
+					String shieldTextureTile3State2Name = (String) action.get("shieldTextureTile3State2");
+					manager.load(shieldTextureTile3State2Name,Texture.class);
+					assets.add(shieldTextureTile3State2Name);
+					manager.finishLoading();
+					Texture shieldTextureTile3State2 = manager.get(shieldTextureTile3State2Name,Texture.class);
+					actionToAdd.shieldTextureTile3State2 = shieldTextureTile3State2;
+				}
+			}*/
+			
 			Integer animationId = (Integer) action.get("animationId");
 			if (animationId != null){
 				actionToAdd.setAnimation(availableAnimations.get(animationId));
@@ -571,14 +626,47 @@ public class ObjectLoader {
 		try (InputStream is = new FileInputStream(charFile)){
 			characters = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
 		}
+		File animationFile = new File(ROOT, "yaml/animations.yml");
+		HashMap<Integer, HashMap<String, Object>> animations;
+		try (InputStream is = new FileInputStream(animationFile)){
+			animations = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
+		
 		for (CharacterData cd : charDatas){
 			HashMap<String, Object> character = characters.get(cd.characterId);
-			String iconTextureName = (String) character.get("icon");
-			manager.load(iconTextureName, Texture.class);
-			assets.add(iconTextureName);
-			manager.finishLoading();
-			Texture iconTexture = manager.get(iconTextureName,Texture.class);
-			cd.setIconTexture(iconTexture);
+			if (cd.getIcon() == null){
+				String iconTextureName = (String) character.get("icon");
+				manager.load(iconTextureName, Texture.class);
+				assets.add(iconTextureName);
+				manager.finishLoading();
+				Texture iconTexture = manager.get(iconTextureName,Texture.class);
+				cd.setIconTexture(iconTexture);
+			}
+			if (cd.getAnimation() == null){
+				Integer animationId = (Integer) character.get("animationId");
+				HashMap<String, Object> animation = animations.get(animationId);
+				String name = (String) animation.get("name");
+				String textureName = (String) animation.get("texture");
+				Integer rows = (Integer) animation.get("rows");
+				Integer cols = (Integer) animation.get("cols");
+				Integer size = (Integer) animation.get("size");
+				manager.load(textureName, Texture.class);
+				assets.add(textureName);
+				manager.finishLoading();
+				Texture animationTexture = manager.get(textureName,Texture.class);
+				Animation anim = new Animation(name,animationTexture,rows,cols,size);
+
+				ArrayList<HashMap<String, Object>> segments = (ArrayList<HashMap<String, Object>>) animation.get("segments");
+				for (HashMap<String, Object> segmentData : segments){
+					Integer segmentId = (Integer) segmentData.get("segmentId");
+					Integer startingIndex = (Integer) segmentData.get("startingIndex");
+					List<Integer> frameLengths = (List<Integer>) segmentData.get("frameData");
+
+					anim.addSegment(segmentId,startingIndex,frameLengths);
+				}
+				AnimationNode animNode = new AnimationNode(anim);
+				cd.setAnimation(animNode);
+			}
 		}
 	}
 

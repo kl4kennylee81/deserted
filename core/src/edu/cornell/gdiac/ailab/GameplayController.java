@@ -35,6 +35,7 @@ public class GameplayController {
     protected Characters characters;
     protected TextMessage textMessages;
     protected AnimationPool animations;
+    protected Shields shields;
     
     protected boolean isTutorial;
     
@@ -93,12 +94,14 @@ public class GameplayController {
         animations = new AnimationPool();
         this.isTutorial = level.isTutorial();
         
+        shields = new Shields(board);
+        
 		// Create the subcontrollers
-        actionController = new ActionController(board,characters,textMessages,animations);
+        actionController = new ActionController(board,characters,textMessages,animations,shields);
         selectionMenuController = new SelectionMenuController(board,characters);
         actionBarController = new ActionBarController(characters);
         aiController = new AIController(board,characters,level.getTacticalManager());
-        persistingController = new PersistingController(board,characters,textMessages,animations);
+        persistingController = new PersistingController(board,characters,textMessages,animations,shields);
         effectController = new EffectController();
         mouseOverController.init(screen, board);
         warningTime = 0;
@@ -112,7 +115,7 @@ public class GameplayController {
     		characters.update();
     		effectController.update(characters,board);
     		actionBarController.update();
-    		persistingController.update();
+    		//persistingController.update();
     		mouseOverController.update(selectionMenuController.getMenu(),characters);
     		if (actionBarController.isAISelection) {
     			aiController.update();
@@ -235,6 +238,8 @@ public class GameplayController {
 		}
         screen.draw(canvas);
     	board.draw(canvas);
+    	
+    	shields.draw(canvas);
     	
     	drawCharacters(canvas);
         animations.draw(canvas,board,inGameState);

@@ -27,7 +27,6 @@ public class MainMenuController {
 	
 	private static final String MAIN_MENU_NAME = "Main Menu";
 	
-	
 	public MainMenuController(GameCanvas canvas, AssetManager manager, MouseOverController mouseOverController,
 			List<LevelData> levelDefs){
 		this.canvas = canvas;
@@ -36,8 +35,12 @@ public class MainMenuController {
 		// the levelDef is needed to create the options
 		this.levelDefs = levelDefs;
 		// initially create the main menu options
-		this.menu = this.createMainMenu();
+		this.menu = this.createStartingMenu();
 		this.mouseOverController = mouseOverController; 
+	}
+	
+	public void setLevelSelect(){
+		this.menu = this.createLevelMenu();
 	}
 	
 	private Option[] makeDefaultOptions() {
@@ -84,7 +87,13 @@ public class MainMenuController {
 	}
 
 	public void drawMenu() {
-		initializeCanvas(Constants.MENU_BCKGD_TEXTURE);
+		if (menu instanceof StartingMenu){
+			initializeCanvas(Constants.MENU_BCKGD_TEXTURE);
+		} else if (menu instanceof MainMenu){
+			initializeCanvas(Constants.MENU_BCKGD_TEXTURE);
+		} else if (menu instanceof LevelMenu){
+			initializeCanvas(Constants.MENU_BCKGD_TEXTURE);
+		}
 		menu.draw(canvas);
 	}
 	
@@ -102,6 +111,12 @@ public class MainMenuController {
 	}
 	
 	public void done(String levelName){
+		if (menu instanceof StartingMenu){
+			((StartingMenu) menu).updateLevel(levelName);
+			if (((StartingMenu) menu).isDone){
+				this.menu = createMainMenu();
+			}
+		}
 		if (menu instanceof MainMenu){
 			if (levelName == LEVEL_SELECT_NAME){
 				this.menu = createLevelMenu();
@@ -142,11 +157,22 @@ public class MainMenuController {
 		return mainmenu;
 	}
 	
+	public Menu createStartingMenu(){
+		StartingMenu startmenu = new StartingMenu();
+		return startmenu;
+	}
+	
 	public boolean isDone(){
 		return isDone;
 	}
 	
 	public void updateMenuAssets(){
+		if (menu instanceof StartingMenu){
+			StartingMenu startMenu = (StartingMenu) menu;
+			if (startMenu.optionHighlight == null && manager.isLoaded(Constants.MENU_HIGHLIGHT_TEXTURE)){
+				startMenu.setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class));
+			}
+		}
 
 		if (menu instanceof MainMenu){
 			MainMenu mainMenu = (MainMenu) menu;
@@ -191,7 +217,11 @@ public class MainMenuController {
 	 * Update when an action is not targeting yet
 	 */
 	private void updateSelection(){
-		if (menu instanceof MainMenu){
+		if (menu instanceof StartingMenu){
+			StartingMenu startMenu = (StartingMenu) menu;
+			updateStartingMainMenu(startMenu);
+		} 
+		else if (menu instanceof MainMenu){
 			MainMenu mainMenu = (MainMenu) menu;
 			updateSelectionMainMenu(mainMenu);
 		}
@@ -273,6 +303,43 @@ public class MainMenuController {
 	        mainMenu.setOption(toSelect);
 		}
 	}
+	
+	private void updateStartingMainMenu(StartingMenu startingMenu){
+		boolean mouseCondition = false;
+		if (startingMenu.selectedIndex!=-1){
+			Option curOption = startingMenu.options[startingMenu.selectedIndex];
+			mouseCondition = curOption.contains(InputController.getMouseX(),InputController.getMouseY(),canvas,null)
+				&& (InputController.pressedLeftMouse());
+		}
+		
+		if (InputController.pressedEnter() || mouseCondition){
+			// fixup to get cur option string from the index
+			String levelKey = startingMenu.getCurOption();
+			done(levelKey);
+		}  else if (InputController.pressedDown() && !InputController.pressedUp()){
+	         //newSelection % length
+	         //(n < 0) ? (m - (abs(n) % m) ) %m : (n % m);
+	         //taken from http://stackoverflow.com/questions/5385024/mod-in-java-produces-negative-numbers
+	    	 int newSelection = startingMenu.getCurIndexOption() + 1;
+	         int length = startingMenu.getOptions().length;
+	         int toSelect = (newSelection < 0) ? (length - 
+						(Math.abs(newSelection) % length) ) 
+						%length : (newSelection % 
+								length);
+
+		     startingMenu.setOption(toSelect);
+		     
+		}   else if (InputController.pressedUp() && !InputController.pressedDown()){
+	    	 int newSelection = startingMenu.getCurIndexOption() - 1;
+	        int length = startingMenu.getOptions().length;
+	        int toSelect = (newSelection < 0) ? (length - 
+						(Math.abs(newSelection) % length) ) 
+						%length : (newSelection % 
+								length);
+	        startingMenu.setOption(toSelect);
+		}
+	}
+	
 	public void resetMenu(){
 		this.levelName = "";
 		this.menu.reset();
