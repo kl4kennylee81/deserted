@@ -22,7 +22,7 @@ public class CharacterSelectController {
 		this.gameSaveStateController = gameSaveStateController;
 		this.isDone = false;
 		
-		this.characterSelect = new CharacterSelect(gameSaveStateController.getAvailableCharactersData());
+		this.characterSelect = new CharacterSelect(gameSaveStateController.getAvailableCharactersData(),gameSaveStateController.getSelectedCharactersId());
 		
 		manager.load(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class);
 		manager.finishLoading();
@@ -32,7 +32,7 @@ public class CharacterSelectController {
 	
 	public void reset(){
 		isDone = false;
-		this.characterSelect = new CharacterSelect(gameSaveStateController.getAvailableCharactersData());
+		this.characterSelect = new CharacterSelect(gameSaveStateController.getAvailableCharactersData(),gameSaveStateController.getSelectedCharactersId());
 		characterSelect.setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class));
 	}
 	
@@ -54,17 +54,16 @@ public class CharacterSelectController {
 	public void handlePress(String optionKey){
 		switch (optionKey){
 		case "Back":
-			nextLevelName = "Level Select";
-			isDone = true;
+			handleNextLevel("Level Select");
 			break;
 		case "Skill Tree":
-			nextLevelName = "Skill Tree";
-			isDone = true;
+			handleNextLevel("Skill Tree");
 			break;
 		case "Play":
-			nextLevelName = "Start Level";
-			isDone = true;
+			handleNextLevel("Start Level");
 			break;
+		case "Select":
+			characterSelect.selectCurrentCharacter();
 		default:
 			if (optionKey.contains(characterSelect.CHARACTER_ID_STRING)){
 				String charIdString = optionKey.substring(characterSelect.CHARACTER_ID_STRING.length());
@@ -73,7 +72,17 @@ public class CharacterSelectController {
 				return;
 			}
 		}
-		
+	}
+	
+	public void handleNextLevel(String levelName){
+		if (characterSelect.canLeave()){
+			gameSaveStateController.setSelectedCharactersId(characterSelect.charactersInPlay);
+			gameSaveStateController.saveGameSaveState();
+			nextLevelName = levelName;
+			isDone = true;
+		} else {
+			
+		}
 	}
 	
 	public Integer getSelectedCharacterId(){

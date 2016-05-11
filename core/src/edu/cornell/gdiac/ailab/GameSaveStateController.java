@@ -40,6 +40,7 @@ public class GameSaveStateController {
 		
 		gameSaveState = new GameSaveState();
 		loadGameSaveState();
+		instance = this;
 	}
 	
 	public static GameSaveStateController getInstance(){
@@ -70,6 +71,17 @@ public class GameSaveStateController {
 		return gameSaveState.getAvailableCharactersData();
 	}
 	
+	public List<Integer> getSelectedCharactersId(){
+		return gameSaveState.selectedCharacters;
+	}
+	
+	public void setSelectedCharactersId(int[] ids){
+		gameSaveState.selectedCharacters.clear();
+		for (int i = 0; i < ids.length; i++){
+			gameSaveState.selectedCharacters.add(ids[i]);
+		}
+	}
+	
 	public boolean containsLevel(String levelName){
 		for (LevelData ld : gameSaveState.levels){
 			if (ld.levelName.equals(levelName)){
@@ -95,6 +107,7 @@ public class GameSaveStateController {
 	
 	@SuppressWarnings("resource")
 	public void resetGameSaveState() throws IOException {
+		System.out.println("resetgamesavestate");
 		FileChannel src = new FileInputStream(new File(ROOT, BASIC_SAVE_FILE)).getChannel();
 		FileChannel dest = new FileOutputStream(new File(ROOT, CURRENT_SAVE_FILE)).getChannel();
 		dest.transferFrom(src, 0, src.size());
@@ -111,6 +124,7 @@ public class GameSaveStateController {
 	}
 	
 	private void setGameSaveState(){
+		System.out.println("setting game save state");
 		gameSaveState.setState(gameSaveStateData);
 	}
 	

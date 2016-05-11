@@ -33,20 +33,26 @@ public class CharacterSelect extends Menu{
 	
 	private static final float RELATIVE_DESCRIPTION_Y_POS = 0.25f;
 	
-	private static final float RELATIVE_DESCRIPTION_WIDTH = 0.15f;
+	private static final float RELATIVE_DESCRIPTION_WIDTH = 0.12f;
 	
 	private static final float RELATIVE_DESCRIPTION_HEIGHT = 0.25f;
 	
+	private static final float RELATIVE_CHARACTERS_SIZE = 0.75f;
+	
 	private static final Texture DESCRIPTION_BACKGROUND = new Texture("models/description_background.png");
+	
+	private static final int NULL_ID= -1;
 	
 	List<CharacterData> characters;
 	int selectedCharacterId;
 	HashMap<Integer,ArrayList<Action>> actions;
 	List<Option> characterOptions;
 	
+	int[] charactersInPlay;
+	
 	Texture optionHighlight;
 	
-	public CharacterSelect(List<CharacterData> characters){
+	public CharacterSelect(List<CharacterData> characters, List<Integer> charactersInPlay){
 		this.characters = characters;
 		this.selectedCharacterId = 0;
 		actions = new HashMap<Integer,ArrayList<Action>>();
@@ -55,12 +61,32 @@ public class CharacterSelect extends Menu{
 		loadActionInfo();
 		
 		characterOptions = new ArrayList<Option>();
-		
+		setCharactersInPlay(charactersInPlay);
 		setOptions();
 	}
 	
+	public boolean containsCharacterId(int charId){
+		for (CharacterData cd : characters){
+			if (cd.characterId == charId){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void setCharactersInPlay(List<Integer> charactersInPlay){
+		this.charactersInPlay = new int[charactersInPlay.size()];
+		for (int i = 0; i < charactersInPlay.size(); i++){
+			if (containsCharacterId(charactersInPlay.get(i))){
+				this.charactersInPlay[i] = charactersInPlay.get(i);
+			} else {
+				this.charactersInPlay[i] = NULL_ID;
+			}
+		}
+	}
+	
 	public void setOptions(){
-		Option[] options = new Option[3+characters.size()];
+		Option[] options = new Option[4+characters.size()];
 		
 		options[0] = new Option("Play","Play");
 		options[0].setBounds(0.88f, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
@@ -74,7 +100,26 @@ public class CharacterSelect extends Menu{
 		options[2].setBounds(0.08f, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
 		options[2].setColor(Constants.MENU_COLOR);
 		
-		int i = 3;
+		String text;
+		if (isCurrentlyInPlay()){
+			text = "Unselect";
+		} else {
+			text = "Select";
+		}
+		
+		int index = getSelectedCharacterIndex();
+		
+		if (index < 0 || index > characters.size()){
+			System.out.println("FIX THIS");
+		}
+		
+		float curCharacterRatio = (index+1f) * RELATIVE_CHARACTERS_SIZE / (characters.size()+1);
+		
+		options[3] = new Option(text,"Select");
+		options[3].setBounds(curCharacterRatio-0.024f, 0.62f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
+		options[3].setColor(Constants.MENU_COLOR);
+		
+		int i = 4;
 		int j, k;
 		float curX = 0.6f;
 		float incrX = 0.1f;
@@ -84,7 +129,7 @@ public class CharacterSelect extends Menu{
 			CharacterData cd = characters.get(j);
 			options[i] = new Option("",CHARACTER_ID_STRING+cd.characterId);
 			
-			float ratio = (j+1f) / (characters.size()+1);
+			float ratio = (j+1f) * RELATIVE_CHARACTERS_SIZE / (characters.size()+1);
 			
 			options[i].setBounds(ratio-RELATIVE_CHARACTER_WIDTH/2, RELATIVE_CHARACTER_Y, RELATIVE_CHARACTER_WIDTH,TEMP_HEIGHT);
 			
@@ -96,6 +141,16 @@ public class CharacterSelect extends Menu{
 		this.options = options;
 	}
 	
+	public int getSelectedCharacterIndex(){
+		for (int i = 0; i < characters.size(); i++){
+			CharacterData cd = characters.get(i);
+			if (cd.characterId == selectedCharacterId){
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	public void setHighlight(Texture t){
 		this.optionHighlight = t;
 	}
@@ -105,8 +160,53 @@ public class CharacterSelect extends Menu{
 			return;
 		}
 		this.selectedCharacterId = charId;
-		//redo option for selecting character;
-		//show action descriptions
+		setOptions();
+	}
+	
+	public boolean canLeave(){
+		for (int n : charactersInPlay){
+			if (n == NULL_ID){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean isCurrentlyInPlay(){
+		for (int i : charactersInPlay){
+			if (i == selectedCharacterId){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public void selectCurrentCharacter(){
+		if (isCurrentlyInPlay()){
+			removeSelectedFromPlay();
+		} else {
+			addUnselectedToPlay();
+		}
+		setOptions();
+	}
+	
+	public void removeSelectedFromPlay(){
+		for (int i = 0; i < charactersInPlay.length; i++){
+			int inPlayId = charactersInPlay[i];
+			if (inPlayId == selectedCharacterId){
+				charactersInPlay[i] = NULL_ID;
+			}
+		}
+	}
+	
+	public void addUnselectedToPlay(){
+		for (int i = 0; i < charactersInPlay.length; i++){
+			int inPlayId = charactersInPlay[i];
+			if (inPlayId == NULL_ID){
+				charactersInPlay[i] = selectedCharacterId;
+				break;
+			}
+		}
 	}
 	
 	public void loadCharacterInfo(){
@@ -129,6 +229,15 @@ public class CharacterSelect extends Menu{
 		}
 	}
 	
+	public CharacterData getCharacter(int id){
+		for (CharacterData cd : characters){
+			if (cd.characterId == id){
+				return cd;
+			} 
+		}
+		return null;
+	}
+	
 
 	@Override
 	public void draw(GameCanvas canvas) {
@@ -136,11 +245,15 @@ public class CharacterSelect extends Menu{
 		int canvasH = canvas.getHeight();
 		
 		// TODO Auto-generated method stub
-		for (int i=0;i<3;i++){
+		for (int i=0;i<4;i++){
 			float x = options[i].getX(canvas) - RELATIVE_HIGHLIGHT_X_OFFSET*canvasW;
 			float y = options[i].getY(canvas) - 3*options[i].getHeight(canvas)/4;
 			float width = options[i].getWidth(canvas);
 			float height = options[i].getHeight(canvas);
+			
+			if (i == 3){
+				x -= canvas.width * 0.01f;
+			}
 			
 			if (options[i].isSelected){
 				if (optionHighlight != null){
@@ -160,11 +273,11 @@ public class CharacterSelect extends Menu{
 				float relativeHeight = charOption.getWidth()*heightToWidthRatio;
 				charOption.height = relativeHeight;
 				
-				float width = characterOptions.get(i).getWidth()*canvas.width;
-				float height = width * toDraw.getRegionHeight() / toDraw.getRegionHeight();
+				float width = charOption.getWidth()*canvas.width;
+				float height = charOption.height*canvas.height;;
 				float ratio = (i+1f) / (characters.size()+1);
-				float x = ratio*canvas.width - width/2;
-				float y = RELATIVE_CHARACTER_Y * canvas.height;
+				float x = charOption.xPosition * canvas.width;
+				float y = charOption.yPosition * canvas.height;
 				
 				String optionKey = charOption.optionKey;
 				if (charOption.optionKey.contains(CHARACTER_ID_STRING)){
@@ -186,7 +299,7 @@ public class CharacterSelect extends Menu{
 		float i = 1;
 		
 		for (Action action : actionsToDraw){
-			float middle_x = canvasW * i / (actionsToDraw.size()+1);
+			float middle_x = canvasW * i * RELATIVE_CHARACTERS_SIZE / (actionsToDraw.size()+1);
 			float descript_y = RELATIVE_DESCRIPTION_Y_POS *canvasH;
 			float descript_width = RELATIVE_DESCRIPTION_WIDTH *canvasW;
 			float descript_height = RELATIVE_DESCRIPTION_HEIGHT * canvasH;
@@ -202,6 +315,33 @@ public class CharacterSelect extends Menu{
 			canvas.drawCenteredText("COST: "+action.cost, middle_x,cost_y, Color.WHITE);
 			i++;
 		}
+		
+		float ratio = 0.5f;
+		
+		float descript_x = canvasW * (RELATIVE_CHARACTERS_SIZE + ((1-ratio) /2) * (1-RELATIVE_CHARACTERS_SIZE) - 0.05f);
+		float descript_y1 = canvasH * (0.3f);
+		float descript_y2 = canvasH * (0.6f);
+		float descript_width = canvasW * (1 - RELATIVE_CHARACTERS_SIZE) * ratio;
+		float descript_height = canvasH * (0.2f);
+		
+		canvas.drawTexture(DESCRIPTION_BACKGROUND, descript_x, descript_y1, descript_width, descript_height, Color.GOLD);
+		canvas.drawTexture(DESCRIPTION_BACKGROUND, descript_x, descript_y2, descript_width, descript_height, Color.GOLD);
+		
+		CharacterData cd0 = getCharacter(charactersInPlay[0]);
+		CharacterData cd1 = getCharacter(charactersInPlay[1]);
+		
+		float iconX = canvasW * (RELATIVE_CHARACTERS_SIZE + ((1-ratio) /2) * (1-RELATIVE_CHARACTERS_SIZE) - 0.035f);
+		float iconWidth = canvasW * (1 - RELATIVE_CHARACTERS_SIZE) * ratio* 0.7f;
+		float iconHeight = canvasH * (0.15f);
+		if (cd0 != null){
+			float iconY = canvasH * (0.625f);
+			canvas.drawTexture(cd0.getIcon(), iconX, iconY, iconWidth, iconHeight, Color.WHITE);
+		}
+		if (cd1 != null){
+			float iconY = canvasH * (0.325f);
+			canvas.drawTexture(cd1.getIcon(), iconX, iconY, iconWidth, iconHeight, Color.WHITE);
+		}
+		
 	}
 
 }

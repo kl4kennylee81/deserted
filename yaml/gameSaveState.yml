@@ -140,9 +140,11 @@ levels:
 availableCharacters:
 - 0
 - 1
+- 2
+- 5
 unlockableCharacters:
 - 2
 - 5
 selectedCharacters:
-- 0
-- 1
+- 2
+- 5
