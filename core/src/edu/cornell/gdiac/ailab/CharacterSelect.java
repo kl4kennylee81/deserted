@@ -2,6 +2,7 @@ package edu.cornell.gdiac.ailab;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
@@ -40,7 +41,7 @@ public class CharacterSelect extends Menu{
 	
 	List<CharacterData> characters;
 	int selectedCharacterId;
-	List<ArrayList<Action>> actions;
+	HashMap<Integer,ArrayList<Action>> actions;
 	List<Option> characterOptions;
 	
 	Texture optionHighlight;
@@ -48,7 +49,7 @@ public class CharacterSelect extends Menu{
 	public CharacterSelect(List<CharacterData> characters){
 		this.characters = characters;
 		this.selectedCharacterId = 0;
-		actions = new ArrayList<ArrayList<Action>>();
+		actions = new HashMap<Integer,ArrayList<Action>>();
 		
 		loadCharacterInfo();
 		loadActionInfo();
@@ -120,7 +121,7 @@ public class CharacterSelect extends Menu{
 	public void loadActionInfo(){
 		try {
 			for (CharacterData cd : characters){
-				actions.add(ObjectLoader.getInstance().getSelectedActionList(cd.currentActions));
+				actions.put(cd.characterId,ObjectLoader.getInstance().getSelectedActionList(cd.currentActions));
 			}
 		} catch (IOException e){
 			// TODO Auto-generated catch block
@@ -164,14 +165,20 @@ public class CharacterSelect extends Menu{
 				float ratio = (i+1f) / (characters.size()+1);
 				float x = ratio*canvas.width - width/2;
 				float y = RELATIVE_CHARACTER_Y * canvas.height;
-				if (i == selectedCharacterId){
-					canvas.draw(toDraw, Color.WHITE,x,y,width,height);
-				} else {
-					canvas.draw(toDraw, Color.GRAY,x,y,width,height);
+				
+				String optionKey = charOption.optionKey;
+				if (charOption.optionKey.contains(CHARACTER_ID_STRING)){
+					String charIdString = optionKey.substring(CHARACTER_ID_STRING.length());
+					int charId = Integer.parseInt(charIdString);
+					if (charId == selectedCharacterId){
+						canvas.draw(toDraw, Color.WHITE,x,y,width,height);
+					} else {
+						canvas.draw(toDraw, Color.GRAY,x,y,width,height);
+					}
 				}
 			}
 		}
-		
+
 		ArrayList<Action> actionsToDraw = actions.get(selectedCharacterId);
 		
 		float relative_offset = 0.065f;
