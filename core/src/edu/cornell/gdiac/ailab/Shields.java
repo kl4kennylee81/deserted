@@ -83,12 +83,26 @@ public class Shields {
 		    if (!an.hitThisRound && shieldContains(an,coordX,coordY)){
 				an.shieldHitsLeft-=1;
 				an.hitThisRound = true;
-				
-				if (an.shieldHitsLeft == 0){
-					iterator.remove();
-				}
 			}
 		}
+		resetShieldedCoordinates();
+	}
+	
+	public void removeShields(){
+		for (Iterator<ActionNode> iterator = leftShields.iterator(); iterator.hasNext();) {
+		    ActionNode an = iterator.next();
+			if (an.shieldHitsLeft == 0){
+				iterator.remove();
+			}
+		}
+		
+		for (Iterator<ActionNode> iterator = rightShields.iterator(); iterator.hasNext();) {
+		    ActionNode an = iterator.next();
+			if (an.shieldHitsLeft == 0){
+				iterator.remove();
+			}
+		}
+		
 		resetShieldedCoordinates();
 	}
 	

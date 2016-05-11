@@ -106,6 +106,7 @@ public class ActionController {
 				}
 			}
 			if (selected != null && selected.charState == CharacterState.EXECUTE){
+				isAnimating = true;
 				executeAction(curAction);
 				selected = null;
 			}
@@ -548,6 +549,10 @@ public class ActionController {
 
 	// make isDone true when every character who needs to attack has attacked
 	public boolean isDone() {
-		return animations.pool.isEmpty() && isDone;
+		if (animations.pool.isEmpty() && isDone){
+			shields.removeShields();
+			return true;
+		}
+		return false;
 	}
 }
