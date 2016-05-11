@@ -241,17 +241,17 @@ public class GameplayController {
     	
     	
     	if (inGameState == InGameState.SELECTION){
-    		shields.draw(canvas,false);
+    		shields.draw(canvas,false,true);
         	
-        	shields.draw(canvas,true);
+        	shields.draw(canvas,true,true);
         	
         	drawCharacters(canvas);
     	} else {
-    		shields.draw(canvas,false);
+    		shields.draw(canvas,false,false);
         	
     		drawCharacters(canvas);
     		
-    		shields.draw(canvas,true);
+    		shields.draw(canvas,true,false);
     	}
     	
         animations.draw(canvas,board,inGameState);

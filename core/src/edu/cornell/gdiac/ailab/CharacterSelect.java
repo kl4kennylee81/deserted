@@ -117,7 +117,7 @@ public class CharacterSelect extends Menu{
 		float curCharacterRatio = (index+1f) * RELATIVE_CHARACTERS_SIZE / (characters.size()+1);
 		
 		options[3] = new Option(text,"Select");
-		options[3].setBounds(curCharacterRatio-0.024f, 0.62f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
+		options[3].setBounds(curCharacterRatio-0.024f, 0.67f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
 		options[3].setColor(Constants.MENU_COLOR);
 		
 		int i = 4;
@@ -253,7 +253,7 @@ public class CharacterSelect extends Menu{
 			float height = options[i].getHeight(canvas);
 			
 			if (i == 3){
-				x -= canvas.width * 0.01f;
+				x -= canvas.width * 0.015f;
 			}
 			
 			if (options[i].isSelected){
