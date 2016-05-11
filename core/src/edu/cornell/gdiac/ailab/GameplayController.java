@@ -239,7 +239,10 @@ public class GameplayController {
         screen.draw(canvas);
     	board.draw(canvas);
     	
-    	shields.draw(canvas);
+    	shields.draw(canvas,false);
+    	
+    	
+    	shields.draw(canvas,true);
     	
     	drawCharacters(canvas);
         animations.draw(canvas,board,inGameState);

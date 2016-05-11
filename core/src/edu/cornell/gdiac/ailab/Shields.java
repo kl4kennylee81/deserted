@@ -12,6 +12,7 @@ import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 public class Shields {
 	
 	private static final float SHIELD_WIDTH = 0.0125f;
+	private static final float SHIELD_Y_OFFSET = 0.02f;
 
 	private List<ActionNode> leftShields;
 	private List<ActionNode> rightShields;
@@ -123,16 +124,16 @@ public class Shields {
 		}
 	}
 	
-	public void draw(GameCanvas canvas){
+	public void draw(GameCanvas canvas, boolean top){
 		for (ActionNode s : leftShields){
-			drawShield(canvas,s,true);
+			drawShield(canvas,s,true,top);
 		}
 		for (ActionNode s : rightShields){
-			drawShield(canvas,s,false);
+			drawShield(canvas,s,false,top);
 		}
 	}
 	
-	private void drawShield(GameCanvas canvas,ActionNode an,boolean leftside){
+	private void drawShield(GameCanvas canvas,ActionNode an,boolean leftside,boolean top){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
 		Coordinate c;	
@@ -142,15 +143,33 @@ public class Shields {
 		int shieldH = (int)(tileH * numWithin);
 		// since we draw from the lower left corner. for the left side you draw 1 tile up
 		// so it looks like its covering the back of the 2nd tile aka the front of the 1st.
-		int shieldX = (int)(leftside ?tileW*an.curX + tileW:tileW*an.curX);
+		//int shieldX = (int)(leftside ?tileW*an.curX + tileW:tileW*an.curX);
+		int shieldX = (int)(tileW*an.curX);
 		int shieldY = (int)(tileH *botY);
-		
+		shieldY -= (int) (SHIELD_Y_OFFSET * canvas.getHeight());
 		// since the shield is being sheared it just needs to be offset by the X and not by the shearing amount which
 		// board offset does. thus we just do it manually by adding on the amount we offset rather than offset board
 		// which also takes into the x displacement from being sheared.
 		shieldX = (int) (shieldX + board.getBoardOffsetX(canvas));
 		shieldY = (int) (shieldY + board.getBoardOffsetY(canvas));
-		canvas.drawTileArrow(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
+		//canvas.drawTileArrow(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
+		if (top){
+			if (numWithin == 1){
+				canvas.drawShield(an.action.shieldTextureTile1State1Top, shieldX, shieldY);
+			} else if (numWithin == 2){
+				canvas.drawShield(an.action.shieldTextureTile2State1Top, shieldX, shieldY);
+			} else if (numWithin == 3){
+				canvas.drawShield(an.action.shieldTextureTile3State1Top, shieldX, shieldY);
+			}
+		} else {
+			if (numWithin == 1){
+				canvas.drawShield(an.action.shieldTextureTile1State1Bottom, shieldX, shieldY);
+			} else if (numWithin == 2){
+				canvas.drawShield(an.action.shieldTextureTile2State1Bottom, shieldX, shieldY);
+			} else if (numWithin == 3){
+				canvas.drawShield(an.action.shieldTextureTile3State1Bottom, shieldX, shieldY);
+			}
+		}
 	}
 	
 }

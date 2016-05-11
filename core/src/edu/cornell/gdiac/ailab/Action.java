@@ -34,12 +34,18 @@ public class Action implements GUIElement {
 	
 	Coordinate[] path;
 	
-	Texture shieldTextureTile1State1;
-	Texture shieldTextureTile1State2;
-	Texture shieldTextureTile2State1;
-	Texture shieldTextureTile2State2;
-	Texture shieldTextureTile3State1;
-	Texture shieldTextureTile3State2;
+	Texture shieldTextureTile1State1Bottom;
+	Texture shieldTextureTile1State1Top;
+	Texture shieldTextureTile1State2Bottom;
+	Texture shieldTextureTile1State2Top;
+	Texture shieldTextureTile2State1Bottom;
+	Texture shieldTextureTile2State1Top;
+	Texture shieldTextureTile2State2Bottom;
+	Texture shieldTextureTile2State2Top;
+	Texture shieldTextureTile3State1Bottom;
+	Texture shieldTextureTile3State1Top;
+	Texture shieldTextureTile3State2Bottom;
+	Texture shieldTextureTile3State2Top;
 
 	public static enum Pattern {
 		MOVE,

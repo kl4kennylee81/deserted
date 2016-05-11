@@ -473,6 +473,10 @@ public class GameCanvas {
 		holder.setRegion(image);
 		draw(image,Color.WHITE,0,0,x,y,0,1.0f,1.0f);
 	}
+	
+	public void drawShield(Texture image, float x, float y){
+		this.draw(image, x, y);
+	}
 
 	/**
 	 * Draws the tinted texture at the given position.
