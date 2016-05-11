@@ -687,6 +687,9 @@ public class CharActionBar {
 			float width = RELATIVE_EFFECT_ICON_WIDTH * canvas.getWidth();
 			float height = width;
 			for (Effect e : effects){
+				if (e.icon == null){
+					continue;
+				}
 				TextureRegion textureRegion = new TextureRegion(e.icon);
 				float angle = e.ratioGone() * CIRCLE_ANGLE;
 				canvas.drawRadial(textureRegion, x, y, width, height, angle);
