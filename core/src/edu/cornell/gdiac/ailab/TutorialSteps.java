@@ -42,6 +42,8 @@ public class TutorialSteps {
 		boolean paused;
 		List<TutorialAction> actions;
 		List<CurrentHighlight> highlights;
+		List<String> highlightChars;
+		List<String> highlightTokens;
 		boolean confirm;
 		boolean spaceToContinue;
 		boolean dontWriteText;
@@ -55,6 +57,8 @@ public class TutorialSteps {
 			this.confirm = confirm;
 			this.actions = null;
 			this.highlights = null;
+			this.highlightChars = null;
+			this.highlightTokens = null;
 			this.spaceToContinue = spaceToContinue;
 			this.dontWriteText = dontWriteText;
 			this.timeToPause = timeToPause;
@@ -131,6 +135,16 @@ public class TutorialSteps {
 			latestStep.highlights = new ArrayList<CurrentHighlight>();
 		}
 		latestStep.highlights.add(ch);
+	}
+	
+	public void addHighlightChars(List<String> highlightChars){
+		Step latestStep = steps.get(steps.size()-1);
+		latestStep.highlightChars = new ArrayList<String>(highlightChars);
+	}
+	
+	public void addHighlightTokens(List<String> highlightTokens){
+		Step latestStep = steps.get(steps.size()-1);
+		latestStep.highlightTokens = new ArrayList<String>(highlightTokens);
 	}
 
 	public void setFinishGame(boolean finishGame) {

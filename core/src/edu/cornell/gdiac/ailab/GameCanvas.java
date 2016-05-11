@@ -1029,6 +1029,19 @@ public class GameCanvas {
 	public void drawCircle(float x, float y, float diam, Color color){
 		this.drawTexture(whiteCircle, x, y, diam, diam, color);
 	}
+	
+	public void drawHighlightCharacter(Texture texture, float x, float y, Color color, float scale){
+		spriteBatch.setColor(color.r, color.g, color.b, 0.4f);
+		float width = texture.getWidth() * scale;
+		float height = texture.getHeight() * scale;
+		width += 34;
+		spriteBatch.draw(whiteCircle, x - 17, y - 13, width, height);
+	}
+	
+	public void drawHighlightToken(Texture texture, float x, float y, float width, float height, Color color){
+		spriteBatch.setColor(color.r, color.g, color.b, 0.4f);
+		spriteBatch.draw(whiteCircle, x-10, y-10,width + 20, height+20);
+	}
 
 	/**
 	 * Enumeration of supported BlendStates.
