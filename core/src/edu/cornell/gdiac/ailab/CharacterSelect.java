@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import edu.cornell.gdiac.ailab.AnimationNode.CharacterState;
 import edu.cornell.gdiac.ailab.GameSaveState.CharacterData;
@@ -110,7 +111,7 @@ public class CharacterSelect extends Menu{
 		int index = getSelectedCharacterIndex();
 		
 		if (index < 0 || index > characters.size()){
-			System.out.println("FIX THIS");
+			System.out.println("FIX THIS - CharacterSelect");
 		}
 		
 		float curCharacterRatio = (index+1f) * RELATIVE_CHARACTERS_SIZE / (characters.size()+1);
@@ -262,6 +263,9 @@ public class CharacterSelect extends Menu{
 			}
 			options[i].draw(canvas);
 		}
+		
+		TextureRegion temp = null;
+		
 		for (int i=0; i < characters.size(); i++){
 			FilmStrip toDraw = characters.get(i).animation.getTexture(CharacterState.ACTIVE, InGameState.NORMAL);
 			Option charOption = characterOptions.get(i);
@@ -269,6 +273,7 @@ public class CharacterSelect extends Menu{
 				toDraw = characters.get(i).animation.getTexture(CharacterState.ACTIVE, InGameState.NORMAL);
 			}
 			if (toDraw != null){
+				temp = toDraw;
 				float heightToWidthRatio = toDraw.getRegionHeight()*1f/toDraw.getRegionWidth();
 				float relativeHeight = charOption.getWidth()*heightToWidthRatio;
 				charOption.height = relativeHeight;
@@ -341,7 +346,6 @@ public class CharacterSelect extends Menu{
 			float iconY = canvasH * (0.325f);
 			canvas.drawTexture(cd1.getIcon(), iconX, iconY, iconWidth, iconHeight, Color.WHITE);
 		}
-		
 	}
 
 }

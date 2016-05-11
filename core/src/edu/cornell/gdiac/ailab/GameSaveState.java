@@ -292,7 +292,6 @@ public class GameSaveState {
 		
 		Object availChars = gameSaveStateData.get("availableCharacters");
 		availableCharacters = (ArrayList<Integer>) availChars;
-		System.out.println(availChars);
 
 		Object unlockChars = gameSaveStateData.get("unlockableCharacters");
 		unlockableCharacters = (ArrayList<Integer>) unlockChars;

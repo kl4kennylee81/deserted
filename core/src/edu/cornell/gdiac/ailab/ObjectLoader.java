@@ -398,6 +398,14 @@ public class ObjectLoader {
 			String effectName = (String) effect.get("name");
 			Integer effectNumRounds = (Integer) effect.get("numRounds");
 			Integer magnitude = (Integer) effect.get("magnitude");
+			String effectIconTextureName = (String) effect.get("effectIcon");
+			Texture effectIconTexture = null;
+			if (effectIconTextureName != null){
+				manager.load(effectIconTextureName, Texture.class);
+				assets.add(effectIconTextureName);
+				manager.finishLoading();
+				effectIconTexture = manager.get(effectIconTextureName,Texture.class);
+			}
 			
 			String iconTextureName = (String) action.get("icon");
 			manager.load(iconTextureName, Texture.class);
@@ -411,11 +419,11 @@ public class ObjectLoader {
 				Integer persistingNumRounds = (Integer) persisting.get("numRounds");
 				Float moveSpeed = (Float) ((Double) persisting.get("moveSpeed")).floatValue();
 					actionToAdd = new PersistingAction(name, cost, damage, range, size,
-							Pattern.valueOf(pattern), path, oneHit, canBlock,needsToggle, new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName),
+							Pattern.valueOf(pattern), path, oneHit, canBlock,needsToggle, new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName, effectIconTexture),
 							description, persistingNumRounds, moveSpeed,iconTexture);
 			}else{
 				actionToAdd = new Action(name, cost, damage, range, size, Pattern.valueOf(pattern), oneHit, canBlock,needsToggle,
-						new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName), description,path,iconTexture);
+						new Effect(effectNumRounds, Type.valueOf(eff), magnitude, effectName, effectIconTexture), description,path,iconTexture);
 			}
 			
 			Integer shieldNumberHits = (Integer) action.get("shieldNumberHits");

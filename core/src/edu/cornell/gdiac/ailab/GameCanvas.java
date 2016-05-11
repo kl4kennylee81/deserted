@@ -46,6 +46,8 @@ public class GameCanvas {
 	/** Font object for displaying images */
 	private BitmapFont displayFont;
 	
+	private RadialSprite radialSprite;
+	
 	private GlyphLayout layout;
 	/** White texture */
 	private Texture white;
@@ -99,6 +101,7 @@ public class GameCanvas {
 		active = false;
 		spriteBatch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
+		radialSprite = new RadialSprite(null);
 		
 		// Set the projection matrix (for proper scaling)
 		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
@@ -1072,6 +1075,13 @@ public class GameCanvas {
 
 	public void setTutorialFont(BitmapFont font) {
 		tutorialFont = font;
+	}
+	
+	public void drawRadial(TextureRegion region, float x, float y, float width, float height, float angle){
+		this.draw(region, Color.GRAY, x, y, width, height);
+		radialSprite.setTextureRegion(region);
+		radialSprite.draw(spriteBatch, x, y, width, height, angle);
+		
 	}
 	
 }

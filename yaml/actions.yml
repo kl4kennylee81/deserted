@@ -161,6 +161,7 @@
     name: Slowed
     numRounds: 3
     magnitude: -4
+    effectIcon: models/effect_icons/slow_icon.png
   description: Target a single square to slow down enemy
   animationId: 0
   icon: models/action_tokens/attack_icon.png
@@ -183,6 +184,7 @@
     name: Slowed
     numRounds: 2
     magnitude: -1
+    effectIcon: models/effect_icons/slow_icon.png
   description: Launch a projectile 3 tiles straight ahead for 2 damage and slows
   animationId: 0
   projectileAnimationId: 2
@@ -427,6 +429,7 @@
     name: Dazed
     numRounds: 1
     magnitude: 1
+    effectIcon: models/effect_icons/dazed_icon.png
   description: Daze your opponent loses a slot.
   animationId: 0
   icon: models/action_tokens/attack_icon.png
@@ -487,6 +490,7 @@
     name: Hasten
     numRounds: 3
     magnitude: 4
+    effectIcon: models/effect_icons/hasten_icon.png
   description: Target a single square to Hasten an ally
   animationId: 0
   icon: models/action_tokens/attack_icon.png
@@ -635,6 +639,7 @@
     name: Slowed
     numRounds: 3
     magnitude: -4
+    effectIcon: models/effect_icons/slow_icon.png
   description: Target a single square to slow down enemy
   animationId: 0
   icon: models/action_tokens/attack_icon.png

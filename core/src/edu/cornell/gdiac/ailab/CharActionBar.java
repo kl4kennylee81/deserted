@@ -63,6 +63,10 @@ public class CharActionBar {
 	
 	private static final float Y_SPACING = 0.08f;
 	
+	private static final float RELATIVE_EFFECT_ICON_WIDTH = 0.025f;
+	
+	private static final int CIRCLE_ANGLE = 360;
+	
 	// make this in terms of the max speed after applying speed modifier
 	public static float MAX_TIME = 30;
 	
@@ -647,7 +651,7 @@ public class CharActionBar {
 	public void draw(GameCanvas canvas,int count,Color barColor,Color fillColor, 
 			float castPosition,boolean leftside,boolean isSelecting,List<ActionNode> selectingActions, 
 			Action curSelectedAction, List<ActionNode> queuedActions,
-			List<ActionNode> castActions, float lerpVal){
+			List<ActionNode> castActions, float lerpVal, List<Effect> effects){
 		
 		float xPosBar = getX(canvas);
 		float yPosBar = getY(canvas,count);
@@ -676,6 +680,19 @@ public class CharActionBar {
 		this.drawQueuedActions(canvas, count, selectingActions);
 		this.drawQueuedActions(canvas,count,queuedActions);
 		this.drawQueuedActions(canvas, count, castActions);
+		
+		if (effects!= null && !effects.isEmpty()){
+			float x = xPosBar + this.getWidth(canvas) + 0.015f * canvas.getWidth();
+			float y = yPosBar - 0.005f * canvas.getHeight();
+			float width = RELATIVE_EFFECT_ICON_WIDTH * canvas.getWidth();
+			float height = width;
+			for (Effect e : effects){
+				TextureRegion textureRegion = new TextureRegion(e.icon);
+				float angle = e.ratioGone() * CIRCLE_ANGLE;
+				canvas.drawRadial(textureRegion, x, y, width, height, angle);
+				x += 0.03f * canvas.getWidth();
+			}
+		}
 	}
 	
 }
