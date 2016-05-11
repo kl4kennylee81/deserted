@@ -246,15 +246,17 @@ public class GameplayController {
         	shields.draw(canvas,true,true);
         	
         	drawCharacters(canvas);
+        	
+        	animations.draw(canvas,board,inGameState);
     	} else {
     		shields.draw(canvas,false,false);
-        	
+    		
+    		animations.draw(canvas,board,inGameState);
+    		
     		drawCharacters(canvas);
     		
     		shields.draw(canvas,true,false);
     	}
-    	
-        animations.draw(canvas,board,inGameState);
         
         textMessages.draw(canvas,board);
         if (prompt != null){
@@ -281,6 +283,14 @@ public class GameplayController {
 		}
     }
     
+    private boolean isHitByAnimation(Character c){
+    	for (AnimationNode an : animations.pool){
+    		if (an.xPos == c.xPosition && an.yPos == c.yPosition){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
     
     //Change how i do this.
     //This needs to be done so characters below show over characters above and selection menu
@@ -293,7 +303,7 @@ public class GameplayController {
     		for (Character c : characters){
     			
     			if (c.yPosition == i && c.isAlive()){
-    				c.draw(canvas,board,shouldDim,this.inGameState);
+    				c.draw(canvas,board,shouldDim,this.inGameState,isHitByAnimation(c));
     			}
     			if (c.getShadowY() == i && c.needShadow() && c.isAlive()){
     				c.drawShadowCharacter(canvas,board,this.inGameState);

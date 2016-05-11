@@ -82,7 +82,7 @@ public class Shields {
 	}
 	
 	
-	public void hitShield(int coordX, int coordY, boolean leftside){
+	public void hitShield(int coordX, int coordY, boolean leftside, TextMessage textMessages){
 		List<ActionNode> shieldsToCheck = leftside ? rightShields : leftShields;
 
 		//Character attacks from leftside, hits rightside
@@ -91,6 +91,7 @@ public class Shields {
 		    if (!an.hitThisRound && shieldContains(an,coordX,coordY)){
 				an.shieldHitsLeft-=1;
 				an.hitThisRound = true;
+				textMessages.addOtherMessage("SHIELDED", coordX, coordY, 2*TextMessage.SECOND, Color.BROWN);
 			}
 		}
 		resetShieldedCoordinates();

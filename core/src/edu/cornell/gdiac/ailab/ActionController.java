@@ -456,7 +456,7 @@ public class ActionController {
 			
 			if (isBlocked(path[i].x, path[i].y)){
 				if (a_node.action.damage > 0){
-					shields.hitShield(path[i].x, path[i].y, selected.leftside);
+					shields.hitShield(path[i].x, path[i].y, selected.leftside,textMessages);
 				}
 				hitThisRound = true;
 			} else {
