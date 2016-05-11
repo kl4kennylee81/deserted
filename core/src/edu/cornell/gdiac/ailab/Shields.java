@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
@@ -13,6 +14,10 @@ public class Shields {
 	
 	private static final float SHIELD_WIDTH = 0.0125f;
 	private static final float SHIELD_Y_OFFSET = 0.02f;
+	
+	private static final int EXPECTED_TILE_WIDTH = 140;
+	private static final int EXPECTED_TILE_HEIGHT = 67;
+	private static final float SHIELD_X_OFFSET = 0.03f;
 
 	private List<ActionNode> leftShields;
 	private List<ActionNode> rightShields;
@@ -145,6 +150,7 @@ public class Shields {
 		// so it looks like its covering the back of the 2nd tile aka the front of the 1st.
 		//int shieldX = (int)(leftside ?tileW*an.curX + tileW:tileW*an.curX);
 		int shieldX = (int)(tileW*an.curX);
+		shieldX += (int) (SHIELD_X_OFFSET * canvas.getWidth() * (botY));
 		int shieldY = (int)(tileH *botY);
 		shieldY -= (int) (SHIELD_Y_OFFSET * canvas.getHeight());
 		// since the shield is being sheared it just needs to be offset by the X and not by the shearing amount which
@@ -152,24 +158,30 @@ public class Shields {
 		// which also takes into the x displacement from being sheared.
 		shieldX = (int) (shieldX + board.getBoardOffsetX(canvas));
 		shieldY = (int) (shieldY + board.getBoardOffsetY(canvas));
-		//canvas.drawTileArrow(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
+		//canvas.drawTileArrow(shieldX, shieldY, shieldW, shieldH, Color.GRAY)
+		
+		float widthRatio = tileW/EXPECTED_TILE_WIDTH;
+		float heightRatio = tileH/EXPECTED_TILE_HEIGHT;
+		
+		Texture toDraw = null;
 		if (top){
 			if (numWithin == 1){
-				canvas.drawShield(an.action.shieldTextureTile1State1Top, shieldX, shieldY);
+				toDraw = an.action.shieldTextureTile1State1Top;
 			} else if (numWithin == 2){
-				canvas.drawShield(an.action.shieldTextureTile2State1Top, shieldX, shieldY);
+				toDraw = an.action.shieldTextureTile2State1Top;
 			} else if (numWithin == 3){
-				canvas.drawShield(an.action.shieldTextureTile3State1Top, shieldX, shieldY);
+				toDraw = an.action.shieldTextureTile3State1Top;
 			}
 		} else {
 			if (numWithin == 1){
-				canvas.drawShield(an.action.shieldTextureTile1State1Bottom, shieldX, shieldY);
+				toDraw = an.action.shieldTextureTile1State1Bottom;
 			} else if (numWithin == 2){
-				canvas.drawShield(an.action.shieldTextureTile2State1Bottom, shieldX, shieldY);
+				toDraw = an.action.shieldTextureTile2State1Bottom;
 			} else if (numWithin == 3){
-				canvas.drawShield(an.action.shieldTextureTile3State1Bottom, shieldX, shieldY);
+				toDraw = an.action.shieldTextureTile3State1Bottom;
 			}
 		}
+		canvas.drawTexture(toDraw, shieldX, shieldY, toDraw.getWidth()*widthRatio, toDraw.getHeight()*heightRatio, Color.WHITE);
 	}
 	
 }
