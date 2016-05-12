@@ -98,6 +98,8 @@ public class CharActionBar {
 	ArrayList<Option> tempActionOptions;
 	ArrayList<Action> tempActions;
 	
+	boolean leftHighlighted;
+	
 	// pass in seconds in waiting, seconds in casting, and number of slots
 	// generates a cast bar with a length and cast point
 	CharActionBar(int numSlots,float waitTime,float castTime){

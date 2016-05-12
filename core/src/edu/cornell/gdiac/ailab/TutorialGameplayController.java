@@ -262,12 +262,34 @@ public class TutorialGameplayController extends GameplayController{
         if(tutorialSteps.currStep() != null){
         	List<String> highlightChars = tutorialSteps.currStep().highlightChars;
         	List<String> highlightTokens = tutorialSteps.currStep().highlightTokens;
+        	List<String> highlightLeft = tutorialSteps.currStep().highlightLeft;
+        	List<String> highlightRight = tutorialSteps.currStep().highlightRight;
+        	List<String> highlightWhole = tutorialSteps.currStep().highlightWhole;
+
         	for(Character c: characters){
         		if(highlightChars != null && highlightChars.contains(c.name) && tutorialSteps.showHighlights){
         			c.isHighlighted = true;
         		}
         		else{
         			c.isHighlighted = false;
+        		}
+        		if(highlightLeft != null && highlightLeft.contains(c.name) && tutorialSteps.showHighlights){
+        			c.highlightLeft = true;
+        		}
+        		else{
+        			c.highlightLeft = false;
+        		}
+        		if(highlightWhole != null && highlightWhole.contains(c.name) && tutorialSteps.showHighlights){
+        			c.highlightWhole = true;
+        		}
+        		else{
+        			c.highlightWhole = false;
+        		}
+        		if(highlightRight != null && highlightRight.contains(c.name) && tutorialSteps.showHighlights){
+        			c.highlightRight = true;
+        		}
+        		else{
+        			c.highlightRight = false;
         		}
         	}
         	if(selectionMenuController.menu != null){

@@ -111,13 +111,14 @@ public class Option implements GUIElement{
 		} 
 		
 		if (image != null){
+			if(isHighlighted){
+				canvas.drawHighlightToken(image, x, y, width, height, Color.YELLOW);
+				canvas.drawLeftArrow(x + (width + 10), y + (width / 2) + 10, Color.GOLD);
+			}
 			Color imageColor = this.getColorImages();
 			//canvas.drawTexture(image, x, y, width,height, Color.WHITE);
 			canvas.drawTexture(image, x, y, width,height, imageColor);
-			if(isHighlighted){
-				//canvas.drawHighlightToken(image, x, y, width, height, Color.GOLD);
-				canvas.drawLeftArrow(x + (width + 10), y + (width / 2) + 10, Color.GOLD);
-			}
+			
 		}
 	}
 	

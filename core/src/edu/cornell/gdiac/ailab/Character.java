@@ -86,6 +86,9 @@ public class Character implements GUIElement {
 	boolean needsDataOutput;
 
 	boolean isHighlighted = false;
+	boolean highlightLeft = false;
+	boolean highlightRight = false;
+	boolean highlightWhole = false;
 	
 	CharacterState charState;
 	
@@ -815,13 +818,17 @@ public class Character implements GUIElement {
 				increasing = true;
 			}
 		}
+
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
 		Coordinate c = board.offsetBoard(canvas,tileW*xPosition,tileH*yPosition);
 		float canvasX = c.x;
 		float canvasY = c.y;
 		c.free();
-		
+		if(isHighlighted){
+			float charScale = getCharScale(canvas,texture,board);
+			canvas.drawHighlightCharacter(texture, canvasX, canvasY, Color.YELLOW, charScale);
+		}
 		Color color = getColor(shouldDim);
 		if (isHitByAnimation){
 			color = color.cpy().mul(1,1,1,0.5f);
@@ -861,9 +868,23 @@ public class Character implements GUIElement {
 			canvas.drawCharacter(texture, canvasX, canvasY, highlightColor, leftside,charScale);
 		}
 		
-		if(isHighlighted){
-			float charScale = getCharScale(canvas,texture,board);
-			canvas.drawHighlightCharacter(texture, canvasX, canvasY, Color.YELLOW, charScale);
+
+		
+		if(highlightLeft){
+			int xPos = (int) actionBar.getX(canvas);
+			int yPos = (int) actionBar.getY(canvas, 1);
+			canvas.drawBarHighlight(xPos-70, yPos, actionBar.getWaitWidth(canvas)+70,  actionBar.getBarHeight(canvas), Color.YELLOW);
+		}
+		if(highlightWhole){
+			int xPos = (int) actionBar.getX(canvas);
+			int yPos = (int) actionBar.getY(canvas, 1);
+			
+			canvas.drawBarHighlight(xPos-70, yPos, actionBar.getTotalWidth(canvas) + 70,  actionBar.getBarHeight(canvas), Color.YELLOW);
+		}
+		if(highlightRight){
+			int xPos = (int) actionBar.getCastPointX(canvas);
+			int yPos = (int) actionBar.getY(canvas, 1);
+			canvas.drawBarHighlight(xPos + 8, yPos, actionBar.getCastWidth(canvas),  actionBar.getBarHeight(canvas), Color.YELLOW);
 		}
 		//use Jons logic for getting textures and then continue doing the same thing with the textures
 	}
