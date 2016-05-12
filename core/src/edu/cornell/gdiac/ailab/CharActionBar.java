@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
@@ -91,6 +92,12 @@ public class CharActionBar {
 	
 	float healthProportion;
 	
+	ArrayList<Option> actionOptions;
+	ArrayList<Action> actions;
+	
+	ArrayList<Option> tempActionOptions;
+	ArrayList<Action> tempActions;
+	
 	// pass in seconds in waiting, seconds in casting, and number of slots
 	// generates a cast bar with a length and cast point
 	CharActionBar(int numSlots,float waitTime,float castTime){
@@ -110,6 +117,12 @@ public class CharActionBar {
 		
 		
 		cancel_token = new Texture(Constants.CANCEL_TOKEN);
+		
+		actionOptions = new ArrayList<Option>();
+		actions = new ArrayList<Action>();
+		
+		tempActionOptions = new ArrayList<Option>();
+		tempActions = new ArrayList<Action>();
 	}
 	
 	public int getTotalNumSlots(){
@@ -498,7 +511,7 @@ public class CharActionBar {
 			List<ActionNode> listActions,float xPosBar,float yPosBar,Color barColor,boolean drawBoxes){
 		int numberSlots = curSlot;
 		for (ActionNode an:listActions){
-			numberSlots = this.drawSlot(canvas,numberSlots,an.action,xPosBar,yPosBar,barColor,drawBoxes);
+			numberSlots = this.drawSlot(canvas,numberSlots,an,xPosBar,yPosBar,barColor,drawBoxes);
 		}
 		return numberSlots;
 	}
@@ -516,30 +529,38 @@ public class CharActionBar {
 //	}
 	
 	public void drawSlotBox(GameCanvas canvas,int curSlots,
-			Action curAction,float xPosBar,float yPosBar,Color slotColor){
+			Action curAction,float xPosBar,float yPosBar,Color slotColor,boolean addOption){
 		float intervalSize = this.getSlotWidth(canvas);
 		float slotX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlots;
 		float actionSlotWidth = intervalSize*curAction.cost;
 		float actionSlotHeight = this.getBarFillHeight(canvas);
 		
 		canvas.drawBox(slotX,yPosBar,actionSlotWidth,actionSlotHeight,slotColor);
+		
+		if (addOption){
+			tempActions.add(curAction);
+			Option o = new Option("","");
+			o.setBounds(slotX/canvas.getWidth(), yPosBar/canvas.getHeight(), actionSlotWidth/canvas.getWidth(), actionSlotHeight/canvas.getHeight());
+			o.checkNormalBounds = true;
+			tempActionOptions.add(o);
+		}
 	}
 	
 	public int drawSlot(GameCanvas canvas,int curSlots,
-			Action curAction,float xPosBar,float yPosBar,Color slotColor,boolean drawBoxes){
-		if (curAction != null && curSlots + curAction.cost <= this.getTotalNumSlots()){
+			ActionNode actionNode,float xPosBar,float yPosBar,Color slotColor,boolean drawBoxes){
+		if (actionNode != null && curSlots + actionNode.action.cost <= this.getTotalNumSlots()){
 			float tickHeight = this.getBarHeight(canvas)/CharActionBar.ACTIONBAR_HEIGHT_CONTAINER_FILL_RATIO;
 			float tickY = yPosBar;
 			float intervalSize = this.getSlotWidth(canvas);
 			float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlots;
-			
+
 			if (drawBoxes){
-				this.drawSlotBox(canvas,curSlots,curAction,xPosBar,yPosBar,slotColor);
+				this.drawSlotBox(canvas,curSlots,actionNode.action,xPosBar,yPosBar,slotColor,true);
 			}
 			
 			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);		
 			
-			return curSlots + curAction.cost;
+			return curSlots + actionNode.action.cost;
 		}
 		else{
 			return curSlots;
@@ -559,7 +580,7 @@ public class CharActionBar {
 				
 				if (drawBoxes){
 					Color selectingColor = Color.WHITE.cpy().lerp(slotColor,lerpVal);
-					this.drawSlotBox(canvas,curSlots,curAction,xPosBar,yPosBar,selectingColor);
+					this.drawSlotBox(canvas,curSlots,curAction,xPosBar,yPosBar,selectingColor,false);
 				}
 				
 				canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);		
@@ -597,12 +618,11 @@ public class CharActionBar {
 	public void drawSlots(GameCanvas canvas,List<ActionNode> castActions,
 			List<ActionNode> queuedActions,List<ActionNode> selectingActions,Action curAction,
 			int count,Color barColor,boolean isSelecting,boolean drawBoxes,float lerpVal){
-		
 		float xPosBar = getX(canvas);
 		float yPosBar = getFillY(canvas,count);
 		
 		this.drawDazedSlots(canvas,xPosBar,yPosBar,barColor);
-			
+		
 		int curSlots = 0;
 		curSlots = drawSlots(canvas,curSlots,castActions,xPosBar,yPosBar,Constants.CAST_COLOR.cpy(),drawBoxes);
 		curSlots = drawSlots(canvas,curSlots,queuedActions,xPosBar,yPosBar,Color.WHITE.cpy(),drawBoxes);
@@ -611,6 +631,7 @@ public class CharActionBar {
 			curSlots = this.drawSelectingActionSlot(canvas, curSlots, curAction, xPosBar, yPosBar, Constants.CAST_COLOR.cpy(), drawBoxes,lerpVal);
 		}
 		this.drawRemainingSlots(canvas, curSlots, xPosBar, yPosBar, barColor);
+		
 	}
 	
 	public void drawQueuedActions(GameCanvas canvas,int count,List<ActionNode> queuedActions){
@@ -646,6 +667,18 @@ public class CharActionBar {
 		}
 	}
 	
+	public void drawHighlightedOption(GameCanvas canvas){
+		for (Option o : actionOptions){
+			if (o.currentlyHovered){
+				float x = o.xPosition*canvas.width;
+				float y = o.yPosition*canvas.height;
+				float width = o.width*canvas.width;
+				float height = o.height*canvas.height;
+				//canvas.drawBox(x, y, width, height, Color.GOLD.cpy().mul(1,1,1,0.9f));
+			}
+		}
+	}
+	
 	
 	// draw gauge style 
 	public void draw(GameCanvas canvas,int count,Color barColor,Color fillColor, 
@@ -664,6 +697,9 @@ public class CharActionBar {
 		this.drawWaitFill(canvas,xPosBar,count,barColor);
 		this.drawCastFill(canvas, xPosBar, count, barColor,castPosition);
 		
+		tempActionOptions.clear();
+		tempActions.clear();
+		
 		// draw action queuing
 		this.drawSlots(canvas, castActions,queuedActions,
 				selectingActions,curSelectedAction,count, barColor,isSelecting,true,lerpVal);
@@ -676,6 +712,15 @@ public class CharActionBar {
 		
 		this.drawSlots(canvas, castActions,queuedActions,
 				selectingActions,curSelectedAction,count, barColor,isSelecting,false,lerpVal);
+		
+		if (!isSelecting){
+			this.drawHighlightedOption(canvas);
+		}
+		
+		actionOptions.clear();
+		actionOptions.addAll(tempActionOptions);
+		actions.clear();
+		actions.addAll(tempActions);
 		
 		this.drawQueuedActions(canvas, count, selectingActions);
 		this.drawQueuedActions(canvas,count,queuedActions);

@@ -196,9 +196,11 @@ public class SelectionMenu {
 				selectedAction = i;
 			}
 		}
-		else if (canDoAction(actions[i], usableNumSlots)){
-			setChoosingTarget(false);
-			selectedAction = i;
+		else if (i >= 0 && i < actions.length){
+			if (canDoAction(actions[i], usableNumSlots) || !isSelecting){
+				setChoosingTarget(false);
+				selectedAction = i;
+			} 
 		}
 	}
 	
