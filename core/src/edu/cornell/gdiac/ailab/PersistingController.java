@@ -172,7 +172,7 @@ public class PersistingController extends ActionController{
 			}
 			
 			if ((isBlocked(curIntX, curIntY) && canBlock)){
-				shields.hitShield(curIntX, curIntY, selected.leftside);
+				shields.hitShield(curIntX, curIntY, selected.leftside,textMessages);
 				selected.popPersistingCast(selectedActionNode);
 				return;
 			}

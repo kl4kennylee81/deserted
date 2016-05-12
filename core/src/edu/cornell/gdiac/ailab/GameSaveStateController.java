@@ -40,6 +40,7 @@ public class GameSaveStateController {
 		
 		gameSaveState = new GameSaveState();
 		loadGameSaveState();
+		instance = this;
 	}
 	
 	public static GameSaveStateController getInstance(){
@@ -68,6 +69,17 @@ public class GameSaveStateController {
 	
 	public List<CharacterData> getAvailableCharactersData(){
 		return gameSaveState.getAvailableCharactersData();
+	}
+	
+	public List<Integer> getSelectedCharactersId(){
+		return gameSaveState.selectedCharacters;
+	}
+	
+	public void setSelectedCharactersId(int[] ids){
+		gameSaveState.selectedCharacters.clear();
+		for (int i = 0; i < ids.length; i++){
+			gameSaveState.selectedCharacters.add(ids[i]);
+		}
 	}
 	
 	public boolean containsLevel(String levelName){

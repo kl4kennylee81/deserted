@@ -57,6 +57,10 @@ public class GameplayController {
     protected String levelName;
     private static Texture DESCRIPTION_BOX_TEXTURE;
     
+    Integer winIn;
+    Integer surviveFor;
+    
+    boolean temp;
     
     public static enum InGameState {
 		NORMAL,
@@ -96,6 +100,8 @@ public class GameplayController {
         
         shields = new Shields(board);
         
+        temp = false;
+        
 		// Create the subcontrollers
         actionController = new ActionController(board,characters,textMessages,animations,shields);
         selectionMenuController = new SelectionMenuController(board,characters);
@@ -105,6 +111,11 @@ public class GameplayController {
         effectController = new EffectController();
         mouseOverController.init(screen, board);
         warningTime = 0;
+    }
+    
+    public void setWinCondition(Integer winIn, Integer surviveFor){
+    	this.winIn = winIn;
+    	this.surviveFor = surviveFor;
     }
     
     public void update(){
@@ -154,6 +165,7 @@ public class GameplayController {
     		
     		if (InputController.pressedEnter()){
     			System.out.println("ENTER 1");
+    			temp = true;
     			inGameState = InGameState.DONE;
     			if (this.isTutorial){
 	    			if (this.leftsideDead()){
@@ -239,10 +251,24 @@ public class GameplayController {
         screen.draw(canvas);
     	board.draw(canvas);
     	
-    	shields.draw(canvas);
     	
-    	drawCharacters(canvas);
-        animations.draw(canvas,board,inGameState);
+    	if (inGameState == InGameState.SELECTION){
+    		shields.draw(canvas,false,true);
+        	
+        	shields.draw(canvas,true,true);
+        	
+        	drawCharacters(canvas);
+        	
+        	animations.draw(canvas,board,inGameState);
+    	} else {
+    		shields.draw(canvas,false,false);
+    		
+    		animations.draw(canvas,board,inGameState);
+    		
+    		drawCharacters(canvas);
+    		
+    		shields.draw(canvas,true,false);
+    	}
         
         textMessages.draw(canvas,board);
         if (prompt != null){
@@ -250,25 +276,55 @@ public class GameplayController {
         }
         //screen should be drawn after greyed out characters
         //but before selected characters
+        float turnX = canvas.getWidth() * 0.9f;
+    	float turnY1 = canvas.getHeight() * 0.9f;
+    	float turnY2 = canvas.getHeight() * 0.85f;
+        if (winIn != null){
+        	canvas.drawCenteredText("Win in", turnX, turnY1, Color.BLACK);
+        	canvas.drawCenteredText(winIn - turnsCompleted() + " turns", turnX, turnY2, Color.BLACK);
+        } else if (surviveFor != null){
+        	canvas.drawCenteredText("Survive for", turnX, turnY1, Color.BLACK);
+        	canvas.drawCenteredText(surviveFor - turnsCompleted() + " turns", turnX, turnY2, Color.BLACK);
+        }
+        
+        if (temp){
+        	System.out.println("check here");
+        }
         
         
-		if (this.gameOver() && this.rightsideDead() && inGameState == InGameState.WARNING){
+		if (this.gameOver() && this.playerWon() && inGameState == InGameState.WARNING){
     		//canvas.drawCenteredText("You have Won", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
     		CompletionScreen cs = CompletionScreen.getInstance();
     		GameSaveStateController gss = GameSaveStateController.getInstance();
+    		gss.beatLevel(levelName);
     		cs.skill_point = gss.getLevelSP(levelName);
     		cs.characters_unlocked = gss.getLevelUnlockedChars(levelName);
     		cs.setIsWin(true);
     		cs.draw(canvas);
     	}
-		else if (this.gameOver() && this.leftsideDead() && inGameState == InGameState.WARNING){
+		else if (this.gameOver() && this.playerLost() && inGameState == InGameState.WARNING){
     		//canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);	
+			CompletionScreen cs = CompletionScreen.getInstance();
+			cs.setIsWin(false);
+			cs.draw(canvas);
+		}
+		else if (this.gameOver() && this.tieGame() && inGameState == InGameState.WARNING){
+    		//canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);	
+			System.out.println("gameplaycontroller tie game make a completion screen for it");
 			CompletionScreen cs = CompletionScreen.getInstance();
 			cs.setIsWin(false);
 			cs.draw(canvas);
 		}
     }
     
+    private boolean isHitByAnimation(Character c){
+    	for (AnimationNode an : animations.pool){
+    		if (an.xPos == c.xPosition && an.yPos == c.yPosition){
+    			return true;
+    		}
+    	}
+    	return false;
+    }
     
     //Change how i do this.
     //This needs to be done so characters below show over characters above and selection menu
@@ -281,7 +337,7 @@ public class GameplayController {
     		for (Character c : characters){
     			
     			if (c.yPosition == i && c.isAlive()){
-    				c.draw(canvas,board,shouldDim,this.inGameState);
+    				c.draw(canvas,board,shouldDim,this.inGameState,isHitByAnimation(c));
     			}
     			if (c.getShadowY() == i && c.needShadow() && c.isAlive()){
     				c.drawShadowCharacter(canvas,board,this.inGameState);
@@ -323,13 +379,44 @@ public class GameplayController {
     	}
     	return dead;
     }
+    public boolean turnGameOver(){
+    	if (winIn != null){
+    		return turnsCompleted() >= winIn;
+    	}
+    	if (surviveFor != null){
+    		return turnsCompleted() >= surviveFor;
+    	}
+    	return false;
+    }
+    
+    public int turnsCompleted(){
+    	return actionBarController.turnsCompleted;
+    }
     
     public boolean gameOver(){
-    	return (leftsideDead() || rightsideDead());
+    	return (leftsideDead() || rightsideDead() || turnGameOver());
     }
     
     public boolean playerWon(){
+    	if (surviveFor != null){
+    		return !leftsideDead();
+    	}
     	return rightsideDead() && !leftsideDead();
+    }
+    
+    public boolean tieGame(){
+    	System.out.println("make tieGame check more rigorous gameplaycontroller");
+    	return rightsideDead() && leftsideDead();
+    }
+    
+    public boolean playerLost(){
+    	if (surviveFor != null){
+    		return leftsideDead();
+    	}
+    	if (winIn != null){
+    		return !rightsideDead();
+    	}
+    	return !rightsideDead() && leftsideDead();
     }
     
     public boolean isDone(){

@@ -74,7 +74,7 @@ public class SelectionMenuController {
 
 		boardWidth = board.width;
 		boardHeight = board.height;
-		nop = new Action("NOP", 1, 0, 0, 1, Pattern.NOP, false, false,false, new Effect(0, Type.REGULAR, 0, "Nope"), "no action",null);
+		nop = new Action("NOP", 1, 0, 0, 1, Pattern.NOP, false, false,false, new Effect(0, Type.REGULAR, 0, "Nope",null), "no action",null);
 	}
 
 	private void setChoosingTarget(boolean isChoosingTarget){

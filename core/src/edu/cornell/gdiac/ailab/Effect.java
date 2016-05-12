@@ -1,5 +1,7 @@
 package edu.cornell.gdiac.ailab;
 
+import com.badlogic.gdx.graphics.Texture;
+
 /** How to create effects:
  * 1: Create a new value in the Type enum for the effect
  * 2: Create a new case in processEffect() in EffectController
@@ -24,11 +26,16 @@ public class Effect {
 	/** Number of rounds left for this effect */
 	float roundsLeft;
 	
+	float maxRounds;
+	
 	/** Cast bar position when it was first applied */
 	float castPosition;
 	
 	/** Name of what happened */
 	String name;
+	
+	/** icon */
+	Texture icon;
 	
 	public static enum Type {
 		BROKEN,
@@ -39,18 +46,20 @@ public class Effect {
 	
 	public static float FRAMES_PER_SECOND = 60;
 	
-	public Effect(float d, Type t, int mag, String n){
+	public Effect(float d, Type t, int mag, String n, Texture texture){
 		roundsLeft = d;
+		maxRounds = d;
 		type = t;
 		magnitude = mag;
 		name = n;
 		isNew = true;
 		isDone = false;
+		icon = texture;
 	}
 	
 	/** Always use this when adding an effect to a character from an actionNode */
 	public Effect clone(){
-		return new Effect(roundsLeft, type, magnitude, name);
+		return new Effect(roundsLeft, type, magnitude, name, icon);
 	}
 	
 	public static float getSecondtoFrames(float sec){
@@ -59,6 +68,10 @@ public class Effect {
 	
 	public String toString(){
 		return name;
+	}
+	
+	public float ratioGone(){
+		return 1 - roundsLeft / maxRounds;
 	}
 	
 }

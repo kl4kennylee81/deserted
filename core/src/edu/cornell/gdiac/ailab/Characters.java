@@ -26,7 +26,7 @@ public class Characters extends LinkedList<Character>{
 			Color fillColor= c.getActionBarColor(shouldDim, Color.WHITE.cpy());	
 			c.actionBar.draw(canvas, count, barColor,fillColor,c.castPosition,c.leftside,c.isSelecting(),
 					c.selectionMenu.getQueuedActions(),c.selectionMenu.getSelectedAction(),c.getQueuedActions(),
-					c.castActions,c.selectionMenu.getLerpVal());
+					c.castActions,c.selectionMenu.getLerpVal(), c.effects);
 			
 			c.drawHealth(canvas, count, shouldDim);
 			c.drawQueuedActions(canvas,count);

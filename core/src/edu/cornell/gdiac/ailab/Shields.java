@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
@@ -12,6 +13,19 @@ import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 public class Shields {
 	
 	private static final float SHIELD_WIDTH = 0.0125f;
+	private static final float SHIELD_Y_OFFSET = 0.02f;
+	
+	private static final int EXPECTED_TILE_1_WIDTH = 200;
+	private static final int EXPECTED_TILE_1_HEIGHT = 80;
+	private static final int EXPECTED_TILE_2_WIDTH = 210;
+	private static final int EXPECTED_TILE_2_HEIGHT = 80;
+	private static final int EXPECTED_TILE_3_WIDTH = 200;
+	private static final int EXPECTED_TILE_3_HEIGHT = 77;
+	private static final float SHIELD_X_OFFSET = 0.03f;
+	
+	private static final float TILE_1_X_OFFSET = 0.015f;
+	private static final float TILE_2_X_OFFSET = 0.03f;
+	private static final float TILE_3_X_OFFSET = 0.03f;
 
 	private List<ActionNode> leftShields;
 	private List<ActionNode> rightShields;
@@ -68,7 +82,7 @@ public class Shields {
 	}
 	
 	
-	public void hitShield(int coordX, int coordY, boolean leftside){
+	public void hitShield(int coordX, int coordY, boolean leftside, TextMessage textMessages){
 		List<ActionNode> shieldsToCheck = leftside ? rightShields : leftShields;
 
 		//Character attacks from leftside, hits rightside
@@ -77,12 +91,27 @@ public class Shields {
 		    if (!an.hitThisRound && shieldContains(an,coordX,coordY)){
 				an.shieldHitsLeft-=1;
 				an.hitThisRound = true;
-				
-				if (an.shieldHitsLeft == 0){
-					iterator.remove();
-				}
+				textMessages.addOtherMessage("SHIELDED", coordX, coordY, 2*TextMessage.SECOND, Color.BROWN);
 			}
 		}
+		resetShieldedCoordinates();
+	}
+	
+	public void removeShields(){
+		for (Iterator<ActionNode> iterator = leftShields.iterator(); iterator.hasNext();) {
+		    ActionNode an = iterator.next();
+			if (an.shieldHitsLeft <= 0){
+				iterator.remove();
+			}
+		}
+		
+		for (Iterator<ActionNode> iterator = rightShields.iterator(); iterator.hasNext();) {
+		    ActionNode an = iterator.next();
+			if (an.shieldHitsLeft <= 0){
+				iterator.remove();
+			}
+		}
+		
 		resetShieldedCoordinates();
 	}
 	
@@ -123,16 +152,16 @@ public class Shields {
 		}
 	}
 	
-	public void draw(GameCanvas canvas){
+	public void draw(GameCanvas canvas, boolean top, boolean fade){
 		for (ActionNode s : leftShields){
-			drawShield(canvas,s,true);
+			drawShield(canvas,s,true,fade,top);
 		}
 		for (ActionNode s : rightShields){
-			drawShield(canvas,s,false);
+			drawShield(canvas,s,false,fade,top);
 		}
 	}
 	
-	private void drawShield(GameCanvas canvas,ActionNode an,boolean leftside){
+	private void drawShield(GameCanvas canvas,ActionNode an,boolean leftside,boolean fade,boolean top){
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
 		Coordinate c;	
@@ -142,15 +171,57 @@ public class Shields {
 		int shieldH = (int)(tileH * numWithin);
 		// since we draw from the lower left corner. for the left side you draw 1 tile up
 		// so it looks like its covering the back of the 2nd tile aka the front of the 1st.
-		int shieldX = (int)(leftside ?tileW*an.curX + tileW:tileW*an.curX);
+		//int shieldX = (int)(leftside ?tileW*an.curX + tileW:tileW*an.curX);
+		int shieldX = (int)(tileW*an.curX);
+		shieldX += (int) (SHIELD_X_OFFSET * canvas.getWidth() * (botY));
 		int shieldY = (int)(tileH *botY);
-		
 		// since the shield is being sheared it just needs to be offset by the X and not by the shearing amount which
 		// board offset does. thus we just do it manually by adding on the amount we offset rather than offset board
 		// which also takes into the x displacement from being sheared.
 		shieldX = (int) (shieldX + board.getBoardOffsetX(canvas));
 		shieldY = (int) (shieldY + board.getBoardOffsetY(canvas));
-		canvas.drawTileArrow(shieldX, shieldY, shieldW, shieldH, Color.GRAY);
+		//canvas.drawTileArrow(shieldX, shieldY, shieldW, shieldH, Color.GRAY)
+		float widthRatio = 1;
+		float heightRatio = 1;
+		if (numWithin == 1){
+			shieldX += canvas.getWidth() * TILE_1_X_OFFSET;
+			widthRatio = tileW/EXPECTED_TILE_1_WIDTH;
+			heightRatio = tileH/EXPECTED_TILE_1_HEIGHT;
+		} else if (numWithin == 2){
+			shieldX += canvas.getWidth() * TILE_2_X_OFFSET;
+			widthRatio = tileW/EXPECTED_TILE_2_WIDTH;
+			heightRatio = tileH/EXPECTED_TILE_2_HEIGHT;
+		} else if (numWithin == 3){
+			shieldX += canvas.getWidth() * TILE_3_X_OFFSET;
+			widthRatio = tileW/EXPECTED_TILE_3_WIDTH;
+			heightRatio = tileH/EXPECTED_TILE_3_HEIGHT;
+		}
+		
+		Texture toDraw = null;
+		if (top){
+			if (numWithin == 1){
+				toDraw = an.action.shieldTextureTile1State1Top;
+			} else if (numWithin == 2){
+				toDraw = an.action.shieldTextureTile2State1Top;
+			} else if (numWithin == 3){
+				toDraw = an.action.shieldTextureTile3State1Top;
+			}
+		} else {
+			if (numWithin == 1){
+				toDraw = an.action.shieldTextureTile1State1Bottom;
+			} else if (numWithin == 2){
+				toDraw = an.action.shieldTextureTile2State1Bottom;
+			} else if (numWithin == 3){
+				toDraw = an.action.shieldTextureTile3State1Bottom;
+			}
+		}
+		
+		Color col = Color.WHITE;
+		if (fade){
+			col = Color.WHITE.cpy().mul(1,1,1,0.3f);
+		}
+		
+		canvas.drawTexture(toDraw, shieldX, shieldY, toDraw.getWidth()*widthRatio, toDraw.getHeight()*heightRatio, col);
 	}
 	
 }

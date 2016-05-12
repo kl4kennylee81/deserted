@@ -704,14 +704,14 @@ public class Character implements GUIElement {
 	}
 	
 	/** currently the character draw function only draws the character and the persisting actions **/
-	public void draw(GameCanvas canvas,GridBoard board, boolean shouldDim,InGameState gameState){
+	public void draw(GameCanvas canvas,GridBoard board, boolean shouldDim,InGameState gameState, boolean isHitByAnimation){
 		if (!isAlive()){
 			return;
 		}
 		if(hasPersisting()){
 			drawPersisting(canvas,board,gameState);
 		}
-		this.drawCharacter(canvas, board, shouldDim, gameState);
+		this.drawCharacter(canvas, board, shouldDim, gameState, isHitByAnimation);
 	}
 	
 	/** temporary while menu is blocked by characters */
@@ -806,7 +806,7 @@ public class Character implements GUIElement {
 		return getFilmStrip(InGameState.PAUSED);
 	}
 	
-	public void drawCharacter(GameCanvas canvas,GridBoard board, boolean shouldDim,InGameState gameState){
+	public void drawCharacter(GameCanvas canvas,GridBoard board, boolean shouldDim,InGameState gameState,boolean isHitByAnimation){
 		if (increasing){
 			lerpVal+=0.02;
 			if (lerpVal >= 0.5){
@@ -830,6 +830,9 @@ public class Character implements GUIElement {
 			canvas.drawHighlightCharacter(texture, canvasX, canvasY, Color.YELLOW, charScale);
 		}
 		Color color = getColor(shouldDim);
+		if (isHitByAnimation){
+			color = color.cpy().mul(1,1,1,0.5f);
+		}
 		Color highlightColor = getHighlightColor(shouldDim);
 		//Decide what animation to draw
 		//Will sometimes be null when current animation is done, we just need to call again
