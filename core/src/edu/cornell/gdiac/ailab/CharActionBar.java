@@ -87,6 +87,8 @@ public class CharActionBar {
 	
 	float healthProportion;
 	
+	boolean leftHighlighted;
+	
 	// pass in seconds in waiting, seconds in casting, and number of slots
 	// generates a cast bar with a length and cast point
 	CharActionBar(int numSlots,float waitTime,float castTime){
@@ -676,6 +678,8 @@ public class CharActionBar {
 		this.drawQueuedActions(canvas, count, selectingActions);
 		this.drawQueuedActions(canvas,count,queuedActions);
 		this.drawQueuedActions(canvas, count, castActions);
+		
+		
 	}
 	
 }

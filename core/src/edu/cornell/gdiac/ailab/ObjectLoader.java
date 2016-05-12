@@ -784,12 +784,25 @@ public class ObjectLoader {
 			
 			ArrayList<String> highlightChars = (ArrayList<String>) step.get("highlightCharacters");
 			ArrayList<String> highlightTokens = (ArrayList<String>) step.get("highlightTokens");
+			ArrayList<String> highlightLeft = (ArrayList<String>) step.get("highlightLeft");
+			ArrayList<String> highlightRight = (ArrayList<String>) step.get("highlightRight");
+			ArrayList<String> highlightWhole = (ArrayList<String>) step.get("highlightWhole");
+
 			
 			if(highlightChars != null){
 				ts.addHighlightChars(highlightChars);
 			}
 			if(highlightTokens != null){
 				ts.addHighlightTokens(highlightTokens);
+			}
+			if(highlightLeft != null){
+				ts.addHighlightLeft(highlightLeft);
+			}
+			if(highlightRight != null){
+				ts.addHighlightRight(highlightRight);
+			}
+			if(highlightWhole != null){
+				ts.addHighlightWhole(highlightWhole);
 			}
 
 			if (actions != null){

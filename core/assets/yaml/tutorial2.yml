@@ -22,23 +22,14 @@
   text: "When you get hit, your wait time decreases."
   paused: true
   spaceToContinue: true
-  highlightRegions:
-    - xPos: 0.14
-      yPos: 0.88
-      width: 0.36
-      height: 0.1
-      arrow: up
+  highlightLeft: ["Tutorial_part_3"]
 
 3:
   text: ""
   paused: false
   spaceToContinue: false
-  highlightRegions:
-    - xPos: 0.14
-      yPos: 0.88
-      width: 0.36
-      height: 0.1
-      arrow: up
+  highlightLeft: ["Tutorial_part_3"]
+
   
 4:
   text: "If you get hit while charging an attack, your attack gets CANCELLED!"

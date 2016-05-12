@@ -44,6 +44,9 @@ public class TutorialSteps {
 		List<CurrentHighlight> highlights;
 		List<String> highlightChars;
 		List<String> highlightTokens;
+		List<String> highlightLeft;
+		List<String> highlightRight;
+		List<String> highlightWhole;
 		boolean confirm;
 		boolean spaceToContinue;
 		boolean dontWriteText;
@@ -146,6 +149,21 @@ public class TutorialSteps {
 		Step latestStep = steps.get(steps.size()-1);
 		latestStep.highlightTokens = new ArrayList<String>(highlightTokens);
 	}
+	public void addHighlightLeft(List<String> highlightLeft){
+		Step latestStep = steps.get(steps.size()-1);
+		latestStep.highlightLeft = new ArrayList<String>(highlightLeft);
+	}
+	
+	public void addHighlightRight(List<String> highlightRight){
+		Step latestStep = steps.get(steps.size()-1);
+		latestStep.highlightRight = new ArrayList<String>(highlightRight);
+	}
+	public void addHighlightWhole(List<String> highlightWhole){
+		Step latestStep = steps.get(steps.size()-1);
+		latestStep.highlightWhole = new ArrayList<String>(highlightWhole);
+	}
+	
+
 
 	public void setFinishGame(boolean finishGame) {
 		this.finishGame = finishGame;

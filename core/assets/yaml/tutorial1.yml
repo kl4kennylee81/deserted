@@ -28,34 +28,21 @@
   spaceToContinue: true
   paused: true
   highlightCharacters: ["Tutorial_part_1"]
-  highlightRegions:
-    - xPos: 0.14
-      yPos: 0.89
-      width: 0.66
-      height: 0.1
-      arrow: up
+  highlightWhole: ["Tutorial_part_1"]
+
 
 4:
   text: "Wait during this phase."
   spaceToContinue: true
   paused: true
-  highlightRegions:
-    - xPos: 0.14
-      yPos: 0.89
-      width: 0.36
-      height: 0.1
-      arrow: up
+  highlightLeft: ["Tutorial_part_1"]
 
 5:
   text: "Attack during this phase."
   spaceToContinue: true
   paused: true
-  highlightRegions:
-    - xPos: 0.5
-      yPos: 0.89
-      width: 0.30
-      height: 0.1
-      arrow: up
+  highlightActionBar: 2
+  highlightRight: ["Tutorial_part_1"]
 
 6:
   text: "When the meter reaches the center, the character must plan actions."
@@ -63,12 +50,8 @@
   paused: false
   spaceToContinue: true
   highlightCharacters: ["Tutorial_part_1"]
-  highlightRegions:
-    - xPos: 0.14
-      yPos: 0.89
-      width: 0.66
-      height: 0.1
-      arrow: up
+  highlightWhole: ["Tutorial_part_1"]
+
 
 #7:
 #  text: "When the meter reaches the center, the character must select actions."
@@ -99,12 +82,8 @@
   text: "Slots on the Action Bar determine when actions execute."
   spaceToContinue: true
   paused: true
-  highlightRegions:
-    - xPos: 0.5
-      yPos: 0.88
-      width: 0.30
-      height: 0.1
-      arrow: up
+  highlightRight: ["Tutorial_part_1"]
+
 
 #8:
 #  text: ""
