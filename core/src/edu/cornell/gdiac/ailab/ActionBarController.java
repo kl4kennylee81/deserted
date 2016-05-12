@@ -12,8 +12,11 @@ public class ActionBarController {
 	boolean isAISelection;
 	boolean isAttack;
 	
+	int turnsCompleted;
+	
 	public ActionBarController(List<Character> chars) {
 		this.characters = chars;
+		turnsCompleted = 0;
 	}
 	
 	public void update(){
@@ -26,6 +29,9 @@ public class ActionBarController {
 			}
 			if (c.castPosition > 1){
 				c.resetCastPosition();
+				if (c.leftside){
+					turnsCompleted++;
+				}
 			}
 			float oldCastPosition = c.castPosition;
 			
@@ -61,6 +67,9 @@ public class ActionBarController {
 				
 				// Reset once done with attacks
 				c.resetCastPosition();
+				if (c.leftside){
+					turnsCompleted++;
+				}
 			}
 		}
 	}

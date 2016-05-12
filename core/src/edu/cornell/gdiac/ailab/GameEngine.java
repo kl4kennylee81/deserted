@@ -252,6 +252,7 @@ public class GameEngine implements Screen {
 	        		curGameplayController = tutorialGameplayController;
 	        		gameState = GameState.PLAY;
 	        	}
+	        	curGameplayController.setWinCondition(ld.winIn, ld.surviveFor);
     		}
     	}
     	// start matching with keywords to get to levels, options, etc. atm its just editors
@@ -512,9 +513,6 @@ public class GameEngine implements Screen {
     	curGameplayController.update();
     	if (curGameplayController.isDone()){
     		//check if levelb eaten and update savestate
-    		if (curGameplayController.playerWon()){
-    			gameSaveStateController.beatLevel(curGameplayController.levelName);
-    		}
 			gameState = GameState.AFTER;
     	}
     	if (InputController.pressedP()){

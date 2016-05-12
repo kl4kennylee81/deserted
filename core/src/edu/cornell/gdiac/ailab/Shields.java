@@ -100,14 +100,14 @@ public class Shields {
 	public void removeShields(){
 		for (Iterator<ActionNode> iterator = leftShields.iterator(); iterator.hasNext();) {
 		    ActionNode an = iterator.next();
-			if (an.shieldHitsLeft == 0){
+			if (an.shieldHitsLeft <= 0){
 				iterator.remove();
 			}
 		}
 		
 		for (Iterator<ActionNode> iterator = rightShields.iterator(); iterator.hasNext();) {
 		    ActionNode an = iterator.next();
-			if (an.shieldHitsLeft == 0){
+			if (an.shieldHitsLeft <= 0){
 				iterator.remove();
 			}
 		}

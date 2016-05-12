@@ -73,7 +73,7 @@
   slots: 5
   availableActions:
   - 0
-  - 17
+  - 22
   - 5
   - 24
   texture: models/CHARA_5.png
