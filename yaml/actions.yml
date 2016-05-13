@@ -15,7 +15,7 @@
     magnitude: 0
   description: Move your character one unit
   animationId: 0
-  icon: models/action_tokens/movement_icon.png
+  icon: models/action_tokens/movement_token.png
 1:
   name: Straight - Tutorial
   cost: 1
@@ -37,7 +37,7 @@
     moveSpeed: 0.06
   animationId: 0
   projectileAnimationId: 2
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/projectile_token.png
 2:
   name: Diagonal
   cost: 2
@@ -55,7 +55,7 @@
     magnitude: 0
   description: Instant diagonal attack
   animationId: 1
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/fire_token.png
 3:
   name: Single
   cost: 3
@@ -74,7 +74,7 @@
     magnitude: 0
   description: Target a single square for 3 damage. Breaks enemy shield.
   animationId: 0
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/lightning_token.png
 4:
   name: Firebolt
   cost: 2
@@ -92,7 +92,7 @@
     magnitude: 0
   description: Hit 4 tiles straight ahead for 2 damage.
   animationId: 1
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/fire_token.png
 
 5:
   name: Diagonal
@@ -115,7 +115,7 @@
     moveSpeed: 0.05
   animationId: 0
   projectileAnimationId: 2
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/projectile_token.png
 
 6:
   name: Shield-3
@@ -143,7 +143,7 @@
     moveSpeed: 0.0
   animationId: 0
   projectileAnimationId: 2
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/shield_token.png
 
 7:
   name: Slow
@@ -164,7 +164,7 @@
     effectIcon: models/effect_icons/slow_icon.png
   description: Target a single square to slow down enemy
   animationId: 0
-  icon: models/action_tokens/attack_icon.png
+  icon: models/effect_icons/slow_icon.png
 
 8:
   name: Straight Slow
@@ -214,7 +214,7 @@
     moveSpeed: 0.0
   animationId: 0
   projectileAnimationId: 2
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/shield_token.png
 
 10:
   name: Shiv
@@ -233,7 +233,7 @@
     magnitude: 0
   description: Launch a projectile 2 tiles straight ahead for 1 damage
   animationId: 1
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/fire_token.png
 
 11:
   name: L - PATH
@@ -257,7 +257,7 @@
     moveSpeed: 0.05
   animationId: 0
   projectileAnimationId: 2
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/projectile_token.png
 
 12:
   name: zigzag - INSTANT
@@ -276,8 +276,8 @@
     numRounds: 0
     magnitude: 0
   description: instant zig zag hit path 1 damage
-  animationId: 0
-  icon: models/action_tokens/attack_icon.png
+  projectileAnimationId: 2
+  icon: models/action_tokens/projectile_token.png
 
 13:
   name: Lightning Column
@@ -296,7 +296,7 @@
     magnitude: 0
   description: Send Lightning Down on the same row as this character's on the enemy's side
   animationId: 0
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/lightning_token.png
 
 14:
   name: Firebolt
@@ -319,7 +319,7 @@
     moveSpeed: 0.06
   animationId: 0
   projectileAnimationId: 2
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/projectile_token.png
 
 15:
   name: Spirit Barrier
@@ -345,7 +345,7 @@
     moveSpeed: 0.0
   animationId: 0
   projectileAnimationId: 2
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/shield_token.png
 
 16:
   name: Guard
@@ -371,7 +371,7 @@
     moveSpeed: 0.0
   animationId: 0
   projectileAnimationId: 2
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/shield_token.png
 
 17:
   name: Avalanche
@@ -391,7 +391,7 @@
     magnitude: 0
   description: Deal 2 damage in a cone shaped T.
   animationId: 1
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/fire_token.png
 
 18:
   name: Shattering Earth
@@ -411,7 +411,7 @@
     magnitude: 0
   description: Deal 3 damage to a particular tile and Breaks the tile.
   animationId: 0
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/shatter_token.png
 
 19:
   name: Lose a Slot
@@ -432,7 +432,7 @@
     effectIcon: models/effect_icons/dazed_icon.png
   description: Daze your opponent loses a slot.
   animationId: 0
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/lightning_token.png
 
 20:
   name: Eruption
@@ -452,7 +452,7 @@
     magnitude: 0
   description: Invoke fire on the tile 2 squares in front and the square behind it.
   animationId: 0
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/fire_token.png
 
 21:
   name: V Destroy
@@ -472,7 +472,7 @@
     magnitude: 0
   description: Invoke fire in a V shape in front of you deal 2 damage.
   animationId: 1
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/fire_token.png
 
 22:
   name: Hasten
@@ -493,7 +493,7 @@
     effectIcon: models/effect_icons/hasten_icon.png
   description: Target a single square to Hasten an ally
   animationId: 0
-  icon: models/action_tokens/attack_icon.png
+  icon: models/effect_icons/hasten_icon.png
 
 23:
   name: SideShot
@@ -517,7 +517,7 @@
     moveSpeed: 0.05
   animationId: 0
   projectileAnimationId: 2
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/projectile_token.png
 
 24:
   name: ScatterShot
@@ -537,7 +537,7 @@
     magnitude: 0
   description: Hits adjacent rows 2 squares forward for 2 damage.
   animationId: 0
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/shatter_token.png
 
 25:
   name: Splash
@@ -557,7 +557,7 @@
     magnitude: 0
   description: Fire a Cross shape for 2 damage
   animationId: 0
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/lightning_token.png
 
 26:
   name: Shattering Earth
@@ -577,7 +577,7 @@
     magnitude: 0
   description: Deal 3 damage to a single target.
   animationId: 0
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/shatter_token.png
 
 27:
   name: SideShot
@@ -601,7 +601,7 @@
     moveSpeed: 0.05
   animationId: 0
   projectileAnimationId: 2
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/projectile_token.png
 
 28:
   name: Avalanche
@@ -621,7 +621,7 @@
     magnitude: 0
   description: Deal 2 damage in a cone shaped T.
   animationId: 0
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/fire_token.png
   
 29:
   name: Single-Slow
@@ -642,26 +642,6 @@
     effectIcon: models/effect_icons/slow_icon.png
   description: Target a single square to slow down enemy
   animationId: 0
-  icon: models/action_tokens/attack_icon.png
-  
-30:
-  name: Diagonal Bolt
-  cost: 2
-  damage: 2
-  range: 10
-  size: 1
-  pattern: INSTANT
-  oneHit: false
-  needsToggle: true
-  canBlock: false
-  path: "0,0 2,1 3,2 4,3"
-  effect:
-    type: REGULAR
-    name: Regular
-    numRounds: 0
-    magnitude: 0
-  description: Lightning strike in a diagonal pattern, breaks enemy shield.
-  animationId: 0
-  icon: models/action_tokens/attack_icon.png
+  icon: models/action_tokens/fire_token.png
 ...
 

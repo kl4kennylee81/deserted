@@ -33,13 +33,13 @@ characters:
     actionTree:
     - actionId: 0
     - actionId: 7
-    - actionId: 10
-    - actionId: 30
+    - actionId: 20
+    - actionId: 5
     currentActions:
     - 0
     - 7
-    - 10
-    - 30
+    - 20
+    - 5
   2:
     characterId: 2
     totalSP: 0
