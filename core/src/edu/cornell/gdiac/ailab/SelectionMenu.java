@@ -41,7 +41,7 @@ public class SelectionMenu {
 	
 	private static final float RELATIVE_DESCRIPTION_X_POS = 0.035f;
 	
-	private static final float RELATIVE_DESCRIPTION_WIDTH = 0.15f;
+	private static final float RELATIVE_DESCRIPTION_WIDTH = 0.12f;
 	
 	private static final float RELATIVE_DESCRIPTION_HEIGHT = 0.25f;
 	
@@ -512,17 +512,7 @@ public class SelectionMenu {
 				float descript_y = RELATIVE_DESCRIPTION_Y_POS * h;
 				float descript_width = RELATIVE_DESCRIPTION_WIDTH *w;
 				float descript_height = RELATIVE_DESCRIPTION_HEIGHT * h;
-				float middle_x = descript_x + descript_width/2;
-				canvas.drawTexture(DESCRIPTION_BACKGROUND, descript_x, descript_y, descript_width, descript_height, Color.WHITE);
-				canvas.drawCenteredTexture(action.menuIcon, middle_x, descript_y+descript_height,50,50, Color.WHITE);
-				//canvas.drawCenteredText(action, descript_x, descript_y, Color.WHITE);
-				float name_y = (RELATIVE_DESCRIPTION_Y_POS+relative_offset*3)*h;
-				canvas.drawCenteredText(action.name, middle_x,name_y, Color.WHITE);
-				float dmg_y = (RELATIVE_DESCRIPTION_Y_POS+relative_offset*2)*h;
-				canvas.drawCenteredText("DMG: "+action.damage, middle_x,dmg_y, Color.WHITE);
-				float cost_y = (RELATIVE_DESCRIPTION_Y_POS+relative_offset*1)*h;
-				canvas.drawCenteredText("COST: "+action.cost, middle_x,cost_y, Color.WHITE);
-				
+				canvas.drawAction(action, descript_x, descript_y, descript_width, descript_height);
 			}
 		}
 	}

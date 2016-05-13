@@ -214,6 +214,7 @@ public class GameSaveState {
 		boolean needsSelect;
 		Integer winIn;
 		Integer surviveFor;
+		String backgroundTexture;
 		
 		public boolean needsSelect(){
 			boolean ns = needsSelect;
@@ -291,6 +292,8 @@ public class GameSaveState {
 			ld.needsSelect = levData.get("needsSelect") == null ? false : (boolean) levData.get("needsSelect");
 			ld.winIn = (Integer) levData.get("winIn");
 			ld.surviveFor = (Integer) levData.get("surviveFor");
+			ld.backgroundTexture = (String) levData.get("background");
+
 			this.levels.add(ld);
 		}
 		

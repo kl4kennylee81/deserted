@@ -249,7 +249,11 @@ public class GameplayController {
 			//getY: iterate over characters, and when character matches selected character thats the number to pass to getY
 		}
         screen.draw(canvas);
-    	board.draw(canvas);
+        board.draw(canvas);
+        /*
+        if (inGameState == InGameState.SELECTION){
+        	board.draw(canvas);
+        }*/
     	
     	
     	if (inGameState == InGameState.SELECTION){
