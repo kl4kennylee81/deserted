@@ -239,7 +239,11 @@ public class GameEngine implements Screen {
     			characterSelectController.reset();
     			gameState = GameState.SELECT;
     		} else {
-	        	initializeCanvas(Constants.BCKGD_TEXTURE, Constants.SELECT_FONT_FILE);
+    			if (ld.backgroundTexture == null){
+    				initializeCanvas(Constants.BCKGD_TEXTURE, Constants.SELECT_FONT_FILE);
+    			} else {
+    				initializeCanvas(ld.backgroundTexture, Constants.SELECT_FONT_FILE);
+    			}
 	        	Level level = null;
 	    		level = this.getLevel(levelName);
 	    		
@@ -755,6 +759,11 @@ public class GameEngine implements Screen {
 	 */
     private void initializeCanvas(String texture_msg, String fontFile) { 
     	canvas.setFont(new BitmapFont());
+    	if (!manager.isLoaded(texture_msg)){
+    		manager.load(texture_msg,Texture.class);
+    		assets.add(texture_msg);
+    		manager.finishLoading();
+    	}
 		Texture texture = manager.get(texture_msg, Texture.class);
 		texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 		canvas.setBackground(texture);

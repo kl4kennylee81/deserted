@@ -17,8 +17,6 @@
  */
 package edu.cornell.gdiac.ailab;
 
-import javax.swing.Action;
-
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Align;
@@ -47,6 +45,8 @@ public class GameCanvas {
 	private BitmapFont displayFont;
 	
 	private RadialSprite radialSprite;
+	
+	private ActionDescription actionDescription;
 	
 	private GlyphLayout layout;
 	/** White texture */
@@ -103,6 +103,7 @@ public class GameCanvas {
 		spriteBatch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
 		radialSprite = new RadialSprite(null);
+		actionDescription = new ActionDescription();
 		
 		// Set the projection matrix (for proper scaling)
 		spriteBatch.getProjectionMatrix().setToOrtho2D(0, 0, getWidth(), getHeight());
@@ -1087,7 +1088,10 @@ public class GameCanvas {
 		this.draw(region, Color.GRAY, x, y, width, height);
 		radialSprite.setTextureRegion(region);
 		radialSprite.draw(spriteBatch, x, y, width, height, angle);
-		
+	}
+	
+	public void drawAction(Action action, float x, float y, float width, float height){
+		actionDescription.draw(this,action,x,y,width,height);
 	}
 	
 }

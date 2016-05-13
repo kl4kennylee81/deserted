@@ -87,6 +87,7 @@ levels:
     levelName: tutorial5
     beaten: false
     boss: false
+    background: backgrounds/environment.png
   5:
     levelName: tutorial6
     beaten: false
