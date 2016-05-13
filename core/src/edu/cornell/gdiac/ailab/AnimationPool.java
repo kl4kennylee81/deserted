@@ -15,6 +15,8 @@ public class AnimationPool{
 	//List of AnimationNodes to draw
 	List<AnimationNode> pool;
 	
+	private static final float ANIMATION_BOARD_SCALE = 0.85f;
+	
 	public AnimationPool(){
 		pool = new LinkedList<AnimationNode>();
 	}
@@ -25,7 +27,7 @@ public class AnimationPool{
 	
 	public float getBoardScale(GameCanvas canvas,float textureWidth,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
-		return tileW/textureWidth;
+		return (tileW*ANIMATION_BOARD_SCALE)/textureWidth;
 	}
 	
 	@SuppressWarnings("unchecked")

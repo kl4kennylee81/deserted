@@ -275,6 +275,7 @@ public class ObjectLoader {
 	 */
 	private void loadKeysFromActions(HashMap<Integer, HashMap<String, Object>> actions) {
 		for (Integer actionId: availableActions.keySet()) {
+			System.out.println(actionId);
 			Integer animationId = (Integer) (actions.get(actionId).get("animationId"));
 			availableAnimations.put(animationId, null);
 			Integer projectileAnimationId = (Integer) (actions.get(actionId).get("projectileAnimationId"));
