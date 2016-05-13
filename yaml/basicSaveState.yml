@@ -97,16 +97,19 @@ levels:
     levelName: Level1
     beaten: false
     boss: false
+    needsSelect: true
     winIn: 1
   11:
     levelName: Level2
     beaten: false
     boss: false
+    needsSelect: true
     surviveFor: 1
   12:
     levelName: Level3
     beaten: false
     boss: false
+    needsSelect: true
     gainedSP: 1
     unlockableCharacter: 2
   13:
@@ -118,6 +121,7 @@ levels:
     levelName: Level5
     beaten: false
     boss: false
+    needsSelect: true
     gainedSP: 1
     unlockableCharacter: 5
   15:
