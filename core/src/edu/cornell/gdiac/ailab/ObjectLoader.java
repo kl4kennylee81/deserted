@@ -275,7 +275,6 @@ public class ObjectLoader {
 	 */
 	private void loadKeysFromActions(HashMap<Integer, HashMap<String, Object>> actions) {
 		for (Integer actionId: availableActions.keySet()) {
-			System.out.println(actionId);
 			Integer animationId = (Integer) (actions.get(actionId).get("animationId"));
 			availableAnimations.put(animationId, null);
 			Integer projectileAnimationId = (Integer) (actions.get(actionId).get("projectileAnimationId"));
@@ -386,6 +385,7 @@ public class ObjectLoader {
 			Integer range = (Integer) action.get("range");
 			Integer size = (Integer) action.get("size");
 			String pattern = (String) action.get("pattern");
+			Boolean notSymmetric = action.get("notSymmetric") == null ? false : (Boolean) action.get("notSymmetric");
 			Boolean oneHit = (Boolean) action.get("oneHit");
 			Boolean canBlock = (Boolean) action.get("canBlock");
 			Boolean needsToggle = (Boolean) action.get("needsToggle");

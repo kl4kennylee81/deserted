@@ -16,6 +16,7 @@ public class Action implements GUIElement {
 	boolean canBlock;
 	boolean needsToggle;
 	boolean isBuff;
+	boolean notSymmetric;
 	Pattern pattern;
 	Effect effect;
 	String description;
@@ -56,7 +57,8 @@ public class Action implements GUIElement {
 		SINGLE,
 		NOP,
 		PROJECTILE,
-		INSTANT
+		INSTANT,
+		SINGLEPATH
 	}
 	
 	public Action(String name, int cost, int damage, int range, int size, 
@@ -83,7 +85,7 @@ public class Action implements GUIElement {
 			Effect effect, String description, String strpath,Texture icon){
 		this(name, cost, damage, range, size, pattern, oneHit, canBlock,needsToggle, effect, description,icon);
 		
-		if ((this.pattern == Pattern.PROJECTILE||this.pattern == Pattern.INSTANT)&&strpath!=""){
+		if ((this.pattern == Pattern.PROJECTILE||this.pattern == Pattern.INSTANT||this.pattern == Pattern.SINGLEPATH)&&strpath!=""){
 			// path string for a straight range 3 looks like this "0,0 1,0 2,0, 3,0" with 0,0 being the character current position"
 			// the coordinate relative to the character will be converted to actual board coordinate when turned into an action node
 			String[] stringPath = strpath.split(" ");
@@ -130,6 +132,8 @@ public class Action implements GUIElement {
 			else{
 				return Math.abs(startX - 1 - targetX) == Math.abs(startY - targetY);
 			}
+		case SINGLEPATH:
+			return this.singlePathCanTarget(startX,startY,targetX,targetY,leftside,board);
 		default:
 			return isOnPath(startX, startY, targetX, targetY, leftside);
 		}		
@@ -211,6 +215,15 @@ public class Action implements GUIElement {
 		int diffX = Math.abs(targetX - startX);
 		int diffY = Math.abs(targetY - startY);
 		return (diffX+diffY) < this.range;
+	}
+	
+	public boolean singlePathCanTarget(int startX,int startY, int targetX,int targetY, boolean leftside, GridBoard board){
+		if (notSymmetric){
+			return singleCanTarget(startX,startY,targetX,targetY,leftside,board) || singleCanTarget(startX,startY-1,targetX,targetY,leftside,board); 
+		} else {
+			return singleCanTarget(startX,startY,targetX,targetY,leftside,board);
+		}
+		
 	}
 	
 	public void setAnimation(Animation animation){

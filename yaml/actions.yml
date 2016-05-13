@@ -622,7 +622,7 @@
   description: Deal 2 damage in a cone shaped T.
   animationId: 0
   icon: models/action_tokens/fire_token.png
-  
+
 29:
   name: Single-Slow
   cost: 3
@@ -643,5 +643,47 @@
   description: Target a single square to slow down enemy
   animationId: 0
   icon: models/action_tokens/fire_token.png
+30:
+  name: Single Cross
+  cost: 1
+  damage: 1
+  range: 5
+  size: 1
+  pattern: SINGLEPATH
+  path: "0,0 1,0 0,1 -1,0 0,-1"
+  oneHit: false
+  needsToggle: true
+  canBlock: false
+  isBuff: false
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 2
+    magnitude: 0
+  description: Cross Attack
+  animationId: 1
+  icon: models/action_tokens/lightning_token.png
+31:
+  name: Single Square
+  cost: 1
+  damage: 1
+  range: 4
+  size: 1
+  pattern: SINGLEPATH
+  path: "0,0 1,0 0,1 1,1"
+  notSymmetric: true
+  oneHit: false
+  needsToggle: true
+  canBlock: false
+  isBuff: false
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 2
+    magnitude: 0
+  description: Square Attack
+  animationId: 1
+  icon: models/action_tokens/lightning_token.png
+
 ...
 
