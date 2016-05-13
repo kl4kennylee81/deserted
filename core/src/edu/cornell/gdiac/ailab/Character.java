@@ -86,6 +86,9 @@ public class Character implements GUIElement {
 	boolean needsDataOutput;
 
 	boolean isHighlighted = false;
+	boolean highlightLeft = false;
+	boolean highlightRight = false;
+	boolean highlightWhole = false;
 	
 	CharacterState charState;
 	
@@ -701,14 +704,14 @@ public class Character implements GUIElement {
 	}
 	
 	/** currently the character draw function only draws the character and the persisting actions **/
-	public void draw(GameCanvas canvas,GridBoard board, boolean shouldDim,InGameState gameState){
+	public void draw(GameCanvas canvas,GridBoard board, boolean shouldDim,InGameState gameState, boolean isHitByAnimation){
 		if (!isAlive()){
 			return;
 		}
 		if(hasPersisting()){
 			drawPersisting(canvas,board,gameState);
 		}
-		this.drawCharacter(canvas, board, shouldDim, gameState);
+		this.drawCharacter(canvas, board, shouldDim, gameState, isHitByAnimation);
 	}
 	
 	/** temporary while menu is blocked by characters */
@@ -803,7 +806,7 @@ public class Character implements GUIElement {
 		return getFilmStrip(InGameState.PAUSED);
 	}
 	
-	public void drawCharacter(GameCanvas canvas,GridBoard board, boolean shouldDim,InGameState gameState){
+	public void drawCharacter(GameCanvas canvas,GridBoard board, boolean shouldDim,InGameState gameState,boolean isHitByAnimation){
 		if (increasing){
 			lerpVal+=0.02;
 			if (lerpVal >= 0.5){
@@ -815,14 +818,21 @@ public class Character implements GUIElement {
 				increasing = true;
 			}
 		}
+
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
 		Coordinate c = board.offsetBoard(canvas,tileW*xPosition,tileH*yPosition);
 		float canvasX = c.x;
 		float canvasY = c.y;
 		c.free();
-		
+		if(isHighlighted){
+			float charScale = getCharScale(canvas,texture,board);
+			canvas.drawHighlightCharacter(texture, canvasX, canvasY, Color.YELLOW, charScale);
+		}
 		Color color = getColor(shouldDim);
+		if (isHitByAnimation){
+			color = color.cpy().mul(1,1,1,0.5f);
+		}
 		Color highlightColor = getHighlightColor(shouldDim);
 		//Decide what animation to draw
 		//Will sometimes be null when current animation is done, we just need to call again
@@ -858,9 +868,23 @@ public class Character implements GUIElement {
 			canvas.drawCharacter(texture, canvasX, canvasY, highlightColor, leftside,charScale);
 		}
 		
-		if(isHighlighted){
-			float charScale = getCharScale(canvas,texture,board);
-			canvas.drawHighlightCharacter(texture, canvasX, canvasY, Color.YELLOW, charScale);
+
+		
+		if(highlightLeft){
+			int xPos = (int) actionBar.getX(canvas);
+			int yPos = (int) actionBar.getY(canvas, 1);
+			canvas.drawBarHighlight(xPos-70, yPos, actionBar.getWaitWidth(canvas)+70,  actionBar.getBarHeight(canvas), Color.YELLOW);
+		}
+		if(highlightWhole){
+			int xPos = (int) actionBar.getX(canvas);
+			int yPos = (int) actionBar.getY(canvas, 1);
+			
+			canvas.drawBarHighlight(xPos-70, yPos, actionBar.getTotalWidth(canvas) + 70,  actionBar.getBarHeight(canvas), Color.YELLOW);
+		}
+		if(highlightRight){
+			int xPos = (int) actionBar.getCastPointX(canvas);
+			int yPos = (int) actionBar.getY(canvas, 1);
+			canvas.drawBarHighlight(xPos + 8, yPos, actionBar.getCastWidth(canvas),  actionBar.getBarHeight(canvas), Color.YELLOW);
 		}
 		//use Jons logic for getting textures and then continue doing the same thing with the textures
 	}

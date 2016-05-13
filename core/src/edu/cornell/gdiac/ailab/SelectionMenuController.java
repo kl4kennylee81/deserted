@@ -59,7 +59,7 @@ public class SelectionMenuController {
 	Direction direction;
 
 
-
+	private boolean canHighlightTiles;
 
 	public SelectionMenuController(GridBoard board, List<Character> chars) {
 		clickedChar = null;
@@ -112,9 +112,11 @@ public class SelectionMenuController {
 
 				updateVariables();
 				int numSlots = selected.getActionBar().getUsableNumSlots();
-				
-				if (menu.canAct(numSlots) && action != null){
-					drawHighlights();
+				if (actionBarHovered()){
+					highlightHoveredAction();
+				}	
+				else if (menu.canAct(numSlots) && action != null){
+					drawHighlights(true);
 				}
 				if (!choosingTarget){
 					// prompt choose an action when not choosing target
@@ -151,7 +153,7 @@ public class SelectionMenuController {
 				checkForClicked();
 				updatePeekingVariables();
 				if (action != null){
-					drawHighlights();
+					drawHighlights(false);
 				}
 				updatePeeking();
 
@@ -177,7 +179,48 @@ public class SelectionMenuController {
 		}
 	}
 
-
+	protected boolean actionBarHovered(){
+		for (Character c : characters){
+			for (Option o : c.actionBar.actionOptions){
+				if (o.currentlyHovered){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	protected void highlightHoveredAction(){
+		Character c = null;
+		Option o = null;
+		Action a = null;
+		for (Character c1 : characters){
+			for (int i = 0; i < c1.actionBar.actionOptions.size(); i++){
+				Option o1 = c1.actionBar.actionOptions.get(i);
+				if (o1.currentlyHovered){
+					c = c1;
+					o = o1;
+					a = c1.actionBar.actions.get(i);
+				}
+			}
+		}
+		if (c == null || o == null || a == null){
+			return;
+		}
+		Character oldSelected = selected;
+		selected = c;
+		shadowX = selected.xPosition;
+		shadowY = selected.yPosition;
+		choosingTarget = false;
+		selectedX = -1;
+		selectedY = -1;
+		direction = null;
+		leftside = selected.leftside;
+		action = a;
+		drawHighlights(false);
+		selected = oldSelected;
+	}
+	
 
 	protected void updateVariables(){
 		menu = selected.getSelectionMenu();
@@ -188,6 +231,7 @@ public class SelectionMenuController {
 		selectedX = menu.getSelectedX();
 		selectedY = menu.getSelectedY();
 		leftside = selected.leftside;
+		
 		board.reset();
 
 		// reset/updates the highlighted flashing square on the board to the proper action
@@ -642,7 +686,8 @@ public class SelectionMenuController {
 		}
 	}
 
-	public void drawHighlights(){
+	public void drawHighlights(boolean canHighlightTiles){
+		this.canHighlightTiles = canHighlightTiles;
 		switch (action.pattern){
 		case STRAIGHT:
 			drawStraight();
@@ -868,6 +913,7 @@ public class SelectionMenuController {
 		}
 		board.setCanMove(character.leftside,shadowX, shadowY-1);
 		board.setCanMove(character.leftside,shadowX, shadowY+1);
+		
 		if (direction == null){
 			return;
 		}

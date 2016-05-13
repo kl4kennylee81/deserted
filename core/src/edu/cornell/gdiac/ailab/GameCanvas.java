@@ -85,6 +85,7 @@ public class GameCanvas {
 	Texture downArrow = new Texture("models/downArrow.png");
 	Texture leftArrow = new Texture("models/leftArrow.png");
 	Texture whiteCircle = new Texture("images/white_circle.png");
+	Texture roundedRect = new Texture("images/rounded_rectangle.png");
 	
 	/** Tutorial font */
 	BitmapFont tutorialFont;
@@ -1034,7 +1035,7 @@ public class GameCanvas {
 	}
 	
 	public void drawHighlightCharacter(Texture texture, float x, float y, Color color, float scale){
-		spriteBatch.setColor(color.r, color.g, color.b, 0.4f);
+		spriteBatch.setColor(color.r, color.g, color.b, 0.8f);
 		float width = texture.getWidth() * scale;
 		float height = texture.getHeight() * scale;
 		width += 34;
@@ -1042,8 +1043,13 @@ public class GameCanvas {
 	}
 	
 	public void drawHighlightToken(Texture texture, float x, float y, float width, float height, Color color){
-		spriteBatch.setColor(color.r, color.g, color.b, 0.4f);
-		spriteBatch.draw(whiteCircle, x-10, y-10,width + 20, height+20);
+		spriteBatch.setColor(color.r, color.g, color.b, 0.8f);
+		spriteBatch.draw(whiteCircle, x-15, y-15,width + 30, height+30);
+	}
+	
+	public void drawBarHighlight(float x, float y, float width, float height, Color color){
+		spriteBatch.setColor(color.r, color.g, color.b, 0.8f);
+		spriteBatch.draw(roundedRect, x-20, y-20,width + 40, height+40);
 	}
 
 	/**

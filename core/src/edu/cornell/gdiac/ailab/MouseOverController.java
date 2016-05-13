@@ -45,7 +45,6 @@ public class MouseOverController {
 				Menu.setOption(i);
 			}
 		}
-		
 	}
 
 	public void update(SelectionMenu currMenu1,Characters characters){
@@ -144,6 +143,15 @@ public class MouseOverController {
 						||currMenu.getActions().length > currMenu.selectedAction && hAction!= currMenu.getSelectedAction())){
 			currMenu.setChoosingTarget(false);
 			currMenu.setSelectedAction(hAction.position);
+		}
+		
+		for (Character c : characters){
+			for (Option o : c.actionBar.actionOptions){
+				o.currentlyHovered = false;
+				if (o.contains(x, y, canvas, board)){
+					o.currentlyHovered = true;
+				}
+			}
 		}
 		
 	}

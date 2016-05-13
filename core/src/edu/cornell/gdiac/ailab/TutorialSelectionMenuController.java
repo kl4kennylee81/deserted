@@ -49,7 +49,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
                 updateVariables();
                 int numSlots = selected.getActionBar().getUsableNumSlots();
                 if (menu.canAct(numSlots) && action != null){
-                    drawHighlights();
+                    drawHighlights(true);
                 }
                 if (!choosingTarget){
                     // prompt choose an action when not choosing target
@@ -86,7 +86,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
                 checkForClicked();
                 updatePeekingVariables();
                 if (action != null){
-                    drawHighlights();
+                    drawHighlights(false);
                 }
                 updatePeeking();
 

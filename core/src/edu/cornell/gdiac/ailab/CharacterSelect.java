@@ -28,7 +28,7 @@ public class CharacterSelect extends Menu{
 	
 	private static final float RELATIVE_CHARACTER_Y = 0.7f;
 	
-	private static final float RELATIVE_CHARACTER_WIDTH = 0.12f;
+	private static final float RELATIVE_CHARACTER_WIDTH = 0.08f;
 	
 	private static final float TEMP_HEIGHT = 0.2f;
 	
@@ -117,8 +117,10 @@ public class CharacterSelect extends Menu{
 		float curCharacterRatio = (index+1f) * RELATIVE_CHARACTERS_SIZE / (characters.size()+1);
 		
 		options[3] = new Option(text,"Select");
-		options[3].setBounds(curCharacterRatio-0.024f, 0.62f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
+		options[3].setBounds(curCharacterRatio-0.024f, 0.67f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
 		options[3].setColor(Constants.MENU_COLOR);
+		
+		characterOptions.clear();
 		
 		int i = 4;
 		int j, k;
@@ -253,7 +255,7 @@ public class CharacterSelect extends Menu{
 			float height = options[i].getHeight(canvas);
 			
 			if (i == 3){
-				x -= canvas.width * 0.01f;
+				x -= canvas.width * 0.015f;
 			}
 			
 			if (options[i].isSelected){
@@ -274,12 +276,15 @@ public class CharacterSelect extends Menu{
 			}
 			if (toDraw != null){
 				temp = toDraw;
-				float heightToWidthRatio = toDraw.getRegionHeight()*1f/toDraw.getRegionWidth();
-				float relativeHeight = charOption.getWidth()*heightToWidthRatio;
-				charOption.height = relativeHeight;
+				//float heightToWidthRatio = toDraw.getRegionHeight()*1f/toDraw.getRegionWidth();
+				//float relativeHeight = charOption.getWidth()*heightToWidthRatio;
+				//charOption.height = relativeHeight;
 				
 				float width = charOption.getWidth()*canvas.width;
-				float height = charOption.height*canvas.height;;
+				float heightToWidthRatio = toDraw.getRegionHeight()*1f/toDraw.getRegionWidth();
+				float height = heightToWidthRatio * width;
+				charOption.height = height/canvas.height;
+				height = charOption.height * canvas.height;
 				float ratio = (i+1f) / (characters.size()+1);
 				float x = charOption.xPosition * canvas.width;
 				float y = charOption.yPosition * canvas.height;

@@ -54,6 +54,8 @@ public class ActionController {
 	List<Coordinate> shieldedPaths;
 
 	ActionNode curAction;
+	
+	boolean curActionExecuted;
 
 	/**
 	 * Creates a GameplayController for the given models.
@@ -89,10 +91,12 @@ public class ActionController {
 		board.occupy(characters);
 		if (selected != null){
 			if (selected.needsAttack){
+				curActionExecuted = false;
 				// set the character state to start the animation
 				curAction = selected.popCast();
 				selected.needsAttack = false;
 				if (curAction.action.pattern == Pattern.MOVE){
+					curActionExecuted = true;
 					executeAction(curAction);
 					selected = null;
 				} else if (!curAction.isInterrupted){
@@ -105,16 +109,16 @@ public class ActionController {
 					selected = null;
 				}
 			}
-			if (selected != null && selected.charState == CharacterState.EXECUTE){
-				isAnimating = true;
+			if (selected != null && !curActionExecuted && selected.charState == CharacterState.EXECUTE){
+				curActionExecuted = true;
 				executeAction(curAction);
+			}
+			if (selected!= null && curActionExecuted && animations.pool.isEmpty()){
+				shields.removeShields();
 				selected = null;
 			}
 		} else {
 			isDone = true;
-			//Sort characters by speed then check their attacks
-			//these characters should be presorted in the initial loading
-			//But things like slows should affect it right? -jon
 			for (Character c : characters){
 				if (c.needsAttack && c.isAlive()){
 					isDone = false;
@@ -456,7 +460,7 @@ public class ActionController {
 			
 			if (isBlocked(path[i].x, path[i].y)){
 				if (a_node.action.damage > 0){
-					shields.hitShield(path[i].x, path[i].y, selected.leftside);
+					shields.hitShield(path[i].x, path[i].y, selected.leftside,textMessages);
 				}
 				hitThisRound = true;
 			} else {
@@ -549,10 +553,6 @@ public class ActionController {
 
 	// make isDone true when every character who needs to attack has attacked
 	public boolean isDone() {
-		if (animations.pool.isEmpty() && isDone){
-			shields.removeShields();
-			return true;
-		}
-		return false;
+		return isDone;
 	}
 }

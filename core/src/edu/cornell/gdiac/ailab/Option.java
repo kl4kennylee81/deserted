@@ -33,6 +33,8 @@ public class Option implements GUIElement{
 	
 	boolean isHighlighted;
 	
+	boolean checkNormalBounds;
+	
 	public void setImage(Texture t){
 		image = t;
 	}
@@ -76,6 +78,7 @@ public class Option implements GUIElement{
 	public Option(String text,String key){
 		this.text = text;
 		this.optionKey = key; 
+		checkNormalBounds = false;
 	}
 	
 	public void setBounds(float x,float y,float width,float height){
@@ -108,13 +111,14 @@ public class Option implements GUIElement{
 		} 
 		
 		if (image != null){
+			if(isHighlighted){
+				canvas.drawHighlightToken(image, x, y, width, height, Color.YELLOW);
+				canvas.drawLeftArrow(x + (width + 10), y + (width / 2) + 10, Color.GOLD);
+			}
 			Color imageColor = this.getColorImages();
 			//canvas.drawTexture(image, x, y, width,height, Color.WHITE);
 			canvas.drawTexture(image, x, y, width,height, imageColor);
-			if(isHighlighted){
-				//canvas.drawHighlightToken(image, x, y, width, height, Color.GOLD);
-				canvas.drawLeftArrow(x + (width + 10), y + (width / 2) + 10, Color.GOLD);
-			}
+			
 		}
 	}
 	
@@ -166,7 +170,14 @@ public class Option implements GUIElement{
 		// to capture within the text the problem with text is when i'm drawing it
 		// it starts x,y at the top left coordinate i have no idea why, thus the minY
 		// is actually the yPosition - height.
-		else{
+		else if (checkNormalBounds){
+			float width_m = this.width * canvas.getWidth();
+			float height_m = this.height * canvas.getHeight();	
+			
+			float x_m = this.xPosition*canvas.getWidth();
+			float y_m = this.yPosition*canvas.getHeight();
+			return (x <= x_m+width_m && x >= x_m && y <= y_m + height_m && y >= y_m);
+		} else {
 			float width_m = this.width * canvas.getWidth();
 			float height_m = this.height * canvas.getHeight();	
 			

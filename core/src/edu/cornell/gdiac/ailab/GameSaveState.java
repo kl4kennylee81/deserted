@@ -212,6 +212,8 @@ public class GameSaveState {
 		int gainedSP;
 		Integer unlockableCharacter;
 		boolean needsSelect;
+		Integer winIn;
+		Integer surviveFor;
 		
 		public boolean needsSelect(){
 			boolean ns = needsSelect;
@@ -287,6 +289,8 @@ public class GameSaveState {
 			ld.gainedSP = levData.get("gainedSP") == null ? 0 : (int) levData.get("gainedSP");
 			ld.unlockableCharacter = (Integer) levData.get("unlockableCharacter");
 			ld.needsSelect = levData.get("needsSelect") == null ? false : (boolean) levData.get("needsSelect");
+			ld.winIn = (Integer) levData.get("winIn");
+			ld.surviveFor = (Integer) levData.get("surviveFor");
 			this.levels.add(ld);
 		}
 		
@@ -407,7 +411,6 @@ public class GameSaveState {
 			e.printStackTrace();
 		}
 		return unlockChars;
-		
 	}
 	
 }

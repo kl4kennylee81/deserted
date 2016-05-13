@@ -96,10 +96,12 @@ levels:
     levelName: Level1
     beaten: false
     boss: false
+    winIn: 1
   11:
     levelName: Level2
     beaten: false
     boss: false
+    surviveFor: 1
   12:
     levelName: Level3
     beaten: false
@@ -126,6 +128,7 @@ levels:
     levelName: pvp
     beaten: false
     boss: false
+
 availableCharacters:
 - 0
 - 1
