@@ -91,8 +91,8 @@ levels:
     levelName: tutorial5
     beaten: false
     boss: false
-    needsSelect: false
     background: backgrounds/environment.png
+    needsSelect: false
   5:
     levelName: tutorial6
     beaten: false
@@ -107,7 +107,7 @@ levels:
     needsSelect: false
   11:
     levelName: Level2
-    beaten: true
+    beaten: false
     boss: false
     surviveFor: 1
     needsSelect: false
