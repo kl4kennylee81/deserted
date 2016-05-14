@@ -147,6 +147,41 @@
   icon: models/tutorial_characters/basic_iconyellow.png
   animationId: 107
 
+9:
+  name: Parent Boss
+  health: 20
+  maxHealth: 20
+  hexColor: FF9900FF
+  speed: 5.
+  castSpeed: 10.
+  slots: 3
+  availableActions:
+  - 0
+  - 1
+  - 2
+  - 3
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconyellow.png
+  animationId: 107
+
+10:  
+  name: boss minions
+  health: 5
+  maxHealth: 5
+  hexColor: FF9900FF
+  speed: 2.
+  castSpeed: 2.
+  slots: 2
+  availableActions:
+  - 0
+  - 5
+  - 6
+  - 7
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconyellow.png
+  animationId: 107
+  bossId: 9
+
 89:
   name: Tutorial_part_3
   health: 6

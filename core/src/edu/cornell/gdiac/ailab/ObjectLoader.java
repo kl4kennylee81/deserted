@@ -285,7 +285,6 @@ public class ObjectLoader {
 	 */
 	private void loadKeysFromActions(HashMap<Integer, HashMap<String, Object>> actions) {
 		for (Integer actionId: availableActions.keySet()) {
-			System.out.println(actionId);
 			Integer animationId = (Integer) (actions.get(actionId).get("animationId"));
 			availableAnimations.put(animationId, null);
 			Integer projectileAnimationId = (Integer) (actions.get(actionId).get("projectileAnimationId"));
@@ -333,6 +332,7 @@ public class ObjectLoader {
 			}
 			// create the boss and replace the charToAdd with teh boss
 			if (modelChar instanceof BossCharacter){
+				System.out.println("line 336 we are in the instanceOf");
 				BossCharacter bossModel = (BossCharacter) modelChar;
 				if (!bossChars.containsKey(bossModel.getParent().id)){
 					Character parentModel = availableCharacters.get(bossModel.getParent().id);
@@ -363,7 +363,7 @@ public class ObjectLoader {
 	}
 	
 	private void loadChar(int charId,HashMap<Integer, HashMap<String, Object>> characters){
-		HashMap<String, Object> character = characters.get(charId);;
+		HashMap<String, Object> character = characters.get(charId);
 		Integer numSlots = (Integer) character.get("slots");
 		String name = (String) character.get("name");
 		Integer health = (Integer) character.get("health");
@@ -384,7 +384,7 @@ public class ObjectLoader {
 		
 		// load the boss assets
 		Integer bossId = (Integer) character.get("bossId");
-		if (bossId!= null && availableCharacters.containsKey(bossId)){
+		if (bossId!= null && !availableCharacters.containsKey(bossId)){
 			loadChar(bossId,characters);
 		}
 		

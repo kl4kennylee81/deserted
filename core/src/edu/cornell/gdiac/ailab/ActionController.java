@@ -539,7 +539,7 @@ public class ActionController {
 	}
 
 	protected void applyDamage(ActionNode a_node,Character target){
-		target.health = Math.max(target.health-a_node.action.damage, 0);
+		target.setHealth(Math.max(target.getHealth()-a_node.action.damage, 0));
 	}
 
 	protected void applyEffect(ActionNode a_node, Character target){

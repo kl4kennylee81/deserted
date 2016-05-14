@@ -34,4 +34,20 @@ public class BossCharacter extends Character{
 		// this is not a copy it will thus be shared between units of the same boss.
 		this.actionBar = this.parentChar.actionBar;
 	}
+	
+	@Override
+	public boolean isAlive() {
+		return this.parentChar.health > 0;
+	}
+	
+	@Override
+	public void setHealth(int val){
+		this.parentChar.setHealth(val);
+	}
+	
+	@Override
+	public int getHealth(){
+		return this.parentChar.getHealth();
+	}
+	
 }

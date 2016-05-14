@@ -644,6 +644,14 @@ public class Character implements GUIElement {
 		return shieldedCoordinates;
 	}
 	
+	public int getHealth(){
+		return this.health;
+	}
+	
+	public void setHealth(int val){
+		this.health = val;
+	}
+	
 	float getNextCast() {
 		ActionNode an = queuedActions.peek();
 		if (an != null){
@@ -1049,7 +1057,15 @@ public class Character implements GUIElement {
 		}
 		float tokenX = this.actionBar.getX(canvas) - leftEndWidth/2;
 		float tokenY = this.actionBar.getY(canvas, count) + this.actionBar.getBarHeight(canvas)*0.92f;
-		String healthText = Integer.toString(this.health);
+		
+		int curHealth;
+		if (this instanceof BossCharacter){
+			curHealth = ((BossCharacter)this).parentChar.getHealth();
+		}
+		else{
+			curHealth = this.getHealth();
+		}
+		String healthText = Integer.toString(curHealth);
 		canvas.drawText(healthText, tokenX, tokenY, Color.BLACK.cpy());
 		
 		
