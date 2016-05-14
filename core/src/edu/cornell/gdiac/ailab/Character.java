@@ -134,10 +134,11 @@ public class Character implements GUIElement {
 	float radius;
 	
 	/**Constructor used by GameEngine to create characters from yaml input. */
-	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
+	public Character (int id,Texture texture, Texture icon, AnimationNode animation, String name, 
 						int health, int maxHealth, Color color, 
 						float speed, float castSpeed, int xPosition, int yPosition,
 						boolean leftSide, Action[] actions,int numSlots){
+		this.id = id;
 		this.texture = texture;
 		this.icon = icon;
 		this.animation = animation;
@@ -166,17 +167,16 @@ public class Character implements GUIElement {
 		this.availableActions = actions;
 		selectionMenu = new SelectionMenu(availableActions);
 		
-		//float waitTime = (float) (Math.random()*3 + 2);
-		//float castTime = (float) (Math.random()*4 + 4);
 		float waitTime = speed;
 		float castTime = castSpeed;
 		this.numSlots = numSlots;
 		actionBar = new CharActionBar(numSlots,waitTime,castTime);	
 	}
 	
-	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
+	public Character (int id,Texture texture, Texture icon, AnimationNode animation, String name, 
 			int health, int maxHealth, Color color, 
 			float speed, float castSpeed,  Action[] actions,int numSlots){
+		this.id = id;
 		this.texture = texture;
 		this.icon = icon;
 		this.animation = animation;
@@ -213,6 +213,7 @@ public class Character implements GUIElement {
 	
 	
 	public Character(Character c){
+		this.id = c.id;
 		this.texture = c.texture;
 		this.icon = c.icon;
 		this.animation = c.animation;
@@ -238,15 +239,14 @@ public class Character implements GUIElement {
 		this.availableActions = c.availableActions;
 		selectionMenu = new SelectionMenu(availableActions);
 
-//		float waitTime = (float) (Math.random()*3 + 2);
-//		float castTime = (float) (Math.random()*4 + 4);
 		float waitTime = c.speed;
 		float castTime = c.castSpeed;
 		actionBar = new CharActionBar(c.numSlots,waitTime,castTime);
-
+		
 	}
 	
 	public Character(Character c, Action[] actions){
+		this.id = c.id;
 		this.texture = c.texture;
 		this.icon = c.icon;
 		this.animation = c.animation;
