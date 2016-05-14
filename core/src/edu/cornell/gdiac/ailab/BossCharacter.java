@@ -1,11 +1,19 @@
 package edu.cornell.gdiac.ailab;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 public class BossCharacter extends Character{
 	/** pointer to a parent character **/
 	Character parentChar;
+	
+	// if share health is true we use the parents health otherwise subtract from own health
+	boolean shareHealth;
+	
+	// this is for drawing if its true you draw it on the parents bar
+	boolean shareBar;
 	
 	public boolean isBoss(){
 		return this.parentChar != null;
@@ -33,6 +41,7 @@ public class BossCharacter extends Character{
 		// for now set the action bar of this character to the action bar of the parent.
 		// this is not a copy it will thus be shared between units of the same boss.
 		this.actionBar = this.parentChar.actionBar;
+		this.shareBar = true;
 	}
 	
 	@Override
@@ -48,6 +57,21 @@ public class BossCharacter extends Character{
 	@Override
 	public int getHealth(){
 		return this.parentChar.getHealth();
+	}
+	
+	@Override
+	void addEffect(Effect e){
+		this.parentChar.getEffects().add(e);
+	}
+	
+	@Override
+	ArrayList<Effect> getEffects(){
+		return this.parentChar.getEffects();
+	}
+	
+	@Override
+	void removeEffect(int i){
+		this.parentChar.getEffects().remove(i);
 	}
 	
 }
