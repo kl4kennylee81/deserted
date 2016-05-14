@@ -71,7 +71,7 @@ public class TutorialGameplayController extends GameplayController{
     		characters.update();
     		effectController.update(characters, board);
     		actionBarController.update();
-    		persistingController.update();
+    		//persistingController.update();
     		mouseOverController.update(selectionMenuController.getMenu(),characters);
     		if (actionBarController.isAISelection) {
     			pauseTimer = 0;
@@ -114,6 +114,7 @@ public class TutorialGameplayController extends GameplayController{
     		break;
     	case ATTACK:
     		actionController.update();
+    		persistingController.updateProjs();
     		if (actionController.isDone()){
     			if (actionBarController.isPlayerSelection){
     				inGameState = InGameState.SELECTION;
@@ -203,8 +204,25 @@ public class TutorialGameplayController extends GameplayController{
 		}
         screen.draw(canvas);
     	board.draw(canvas);
-    	drawCharacters(canvas);
-        animations.draw(canvas,board,inGameState);
+    	
+    	if (inGameState == InGameState.SELECTION){
+    		shields.draw(canvas,false,true);
+        	
+        	shields.draw(canvas,true,true);
+        	
+        	drawCharacters(canvas);
+        	
+        	animations.draw(canvas,board,inGameState);
+    	} else {
+    		shields.draw(canvas,false,false);
+    		
+    		animations.draw(canvas,board,inGameState);
+    		
+    		drawCharacters(canvas);
+    		
+    		shields.draw(canvas,true,false);
+    	}
+    	
 		if (highlight_action > 0){//must change
 			//make a custom highlight and shift it by highlight_action
 

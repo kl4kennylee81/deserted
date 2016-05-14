@@ -346,11 +346,11 @@ public class CharacterSelect extends Menu{
 		float iconHeight = canvasH * (0.15f);
 		if (cd0 != null){
 			float iconY = canvasH * (0.625f);
-			canvas.drawTexture(cd0.getIcon(), iconX, iconY, iconWidth, iconHeight, Color.WHITE);
+			canvas.drawTexture(cd0.bigIcon, iconX, iconY, iconWidth, iconHeight, Color.WHITE);
 		}
 		if (cd1 != null){
 			float iconY = canvasH * (0.325f);
-			canvas.drawTexture(cd1.getIcon(), iconX, iconY, iconWidth, iconHeight, Color.WHITE);
+			canvas.drawTexture(cd1.bigIcon, iconX, iconY, iconWidth, iconHeight, Color.WHITE);
 		}
 	}
 

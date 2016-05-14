@@ -883,18 +883,20 @@ public class SelectionMenuController {
 		if (this.menuState != MenuState.PEEKING){
 			for (int i=0;i<board.getWidth();i++){
 				for (int j = 0;j<board.getHeight();j++){
-					if (this.action.singlePathCanTarget(selected.getShadowX(),selected.getShadowY(),i,j, selected.leftside, board)){
-						for (Coordinate c : singlePathHitPath(action,i,j,selected.leftside)){
-							int ii = c.x;
-							int jj = c.y;
-							if (selected.leftside && ii >= (int)board.getWidth()/2){
-								board.setCanTarget(ii,jj);
-							}
-							else if (!selected.leftside && ii < (int)board.getWidth()/2){
-								board.setCanTarget(ii,jj);
-							}
-							else if(this.action.isBuff){
-								board.setCanTarget(ii, jj);
+					if (this.action.singleCanTarget(selected.getShadowX(),selected.getShadowY(),i,j, selected.leftside, board)){
+						if ((selected.leftside && i >= (int)board.getWidth()/2) || (!selected.leftside && i < (int)board.getWidth()/2)){
+							for (Coordinate c : singlePathHitPath(action,i,j,selected.leftside)){
+								int ii = c.x;
+								int jj = c.y;
+								if (selected.leftside && ii >= (int)board.getWidth()/2){
+									board.setCanTarget(ii,jj);
+								}
+								else if (!selected.leftside && ii < (int)board.getWidth()/2){
+									board.setCanTarget(ii,jj);
+								}
+								else if(this.action.isBuff){
+									board.setCanTarget(ii, jj);
+								}
 							}
 						}
 					}

@@ -2,6 +2,7 @@ characters:
   0:
     characterId: 0
     totalSP: 0
+    bigIcon: models/sulus_icon_big.png
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -30,6 +31,7 @@ characters:
   1:
     characterId: 1
     totalSP: 0
+    bigIcon: models/bunmage_largeicon.png
     actionTree:
     - actionId: 0
     - actionId: 7
@@ -43,6 +45,7 @@ characters:
   2:
     characterId: 2
     totalSP: 0
+    bigIcon: models/sulus_icon_big.png
     actionTree:
     - actionId: 0
     - actionId: 16
@@ -56,6 +59,7 @@ characters:
   3:
     characterId: 5
     totalSP: 0
+    bigIcon: models/sulus_icon_big.png
     actionTree:
     - actionId: 0
     - actionId: 23
@@ -133,7 +137,6 @@ levels:
     levelName: pvp
     beaten: false
     boss: false
-
 availableCharacters:
 - 0
 - 1
