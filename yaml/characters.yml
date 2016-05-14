@@ -109,6 +109,7 @@
   - 16
   - 17
   - 6
+  - 31
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconblue.png
   animationId: 105

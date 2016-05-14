@@ -253,7 +253,6 @@ public class GameSaveState {
 			String levelName = (String) levData.get("levelName");
 			LevelData ld = getLevelData(levelName);
 			levData.put("beaten", ld.beaten);
-			levData.put("needsSelect", ld.needsSelect);
 		}
 		
 		Object selChars = gameSaveStateData.get("selectedCharacters");
