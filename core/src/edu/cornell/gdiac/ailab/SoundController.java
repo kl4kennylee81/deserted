@@ -24,6 +24,7 @@ package edu.cornell.gdiac.ailab;
 import java.util.HashMap;
 import com.badlogic.gdx.audio.*;
 import com.badlogic.gdx.assets.*;
+import GameEngine.GameState;
 
 /** 
  *  Static controller class for managing sound.
@@ -120,5 +121,9 @@ public class SoundController {
 	 */
 	public static Sound get(String key) {
         return soundBank.get(key);
+    }
+    
+    public static void update(GameState gs){
+    	//push when home
     }
 }
