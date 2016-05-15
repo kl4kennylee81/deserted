@@ -26,7 +26,6 @@ MAGE_POSITION:
   adjacent_attack_square/adjacent_safe_square: MOVE_POWER
   adjacent_attack_square_quick: MOVE_QUICK_MOVE
   adjacent_attack_square: MOVE_POWER
-  adjacent_safe_square: MOVE
   high_health: MOVE_GOAL_ATTACK
   default: MOVE_GOAL_SHIELD  
 #--------------------------------------
@@ -65,11 +64,6 @@ QUICK_QUICK:
   type: leaf
   my_tactic: SPECIFIC
   my_actions: [QUICK_ATTACK, QUICK_ATTACK]
-  
-MOVE_POWER:
-  type: leaf
-  my_tactic: SPECIFIC
-  my_actions: [MOVE_AGGRESSIVE, POWERFUL_ATTACK, QUICK_ATTACK]
   
 QUICK_MOVE_AGGRESSIVE_SHIELD:
   type: leaf
