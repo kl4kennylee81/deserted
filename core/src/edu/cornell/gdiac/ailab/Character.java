@@ -715,9 +715,9 @@ public class Character implements GUIElement {
 	}
 	
 	/** temporary while menu is blocked by characters */
-	public void drawSelection(GameCanvas canvas,GridBoard board,int count,boolean clickedCharExist){
+	public void drawSelection(GameCanvas canvas,GridBoard board,int count,boolean clickedCharExist,boolean charActionHovered){
 		if ((isSelecting && isAlive()) || isClicked){
-			boolean writeDescription = isClicked || (isSelecting && !clickedCharExist);
+			boolean writeDescription = (isClicked || (isSelecting && !clickedCharExist)) && !charActionHovered;
 			selectionMenu.draw(canvas,this.actionBar,count, isClicked, centerX, centerY, radius, leftside, writeDescription, isSelecting);
 		}
 	}

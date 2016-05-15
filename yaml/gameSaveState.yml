@@ -92,7 +92,6 @@ levels:
     beaten: false
     boss: false
     background: backgrounds/environment.png
-    needsSelect: false
   5:
     levelName: tutorial6
     beaten: false
