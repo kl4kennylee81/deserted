@@ -4,7 +4,7 @@
   maxHealth: 7
   hexColor: CD2626FF
   speed: 5.5
-  castSpeed: 6.5
+  castSpeed: 7.0
   slots: 4
   availableActions:
   - 0
@@ -36,8 +36,8 @@
   health: 12
   maxHealth: 12
   hexColor: 00cc00FF
-  speed: 0.0
-  castSpeed: 6.0
+  speed: 0.5
+  castSpeed: 7.5
   slots: 2
   availableActions:
   - 0
@@ -53,8 +53,8 @@
   maxHealth: 8
   hexColor: FF9900FF
   speed: 3.5
-  castSpeed: 7.5
-  slots: 5
+  castSpeed: 8.0
+  slots: 4
   availableActions:
   - 0
   - 13
@@ -69,8 +69,8 @@
   maxHealth: 8
   hexColor: CD2626FF
   speed: 5.0
-  castSpeed: 7.5
-  slots: 5
+  castSpeed: 7.
+  slots: 4
   availableActions:
   - 0
   - 22
@@ -84,9 +84,9 @@
   health: 10
   maxHealth: 10
   hexColor: 3299FFFF
-  speed: 3.0
-  castSpeed: 9.0
-  slots: 4
+  speed: 2.5
+  castSpeed: 6.
+  slots: 3
   availableActions:
   - 0
   - 23
@@ -101,14 +101,14 @@
   health: 8
   maxHealth: 8
   hexColor: 00cc00FF
-  speed: 0.0
-  castSpeed: 6.0
+  speed: 0.5
+  castSpeed: 7.0
   slots: 2
   availableActions:
   - 0
   - 16
   - 17
-  - 6
+  - 18
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconblue.png
   animationId: 105
@@ -118,9 +118,9 @@
   health: 6
   maxHealth: 6
   hexColor: 3299FFFF
-  speed: 3.0
-  castSpeed: 9.0
-  slots: 4
+  speed: 2.5
+  castSpeed: 6.
+  slots: 3
   availableActions:
   - 0
   - 23
@@ -136,8 +136,8 @@
   maxHealth: 5
   hexColor: FF9900FF
   speed: 3.5
-  castSpeed: 7.5
-  slots: 5
+  castSpeed: 8.0
+  slots: 4
   availableActions:
   - 0
   - 13
@@ -448,7 +448,7 @@
   hexColor: 3299FFFF
   speed: 2.5
   castSpeed: 8.5
-  slots: 4
+  slots: 3
   availableActions:
   - 0
   - 20
@@ -465,7 +465,7 @@
   hexColor: FF9900FF
   speed: 4.0
   castSpeed: 7.5
-  slots: 5
+  slots: 4
   availableActions:
   - 0
   - 13
@@ -482,7 +482,7 @@
   hexColor: CD2626FF
   speed: 5.0
   castSpeed: 7.5
-  slots: 5
+  slots: 4
   availableActions:
   - 0
   - 22
