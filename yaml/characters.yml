@@ -1,7 +1,7 @@
 0:
   name: Main Character
-  health: 7
-  maxHealth: 7
+  health: 6
+  maxHealth: 6
   hexColor: CD2626FF
   speed: 5.5
   castSpeed: 7.0
@@ -10,15 +10,15 @@
   - 0
   - 4
   - 3
-  - 6
+  - 9
   texture: models/CHARA_3.png
   icon: models/sulus_icon.png
   animationId: 101
   bossId: 1000
 1:
   name: Spirit
-  health: 7
-  maxHealth: 7
+  health: 6
+  maxHealth: 6
   hexColor: CD2626FF
   speed: 3.5
   castSpeed: 7.5
@@ -35,16 +35,11 @@
 
 2:
   name: Rock Spirit
-  health: 12
-  maxHealth: 12
+  health: 10
+  maxHealth: 10
   hexColor: 00cc00FF
-<<<<<<< HEAD
   speed: 2.5
   castSpeed: 7.5
-=======
-  speed: 0.5
-  castSpeed: 7.0
->>>>>>> origin
   slots: 2
   availableActions:
   - 0
@@ -57,8 +52,8 @@
   bossId: 1000
 3:
   name: Mage Spirit
-  health: 8
-  maxHealth: 8
+  health: 6
+  maxHealth: 6
   hexColor: FF9900FF
   speed: 4.
   castSpeed: 8.0
@@ -74,8 +69,8 @@
   bossId: 1000
 4:
   name: Enchantress Spirit
-  health: 8
-  maxHealth: 8
+  health: 6
+  maxHealth: 6
   hexColor: CD2626FF
   speed: 6.
   castSpeed: 7.
@@ -91,8 +86,8 @@
   bossId: 1000
 5:
   name: Fighter Spirit
-  health: 10
-  maxHealth: 10
+  health: 8
+  maxHealth: 8
   hexColor: 3299FFFF
   speed: 5.
   castSpeed: 6.
@@ -539,7 +534,6 @@
   icon: models/tutorial_characters/basic_icon.png
   animationId: 103
 
-<<<<<<< HEAD
 # 1000+ This is where we have the parent characters
 1000:
   name: Dara
@@ -591,8 +585,8 @@
   health: 5
   maxHealth: 5
   hexColor: CD2626FF
-  speed: 5.5
-  castSpeed: 8.0
+  speed: 3.
+  castSpeed: 7.0
   slots: 2
   availableActions:
   - 0
@@ -601,13 +595,15 @@
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
   animationId: 103
-  
+  bossId: 9
+  sharedStatus: true
+
 31:
   name: Boss
   health: 10
   maxHealth: 10
   hexColor: CD2626FF
-  speed: 5.5
+  speed: 5.
   castSpeed: 8.0
   slots: 2
   availableActions:
@@ -617,3 +613,5 @@
   texture: models/CHARA_3.png
   icon: models/bunmage_icon.png
   animationId: 108
+  bossId: 9
+  sharedStatus: true
