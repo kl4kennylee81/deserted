@@ -282,7 +282,7 @@
 13:
   name: Lightning Column
   cost: 3
-  damage: 2
+  damage: 3
   range: 10
   size: 1
   pattern: HORIZONTAL
@@ -323,7 +323,7 @@
 
 15:
   name: Spirit Barrier
-  cost: 3
+  cost: 1
   damage: 0
   range: 2
   size: 1
@@ -354,7 +354,7 @@
   range: 2
   size: 1
   pattern: SHIELD
-  shieldNumberHits: 2
+  shieldNumberHits: 1
   shieldTextureTile2State1Bottom: actions/shield_2bottom.png
   shieldTextureTile2State1Top: actions/shield_2top.png
   needsToggle: true
