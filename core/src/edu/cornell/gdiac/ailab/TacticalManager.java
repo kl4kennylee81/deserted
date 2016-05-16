@@ -560,6 +560,12 @@ public class TacticalManager extends ConditionalManager{
 		Action a = shield(c);
 		int x1;
 		int x2;
+		if(yPos == 0){
+			return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.UP);
+		}
+		if(yPos == board.height-1){
+			return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.DOWN);
+		}
 		for(Character f: friends){
 			x1 = c.leftside? xPos : f.xPosition;
 			x2 = c.leftside? f.xPosition : xPos;

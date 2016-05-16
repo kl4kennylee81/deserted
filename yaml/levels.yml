@@ -191,14 +191,14 @@ BossTest:
     enemies:
         - id: 31
           xPosition: 5
-          yPosition: 2
+          yPosition: 1
 
         - id: 30
-          xPosition: 3
-          yPosition: 3
+          xPosition: 4
+          yPosition: 2
         - id: 30
           xPosition: 4
-          yPosition: 0
+          yPosition: 1
     nextLevel:
     boardWidth: 6
     boardHeight: 4
