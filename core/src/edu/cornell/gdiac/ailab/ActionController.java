@@ -165,6 +165,9 @@ public class ActionController {
 			case SINGLE:
 				executeSingle(a_node);
 				break;
+			case SINGLEPATH:
+				executeSinglePath(a_node);
+				break;
 			case INSTANT:
 				executeInstant(a_node);
 				break;
@@ -197,10 +200,48 @@ public class ActionController {
 			case INSTANT:
 				path = convertRelativePath(a_node);
 				break;
+			case SINGLEPATH:
+				path = singlePathHitPath(a_node);
 			default:
 				break;
 		}
 		return path;
+	}
+	
+	private Coordinate[] singlePathHitPath(ActionNode a_node){
+		Coordinates coords = Coordinates.getInstance();
+		// when we pass in coordinate for the path we can go out of bounds it is checked in execution time
+		if (a_node.action== null || a_node.action.path == null){
+			System.out.println("line action controller 187: error input pattern projectile or instant did not have path");
+			return null;
+		}
+		Coordinate[] relativePath = a_node.action.path;
+		Coordinate[] absolutePath = new Coordinate[relativePath.length];
+		for (int i = 0;i<relativePath.length;i++){
+			// if on leftside we increment x in opposite direction
+			int x;int y;
+			if (selected.leftside){
+				x = a_node.xPosition + relativePath[i].x;
+				if (a_node.direction!= null && a_node.direction==Direction.DOWN){
+					y = a_node.yPosition - relativePath[i].y;
+				}
+				else{
+					y = a_node.yPosition + relativePath[i].y;
+				}
+			}
+			else{
+				x = a_node.xPosition - relativePath[i].x;
+				if (a_node.direction!= null && a_node.direction==Direction.DOWN){
+					y = a_node.yPosition - relativePath[i].y;
+				}
+				else{
+					y = a_node.yPosition + relativePath[i].y;
+				}
+			}
+			absolutePath[i] = coords.obtain();
+			absolutePath[i].set(x, y);
+		}
+		return absolutePath;
 	}
 
 	/** converts path from relative coordinates to absolute coordinates on the board **/
@@ -304,7 +345,7 @@ public class ActionController {
 	private boolean isDiagonalDown(ActionNode a_node){
 		return a_node.direction == Direction.DOWN;
 	}
-
+	
 	private Coordinate[] diagonalHitPath(ActionNode a_node){
 		Coordinates coordPool = Coordinates.getInstance();
 		int projectileX = (selected.leftside) ? selected.xPosition+1:selected.xPosition-1;
@@ -417,6 +458,11 @@ public class ActionController {
 			selected.xPosition = nextX;
 			selected.yPosition = nextY;
 		}
+	}
+	
+	private void executeSinglePath(ActionNode a_node){
+		Coordinate[] path = singlePathHitPath(a_node);
+		processHitPath(a_node,path,a_node.action.oneHit,a_node.action.canBlock);
 	}
 
 	private void executeStraight(ActionNode a_node){

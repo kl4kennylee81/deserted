@@ -448,6 +448,7 @@ public class ObjectLoader {
 			Integer range = (Integer) action.get("range");
 			Integer size = (Integer) action.get("size");
 			String pattern = (String) action.get("pattern");
+			Boolean notSymmetric = action.get("notSymmetric") == null ? false : (Boolean) action.get("notSymmetric");
 			Boolean oneHit = (Boolean) action.get("oneHit");
 			Boolean canBlock = (Boolean) action.get("canBlock");
 			Boolean needsToggle = (Boolean) action.get("needsToggle");
@@ -492,96 +493,13 @@ public class ObjectLoader {
 			Integer shieldNumberHits = (Integer) action.get("shieldNumberHits");
 			if (shieldNumberHits != null && pattern.equals("SHIELD")){
 				actionToAdd.setShieldNumberHits(shieldNumberHits);
-				
-				if (range == 1){
-					String shieldTextureTile1State1NameBottom = (String) action.get("shieldTextureTile1State1Bottom");
-					manager.load(shieldTextureTile1State1NameBottom,Texture.class);
-					assets.add(shieldTextureTile1State1NameBottom);
-					manager.finishLoading();
-					Texture shieldTextureTile1State1Bottom = manager.get(shieldTextureTile1State1NameBottom,Texture.class);
-					actionToAdd.shieldTextureTile1State1Bottom = shieldTextureTile1State1Bottom;
-					
-					String shieldTextureTile1State1NameTop = (String) action.get("shieldTextureTile1State1Top");
-					manager.load(shieldTextureTile1State1NameTop,Texture.class);
-					assets.add(shieldTextureTile1State1NameTop);
-					manager.finishLoading();
-					Texture shieldTextureTile1State1Top = manager.get(shieldTextureTile1State1NameTop,Texture.class);
-					actionToAdd.shieldTextureTile1State1Top = shieldTextureTile1State1Top;
-					if (shieldNumberHits > 1){
-						String shieldTextureTile1State2NameBottom = (String) action.get("shieldTextureTile1State2Bottom");
-						manager.load(shieldTextureTile1State2NameBottom,Texture.class);
-						assets.add(shieldTextureTile1State2NameBottom);
-						manager.finishLoading();
-						Texture shieldTextureTile1State2Bottom = manager.get(shieldTextureTile1State2NameBottom,Texture.class);
-						actionToAdd.shieldTextureTile1State2Bottom = shieldTextureTile1State2Bottom;
-						
-						String shieldTextureTile1State2NameTop = (String) action.get("shieldTextureTile1State2Top");
-						manager.load(shieldTextureTile1State2NameTop,Texture.class);
-						assets.add(shieldTextureTile1State2NameTop);
-						manager.finishLoading();
-						Texture shieldTextureTile1State2Top = manager.get(shieldTextureTile1State2NameTop,Texture.class);
-						actionToAdd.shieldTextureTile1State2Top = shieldTextureTile1State2Top;
-					}
+				String shieldColor0Name = (String) action.get("shieldColor0");
+				if (shieldColor0Name != null){
+					actionToAdd.shieldColor0 = Color.valueOf(shieldColor0Name);
 				}
-				if (range == 2 || range == 3){
-					String shieldTextureTile2State1NameBottom = (String) action.get("shieldTextureTile2State1Bottom");
-					manager.load(shieldTextureTile2State1NameBottom,Texture.class);
-					assets.add(shieldTextureTile2State1NameBottom);
-					manager.finishLoading();
-					Texture shieldTextureTile2State1Bottom = manager.get(shieldTextureTile2State1NameBottom,Texture.class);
-					actionToAdd.shieldTextureTile2State1Bottom = shieldTextureTile2State1Bottom;
-					
-					String shieldTextureTile2State1NameTop = (String) action.get("shieldTextureTile2State1Top");
-					manager.load(shieldTextureTile2State1NameTop,Texture.class);
-					assets.add(shieldTextureTile2State1NameTop);
-					manager.finishLoading();
-					Texture shieldTextureTile2State1Top = manager.get(shieldTextureTile2State1NameTop,Texture.class);
-					actionToAdd.shieldTextureTile2State1Top = shieldTextureTile2State1Top;
-					if (shieldNumberHits > 1){
-						String shieldTextureTile2State2NameBottom = (String) action.get("shieldTextureTile2State2Bottom");
-						manager.load(shieldTextureTile2State2NameBottom,Texture.class);
-						assets.add(shieldTextureTile2State2NameBottom);
-						manager.finishLoading();
-						Texture shieldTextureTile2State2Bottom = manager.get(shieldTextureTile2State2NameBottom,Texture.class);
-						actionToAdd.shieldTextureTile2State2Bottom = shieldTextureTile2State2Bottom;
-						
-						String shieldTextureTile2State2NameTop = (String) action.get("shieldTextureTile2State2Top");
-						manager.load(shieldTextureTile2State2NameTop,Texture.class);
-						assets.add(shieldTextureTile2State2NameTop);
-						manager.finishLoading();
-						Texture shieldTextureTile2State2Top = manager.get(shieldTextureTile2State2NameTop,Texture.class);
-						actionToAdd.shieldTextureTile2State2Top = shieldTextureTile2State2Top;
-					}
-				}
-				if (range == 3){
-					String shieldTextureTile3State1NameBottom = (String) action.get("shieldTextureTile3State1Bottom");
-					manager.load(shieldTextureTile3State1NameBottom,Texture.class);
-					assets.add(shieldTextureTile3State1NameBottom);
-					manager.finishLoading();
-					Texture shieldTextureTile3State1Bottom = manager.get(shieldTextureTile3State1NameBottom,Texture.class);
-					actionToAdd.shieldTextureTile3State1Bottom = shieldTextureTile3State1Bottom;
-					
-					String shieldTextureTile3State1NameTop = (String) action.get("shieldTextureTile3State1Top");
-					manager.load(shieldTextureTile3State1NameTop,Texture.class);
-					assets.add(shieldTextureTile3State1NameTop);
-					manager.finishLoading();
-					Texture shieldTextureTile3State1Top = manager.get(shieldTextureTile3State1NameTop,Texture.class);
-					actionToAdd.shieldTextureTile3State1Top = shieldTextureTile3State1Top;
-					if (shieldNumberHits > 1){
-						String shieldTextureTile3State2NameBottom = (String) action.get("shieldTextureTile3State2Bottom");
-						manager.load(shieldTextureTile3State2NameBottom,Texture.class);
-						assets.add(shieldTextureTile3State2NameBottom);
-						manager.finishLoading();
-						Texture shieldTextureTile3State2Bottom = manager.get(shieldTextureTile3State2NameBottom,Texture.class);
-						actionToAdd.shieldTextureTile3State2Bottom = shieldTextureTile3State2Bottom;
-						
-						String shieldTextureTile3State2NameTop = (String) action.get("shieldTextureTile3State2Top");
-						manager.load(shieldTextureTile3State2NameTop,Texture.class);
-						assets.add(shieldTextureTile3State2NameTop);
-						manager.finishLoading();
-						Texture shieldTextureTile3State2Top = manager.get(shieldTextureTile3State2NameTop,Texture.class);
-						actionToAdd.shieldTextureTile3State2Top = shieldTextureTile3State2Top;
-					}
+				String shieldColor1Name = (String) action.get("shieldColor1");
+				if (shieldColor1Name != null){
+					actionToAdd.shieldColor1 = Color.valueOf(shieldColor1Name);
 				}
 			}
 			
@@ -785,6 +703,13 @@ public class ObjectLoader {
 				manager.finishLoading();
 				Texture iconTexture = manager.get(iconTextureName,Texture.class);
 				cd.setIconTexture(iconTexture);
+			}
+			if (cd.bigIcon == null){
+				manager.load(cd.bigIconTextureName, Texture.class);
+				assets.add(cd.bigIconTextureName);
+				manager.finishLoading();
+				Texture bigIconTexture = manager.get(cd.bigIconTextureName,Texture.class);
+				cd.bigIcon = bigIconTexture;
 			}
 			if (cd.getAnimation() == null){
 				Integer animationId = (Integer) character.get("animationId");

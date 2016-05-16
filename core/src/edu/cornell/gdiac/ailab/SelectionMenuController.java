@@ -25,7 +25,6 @@ public class SelectionMenuController {
 	GridBoard board;
 	List<Character> characters;
 
-	//TODO: Change how I handle this
 	/** NOP action that is available for every character */
 	Action nop;
 
@@ -299,6 +298,7 @@ public class SelectionMenuController {
 				return true;
 			}
 		case SINGLE:
+		case SINGLEPATH:
 			return true;
 		default:
 			return false;
@@ -361,6 +361,9 @@ public class SelectionMenuController {
 		switch (selectedAction.pattern){
 		case STRAIGHT:
 			break;
+		case SINGLEPATH:
+			this.singlePathUpdateTargetedAction(curChar);
+			break;
 		case SINGLE:
 			this.singleUpdateTargetedAction(curChar);
 			break;
@@ -419,6 +422,46 @@ public class SelectionMenuController {
 		else{
 			this.direction = Direction.UP;
 		}
+	}
+	
+	protected void singlePathUpdateTargetedAction(Character curChar){
+		Action selectedAction = this.menu.getSelectedAction();
+		if (curChar == null||selectedAction == null){
+			return;
+		}
+		int maxHitSize = 0;
+		for (int i =0;i<board.getWidth();i++){
+			for (int j=0;j<board.getHeight();j++){
+				if ((curChar.leftside && i >= board.getWidth()/2)||(!curChar.leftside && i < board.getWidth()/2) || selectedAction.isBuff){
+					boolean canHit = selectedAction.hitsTarget(curChar.getShadowX(),curChar.getShadowY(),i,j,curChar.leftside,board);
+					Coordinate[] hitCoords = singlePathHitPath(selectedAction,i,j,curChar.leftside);
+					int curHitSize = getHitSize(hitCoords, curChar.leftside, selectedAction.isBuff);
+					if (canHit && curHitSize > maxHitSize){
+						this.selectedX = i;
+						this.selectedY = j;
+						maxHitSize = curHitSize;
+					}
+				}
+			}
+		}
+	}
+	
+	private int getHitSize(Coordinate[] hitCoords, boolean leftside, boolean isBuff){
+		int i = 0;
+		for (Coordinate c : hitCoords){
+			int ii = c.x;
+			int jj = c.y;
+			if (leftside && ii >= (int)board.getWidth()/2){
+				i++;
+			}
+			else if (!leftside && ii < (int)board.getWidth()/2){
+				i++;
+			}
+			else if(isBuff){
+				i++;
+			}
+		}
+		return i;
 	}
 
 	protected void singleUpdateTargetedAction(Character curChar){
@@ -480,6 +523,9 @@ public class SelectionMenuController {
 			return;
 		}
 		switch (action.pattern){
+		case SINGLEPATH:
+			updateChoosingSinglePath();
+			break;
 		case SINGLE:
 			updateChoosingSingle();
 			break;
@@ -555,6 +601,56 @@ public class SelectionMenuController {
 		// reset the highlighted flashing tile on the board
 		this.setTargetedAction();
 	}
+	
+	protected void updateChoosingSinglePath(){
+		direction = Direction.NONE;
+		int updateX = selectedX;
+		int updateY = selectedY;
+		if (InputController.pressedUp() && !InputController.pressedDown()){
+			updateX = selectedX;
+			updateY = selectedY + 1;
+			updateY %= boardHeight;
+		} else if (InputController.pressedDown() && !InputController.pressedUp()){
+			updateX = selectedX;
+			updateY = selectedY - 1;
+			if (updateY < 0){
+				updateY += boardHeight;
+			}
+		} else if (InputController.pressedLeft() && !InputController.pressedRight()){
+			updateX = selectedX - 1;
+			updateY = selectedY;
+			if (updateX > boardWidth-1){
+				updateX -= boardWidth/2;
+			}
+			else if (updateX < 0){
+				updateX+=boardWidth/2;
+			}
+			if (((!this.action.isBuff && leftside)||(this.action.isBuff && !leftside)) && updateX<boardWidth/2){
+				updateX+=boardWidth/2;
+			} else if (((!this.action.isBuff && !leftside)||(this.action.isBuff && leftside)) && selectedX<0){
+				updateX+=boardWidth/2;
+			}
+		} else if (InputController.pressedRight() && !InputController.pressedLeft()){
+			updateX = selectedX + 1;
+			updateY = selectedY;
+			if (updateX > boardWidth-1){
+				updateX -= boardWidth/2;
+			}
+			else if (updateX < 0){
+				updateX+=boardWidth/2;
+			}
+			if (((!this.action.isBuff && leftside)||(this.action.isBuff && !leftside)) && updateX> boardWidth-1){
+				updateX -= boardWidth/2;
+			} else if (((!this.action.isBuff && !leftside)||(this.action.isBuff && leftside)) && updateX > boardWidth/2-1){
+				updateX -= boardWidth/2;
+			}
+		}
+		if (action.singlePathCanTarget(selected.getShadowX(), selected.getShadowY(), updateX,updateY, selected.leftside, board)){
+			selectedX = updateX;
+			selectedY = updateY;
+		}
+	
+	}
 
 	protected void updateChoosingSingle(){
 		direction = Direction.NONE;
@@ -599,8 +695,7 @@ public class SelectionMenuController {
 				updateX -= boardWidth/2;
 			}
 		}
-
-		if (action.singleCanTarget(selected.getShadowX(), selected.getShadowY(), updateX,updateY, selected.leftside, board)){
+		if (action.singlePathCanTarget(selected.getShadowX(), selected.getShadowY(), updateX,updateY, selected.leftside, board)){
 			selectedX = updateX;
 			selectedY = updateY;
 		}
@@ -695,6 +790,9 @@ public class SelectionMenuController {
 		case SINGLE:
 			drawSingle();
 			break;
+		case SINGLEPATH:
+			drawSinglePath();
+			break;
 		case MOVE:
 			drawMove();
 			break;
@@ -748,6 +846,115 @@ public class SelectionMenuController {
 		} else {
 			for (int y = 0; y < board.height; y++){
 				board.setCanTarget(board.width - 1 - shadowX, y);
+			}
+		}
+	}
+	
+	private Coordinate[] singlePathHitPath(Action action, int selectedX, int selectedY, boolean leftside){
+		Coordinates coords = Coordinates.getInstance();
+		// when we pass in coordinate for the path we can go out of bounds it is checked in execution time
+		if (action== null || action.path == null){
+			System.out.println("line action controller 187: error input pattern projectile or instant did not have path");
+			return null;
+		}
+		Coordinate[] relativePath = action.path;
+		Coordinate[] absolutePath = new Coordinate[relativePath.length];
+		for (int i = 0;i<relativePath.length;i++){
+			// if on leftside we increment x in opposite direction
+			int x;int y;
+			if (leftside){
+				x = selectedX + relativePath[i].x;
+				y = selectedY + relativePath[i].y;
+			}
+			else{
+				x = selectedX - relativePath[i].x;
+				y = selectedY + relativePath[i].y;
+			}
+			absolutePath[i] = coords.obtain();
+			absolutePath[i].set(x, y);
+		}
+		return absolutePath;
+	}
+	
+	public void drawSinglePath(){
+		if (action.path == null){
+			return;
+		}
+		if (this.menuState != MenuState.PEEKING){
+			for (int i=0;i<board.getWidth();i++){
+				for (int j = 0;j<board.getHeight();j++){
+					if (this.action.singleCanTarget(selected.getShadowX(),selected.getShadowY(),i,j, selected.leftside, board)){
+						if ((selected.leftside && i >= (int)board.getWidth()/2) || (!selected.leftside && i < (int)board.getWidth()/2)){
+							for (Coordinate c : singlePathHitPath(action,i,j,selected.leftside)){
+								int ii = c.x;
+								int jj = c.y;
+								if (selected.leftside && ii >= (int)board.getWidth()/2){
+									board.setCanTarget(ii,jj);
+								}
+								else if (!selected.leftside && ii < (int)board.getWidth()/2){
+									board.setCanTarget(ii,jj);
+								}
+								else if(this.action.isBuff){
+									board.setCanTarget(ii, jj);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		// when peeking at the enemy character movesets there moves are drawn from their current location
+		// not the shadows location because the player does not have the information of where the shadow is
+		else{
+			for (int i=0;i<board.getWidth();i++){
+				for (int j = 0;j<board.getHeight();j++){
+					if (this.action.singlePathCanTarget((int)clickedChar.getX(),(int)clickedChar.getY(),i,j, clickedChar.leftside, board)){
+						for (Coordinate c : singlePathHitPath(action,i,j,clickedChar.leftside)){
+							int ii = c.x;
+							int jj = c.y;
+							if (clickedChar.leftside && ii >= (int)board.getWidth()/2){
+								board.setCanTarget(ii,jj);
+							}
+							else if (!clickedChar.leftside && ii < (int)board.getWidth()/2){
+								board.setCanTarget(ii,jj);
+							}
+							else if(this.action.isBuff){
+								board.setCanTarget(ii, jj);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		Coordinate[] path = action.path;
+		if (leftside) {
+			for (int i = 0; i < path.length; i++){
+				int x = selectedX + path[i].x;
+				int y = selectedY + path[i].y;
+				if (shadowX == x && shadowY == y){
+					continue;
+				}
+				else if ((!board.isInBounds(x,y))){
+					continue;
+				}
+				if (!board.isOnSide(leftside, x, y)){
+					board.setHighlighted(x,y);
+				}
+			}
+		} else {
+			for (int i = 0; i < action.path.length; i++){
+				int x = selectedX - path[i].x;
+				int y = selectedY + path[i].y;
+				if (shadowX == x && shadowY == y){
+					continue;
+				}
+				else if ((!board.isInBounds(x,y)) ){
+					continue;
+				}
+				if (!board.isOnSide(leftside, x, y)){
+					board.setHighlighted(x,y);
+				}
 			}
 		}
 	}

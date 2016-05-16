@@ -73,7 +73,7 @@ public class Characters extends LinkedList<Character>{
 		}
 	}
 	
-	public void drawSelectionMenu(GameCanvas canvas,GridBoard board,boolean shouldDim, boolean inSelection){
+	public void drawSelectionMenu(GameCanvas canvas,GridBoard board,boolean shouldDim, boolean inSelection,boolean charActionHovered){
 		Character clickedChar = clickedCharExists();
 		boolean clickedCharExist = clickedChar != null;
 		int count = 0;
@@ -83,11 +83,23 @@ public class Characters extends LinkedList<Character>{
         		// if no character is clicked we let the drawSelection determine if the character can draw.
         		// if there is a clicked char only the character equal to the clicked one will pass through
         		if (clickedChar == null||c == clickedChar){
-        			c.drawSelection(canvas,board,count,clickedCharExist);
+        			c.drawSelection(canvas,board,count,clickedCharExist,charActionHovered);
         		}
         	}
 			c.drawToken(canvas,count,shouldDim);
         }
+	}
+	
+	public boolean isActionHovered(){
+		for (Character c1 : this){
+			for (int i = 0; i < c1.actionBar.actionOptions.size(); i++){
+				Option o1 = c1.actionBar.actionOptions.get(i);
+				if (o1.currentlyHovered){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	public Character clickedCharExists() {
@@ -104,9 +116,45 @@ public class Characters extends LinkedList<Character>{
 		this.healthChars = new HashMap<Character,List<Character>>();
 	}
 	
-	public void draw(GameCanvas canvas,GridBoard board,boolean shouldDim, boolean inSelection){
+	public void draw(GameCanvas canvas,GridBoard board,boolean shouldDim, boolean inSelection,boolean charActionHovered){
+		if (charActionHovered){
+			drawActionHoveredDescription(canvas);
+		}
 		drawActionBars(canvas,shouldDim);
-		drawSelectionMenu(canvas,board,shouldDim, inSelection);
+
+		drawSelectionMenu(canvas,board,shouldDim, inSelection, charActionHovered);
 		drawHealth(canvas,shouldDim);
+	}
+	
+	public void drawActionHoveredDescription(GameCanvas canvas){
+		Character c = null;
+		Option o = null;
+		Action a = null;
+		for (Character c1 : this){
+			for (int i = 0; i < c1.actionBar.actionOptions.size(); i++){
+				Option o1 = c1.actionBar.actionOptions.get(i);
+				if (o1.currentlyHovered){
+					c = c1;
+					o = o1;
+					a = c1.actionBar.actions.get(i);
+				}
+			}
+		}
+		if (c == null || o == null || a == null){
+			return;
+		}
+		float w = canvas.getWidth();
+		float h = canvas.getHeight();
+		
+		float descript_x;
+		if (c.leftside){
+			descript_x = SelectionMenu.RELATIVE_DESCRIPTION_X_LEFT_POS *w;
+		} else {
+			descript_x = SelectionMenu.RELATIVE_DESCRIPTION_X_RIGHT_POS * w;
+		}
+		float descript_y = SelectionMenu.RELATIVE_DESCRIPTION_Y_POS * h;
+		float descript_width = SelectionMenu.RELATIVE_DESCRIPTION_WIDTH *w;
+		float descript_height = SelectionMenu.RELATIVE_DESCRIPTION_HEIGHT * h;
+		canvas.drawAction(a, descript_x, descript_y, descript_width, descript_height);
 	}
 }

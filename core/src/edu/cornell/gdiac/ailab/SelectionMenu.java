@@ -37,15 +37,21 @@ public class SelectionMenu {
 
 	public static final float TEXT_ACTION_OFFSET = 30f;
 
-	private static final float RELATIVE_DESCRIPTION_Y_POS = 0.33f;
+	public static final float RELATIVE_DESCRIPTION_Y_POS = 0.33f;
 	
-	private static final float RELATIVE_DESCRIPTION_X_POS = 0.035f;
+	public static final float RELATIVE_DESCRIPTION_X_LEFT_POS = 0.035f;
 	
-	private static final float RELATIVE_DESCRIPTION_WIDTH = 0.12f;
+	public static final float RELATIVE_DESCRIPTION_X_RIGHT_POS = 0.845f;
 	
-	private static final float RELATIVE_DESCRIPTION_HEIGHT = 0.25f;
+	public static final float RELATIVE_DESCRIPTION_WIDTH = 0.12f;
+	
+	public static final float RELATIVE_DESCRIPTION_HEIGHT = 0.25f;
 	
 	private static final float RADIUS_CONSTANT = 1.5f;
+	
+	private static final float CONFIRM_WIDTH = 0.05f;
+	
+	private static final float CONFIRM_HEIGHT = 0.04f;
 	
 	private static final Texture CONFIRM_BUTTON_UNPRESSED = new Texture("models/confirmbutton_unpressed.png");
 	
@@ -101,7 +107,6 @@ public class SelectionMenu {
 		}
 		Option confirm = new Option("","Confirm");
 		confirm.setImage(CONFIRM_BUTTON_UNPRESSED);
-		confirm.sameWidthHeight = true;
 		confirm.setImageColor(Color.WHITE);
 		options[actions.length] = confirm;
 	}
@@ -395,7 +400,7 @@ public class SelectionMenu {
 				Option confirm = options[actions.length];
 				float x = centerX/canvas.width;
 				float y = (centerY - radius)/canvas.height;
-				confirm.setBounds(x-RELATIVE_ICON_LENGTH/2, y-RELATIVE_ICON_LENGTH/2, RELATIVE_ICON_LENGTH, RELATIVE_ICON_LENGTH);
+				confirm.setBounds(x-CONFIRM_WIDTH/2, y-CONFIRM_HEIGHT/2, CONFIRM_WIDTH, CONFIRM_HEIGHT);
 				
 				if (confirm.currentlyHovered || selectedAction == actions.length){
 					confirm.setImage(CONFIRM_BUTTON_PRESSED);
@@ -508,7 +513,12 @@ public class SelectionMenu {
 		if (writeDescription){
 			if (selectedAction < actions.length && selectedAction >= 0){
 				Action action = actions[selectedAction];
-				float descript_x = RELATIVE_DESCRIPTION_X_POS *w;
+				float descript_x;
+				if (leftside){
+					descript_x = RELATIVE_DESCRIPTION_X_LEFT_POS *w;
+				} else {
+					descript_x = RELATIVE_DESCRIPTION_X_RIGHT_POS * w;
+				}
 				float descript_y = RELATIVE_DESCRIPTION_Y_POS * h;
 				float descript_width = RELATIVE_DESCRIPTION_WIDTH *w;
 				float descript_height = RELATIVE_DESCRIPTION_HEIGHT * h;

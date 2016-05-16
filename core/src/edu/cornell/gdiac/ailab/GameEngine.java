@@ -263,7 +263,6 @@ public class GameEngine implements Screen {
     	else {
     		this.startKeyword(levelName, backLevelName);
     	}
-    	
     }
 
 	/**
@@ -311,7 +310,8 @@ public class GameEngine implements Screen {
         
 	    //update the input controller
 	    InputController.update();
-		
+		//play correct sounds depending on game state
+	    SoundController.update(gameState);
 		// What we do depends on the game state
 		switch (gameState) {
 		case LOAD:
@@ -377,7 +377,7 @@ public class GameEngine implements Screen {
 		}
 		
 	}
-		
+
 	private void updateLevelMenu() {
 		// TODO Auto-generated method stub
 		
@@ -457,6 +457,7 @@ public class GameEngine implements Screen {
         		gameLoad += 0.01f;
         	} else {
         		gameState = GameState.MENU;
+        		SoundController.LoadContent(manager);
         	}
       	}
 	}

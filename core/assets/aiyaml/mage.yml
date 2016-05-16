@@ -1,19 +1,23 @@
 MAGE_ATTACK:
   type: index
   branch_type: ATTACK
-  no_interrupt_chance/safe: POWER
-  no_interrupt_chance/quick_attack_can_hit/adjacent_attack_square_quick: QUICK_MOVE_QUICK
-  no_interrupt_chance/quick_attack_can_hit: QUICK_SHIELD
-  no_interrupt_chance: POWER
-  low_interrupt_chance/quick_attack_can_hit/adjacent_safe_square/adjacent_attack_square_quick: QUICK_MOVE_QUICK
-  low_interrupt_chance/quick_attack_can_hit/adjacent_attack_square_quick: QUICK_MOVE_QUICK
-  low_interrupt_chance/quick_attack_can_hit/adjacent_safe_square: ATTACK_DEFEND
-  low_interrupt_chance/quick_attack_can_hit: ATTACK_GOAL
-  low_interrupt_chance/is_protected: POWER 
-  low_interrupt_chance: MOVE_GOAL_ATTACK
-  medium_interrupt_chance/adjacent_safe_square/adjacent_attack_square: MOVE_QUICK_QUICK
-  medium_interrupt_chance/adjacent_attack_square: MOVE_QUICK_MOVE
-  medium_interrupt_chance/adjacent_safe_square: MOVE_POWER
+  is_protected: POWER
+  no_interrupt_chance/safe: POWER_SHIELD
+  no_interrupt_chance/quick_attack_can_hit/adjacent_attack_square: QUICK_MOVE_AGGRESSIVE_SHIELD 
+  no_interrupt_chance/adjacent_safe_square: POWER_MOVE
+  no_interrupt_chance/quick_attack_can_hit: QUICK_QUICK
+  no_interrupt_chance: POWER_SHIELD
+  low_interrupt_chance/quick_attack_can_hit/adjacent_safe_square/adjacent_attack_square: QUICK_MOVE_AGGRESSIVE_SHIELD
+  low_interrupt_chance/quick_attack_can_hit/adjacent_safe_square: QUICK_MOVE_SHIELD
+  low_interrupt_chance/quick_attack_can_hit/adjacent_attack_square: QUICK_MOVE_AGGRESSIVE_SHIELD
+  low_interrupt_chance/quick_attack_can_hit: QUICK_QUICK
+  low_interrupt_chance: SHIELD_POWER
+  medium_interrupt_chance/adjacent_attack_square_quick: MOVE_QUICK_SHIELD
+  medium_interrupt_chance/adjacent_attack_square: MOVE_POWER
+  medium_interrupt_chance: SHIELD_POWER
+  adjacent_attack_square_quick: MOVE_QUICK_SHIELD
+  adjacent_attack_square/high_health: MOVE_POWER  
+  high_health: MOVE_GOAL_ATTACK
   default: MOVE_GOAL_SHIELD
   
 MAGE_POSITION:
@@ -21,9 +25,9 @@ MAGE_POSITION:
   branch_type: POSITION
   adjacent_attack_square/adjacent_safe_square: MOVE_POWER
   adjacent_attack_square_quick: MOVE_QUICK_MOVE
-  adjacent_attack_square: MOVE_SHIELD_ATTACK
-  default: MOVE_GOAL_ATTACK
-  
+  adjacent_attack_square: MOVE_POWER
+  high_health: MOVE_GOAL_ATTACK
+  default: MOVE_GOAL_SHIELD  
 #--------------------------------------
 
 POWER:
@@ -31,10 +35,10 @@ POWER:
   my_tactic: SPECIFIC
   my_actions: [POWERFUL_ATTACK, POWERFUL_ATTACK, MOVE_DEFENSIVE]
 
-SHIELD_ATTACK:
+MOVE_POWER:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [SHIELD, QUICK_ATTACK]
+  my_actions: [MOVE_AGGRESSIVE, POWERFUL_ATTACK, SHIELD]
 
 SHIELD_NOP:
   type: leaf
@@ -44,54 +48,49 @@ SHIELD_NOP:
 MOVE_GOAL_ATTACK:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_GOAL, MOVE_GOAL, QUICK_ATTACK]
+  my_actions: [MOVE_GOAL, MOVE_AGGRESSIVE, QUICK_ATTACK]
 
-MOVE_GOAL_SHIELD:
+MOVE_QUICK_SHIELD:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_GOAL, MOVE_GOAL, SHIELD]
+  my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK, SHIELD]
 
-MOVE_SHIELD_ATTACK:
+QUICK_MOVE_SHIELD:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_AGGRESSIVE, SHIELD, QUICK_ATTACK]
+  my_actions: [QUICK_ATTACK, MOVE_GOAL, SHIELD]
   
-QUICK_MOVE_QUICK:
+QUICK_QUICK:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [QUICK_ATTACK, MOVE_AGGRESSIVE, QUICK_ATTACK]
+  my_actions: [QUICK_ATTACK, QUICK_ATTACK]
   
-MOVE_POWER:
+QUICK_MOVE_AGGRESSIVE_SHIELD:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_AGGRESSIVE, POWERFUL_ATTACK, QUICK_ATTACK]
+  my_actions: [QUICK_ATTACK, MOVE_AGGRESSIVE, SHIELD]
   
-ATTACK_DEFEND:
+POWER_MOVE:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [QUICK_ATTACK, MOVE_DEFENSIVE]
+  my_actions: [POWERFUL_ATTACK, MOVE_GOAL, SHIELD]
   
-ATTACK_GOAL:
+POWER_SHIELD:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_GOAL, QUICK_ATTACK, MOVE_GOAL]
+  my_actions: [POWERFUL_ATTACK, SHIELD]
   
-QUICK_SHIELD:
+SHIELD_POWER:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [QUICK_ATTACK, SHIELD]
-  
-MOVE_QUICK_QUICK:
-  type: leaf
-  my_tactic: SPECIFIC
-  my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK, QUICK_ATTACK]
+  my_actions: [SHIELD, POWERFUL_ATTACK]
   
 MOVE_QUICK_MOVE:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK, MOVE_DEFENSIVE]
+  my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK, MOVE_GOAL]
   
-MOVE_MOVE_QUICK:
+MOVE_GOAL_SHIELD:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_DEFENSIVE, MOVE_GOAL, QUICK_ATTACK]
+  my_actions: [MOVE_GOAL, MOVE_GOAL, SHIELD]

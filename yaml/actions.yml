@@ -125,10 +125,7 @@
   size: 1
   pattern: SHIELD
   shieldNumberHits: 1
-  shieldTextureTile2State1Bottom: actions/shield_2bottom.png
-  shieldTextureTile2State1Top: actions/shield_2top.png
-  shieldTextureTile3State1Bottom: actions/shield_3bottom.png
-  shieldTextureTile3State1Top: actions/shield_3top.png
+  shieldColor0: 7EF9F5FF
   oneHit: false
   needsToggle: false
   canBlock: false
@@ -198,8 +195,7 @@
   size: 1
   pattern: SHIELD
   shieldNumberHits: 1
-  shieldTextureTile2State1Bottom: actions/shield_2bottom.png
-  shieldTextureTile2State1Top: actions/shield_2top.png
+  shieldColor0: 7EF9F5FF
   needsToggle: true
   oneHit: false
   canBlock: false
@@ -281,7 +277,7 @@
 
 13:
   name: Lightning Column
-  cost: 4
+  cost: 3
   damage: 2
   range: 10
   size: 1
@@ -323,14 +319,13 @@
 
 15:
   name: Spirit Barrier
-  cost: 2
+  cost: 3
   damage: 0
   range: 2
   size: 1
   pattern: SHIELD
   shieldNumberHits: 1
-  shieldTextureTile2State1Bottom: actions/shield_2bottom.png
-  shieldTextureTile2State1Top: actions/shield_2top.png
+  shieldColor0: 7EF9F5FF
   needsToggle: true
   oneHit: false
   canBlock: false
@@ -349,14 +344,14 @@
 
 16:
   name: Guard
-  cost: 1
+  cost: 2
   damage: 0
   range: 2
   size: 1
   pattern: SHIELD
-  shieldNumberHits: 1
-  shieldTextureTile2State1Bottom: actions/shield_2bottom.png
-  shieldTextureTile2State1Top: actions/shield_2top.png
+  shieldNumberHits: 2
+  shieldColor0: 7EF9F5FF
+  shieldColor1: F29EFFFF
   needsToggle: true
   oneHit: false
   canBlock: false
@@ -436,7 +431,7 @@
 
 20:
   name: Eruption
-  cost: 3
+  cost: 2
   damage: 2
   range: 10
   size: 1
@@ -521,7 +516,7 @@
 
 24:
   name: ScatterShot
-  cost: 4
+  cost: 3
   damage: 2
   range: 10
   size: 1
@@ -622,7 +617,7 @@
   description: Deal 2 damage in a cone shaped T.
   animationId: 0
   icon: models/action_tokens/fire_token.png
-  
+
 29:
   name: Single-Slow
   cost: 3
@@ -643,5 +638,46 @@
   description: Target a single square to slow down enemy
   animationId: 0
   icon: models/action_tokens/fire_token.png
+30:
+  name: Single Cross
+  cost: 1
+  damage: 1
+  range: 5
+  size: 1
+  pattern: SINGLEPATH
+  path: "0,0 1,0 0,1 -1,0 0,-1"
+  oneHit: false
+  needsToggle: true
+  canBlock: false
+  isBuff: false
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 2
+    magnitude: 0
+  description: Cross Attack
+  animationId: 1
+  icon: models/action_tokens/lightning_token.png
+31:
+  name: Single Square
+  cost: 1
+  damage: 1
+  range: 4
+  size: 1
+  pattern: SINGLEPATH
+  path: "0,0 1,0 0,1 1,1"
+  oneHit: false
+  needsToggle: true
+  canBlock: false
+  isBuff: false
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 2
+    magnitude: 0
+  description: Square Attack
+  animationId: 1
+  icon: models/action_tokens/lightning_token.png
+
 ...
 
