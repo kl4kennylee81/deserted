@@ -49,6 +49,10 @@ public class SelectionMenu {
 	
 	private static final float RADIUS_CONSTANT = 1.5f;
 	
+	private static final float CONFIRM_WIDTH = 0.05f;
+	
+	private static final float CONFIRM_HEIGHT = 0.04f;
+	
 	private static final Texture CONFIRM_BUTTON_UNPRESSED = new Texture("models/confirmbutton_unpressed.png");
 	
 	private static final Texture CONFIRM_BUTTON_PRESSED = new Texture("models/confirmbutton_pressed.png");
@@ -103,7 +107,6 @@ public class SelectionMenu {
 		}
 		Option confirm = new Option("","Confirm");
 		confirm.setImage(CONFIRM_BUTTON_UNPRESSED);
-		confirm.sameWidthHeight = true;
 		confirm.setImageColor(Color.WHITE);
 		options[actions.length] = confirm;
 	}
@@ -397,7 +400,7 @@ public class SelectionMenu {
 				Option confirm = options[actions.length];
 				float x = centerX/canvas.width;
 				float y = (centerY - radius)/canvas.height;
-				confirm.setBounds(x-RELATIVE_ICON_LENGTH/2, y-RELATIVE_ICON_LENGTH/2, RELATIVE_ICON_LENGTH, RELATIVE_ICON_LENGTH);
+				confirm.setBounds(x-CONFIRM_WIDTH/2, y-CONFIRM_HEIGHT/2, CONFIRM_WIDTH, CONFIRM_HEIGHT);
 				
 				if (confirm.currentlyHovered || selectedAction == actions.length){
 					confirm.setImage(CONFIRM_BUTTON_PRESSED);

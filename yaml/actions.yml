@@ -125,10 +125,7 @@
   size: 1
   pattern: SHIELD
   shieldNumberHits: 1
-  shieldTextureTile2State1Bottom: actions/shield_2bottom.png
-  shieldTextureTile2State1Top: actions/shield_2top.png
-  shieldTextureTile3State1Bottom: actions/shield_3bottom.png
-  shieldTextureTile3State1Top: actions/shield_3top.png
+  shieldColor0: 7EF9F5FF
   oneHit: false
   needsToggle: false
   canBlock: false
@@ -198,8 +195,7 @@
   size: 1
   pattern: SHIELD
   shieldNumberHits: 1
-  shieldTextureTile2State1Bottom: actions/shield_2bottom.png
-  shieldTextureTile2State1Top: actions/shield_2top.png
+  shieldColor0: 7EF9F5FF
   needsToggle: true
   oneHit: false
   canBlock: false
@@ -329,8 +325,7 @@
   size: 1
   pattern: SHIELD
   shieldNumberHits: 1
-  shieldTextureTile2State1Bottom: actions/shield_2bottom.png
-  shieldTextureTile2State1Top: actions/shield_2top.png
+  shieldColor0: 7EF9F5FF
   needsToggle: true
   oneHit: false
   canBlock: false
@@ -354,9 +349,9 @@
   range: 2
   size: 1
   pattern: SHIELD
-  shieldNumberHits: 1
-  shieldTextureTile2State1Bottom: actions/shield_2bottom.png
-  shieldTextureTile2State1Top: actions/shield_2top.png
+  shieldNumberHits: 2
+  shieldColor0: 7EF9F5FF
+  shieldColor1: F29EFFFF
   needsToggle: true
   oneHit: false
   canBlock: false
