@@ -54,6 +54,7 @@ public class Characters extends LinkedList<Character>{
 	}
 	
 	public void updateHealthUIList(){
+		healthChars.clear();
 		for (Character c: this){
 			if (c instanceof BossCharacter){
 				Character parent = ((BossCharacter) c).getParent();

@@ -1118,7 +1118,18 @@ public class Character implements GUIElement {
 			canvas.drawText(healthText, textX,textY, Color.WHITE.cpy());
 		}
 		
-		// draw the token
+		if (children != null){
+			// draw the children token
+			float startChildY = iconY + iconHeight;
+			float startChildX = healthX + healthWidth;
+			int childcount = 0;
+			for (Character child: children){
+				childcount++;
+				float childX = startChildX;
+				float childY = startChildY - (childcount*child.icon.getHeight());
+				canvas.draw(child.icon, childX, childY);
+			}
+		}
 	}
 	
 	public Color getActionBarColor(boolean shouldDim,Color c){
