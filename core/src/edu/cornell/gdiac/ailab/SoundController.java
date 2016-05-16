@@ -23,6 +23,9 @@ package edu.cornell.gdiac.ailab;
 
 import java.util.HashMap;
 import com.badlogic.gdx.audio.*;
+
+import edu.cornell.gdiac.ailab.GameEngine.GameState;
+
 import com.badlogic.gdx.assets.*;
 
 /** 
@@ -30,28 +33,28 @@ import com.badlogic.gdx.assets.*;
  */
 public class SoundController {
 	// Static names to the sounds 
-	/** Weapon fire sound */
-	public static final String FIRE_SOUND = "fire";
-	/** Falling (to death) sound */
-	public static final String FALL_SOUND = "fall";
-	/** Collision sound */
-	public static final String BUMP_SOUND = "bump";
 	/** Game over (player lost) sound */
 	public static final String GAME_OVER_SOUND = "over";
 
 	/** Hash map storing references to sound assets (after they are loaded) */
-	private static HashMap<String, Sound> soundBank; 
+	private static HashMap<String, Sound> soundBank;
+	
+	/** menu sound player */
+	private static Music menuSound;
+	
+	/** battle sound player */
+	private static Music battleSound;
 
 	// Files storing the sound references
-	/** File to weapon fire */
-	private static final String FIRE_FILE = "sounds/Fire.mp3";
-	/** File to falling sound */
-	private static final String FALL_FILE = "sounds/Fall.mp3";
-	/** File to collision sound */
-	private static final String BUMP_FILE = "sounds/Bump.mp3";
 	/** File to game over (player lost) */
 	private static final String OVER_FILE = "sounds/GameOver.mp3";
 
+	/** Menu music file*/
+	private static final String MENU_MUSIC_FILE  = "sounds/menu_theme.mp3";
+	
+	/** Battle music file*/
+	private static final String BATTLE_MUSIC_FILE  = "sounds/battle_theme_1.mp3";
+	
 	/** 
 	 * Preloads the assets for this Sound controller.
 	 * 
@@ -62,10 +65,9 @@ public class SoundController {
 	 * @param manager Reference to global asset manager.
 	 */
 	public static void PreLoadContent(AssetManager manager) {
-		manager.load(FIRE_FILE,Sound.class);
-		manager.load(FALL_FILE,Sound.class);
-		manager.load(BUMP_FILE,Sound.class);
 		manager.load(OVER_FILE,Sound.class);
+		manager.load(MENU_MUSIC_FILE,Music.class);
+		manager.load(BATTLE_MUSIC_FILE,Music.class);
 	}
 
 	/** 
@@ -80,17 +82,14 @@ public class SoundController {
 	 */
 	public static void LoadContent(AssetManager manager) {
 		soundBank = new HashMap<String, Sound>();
-		if (manager.isLoaded(FIRE_FILE)) {
-			soundBank.put(FIRE_SOUND,manager.get(FIRE_FILE,Sound.class));
-		}
-		if (manager.isLoaded(FALL_FILE)) {
-			soundBank.put(FALL_SOUND,manager.get(FALL_FILE,Sound.class));
-		}
-		if (manager.isLoaded(BUMP_FILE)) {
-			soundBank.put(BUMP_SOUND,manager.get(BUMP_FILE,Sound.class));
-		}
 		if (manager.isLoaded(OVER_FILE)) {
 			soundBank.put(GAME_OVER_SOUND,manager.get(OVER_FILE,Sound.class));
+		}
+		if (manager.isLoaded(MENU_MUSIC_FILE)) {
+			menuSound = manager.get(MENU_MUSIC_FILE,  Music.class);
+		}
+		if (manager.isLoaded(BATTLE_MUSIC_FILE)) {
+			battleSound = manager.get(BATTLE_MUSIC_FILE,  Music.class);
 		}
 	}
 
@@ -106,9 +105,6 @@ public class SoundController {
 		if (soundBank != null) {
 			soundBank.clear();
 			soundBank = null;
-			manager.unload(FIRE_FILE);
-			manager.unload(FALL_FILE);
-			manager.unload(BUMP_FILE);
 			manager.unload(OVER_FILE);
 		}
 	}
@@ -121,4 +117,34 @@ public class SoundController {
 	public static Sound get(String key) {
         return soundBank.get(key);
     }
+	
+	public static void update(GameState gs){
+		switch (gs) {
+		case LOAD:
+		case LEVEL_MENU:
+		case PAUSED:
+		case SELECT:
+			break;
+		case MENU:
+		case EDITOR:
+		case CUSTOMIZE:
+			if (menuSound.isPlaying()) break;
+			else {
+				battleSound.stop();
+				menuSound.play();
+			}
+			break;
+		case PLAY:			
+			if (battleSound.isPlaying()) break;
+			else {
+				menuSound.stop();
+				battleSound.play();
+			}
+			break;
+		case FINISH:
+		case AFTER:
+			((Sound)soundBank.get(OVER_FILE)).play();
+			break;
+		}
+	}
 }
