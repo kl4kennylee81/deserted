@@ -56,6 +56,11 @@ public class BossCharacter extends Character{
 	}
 	
 	@Override
+	public int getMaxHealth(){
+		return this.parentChar.getMaxHealth();
+	}
+	
+	@Override
 	void addEffect(Effect e){
 		if (sharedStatus){
 			this.parentChar.getEffects().add(e);
@@ -101,5 +106,11 @@ public class BossCharacter extends Character{
 		else {
 			this.parentChar.castMoved = Math.min(this.castMoved, this.parentChar.castMoved);
 		}
+	}
+	
+	@Override
+	public void setLeftSide(boolean ls) {
+		super.setLeftSide(ls);
+		this.parentChar.setLeftSide(ls);
 	}
 }

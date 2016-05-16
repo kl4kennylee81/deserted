@@ -421,28 +421,17 @@ public class CharActionBar {
 	}
 	
 	public void drawLeftEndpoint(GameCanvas canvas, float xPosBar, float yPosBar, boolean leftside,Color barColor){		
-		if (leftside){
-			// draw end point left
-			float leftEndWidth = (CharActionBar.actionBar_leftBlue.getWidth()* this.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_leftBlue.getHeight();
-			float leftEndHeight = this.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER;
-			
-			float leftEndX = xPosBar - 0.9f*leftEndWidth;
-			float leftEndY = yPosBar - leftEndHeight/4;
-			
-			// make this endpoint part of the curvature of the end filling
-			canvas.drawTexture(actionBar_leftBlue,leftEndX,leftEndY,leftEndWidth,leftEndHeight,barColor);
-		}
-		else {
-			// draw end point left
-			float leftEndWidth = (CharActionBar.actionBar_leftRed.getWidth()* this.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_leftRed.getHeight();
-			float leftEndHeight = 0.85f*this.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER;
-			
-			float leftEndX = xPosBar - 0.9f*leftEndWidth;
-			float leftEndY = yPosBar - leftEndHeight/5;
-			
-			// make this endpoint part of the curvature of the end filling
-			canvas.drawTexture(actionBar_leftRed,leftEndX,leftEndY,leftEndWidth,leftEndHeight,barColor);
-		}
+		float leftEndWidth = CharActionBar.actionBar_rightend.getWidth() * this.getBarHeight(canvas)/CharActionBar.actionBar_rightend.getHeight();
+		float leftEndHeight = this.getBarHeight(canvas);
+		
+		float leftEndX = xPosBar;
+		float leftEndY = yPosBar;
+
+		float Sx = leftEndWidth/CharActionBar.actionBar_rightend.getWidth();
+		float Sy = leftEndHeight/CharActionBar.actionBar_rightend.getHeight();
+		
+		// make this endpoint part of the curvature of the end filling
+		canvas.draw(actionBar_rightend,barColor,0,0,leftEndX,leftEndY,0,-Sx,Sy);
 	}
 	
 	public void drawBar(GameCanvas canvas,float xPosBar,float yPosBar, Color barColor){

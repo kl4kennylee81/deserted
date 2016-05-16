@@ -549,7 +549,7 @@
   - 3
   - 6
   texture: models/CHARA_3.png
-  icon: models/sulus_icon.png
+  icon: models/CASTICON_3.png
   animationId: 101
 
 1001:

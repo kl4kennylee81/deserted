@@ -1,11 +1,17 @@
 package edu.cornell.gdiac.ailab;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Characters extends LinkedList<Character>{
+	
+	//the parent char and unaffiliated chars that we draw the health UI for
+	HashMap<Character,List<Character>> healthChars;
 	
 	public void drawActionBars(GameCanvas canvas,boolean shouldDim){
 		int count = 0;
@@ -18,16 +24,51 @@ public class Characters extends LinkedList<Character>{
 					c.selectionMenu.getQueuedActions(),c.selectionMenu.getSelectedAction(),c.getQueuedActions(),
 					c.castActions,c.selectionMenu.getLerpVal(), c.getEffects());
 			
-			c.drawHealth(canvas, count, shouldDim);
 			c.drawQueuedActions(canvas,count);
-			
-			// handle all character drawing logic here
+		}
+	}
+	
+	public void drawHealth(GameCanvas canvas,boolean shouldDim){
+		int leftCount = 0;
+		int rightCount = 0;
+		for (Character c: healthChars.keySet()){
+			List<Character> childrens = healthChars.get(c);
+			if (c.leftside){
+				leftCount++;
+				c.drawHealth(canvas, leftCount, shouldDim,childrens);
+			}
+			else{
+				rightCount++;
+				c.drawHealth(canvas, rightCount, shouldDim,childrens);
+			}
 		}
 	}
 	
 	public void update(){
+		// accumulate list of ally and enemy to show health ui
+		this.updateHealthUIList();
+		
 		for (Character c: this){
 			c.update();
+		}
+	}
+	
+	public void updateHealthUIList(){
+		for (Character c: this){
+			if (c instanceof BossCharacter){
+				Character parent = ((BossCharacter) c).getParent();
+				if (!healthChars.containsKey(parent)){
+					List<Character> children = new LinkedList<Character>();
+					children.add(c);
+					healthChars.put(parent, children);
+				}
+				else{
+					healthChars.get(parent).add(c);
+				}
+			}
+			else{
+				healthChars.put(c, null);
+			}
 		}
 	}
 	
@@ -59,10 +100,12 @@ public class Characters extends LinkedList<Character>{
 	
 	public Characters(){
 		super();
+		this.healthChars = new HashMap<Character,List<Character>>();
 	}
 	
 	public void draw(GameCanvas canvas,GridBoard board,boolean shouldDim, boolean inSelection){
 		drawActionBars(canvas,shouldDim);
 		drawSelectionMenu(canvas,board,shouldDim, inSelection);
+		drawHealth(canvas,shouldDim);
 	}
 }

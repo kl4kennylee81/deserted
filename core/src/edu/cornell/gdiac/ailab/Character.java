@@ -27,9 +27,6 @@ public class Character implements GUIElement {
 	private static final float SHIELD_WIDTH = 0.0125f;
 	private static final int DIAGONAL_SIZE = 20;
 	
-	private static final float ACTIONBAR_TICK_SIZE = 8f;
-	private static final float HEALTH_OFFSET = 20f;
-	
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
 	public static float CHARACTER_PROPORTION = 0.7f;
@@ -134,6 +131,8 @@ public class Character implements GUIElement {
 	float centerY;
 	float radius;
 	
+	TextureRegion healthUI;
+	
 	/**Constructor used by GameEngine to create characters from yaml input. */
 	public Character (int id,Texture texture, Texture icon, AnimationNode animation, String name, 
 						int health, int maxHealth, Color color, 
@@ -171,7 +170,10 @@ public class Character implements GUIElement {
 		float waitTime = speed;
 		float castTime = castSpeed;
 		this.numSlots = numSlots;
-		actionBar = new CharActionBar(numSlots,waitTime,castTime);	
+		actionBar = new CharActionBar(numSlots,waitTime,castTime);
+		
+		Texture healthTexture = new Texture(Constants.HEALTH_UI);
+		this.healthUI = new TextureRegion(healthTexture);
 	}
 	
 	public Character (int id,Texture texture, Texture icon, AnimationNode animation, String name, 
@@ -210,6 +212,8 @@ public class Character implements GUIElement {
 		this.numSlots = numSlots;
 		actionBar = new CharActionBar(numSlots,waitTime,castTime);
 
+		Texture healthTexture = new Texture(Constants.HEALTH_UI);
+		this.healthUI = new TextureRegion(healthTexture);
 	}
 	
 	
@@ -243,7 +247,8 @@ public class Character implements GUIElement {
 		float waitTime = c.speed;
 		float castTime = c.castSpeed;
 		actionBar = new CharActionBar(c.numSlots,waitTime,castTime);
-		
+		Texture healthTexture = new Texture(Constants.HEALTH_UI);
+		this.healthUI = new TextureRegion(healthTexture);
 	}
 	
 	public Character(Character c, Action[] actions){
@@ -281,7 +286,8 @@ public class Character implements GUIElement {
 
 		this.availableActions = actions;
 		selectionMenu = new SelectionMenu(availableActions);
-		
+		Texture healthTexture = new Texture(Constants.HEALTH_UI);
+		this.healthUI = new TextureRegion(healthTexture);
 	}
 	
 	/** update the state of the character 
@@ -656,6 +662,10 @@ public class Character implements GUIElement {
 	
 	public int getHealth(){
 		return this.health;
+	}
+	
+	public int getMaxHealth(){
+		return this.maxHealth;
 	}
 	
 	public void setHealth(int val){
@@ -1053,42 +1063,62 @@ public class Character implements GUIElement {
 		}
 	}	
 	
-	public void drawHealth(GameCanvas canvas,int count,boolean shouldDim){
-	
-//		Color iconColor = this.getColor(shouldDim);
-//		Color waitColor = this.getActionBarColor(shouldDim, this.color.cpy());
-		float leftEndWidth;
-		if (this.leftside){
-			leftEndWidth = (CharActionBar.actionBar_leftBlue.getWidth()* this.actionBar.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_leftBlue.getHeight();
-			
-		}
-		else {
-			leftEndWidth = 0.7f*(CharActionBar.actionBar_leftRed.getWidth()* this.actionBar.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_leftRed.getHeight();
-		}
-		float tokenX = this.actionBar.getX(canvas) - leftEndWidth/2;
-		float tokenY = this.actionBar.getY(canvas, count) + this.actionBar.getBarHeight(canvas)*0.92f;
+	public void drawHealth(GameCanvas canvas,int count,boolean shouldDim,List<Character> children){
 		
-		int curHealth;
-		if (this instanceof BossCharacter){
-			curHealth = ((BossCharacter)this).parentChar.getHealth();
+		Color c = this.getColor(shouldDim);
+
+		int curHealth = this.getHealth();
+		int maxHealth = this.getMaxHealth();
+		String healthText = Integer.toString(curHealth)+"/"+Integer.toString(maxHealth);
+		
+		float healthWidth = Constants.HEALTH_WIDTH * canvas.getWidth();
+		
+		float healthHeight = this.healthUI.getRegionHeight()*healthWidth/this.healthUI.getRegionWidth();
+		
+		float healthSpacing = Constants.HEALTH_SPACING_Y * canvas.getHeight();
+		
+		float healthSx = healthWidth/this.healthUI.getRegionWidth();
+		
+		float healthSy = healthHeight/this.healthUI.getRegionHeight();
+		
+		float iconWidth = Constants.HEALTH_TOKEN_WIDTH * canvas.getWidth();
+		
+		float iconHeight = this.icon.getHeight()* iconWidth/this.icon.getWidth();
+		
+		float healthY = (Constants.HEALTH_UI_Y * canvas.getHeight())-(count*(healthHeight + healthSpacing+iconHeight));
+		
+		float textY = healthY + 0.75f*healthHeight;
+		
+		float iconY = healthY + Constants.HEALTH_TOKEN_Y_OFFSET * canvas.getHeight();
+		
+		float healthX;
+		if (this.leftside){
+			healthX = Constants.HEALTH_UI_X * canvas.getWidth();
+			
+			float iconX = healthX + iconWidth/2;
+			
+			canvas.draw(this.icon,c,iconX,iconY,iconWidth,iconHeight);
+			
+			canvas.draw(healthUI, c, 0,0, healthX, healthY,0, healthSx, healthSy); 
+			
+			float textX = healthX + healthWidth/2;
+			canvas.drawText(healthText, textX,textY, Color.WHITE.cpy());
 		}
 		else{
-			curHealth = this.getHealth();
+			healthX = (1-Constants.HEALTH_UI_X) * canvas.getWidth();
+			
+			float textX = healthX - 0.7f*healthWidth;
+			
+			float iconX = healthX - 1.7f*iconWidth;
+			
+			canvas.draw(this.icon,c,iconX,iconY,iconWidth,iconHeight);
+			
+			canvas.draw(healthUI, c, 0,0, healthX, healthY,0, -healthSx, healthSy); 
+			
+			canvas.drawText(healthText, textX,textY, Color.WHITE.cpy());
 		}
-		String healthText = Integer.toString(curHealth);
-		canvas.drawText(healthText, tokenX, tokenY, Color.BLACK.cpy());
 		
-		
-//		canvas.drawTexture(this.icon, tokenX, tokenY, this.icon.getWidth(),this.icon.getHeight(),iconColor);
-//		
-//		/** the wait width is modified by the hp already **/
-//		float healthW = this.actionBar.getWaitWidthNoBuffer(canvas);
-//		float healthH = this.actionBar.getBarHeight(canvas);
-//		
-//		float healthX = this.actionBar.getX(canvas);
-//		float healthY = tokenY;
-//		
-//		canvas.drawBox(healthX, healthY, healthW, healthH, waitColor);
+		// draw the token
 	}
 	
 	public Color getActionBarColor(boolean shouldDim,Color c){
