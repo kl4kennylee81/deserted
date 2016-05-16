@@ -143,6 +143,8 @@ public class SoundController {
 			break;
 		case FINISH:
 		case AFTER:
+			battleSound.stop();
+			menuSound.stop();
 			((Sound)soundBank.get(GAME_OVER_SOUND)).play();
 			break;
 		}
