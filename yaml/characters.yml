@@ -37,7 +37,7 @@
   maxHealth: 12
   hexColor: 00cc00FF
   speed: 0.5
-  castSpeed: 7.5
+  castSpeed: 7.0
   slots: 2
   availableActions:
   - 0
@@ -53,7 +53,7 @@
   maxHealth: 8
   hexColor: FF9900FF
   speed: 3.5
-  castSpeed: 8.0
+  castSpeed: 6.5
   slots: 4
   availableActions:
   - 0
@@ -136,7 +136,7 @@
   maxHealth: 5
   hexColor: FF9900FF
   speed: 3.5
-  castSpeed: 8.0
+  castSpeed: 6.5
   slots: 4
   availableActions:
   - 0
@@ -430,7 +430,7 @@
   maxHealth: 5
   hexColor: 00cc00FF
   speed: 1.0
-  castSpeed: 6.0
+  castSpeed: 7.0
   slots: 2
   availableActions:
   - 0
@@ -464,7 +464,7 @@
   maxHealth: 4
   hexColor: FF9900FF
   speed: 4.0
-  castSpeed: 7.5
+  castSpeed: 6.5
   slots: 4
   availableActions:
   - 0

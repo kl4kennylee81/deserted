@@ -104,7 +104,7 @@ levels:
     needsSelect: true
   11:
     levelName: Level2
-    beaten: false
+    beaten: true
     boss: false
     needsSelect: true
   12:
