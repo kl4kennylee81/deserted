@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
@@ -35,18 +36,8 @@ public class Action implements GUIElement {
 	
 	Coordinate[] path;
 	
-	Texture shieldTextureTile1State1Bottom;
-	Texture shieldTextureTile1State1Top;
-	Texture shieldTextureTile1State2Bottom;
-	Texture shieldTextureTile1State2Top;
-	Texture shieldTextureTile2State1Bottom;
-	Texture shieldTextureTile2State1Top;
-	Texture shieldTextureTile2State2Bottom;
-	Texture shieldTextureTile2State2Top;
-	Texture shieldTextureTile3State1Bottom;
-	Texture shieldTextureTile3State1Top;
-	Texture shieldTextureTile3State2Bottom;
-	Texture shieldTextureTile3State2Top;
+	Color shieldColor0;
+	Color shieldColor1;
 
 	public static enum Pattern {
 		MOVE,

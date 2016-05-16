@@ -26,7 +26,14 @@ public class Shields {
 	private static final float TILE_1_X_OFFSET = 0.015f;
 	private static final float TILE_2_X_OFFSET = 0.03f;
 	private static final float TILE_3_X_OFFSET = 0.03f;
-
+	
+	private static final Texture SHIELD_1_BOTTOM = new Texture("models/shield_1bottom.png");
+	private static final Texture SHIELD_1_TOP = new Texture("models/shield_1top.png");
+	private static final Texture SHIELD_2_BOTTOM = new Texture("models/shield_2bottom.png");
+	private static final Texture SHIELD_2_TOP = new Texture("models/shield_2top.png");
+	private static final Texture SHIELD_3_BOTTOM = new Texture("models/shield_3bottom.png");
+	private static final Texture SHIELD_3_TOP = new Texture("models/shield_3top.png");
+	
 	private List<ActionNode> leftShields;
 	private List<ActionNode> rightShields;
 	
@@ -200,25 +207,40 @@ public class Shields {
 		Texture toDraw = null;
 		if (top){
 			if (numWithin == 1){
-				toDraw = an.action.shieldTextureTile1State1Top;
+				toDraw = SHIELD_1_TOP;
 			} else if (numWithin == 2){
-				toDraw = an.action.shieldTextureTile2State1Top;
+				toDraw = SHIELD_2_TOP;
 			} else if (numWithin == 3){
-				toDraw = an.action.shieldTextureTile3State1Top;
+				toDraw = SHIELD_3_TOP;
 			}
 		} else {
 			if (numWithin == 1){
-				toDraw = an.action.shieldTextureTile1State1Bottom;
+				toDraw = SHIELD_1_BOTTOM;
 			} else if (numWithin == 2){
-				toDraw = an.action.shieldTextureTile2State1Bottom;
+				toDraw = SHIELD_2_BOTTOM;
 			} else if (numWithin == 3){
-				toDraw = an.action.shieldTextureTile3State1Bottom;
+				toDraw = SHIELD_3_BOTTOM;
 			}
 		}
 		
 		Color col = Color.WHITE;
+		if (an.shieldHitsLeft == an.action.shieldNumberHits){
+			if (an.action.shieldColor0 != null){
+				col = an.action.shieldColor0;
+			} else {
+				col = Color.CYAN;
+			}
+		} else {
+			if (an.action.shieldColor1 != null){
+				col = an.action.shieldColor1;
+			} else if (an.action.shieldColor0 != null){
+				col = an.action.shieldColor0;
+			} else {
+				col = Color.CYAN;
+			}
+		}
 		if (fade){
-			col = Color.WHITE.cpy().mul(1,1,1,0.3f);
+			col = col.cpy().mul(1,1,1,0.3f);
 		}
 		
 		canvas.drawTexture(toDraw, shieldX, shieldY, toDraw.getWidth()*widthRatio, toDraw.getHeight()*heightRatio, col);
