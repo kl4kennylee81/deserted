@@ -1121,13 +1121,14 @@ public class Character implements GUIElement {
 		if (children != null){
 			// draw the children token
 			float startChildY = iconY + iconHeight;
-			float startChildX = healthX + healthWidth;
+			float startChildX = leftside ? healthX + healthWidth: healthX - healthWidth;
 			int childcount = 0;
 			for (Character child: children){
 				childcount++;
-				float childX = startChildX;
+				Color childColor = child.getColor(shouldDim);
+				float childX = startChildX - child.icon.getWidth();
 				float childY = startChildY - (childcount*child.icon.getHeight());
-				canvas.draw(child.icon, childX, childY);
+				canvas.draw(child.icon, childColor,childX, childY);
 			}
 		}
 	}
