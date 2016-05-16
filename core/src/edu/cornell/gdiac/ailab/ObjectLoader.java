@@ -343,10 +343,14 @@ public class ObjectLoader {
 					// create a new parent that is seperate from the model due to needing unique one
 					// for allies and enemies
 					Character parentToAdd = new Character(parentModel);
+					
 					bossChars.put(parentToAdd.id, parentToAdd);
 				}
 				// retrieve the parent model from the bosses since it has to exist from above
 				Character parentModel = bossChars.get(bossModel.getParent().id);
+				
+				// set the max health to be the health of all its children
+				parentModel.setMaxHealth(charToAdd.getHealth()+parentModel.getMaxHealth());
 				
 				// constructor sets the action bar to be set to the bosses action bar thus sharing
 				charToAdd = new BossCharacter(bossModel,parentModel);

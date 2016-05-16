@@ -155,8 +155,8 @@
 
 9:
   name: Parent Boss
-  health: 20
-  maxHealth: 20
+  health: 0
+  maxHealth: 0
   hexColor: FF9900FF
   speed: 5.
   castSpeed: 10.
@@ -537,8 +537,8 @@
 # 1000+ This is where we have the parent characters
 1000:
   name: Dara
-  health: 7
-  maxHealth: 7
+  health: 0
+  maxHealth: 0
   hexColor: CD2626FF
   speed: 5.5
   castSpeed: 6.5
@@ -554,8 +554,8 @@
 
 1001:
   name: Friend
-  health: 4
-  maxHealth: 4
+  health: 0
+  maxHealth: 0
   hexColor: CD2626FF
   speed: 5.0
   castSpeed: 7.5
@@ -568,8 +568,8 @@
 
 1002:
   name: Enemy Character
-  health: 4
-  maxHealth: 4
+  health: 0
+  maxHealth: 0
   hexColor: CD2626FF
   speed: 5.0
   castSpeed: 7.5

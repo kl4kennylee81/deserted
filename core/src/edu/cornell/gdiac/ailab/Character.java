@@ -672,6 +672,11 @@ public class Character implements GUIElement {
 		this.health = val;
 	}
 	
+	public void setMaxHealth(int val){
+		this.health = val;
+		this.maxHealth = val;
+	}
+	
 	float getNextCast() {
 		ActionNode an = queuedActions.peek();
 		if (an != null){
