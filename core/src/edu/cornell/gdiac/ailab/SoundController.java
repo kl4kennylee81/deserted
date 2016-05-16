@@ -143,7 +143,7 @@ public class SoundController {
 			break;
 		case FINISH:
 		case AFTER:
-			((Sound)soundBank.get(OVER_FILE)).play();
+			((Sound)soundBank.get(GAME_OVER_SOUND)).play();
 			break;
 		}
 	}
