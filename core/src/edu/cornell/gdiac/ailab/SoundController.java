@@ -157,7 +157,10 @@ public class SoundController {
 		case EDITOR:
 		case CUSTOMIZE:
 			if (menuSound.isPlaying()) break;
-			else menuSound.play();
+			else {
+				battleSound.stop();
+				menuSound.play();
+			}
 			break;
 		case PLAY:			
 			if (battleSound.isPlaying()) break;
