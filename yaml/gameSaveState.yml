@@ -71,53 +71,44 @@ levels:
     levelName: tutorial1
     beaten: false
     boss: false
-    needsSelect: false
   1:
     levelName: tutorial2
     beaten: false
     boss: false
-    needsSelect: false
   2:
     levelName: tutorial3
     beaten: false
     boss: false
-    needsSelect: false
   3:
     levelName: tutorial4
     beaten: false
     boss: false
-    needsSelect: false
   4:
     levelName: tutorial5
     beaten: false
     boss: false
     background: backgrounds/environment.png
-    needsSelect: false
   5:
     levelName: tutorial6
     beaten: false
     boss: false
     gainedSP: 1
-    needsSelect: false
   10:
     levelName: Level1
     beaten: false
     boss: false
     winIn: 1
-    needsSelect: false
   11:
     levelName: Level2
     beaten: false
     boss: false
     surviveFor: 1
-    needsSelect: false
   12:
     levelName: Level3
     beaten: false
     boss: false
     gainedSP: 1
     unlockableCharacter: 2
-    needsSelect: false
   13:
     levelName: Level4
     beaten: false
@@ -129,7 +120,6 @@ levels:
     boss: false
     gainedSP: 1
     unlockableCharacter: 5
-    needsSelect: false
   15:
     levelName: Level6
     beaten: false
@@ -139,14 +129,13 @@ levels:
     levelName: pvp
     beaten: false
     boss: false
-    needsSelect: false
+
 availableCharacters:
 - 0
 - 1
-- 2
 unlockableCharacters:
 - 2
 - 5
 selectedCharacters:
 - 0
-- 2
+- 1

@@ -187,6 +187,7 @@
   icon: models/tutorial_characters/basic_iconyellow.png
   animationId: 107
   bossId: 9
+  sharedStatus: true
 
 89:
   name: Tutorial_part_3

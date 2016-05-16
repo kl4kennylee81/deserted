@@ -27,15 +27,16 @@ public class BossCharacter extends Character{
 	
 	public BossCharacter (int id,Texture texture, Texture icon, AnimationNode animation, String name, 
 			int health, int maxHealth, Color color,float speed, float castSpeed, 
-			Action[] actions,int numSlots,Character parent){
+			Action[] actions,int numSlots,Character parent,boolean sharedStatus){
 		super(id,texture,icon,animation,name,health,maxHealth,color,speed,castSpeed,actions,numSlots);
 		this.parentChar = parent;
+		this.sharedStatus = sharedStatus;
 	}
 	
-	public BossCharacter(Character c,Character parent){
+	public BossCharacter(BossCharacter c,Character parent){
 		super(c);
 		this.parentChar = parent;
-		this.sharedStatus = true;
+		this.sharedStatus = c.sharedStatus;
 		this.sharedBar = true;
 	}
 	
@@ -60,7 +61,7 @@ public class BossCharacter extends Character{
 			this.parentChar.getEffects().add(e);
 		}
 		else{
-			this.getEffects().add(e);
+			super.getEffects().add(e);
 		}
 	}
 	
@@ -70,7 +71,7 @@ public class BossCharacter extends Character{
 			return this.parentChar.getEffects();
 		}
 		else{
-			return this.getEffects();
+			return super.getEffects();
 		}
 	}
 	
@@ -80,7 +81,7 @@ public class BossCharacter extends Character{
 			this.parentChar.getEffects().remove(e);
 		}
 		else{
-			this.getEffects().remove(e);
+			super.getEffects().remove(e);
 		}
 	}
 	

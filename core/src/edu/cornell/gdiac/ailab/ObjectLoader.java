@@ -334,7 +334,7 @@ public class ObjectLoader {
 			}else{
 				charToAdd = new Character(modelChar);
 			}
-			// create the boss and replace the charToAdd with teh boss
+			// create the boss and replace the charToAdd with the boss
 			if (modelChar instanceof BossCharacter){
 				BossCharacter bossModel = (BossCharacter) modelChar;
 				if (!bossChars.containsKey(bossModel.getParent().id)){
@@ -405,9 +405,13 @@ public class ObjectLoader {
 		AnimationNode animNode = new AnimationNode(anim);
 		Character characterToAdd;
 		if (bossChar != null){
+			Boolean sharedStatus = (Boolean) character.get("sharedStatus");
+			if (sharedStatus == null){
+				sharedStatus = false;
+			}
 			characterToAdd = new BossCharacter(charId,charTexture, iconTexture, animNode,
 					name, health, maxHealth, Color.valueOf(hexColor), speed,
-					castSpeed, actionArray,numSlots,bossChar);
+					castSpeed, actionArray,numSlots,bossChar,sharedStatus);
 		}
 		else{
 			characterToAdd = new Character(charId,charTexture, iconTexture, animNode,
