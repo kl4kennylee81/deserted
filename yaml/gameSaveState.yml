@@ -137,10 +137,7 @@ levels:
     levelName: pvp
     beaten: false
     boss: false
-<<<<<<< HEAD
 
-=======
->>>>>>> origin
 availableCharacters:
 - 0
 - 1
