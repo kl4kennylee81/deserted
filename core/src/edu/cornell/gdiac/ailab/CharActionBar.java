@@ -90,8 +90,6 @@ public class CharActionBar {
 	// slots affected by daze
 	int dazedSlots;
 	
-	float healthProportion;
-	
 	ArrayList<Option> actionOptions;
 	ArrayList<Action> actions;
 	
@@ -307,10 +305,6 @@ public class CharActionBar {
 		float bar_width = getWidth(canvas);
 		float cast_point = bar_width * this.getCastPoint();
 		return start_x + cast_point;
-	}
-	
-	public void update(float healthProp){
-		this.healthProportion = healthProp;
 	}
 	
 	/** Section for handling drawing a normal bar to represent total initial energy 

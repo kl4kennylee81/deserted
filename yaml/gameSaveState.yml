@@ -120,7 +120,7 @@ levels:
     needsSelect: false
   13:
     levelName: Level4
-    beaten: true
+    beaten: false
     boss: false
     needsSelect: true
   14:
@@ -143,9 +143,10 @@ levels:
 availableCharacters:
 - 0
 - 1
+- 2
 unlockableCharacters:
 - 2
 - 5
 selectedCharacters:
 - 0
-- 1
+- 2

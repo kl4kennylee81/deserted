@@ -9,11 +9,9 @@ public class BossCharacter extends Character{
 	/** pointer to a parent character **/
 	Character parentChar;
 	
-	// if share health is true we use the parents health otherwise subtract from own health
-	boolean shareHealth;
+	boolean sharedStatus;
 	
-	// this is for drawing if its true you draw it on the parents bar
-	boolean shareBar;
+	boolean sharedBar;
 	
 	public boolean isBoss(){
 		return this.parentChar != null;
@@ -37,11 +35,8 @@ public class BossCharacter extends Character{
 	public BossCharacter(Character c,Character parent){
 		super(c);
 		this.parentChar = parent;
-		
-		// for now set the action bar of this character to the action bar of the parent.
-		// this is not a copy it will thus be shared between units of the same boss.
-		this.actionBar = this.parentChar.actionBar;
-		this.shareBar = true;
+		this.sharedStatus = true;
+		this.sharedBar = true;
 	}
 	
 	@Override
@@ -61,17 +56,49 @@ public class BossCharacter extends Character{
 	
 	@Override
 	void addEffect(Effect e){
-		this.parentChar.getEffects().add(e);
+		if (sharedStatus){
+			this.parentChar.getEffects().add(e);
+		}
+		else{
+			this.getEffects().add(e);
+		}
 	}
 	
 	@Override
-	ArrayList<Effect> getEffects(){
-		return this.parentChar.getEffects();
+	public ArrayList<Effect> getEffects(){
+		if (sharedStatus){
+			return this.parentChar.getEffects();
+		}
+		else{
+			return this.getEffects();
+		}
 	}
 	
 	@Override
-	void removeEffect(int i){
-		this.parentChar.getEffects().remove(i);
+	void removeEffect(Effect e){
+		if (sharedStatus){
+			this.parentChar.getEffects().remove(e);
+		}
+		else{
+			this.getEffects().remove(e);
+		}
 	}
 	
+	@Override
+	/** update the state of the character and the bosses meta information
+	 *  currently updates its cast moved
+	 * **/
+	public void update(){
+		updateParentCastMoved();
+		super.update();
+	}
+	
+	public void updateParentCastMoved(){
+		if (this.parentChar.castMoved == 0){
+			this.parentChar.castMoved = this.castMoved;
+		}
+		else {
+			this.parentChar.castMoved = Math.min(this.castMoved, this.parentChar.castMoved);
+		}
+	}
 }

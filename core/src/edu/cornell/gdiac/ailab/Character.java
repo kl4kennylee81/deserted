@@ -14,6 +14,7 @@ import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNode.Direction;
 import edu.cornell.gdiac.ailab.AnimationNode.CharacterState;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
+import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.ailab.ActionNode;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
@@ -287,8 +288,7 @@ public class Character implements GUIElement {
 	 *  currently just updates his actionBar with his current health
 	 * **/
 	public void update(){
-		float healthProportion = ((float)health/(float)maxHealth);
-		this.actionBar.update(healthProportion);
+		updateSpeedModifier();
 		
 		// update character state
 		updateCharState();
@@ -542,6 +542,16 @@ public class Character implements GUIElement {
 		return this.actionBar.speedModifier;
 	}
 	
+	public void updateSpeedModifier(){
+		int modifier = 0;
+		for (Effect e:this.getEffects()){
+			if (e.type == Type.SPEED){
+				modifier+=e.magnitude;
+			}
+		}
+		this.setSpeedModifier(modifier);
+	}
+	
 	public float getInterval(){
 		//System.out.println(name+" "+actionBar.getCastPoint());
 		return (1f-actionBar.getCastPoint()) / this.getActionBar().getTotalNumSlots();
@@ -571,8 +581,8 @@ public class Character implements GUIElement {
 		return effects;
 	}
 	
-	void removeEffect(int i){
-		effects.remove(i);
+	void removeEffect(Effect e){
+		effects.remove(e);
 	}
 	
 	/**

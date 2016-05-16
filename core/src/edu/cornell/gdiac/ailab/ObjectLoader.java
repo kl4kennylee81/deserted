@@ -9,8 +9,10 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.yaml.snakeyaml.Yaml;
 
@@ -262,8 +264,10 @@ public class ObjectLoader {
 		availableAnimations.put(animationId, null);
 
 		ArrayList<Integer> actionList = (ArrayList<Integer>) characters.get(charId).get("availableActions");
-		for (Integer actionId : actionList) {
-			availableActions.put(actionId, null);
+		if (actionList != null){
+			for (Integer actionId : actionList) {
+				availableActions.put(actionId, null);
+			}
 		}
 		
 		ArrayList<Integer> actionList2 = (ArrayList<Integer>) gameSaveState.getActionIds(charId);
@@ -332,7 +336,6 @@ public class ObjectLoader {
 			}
 			// create the boss and replace the charToAdd with teh boss
 			if (modelChar instanceof BossCharacter){
-				System.out.println("line 336 we are in the instanceOf");
 				BossCharacter bossModel = (BossCharacter) modelChar;
 				if (!bossChars.containsKey(bossModel.getParent().id)){
 					Character parentModel = availableCharacters.get(bossModel.getParent().id);
@@ -417,7 +420,8 @@ public class ObjectLoader {
 	
 	@SuppressWarnings("unchecked")
 	private void loadChars(HashMap<Integer, HashMap<String, Object>> characters) {
-		for (Integer charId: availableCharacters.keySet()) {
+		Set<Integer> temp = new HashSet(availableCharacters.keySet());
+		for (Integer charId: temp) {
 			loadChar(charId,characters);
 		}
 	}
