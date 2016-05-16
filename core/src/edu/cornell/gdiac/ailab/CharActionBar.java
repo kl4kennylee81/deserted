@@ -46,7 +46,7 @@ public class CharActionBar {
 	public static float CENTER_MULTIPLIER = 2f;
 
 	/** time all characters have to wait before they enter their casting period **/
-	public static final float STARTING_BUFFER_TIME = 3f;
+	public static final float STARTING_BUFFER_TIME = 0f;
 	
 	public static final float CHAR_VELOCITY_SCREEN_RATIO = 0.0008f;
 	
@@ -188,13 +188,8 @@ public class CharActionBar {
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
 		
-		// modify based on current health left
-		float healthTime = waitTime*HEALTH_TIME_PROPORTION;
-		float unmovedTime = waitTime*(1-HEALTH_TIME_PROPORTION);
-		float modifiedWaitTime = (healthTime* this.healthProportion) +unmovedTime;
-		
 		// modify based on speed modifier
-		modifiedWaitTime = (modifiedWaitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
+		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return newTotalTime/MAX_TIME;
@@ -244,13 +239,8 @@ public class CharActionBar {
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
 		
-		// modify based on current health left
-		float healthTime = waitTime*HEALTH_TIME_PROPORTION;
-		float unmovedTime = waitTime*(1-HEALTH_TIME_PROPORTION);
-		float modifiedWaitTime = (healthTime* this.healthProportion) +unmovedTime;
-		
 		// modify based on speed modifier
-		modifiedWaitTime = (modifiedWaitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
+		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return modifiedWaitTime/newTotalTime;
