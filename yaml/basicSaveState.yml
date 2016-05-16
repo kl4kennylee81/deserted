@@ -137,6 +137,11 @@ levels:
     levelName: pvp
     beaten: false
     boss: false
+  17:
+    levelName: BossTest
+    beaten: false
+    needsSelect: false
+    boss: false
 availableCharacters:
 - 0
 - 1

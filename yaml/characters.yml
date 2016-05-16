@@ -85,8 +85,8 @@
   maxHealth: 10
   hexColor: 3299FFFF
   speed: 2.5
-  castSpeed: 6.
-  slots: 3
+  castSpeed: 8.
+  slots: 4
   availableActions:
   - 0
   - 23
@@ -119,8 +119,8 @@
   maxHealth: 6
   hexColor: 3299FFFF
   speed: 2.5
-  castSpeed: 6.
-  slots: 3
+  castSpeed: 8.
+  slots: 4
   availableActions:
   - 0
   - 23
@@ -448,7 +448,7 @@
   hexColor: 3299FFFF
   speed: 2.5
   castSpeed: 8.5
-  slots: 3
+  slots: 4
   availableActions:
   - 0
   - 20
@@ -491,3 +491,35 @@
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
   animationId: 103
+
+30:
+  name: Arm
+  health: 5
+  maxHealth: 5
+  hexColor: CD2626FF
+  speed: 5.5
+  castSpeed: 8.0
+  slots: 2
+  availableActions:
+  - 0
+  - 9
+  - 32
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
+  animationId: 103
+  
+31:
+  name: Boss
+  health: 10
+  maxHealth: 10
+  hexColor: CD2626FF
+  speed: 5.5
+  castSpeed: 8.0
+  slots: 2
+  availableActions:
+  - 0
+  - 33
+  - 34
+  texture: models/CHARA_3.png
+  icon: models/bunmage_icon.png
+  animationId: 108

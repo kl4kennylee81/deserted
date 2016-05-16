@@ -35,7 +35,7 @@ ARM_ATTACK_SHIELD:
 ARM_ATTACK_MOVE:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [QUCIK_ATTACK, MOVE_GOAL]
+  my_actions: [QUICK_ATTACK, MOVE_GOAL]
   
 ARM_MOVE_ATTACK:
   type: leaf
