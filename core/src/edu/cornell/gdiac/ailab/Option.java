@@ -105,6 +105,7 @@ public class Option implements GUIElement{
 		float width = this.width * canvas.getWidth();
 		Color textColor = this.getColor();
 		canvas.drawText(this.text, x, y, textColor);
+
 		
 		if (sameWidthHeight){
 			height = width;

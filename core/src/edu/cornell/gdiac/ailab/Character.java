@@ -322,6 +322,10 @@ public class Character implements GUIElement {
 		}
 		}
 	
+	public Texture getTexture(){
+		return texture;
+	}
+	
 	public void setLeftSide(boolean ls) {
 		leftside = ls;
 	}
