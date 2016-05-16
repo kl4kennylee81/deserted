@@ -21,7 +21,6 @@
  */
 package edu.cornell.gdiac.ailab;
 
-import java.io.IOException;
 import java.util.HashMap;
 import com.badlogic.gdx.audio.*;
 
@@ -34,12 +33,6 @@ import com.badlogic.gdx.assets.*;
  */
 public class SoundController {
 	// Static names to the sounds 
-	/** Weapon fire sound */
-	public static final String FIRE_SOUND = "fire";
-	/** Falling (to death) sound */
-	public static final String FALL_SOUND = "fall";
-	/** Collision sound */
-	public static final String BUMP_SOUND = "bump";
 	/** Game over (player lost) sound */
 	public static final String GAME_OVER_SOUND = "over";
 
@@ -53,12 +46,6 @@ public class SoundController {
 	private static Music battleSound;
 
 	// Files storing the sound references
-	/** File to weapon fire */
-	private static final String FIRE_FILE = "sounds/Fire.mp3";
-	/** File to falling sound */
-	private static final String FALL_FILE = "sounds/Fall.mp3";
-	/** File to collision sound */
-	private static final String BUMP_FILE = "sounds/Bump.mp3";
 	/** File to game over (player lost) */
 	private static final String OVER_FILE = "sounds/GameOver.mp3";
 
@@ -78,9 +65,6 @@ public class SoundController {
 	 * @param manager Reference to global asset manager.
 	 */
 	public static void PreLoadContent(AssetManager manager) {
-		manager.load(FIRE_FILE,Sound.class);
-		manager.load(FALL_FILE,Sound.class);
-		manager.load(BUMP_FILE,Sound.class);
 		manager.load(OVER_FILE,Sound.class);
 		manager.load(MENU_MUSIC_FILE,Music.class);
 		manager.load(BATTLE_MUSIC_FILE,Music.class);
@@ -98,15 +82,6 @@ public class SoundController {
 	 */
 	public static void LoadContent(AssetManager manager) {
 		soundBank = new HashMap<String, Sound>();
-		if (manager.isLoaded(FIRE_FILE)) {
-			soundBank.put(FIRE_SOUND,manager.get(FIRE_FILE,Sound.class));
-		}
-		if (manager.isLoaded(FALL_FILE)) {
-			soundBank.put(FALL_SOUND,manager.get(FALL_FILE,Sound.class));
-		}
-		if (manager.isLoaded(BUMP_FILE)) {
-			soundBank.put(BUMP_SOUND,manager.get(BUMP_FILE,Sound.class));
-		}
 		if (manager.isLoaded(OVER_FILE)) {
 			soundBank.put(GAME_OVER_SOUND,manager.get(OVER_FILE,Sound.class));
 		}
@@ -130,9 +105,6 @@ public class SoundController {
 		if (soundBank != null) {
 			soundBank.clear();
 			soundBank = null;
-			manager.unload(FIRE_FILE);
-			manager.unload(FALL_FILE);
-			manager.unload(BUMP_FILE);
 			manager.unload(OVER_FILE);
 		}
 	}
