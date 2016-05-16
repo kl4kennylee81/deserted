@@ -278,7 +278,7 @@
 13:
   name: Lightning Column
   cost: 3
-  damage: 2
+  damage: 3
   range: 10
   size: 1
   pattern: HORIZONTAL
@@ -319,7 +319,7 @@
 
 15:
   name: Spirit Barrier
-  cost: 3
+  cost: 1
   damage: 0
   range: 2
   size: 1
@@ -344,15 +344,15 @@
 
 16:
   name: Guard
-  cost: 2
+  cost: 1
   damage: 0
-  range: 2
+  range: 1
   size: 1
   pattern: SHIELD
   shieldNumberHits: 2
   shieldColor0: 7EF9F5FF
   shieldColor1: F29EFFFF
-  needsToggle: true
+  needsToggle: false
   oneHit: false
   canBlock: false
   effect:
@@ -678,6 +678,71 @@
   description: Square Attack
   animationId: 1
   icon: models/action_tokens/lightning_token.png
+  
+32:
+  name: Diagonal
+  cost: 1
+  damage: 2
+  range: 5
+  size: 1
+  pattern: DIAGONAL
+  oneHit: true
+  needsToggle: true
+  canBlock: true
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Launch a projectile diagonally up or down for 2 damage
+  persisting_action:
+    numRounds: 10
+    moveSpeed: 0.05
+  animationId: 0
+  projectileAnimationId: 2
+  icon: models/action_tokens/projectile_token.png
+
+33:
+  name: Hyperbeam
+  cost: 2
+  damage: 5
+  range: 5
+  size: 1
+  pattern: INSTANT
+  oneHit: false
+  needsToggle: true
+  canBlock: true
+  path: "0,0 1,0 2,0 3,0 4,0 5,0 1,1 2,1 3,1 4,1 5,1"
+  
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Super powerful attack
+  animationId: 1
+  icon: models/action_tokens/fire_token.png
+  
+34:
+  name: Hasten
+  cost: 2
+  damage: 0
+  range: 10
+  size: 1
+  pattern: SINGLE
+  oneHit: true
+  needsToggle: true
+  canBlock: false
+  isBuff: true
+  effect:
+    type: SPEED
+    name: Hasten
+    numRounds: 3
+    magnitude: 4
+    effectIcon: models/effect_icons/hasten_icon.png
+  description: Target a single square to Hasten an ally
+  animationId: 0
+  icon: models/effect_icons/hasten_icon.png
 
 ...
 

@@ -27,6 +27,7 @@ public class AIController {
 	List<Character> chars;
 	Character selected;
 	Action nop;
+	Shields shields;
 	
 	private int xOffset;
 	private int yOffset;
@@ -36,11 +37,12 @@ public class AIController {
 	private boolean hasSingle;
 	private TacticalManager tacticalManager;
 	
-	public AIController(GridBoard board, List<Character> chars, TacticalManager tm) {
+	public AIController(GridBoard board, List<Character> chars, TacticalManager tm, Shields shields) {
 		this.board = board;
 		this.chars = chars;
 		this.tacticalManager = tm;
-		tacticalManager.setState(board, chars);
+		this.shields = shields;
+		tacticalManager.setState(board, chars, shields);
 		nop = new Action("NOP", 1, 0, 0, 1, Pattern.NOP, false, false,false, new Effect(0, Type.REGULAR, 0, "Nope",null), "no action",null);
 
 	}

@@ -1,6 +1,5 @@
 ROOT:
   type: index
-  first_move: RANDOM
   can_hit: ATTACK
   default: POSITION
 

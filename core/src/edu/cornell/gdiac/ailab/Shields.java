@@ -27,12 +27,12 @@ public class Shields {
 	private static final float TILE_2_X_OFFSET = 0.03f;
 	private static final float TILE_3_X_OFFSET = 0.03f;
 	
-	private static final Texture SHIELD_1_BOTTOM = new Texture("models/shield_1bottom.png");
-	private static final Texture SHIELD_1_TOP = new Texture("models/shield_1top.png");
-	private static final Texture SHIELD_2_BOTTOM = new Texture("models/shield_2bottom.png");
-	private static final Texture SHIELD_2_TOP = new Texture("models/shield_2top.png");
-	private static final Texture SHIELD_3_BOTTOM = new Texture("models/shield_3bottom.png");
-	private static final Texture SHIELD_3_TOP = new Texture("models/shield_3top.png");
+	private static final Texture SHIELD_1_BOTTOM = new Texture("actions/shield_1bottom.png");
+	private static final Texture SHIELD_1_TOP = new Texture("actions/shield_1top.png");
+	private static final Texture SHIELD_2_BOTTOM = new Texture("actions/shield_2bottom.png");
+	private static final Texture SHIELD_2_TOP = new Texture("actions/shield_2top.png");
+	private static final Texture SHIELD_3_BOTTOM = new Texture("actions/shield_3bottom.png");
+	private static final Texture SHIELD_3_TOP = new Texture("actions/shield_3top.png");
 	
 	private List<ActionNode> leftShields;
 	private List<ActionNode> rightShields;

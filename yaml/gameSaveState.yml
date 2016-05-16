@@ -73,7 +73,7 @@ characters:
 levels:
   0:
     levelName: tutorial1
-    beaten: false
+    beaten: true
     boss: false
   1:
     levelName: tutorial2
@@ -102,13 +102,11 @@ levels:
     beaten: false
     boss: false
     needsSelect: true
-    winIn: 1
   11:
     levelName: Level2
     beaten: false
     boss: false
     needsSelect: true
-    surviveFor: 1
   12:
     levelName: Level3
     beaten: false
@@ -137,7 +135,11 @@ levels:
     levelName: pvp
     beaten: false
     boss: false
-
+  17:
+    levelName: BossTest
+    beaten: false
+    needsSelect: false
+    boss: false
 availableCharacters:
 - 0
 - 1

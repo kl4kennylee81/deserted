@@ -47,9 +47,10 @@ public class TacticalManager extends ConditionalManager{
 	}
 	
 	
-	public void setState(GridBoard board, List<Character> chars){
+	public void setState(GridBoard board, List<Character> chars, Shields shields){
 		this.chars = chars;
 		this.board = board;
+		this.shields = shields;
 	}
 	
 	
@@ -81,8 +82,8 @@ public class TacticalManager extends ConditionalManager{
 	 * Manager tree to find a list of actions. 
 	 */
 	public void selectActions(Character c){
-		// System.out.print(c.name+": ");
-		// System.out.print(map.get("can_hit")+" ");
+		System.out.print(c.name+": ");
+		System.out.println(map.get("is_protected"));
 		// System.out.println(map.get("single_in_range")+" ");
 		//System.out.print(map.get("MED_INT_CHANCE")+" ");
 		//System.out.println(map.get("HIGH_INT_CHANCE")+" ");
@@ -559,6 +560,12 @@ public class TacticalManager extends ConditionalManager{
 		Action a = shield(c);
 		int x1;
 		int x2;
+		if(yPos == 0){
+			return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.UP);
+		}
+		if(yPos == board.height-1){
+			return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.DOWN);
+		}
 		for(Character f: friends){
 			x1 = c.leftside? xPos : f.xPosition;
 			x2 = c.leftside? f.xPosition : xPos;

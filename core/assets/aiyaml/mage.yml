@@ -3,13 +3,11 @@ MAGE_ATTACK:
   branch_type: ATTACK
   is_protected: POWER
   no_interrupt_chance/safe: POWER_SHIELD
-  no_interrupt_chance/quick_attack_can_hit/adjacent_attack_square: QUICK_MOVE_AGGRESSIVE_SHIELD 
   no_interrupt_chance/adjacent_safe_square: POWER_MOVE
   no_interrupt_chance/quick_attack_can_hit: QUICK_QUICK
   no_interrupt_chance: POWER_SHIELD
-  low_interrupt_chance/quick_attack_can_hit/adjacent_safe_square/adjacent_attack_square: QUICK_MOVE_AGGRESSIVE_SHIELD
+  low_interrupt_chance/quick_attack_can_hit/adjacent_safe_square/adjacent_attack_square: QUICK_MOVE_SHIELD
   low_interrupt_chance/quick_attack_can_hit/adjacent_safe_square: QUICK_MOVE_SHIELD
-  low_interrupt_chance/quick_attack_can_hit/adjacent_attack_square: QUICK_MOVE_AGGRESSIVE_SHIELD
   low_interrupt_chance/quick_attack_can_hit: QUICK_QUICK
   low_interrupt_chance: SHIELD_POWER
   medium_interrupt_chance/adjacent_attack_square_quick: MOVE_QUICK_SHIELD

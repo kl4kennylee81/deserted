@@ -1,31 +1,37 @@
 ROCK_ATTACK:
   type: index
   branch_type: ATTACK
+  is_protected: ROCK_POWER
   no_interrupt_chance/safe: ROCK_POWER
-  no_interrupt_chance/quick_attack_can_hit: ROCK_SHIELD_ATTACK
+  no_interrupt_chance/quick_attack_can_hit: ROCK_ATTACK_SHIELD
   no_interrupt_chance: ROCK_POWER
   low_interrupt_chance/quick_attack_can_hit: ROCK_QUICK_QUICK
   low_interrupt_chance/adjacent_attack_square_quick: ROCK_MOVE_ATTACK
-  low_interrupt_chance/adjacent_safe_square: ROCK_MOVE_MOVE
+  low_interrupt_chance/adjacent_safe_square: ROCK_QUICK_MOVE
   low_interrupt_chance: ROCK_POWER
   medium_interrupt_chance/adjacent_attack_square_quick: ROCK_MOVE_ATTACK
-  medium_interrupt_chance/quick_attack_can_hit: ROCK_QUICK_QUICK
+  medium_interrupt_chance/quick_attack_can_hit: ROCK_SHIELD_ATTACK
   medium_interrupt_chance: ROCK_SHIELD_NOP
-  could_be_blocked/adjacent_attack_square_quick: ROCK_MOVE_ATTACK
-  could_be_blocked: ROCK_MOVE_ATTACK2
   adjacent_attack_square_quick: ROCK_MOVE_ATTACK
+  quick_attack_can_hit: ROCK_SHIELD_ATTACK
   default: ROCK_QUICK_QUICK
   
 ROCK_POSITION:
   type: index
   branch_type: POSITION
   adjacent_attack_square_quick: ROCK_MOVE_ATTACK
+  adjacent_attack_square: ROCK_MOVE_SHIELD
   default: ROCK_MOVE_MOVE
 
 ROCK_QUICK_QUICK:
   type: leaf
   my_tactic: SPECIFIC
   my_actions: [QUICK_ATTACK, QUICK_ATTACK]
+
+ROCK_QUICK_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, MOVE_GOAL]
 
 NOP:
   type: leaf
@@ -61,8 +67,18 @@ ROCK_SHIELD_NOP:
   type: leaf
   my_tactic: SPECIFIC
   my_actions: [SHIELD]
+
+ROCK_ATTACK_SHIELD:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, SHIELD]
   
 ROCK_SHIELD_ATTACK:
   type: leaf
   my_tactic: SPECIFIC
   my_actions: [SHIELD, QUICK_ATTACK]
+  
+ROCK_MOVE_SHIELD:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, SHIELD]

@@ -17,6 +17,7 @@ public class ConditionalManager {
 	protected Character selected;
 	protected List<Character> friends;
 	protected List<Character> enemies;
+	protected Shields shields;
 	
 	protected HashSet<Character> firstMove;
     
@@ -517,18 +518,24 @@ public class ConditionalManager {
 	 * character's shield.
 	 */
 	public boolean isProtected(){
-		for(Character c: friends){
-			if(c.hasShield()){
-				List<Coordinate> list = c.getShieldedCoords();
-				for(Coordinate coord: list){
-					int x1 = selected.leftside? selected.xPosition : coord.x;
-					int x2 = selected.leftside? coord.x : selected.xPosition;
-					if(coord.y == selected.yPosition && x1 <= x2){
-						return true;
-					}
-				}
+
+		List<Coordinate> list = shields.leftShieldedCoordinates;
+		for(Coordinate coord: list){
+			int x1 = selected.leftside? selected.xPosition : coord.x;
+			int x2 = selected.leftside? coord.x : selected.xPosition;
+			if(coord.y == selected.yPosition && x1 <= x2){
+				return true;
 			}
 		}
+		list = shields.rightShieldedCoordinates;
+		for(Coordinate coord: list){
+			int x1 = selected.leftside? selected.xPosition : coord.x;
+			int x2 = selected.leftside? coord.x : selected.xPosition;
+			if(coord.y == selected.yPosition && x1 <= x2){
+				return true;
+			}
+		}
+	
 		return false;
 		
 	}

@@ -1,24 +1,21 @@
 BOSS_ATTACK:
   type: index
   branch_type: ATTACK
-  no_interrupt_chance/one_enemy_left: BOSS_ATTACK
-  no_interrupt_chance/high_health/not_hastened: BOSS_HASTEN
-  no_interrupt_chance: BOSS_ATTACK 
-  low_interrupt_chance/one_enemy_left: BOSS_ATTACK
+  is_protected: BOSS_POWER
+  no_interrupt_chance/high_health/not_hastened: BOSS_HASTEN  
+  no_interrupt_chance: BOSS_POWER 
+  low_interrupt_chance/one_enemy_left: BOSS_POWER
   low_interrupt_chance/high_health/not_hastened: BOSS_HASTEN  
-  low_interrupt_chance: BOSS_ATTACK
-  is_protected/one_enemy_left: BOSS_ATTACK
+  low_interrupt_chance: BOSS_POWER
   is_protected/high_health/not_hastened: BOSS_HASTEN
-  is_protected: BOSS_ATTACK
-  adjacent_safe_square: BOSS_MOVE_GOAL
-  default: BOSS_ATTACK
+  default: BOSS_POWER
   
 BOSS_POSITION:
   type: index
   branch_type: POSITION
-  is_protected/not_hastened: BOSS_HASTEN
-  no_interrupt_chance/not_hastened: BOSS_HASTEN
-  low_interrupt_chance/not_hastened: BOSS_HASTEN
+  is_protected/high_health/not_hastened: BOSS_HASTEN
+  no_interrupt_chance/high_health/not_hastened: BOSS_HASTEN
+  low_interrupt_chance/high_health/not_hastened: BOSS_HASTEN
   adjacent_attack_square: BOSS_MOVE_AGGRESSIVE
   default: BOSS_MOVE_GOAL
 
@@ -37,7 +34,7 @@ BOSS_MOVE_GOAL:
   my_tactic: SPECIFIC
   my_actions: [MOVE_GOAL]
   
-BOSS_ATTACK:
+BOSS_POWER:
   type: leaf
   my_tactic: SPECIFIC
   my_actions: [QUICK_ATTACK]
