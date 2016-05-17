@@ -83,10 +83,6 @@ levels:
     seenPre: false
     postNarrative: yaml/narratives/test.yml
     seenPost: false
-  2:
-    levelName: tutorial3
-    beaten: false
-    boss: false
   3:
     levelName: tutorial4
     beaten: false

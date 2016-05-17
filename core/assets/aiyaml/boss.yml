@@ -2,12 +2,12 @@ BOSS_ATTACK:
   type: index
   branch_type: ATTACK
   is_protected: BOSS_POWER
-  no_interrupt_chance/high_health/not_hastened: BOSS_HASTEN  
+  no_interrupt_chance/not_hastened: BOSS_HASTEN  
   no_interrupt_chance: BOSS_POWER 
   low_interrupt_chance/one_enemy_left: BOSS_POWER
   low_interrupt_chance/high_health/not_hastened: BOSS_HASTEN  
   low_interrupt_chance: BOSS_POWER
-  is_protected/high_health/not_hastened: BOSS_HASTEN
+  is_protected/not_hastened: BOSS_HASTEN
   default: BOSS_POWER
   
 BOSS_POSITION:

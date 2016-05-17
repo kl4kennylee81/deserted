@@ -47,6 +47,7 @@ public class TutorialSteps {
 		List<String> highlightLeft;
 		List<String> highlightRight;
 		List<String> highlightWhole;
+		boolean boxHighlight;
 		boolean confirm;
 		boolean spaceToContinue;
 		boolean dontWriteText;
@@ -62,6 +63,7 @@ public class TutorialSteps {
 			this.highlights = null;
 			this.highlightChars = null;
 			this.highlightTokens = null;
+			boxHighlight = false;
 			this.spaceToContinue = spaceToContinue;
 			this.dontWriteText = dontWriteText;
 			this.timeToPause = timeToPause;
@@ -161,6 +163,10 @@ public class TutorialSteps {
 	public void addHighlightWhole(List<String> highlightWhole){
 		Step latestStep = steps.get(steps.size()-1);
 		latestStep.highlightWhole = new ArrayList<String>(highlightWhole);
+	}
+	
+	public void setBoxHighlight(boolean kyle){
+		steps.get(steps.size()-1).boxHighlight = kyle;
 	}
 	
 
@@ -274,12 +280,8 @@ public class TutorialSteps {
 			// Color.WHITE);
 			toWrite += "\n\nPress Enter or Click anywhere to continue";
 		}
-		if (step != null) {
-			canvas.drawTutorialText(toWrite, levelColor == null ? Color.WHITE : levelColor,
-					step.text.length() > 10 ? Align.left : Align.center);
-		} else {
-			canvas.drawTutorialText(toWrite, levelColor == null ? Color.WHITE : levelColor, Align.left);
-		}
+		canvas.drawTutorialText(toWrite, levelColor == null ? Color.WHITE : levelColor, 
+					toWrite.length() > 10 ? Align.center : Align.left);
 
 		drawWarningText(canvas);
 	}

@@ -105,4 +105,6 @@ public class Constants {
 	public static final float HEALTH_TOKEN_WIDTH = 0.05f;
 	
 	public static final float HEALTH_TOKEN_Y_OFFSET = 0.05f;
+	
+	public static final float LERP_RATE = 0.04f;
 }

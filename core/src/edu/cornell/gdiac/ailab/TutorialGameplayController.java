@@ -203,7 +203,7 @@ public class TutorialGameplayController extends GameplayController{
 	    	screen.noScreen();
 		}
         screen.draw(canvas);
-    	board.draw(canvas);
+    	board.draw(canvas, selectionMenuController);
     	
     	if (inGameState == InGameState.SELECTION){
     		shields.draw(canvas,false,true);
@@ -225,22 +225,23 @@ public class TutorialGameplayController extends GameplayController{
     	
 		if (highlight_action > 0){//must change
 			//make a custom highlight and shift it by highlight_action
-
     		Character selectedChar = selectionMenuController.selected;
-    		if (selectedChar != null){
-    			int count = 0;
-    			for (int i=0; i< characters.size();i++){
-    				Character c = characters.get(i);
-    				if (c == selectedChar){
-    					count = i+1;
-    					break;
-    				}
-    			}
-    			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + (highlight_action)*selectedChar.actionBar.getSlotWidth(canvas);
-    			float highlightY = selectedChar.actionBar.getY(canvas, count) - selectedChar.actionBar.getBarHeight(canvas);//characters.indexOf(selectedChar));
-    			if(selectionMenuController.menu != null && selectionMenuController.menu.actions != null && selectionMenuController.menu.selectedAction != selectionMenuController.menu.actions.length){
-        			canvas.drawDownTextArrow(highlightX + 20, highlightY + 8, Color.YELLOW, "Action executes here");
-    			}
+    		if (selectedChar.isSelecting){
+	    		if (selectedChar != null){
+	    			int count = 0;
+	    			for (int i=0; i< characters.size();i++){
+	    				Character c = characters.get(i);
+	    				if (c == selectedChar){
+	    					count = i+1;
+	    					break;
+	    				}
+	    			}
+	    			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + (highlight_action)*selectedChar.actionBar.getSlotWidth(canvas);
+	    			float highlightY = selectedChar.actionBar.getY(canvas, count) - selectedChar.actionBar.getBarHeight(canvas);//characters.indexOf(selectedChar));
+	    			if(selectionMenuController.menu != null && selectionMenuController.menu.actions != null && selectionMenuController.menu.selectedAction != selectionMenuController.menu.actions.length){
+	        			canvas.drawDownTextArrow(highlightX + 20, highlightY + 8, Color.YELLOW, "Action executes here");
+	    			}
+	    		}
     		}
 			//getY: iterate over characters, and when character matches selected character thats the number to pass to getY
 		}
@@ -311,6 +312,13 @@ public class TutorialGameplayController extends GameplayController{
         		}
         	}
         	if(selectionMenuController.menu != null){
+        		if(highlightTokens != null && tutorialSteps.showHighlights)
+        		{
+        			selectionMenuController.menu.highlightBox = tutorialSteps.currStep().boxHighlight;
+        		}
+        		else{
+        			selectionMenuController.menu.highlightBox = false;
+        		}
             	for(Option o: selectionMenuController.menu.getOptions()){
             		if(highlightTokens != null && highlightTokens.contains(o.optionKey) && tutorialSteps.showHighlights){
             			o.isHighlighted = true;
@@ -319,7 +327,6 @@ public class TutorialGameplayController extends GameplayController{
             			o.isHighlighted = false;
             		}
             	}
-
         	}
         }
         tutorialSteps.drawText(canvas);

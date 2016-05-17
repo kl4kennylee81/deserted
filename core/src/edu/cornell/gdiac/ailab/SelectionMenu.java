@@ -47,7 +47,7 @@ public class SelectionMenu {
 	
 	public static final float RELATIVE_DESCRIPTION_HEIGHT = 0.25f;
 	
-	private static final float RADIUS_CONSTANT = 1.5f;
+	private static final float RADIUS_CONSTANT = 1.3f;
 	
 	private static final float CONFIRM_WIDTH = 0.05f;
 	
@@ -74,6 +74,11 @@ public class SelectionMenu {
 	/** Lerp value increasing or decreasing */
 	private boolean increasing;
 	
+	/** Lerp value for highlighting */
+	private float tokenLerpVal;
+	/** Lerp value increasing or decreasing */
+	private boolean tokenIncreasing;
+	
 	TexturedMesh menuMesh;
 	TexturedMesh menuBar;
 
@@ -87,6 +92,8 @@ public class SelectionMenu {
 	
 	private Option[] options;
 	
+	public boolean highlightBox;
+	
 	public SelectionMenu(Action[] actions){
 		this.actions = actions;
 		this.options = new Option[actions.length+1];
@@ -97,6 +104,9 @@ public class SelectionMenu {
 		selectedActions = new LinkedList<ActionNode>();
 		lerpVal = 0;
 		increasing = true;
+		highlightBox = false;
+		tokenLerpVal = 0;
+		tokenIncreasing = true;
 	}
 	
 	public void setOptions(){
@@ -119,6 +129,7 @@ public class SelectionMenu {
 		if (slots_taken <= numSlots){
 			selectedActions.addLast(actionNode);
 			this.takenSlots+=actionNode.action.cost;
+			TutorialGameplayController.highlight_action += actionNode.action.cost;
 		}
 	}
 	
@@ -141,6 +152,7 @@ public class SelectionMenu {
 		ActionNode an = selectedActions.pollLast();
 		if (an != null) {
 			takenSlots -= an.action.cost;
+			TutorialGameplayController.highlight_action -= an.action.cost;
 		}
 		return an;
 	}
@@ -255,7 +267,9 @@ public class SelectionMenu {
 				selectedAction += 1;
 				selectedAction %= modVar;
 				if (canDoAction(selectedAction,numSlots)){
-					if (this.getSelectedAction() != null) TutorialGameplayController.highlight_action = this.getSelectedAction().cost;
+					if (this.getSelectedAction() != null) {
+						TutorialGameplayController.highlight_action = takenSlots + this.getSelectedAction().cost;
+					}
 					return true;
 				}
 			}
@@ -266,7 +280,7 @@ public class SelectionMenu {
 					selectedAction += modVar;
 				}
 				if (canDoAction(selectedAction,numSlots)){
-					if (this.getSelectedAction() != null) TutorialGameplayController.highlight_action = this.getSelectedAction().cost;
+					if (this.getSelectedAction() != null) TutorialGameplayController.highlight_action = takenSlots + this.getSelectedAction().cost;
 					return true;
 				}
 			}
@@ -341,7 +355,7 @@ public class SelectionMenu {
 			 else{
 				 return Color.WHITE.cpy().lerp(Color.CORAL,lerpVal);
 			 }*/
-			 return Color.CORAL.cpy();
+			 return Color.YELLOW.cpy().lerp(Color.CORAL, tokenLerpVal);
 		}
 		else {
 			return Color.WHITE;
@@ -355,14 +369,26 @@ public class SelectionMenu {
 		int usableNumSlots = actionBar.getUsableNumSlots();
 		
 		if (increasing){
-			lerpVal+=0.012;
+			lerpVal += Constants.LERP_RATE;
 			if (lerpVal >= 1){
 				increasing = false;
 			}
 		} else {
-			lerpVal -= 0.012;
+			lerpVal -= Constants.LERP_RATE;
 			if (lerpVal <= 0.4){
 				increasing = true;
+			}
+		}
+		
+		if (tokenIncreasing){
+			tokenLerpVal += Constants.LERP_RATE;
+			if (tokenLerpVal >= 1){
+				tokenIncreasing = false;
+			}
+		} else {
+			tokenLerpVal -= Constants.LERP_RATE;
+			if (tokenLerpVal <= 0.4){
+				tokenIncreasing = true;
 			}
 		}
 		//Draw action names
@@ -522,7 +548,7 @@ public class SelectionMenu {
 				float descript_y = RELATIVE_DESCRIPTION_Y_POS * h;
 				float descript_width = RELATIVE_DESCRIPTION_WIDTH *w;
 				float descript_height = RELATIVE_DESCRIPTION_HEIGHT * h;
-				canvas.drawAction(action, descript_x, descript_y, descript_width, descript_height);
+				canvas.drawAction(action, descript_x, descript_y, descript_width, descript_height, highlightBox);
 			}
 		}
 	}

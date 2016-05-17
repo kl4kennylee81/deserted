@@ -91,9 +91,10 @@
 #  paused: false
 
 9:
-  text: "Use WASD or Arrowkeys to navigate. Go to \"Move\" and press Enter."
+  text: "Use WASD or Arrowkeys to navigate the selection menu. Go to \"Move\" and press Enter."
   spaceToContinue: false
   paused: false
+  boxHighlight: true
   highlightTokens: ["0"]
   actions:
     - actionId: 0
@@ -112,7 +113,7 @@
       direction: UP
 
 11:
-  text: "Now, go to \"Straight\" and press Enter."
+  text: "Now, go to \"Firebolt\" and press Enter."
   spaceToContinue: false
   paused: false
   highlightTokens: ["1"]
