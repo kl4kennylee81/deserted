@@ -1090,8 +1090,14 @@ public class GameCanvas {
 		radialSprite.draw(spriteBatch, x, y, width, height, angle);
 	}
 	
-	public void drawAction(Action action, float x, float y, float width, float height){
-		actionDescription.draw(this,action,x,y,width,height);
+	public void drawAction(Action action, float x, float y, float width, float height, boolean highlight){
+		actionDescription.draw(this,action,x,y,width,height, highlight);
+	}
+	
+	public void drawHighlightBackground(float x, float y, float width, float height){
+		Color c = Color.YELLOW;
+		spriteBatch.setColor(c.r, c.g, c.b, 0.8f);
+		spriteBatch.draw(roundedRect, x-20, y-20, width + 40, height + 40);
 	}
 	
 }

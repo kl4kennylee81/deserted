@@ -311,6 +311,10 @@ public class TutorialGameplayController extends GameplayController{
         		}
         	}
         	if(selectionMenuController.menu != null){
+        		if(tutorialSteps.showHighlights)
+        		{
+        			selectionMenuController.menu.highlightBox = tutorialSteps.currStep().boxHighlight;
+        		}
             	for(Option o: selectionMenuController.menu.getOptions()){
             		if(highlightTokens != null && highlightTokens.contains(o.optionKey) && tutorialSteps.showHighlights){
             			o.isHighlighted = true;
@@ -319,7 +323,6 @@ public class TutorialGameplayController extends GameplayController{
             			o.isHighlighted = false;
             		}
             	}
-
         	}
         }
         tutorialSteps.drawText(canvas);

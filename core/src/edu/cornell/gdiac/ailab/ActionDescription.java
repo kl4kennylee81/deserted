@@ -23,9 +23,10 @@ public class ActionDescription {
 	
 	private static final Texture DESCRIPTION_BACKGROUND = new Texture("models/description_background.png");
 	
-	public void draw(GameCanvas canvas, Action action, float x, float y, float width, float height){
+	public void draw(GameCanvas canvas, Action action, float x, float y, float width, float height, boolean highlight){
 		float h = canvas.getHeight();
 		float middle_x = x + width/2;
+		canvas.drawHighlightBackground(x, y, width, height);
 		canvas.drawTexture(DESCRIPTION_BACKGROUND, x, y, width, height, Color.WHITE);
 		float iconSize = width/3;
 		canvas.drawCenteredTexture(action.menuIcon, middle_x, y+height,iconSize,iconSize, Color.WHITE);
