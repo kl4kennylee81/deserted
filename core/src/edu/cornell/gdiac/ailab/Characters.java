@@ -24,7 +24,7 @@ public class Characters extends LinkedList<Character>{
 					c.selectionMenu.getQueuedActions(),c.selectionMenu.getSelectedAction(),c.getQueuedActions(),
 					c.castActions,c.selectionMenu.getLerpVal(), c.getEffects());
 			
-			c.drawQueuedActions(canvas,count);
+//			c.drawQueuedActions(canvas,count);
 		}
 	}
 	

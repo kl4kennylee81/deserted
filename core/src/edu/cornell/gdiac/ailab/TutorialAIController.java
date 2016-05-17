@@ -44,7 +44,7 @@ public class TutorialAIController {
 	
 		for (TutorialAction ta : tutorialSteps.getActions()){
 			Action action = selected.availableActions[ta.actionId];
-			float executePoint = selected.actionBar.castPoint + (selected.getInterval() * (startPoint + action.cost));
+			int executePoint = startPoint + action.cost;
 			ActionNode a = new ActionNode(action, executePoint, ta.xPos, ta.yPos, ta.direction);
 			startPoint += action.cost;
 			actions.add(a);

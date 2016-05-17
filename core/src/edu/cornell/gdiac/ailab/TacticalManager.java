@@ -947,8 +947,8 @@ public class TacticalManager extends ConditionalManager{
 	/**
 	 * Return the value in the cast bar where this action will go off
 	 */
-	private float getCastTime(Character c, Action a, int startPoint){
-		return c.actionBar.getCastPoint() + (c.getInterval() * (startPoint + a.cost));
+	private int getCastTime(Character c, Action a, int startPoint){
+		return startPoint + a.cost;
 	}
 		
 	

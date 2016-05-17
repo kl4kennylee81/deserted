@@ -311,12 +311,6 @@ public class CharActionBar {
 		return this.getCastPoint() * getWidth(canvas);
 	}
 	
-	public float actionExecutionTime(float takenSlots,float actionCost){
-		float totalSlots = takenSlots + actionCost;
-		float slotWidth = getSlotWidth();
-		return this.getCastPoint() + totalSlots*slotWidth;
-	}
-	
 	public float getBarCastPoint(GameCanvas canvas){
 		float start_x = getX(canvas);
 		float bar_width = getWidth(canvas);
@@ -371,6 +365,15 @@ public class CharActionBar {
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return modifiedWaitTime/newTotalTime;
+	}
+	
+	float getExecutePoint(ActionNode an){
+		if (an != null){
+			float executePoint = an.executeSlot*this.getSlotWidth() + this.getCastPoint();
+			return executePoint;
+		} else {
+			return 2f;
+		}
 	}
 	
 	/** original draw code to draw the action bar constant and a waiting time area **/
@@ -600,8 +603,9 @@ public class CharActionBar {
 		float actionSlot_y = this.getY(canvas, count);
 
 		for (ActionNode a: queuedActions){
-			// length relative 
-			float centeredCast = this.getCenteredActionX(canvas, a.executePoint, a.action.cost);
+			// length relative
+			float executePoint = this.getExecutePoint(a);
+			float centeredCast = this.getCenteredActionX(canvas, executePoint, a.action.cost);
 			
 			float x_pos = actionSlot_x + centeredCast;
 			float y_pos = actionSlot_y;

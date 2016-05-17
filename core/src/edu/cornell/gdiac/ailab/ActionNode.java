@@ -13,7 +13,7 @@ public class ActionNode {
 	}
 	
 	Action action;
-	float executePoint;
+	int executeSlot;
 	boolean isInterrupted;
 	
 	//target tile for single attacks
@@ -39,9 +39,9 @@ public class ActionNode {
 	int shieldHitsLeft;
 	boolean hitThisRound;
 	
-	public ActionNode(Action action, float executePoint, int xPos, int yPos){
+	public ActionNode(Action action, int executeSlot, int xPos, int yPos){
 		this.action = action;
-		this.executePoint = executePoint;
+		this.executeSlot = executeSlot;
 		this.xPosition = xPos;
 		this.yPosition = yPos;
 		this.isInterrupted = false;
@@ -52,9 +52,9 @@ public class ActionNode {
 		}
 	}
 	
-	public ActionNode(Action action, float executePoint, int xPos, int yPos, Direction direction){
+	public ActionNode(Action action, int executeSlot, int xPos, int yPos, Direction direction){
 		this.action = action;
-		this.executePoint = executePoint;
+		this.executeSlot = executeSlot;
 		this.xPosition = xPos;
 		this.yPosition = yPos;
 		this.isInterrupted = false;
