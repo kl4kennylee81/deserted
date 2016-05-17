@@ -368,8 +368,8 @@
   animationId: 107
 99:
   name: Tutorial_Single_Straight
-  health: 4
-  maxHealth: 4
+  health: 2
+  maxHealth: 2
   hexColor: 3299FFFF
   speed: 7.5
   castSpeed: 5.0

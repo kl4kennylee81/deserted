@@ -61,32 +61,12 @@ public class BossCharacter extends Character{
 	}
 	
 	@Override
-	void addEffect(Effect e){
-		if (sharedStatus){
-			this.parentChar.getEffects().add(e);
-		}
-		else{
-			super.getEffects().add(e);
-		}
-	}
-	
-	@Override
 	public ArrayList<Effect> getEffects(){
 		if (sharedStatus){
 			return this.parentChar.getEffects();
 		}
 		else{
 			return super.getEffects();
-		}
-	}
-	
-	@Override
-	void removeEffect(Effect e){
-		if (sharedStatus){
-			this.parentChar.getEffects().remove(e);
-		}
-		else{
-			super.getEffects().remove(e);
 		}
 	}
 	

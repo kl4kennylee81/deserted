@@ -208,25 +208,6 @@ public class GameplayController {
     }
     
     public void drawPlay(GameCanvas canvas){
-    	// not sure why this is needed
-//    	if (this.isTutorial && inGameState == InGameState.WARNING) {
-//    		TutorialSteps.drawWarningText(canvas);
-//    		return;
-//    	}
-    	// temporary hacky code to show that you have won without destroying the canvas
-    	// will definately need to rewrite this portion
-//		if (this.gameOver() && this.rightsideDead() && inGameState == InGameState.WARNING){
-//    		//canvas.drawCenteredText("You have Won", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
-//    		CompletionScreen cs = CompletionScreen.getInstance();
-//    		cs.setIsWin(true);
-//    		cs.draw(canvas);
-//    	}
-//		else if (this.gameOver() && this.leftsideDead() && inGameState == InGameState.WARNING){
-//    		//canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);	
-//			CompletionScreen cs = CompletionScreen.getInstance();
-//			cs.setIsWin(false);
-//			cs.draw(canvas);
-//		}
 		
 		if (TutorialGameplayController.highlight_action > 0){
 			//make a custom highlight and shift it by highlight_action

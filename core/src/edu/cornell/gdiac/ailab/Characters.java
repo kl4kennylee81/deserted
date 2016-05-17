@@ -15,16 +15,31 @@ public class Characters extends LinkedList<Character>{
 	
 	public void drawActionBars(GameCanvas canvas,boolean shouldDim){
 		int count = 0;
+		
+		// show the highlight for the selected action on enemy bars
+		float lengthSelectedAction = 0;
+		float lengthQueuedActions = 0;
+		float lerpVal = 0;
+		for (Character c:this){
+			if (c.isSelecting()){
+				if (c.getSelectionMenu().getQueuedActions().size() > 0){
+					ActionNode lastAn = c.getSelectionMenu().getQueuedActions().get(c.getSelectionMenu().getQueuedActions().size()-1);
+					lengthQueuedActions = lastAn.executeSlot*c.getActionBar().getSlotWidth(canvas);
+				}
+				Action selectedAction = c.selectionMenu.getSelectedAction();
+				if (selectedAction != null){
+					lengthSelectedAction = selectedAction.cost * c.getActionBar().getSlotWidth(canvas);
+				}
+				lerpVal = c.selectionMenu.getLerpVal();
+			}
+		}
 		for (Character c:this){
 			count++;
-			
 			Color barColor = c.getActionBarColor(shouldDim, Color.WHITE.cpy());
 			Color fillColor= c.getActionBarColor(shouldDim, Color.WHITE.cpy());	
 			c.actionBar.draw(canvas, count, barColor,fillColor,c.castPosition,c.leftside,c.isSelecting(),
 					c.selectionMenu.getQueuedActions(),c.selectionMenu.getSelectedAction(),c.getQueuedActions(),
-					c.castActions,c.selectionMenu.getLerpVal(), c.getEffects());
-			
-			c.drawQueuedActions(canvas,count);
+					c.castActions,lerpVal, c.getEffects(),lengthSelectedAction,lengthQueuedActions);
 		}
 	}
 	

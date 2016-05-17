@@ -149,7 +149,11 @@ public class CharActionBar {
 	}
 	
 	float getSpeedModifier() {
-		switch (speedModifier) {
+		return getSpeedModifier(this.speedModifier);
+	}
+	
+	float getSpeedModifier(int speedMod) {
+		switch (speedMod) {
 		case -2:
 			// gets you 2x more time
 			return 1/2f;
@@ -163,9 +167,9 @@ public class CharActionBar {
 		case 2:
 			return 2f;
 		default:
-			if (speedModifier < -2){
+			if (speedMod < -2){
 				return 1/2f;
-			} else if (speedModifier > 2){
+			} else if (speedMod > 2){
 				return 2f;
 			}
 			else{
@@ -182,16 +186,21 @@ public class CharActionBar {
 	
 	/** length as a proportion of the max_length **/
 	public float getLength(){
+		return getLength(this.getSpeedModifier());
+	}
+	
+	public float getLength(float speedModifier){
 		float totalTime = this.length * MAX_TIME;
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
 		
 		// modify based on speed modifier
-		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
+		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/speedModifier;
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return newTotalTime/MAX_TIME;
 	}
+	
 	
 	public float getCastPointX(GameCanvas canvas){
 		float xBar = this.getX(canvas);
@@ -233,12 +242,16 @@ public class CharActionBar {
 	
 	
 	public float getCastPoint(){
+		return getCastPoint(this.getSpeedModifier());
+	}
+	
+	public float getCastPoint(float speedModifier){
 		float totalTime = this.length * MAX_TIME;
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
 		
 		// modify based on speed modifier
-		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
+		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/speedModifier;
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return modifiedWaitTime/newTotalTime;
@@ -278,6 +291,10 @@ public class CharActionBar {
 		return (1-this.getCastPoint())/this.getTotalNumSlots();
 	}
 	
+	public float getSlotWidth(float speedMod){
+		return (1 - this.getCastPoint(speedMod))/this.getTotalNumSlots();
+	}
+	
 	public float getBarHeight(GameCanvas canvas){
 		return BAR_HEIGHT_RATIO * canvas.getHeight();
 	}
@@ -292,12 +309,6 @@ public class CharActionBar {
 	
 	public float getWaitWidth(GameCanvas canvas){
 		return this.getCastPoint() * getWidth(canvas);
-	}
-	
-	public float actionExecutionTime(float takenSlots,float actionCost){
-		float totalSlots = takenSlots + actionCost;
-		float slotWidth = getSlotWidth();
-		return this.getCastPoint() + totalSlots*slotWidth;
 	}
 	
 	public float getBarCastPoint(GameCanvas canvas){
@@ -356,6 +367,15 @@ public class CharActionBar {
 		return modifiedWaitTime/newTotalTime;
 	}
 	
+	float getExecutePoint(ActionNode an){
+		if (an != null){
+			float executePoint = an.executeSlot*this.getSlotWidth() + this.getCastPoint();
+			return executePoint;
+		} else {
+			return 2f;
+		}
+	}
+	
 	/** original draw code to draw the action bar constant and a waiting time area **/
 	public void draw(GameCanvas canvas,int count,Color waitColor,Color castColor,Color bufferColor){
 		float w = canvas.getWidth();
@@ -379,38 +399,6 @@ public class CharActionBar {
 		float bufferWidth = this.getBufferWidth(canvas);
 		float xPosBuffer = xPosBar + this.getWaitWidthTotalNoBuffer(canvas);
 		canvas.drawBox(xPosBuffer, yPosBar, bufferWidth, heightBar, bufferColor);
-	
-		for (int i = 0; i < this.getTotalNumSlots(); i++){
-			float intervalSize = this.getSlotWidth(canvas);
-			float startCastX = xPosBar + waitWidth;
-			canvas.drawBox(startCastX + i*intervalSize, yPosBar, BAR_DIVIDER_WIDTH, heightBar, Color.BLACK);
-		}	
-		
-	}
-	
-	public void draw(GameCanvas canvas,int count,Color waitColor,Color castColor){
-		float w = canvas.getWidth();
-		float h = canvas.getHeight();
-		
-		float xPosBar = getX(canvas);
-		float yPosBar = getY(canvas,count);
-		
-		// width of the bar unmodified by hp
-		float widthTotalBar = this.getWidth(canvas);
-		float heightBar = BAR_HEIGHT_RATIO * h;
-		
-		// waiting is red we draw red the full bar
-		canvas.drawBox(xPosBar,yPosBar, widthTotalBar, heightBar, castColor);		
-		
-		// non casting is green we draw width up to the casting point
-		float waitWidth = widthTotalBar * this.getCastPoint();
-		canvas.drawBox(xPosBar, yPosBar, waitWidth, heightBar, waitColor);
-		
-		//draw dazed slots as gray
-		float castTotalWidth = widthTotalBar - waitWidth;
-		float dazedWidth = (dazedSlots*1f/numSlots)*castTotalWidth;
-		float dazedxPos = xPosBar + widthTotalBar - dazedWidth;
-		canvas.drawBox(dazedxPos, yPosBar, dazedWidth, heightBar, Color.GRAY);
 	
 		for (int i = 0; i < this.getTotalNumSlots(); i++){
 			float intervalSize = this.getSlotWidth(canvas);
@@ -490,18 +478,6 @@ public class CharActionBar {
 		}
 		return numberSlots;
 	}
-	
-//	float curSlot_x = actionSlot_x + ((slot_width) * i) + CharActionBar.BAR_DIVIDER_WIDTH;
-//	float slot_w_space = slot_width-CharActionBar.BAR_DIVIDER_WIDTH;
-//	if (i < takenSlots) {
-//		canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Constants.CAST_COLOR.cpy());
-//	} else if (selectedAction < actions.length && i < takenSlots+actions[selectedAction].cost){
-//		canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE.cpy().lerp(Constants.CAST_COLOR.cpy(),lerpVal));
-//	} else if (i >= usableNumSlots){
-//		canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.GRAY);
-//	} else {
-//		canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE);
-//	}
 	
 	public void drawSlotBox(GameCanvas canvas,int curSlots,
 			Action curAction,float xPosBar,float yPosBar,Color slotColor,boolean addOption){
@@ -603,6 +579,7 @@ public class CharActionBar {
 		curSlots = drawSlots(canvas,curSlots,queuedActions,xPosBar,yPosBar,Color.WHITE.cpy(),drawBoxes);
 		if (isSelecting && curSlots < this.getTotalNumSlots()){
 			curSlots = drawSlots(canvas,curSlots,selectingActions,xPosBar,yPosBar,Constants.CAST_COLOR.cpy(),drawBoxes);
+			
 			curSlots = this.drawSelectingActionSlot(canvas, curSlots, curAction, xPosBar, yPosBar, Constants.CAST_COLOR.cpy(), drawBoxes,lerpVal);
 		}
 		this.drawRemainingSlots(canvas, curSlots, xPosBar, yPosBar, barColor);
@@ -615,8 +592,9 @@ public class CharActionBar {
 		float actionSlot_y = this.getY(canvas, count);
 
 		for (ActionNode a: queuedActions){
-			// length relative 
-			float centeredCast = this.getCenteredActionX(canvas, a.executePoint, a.action.cost);
+			// length relative
+			float executePoint = this.getExecutePoint(a);
+			float centeredCast = this.getCenteredActionX(canvas, executePoint, a.action.cost);
 			
 			float x_pos = actionSlot_x + centeredCast;
 			float y_pos = actionSlot_y;
@@ -654,12 +632,67 @@ public class CharActionBar {
 		}
 	}
 	
+	public void drawSelectingActionFill(GameCanvas canvas, float xPosBar,int count,
+			Color barColor, float castPosition,float lengthSelectedAction,
+			float lengthQueuedActions, boolean isSelecting,float lerpVal){
+		// we already draw the lerping version of the slot in drawSlots
+		if (isSelecting){
+			return;
+		}
+
+		
+		Color barFadedColor = barColor.cpy().mul(Constants.CAST_COLOR.cpy());
+		
+		float selectingXStart = drawSelectingActionFill(canvas,xPosBar,count,
+				castPosition,lengthQueuedActions,barFadedColor);
+		
+		Color lerpingBarColor = Color.CLEAR.cpy().lerp(barFadedColor, lerpVal);
+		
+		drawSelectingActionFill(canvas,xPosBar,count,
+				selectingXStart,lengthSelectedAction,lerpingBarColor);
+		
+	}
+	
+	public void drawSelectingActionFill(GameCanvas canvas,float xPos,float yPos,
+			Color barColor,float castWidth){
+		
+		float castHeight = this.getBarFillHeight(canvas);
+		canvas.drawBox(xPos, yPos, castWidth, castHeight, barColor);
+	}
+	
+	public float drawSelectingActionFill(GameCanvas canvas,float xPosBar,int count,
+			float startPosition,float length,Color barColor){
+		float xPos = xPosBar + this.getXInBar(canvas, startPosition);
+		float yPos = this.getFillY(canvas, count);
+		
+		float castWidth = length;
+		
+		float xPosInBar = this.getXInBar(canvas, startPosition) + castWidth;
+		
+		float xPosSelecting;
+		if (xPosInBar > this.getWidth(canvas)){
+			float diffWidth = this.getWidth(canvas) - this.getXInBar(canvas, startPosition);
+			drawSelectingActionFill(canvas,xPos,yPos,barColor,diffWidth);
+			
+			float remainderWidth = castWidth - diffWidth;
+			drawSelectingActionFill(canvas,xPosBar,yPos,barColor,remainderWidth);
+		
+			xPosSelecting = remainderWidth/this.getWidth(canvas);
+		}
+		else{
+			drawSelectingActionFill(canvas,xPos,yPos,barColor,castWidth);
+			xPosSelecting = xPosInBar/this.getWidth(canvas);
+		}
+		return xPosSelecting;
+	}
+	
 	
 	// draw gauge style 
 	public void draw(GameCanvas canvas,int count,Color barColor,Color fillColor, 
 			float castPosition,boolean leftside,boolean isSelecting,List<ActionNode> selectingActions, 
 			Action curSelectedAction, List<ActionNode> queuedActions,
-			List<ActionNode> castActions, float lerpVal, List<Effect> effects){
+			List<ActionNode> castActions, float lerpVal, List<Effect> effects,
+			float lengthSelectedAction,float lengthQueuedActions){
 		
 		float xPosBar = getX(canvas);
 		float yPosBar = getY(canvas,count);
@@ -675,17 +708,27 @@ public class CharActionBar {
 		tempActionOptions.clear();
 		tempActions.clear();
 		
+		// temporary code for revealing only the next action for opponents
+		List<ActionNode> queuedSubList = queuedActions;
+		if (queuedActions.size() > 0 && !leftside){
+			queuedSubList = queuedActions.subList(0, 1);
+		}
+		
 		// draw action queuing
-		this.drawSlots(canvas, castActions,queuedActions,
+		this.drawSlots(canvas, castActions,queuedSubList,
 				selectingActions,curSelectedAction,count, barColor,isSelecting,true,lerpVal);
 		
 		// draw the fill on the cast bar
 		this.drawCastFill(canvas, xPosBar, count, barColor,castPosition);
 		
+		// draw the fill of the lerping selecting action of other character
+//		this.drawSelectingActionFill(canvas,xPosBar,count,barColor,
+//				castPosition,lengthSelectedAction,lengthQueuedActions,isSelecting,lerpVal);
+		
 		// draw icon
 		this.drawCenterIcon(canvas, xPosBar,yPosBar,barColor);
 		
-		this.drawSlots(canvas, castActions,queuedActions,
+		this.drawSlots(canvas, castActions,queuedSubList,
 				selectingActions,curSelectedAction,count, barColor,isSelecting,false,lerpVal);
 		
 		if (!isSelecting){
@@ -698,7 +741,7 @@ public class CharActionBar {
 		actions.addAll(tempActions);
 		
 		this.drawQueuedActions(canvas, count, selectingActions);
-		this.drawQueuedActions(canvas,count,queuedActions);
+		this.drawQueuedActions(canvas,count,queuedSubList);
 		this.drawQueuedActions(canvas, count, castActions);
 		
 		if (effects!= null && !effects.isEmpty()){

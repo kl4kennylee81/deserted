@@ -76,7 +76,7 @@
   animationId: 0
   icon: models/action_tokens/lightning_token.png
 4:
-  name: Straight
+  name: Firebolt
   cost: 2
   damage: 2
   range: 4
@@ -90,13 +90,10 @@
     name: Regular
     numRounds: 0
     magnitude: 0
-  persisting_action:
-    numRounds: 10
-    moveSpeed: 0.05
   description: Hit 4 tiles straight ahead for 2 damage.
-  animationId: 0
-  projectileAnimationId: 2
-  icon: models/action_tokens/projectile_token.png
+  animationId: 1
+  icon: models/action_tokens/fire_token.png
+ 
 
 5:
   name: Diagonal
@@ -150,7 +147,7 @@
   name: Slow
   cost: 2
   damage: 0
-  range: 6
+  range: 10
   size: 1
   pattern: SINGLE
   oneHit: true
@@ -160,7 +157,7 @@
   effect:
     type: SPEED
     name: Slowed
-    numRounds: 3
+    numRounds: 1
     magnitude: -4
     effectIcon: models/effect_icons/slow_icon.png
   description: Target a single square to slow down enemy
@@ -782,7 +779,6 @@
   size: 1
   pattern: SHIELD
   shieldNumberHits: 1
-  shieldColor0: F29EFFFF
   shieldColor1: 7EF9F5FF
   needsToggle: true
   oneHit: false
