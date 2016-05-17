@@ -324,7 +324,7 @@ public class SelectionMenuController {
 					updateTargetedAction();
 					prompt = "Choose a Target";
 				} else {
-					float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
+					int actionExecute = menu.takenSlots + action.cost;
 					menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 					menu.resetPointer(numSlots);
 				}
@@ -592,7 +592,7 @@ public class SelectionMenuController {
 	}
 
 	private void confirmedAction(){
-		float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
+		int actionExecute =menu.takenSlots+action.cost;
 		int numSlots = selected.getActionBar().getUsableNumSlots();
 		menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 		this.setChoosingTarget(false);

@@ -243,19 +243,19 @@ public class AIController {
 		int curX = selected.xPosition + xOffset;
 		int curY = selected.yPosition + yOffset;
 		if(isSafe(curX + 1, curY)){
-			nodes.add(new ActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
+			nodes.add(new ActionNode(movement, curSlot, curX + 1, curY, Direction.RIGHT));
 		}
 		if(isSafe(curX, curY + 1)){
-			nodes.add(new ActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX, curY + 1, Direction.UP));
+			nodes.add(new ActionNode(movement, curSlot, curX, curY + 1, Direction.UP));
 		}
 		if(isSafe(curX - 1, curY)){
-			nodes.add(new ActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX - 1, curY, Direction.LEFT));
+			nodes.add(new ActionNode(movement, curSlot, curX - 1, curY, Direction.LEFT));
 		}
 		if(isSafe(curX, curY - 1)){
-			nodes.add(new ActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX, curY - 1, Direction.DOWN));
+			nodes.add(new ActionNode(movement, curSlot, curX, curY - 1, Direction.DOWN));
 		}
 		if(isSafe(curX, curY)){			
-			nodes.add(new ActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE));		
+			nodes.add(new ActionNode(nop, curSlot, 0, 0, Direction.NONE));		
 		}
 		return nodes;
 	}
@@ -270,19 +270,19 @@ public class AIController {
 		int curX = selected.xPosition + xOffset;
 		int curY = selected.yPosition + yOffset;
 		if(canHitSomeone(curX + 1, curY) && ownSide(curX + 1)){
-			nodes.add(new ActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
+			nodes.add(new ActionNode(movement, curSlot, curX + 1, curY, Direction.RIGHT));
 		}
 		if(canHitSomeone(curX, curY + 1) && ownSide(curX)){
-			nodes.add(new ActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX, curY + 1, Direction.UP));
+			nodes.add(new ActionNode(movement, curSlot, curX, curY + 1, Direction.UP));
 		}
 		if(canHitSomeone(curX, curY - 1) && ownSide(curX)){
-			nodes.add(new ActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX, curY - 1, Direction.DOWN));
+			nodes.add(new ActionNode(movement, curSlot, curX, curY - 1, Direction.DOWN));
 		}
 		if(canHitSomeone(curX - 1, curY) && ownSide(curX - 1)){
-			nodes.add(new ActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX - 1, curY, Direction.LEFT));
+			nodes.add(new ActionNode(movement, curSlot, curX - 1, curY, Direction.LEFT));
 		}
 		if(canHitSomeone(curX, curY)){	
-			nodes.add(new ActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE));
+			nodes.add(new ActionNode(nop, curSlot, 0, 0, Direction.NONE));
 		}
 		return nodes;
 	}
@@ -295,16 +295,16 @@ public class AIController {
 		int curX = selected.xPosition + xOffset;
 		int curY = selected.yPosition + yOffset;
 		if(board.isInBounds(curX + 1, curY) && ownSide(curX + 1) ){
-			nodes.add(new ActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX + 1, curY, Direction.RIGHT));
+			nodes.add(new ActionNode(movement, curSlot, curX + 1, curY, Direction.RIGHT));
 		}
 		if(board.isInBounds(curX, curY + 1) && ownSide(curX)){
-			nodes.add(new ActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX, curY + 1, Direction.UP));
+			nodes.add(new ActionNode(movement, curSlot, curX, curY + 1, Direction.UP));
 		}
 		if(board.isInBounds(curX - 1, curY) && ownSide(curX - 1)){
-			nodes.add(new ActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX - 1, curY, Direction.LEFT));
+			nodes.add(new ActionNode(movement, curSlot, curX - 1, curY, Direction.LEFT));
 		}
 		if(board.isInBounds(curX, curY - 1) && ownSide(curX)){
-			nodes.add(new ActionNode(movement, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), curX, curY - 1, Direction.DOWN));
+			nodes.add(new ActionNode(movement, curSlot, curX, curY - 1, Direction.DOWN));
 		}
 		Random r = new Random();
 		return nodes.get(r.nextInt(nodes.size()));	
@@ -346,7 +346,7 @@ public class AIController {
 		//attacks.add(new ActionNode(a, c.getActionBar().getCastPoint() + (interval * (curSlot + a.cost - 1)), 0, 0));
 		for(Character c: chars){
 			if(!c.isAI && c.yPosition == selected.yPosition + yOffset && c.isAlive()){
-				attacks.add(new ActionNode(a, c.getActionBar().getCastPoint() + (interval * (curSlot + a.cost - 1)), 0, 0, Direction.NONE));
+				attacks.add(new ActionNode(a,curSlot + a.cost - 1, 0, 0, Direction.NONE));
 			}
 		}
 	}
@@ -363,7 +363,7 @@ public class AIController {
 					c.xPosition, 
 					c.yPosition)){
 				Direction dir = c.yPosition < (selected.yPosition + yOffset) ? Direction.DOWN : Direction.UP;
-				attacks.add(new ActionNode(a, c.getActionBar().getCastPoint() + (interval * (curSlot + a.cost -1)), 0, 0, dir));
+				attacks.add(new ActionNode(a,curSlot + a.cost -1, 0, 0, dir));
 			}
 		}
 	}
@@ -376,15 +376,15 @@ public class AIController {
 		for(Action a: selected.availableActions){
 			switch (a.pattern){
 				case STRAIGHT:
-					return new ActionNode(a, selecting.getActionBar().getCastPoint() + (interval * (curSlot + a.cost - 1)), 0, 0, Direction.NONE);
+					return new ActionNode(a,curSlot + a.cost - 1, 0, 0, Direction.NONE);
 				case DIAGONAL:
 					Direction dir = (selected.yPosition + yOffset < board.height / 2) ? Direction.UP : Direction.DOWN;
-					return new ActionNode(a, selecting.getActionBar().getCastPoint() + (interval * (curSlot + a.cost - 1)), 0, 0, dir);
+					return new ActionNode(a,curSlot + a.cost - 1, 0, 0, dir);
 				default:
 					break;
 			}
 		}
-		return new ActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE);			
+		return new ActionNode(nop, curSlot, 0, 0, Direction.NONE);			
 	}
 	
 	/**
@@ -418,7 +418,7 @@ public class AIController {
 	public void addSingle(Action a, ArrayList<ActionNode> attacks){
 		for(Character c: chars){
 			if(!c.isAI && c.isAlive()){
-				attacks.add(new ActionNode(a, c.getActionBar().getCastPoint() + (interval * (curSlot + a.cost -1)), c.xPosition, c.yPosition, Direction.NONE));
+				attacks.add(new ActionNode(a,curSlot + a.cost -1, c.xPosition, c.yPosition, Direction.NONE));
 			}
 		}
 	}
@@ -438,7 +438,7 @@ public class AIController {
 			}
 		}
 		if(attacks.size() == 0){
-			return new ActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE);
+			return new ActionNode(nop, curSlot, 0, 0, Direction.NONE);
 		}
 		else{
 			Random r = new Random();
@@ -458,7 +458,7 @@ public class AIController {
 			return getProjectile();
 		}
 		if(shield){
-			return new ActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE);
+			return new ActionNode(nop, curSlot, 0, 0, Direction.NONE);
 		}
 		return getMovement();
 	}
@@ -472,13 +472,13 @@ public class AIController {
 				case SHIELD:
 					shield = true;
 					Direction dir = (selected.yPosition + yOffset < board.height / 2) ? Direction.UP : Direction.DOWN;
-					return new ActionNode(a, selecting.getActionBar().getCastPoint() + (interval * (curSlot + a.cost -1)), 0, 0, dir);
+					return new ActionNode(a,curSlot + a.cost -1, 0, 0, dir);
 				default:
 					break;
 			}
 		}
 		if(shield){
-			return new ActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE);
+			return new ActionNode(nop, curSlot, 0, 0, Direction.NONE);
 		}
 		return getMovement();
 	}
@@ -495,12 +495,12 @@ public class AIController {
 					break;
 				case STRAIGHT:
 					if(curSlot <= 3)
-						actions.add(new ActionNode(a, selecting.getActionBar().getCastPoint() + (interval * (curSlot + a.cost - 1)), 0, 0, Direction.NONE));
+						actions.add(new ActionNode(a, curSlot + a.cost - 1, 0, 0, Direction.NONE));
 					break;
 				case DIAGONAL:
 					Direction dir = (selected.yPosition + yOffset < board.height / 2) ? Direction.UP : Direction.DOWN;
 					if(curSlot <= 3)
-						actions.add(new ActionNode(a, selecting.getActionBar().getCastPoint() + (interval * (curSlot + a.cost - 1)), 0, 0, dir));
+						actions.add(new ActionNode(a,curSlot + a.cost - 1, 0, 0, dir));
 					break;
 				default:
 					break;
@@ -514,7 +514,7 @@ public class AIController {
 			return actions.get(r.nextInt(actions.size())); 
 		}
 		else{
-			return new ActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE);
+			return new ActionNode(nop, curSlot, 0, 0, Direction.NONE);
 		}
 	}
 	
@@ -531,7 +531,7 @@ public class AIController {
 				action = getShield();
 			}
 			else if(shield){
-				action = new ActionNode(nop, selecting.getActionBar().getCastPoint() + (interval * (curSlot)), 0, 0, Direction.NONE);
+				action = new ActionNode(nop, curSlot, 0, 0, Direction.NONE);
 			}
 			else{
 				action = getMovement();

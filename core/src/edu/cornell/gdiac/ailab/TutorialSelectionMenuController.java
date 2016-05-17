@@ -206,7 +206,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
         }
         if (InputController.pressedEnter()){
             if (correctDirection()){
-                float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,action.cost);
+                int actionExecute = menu.takenSlots + action.cost;
                 int numSlots = selected.actionBar.getUsableNumSlots();
                 menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
                 menu.setChoosingTarget(false);

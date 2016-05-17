@@ -330,6 +330,10 @@ public class Character implements GUIElement {
 		}
 		}
 	
+	public float getCastPosition(){
+		return this.castPosition;
+	}
+	
 	public void setLeftSide(boolean ls) {
 		leftside = ls;
 	}
@@ -582,15 +586,80 @@ public class Character implements GUIElement {
 	}
 	
 	void addEffect(Effect e){
-		effects.add(e);
+		switch (e.type){
+		case SPEED:
+			translateCastPosition(e,true);
+			break;
+		default:
+			break;
+		}
+		this.getEffects().add(e);
+		this.updateSpeedModifier();
 	}
 	
 	ArrayList<Effect> getEffects(){
-		return effects;
+		return this.effects;
 	}
 	
 	void removeEffect(Effect e){
-		effects.remove(e);
+		switch (e.type){
+		case SPEED:
+			translateCastPosition(e,false);
+			break;
+		default:
+			break;
+		}
+		this.getEffects().remove(e);
+		this.updateSpeedModifier();
+	}
+	
+	void translateCastPosition(Effect e,boolean adding){
+		if (e.type != Type.SPEED){
+			return;
+		}
+		if (castPosition < this.getCastPoint()){
+			this.translateWaitCastPosition(e,adding);
+		}
+		else{
+			this.translateCastingCastPosition(e,adding);
+		}
+		this.updateSpeedModifier();
+	}
+	
+	void translateWaitCastPosition(Effect e,boolean adding){
+		if (e.type != Type.SPEED){
+			return;
+		}
+		float old_castPoint = this.getActionBar().getCastPoint();
+		float old_castPosition = castPosition;
+		
+		int new_speedMod = adding ? this.getSpeedModifier() + e.magnitude: this.getSpeedModifier() - e.magnitude;
+		float new_speedModded = this.getActionBar().getSpeedModifier(new_speedMod);	
+		float new_castPoint = this.getActionBar().getCastPoint(new_speedModded);		
+		float newCastPosition = new_castPoint *old_castPosition/old_castPoint;
+		
+		// now we set it to the new castPosition
+		this.setCastPosition(newCastPosition);
+	}
+	
+	void translateCastingCastPosition(Effect e,boolean adding){
+		float old_castPosition = castPosition;
+		float old_castPoint = this.getActionBar().getCastPoint();
+		
+		float old_castTraversed = old_castPosition - old_castPoint;
+		float old_noSlots = old_castTraversed/this.getActionBar().getSlotWidth();
+		
+		int new_speedMod = adding ? this.getSpeedModifier() + e.magnitude: this.getSpeedModifier() - e.magnitude;
+		float new_speedModded = this.getActionBar().getSpeedModifier(new_speedMod);
+		float new_castPoint = this.getActionBar().getCastPoint(new_speedModded);
+		
+		float new_slotWidth = this.getActionBar().getSlotWidth(new_speedModded);
+		float new_castTraversed = old_noSlots * new_slotWidth;
+		
+		float newCastPosition  = new_castTraversed + new_castPoint;
+
+		// now we set it to the new castPosition
+		this.setCastPosition(newCastPosition);
 	}
 	
 	/**
@@ -682,7 +751,8 @@ public class Character implements GUIElement {
 	float getNextCast() {
 		ActionNode an = queuedActions.peek();
 		if (an != null){
-			return an.executePoint;
+			float executePoint = an.executeSlot*this.getActionBar().getSlotWidth() + this.getActionBar().getCastPoint();
+			return executePoint;
 		} else {
 			return 2f;
 		}
@@ -698,6 +768,10 @@ public class Character implements GUIElement {
 	public void resetCastPosition(){
 		this.castPosition = 0;
 		this.castActions.clear();
+	}
+	
+	public void setCastPosition(float val){
+		this.castPosition = val;
 	}
 	
 	public void updateRoundLengths(){
@@ -754,28 +828,6 @@ public class Character implements GUIElement {
 		if ((isSelecting && isAlive()) || isClicked){
 			boolean writeDescription = (isClicked || (isSelecting && !clickedCharExist)) && !charActionHovered;
 			selectionMenu.draw(canvas,this.actionBar,count, isClicked, centerX, centerY, radius, leftside, writeDescription, isSelecting);
-		}
-	}
-	
-	/** draw the queued actions **/
-	public void drawQueuedActions(GameCanvas canvas,int count){
-		// don't draw queued actions unless he is hovering or is an AI
-		if (this.isAI||!this.getHovering()){
-			return;
-		}
-		
-		float actionSlot_x = this.actionBar.getX(canvas);
-		float actionSlot_y = this.actionBar.getY(canvas, count);
-
-		List<ActionNode> queuedActions = this.queuedActions;
-		for (ActionNode a: queuedActions){
-			// length relative 
-			float centeredCast = this.actionBar.getCenteredActionX(canvas, a.executePoint, a.action.cost);
-			float x_pos = actionSlot_x + centeredCast;
-			
-			float y_pos = actionSlot_y;
-			String text = a.action.name;
-			canvas.drawCenteredText(text,x_pos,y_pos,Color.WHITE);
 		}
 	}
 	
@@ -1162,7 +1214,7 @@ public class Character implements GUIElement {
 //			chosenColor = chosenColor.lerp(this.color.cpy(), lerpVal);
 		}
 		else if (shouldDim){
-			chosenColor = Color.LIGHT_GRAY.cpy().mul(1,1,1,0.9f);
+			chosenColor = Color.GRAY.cpy().mul(1,1,1,0.9f);
 		}
 		else if (charState == CharacterState.CAST || charState == CharacterState.EXECUTE){
 			chosenColor = Color.GOLD.cpy();
