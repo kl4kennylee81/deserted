@@ -312,7 +312,7 @@ public class CharacterSelect extends Menu{
 			float descript_width = RELATIVE_DESCRIPTION_WIDTH *canvasW;
 			float descript_height = RELATIVE_DESCRIPTION_HEIGHT * canvasH;
 			float descript_x = middle_x - descript_width/2;
-			canvas.drawAction(action, descript_x, descript_y, descript_width, descript_height);
+			canvas.drawAction(action, descript_x, descript_y, descript_width, descript_height, false);
 			/*canvas.drawTexture(DESCRIPTION_BACKGROUND, descript_x, descript_y, descript_width, descript_height, Color.WHITE);
 			canvas.drawCenteredTexture(action.menuIcon, middle_x, descript_y+descript_height,50,50, Color.WHITE);
 			//canvas.drawCenteredText(action, descript_x, descript_y, Color.WHITE);

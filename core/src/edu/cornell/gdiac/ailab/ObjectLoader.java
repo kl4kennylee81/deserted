@@ -919,6 +919,7 @@ public class ObjectLoader {
 			ArrayList<String> highlightLeft = (ArrayList<String>) step.get("highlightLeft");
 			ArrayList<String> highlightRight = (ArrayList<String>) step.get("highlightRight");
 			ArrayList<String> highlightWhole = (ArrayList<String>) step.get("highlightWhole");
+			Boolean boxHighlight = (Boolean) step.get("boxHighlight");
 
 			
 			if(highlightChars != null){
@@ -935,6 +936,9 @@ public class ObjectLoader {
 			}
 			if(highlightWhole != null){
 				ts.addHighlightWhole(highlightWhole);
+			}
+			if(boxHighlight != null){
+				ts.setBoxHighlight(boxHighlight);
 			}
 
 			if (actions != null){

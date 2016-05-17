@@ -155,6 +155,6 @@ public class Characters extends LinkedList<Character>{
 		float descript_y = SelectionMenu.RELATIVE_DESCRIPTION_Y_POS * h;
 		float descript_width = SelectionMenu.RELATIVE_DESCRIPTION_WIDTH *w;
 		float descript_height = SelectionMenu.RELATIVE_DESCRIPTION_HEIGHT * h;
-		canvas.drawAction(a, descript_x, descript_y, descript_width, descript_height);
+		canvas.drawAction(a, descript_x, descript_y, descript_width, descript_height, false);
 	}
 }

@@ -47,7 +47,7 @@ public class SelectionMenu {
 	
 	public static final float RELATIVE_DESCRIPTION_HEIGHT = 0.25f;
 	
-	private static final float RADIUS_CONSTANT = 1.5f;
+	private static final float RADIUS_CONSTANT = 1.3f;
 	
 	private static final float CONFIRM_WIDTH = 0.05f;
 	
@@ -92,6 +92,8 @@ public class SelectionMenu {
 	
 	private Option[] options;
 	
+	public boolean highlightBox;
+	
 	public SelectionMenu(Action[] actions){
 		this.actions = actions;
 		this.options = new Option[actions.length+1];
@@ -102,6 +104,7 @@ public class SelectionMenu {
 		selectedActions = new LinkedList<ActionNode>();
 		lerpVal = 0;
 		increasing = true;
+		highlightBox = false;
 		tokenLerpVal = 0;
 		tokenIncreasing = true;
 	}
@@ -545,7 +548,7 @@ public class SelectionMenu {
 				float descript_y = RELATIVE_DESCRIPTION_Y_POS * h;
 				float descript_width = RELATIVE_DESCRIPTION_WIDTH *w;
 				float descript_height = RELATIVE_DESCRIPTION_HEIGHT * h;
-				canvas.drawAction(action, descript_x, descript_y, descript_width, descript_height);
+				canvas.drawAction(action, descript_x, descript_y, descript_width, descript_height, highlightBox);
 			}
 		}
 	}
