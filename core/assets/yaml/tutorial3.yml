@@ -13,7 +13,7 @@
 1:
   text: "Hover over an enemy to highlight his action bar"
   paused: true
-  spaceToContinue: true
+  spaceToContinue: false
 
 2:
   text: ""
