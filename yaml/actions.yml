@@ -42,7 +42,7 @@
   name: Diagonal
   cost: 2
   damage: 2
-  range: 5
+  range: 10
   size: 1
   pattern: DIAGONAL
   needsToggle: true
@@ -98,7 +98,7 @@
   name: Diagonal
   cost: 2
   damage: 2
-  range: 5
+  range: 10
   size: 1
   pattern: DIAGONAL
   oneHit: true
@@ -189,7 +189,7 @@
 
 9:
   name: Shield2
-  cost: 2
+  cost: 1
   damage: 0
   range: 2
   size: 1
@@ -319,13 +319,14 @@
 
 15:
   name: Spirit Barrier
-  cost: 1
+  cost: 3
   damage: 0
   range: 2
   size: 1
   pattern: SHIELD
-  shieldNumberHits: 1
-  shieldColor0: 7EF9F5FF
+  shieldNumberHits: 2
+  shieldColor0: F29EFFFF
+  shieldColor1: 7EF9F5FF
   needsToggle: true
   oneHit: false
   canBlock: false
@@ -349,9 +350,8 @@
   range: 1
   size: 1
   pattern: SHIELD
-  shieldNumberHits: 2
-  shieldColor0: 7EF9F5FF
-  shieldColor1: F29EFFFF
+  shieldNumberHits: 1
+  shieldColor0: F29EFFFF
   needsToggle: false
   oneHit: false
   canBlock: false
@@ -683,7 +683,7 @@
   name: Diagonal
   cost: 1
   damage: 2
-  range: 5
+  range: 10
   size: 1
   pattern: DIAGONAL
   oneHit: true
@@ -705,7 +705,7 @@
 33:
   name: Hyperbeam
   cost: 2
-  damage: 4
+  damage: 3
   range: 5
   size: 1
   pattern: INSTANT
@@ -743,6 +743,32 @@
   description: Target a single square to Hasten an ally
   animationId: 0
   icon: models/effect_icons/hasten_icon.png
+
+35:
+  name: Shield2
+  cost: 3
+  damage: 0
+  range: 2
+  size: 1
+  pattern: SHIELD
+  shieldNumberHits: 2
+  shieldColor0: F29EFFFF
+  shieldColor1: 7EF9F5FF
+  needsToggle: true
+  oneHit: false
+  canBlock: false
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Creates a 2-tile wide shield (Cannot move after) 
+  persisting_action:
+    numRounds: 1
+    moveSpeed: 0.0
+  animationId: 0
+  projectileAnimationId: 2
+  icon: models/action_tokens/shield_token.png
 
 ...
 

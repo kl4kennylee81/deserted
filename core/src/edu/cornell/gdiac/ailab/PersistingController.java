@@ -148,30 +148,13 @@ public class PersistingController extends ActionController{
 			int curIntX = selectedActionNode.getCurInPath().x;
 			int curIntY = selectedActionNode.getCurInPath().y;
 			
-			boolean canBlock = false;
-			//last coordinate in the path
-			if (selectedActionNode.getLastInPath()!= null){
-				int lastIntX = selectedActionNode.getLastInPath().x;
-				int lastIntY = selectedActionNode.getLastInPath().y;
-				if (lastIntY == curIntY){
-					canBlock = true;
-				}
-				// this will check if diagonal can be blocked only if you shielded the adjacent
-				// tile that from the direction the projectile is approaching from.
-				else if (lastIntY != curIntY && lastIntX != curIntX){
-					if (this.isBlocked(curIntX,lastIntY)){
-						canBlock = true;
-					}
-				}
-			}
-			
 			// Check if next position is out of bounds or blocked
-			if (!board.isInBounds((int)Math.floor(selectedActionNode.curX),(int)Math.floor(selectedActionNode.curY))){
+			if (!board.isInBounds(curIntX,curIntY)){
 				selected.popPersistingCast(selectedActionNode);
 				return;
 			}
 			
-			if ((isBlocked(curIntX, curIntY) && canBlock)){
+			if (isBlocked(curIntX, curIntY)){
 				shields.hitShield(curIntX, curIntY, selected.leftside,textMessages);
 				selected.popPersistingCast(selectedActionNode);
 				return;

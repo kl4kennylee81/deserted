@@ -17,7 +17,7 @@ characters:
         cost: 1
       - actionId: 22
         cost: 1
-    - actionId: 6
+    - actionId: 353
       nextAction:
       - actionId: 7
         cost: 1
@@ -27,7 +27,7 @@ characters:
     - 0
     - 4
     - 3
-    - 6
+    - 35
   1:
     characterId: 1
     totalSP: 0
@@ -140,11 +140,13 @@ levels:
   17:
     levelName: BossTest
     beaten: false
-    needsSelect: false
+    needsSelect: true
     boss: false
 availableCharacters:
 - 0
 - 1
+- 2
+- 5
 unlockableCharacters:
 - 2
 - 5

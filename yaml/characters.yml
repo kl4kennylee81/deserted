@@ -10,7 +10,7 @@
   - 0
   - 4
   - 3
-  - 9
+  - 35
   texture: models/CHARA_3.png
   icon: models/sulus_icon.png
   animationId: 101
@@ -20,7 +20,7 @@
   health: 6
   maxHealth: 6
   hexColor: CD2626FF
-  speed: 3.5
+  speed: 5.5
   castSpeed: 7.5
   slots: 4
   availableActions:
@@ -38,7 +38,7 @@
   health: 10
   maxHealth: 10
   hexColor: 00cc00FF
-  speed: 2.5
+  speed: 3.
   castSpeed: 7.5
   slots: 2
   availableActions:
@@ -55,7 +55,7 @@
   health: 6
   maxHealth: 6
   hexColor: FF9900FF
-  speed: 4.
+  speed: 5.
   castSpeed: 8.0
   slots: 4
   availableActions:
@@ -72,7 +72,7 @@
   health: 6
   maxHealth: 6
   hexColor: CD2626FF
-  speed: 6.
+  speed: 6.5
   castSpeed: 7.
   slots: 4
   availableActions:
@@ -89,7 +89,7 @@
   health: 8
   maxHealth: 8
   hexColor: 3299FFFF
-  speed: 5.
+  speed: 5.5
   castSpeed: 6.
   slots: 4
   availableActions:
@@ -585,8 +585,8 @@
   health: 5
   maxHealth: 5
   hexColor: CD2626FF
-  speed: 3.
-  castSpeed: 7.0
+  speed: 5.0
+  castSpeed: 9.0
   slots: 2
   availableActions:
   - 0
@@ -600,11 +600,11 @@
 
 31:
   name: Boss
-  health: 10
-  maxHealth: 10
+  health: 5
+  maxHealth: 5
   hexColor: CD2626FF
-  speed: 5.
-  castSpeed: 8.0
+  speed: 6.5
+  castSpeed: 10.0
   slots: 2
   availableActions:
   - 0
