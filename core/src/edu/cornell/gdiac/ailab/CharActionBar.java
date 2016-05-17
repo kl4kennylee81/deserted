@@ -639,23 +639,51 @@ public class CharActionBar {
 		if (isSelecting){
 			return;
 		}
-		float xPos = xPosBar + this.getXInBar(canvas, castPosition);
-		float yPos = this.getFillY(canvas, count);
-		
-		float castWidth = lengthQueuedActions;
-		float castHeight = this.getBarFillHeight(canvas);
+
 		
 		Color barFadedColor = barColor.cpy().mul(Constants.CAST_COLOR.cpy());
 		
-		canvas.drawBox(xPos, yPos, castWidth, castHeight, barFadedColor);
+		float selectingXStart = drawSelectingActionFill(canvas,xPosBar,count,
+				castPosition,lengthQueuedActions,barFadedColor);
 		
-		float xPosSelecting = xPos + castWidth;
+		Color lerpingBarColor = Color.CLEAR.cpy().lerp(barFadedColor, lerpVal);
 		
-		float selectingWidth = lengthSelectedAction;
+		drawSelectingActionFill(canvas,xPosBar,count,
+				selectingXStart,lengthSelectedAction,lerpingBarColor);
 		
-		Color lerpingBarColor = barColor.lerp(barFadedColor, lerpVal);
+	}
+	
+	public void drawSelectingActionFill(GameCanvas canvas,float xPos,float yPos,
+			Color barColor,float castWidth){
 		
-		canvas.drawBox(xPosSelecting,yPos, selectingWidth, castHeight,lerpingBarColor);
+		float castHeight = this.getBarFillHeight(canvas);
+		canvas.drawBox(xPos, yPos, castWidth, castHeight, barColor);
+	}
+	
+	public float drawSelectingActionFill(GameCanvas canvas,float xPosBar,int count,
+			float startPosition,float length,Color barColor){
+		float xPos = xPosBar + this.getXInBar(canvas, startPosition);
+		float yPos = this.getFillY(canvas, count);
+		
+		float castWidth = length;
+		
+		float xPosInBar = this.getXInBar(canvas, startPosition) + castWidth;
+		
+		float xPosSelecting;
+		if (xPosInBar > this.getWidth(canvas)){
+			float diffWidth = this.getWidth(canvas) - this.getXInBar(canvas, startPosition);
+			drawSelectingActionFill(canvas,xPos,yPos,barColor,diffWidth);
+			
+			float remainderWidth = castWidth - diffWidth;
+			drawSelectingActionFill(canvas,xPosBar,yPos,barColor,remainderWidth);
+		
+			xPosSelecting = remainderWidth/this.getWidth(canvas);
+		}
+		else{
+			drawSelectingActionFill(canvas,xPos,yPos,barColor,castWidth);
+			xPosSelecting = xPosInBar/this.getWidth(canvas);
+		}
+		return xPosSelecting;
 	}
 	
 	
