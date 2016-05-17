@@ -146,7 +146,7 @@
   name: Slow
   cost: 2
   damage: 0
-  range: 6
+  range: 10
   size: 1
   pattern: SINGLE
   oneHit: true
@@ -156,7 +156,7 @@
   effect:
     type: SPEED
     name: Slowed
-    numRounds: 3
+    numRounds: 1
     magnitude: -4
     effectIcon: models/effect_icons/slow_icon.png
   description: Target a single square to slow down enemy

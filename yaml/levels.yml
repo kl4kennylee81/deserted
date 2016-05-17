@@ -13,12 +13,12 @@ pvp:
           xPosition: 5
           yPosition: 0
 
-        - id: 10
-          xPosition: 5
-          yPosition: 3
-        - id: 10
-          xPosition: 5
-          yPosition: 2
+        # - id: 10
+        #   xPosition: 5
+        #   yPosition: 3
+        # - id: 10
+        #   xPosition: 5
+        #   yPosition: 2
     nextLevel:
     boardWidth: 6
     boardHeight: 4

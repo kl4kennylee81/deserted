@@ -149,7 +149,11 @@ public class CharActionBar {
 	}
 	
 	float getSpeedModifier() {
-		switch (speedModifier) {
+		return getSpeedModifier(this.speedModifier);
+	}
+	
+	float getSpeedModifier(int speedMod) {
+		switch (speedMod) {
 		case -2:
 			// gets you 2x more time
 			return 1/2f;
@@ -163,9 +167,9 @@ public class CharActionBar {
 		case 2:
 			return 2f;
 		default:
-			if (speedModifier < -2){
+			if (speedMod < -2){
 				return 1/2f;
-			} else if (speedModifier > 2){
+			} else if (speedMod > 2){
 				return 2f;
 			}
 			else{
@@ -182,16 +186,21 @@ public class CharActionBar {
 	
 	/** length as a proportion of the max_length **/
 	public float getLength(){
+		return getLength(this.getSpeedModifier());
+	}
+	
+	public float getLength(float speedModifier){
 		float totalTime = this.length * MAX_TIME;
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
 		
 		// modify based on speed modifier
-		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
+		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/speedModifier;
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return newTotalTime/MAX_TIME;
 	}
+	
 	
 	public float getCastPointX(GameCanvas canvas){
 		float xBar = this.getX(canvas);
@@ -233,12 +242,16 @@ public class CharActionBar {
 	
 	
 	public float getCastPoint(){
+		return getCastPoint(this.getSpeedModifier());
+	}
+	
+	public float getCastPoint(float speedModifier){
 		float totalTime = this.length * MAX_TIME;
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
 		
 		// modify based on speed modifier
-		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
+		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/speedModifier;
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return modifiedWaitTime/newTotalTime;
@@ -276,6 +289,10 @@ public class CharActionBar {
 	
 	public float getSlotWidth(){
 		return (1-this.getCastPoint())/this.getTotalNumSlots();
+	}
+	
+	public float getSlotWidth(float speedMod){
+		return (1 - this.getCastPoint(speedMod))/this.getTotalNumSlots();
 	}
 	
 	public float getBarHeight(GameCanvas canvas){

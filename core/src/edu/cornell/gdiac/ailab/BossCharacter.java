@@ -63,10 +63,11 @@ public class BossCharacter extends Character{
 	@Override
 	void addEffect(Effect e){
 		if (sharedStatus){
-			this.parentChar.getEffects().add(e);
+			System.out.println(this.getCastPosition());
+			this.parentChar.addEffect(e,this.getCastPosition(),this.getActionBar());
 		}
 		else{
-			super.getEffects().add(e);
+			super.addEffect(e);
 		}
 	}
 	
@@ -83,10 +84,10 @@ public class BossCharacter extends Character{
 	@Override
 	void removeEffect(Effect e){
 		if (sharedStatus){
-			this.parentChar.getEffects().remove(e);
+			this.parentChar.removeEffect(e,this.getCastPosition(),this.getActionBar());
 		}
 		else{
-			super.getEffects().remove(e);
+			super.removeEffect(e);
 		}
 	}
 	
