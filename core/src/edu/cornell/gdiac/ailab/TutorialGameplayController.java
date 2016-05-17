@@ -203,7 +203,7 @@ public class TutorialGameplayController extends GameplayController{
 	    	screen.noScreen();
 		}
         screen.draw(canvas);
-    	board.draw(canvas);
+    	board.draw(canvas, selectionMenuController);
     	
     	if (inGameState == InGameState.SELECTION){
     		shields.draw(canvas,false,true);

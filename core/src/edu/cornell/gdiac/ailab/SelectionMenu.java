@@ -74,6 +74,11 @@ public class SelectionMenu {
 	/** Lerp value increasing or decreasing */
 	private boolean increasing;
 	
+	/** Lerp value for highlighting */
+	private float tokenLerpVal;
+	/** Lerp value increasing or decreasing */
+	private boolean tokenIncreasing;
+	
 	TexturedMesh menuMesh;
 	TexturedMesh menuBar;
 
@@ -97,6 +102,8 @@ public class SelectionMenu {
 		selectedActions = new LinkedList<ActionNode>();
 		lerpVal = 0;
 		increasing = true;
+		tokenLerpVal = 0;
+		tokenIncreasing = true;
 	}
 	
 	public void setOptions(){
@@ -341,7 +348,7 @@ public class SelectionMenu {
 			 else{
 				 return Color.WHITE.cpy().lerp(Color.CORAL,lerpVal);
 			 }*/
-			 return Color.CORAL.cpy();
+			 return Color.YELLOW.cpy().lerp(Color.CORAL, tokenLerpVal);
 		}
 		else {
 			return Color.WHITE;
@@ -355,14 +362,26 @@ public class SelectionMenu {
 		int usableNumSlots = actionBar.getUsableNumSlots();
 		
 		if (increasing){
-			lerpVal+=0.012;
+			lerpVal += Constants.LERP_RATE;
 			if (lerpVal >= 1){
 				increasing = false;
 			}
 		} else {
-			lerpVal -= 0.012;
+			lerpVal -= Constants.LERP_RATE;
 			if (lerpVal <= 0.4){
 				increasing = true;
+			}
+		}
+		
+		if (tokenIncreasing){
+			tokenLerpVal += Constants.LERP_RATE;
+			if (tokenLerpVal >= 1){
+				tokenIncreasing = false;
+			}
+		} else {
+			tokenLerpVal -= Constants.LERP_RATE;
+			if (tokenLerpVal <= 0.4){
+				tokenIncreasing = true;
 			}
 		}
 		//Draw action names

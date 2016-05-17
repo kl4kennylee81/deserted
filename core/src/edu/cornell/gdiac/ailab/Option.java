@@ -35,6 +35,8 @@ public class Option implements GUIElement{
 	
 	boolean checkNormalBounds;
 	
+	boolean increasing;
+	
 	public void setImage(Texture t){
 		image = t;
 	}

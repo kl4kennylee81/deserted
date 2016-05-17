@@ -843,12 +843,12 @@ public class Character implements GUIElement {
 	
 	public void drawCharacter(GameCanvas canvas,GridBoard board, boolean shouldDim,InGameState gameState,boolean isHitByAnimation){
 		if (increasing){
-			lerpVal+=0.02;
+			lerpVal += Constants.LERP_RATE;
 			if (lerpVal >= 0.5){
 				increasing = false;
 			}
 		} else {
-			lerpVal -= 0.02;
+			lerpVal -= Constants.LERP_RATE;
 			if (lerpVal <= 0){
 				increasing = true;
 			}
@@ -1159,7 +1159,7 @@ public class Character implements GUIElement {
 			return chosenColor;
 		}
 		else if (isSelecting){
-			chosenColor = chosenColor.lerp(this.color.cpy(), lerpVal);
+//			chosenColor = chosenColor.lerp(this.color.cpy(), lerpVal);
 		}
 		else if (shouldDim){
 			chosenColor = Color.LIGHT_GRAY.cpy().mul(1,1,1,0.9f);
@@ -1190,7 +1190,7 @@ public class Character implements GUIElement {
 			chosenColor = chosenColor.lerp(Color.WHITE, lerpVal);
 		}
 		else if (isSelecting){
-			chosenColor = chosenColor.lerp(Color.WHITE, lerpVal);
+//			chosenColor = chosenColor.lerp(Color.WHITE, lerpVal);
 		}
 		else if (shouldDim){
 			chosenColor = Color.DARK_GRAY.cpy().mul(1,1,1,0.8f);
