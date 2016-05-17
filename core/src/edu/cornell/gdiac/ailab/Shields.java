@@ -51,26 +51,57 @@ public class Shields {
 	}
 	
 	public void addShield(Character character, ActionNode shield, Coordinate[] path){
-		shield.setPersisting(0, character.xPosition, character.yPosition, path);
 		
 		if (character.leftside){
-			removeOverlappingShields(leftShields,path);
+			path = combineOverlappingShields(leftShields,path);
+			shield.setPersisting(0, character.xPosition, character.yPosition, path);
 			leftShields.add(shield);
 		} else {
-			removeOverlappingShields(rightShields,path);
+			path = combineOverlappingShields(rightShields,path);
+			shield.setPersisting(0, character.xPosition, character.yPosition, path);
 			rightShields.add(shield);
 		}
 		resetShieldedCoordinates();
 	}
 	
-	public void removeOverlappingShields(List<ActionNode> shields, Coordinate[] path){
+	public Coordinate[] combineOverlappingShields(List<ActionNode> shields, Coordinate[] path){
+		List<Coordinate> coords = new ArrayList<Coordinate>();
+		for (Coordinate c : path){
+			coords.add(c);
+		}
 		for (Iterator<ActionNode> iterator = shields.iterator(); iterator.hasNext();) {
 		    ActionNode an = iterator.next();
 		    Coordinate[] otherPath = an.path;
 		    if (overlapPaths(path,otherPath)){
 				iterator.remove();
+				addPaths(coords,otherPath);
 			}
 		}
+		
+		Coordinate[] newPath = new Coordinate[coords.size()];
+		
+		coords.toArray(newPath);
+		
+		return newPath;
+	}
+	
+	public void addPaths(List<Coordinate> coords, Coordinate[] path){
+		List<Coordinate> toAdd = new ArrayList<Coordinate>();
+		for (Coordinate c1 : path){
+			if (toAdd.contains(c1)){
+				continue;
+			}
+			boolean add = true;
+			for (Coordinate c : coords){
+				if (c1.x == c.x && c1.y == c.y){
+					add = false;
+				}
+			}
+			if (add){
+				toAdd.add(c1);
+			}
+		}
+		coords.addAll(toAdd);
 	}
 	
 	public boolean overlapPaths(Coordinate[] path1, Coordinate[] path2){
