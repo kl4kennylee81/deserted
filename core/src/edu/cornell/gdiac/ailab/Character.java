@@ -656,20 +656,22 @@ public class Character implements GUIElement {
 		float new_speedModded = actionBarChanged.getSpeedModifier(new_speedMod);	
 		float new_castPoint = actionBarChanged.getCastPoint(new_speedModded);
 		
-		System.out.println("WAIT");
-		System.out.println("speed mod int"+new_speedMod);
-		System.out.println("speed mod after"+new_speedModded);
+//		System.out.println("WAIT");
+//		System.out.println("speed mod int"+new_speedMod);
+//		System.out.println("speed mod after"+new_speedModded);
 		
 		float newCastPosition = new_castPoint *old_castPosition/old_castPoint;
 		
 		// now we set it to the new castPosition
 		this.setCastPosition(newCastPosition);
 		
-		System.out.println("old cast position "+old_castPosition);
-		System.out.println("old cast point "+old_castPoint);
+		System.out.println("speed int val"+this.getSpeedModifier());
 		
-		System.out.println("new cast position: "+newCastPosition);
-		System.out.println("new cast point: "+ new_castPoint);
+//		System.out.println("old cast position "+old_castPosition);
+//		System.out.println("old cast point "+old_castPoint);
+//		
+//		System.out.println("new cast position: "+newCastPosition);
+//		System.out.println("new cast point: "+ new_castPoint);
 	}
 	
 	void translateCastingCastPosition(Effect e,float castPosition,CharActionBar actionBarChanged){
@@ -687,13 +689,15 @@ public class Character implements GUIElement {
 		
 		float newCastPosition  = new_castTraversed + new_castPoint;
 		
-		System.out.println("CAST");
+		System.out.println("speed int val"+this.getSpeedModifier());
 		
-		System.out.println("old cast position "+old_castPosition);
-		System.out.println("old cast point "+old_castPoint);
-		
-		System.out.println("new cast position: "+newCastPosition);
-		System.out.println("new cast point: "+ new_castPoint);
+//		System.out.println("CAST");
+//		
+//		System.out.println("old cast position "+old_castPosition);
+//		System.out.println("old cast point "+old_castPoint);
+//		
+//		System.out.println("new cast position: "+newCastPosition);
+//		System.out.println("new cast point: "+ new_castPoint);
 		// now we set it to the new castPosition
 		this.setCastPosition(newCastPosition);
 	}

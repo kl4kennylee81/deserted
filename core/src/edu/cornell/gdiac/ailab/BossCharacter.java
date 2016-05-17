@@ -97,6 +97,7 @@ public class BossCharacter extends Character{
 	 * **/
 	public void update(){
 		updateParentCastMoved();
+		this.parentChar.update();
 		super.update();
 	}
 	
