@@ -143,6 +143,9 @@ public class SoundController {
 			break;
 		case FINISH:
 		case AFTER:
+			if (soundBank == null || soundBank.get(OVER_FILE) == null){
+				return;
+			}
 			((Sound)soundBank.get(OVER_FILE)).play();
 			break;
 		}

@@ -330,6 +330,46 @@ public class ObjectLoader {
 		}
 	}
 	
+	public HashMap<Integer,Character> getCharacterMap(ArrayList<Integer> charIDs) throws IOException{
+		HashMap<Integer,Character> charMap = new HashMap<Integer,Character>();
+		availableCharacters = new HashMap<Integer, Character>();
+		availableAnimations = new HashMap<Integer, Animation>();
+		for (Integer id : charIDs){
+			availableCharacters.put(id, null);
+		}
+		
+		Yaml yaml = new Yaml();
+		File animationFile = new File(ROOT, "yaml/animations.yml");
+		HashMap<Integer, HashMap<String, Object>> animations;
+		try (InputStream is = new FileInputStream(animationFile)){
+			animations = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
+		
+		File actionFile = new File(ROOT, "yaml/actions.yml");
+		HashMap<Integer, HashMap<String, Object>> actions;
+		try (InputStream is = new FileInputStream(actionFile)){
+			actions = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
+	
+		File charFile = new File(ROOT, "yaml/characters.yml");
+		HashMap<Integer, HashMap<String, Object>> characters;
+		try (InputStream is = new FileInputStream(charFile)){
+			characters = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
+
+		loadKeysFromCharacters(characters, GameSaveStateController.getInstance().getGameSaveState());
+		loadKeysFromActions(actions);
+		loadAnimations(animations);
+		loadActions(actions);
+		loadChars(characters);
+		
+		for (Integer id : charIDs){
+			charMap.put(id, availableCharacters.get(id));
+		}
+		
+		return charMap;
+	}
+	
 	@SuppressWarnings("unchecked")
 	private void loadChars(HashMap<Integer, HashMap<String, Object>> characters) {
 		for (Integer charId: availableCharacters.keySet()) {
@@ -633,6 +673,9 @@ public class ObjectLoader {
 		
 		for (CharacterData cd : charDatas){
 			HashMap<String, Object> character = characters.get(cd.characterId);
+			if (cd.name == null){
+				cd.name = (String) character.get("name");
+			}
 			if (cd.getIcon() == null){
 				String iconTextureName = (String) character.get("icon");
 				manager.load(iconTextureName, Texture.class);
@@ -676,6 +719,15 @@ public class ObjectLoader {
 		}
 	}
 
+	public HashMap<Integer, HashMap<String, Object>> loadNarrative(String narrativeFileName) throws IOException{
+		Yaml yaml = new Yaml();
+		File narrativeFile = new File(ROOT, narrativeFileName);
+		HashMap<Integer, HashMap<String, Object>> narrativeData;
+		try (InputStream is = new FileInputStream(narrativeFile)){
+			narrativeData = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
+		return narrativeData;
+	}
 
 	/**
 	 * Returns true if this string is the name of a character

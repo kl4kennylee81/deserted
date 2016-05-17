@@ -26,7 +26,7 @@ public class CharacterSelect extends Menu{
 	
 	private static final Color SELECTED_CHARACTER_COLOR = Color.GOLDENROD.cpy();
 	
-	private static final float RELATIVE_CHARACTER_Y = 0.7f;
+	private static final float RELATIVE_CHARACTER_Y = 0.63f;
 	
 	private static final float RELATIVE_CHARACTER_WIDTH = 0.08f;
 	
@@ -117,7 +117,7 @@ public class CharacterSelect extends Menu{
 		float curCharacterRatio = (index+1f) * RELATIVE_CHARACTERS_SIZE / (characters.size()+1);
 		
 		options[3] = new Option(text,"Select");
-		options[3].setBounds(curCharacterRatio-0.024f, 0.67f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
+		options[3].setBounds(curCharacterRatio-0.024f, 0.6f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
 		options[3].setColor(Constants.MENU_COLOR);
 		
 		characterOptions.clear();
@@ -288,6 +288,8 @@ public class CharacterSelect extends Menu{
 				float ratio = (i+1f) / (characters.size()+1);
 				float x = charOption.xPosition * canvas.width;
 				float y = charOption.yPosition * canvas.height;
+				
+				canvas.drawCenteredText(characters.get(i).name, x+width/2, 0.92f*canvas.height, Color.WHITE);
 				
 				String optionKey = charOption.optionKey;
 				if (charOption.optionKey.contains(CHARACTER_ID_STRING)){

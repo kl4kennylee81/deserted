@@ -73,12 +73,20 @@ characters:
 levels:
   0:
     levelName: tutorial1
-    beaten: false
+    beaten: true
     boss: false
+    preNarrative: yaml/narratives/test.yml
+    seenPre: true
+    postNarrative: yaml/narratives/test.yml
+    seenPost: true
   1:
     levelName: tutorial2
-    beaten: false
+    beaten: true
     boss: false
+    preNarrative: yaml/narratives/test.yml
+    seenPre: true
+    postNarrative: yaml/narratives/test.yml
+    seenPost: true
   2:
     levelName: tutorial3
     beaten: false
