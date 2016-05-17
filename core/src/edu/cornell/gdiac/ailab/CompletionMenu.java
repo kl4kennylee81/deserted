@@ -71,6 +71,15 @@ public class CompletionMenu extends Menu {
 		}
 		
 	}
+	
+	public void setWin(boolean won){
+		Option topOption = this.options[0];
+		if (won){
+			topOption.setText("Next Level");
+		}else{
+			topOption.setText("Retry");
+		}
+	}
 
 	@Override
 	public void draw(GameCanvas canvas) {

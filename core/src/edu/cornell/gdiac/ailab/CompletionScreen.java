@@ -30,7 +30,6 @@ public class CompletionScreen {
 	
 	boolean isWin;
 	
-	boolean isActive;
 	
 	List<CharacterData> characters_unlocked;
 	
@@ -76,6 +75,7 @@ public class CompletionScreen {
 	public void setIsWin(boolean won){
 		generateNotifications();
 		isWin = won;
+		cm.setWin(won);
 	}
 	
 	private void generateNotifications(){
@@ -104,7 +104,7 @@ public class CompletionScreen {
 	}
 	
 	public void draw(GameCanvas canvas) {
-		isActive = true;
+		
 		float cWidth = canvas.getWidth();
 		float cHeight = canvas.getHeight();
 		

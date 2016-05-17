@@ -169,6 +169,7 @@ public class GameplayController {
     		this.animations.sort();
     		break;
     	case WARNING:
+    		screen.setJustScreen();
     		//notifications processed first
     		if (CompletionScreen.getInstance().notifications.size() > 0){
     			if (InputController.pressedEnter() || InputController.leftMouseClicked){

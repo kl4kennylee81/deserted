@@ -71,7 +71,7 @@ public class GameSaveState {
 		String bigIconTextureName;
 		Texture bigIcon;
 		AnimationNode animation;
-		Texture texture;
+		Texture fullCharTexture;
 		
 		public CharacterData(){
 			this.actionUpgrades = new ArrayList<ActionUpgrade>();
@@ -88,11 +88,11 @@ public class GameSaveState {
 		}
 		
 		public Texture getTexture(){
-			return this.texture;
+			return this.fullCharTexture;
 		}
 		
 		public void setTexture(Texture t){
-			this.texture = t;
+			this.fullCharTexture = t;
 		}
 		
 		public void setAnimation(AnimationNode animation){

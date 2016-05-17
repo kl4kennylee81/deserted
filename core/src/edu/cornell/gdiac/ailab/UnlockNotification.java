@@ -7,7 +7,7 @@ public class UnlockNotification {
 
 	String text;
 	Texture background;
-	Texture texture;
+	Texture unlockedCharTexture;
 	
 	private static final float UNLOCK_X_POS = 0.33f;
 	
@@ -33,14 +33,14 @@ public class UnlockNotification {
 	public UnlockNotification(String msg, Texture bg, Texture texture){
 		this.text = msg;
 		this.background = bg;
-		this.texture = texture;
+		this.unlockedCharTexture = texture;
 	}
 	
 	public void draw(GameCanvas canvas, float w, float h){
 		
 		drawBackground(canvas, w, h);
 		drawText(canvas, w, h);
-		if (texture != null){
+		if (unlockedCharTexture != null){
 			drawTexture(canvas, w, h);
 		}
 	}
@@ -64,7 +64,7 @@ public class UnlockNotification {
 		float y = CHAR_Y_POS * h;
 		float width = CHAR_WIDTH * w;
 		float height = CHAR_HEIGHT * h;
-		canvas.drawTexture(texture, x, y, width, height, Color.WHITE);
+		canvas.drawTexture(unlockedCharTexture, x, y, width, height, Color.WHITE);
 	}
 	
 	
