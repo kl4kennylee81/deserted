@@ -1,7 +1,7 @@
 characters:
   0:
     characterId: 0
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -29,7 +29,7 @@ characters:
     - 35
   1:
     characterId: 1
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 7
@@ -42,7 +42,7 @@ characters:
     - 5
   2:
     characterId: 2
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 16
@@ -55,7 +55,7 @@ characters:
     - 18
   3:
     characterId: 5
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 23
@@ -94,7 +94,7 @@ levels:
     background: backgrounds/environment.png
   5:
     levelName: tutorial6
-    beaten: false
+    beaten: true
     boss: false
     gainedSP: 1
   10:
@@ -102,13 +102,11 @@ levels:
     beaten: false
     boss: false
     needsSelect: true
-    #winIn: 1
   11:
     levelName: Level2
     beaten: false
     boss: false
     needsSelect: true
-    #surviveFor: 1
   12:
     levelName: Level3
     beaten: false

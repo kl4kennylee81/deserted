@@ -815,7 +815,7 @@
     type: SPEED
     name: Slowed
     numRounds: 3
-    magnitude: -6
+    magnitude: -10
     effectIcon: models/effect_icons/slow_icon.png
   description: Target a single square to slow down enemy
   animationId: 0
