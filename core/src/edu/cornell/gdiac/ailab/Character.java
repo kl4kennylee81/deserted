@@ -588,7 +588,7 @@ public class Character implements GUIElement {
 	void addEffect(Effect e){
 		switch (e.type){
 		case SPEED:
-			translateCastPosition(e,this.getCastPosition(),this.getActionBar());
+			translateCastPosition(e,true,this.getCastPosition(),this.getActionBar());
 			break;
 		default:
 			break;
@@ -603,7 +603,7 @@ public class Character implements GUIElement {
 	void removeEffect(Effect e){
 		switch (e.type){
 		case SPEED:
-			translateCastPosition(e,this.getCastPosition(),this.getActionBar());
+			translateCastPosition(e,false,this.getCastPosition(),this.getActionBar());
 			break;
 		default:
 			break;
@@ -614,7 +614,7 @@ public class Character implements GUIElement {
 	void addEffect(Effect e,float castPosition,CharActionBar actionBarChanged){
 		switch (e.type){
 		case SPEED:
-			translateCastPosition(e,castPosition,actionBarChanged);
+			translateCastPosition(e,true,castPosition,actionBarChanged);
 			break;
 		default:
 			break;
@@ -625,7 +625,7 @@ public class Character implements GUIElement {
 	void removeEffect(Effect e,float castPosition,CharActionBar actionBarChanged){
 		switch (e.type){
 		case SPEED:
-			translateCastPosition(e,castPosition,actionBarChanged);
+			translateCastPosition(e,false,castPosition,actionBarChanged);
 			break;
 		default:
 			break;
@@ -633,71 +633,67 @@ public class Character implements GUIElement {
 		effects.remove(e);
 	}
 	
-	void translateCastPosition(Effect e,float castPosition,CharActionBar actionBarChanged){
+	void translateCastPosition(Effect e,boolean adding,float castPosition,CharActionBar actionBarChanged){
 		if (e.type != Type.SPEED){
 			return;
 		}
 		if (castPosition < actionBarChanged.getCastPoint()){
-			this.translateWaitCastPosition(e,castPosition,actionBarChanged);
+			this.translateWaitCastPosition(e,adding,castPosition,actionBarChanged);
 		}
 		else{
-			this.translateCastingCastPosition(e,castPosition,actionBarChanged);
+			this.translateCastingCastPosition(e,adding,castPosition,actionBarChanged);
 		}
 	}
 	
-	void translateWaitCastPosition(Effect e,float castPosition,CharActionBar actionBarChanged){
+	void translateWaitCastPosition(Effect e,boolean adding,float castPosition,CharActionBar actionBarChanged){
 		if (e.type != Type.SPEED){
 			return;
 		}
 		float old_castPoint = actionBarChanged.getCastPoint();
 		float old_castPosition = castPosition;
 		
-		int new_speedMod = actionBarChanged.speedModifier + e.magnitude;
+		int new_speedMod = adding ? this.getSpeedModifier() + e.magnitude: this.getSpeedModifier() - e.magnitude;
 		float new_speedModded = actionBarChanged.getSpeedModifier(new_speedMod);	
-		float new_castPoint = actionBarChanged.getCastPoint(new_speedModded);
-		
-//		System.out.println("WAIT");
-//		System.out.println("speed mod int"+new_speedMod);
-//		System.out.println("speed mod after"+new_speedModded);
-		
+		float new_castPoint = actionBarChanged.getCastPoint(new_speedModded);		
 		float newCastPosition = new_castPoint *old_castPosition/old_castPoint;
 		
 		// now we set it to the new castPosition
 		this.setCastPosition(newCastPosition);
 		
-		System.out.println("speed int val"+this.getSpeedModifier());
+		System.out.println("WAIT");
+		System.out.println("speed mod int"+new_speedMod);
+		System.out.println("speed mod after"+new_speedModded);
 		
-//		System.out.println("old cast position "+old_castPosition);
-//		System.out.println("old cast point "+old_castPoint);
-//		
-//		System.out.println("new cast position: "+newCastPosition);
-//		System.out.println("new cast point: "+ new_castPoint);
+		System.out.println("old cast position "+old_castPosition);
+		System.out.println("old cast point "+old_castPoint);
+		
+		System.out.println("new cast position: "+newCastPosition);
+		System.out.println("new cast point: "+ new_castPoint);
 	}
 	
-	void translateCastingCastPosition(Effect e,float castPosition,CharActionBar actionBarChanged){
+	void translateCastingCastPosition(Effect e,boolean adding,float castPosition,CharActionBar actionBarChanged){
 		float old_castPosition = castPosition;
-		int old_speedMod = actionBarChanged.speedModifier + e.magnitude;
-		float old_speedModded = actionBarChanged.getSpeedModifier(old_speedMod);
-		float old_castPoint = actionBarChanged.getCastPoint(old_speedModded);
+		float old_castPoint = actionBarChanged.getCastPoint();
 		
 		float old_castTraversed = old_castPosition - old_castPoint;
-		float old_noSlots = old_castTraversed/actionBarChanged.getSlotWidth(old_speedModded);
+		float old_noSlots = old_castTraversed/actionBarChanged.getSlotWidth();
 		
-		float new_castPoint = actionBarChanged.getCastPoint();
-		float new_slotWidth = actionBarChanged.getSlotWidth();
+		int new_speedMod = adding ? this.getSpeedModifier() + e.magnitude: this.getSpeedModifier() - e.magnitude;
+		float new_speedModded = actionBarChanged.getSpeedModifier(new_speedMod);
+		float new_castPoint = actionBarChanged.getCastPoint(new_speedModded);
+		
+		float new_slotWidth = actionBarChanged.getSlotWidth(new_speedModded);
 		float new_castTraversed = old_noSlots * new_slotWidth;
 		
 		float newCastPosition  = new_castTraversed + new_castPoint;
+				
+		System.out.println("CAST");
 		
-		System.out.println("speed int val"+this.getSpeedModifier());
+		System.out.println("old cast position "+old_castPosition);
+		System.out.println("old cast point "+old_castPoint);
 		
-//		System.out.println("CAST");
-//		
-//		System.out.println("old cast position "+old_castPosition);
-//		System.out.println("old cast point "+old_castPoint);
-//		
-//		System.out.println("new cast position: "+newCastPosition);
-//		System.out.println("new cast point: "+ new_castPoint);
+		System.out.println("new cast position: "+newCastPosition);
+		System.out.println("new cast point: "+ new_castPoint);
 		// now we set it to the new castPosition
 		this.setCastPosition(newCastPosition);
 	}
