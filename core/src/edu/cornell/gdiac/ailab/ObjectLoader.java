@@ -9,8 +9,10 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.yaml.snakeyaml.Yaml;
 
@@ -252,20 +254,32 @@ public class ObjectLoader {
 	@SuppressWarnings("unchecked")
 	private void loadKeysFromCharacters(HashMap<Integer, HashMap<String, Object>> characters, GameSaveState gameSaveState) {
 		for (Integer charId: availableCharacters.keySet()) {
-			Integer animationId = (Integer) characters.get(charId).get("animationId");
-			availableAnimations.put(animationId, null);
+			loadKeyFromCharacter(charId,characters,gameSaveState);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void loadKeyFromCharacter(Integer charId,HashMap<Integer, HashMap<String, Object>> characters,GameSaveState gameSaveState){
+		Integer animationId = (Integer) characters.get(charId).get("animationId");
+		availableAnimations.put(animationId, null);
 
-			ArrayList<Integer> actionList = (ArrayList<Integer>) characters.get(charId).get("availableActions");
+		ArrayList<Integer> actionList = (ArrayList<Integer>) characters.get(charId).get("availableActions");
+		if (actionList != null){
 			for (Integer actionId : actionList) {
 				availableActions.put(actionId, null);
 			}
-			
-			ArrayList<Integer> actionList2 = (ArrayList<Integer>) gameSaveState.getActionIds(charId);
-			if (actionList2 != null){
-				for (Integer actionId : actionList2) {
-					availableActions.put(actionId, null);
-				}
+		}
+		
+		ArrayList<Integer> actionList2 = (ArrayList<Integer>) gameSaveState.getActionIds(charId);
+		if (actionList2 != null){
+			for (Integer actionId : actionList2) {
+				availableActions.put(actionId, null);
 			}
+		}
+		
+		Integer bossId = (Integer)characters.get(charId).get("bossId");
+		if (bossId != null){
+			loadKeyFromCharacter(bossId,characters,gameSaveState);
 		}
 	}
 
@@ -288,6 +302,9 @@ public class ObjectLoader {
 	private void loadLevelChars(ArrayList<HashMap<String, Object>> levelChars, 
 									boolean leftSide, GameSaveState gameSaveState,
 									boolean levelHasAI) {
+		
+	    // each boss id ties a particular character to that boss. each side boss id uniquely identifies it
+	    HashMap<Integer,Character> bossChars = new HashMap<Integer,Character>();
 		
 		for (HashMap<String, Object> levelChar : levelChars) {
 			Integer normalId = (Integer) levelChar.get("id");
@@ -317,6 +334,28 @@ public class ObjectLoader {
 			}else{
 				charToAdd = new Character(modelChar);
 			}
+			// create the boss and replace the charToAdd with the boss
+			if (modelChar instanceof BossCharacter){
+				BossCharacter bossModel = (BossCharacter) modelChar;
+				if (!bossChars.containsKey(bossModel.getParent().id)){
+					Character parentModel = availableCharacters.get(bossModel.getParent().id);
+					
+					// create a new parent that is seperate from the model due to needing unique one
+					// for allies and enemies
+					Character parentToAdd = new Character(parentModel);
+					
+					bossChars.put(parentToAdd.id, parentToAdd);
+				}
+				// retrieve the parent model from the bosses since it has to exist from above
+				Character parentModel = bossChars.get(bossModel.getParent().id);
+				
+				// set the max health to be the health of all its children
+				parentModel.setMaxHealth(charToAdd.getHealth()+parentModel.getMaxHealth());
+				
+				// constructor sets the action bar to be set to the bosses action bar thus sharing
+				charToAdd = new BossCharacter(bossModel,parentModel);
+			}
+			
 			charToAdd.setStartPos(xPosition, yPosition);
 			charToAdd.setLeftSide(leftSide);
 			charToAdd.animation = new AnimationNode(modelChar.animation);
@@ -330,44 +369,116 @@ public class ObjectLoader {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	private void loadChars(HashMap<Integer, HashMap<String, Object>> characters) {
-		for (Integer charId: availableCharacters.keySet()) {
-			HashMap<String, Object> character = characters.get(charId);;
-			Integer numSlots = (Integer) character.get("slots");
-			String name = (String) character.get("name");
-			Integer health = (Integer) character.get("health");
-			Integer maxHealth = (Integer) character.get("maxHealth");
-			String hexColor = (String) character.get("hexColor");
-			Float speed = (Float) ((Double) character.get("speed")).floatValue();
-			Float castSpeed = (Float) ((Double) character.get("castSpeed")).floatValue();
-			ArrayList<Integer> actions;
-			actions = (ArrayList<Integer>) character.get("availableActions");
-			Action[] actionArray = new Action[actions.size()];
-			int i=0;
-			for (Integer actionId : actions){
-				actionArray[i] = availableActions.get(actionId);
-				i++;
-			}
-			String charTextureName = (String) character.get("texture");
-			String iconTextureName = (String) character.get("icon");
+	public HashMap<Integer,Character> getCharacterMap(ArrayList<Integer> charIDs) throws IOException{
+		HashMap<Integer,Character> charMap = new HashMap<Integer,Character>();
+		availableCharacters = new HashMap<Integer, Character>();
+		availableAnimations = new HashMap<Integer, Animation>();
+		for (Integer id : charIDs){
+			availableCharacters.put(id, null);
+		}
+		
+		Yaml yaml = new Yaml();
+		File animationFile = new File(ROOT, "yaml/animations.yml");
+		HashMap<Integer, HashMap<String, Object>> animations;
+		try (InputStream is = new FileInputStream(animationFile)){
+			animations = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
+		
+		File actionFile = new File(ROOT, "yaml/actions.yml");
+		HashMap<Integer, HashMap<String, Object>> actions;
+		try (InputStream is = new FileInputStream(actionFile)){
+			actions = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
+	
+		File charFile = new File(ROOT, "yaml/characters.yml");
+		HashMap<Integer, HashMap<String, Object>> characters;
+		try (InputStream is = new FileInputStream(charFile)){
+			characters = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
 
-			manager.load(charTextureName,Texture.class);
-			assets.add(charTextureName);
-			manager.load(iconTextureName, Texture.class);
-			assets.add(iconTextureName);
-			manager.finishLoading();
-			Texture charTexture = manager.get(charTextureName,Texture.class);
-			Texture iconTexture = manager.get(iconTextureName,Texture.class);
-			Integer animationId = (Integer) character.get("animationId");
-			Animation anim = availableAnimations.get(animationId);
-			AnimationNode animNode = new AnimationNode(anim);
-			
-			Character characterToAdd = new Character(charTexture, iconTexture, animNode,
+		loadKeysFromCharacters(characters, GameSaveStateController.getInstance().getGameSaveState());
+		loadKeysFromActions(actions);
+		loadAnimations(animations);
+		loadActions(actions);
+		loadChars(characters);
+		
+		for (Integer id : charIDs){
+			charMap.put(id, availableCharacters.get(id));
+		}
+		
+		return charMap;
+	}
+	
+	private void loadChar(int charId,HashMap<Integer, HashMap<String, Object>> characters){
+		HashMap<String, Object> character = characters.get(charId);
+		Integer numSlots = (Integer) character.get("slots");
+		String name = (String) character.get("name");
+		Integer health = (Integer) character.get("health");
+		Integer maxHealth = (Integer) character.get("maxHealth");
+		String hexColor = (String) character.get("hexColor");
+		Float speed = (Float) ((Double) character.get("speed")).floatValue();
+		Float castSpeed = (Float) ((Double) character.get("castSpeed")).floatValue();
+		ArrayList<Integer> actions;
+		actions = (ArrayList<Integer>) character.get("availableActions");
+		Action[] actionArray = new Action[actions.size()];
+		int i=0;
+		for (Integer actionId : actions){
+			actionArray[i] = availableActions.get(actionId);
+			i++;
+		}
+		String charTextureName = (String) character.get("texture");
+		String iconTextureName = (String) character.get("icon");
+		
+		// load the boss assets
+		Integer bossId = (Integer) character.get("bossId");
+		if (bossId!= null && !availableCharacters.containsKey(bossId)){
+			loadChar(bossId,characters);
+		}
+		
+		Character bossChar = availableCharacters.get(bossId);
+
+		manager.load(charTextureName,Texture.class);
+		assets.add(charTextureName);
+		manager.load(iconTextureName, Texture.class);
+		assets.add(iconTextureName);
+		manager.finishLoading();
+		Texture charTexture = manager.get(charTextureName,Texture.class);
+		Texture iconTexture = manager.get(iconTextureName,Texture.class);
+		Integer animationId = (Integer) character.get("animationId");
+		Animation anim = availableAnimations.get(animationId);
+		AnimationNode animNode = new AnimationNode(anim);
+		Character characterToAdd;
+		if (bossChar != null){
+			Boolean sharedStatus = (Boolean) character.get("sharedStatus");
+			if (sharedStatus == null){
+				sharedStatus = false;
+			}
+			characterToAdd = new BossCharacter(charId,charTexture, iconTexture, animNode,
+					name, health, maxHealth, Color.valueOf(hexColor), speed,
+					castSpeed, actionArray,numSlots,bossChar,sharedStatus);
+		}
+		else{
+			characterToAdd = new Character(charId,charTexture, iconTexture, animNode,
 					name, health, maxHealth, Color.valueOf(hexColor), speed,
 					castSpeed, actionArray,numSlots);
-			characterToAdd.id = charId;
-			availableCharacters.put(charId, characterToAdd);
+		}
+		
+		String bigIconName = (String) character.get("bigIcon");
+		if (bigIconName != null){
+			manager.load(bigIconName, Texture.class);
+			assets.add(bigIconName);
+			manager.finishLoading();
+			characterToAdd.bigIcon = manager.get(bigIconName,Texture.class);
+		}
+		
+		availableCharacters.put(charId, characterToAdd);
+	}
+	
+	@SuppressWarnings("unchecked")
+	private void loadChars(HashMap<Integer, HashMap<String, Object>> characters) {
+		Set<Integer> temp = new HashSet(availableCharacters.keySet());
+		for (Integer charId: temp) {
+			loadChar(charId,characters);
 		}
 	}
 	
@@ -633,6 +744,9 @@ public class ObjectLoader {
 		
 		for (CharacterData cd : charDatas){
 			HashMap<String, Object> character = characters.get(cd.characterId);
+			if (cd.name == null){
+				cd.name = (String) character.get("name");
+			}
 			if (cd.getIcon() == null){
 				String iconTextureName = (String) character.get("icon");
 				manager.load(iconTextureName, Texture.class);
@@ -642,11 +756,14 @@ public class ObjectLoader {
 				cd.setIconTexture(iconTexture);
 			}
 			if (cd.bigIcon == null){
-				manager.load(cd.bigIconTextureName, Texture.class);
-				assets.add(cd.bigIconTextureName);
-				manager.finishLoading();
-				Texture bigIconTexture = manager.get(cd.bigIconTextureName,Texture.class);
-				cd.bigIcon = bigIconTexture;
+				String bigIconName = (String) character.get("bigIcon");
+				if (bigIconName != null){
+					manager.load(bigIconName, Texture.class);
+					assets.add(bigIconName);
+					manager.finishLoading();
+					Texture bigIconTexture = manager.get(bigIconName,Texture.class);
+					cd.bigIcon = bigIconTexture;
+				}
 			}
 			if (cd.getAnimation() == null){
 				Integer animationId = (Integer) character.get("animationId");
@@ -676,6 +793,15 @@ public class ObjectLoader {
 		}
 	}
 
+	public HashMap<Integer, HashMap<String, Object>> loadNarrative(String narrativeFileName) throws IOException{
+		Yaml yaml = new Yaml();
+		File narrativeFile = new File(ROOT, narrativeFileName);
+		HashMap<Integer, HashMap<String, Object>> narrativeData;
+		try (InputStream is = new FileInputStream(narrativeFile)){
+			narrativeData = (HashMap<Integer, HashMap<String, Object>>) yaml.load(is);
+		}
+		return narrativeData;
+	}
 
 	/**
 	 * Returns true if this string is the name of a character

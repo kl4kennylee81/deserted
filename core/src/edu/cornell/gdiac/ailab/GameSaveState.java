@@ -68,9 +68,9 @@ public class GameSaveState {
 		List<ActionUpgrade> actionUpgrades;
 		ArrayList<Integer> currentActions;
 		private Texture icon;
-		String bigIconTextureName;
 		Texture bigIcon;
 		AnimationNode animation;
+		String name;
 		
 		
 		public CharacterData(){
@@ -209,6 +209,7 @@ public class GameSaveState {
 	
 	public class LevelData {
 		String levelName;
+		String nextLevelName;
 		boolean beaten;
 		boolean boss;
 		int gainedSP;
@@ -217,11 +218,19 @@ public class GameSaveState {
 		Integer winIn;
 		Integer surviveFor;
 		String backgroundTexture;
+		String preNarrative;
+		Boolean seenPre;
+		String postNarrative;
+		Boolean seenPost;
 		
 		public boolean needsSelect(){
 			boolean ns = needsSelect;
 			//needsSelect = false;
 			return ns;
+		}
+		
+		public String getNextLevelName(){
+			return nextLevelName;
 		}
 	}
 	
@@ -255,6 +264,12 @@ public class GameSaveState {
 			String levelName = (String) levData.get("levelName");
 			LevelData ld = getLevelData(levelName);
 			levData.put("beaten", ld.beaten);
+			if (ld.preNarrative != null && ld.seenPre != null){
+				levData.put("seenPre", ld.seenPre);
+			}
+			if (ld.postNarrative != null && ld.seenPost != null){
+				levData.put("seenPost", ld.seenPost);
+			}
 		}
 		
 		Object selChars = gameSaveStateData.get("selectedCharacters");
@@ -273,7 +288,6 @@ public class GameSaveState {
 			CharacterData cd = new CharacterData();
 			cd.characterId = (int) charData.get("characterId");
 			cd.totalSP = (int) charData.get("totalSP");
-			cd.bigIconTextureName = (String) charData.get("bigIcon");
 			ArrayList<HashMap<String,Object>> actionTree = (ArrayList<HashMap<String,Object>>) charData.get("actionTree");
 			for (HashMap<String,Object> actionUpgradeData : actionTree){
 				cd.addActionUpgrade(actionUpgradeData);
@@ -283,6 +297,7 @@ public class GameSaveState {
 		}
 		
 		HashMap<String, Object> levelData = gameSaveStateData.get("levels");
+		LevelData prevLevelData = null;
 		for (Object l : levelData.values()){
 			HashMap<String,Object> levData = (HashMap<String, Object>) l;
 			LevelData ld = new LevelData();
@@ -295,8 +310,18 @@ public class GameSaveState {
 			ld.winIn = (Integer) levData.get("winIn");
 			ld.surviveFor = (Integer) levData.get("surviveFor");
 			ld.backgroundTexture = (String) levData.get("background");
-
+			
+			ld.preNarrative = (String) levData.get("preNarrative");
+			ld.seenPre = (Boolean) levData.get("seenPre");
+			ld.postNarrative = (String) levData.get("postNarrative");
+			ld.seenPost = (Boolean) levData.get("seenPost");
+			
 			this.levels.add(ld);
+			
+			if (prevLevelData != null){
+				prevLevelData.nextLevelName = ld.levelName;
+			}
+			prevLevelData = ld;
 		}
 		
 		Object availChars = gameSaveStateData.get("availableCharacters");

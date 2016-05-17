@@ -1,21 +1,24 @@
 pvp:
     allies:
-        - id: 6
+        - id: 0
           xPosition: 0
           yPosition: 0
 
-        - id: 3
+        - id: 1
           xPosition: 0
           yPosition: 3
 
     enemies:
-        - id: 4
+        - id: 10
           xPosition: 5
           yPosition: 0
 
-        - id: 5
+        - id: 10
           xPosition: 5
           yPosition: 3
+        - id: 10
+          xPosition: 5
+          yPosition: 2
     nextLevel:
     boardWidth: 6
     boardHeight: 4

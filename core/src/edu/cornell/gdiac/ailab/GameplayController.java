@@ -269,9 +269,26 @@ public class GameplayController {
     		
     		animations.draw(canvas,board,inGameState);
     		
-    		drawCharacters(canvas);
     		
-    		shields.draw(canvas,true,false);
+    		//interleave drawCharacters and shields
+    		boolean inSelection = inGameState == InGameState.SELECTION;
+    		boolean shouldDim = inGameState == InGameState.SELECTION || 
+    				mouseOverController.isCharacterHighlighted();
+    		boolean charActionHovered = characters.isActionHovered();
+        	for (int i = board.height-1; i >= 0; i--){
+        		for (Character c : characters){
+        			
+        			if (c.yPosition == i && c.isAlive()){
+        				c.draw(canvas,board,shouldDim,this.inGameState,isHitByAnimation(c));
+        			}
+        			if (c.getShadowY() == i && c.needShadow() && c.isAlive()){
+        				c.drawShadowCharacter(canvas,board,this.inGameState);
+        			}
+                }
+        		shields.draw(canvas,true,false,i);
+        	}
+        	characters.draw(canvas,board,shouldDim, inSelection, charActionHovered);
+    		
     	}
         
         textMessages.draw(canvas,board);

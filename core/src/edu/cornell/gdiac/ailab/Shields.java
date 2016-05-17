@@ -52,18 +52,23 @@ public class Shields {
 	
 	public void addShield(Character character, ActionNode shield, Coordinate[] path){
 		shield.setPersisting(0, character.xPosition, character.yPosition, path);
-		
 		if (character.leftside){
 			removeOverlappingShields(leftShields,path);
+			shield.setPersisting(0, character.xPosition, character.yPosition, path);
 			leftShields.add(shield);
 		} else {
 			removeOverlappingShields(rightShields,path);
+			shield.setPersisting(0, character.xPosition, character.yPosition, path);
 			rightShields.add(shield);
 		}
 		resetShieldedCoordinates();
 	}
 	
 	public void removeOverlappingShields(List<ActionNode> shields, Coordinate[] path){
+		List<Coordinate> coords = new ArrayList<Coordinate>();
+		for (Coordinate c : path){
+			coords.add(c);
+		}
 		for (Iterator<ActionNode> iterator = shields.iterator(); iterator.hasNext();) {
 		    ActionNode an = iterator.next();
 		    Coordinate[] otherPath = an.path;
@@ -165,6 +170,19 @@ public class Shields {
 		}
 		for (ActionNode s : rightShields){
 			drawShield(canvas,s,false,fade,top);
+		}
+	}
+	
+	public void draw(GameCanvas canvas, boolean top, boolean fade, int yPosition){
+		for (ActionNode s : leftShields){
+			if (Coordinates.minYCoordinate(s.path) == yPosition){
+				drawShield(canvas,s,true,fade,top);
+			}
+		}
+		for (ActionNode s : rightShields){
+			if (Coordinates.minYCoordinate(s.path) == yPosition){
+				drawShield(canvas,s,false,fade,top);
+			}
 		}
 	}
 	

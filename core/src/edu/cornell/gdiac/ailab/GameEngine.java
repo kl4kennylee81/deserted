@@ -90,7 +90,9 @@ public class GameEngine implements Screen {
 		/** When we are customizing our actions */
 		CUSTOMIZE,
 		/** When we are in character select */
-		SELECT
+		SELECT,
+		/** Narrative */
+		NARRATIVE
 	}
 
 
@@ -143,6 +145,8 @@ public class GameEngine implements Screen {
     
     private EditorController editorController;
     
+    private NarrativeController narrativeController;
+    
     private GameSaveStateController gameSaveStateController;
     private CharacterCustomizationController characterCustomizationController;
     private CharacterSelectController characterSelectController;
@@ -177,6 +181,8 @@ public class GameEngine implements Screen {
 	/** What data file number we are on */
 	private int fileNum;
 	
+	private LevelData curLevelData;
+	
 	/** 
 	 * Constructs a new game engine
 	 *
@@ -195,6 +201,7 @@ public class GameEngine implements Screen {
 		editorController = null;
 		gameplayController = new GameplayController(mouseOverController, file, fileNum, false);
 		tutorialGameplayController = new TutorialGameplayController(mouseOverController, file, fileNum);
+		narrativeController = new NarrativeController();
 		
 		updateMeasures();
 	}
@@ -234,15 +241,20 @@ public class GameEngine implements Screen {
     
     public void startGame(String levelName, String backLevelName, boolean needsSelect) throws IOException {
     	if (this.gameSaveStateController.containsLevel(levelName)){
-    		LevelData ld = this.gameSaveStateController.getLevelData(levelName);
-    		if (ld.needsSelect() && needsSelect){
+    		curLevelData = this.gameSaveStateController.getLevelData(levelName);
+    		if (curLevelData.needsSelect() && needsSelect){
     			characterSelectController.reset();
     			gameState = GameState.SELECT;
+    		} else if (curLevelData.preNarrative != null && !curLevelData.seenPre){
+    			curLevelData.seenPre = true;
+    			narrativeController.reset(curLevelData.preNarrative,true);
+    			gameState = GameState.NARRATIVE;
+    			
     		} else {
-    			if (ld.backgroundTexture == null){
+    			if (curLevelData.backgroundTexture == null){
     				initializeCanvas(Constants.BCKGD_TEXTURE, Constants.SELECT_FONT_FILE);
     			} else {
-    				initializeCanvas(ld.backgroundTexture, Constants.SELECT_FONT_FILE);
+    				initializeCanvas(curLevelData.backgroundTexture, Constants.SELECT_FONT_FILE);
     			}
 	        	Level level = null;
 	    		level = this.getLevel(levelName);
@@ -256,7 +268,7 @@ public class GameEngine implements Screen {
 	        		curGameplayController = tutorialGameplayController;
 	        		gameState = GameState.PLAY;
 	        	}
-	        	curGameplayController.setWinCondition(ld.winIn, ld.surviveFor);
+	        	curGameplayController.setWinCondition(curLevelData.winIn, curLevelData.surviveFor);
     		}
     	}
     	// start matching with keywords to get to levels, options, etc. atm its just editors
@@ -348,7 +360,7 @@ public class GameEngine implements Screen {
 			break;
 		case AFTER:
 			//updateAfter();
-			if (!nextLevel.equals("")){
+			if (nextLevel.equals("")){
 				try {
 					canvas.end();
 					startGame(nextLevel,"",false);
@@ -358,6 +370,7 @@ public class GameEngine implements Screen {
 					e.printStackTrace();
 				}
 			} else {
+				System.out.println("AFTER");
 				drawAfter();
 				canvas.end();
 			}
@@ -374,6 +387,10 @@ public class GameEngine implements Screen {
 			updateCharacterSelectMenu();
 			canvas.end();
 			break;
+		case NARRATIVE:
+			updateNarrative();
+			canvas.end();
+			break;
 		}
 		
 	}
@@ -381,6 +398,25 @@ public class GameEngine implements Screen {
 	private void updateLevelMenu() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void updateNarrative(){
+		narrativeController.update();
+		narrativeController.draw(canvas);
+		if (narrativeController.isDone()){
+			gameSaveStateController.saveGameSaveState();
+			
+			try {
+				if (narrativeController.isPre){
+					loadNextMenu(curLevelData.levelName, "", false);
+				} else {
+					loadNextMenu(curLevelData.getNextLevelName(), "",true);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private void updateCharacterSelectMenu(){
@@ -517,8 +553,28 @@ public class GameEngine implements Screen {
     public void updatePlay() {
     	curGameplayController.update();
     	if (curGameplayController.isDone()){
-    		//check if levelb eaten and update savestate
-			gameState = GameState.AFTER;
+    		if (curGameplayController.playerWon()){
+	    		//check if levelb eaten and update savestate
+	    		if (curLevelData.postNarrative != null && !curLevelData.seenPost){
+	    			curLevelData.seenPost = true;
+	    			narrativeController.reset(curLevelData.postNarrative, false);
+	    			gameState = GameState.NARRATIVE;
+	    		} else {
+	    			try {
+						loadNextMenu(curLevelData.getNextLevelName(), "",true);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	    		}
+    		} else {
+    			try {
+					loadNextMenu(curLevelData.levelName,"",false);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    		}
     	}
     	if (InputController.pressedP()){
     		gameState = GameState.PAUSED;
@@ -691,6 +747,9 @@ public class GameEngine implements Screen {
 		
 		manager.load(Constants.PRGRSBR_TEXTURE, Texture.class);
 		assets.add(Constants.PRGRSBR_TEXTURE);
+		
+		manager.load(Constants.HEALTH_UI, Texture.class);
+		assets.add(Constants.HEALTH_UI);
 		
 		statusBar = new Texture(Constants.PRGRSBR_TEXTURE);
 		statusBkgLeft   = new TextureRegion(statusBar,0,0,PROGRESS_CAP,PROGRESS_HEIGHT);

@@ -14,6 +14,7 @@ import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNode.Direction;
 import edu.cornell.gdiac.ailab.AnimationNode.CharacterState;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
+import edu.cornell.gdiac.ailab.Effect.Type;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.ailab.ActionNode;
 import edu.cornell.gdiac.ailab.AIController.Difficulty;
@@ -25,9 +26,6 @@ public class Character implements GUIElement {
 	private static final float SHIELD_OFFSET = 5;
 	private static final float SHIELD_WIDTH = 0.0125f;
 	private static final int DIAGONAL_SIZE = 20;
-	
-	private static final float ACTIONBAR_TICK_SIZE = 8f;
-	private static final float HEALTH_OFFSET = 20f;
 	
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
@@ -61,6 +59,8 @@ public class Character implements GUIElement {
 	SelectionMenu selectionMenu;
 	CharActionBar actionBar;
 	int numSlots;
+	
+	Texture bigIcon;
 	
 	int id;
 	
@@ -133,11 +133,14 @@ public class Character implements GUIElement {
 	float centerY;
 	float radius;
 	
+	TextureRegion healthUI;
+	
 	/**Constructor used by GameEngine to create characters from yaml input. */
-	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
+	public Character (int id,Texture texture, Texture icon, AnimationNode animation, String name, 
 						int health, int maxHealth, Color color, 
 						float speed, float castSpeed, int xPosition, int yPosition,
 						boolean leftSide, Action[] actions,int numSlots){
+		this.id = id;
 		this.texture = texture;
 		this.icon = icon;
 		this.animation = animation;
@@ -166,17 +169,19 @@ public class Character implements GUIElement {
 		this.availableActions = actions;
 		selectionMenu = new SelectionMenu(availableActions);
 		
-		//float waitTime = (float) (Math.random()*3 + 2);
-		//float castTime = (float) (Math.random()*4 + 4);
 		float waitTime = speed;
 		float castTime = castSpeed;
 		this.numSlots = numSlots;
-		actionBar = new CharActionBar(numSlots,waitTime,castTime);	
+		actionBar = new CharActionBar(numSlots,waitTime,castTime);
+		
+		Texture healthTexture = new Texture(Constants.HEALTH_UI);
+		this.healthUI = new TextureRegion(healthTexture);
 	}
 	
-	public Character (Texture texture, Texture icon, AnimationNode animation, String name, 
+	public Character (int id,Texture texture, Texture icon, AnimationNode animation, String name, 
 			int health, int maxHealth, Color color, 
 			float speed, float castSpeed,  Action[] actions,int numSlots){
+		this.id = id;
 		this.texture = texture;
 		this.icon = icon;
 		this.animation = animation;
@@ -209,10 +214,13 @@ public class Character implements GUIElement {
 		this.numSlots = numSlots;
 		actionBar = new CharActionBar(numSlots,waitTime,castTime);
 
+		Texture healthTexture = new Texture(Constants.HEALTH_UI);
+		this.healthUI = new TextureRegion(healthTexture);
 	}
 	
 	
 	public Character(Character c){
+		this.id = c.id;
 		this.texture = c.texture;
 		this.icon = c.icon;
 		this.animation = c.animation;
@@ -238,15 +246,15 @@ public class Character implements GUIElement {
 		this.availableActions = c.availableActions;
 		selectionMenu = new SelectionMenu(availableActions);
 
-//		float waitTime = (float) (Math.random()*3 + 2);
-//		float castTime = (float) (Math.random()*4 + 4);
 		float waitTime = c.speed;
 		float castTime = c.castSpeed;
 		actionBar = new CharActionBar(c.numSlots,waitTime,castTime);
-
+		Texture healthTexture = new Texture(Constants.HEALTH_UI);
+		this.healthUI = new TextureRegion(healthTexture);
 	}
 	
 	public Character(Character c, Action[] actions){
+		this.id = c.id;
 		this.texture = c.texture;
 		this.icon = c.icon;
 		this.animation = c.animation;
@@ -280,15 +288,15 @@ public class Character implements GUIElement {
 
 		this.availableActions = actions;
 		selectionMenu = new SelectionMenu(availableActions);
-		
+		Texture healthTexture = new Texture(Constants.HEALTH_UI);
+		this.healthUI = new TextureRegion(healthTexture);
 	}
 	
 	/** update the state of the character 
 	 *  currently just updates his actionBar with his current health
 	 * **/
 	public void update(){
-		float healthProportion = ((float)health/(float)maxHealth);
-		this.actionBar.update(healthProportion);
+		updateSpeedModifier();
 		
 		// update character state
 		updateCharState();
@@ -542,6 +550,16 @@ public class Character implements GUIElement {
 		return this.actionBar.speedModifier;
 	}
 	
+	public void updateSpeedModifier(){
+		int modifier = 0;
+		for (Effect e:this.getEffects()){
+			if (e.type == Type.SPEED){
+				modifier+=e.magnitude;
+			}
+		}
+		this.setSpeedModifier(modifier);
+	}
+	
 	public float getInterval(){
 		//System.out.println(name+" "+actionBar.getCastPoint());
 		return (1f-actionBar.getCastPoint()) / this.getActionBar().getTotalNumSlots();
@@ -571,8 +589,8 @@ public class Character implements GUIElement {
 		return effects;
 	}
 	
-	void removeEffect(int i){
-		effects.remove(i);
+	void removeEffect(Effect e){
+		effects.remove(e);
 	}
 	
 	/**
@@ -642,6 +660,23 @@ public class Character implements GUIElement {
 	
 	List<Coordinate> getShieldedCoords(){
 		return shieldedCoordinates;
+	}
+	
+	public int getHealth(){
+		return this.health;
+	}
+	
+	public int getMaxHealth(){
+		return this.maxHealth;
+	}
+	
+	public void setHealth(int val){
+		this.health = val;
+	}
+	
+	public void setMaxHealth(int val){
+		this.health = val;
+		this.maxHealth = val;
 	}
 	
 	float getNextCast() {
@@ -1035,34 +1070,74 @@ public class Character implements GUIElement {
 		}
 	}	
 	
-	public void drawHealth(GameCanvas canvas,int count,boolean shouldDim){
-	
-//		Color iconColor = this.getColor(shouldDim);
-//		Color waitColor = this.getActionBarColor(shouldDim, this.color.cpy());
-		float leftEndWidth;
+	public void drawHealth(GameCanvas canvas,int count,boolean shouldDim,List<Character> children){
+		
+		Color c = this.getColor(shouldDim);
+
+		int curHealth = this.getHealth();
+		int maxHealth = this.getMaxHealth();
+		String healthText = Integer.toString(curHealth)+"/"+Integer.toString(maxHealth);
+		
+		float healthWidth = Constants.HEALTH_WIDTH * canvas.getWidth();
+		
+		float healthHeight = this.healthUI.getRegionHeight()*healthWidth/this.healthUI.getRegionWidth();
+		
+		float healthSpacing = Constants.HEALTH_SPACING_Y * canvas.getHeight();
+		
+		float healthSx = healthWidth/this.healthUI.getRegionWidth();
+		
+		float healthSy = healthHeight/this.healthUI.getRegionHeight();
+		
+		float iconWidth = Constants.HEALTH_TOKEN_WIDTH * canvas.getWidth();
+		
+		float iconHeight = this.icon.getHeight()* iconWidth/this.icon.getWidth();
+		
+		float healthY = (Constants.HEALTH_UI_Y * canvas.getHeight())-(count*(healthHeight + healthSpacing+iconHeight));
+		
+		float textY = healthY + 0.75f*healthHeight;
+		
+		float iconY = healthY + Constants.HEALTH_TOKEN_Y_OFFSET * canvas.getHeight();
+		
+		float healthX;
 		if (this.leftside){
-			leftEndWidth = (CharActionBar.actionBar_leftBlue.getWidth()* this.actionBar.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_leftBlue.getHeight();
+			healthX = Constants.HEALTH_UI_X * canvas.getWidth();
 			
+			float iconX = healthX + iconWidth/2;
+			
+			canvas.draw(this.icon,c,iconX,iconY,iconWidth,iconHeight);
+			
+			canvas.draw(healthUI, c, 0,0, healthX, healthY,0, healthSx, healthSy); 
+			
+			float textX = healthX + healthWidth/2;
+			canvas.drawText(healthText, textX,textY, Color.WHITE.cpy());
 		}
-		else {
-			leftEndWidth = 0.7f*(CharActionBar.actionBar_leftRed.getWidth()* this.actionBar.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_leftRed.getHeight();
+		else{
+			healthX = (1-Constants.HEALTH_UI_X) * canvas.getWidth();
+			
+			float textX = healthX - 0.7f*healthWidth;
+			
+			float iconX = healthX - 1.7f*iconWidth;
+			
+			canvas.draw(this.icon,c,iconX,iconY,iconWidth,iconHeight);
+			
+			canvas.draw(healthUI, c, 0,0, healthX, healthY,0, -healthSx, healthSy); 
+			
+			canvas.drawText(healthText, textX,textY, Color.WHITE.cpy());
 		}
-		float tokenX = this.actionBar.getX(canvas) - leftEndWidth/2;
-		float tokenY = this.actionBar.getY(canvas, count) + this.actionBar.getBarHeight(canvas)*0.92f;
-		String healthText = Integer.toString(this.health);
-		canvas.drawText(healthText, tokenX, tokenY, Color.BLACK.cpy());
 		
-		
-//		canvas.drawTexture(this.icon, tokenX, tokenY, this.icon.getWidth(),this.icon.getHeight(),iconColor);
-//		
-//		/** the wait width is modified by the hp already **/
-//		float healthW = this.actionBar.getWaitWidthNoBuffer(canvas);
-//		float healthH = this.actionBar.getBarHeight(canvas);
-//		
-//		float healthX = this.actionBar.getX(canvas);
-//		float healthY = tokenY;
-//		
-//		canvas.drawBox(healthX, healthY, healthW, healthH, waitColor);
+		if (children != null){
+			// draw the children token
+			float startChildY = iconY + iconHeight;
+			float startChildX = leftside ? healthX + healthWidth: healthX - healthWidth;
+			int childcount = 0;
+			for (Character child: children){
+				childcount++;
+				Color childColor = child.getColor(shouldDim);
+				float childX = startChildX - child.icon.getWidth();
+				float childY = startChildY - (childcount*child.icon.getHeight());
+				canvas.draw(child.icon, childColor,childX, childY);
+			}
+		}
 	}
 	
 	public Color getActionBarColor(boolean shouldDim,Color c){

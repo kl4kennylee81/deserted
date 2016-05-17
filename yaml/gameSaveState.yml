@@ -2,7 +2,6 @@ characters:
   0:
     characterId: 0
     totalSP: 0
-    bigIcon: models/sulus_icon_big.png
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -17,7 +16,7 @@ characters:
         cost: 1
       - actionId: 22
         cost: 1
-    - actionId: 6
+    - actionId: 353
       nextAction:
       - actionId: 7
         cost: 1
@@ -27,11 +26,10 @@ characters:
     - 0
     - 4
     - 3
-    - 6
+    - 35
   1:
     characterId: 1
     totalSP: 0
-    bigIcon: models/bunmage_largeicon.png
     actionTree:
     - actionId: 0
     - actionId: 7
@@ -45,7 +43,6 @@ characters:
   2:
     characterId: 2
     totalSP: 0
-    bigIcon: models/sulus_icon_big.png
     actionTree:
     - actionId: 0
     - actionId: 16
@@ -59,7 +56,6 @@ characters:
   3:
     characterId: 5
     totalSP: 0
-    bigIcon: models/sulus_icon_big.png
     actionTree:
     - actionId: 0
     - actionId: 23
@@ -75,10 +71,18 @@ levels:
     levelName: tutorial1
     beaten: false
     boss: false
+    preNarrative: yaml/narratives/test.yml
+    seenPre: false
+    postNarrative: yaml/narratives/test.yml
+    seenPost: false
   1:
     levelName: tutorial2
     beaten: false
     boss: false
+    preNarrative: yaml/narratives/test.yml
+    seenPre: false
+    postNarrative: yaml/narratives/test.yml
+    seenPost: false
   2:
     levelName: tutorial3
     beaten: false
@@ -140,11 +144,13 @@ levels:
   17:
     levelName: BossTest
     beaten: false
-    needsSelect: false
+    needsSelect: true
     boss: false
 availableCharacters:
 - 0
 - 1
+- 2
+- 5
 unlockableCharacters:
 - 2
 - 5
