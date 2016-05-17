@@ -708,21 +708,27 @@ public class CharActionBar {
 		tempActionOptions.clear();
 		tempActions.clear();
 		
+		// temporary code for revealing only the next action for opponents
+		List<ActionNode> queuedSubList = queuedActions;
+		if (queuedActions.size() > 0 && !leftside){
+			queuedSubList = queuedActions.subList(0, 1);
+		}
+		
 		// draw action queuing
-		this.drawSlots(canvas, castActions,queuedActions,
+		this.drawSlots(canvas, castActions,queuedSubList,
 				selectingActions,curSelectedAction,count, barColor,isSelecting,true,lerpVal);
 		
 		// draw the fill on the cast bar
 		this.drawCastFill(canvas, xPosBar, count, barColor,castPosition);
 		
 		// draw the fill of the lerping selecting action of other character
-		this.drawSelectingActionFill(canvas,xPosBar,count,barColor,
-				castPosition,lengthSelectedAction,lengthQueuedActions,isSelecting,lerpVal);
+//		this.drawSelectingActionFill(canvas,xPosBar,count,barColor,
+//				castPosition,lengthSelectedAction,lengthQueuedActions,isSelecting,lerpVal);
 		
 		// draw icon
 		this.drawCenterIcon(canvas, xPosBar,yPosBar,barColor);
 		
-		this.drawSlots(canvas, castActions,queuedActions,
+		this.drawSlots(canvas, castActions,queuedSubList,
 				selectingActions,curSelectedAction,count, barColor,isSelecting,false,lerpVal);
 		
 		if (!isSelecting){
@@ -735,7 +741,7 @@ public class CharActionBar {
 		actions.addAll(tempActions);
 		
 		this.drawQueuedActions(canvas, count, selectingActions);
-		this.drawQueuedActions(canvas,count,queuedActions);
+		this.drawQueuedActions(canvas,count,queuedSubList);
 		this.drawQueuedActions(canvas, count, castActions);
 		
 		if (effects!= null && !effects.isEmpty()){

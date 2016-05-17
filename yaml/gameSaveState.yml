@@ -106,13 +106,11 @@ levels:
     beaten: false
     boss: false
     needsSelect: true
-    #winIn: 1
   11:
     levelName: Level2
     beaten: false
     boss: false
     needsSelect: true
-    #surviveFor: 1
   12:
     levelName: Level3
     beaten: false
