@@ -226,7 +226,7 @@ public class TutorialGameplayController extends GameplayController{
 		if (highlight_action > 0){//must change
 			//make a custom highlight and shift it by highlight_action
     		Character selectedChar = selectionMenuController.selected;
-    		if (selectedChar.isSelecting){
+    		if (selectedChar != null && selectedChar.isSelecting){
 	    		if (selectedChar != null){
 	    			int count = 0;
 	    			for (int i=0; i< characters.size();i++){

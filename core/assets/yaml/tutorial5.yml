@@ -9,12 +9,12 @@
   nextLevel: tutorial6
 
 1:
-  text: "Blue Shield Minions will protect their allies"
+  text: "Darker shields last for more than one hit."
   paused: true
   spaceToContinue: false
 
 4:
-  text: "Single-target attacks can hit shielded enemies!"
+  text: "Lightning attacks can strike behind a shield!"
   paused: true
   spaceToContinue: false
 
