@@ -748,6 +748,9 @@ public class GameEngine implements Screen {
 		manager.load(Constants.PRGRSBR_TEXTURE, Texture.class);
 		assets.add(Constants.PRGRSBR_TEXTURE);
 		
+		manager.load(Constants.HEALTH_UI, Texture.class);
+		assets.add(Constants.HEALTH_UI);
+		
 		statusBar = new Texture(Constants.PRGRSBR_TEXTURE);
 		statusBkgLeft   = new TextureRegion(statusBar,0,0,PROGRESS_CAP,PROGRESS_HEIGHT);
 		statusBkgRight  = new TextureRegion(statusBar,statusBar.getWidth()-PROGRESS_CAP,0,PROGRESS_CAP,PROGRESS_HEIGHT);

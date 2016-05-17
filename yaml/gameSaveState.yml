@@ -17,7 +17,7 @@ characters:
         cost: 1
       - actionId: 22
         cost: 1
-    - actionId: 6
+    - actionId: 353
       nextAction:
       - actionId: 7
         cost: 1
@@ -27,7 +27,7 @@ characters:
     - 0
     - 4
     - 3
-    - 6
+    - 35
   1:
     characterId: 1
     totalSP: 0
@@ -110,13 +110,11 @@ levels:
     beaten: false
     boss: false
     needsSelect: true
-    winIn: 1
   11:
     levelName: Level2
     beaten: false
     boss: false
     needsSelect: true
-    surviveFor: 1
   12:
     levelName: Level3
     beaten: false
@@ -145,9 +143,16 @@ levels:
     levelName: pvp
     beaten: false
     boss: false
+  17:
+    levelName: BossTest
+    beaten: false
+    needsSelect: true
+    boss: false
 availableCharacters:
 - 0
 - 1
+- 2
+- 5
 unlockableCharacters:
 - 2
 - 5

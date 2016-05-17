@@ -1,6 +1,7 @@
 package edu.cornell.gdiac.ailab;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,76 +19,47 @@ public class EffectController {
 	public EffectController(){
 	}
 	
-	public void update(List<Character> characters,GridBoard board){
-		for(Character c: characters){
-			processEffects(c);
+	public void update(List<Character> characters,GridBoard board){	
+		HashSet<Character> toUpdate = new HashSet<Character>();
+		for (Character c: characters){
+			if (c instanceof BossCharacter){
+				Character parent = ((BossCharacter) c).getParent();
+				if (((BossCharacter) c).sharedStatus 
+						&& !toUpdate.contains(parent)){
+					toUpdate.add(parent);
+				}
+				else if (!(((BossCharacter) c).sharedStatus )){
+					toUpdate.add(c);
+				}
+			}
+			else{
+				toUpdate.add(c);
+			}
+		}
+		
+		for(Character c: toUpdate){
 			removeFinishedEffects(c);
 		}
 		// update board tiles
 		processTileEffects(board);
 	}
 	
-	public void processEffects(Character c){
-		for(Effect e: c.getEffects()){
-			processEffect(e, c);
-		}
-	}
-	
-	public void processEffect(Effect e, Character c){
-		switch(e.type){
-			case SPEED:
-				processSpeed(e, c);
-				break;
-			case DAZED:
-				processDazed(e, c);
-				break;
-			default:
-				break;
-		}
-	}
-	
-	/**
-	 * Applies the slow effect to the character if it is new, reduces the "framesLeft" 
-	 * counter, and sets a flag, and reverses the effect, if the effect is done.
-	 */
-	public void processSpeed(Effect e, Character c){
-		if(e.isNew){
-			c.setSpeedModifier(c.getSpeedModifier()+e.magnitude);
-			e.isNew = false;
-		}
-		e.roundsLeft -= c.castMoved;
-		if (e.roundsLeft <= 0){
-			c.setSpeedModifier(c.getSpeedModifier()-e.magnitude);
-			e.isDone = true;
-		}
-	}
-	
-	/**
-	 * Applies the dazed effect to the character if it is new, reduces the "framesLeft" 
-	 * counter, and sets a flag, and reverses the effect, if the effect is done.
-	 */
-	public void processDazed(Effect e, Character c){
-		if(e.isNew){
-			c.setDazedSlots(c.getDazedSlots()+e.magnitude);
-			e.isNew = false;
-		}
-		e.roundsLeft -= c.castMoved;
-		if (e.roundsLeft <= 0){
-			c.setDazedSlots(c.getDazedSlots()-e.magnitude);
-			e.isDone = true;
-		}
-	}
-	
 	
 	public void removeFinishedEffects(Character c){
-		int i = 0;
-		while(i < c.getEffects().size()){
-			if(c.getEffects().get(i).isDone){
-				c.removeEffect(i);
+		LinkedList<Effect> toRemove = new LinkedList<Effect>();
+		
+		for (Effect e:c.getEffects()){
+			e.roundsLeft -= c.castMoved;
+			if (e.roundsLeft <= 0){
+				e.isDone = true;
 			}
-			else{
-				i++;
+			
+			if(e.isDone){
+				toRemove.add(e);
 			}
+		}
+		for (Effect e: toRemove){
+			c.removeEffect(e);
 		}
 	}
 	

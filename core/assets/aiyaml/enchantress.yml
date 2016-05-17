@@ -1,22 +1,18 @@
 ENCHANTRESS_ATTACK:
   type: index
   branch_type: ATTACK
-  first_move: ENCHANTRESS_HASTEN_ATTACK
-  no_interrupt_chance/safe/high_health/quick_attack_can_hit/not_hastened: ENCHANTRESS_HASTEN_ATTACK
+  first_move: ENCHANTRESS_HASTEN_MOVE
+  no_interrupt_chance/safe/high_health/quick_attack_can_hit/not_hastened: ENCHANTRESS_HASTEN_MOVE
   no_interrupt_chance/safe/high_health/not_hastened: ENCHANTRESS_HASTEN_MOVE
   no_interrupt_chance/safe/quick_attack_can_hit: ENCHANTRESS_QUICK_QUICK_MOVE
-  no_interrupt_chance/safe: ENCHANTRESS_POWER_MOVEDEF
-  no_interrupt_chance/adjacent_attack_square_quick/quick_attack_can_hit: ENCHANTRESS_QUICK_MOVE_QUICK
-  no_interrupt_chance/quick_attack_can_hit: ENCHANTRESS_QUICK_QUICK_MOVE 
-  no_interrupt_chance: ENCHANTRESS_POWER_MOVEDEF
+  no_interrupt_chance/adjacent_safe_square: ENCHANTRESS_POWER_MOVEDEF
+  no_interrupt_chance: ENCHANTRESS_POWER_MOVEGOAL
   low_interrupt_chance/high_health/not_hastened: ENCHANTRESS_HASTEN_MOVE
-  low_interrupt_chance/quick_attack_can_hit/adjacent_attack_square_quick/adjacent_safe_square: ENCHANTRESS_QUICK_MOVE_QUICK
-  low_interrupt_chance/quick_attack_can_hit/adjacent_safe_square: ENCHANTRESS_QUICK_QUICK_MOVE
   low_interrupt_chance/quick_attack_can_hit: ENCHANTRESS_QUICK_MOVE_MOVE
   low_interrupt_chance/adjacent_attack_square/adjacent_safe_square: ENCHANTRESS_MOVE_POWER
   low_interrupt_chance/adjacent_attack_square_quick: ENCHANTRESS_MOVE_QUICK_MOVE
   low_interrupt_chance: ENCHANTRESS_POWER_MOVEDEF
-  medium_interrupt_chance/adjacent_attack_square_quick/adjacent_safe_square: ENCHANTRESS_MOVE_QUICK_QUICK
+  medium_interrupt_chance/adjacent_attack_square_quick/adjacent_safe_square: ENCHANTRESS_MOVE_QUICK_MOVE
   medium_interrupt_chance/adjacent_attack_square/adjacent_safe_square: ENCHANTRESS_MOVE_POWER
   medium_interrupt_chance/adjacent_attack_square_quick: ENCHANTRESS_MOVE_QUICK_MOVE
   medium_interrupt_chance/adjacent_safe_square/high_health/not_hastened: ENCHANTRESS_MOVE_HASTEN
@@ -36,7 +32,7 @@ ENCHANTRESS_POSITION:
   low_interrupt_chance/high_health/not_hastened/adjacent_safe_square: ENCHANTRESS_MOVE_HASTEN
   adjacent_attack_square_quick: ENCHANTRESS_MOVE_QUICK_MOVE
   adjacent_attack_square: ENCHANTRESS_MOVE_POWER
-  default: ENCHANTRESS_MOVE_MOVE_MOVE_QUICK
+  default: ENCHANTRESS_MOVE_MOVE_QUICK
   
 ENCHANTRESS_QUICK_QUICK_MOVE:
   type: leaf
@@ -71,7 +67,7 @@ ENCHANTRESS_POWER_MOVEGOAL:
 ENCHANTRESS_HASTEN_MOVE:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [SINGLE_SELF, MOVE_DEFENSIVE]
+  my_actions: [SINGLE_SELF, MOVE_GOAL]
   
 ENCHANTRESS_HASTEN_RANDOM:
   type: leaf
@@ -116,4 +112,4 @@ ENCHANTRESS_MOVE_MOVE_MOVE_QUICK:
 ENCHANTRESS_MOVE_POWER:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_AGGRESSIVE, POWERFUL_ATTACK, QUICK_ATTACK]  
+  my_actions: [MOVE_AGGRESSIVE, POWERFUL_ATTACK, MOVE_GOAL]  

@@ -106,7 +106,7 @@ public class GameplayController {
         actionController = new ActionController(board,characters,textMessages,animations,shields);
         selectionMenuController = new SelectionMenuController(board,characters);
         actionBarController = new ActionBarController(characters);
-        aiController = new AIController(board,characters,level.getTacticalManager());
+        aiController = new AIController(board,characters,level.getTacticalManager(),shields);
         persistingController = new PersistingController(board,characters,textMessages,animations,shields);
         effectController = new EffectController();
         mouseOverController.init(screen, board);

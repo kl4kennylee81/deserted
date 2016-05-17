@@ -46,7 +46,7 @@ public class CharActionBar {
 	public static float CENTER_MULTIPLIER = 2f;
 
 	/** time all characters have to wait before they enter their casting period **/
-	public static final float STARTING_BUFFER_TIME = 3f;
+	public static final float STARTING_BUFFER_TIME = 0f;
 	
 	public static final float CHAR_VELOCITY_SCREEN_RATIO = 0.0008f;
 	
@@ -89,8 +89,6 @@ public class CharActionBar {
 	
 	// slots affected by daze
 	int dazedSlots;
-	
-	float healthProportion;
 	
 	ArrayList<Option> actionOptions;
 	ArrayList<Action> actions;
@@ -188,13 +186,8 @@ public class CharActionBar {
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
 		
-		// modify based on current health left
-		float healthTime = waitTime*HEALTH_TIME_PROPORTION;
-		float unmovedTime = waitTime*(1-HEALTH_TIME_PROPORTION);
-		float modifiedWaitTime = (healthTime* this.healthProportion) +unmovedTime;
-		
 		// modify based on speed modifier
-		modifiedWaitTime = (modifiedWaitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
+		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return newTotalTime/MAX_TIME;
@@ -244,13 +237,8 @@ public class CharActionBar {
 		float waitTime = totalTime * this.castPoint;
 		float castTime = totalTime - waitTime;
 		
-		// modify based on current health left
-		float healthTime = waitTime*HEALTH_TIME_PROPORTION;
-		float unmovedTime = waitTime*(1-HEALTH_TIME_PROPORTION);
-		float modifiedWaitTime = (healthTime* this.healthProportion) +unmovedTime;
-		
 		// modify based on speed modifier
-		modifiedWaitTime = (modifiedWaitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
+		float modifiedWaitTime = (waitTime + STARTING_BUFFER_TIME)/this.getSpeedModifier();
 		
 		float newTotalTime = modifiedWaitTime + castTime;
 		return modifiedWaitTime/newTotalTime;
@@ -317,10 +305,6 @@ public class CharActionBar {
 		float bar_width = getWidth(canvas);
 		float cast_point = bar_width * this.getCastPoint();
 		return start_x + cast_point;
-	}
-	
-	public void update(float healthProp){
-		this.healthProportion = healthProp;
 	}
 	
 	/** Section for handling drawing a normal bar to represent total initial energy 
@@ -437,28 +421,17 @@ public class CharActionBar {
 	}
 	
 	public void drawLeftEndpoint(GameCanvas canvas, float xPosBar, float yPosBar, boolean leftside,Color barColor){		
-		if (leftside){
-			// draw end point left
-			float leftEndWidth = (CharActionBar.actionBar_leftBlue.getWidth()* this.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_leftBlue.getHeight();
-			float leftEndHeight = this.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER;
-			
-			float leftEndX = xPosBar - 0.9f*leftEndWidth;
-			float leftEndY = yPosBar - leftEndHeight/4;
-			
-			// make this endpoint part of the curvature of the end filling
-			canvas.drawTexture(actionBar_leftBlue,leftEndX,leftEndY,leftEndWidth,leftEndHeight,barColor);
-		}
-		else {
-			// draw end point left
-			float leftEndWidth = (CharActionBar.actionBar_leftRed.getWidth()* this.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER)/ CharActionBar.actionBar_leftRed.getHeight();
-			float leftEndHeight = 0.85f*this.getBarHeight(canvas)*CharActionBar.CENTER_MULTIPLIER;
-			
-			float leftEndX = xPosBar - 0.9f*leftEndWidth;
-			float leftEndY = yPosBar - leftEndHeight/5;
-			
-			// make this endpoint part of the curvature of the end filling
-			canvas.drawTexture(actionBar_leftRed,leftEndX,leftEndY,leftEndWidth,leftEndHeight,barColor);
-		}
+		float leftEndWidth = CharActionBar.actionBar_rightend.getWidth() * this.getBarHeight(canvas)/CharActionBar.actionBar_rightend.getHeight();
+		float leftEndHeight = this.getBarHeight(canvas);
+		
+		float leftEndX = xPosBar;
+		float leftEndY = yPosBar;
+
+		float Sx = leftEndWidth/CharActionBar.actionBar_rightend.getWidth();
+		float Sy = leftEndHeight/CharActionBar.actionBar_rightend.getHeight();
+		
+		// make this endpoint part of the curvature of the end filling
+		canvas.draw(actionBar_rightend,barColor,0,0,leftEndX,leftEndY,0,-Sx,Sy);
 	}
 	
 	public void drawBar(GameCanvas canvas,float xPosBar,float yPosBar, Color barColor){

@@ -1,21 +1,24 @@
 pvp:
     allies:
-        - id: 6
+        - id: 0
           xPosition: 0
           yPosition: 0
 
-        - id: 3
+        - id: 1
           xPosition: 0
           yPosition: 3
 
     enemies:
-        - id: 4
+        - id: 10
           xPosition: 5
           yPosition: 0
 
-        - id: 5
+        - id: 10
           xPosition: 5
           yPosition: 3
+        - id: 10
+          xPosition: 5
+          yPosition: 2
     nextLevel:
     boardWidth: 6
     boardHeight: 4
@@ -116,11 +119,11 @@ Level4:
     enemies:
         - id: 7
           xPosition: 5
-          yPosition: 0
+          yPosition: 1
 
         - id: 8
           xPosition: 5
-          yPosition: 3
+          yPosition: 2
     nextLevel:
     boardWidth: 6
     boardHeight: 4
@@ -141,11 +144,11 @@ Level6:
     enemies:
         - id: 4
           xPosition: 5
-          yPosition: 0
+          yPosition: 1
 
         - id: 5
           xPosition: 5
-          yPosition: 3
+          yPosition: 2
     nextLevel:
     boardWidth: 6
     boardHeight: 4
@@ -166,17 +169,45 @@ Level5:
     enemies:
         - id: 3
           xPosition: 5
-          yPosition: 0
+          yPosition: 1
 
         - id: 4
           xPosition: 5
-          yPosition: 3
+          yPosition: 2
     nextLevel:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/mage.yml", "aiyaml/enchantress.yml", "aiyaml/mage-enchantress.yml"]
+    
+BossTest:
+    allies:
+        - selectedId: 0
+          xPosition: 0
+          yPosition: 3
+
+        - selectedId: 1
+          xPosition: 0
+          yPosition: 0
+
+    enemies:
+        - id: 31
+          xPosition: 5
+          yPosition: 1
+
+        - id: 30
+          xPosition: 4
+          yPosition: 2
+        - id: 30
+          xPosition: 4
+          yPosition: 1
+    nextLevel:
+    boardWidth: 6
+    boardHeight: 4
+    boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
+    AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
 
 tutorial1:
     allies:

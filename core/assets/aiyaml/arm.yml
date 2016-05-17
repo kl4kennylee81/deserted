@@ -1,32 +1,36 @@
 ARM_ATTACK:
   type: index
   branch_type: ATTACK
-  no_interrupt_chance/safe/is_protected: ARM_ATTACK_ATTACK
-  no_interrupt_chance/safe/: ARM_ATTACK_SHIELD
-  no_interrupt_chance/is_protected: ARM_ATTACK_MOVE
+  is_protected: ARM_ATTACK_ATTACK
+  no_interrupt_chance/can_protect: ARM_SHIELD_ATTACK
   no_interrupt_chance: ARM_ATTACK_SHIELD 
-  low_interrupt_chance/adjacent_safe_square: ARM_ATTACK_MOVE
   low_interrupt_chance/is_protected: ARM_ATTACK_ATTACK
-  low_interrupt_chance: ARM_SHIELD_ATTACK
+  low_interrupt_chance/can_protect: ARM_SHIELD_ATTACK
+  low_interrupt_chance/adjacent_safe_square: ARM_ATTACK_MOVE
+  low_interrupt_chance: ARM_ATTACK_SHIELD
   medium_interrupt_chance/is_protected: ARM_ATTACK_ATTACK
   medium_interrupt_chance/adjacent_attack_square: ARM_MOVE_ATTACK
   medium_interrupt_chance: ARM_MOVE_SHIELD
   adjacent_attack_square: ARM_MOVE_ATTACK
-  default: ARM_ATTACK_ATTACK
+  default: ARM_MOVE_SHIELD
   
 ARM_POSITION:
   type: index
   branch_type: POSITION
   adjacent_attack_square: ARM_MOVE_ATTACK
-  is_protected: ARM_MOVE_MOVE
-  no_interrupt_chance/can_protect: ARM_SHIELD  
-  default: ARM_MOVE_MOVE
+  is_protected: ARM_QUICK
+  default: ARM_MOVE_SHIELD  
 
 ARM_ATTACK_ATTACK:
   type: leaf
   my_tactic: SPECIFIC
   my_actions: [QUICK_ATTACK, QUICK_ATTACK]
 
+ARM_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK]
+  
 ARM_ATTACK_SHIELD:
   type: leaf
   my_tactic: SPECIFIC
@@ -35,7 +39,7 @@ ARM_ATTACK_SHIELD:
 ARM_ATTACK_MOVE:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [QUCIK_ATTACK, MOVE_GOAL]
+  my_actions: [QUICK_ATTACK, MOVE_GOAL]
   
 ARM_MOVE_ATTACK:
   type: leaf
@@ -50,7 +54,7 @@ ARM_SHIELD_ATTACK:
 ARM_MOVE_SHIELD:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_GOAL, SHIELD]
+  my_actions: [MOVE_PROTECT, SHIELD]
   
 ARM_SHIELD:
   type: leaf

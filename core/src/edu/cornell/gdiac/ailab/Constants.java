@@ -90,4 +90,19 @@ public class Constants {
 	
 	//Cancel Token
 	public static final String CANCEL_TOKEN = "models/action_tokens/cancel_token.png";
+
+	// HEALTH UI constants
+	public static final String HEALTH_UI = "images/health.png";
+	
+	public static final float HEALTH_UI_X = 0.025f;
+	
+	public static final float HEALTH_UI_Y = 1.0f;
+	
+	public static final float HEALTH_WIDTH = 0.1f;
+	
+	public static final float HEALTH_SPACING_Y = 0.025f;
+	
+	public static final float HEALTH_TOKEN_WIDTH = 0.05f;
+	
+	public static final float HEALTH_TOKEN_Y_OFFSET = 0.05f;
 }

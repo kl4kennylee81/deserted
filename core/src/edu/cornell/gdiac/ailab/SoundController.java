@@ -143,10 +143,9 @@ public class SoundController {
 			break;
 		case FINISH:
 		case AFTER:
-			if (soundBank == null || soundBank.get(OVER_FILE) == null){
-				return;
-			}
-			((Sound)soundBank.get(OVER_FILE)).play();
+			battleSound.stop();
+			menuSound.stop();
+			((Sound)soundBank.get(GAME_OVER_SOUND)).play();
 			break;
 		}
 	}
