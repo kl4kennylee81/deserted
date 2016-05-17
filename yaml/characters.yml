@@ -195,10 +195,10 @@
 
 89:
   name: Tutorial_part_3
-  health: 6
-  maxHealth: 6
+  health: 4
+  maxHealth: 4
   hexColor: 3299FFFF
-  speed: 5.5
+  speed: 7.0
   castSpeed: 7.0
   slots: 4
   availableActions:
@@ -240,9 +240,9 @@
   health: 4
   maxHealth: 4
   hexColor: FF9900FF
-  speed: 0.0
-  castSpeed: 7.0
-  slots: 4
+  speed: 5.0
+  castSpeed: 5.0
+  slots: 2
   availableActions:
   - 0
   - 4

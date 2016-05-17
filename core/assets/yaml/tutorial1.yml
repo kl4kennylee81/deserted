@@ -94,8 +94,8 @@
   text: "Use WASD or Arrowkeys to navigate the selection menu. Go to \"Move\" and press Enter."
   spaceToContinue: false
   paused: false
-  highlightTokens: ["0"]
   boxHighlight: true
+  highlightTokens: ["0"]
   actions:
     - actionId: 0
       xPos: 0

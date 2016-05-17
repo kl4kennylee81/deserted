@@ -27,8 +27,8 @@ public class GridBoard {
 	private HashMap<String,Effect> tileEffects;
 	
 	/** Color of a regular tile */
-	private static final Color BASIC_COLOR1 = new Color(0.2f, 0.2f, 1.0f, 1.0f).mul(1,1,1,1);
-	private static final Color BASIC_COLOR2 = new Color(237f/255f, 92f/255f, 92f/255f, 1.0f).mul(1,1,1,1);//new Color(1.0f, 0.6f, 0.2f, 1.0f);
+	private static final Color BASIC_COLOR1 = new Color(0.2f, 0.2f, 1.0f, 1.0f);
+	private static final Color BASIC_COLOR2 = new Color(237f/255f, 92f/255f, 92f/255f, 1.0f);//new Color(1.0f, 0.6f, 0.2f, 1.0f);
 	/** Highlight color for power tiles */
 	private static final Color CAN_TARGET_COLOR = new Color( 1f,  1.0f,  0f, 1.0f);
 	private static final Color HIGHLIGHT_COLOR = new Color( 0.0f,  1.0f,  1.0f, 1.0f);
@@ -158,33 +158,33 @@ public class GridBoard {
 	 *
 	 * @param canvas the drawing context
 	 */
-	public void draw(GameCanvas canvas) {
+	public void draw(GameCanvas canvas, SelectionMenuController controller) {
 		if (increasing){
-			lerpVal+=0.03;
+			lerpVal += Constants.LERP_RATE;
 			if (lerpVal >= 1){
 				increasing = false;
 			}
 		} else {
-			lerpVal -= 0.03;
+			lerpVal -= Constants.LERP_RATE;
 			if (lerpVal <= 0){
 				increasing = true;
 			}
 		}
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
-				drawTile(x,y, canvas);
+				drawTile(x,y, canvas, controller);
 			}
 		}
 	}
 	
 	public void drawMini(GameCanvas canvas) {
 		if (increasing){
-			lerpVal+=0.03;
+			lerpVal += Constants.LERP_RATE;
 			if (lerpVal >= 1){
 				increasing = false;
 			}
 		} else {
-			lerpVal -= 0.03;
+			lerpVal -= Constants.LERP_RATE;
 			if (lerpVal <= 0){
 				increasing = true;
 			}
@@ -221,7 +221,7 @@ public class GridBoard {
 	 * @param x The x index for the Tile cell
 	 * @param y The y index for the Tile cell
 	 */
-	private void drawTile(int x, int y, GameCanvas canvas) {
+	private void drawTile(int x, int y, GameCanvas canvas, SelectionMenuController controller) {
 		Tile tile = tiles[x][y];
 		
 		// Compute drawing coordinates
@@ -233,7 +233,11 @@ public class GridBoard {
 
 		Color color = x<width/2 ? BASIC_COLOR1.cpy() : BASIC_COLOR2.cpy();
 		if (tile.isHighlighted){
-			color.lerp(HIGHLIGHT_COLOR,lerpVal);
+			if (!controller.choosingTarget){
+				color = CAN_TARGET_COLOR;
+			} else {
+				color.lerp(HIGHLIGHT_COLOR,lerpVal);
+			}
 		} else if (tile.canTarget){
 			color = CAN_TARGET_COLOR;
 		} else if (tile.isAttacked){

@@ -203,7 +203,7 @@ public class TutorialGameplayController extends GameplayController{
 	    	screen.noScreen();
 		}
         screen.draw(canvas);
-    	board.draw(canvas);
+    	board.draw(canvas, selectionMenuController);
     	
     	if (inGameState == InGameState.SELECTION){
     		shields.draw(canvas,false,true);
@@ -311,9 +311,12 @@ public class TutorialGameplayController extends GameplayController{
         		}
         	}
         	if(selectionMenuController.menu != null){
-        		if(tutorialSteps.showHighlights)
+        		if(highlightTokens != null && tutorialSteps.showHighlights)
         		{
         			selectionMenuController.menu.highlightBox = tutorialSteps.currStep().boxHighlight;
+        		}
+        		else{
+        			selectionMenuController.menu.highlightBox = false;
         		}
             	for(Option o: selectionMenuController.menu.getOptions()){
             		if(highlightTokens != null && highlightTokens.contains(o.optionKey) && tutorialSteps.showHighlights){

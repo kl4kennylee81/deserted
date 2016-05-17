@@ -10,28 +10,14 @@
   wrongText: "You have to avoid your opponent's attack. Try again!"
   rightText: "Well done!"
   note: player presses space
-
-    
+  
 1:
-  text: ""
-  paused: false
-  spaceToContinue: false
-  timeToPause: 175
+   text: ""
+   paused: false
+   spaceToContinue: false
+
   
 2:
-  text: "When you get hit, your wait time decreases."
-  paused: true
-  spaceToContinue: true
-  highlightLeft: ["Tutorial_part_3"]
-
-3:
-  text: ""
-  paused: false
-  spaceToContinue: false
-  highlightLeft: ["Tutorial_part_3"]
-
-  
-4:
   text: "If you get hit while charging an attack, your attack gets CANCELLED!"
   paused: true
   spaceToContinue: false
