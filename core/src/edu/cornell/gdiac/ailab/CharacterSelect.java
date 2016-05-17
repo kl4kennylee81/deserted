@@ -123,12 +123,8 @@ public class CharacterSelect extends Menu{
 		characterOptions.clear();
 		
 		int i = 4;
-		int j, k;
-		float curX = 0.6f;
-		float incrX = 0.1f;
-		float curY = 0.68f;
+		int j;
 		for (j = 0; j < characters.size(); j++){
-			float relX = curX + incrX*j;
 			CharacterData cd = characters.get(j);
 			options[i] = new Option("",CHARACTER_ID_STRING+cd.characterId);
 			

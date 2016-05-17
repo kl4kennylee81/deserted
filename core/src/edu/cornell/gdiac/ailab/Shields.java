@@ -51,20 +51,20 @@ public class Shields {
 	}
 	
 	public void addShield(Character character, ActionNode shield, Coordinate[] path){
-		
+		shield.setPersisting(0, character.xPosition, character.yPosition, path);
 		if (character.leftside){
-			path = combineOverlappingShields(leftShields,path);
+			removeOverlappingShields(leftShields,path);
 			shield.setPersisting(0, character.xPosition, character.yPosition, path);
 			leftShields.add(shield);
 		} else {
-			path = combineOverlappingShields(rightShields,path);
+			removeOverlappingShields(rightShields,path);
 			shield.setPersisting(0, character.xPosition, character.yPosition, path);
 			rightShields.add(shield);
 		}
 		resetShieldedCoordinates();
 	}
 	
-	public Coordinate[] combineOverlappingShields(List<ActionNode> shields, Coordinate[] path){
+	public void removeOverlappingShields(List<ActionNode> shields, Coordinate[] path){
 		List<Coordinate> coords = new ArrayList<Coordinate>();
 		for (Coordinate c : path){
 			coords.add(c);
@@ -74,34 +74,8 @@ public class Shields {
 		    Coordinate[] otherPath = an.path;
 		    if (overlapPaths(path,otherPath)){
 				iterator.remove();
-				addPaths(coords,otherPath);
 			}
 		}
-		
-		Coordinate[] newPath = new Coordinate[coords.size()];
-		
-		coords.toArray(newPath);
-		
-		return newPath;
-	}
-	
-	public void addPaths(List<Coordinate> coords, Coordinate[] path){
-		List<Coordinate> toAdd = new ArrayList<Coordinate>();
-		for (Coordinate c1 : path){
-			if (toAdd.contains(c1)){
-				continue;
-			}
-			boolean add = true;
-			for (Coordinate c : coords){
-				if (c1.x == c.x && c1.y == c.y){
-					add = false;
-				}
-			}
-			if (add){
-				toAdd.add(c1);
-			}
-		}
-		coords.addAll(toAdd);
 	}
 	
 	public boolean overlapPaths(Coordinate[] path1, Coordinate[] path2){
@@ -196,6 +170,19 @@ public class Shields {
 		}
 		for (ActionNode s : rightShields){
 			drawShield(canvas,s,false,fade,top);
+		}
+	}
+	
+	public void draw(GameCanvas canvas, boolean top, boolean fade, int yPosition){
+		for (ActionNode s : leftShields){
+			if (Coordinates.minYCoordinate(s.path) == yPosition){
+				drawShield(canvas,s,true,fade,top);
+			}
+		}
+		for (ActionNode s : rightShields){
+			if (Coordinates.minYCoordinate(s.path) == yPosition){
+				drawShield(canvas,s,false,fade,top);
+			}
 		}
 	}
 	

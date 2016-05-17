@@ -463,6 +463,14 @@ public class ObjectLoader {
 					castSpeed, actionArray,numSlots);
 		}
 		
+		String bigIconName = (String) character.get("bigIcon");
+		if (bigIconName != null){
+			manager.load(bigIconName, Texture.class);
+			assets.add(bigIconName);
+			manager.finishLoading();
+			characterToAdd.bigIcon = manager.get(bigIconName,Texture.class);
+		}
+		
 		availableCharacters.put(charId, characterToAdd);
 	}
 	
@@ -748,11 +756,14 @@ public class ObjectLoader {
 				cd.setIconTexture(iconTexture);
 			}
 			if (cd.bigIcon == null){
-				manager.load(cd.bigIconTextureName, Texture.class);
-				assets.add(cd.bigIconTextureName);
-				manager.finishLoading();
-				Texture bigIconTexture = manager.get(cd.bigIconTextureName,Texture.class);
-				cd.bigIcon = bigIconTexture;
+				String bigIconName = (String) character.get("bigIcon");
+				if (bigIconName != null){
+					manager.load(bigIconName, Texture.class);
+					assets.add(bigIconName);
+					manager.finishLoading();
+					Texture bigIconTexture = manager.get(bigIconName,Texture.class);
+					cd.bigIcon = bigIconTexture;
+				}
 			}
 			if (cd.getAnimation() == null){
 				Integer animationId = (Integer) character.get("animationId");

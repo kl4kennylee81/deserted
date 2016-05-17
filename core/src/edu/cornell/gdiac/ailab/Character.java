@@ -60,6 +60,8 @@ public class Character implements GUIElement {
 	CharActionBar actionBar;
 	int numSlots;
 	
+	Texture bigIcon;
+	
 	int id;
 	
 	boolean leftside;

@@ -13,6 +13,7 @@
   - 35
   texture: models/CHARA_3.png
   icon: models/sulus_icon.png
+  bigIcon: models/sulus_icon_big.png
   animationId: 101
   bossId: 1000
 1:
@@ -30,6 +31,7 @@
   - 5
   texture: models/CHARA_3.png
   icon: models/bunmage_icon.png
+  bigIcon: models/bunmage_largeicon.png
   animationId: 108
   bossId: 1001
 
@@ -48,6 +50,7 @@
   - 18
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconblue.png
+  bigIcon: models/sulus_icon_big.png
   animationId: 105
   bossId: 1000
 3:
@@ -99,6 +102,7 @@
   - 7
   texture: models/CHARA_1.png
   icon: models/tutorial_characters/basic_iconred.png
+  bigIcon: models/sulus_icon_big.png
   animationId: 106
   bossId: 1000
 

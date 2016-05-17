@@ -68,7 +68,6 @@ public class GameSaveState {
 		List<ActionUpgrade> actionUpgrades;
 		ArrayList<Integer> currentActions;
 		private Texture icon;
-		String bigIconTextureName;
 		Texture bigIcon;
 		AnimationNode animation;
 		String name;
@@ -289,7 +288,6 @@ public class GameSaveState {
 			CharacterData cd = new CharacterData();
 			cd.characterId = (int) charData.get("characterId");
 			cd.totalSP = (int) charData.get("totalSP");
-			cd.bigIconTextureName = (String) charData.get("bigIcon");
 			ArrayList<HashMap<String,Object>> actionTree = (ArrayList<HashMap<String,Object>>) charData.get("actionTree");
 			for (HashMap<String,Object> actionUpgradeData : actionTree){
 				cd.addActionUpgrade(actionUpgradeData);
