@@ -61,17 +61,6 @@ public class BossCharacter extends Character{
 	}
 	
 	@Override
-	void addEffect(Effect e){
-		if (sharedStatus){
-			System.out.println(this.getCastPosition());
-			this.parentChar.addEffect(e,this.getCastPosition(),this.getActionBar());
-		}
-		else{
-			super.addEffect(e);
-		}
-	}
-	
-	@Override
 	public ArrayList<Effect> getEffects(){
 		if (sharedStatus){
 			return this.parentChar.getEffects();
@@ -82,22 +71,11 @@ public class BossCharacter extends Character{
 	}
 	
 	@Override
-	void removeEffect(Effect e){
-		if (sharedStatus){
-			this.parentChar.removeEffect(e,this.getCastPosition(),this.getActionBar());
-		}
-		else{
-			super.removeEffect(e);
-		}
-	}
-	
-	@Override
 	/** update the state of the character and the bosses meta information
 	 *  currently updates its cast moved
 	 * **/
 	public void update(){
 		updateParentCastMoved();
-		this.parentChar.update();
 		super.update();
 	}
 	

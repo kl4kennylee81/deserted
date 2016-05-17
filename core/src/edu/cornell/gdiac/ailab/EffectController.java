@@ -20,32 +20,50 @@ public class EffectController {
 	}
 	
 	public void update(List<Character> characters,GridBoard board){	
-		HashSet<Character> toUpdate = new HashSet<Character>();
+		HashMap<Character,List<Character>> toUpdate = new HashMap<Character,List<Character>>();
 		for (Character c: characters){
 			if (c instanceof BossCharacter){
 				Character parent = ((BossCharacter) c).getParent();
 				if (((BossCharacter) c).sharedStatus 
-						&& !toUpdate.contains(parent)){
-					toUpdate.add(parent);
+						&& !toUpdate.containsKey(parent)){
+					List<Character> childList = new LinkedList<Character>();
+					childList.add(c);
+					toUpdate.put(parent,childList);
+				}
+				else if (toUpdate.containsKey(parent)){
+					toUpdate.get(parent).add(c);
 				}
 				else if (!(((BossCharacter) c).sharedStatus )){
-					toUpdate.add(c);
+					toUpdate.put(c,null);
 				}
 			}
 			else{
-				toUpdate.add(c);
+				toUpdate.put(c,null);
 			}
 		}
 		
-		for(Character c: toUpdate){
-			removeFinishedEffects(c);
+		// update the character position for the children characters after
+		// removing the effect
+		for(Character c: toUpdate.keySet()){
+			if (toUpdate.get(c) == null){
+				removeFinishedEffects(c);
+			}
+			else {
+				List<Effect> effectRemoved = removeFinishedEffects(c);
+				List<Character> childList = toUpdate.get(c);
+				for (Character child:childList){
+					for (Effect e: effectRemoved){
+						child.translateCastPosition(e, false);
+					}
+				}
+			}
 		}
 		// update board tiles
 		processTileEffects(board);
 	}
 	
 	
-	public void removeFinishedEffects(Character c){
+	public List<Effect> removeFinishedEffects(Character c){
 		LinkedList<Effect> toRemove = new LinkedList<Effect>();
 		
 		for (Effect e:c.getEffects()){
@@ -61,6 +79,7 @@ public class EffectController {
 		for (Effect e: toRemove){
 			c.removeEffect(e);
 		}
+		return toRemove;
 	}
 	
 	public void processTileEffects(GridBoard board){
