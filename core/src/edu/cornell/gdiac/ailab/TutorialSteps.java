@@ -274,12 +274,8 @@ public class TutorialSteps {
 			// Color.WHITE);
 			toWrite += "\n\nPress Enter or Click anywhere to continue";
 		}
-		if (step != null) {
-			canvas.drawTutorialText(toWrite, levelColor == null ? Color.WHITE : levelColor,
-					step.text.length() > 10 ? Align.left : Align.center);
-		} else {
-			canvas.drawTutorialText(toWrite, levelColor == null ? Color.WHITE : levelColor, Align.left);
-		}
+		canvas.drawTutorialText(toWrite, levelColor == null ? Color.WHITE : levelColor, 
+					toWrite.length() > 10 ? Align.center : Align.left);
 
 		drawWarningText(canvas);
 	}

@@ -1003,10 +1003,10 @@ public class GameCanvas {
 			displayFont.setColor(color);
 		}
 		float width = ((float)getWidth())/1.3f;
-		float x = getWidth()/2-width/2;
+		float x = getWidth()/2-width/3;
 		float y = ((float)getHeight())/2f;
 //		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, alignment, true);
-		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, Align.center, true);
+		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
 		setFont(currFont);
 		return g;
 	}
