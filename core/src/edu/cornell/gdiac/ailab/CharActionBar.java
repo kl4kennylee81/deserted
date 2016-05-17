@@ -479,18 +479,6 @@ public class CharActionBar {
 		return numberSlots;
 	}
 	
-//	float curSlot_x = actionSlot_x + ((slot_width) * i) + CharActionBar.BAR_DIVIDER_WIDTH;
-//	float slot_w_space = slot_width-CharActionBar.BAR_DIVIDER_WIDTH;
-//	if (i < takenSlots) {
-//		canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Constants.CAST_COLOR.cpy());
-//	} else if (selectedAction < actions.length && i < takenSlots+actions[selectedAction].cost){
-//		canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE.cpy().lerp(Constants.CAST_COLOR.cpy(),lerpVal));
-//	} else if (i >= usableNumSlots){
-//		canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.GRAY);
-//	} else {
-//		canvas.drawBox(curSlot_x,actionSlot_y,slot_w_space,slot_height,Color.WHITE);
-//	}
-	
 	public void drawSlotBox(GameCanvas canvas,int curSlots,
 			Action curAction,float xPosBar,float yPosBar,Color slotColor,boolean addOption){
 		float intervalSize = this.getSlotWidth(canvas);
@@ -591,6 +579,7 @@ public class CharActionBar {
 		curSlots = drawSlots(canvas,curSlots,queuedActions,xPosBar,yPosBar,Color.WHITE.cpy(),drawBoxes);
 		if (isSelecting && curSlots < this.getTotalNumSlots()){
 			curSlots = drawSlots(canvas,curSlots,selectingActions,xPosBar,yPosBar,Constants.CAST_COLOR.cpy(),drawBoxes);
+			
 			curSlots = this.drawSelectingActionSlot(canvas, curSlots, curAction, xPosBar, yPosBar, Constants.CAST_COLOR.cpy(), drawBoxes,lerpVal);
 		}
 		this.drawRemainingSlots(canvas, curSlots, xPosBar, yPosBar, barColor);
@@ -643,12 +632,39 @@ public class CharActionBar {
 		}
 	}
 	
+	public void drawSelectingActionFill(GameCanvas canvas, float xPosBar,int count,
+			Color barColor, float castPosition,float lengthSelectedAction,
+			float lengthQueuedActions, boolean isSelecting,float lerpVal){
+		// we already draw the lerping version of the slot in drawSlots
+		if (isSelecting){
+			return;
+		}
+		float xPos = xPosBar + this.getXInBar(canvas, castPosition);
+		float yPos = this.getFillY(canvas, count);
+		
+		float castWidth = lengthQueuedActions;
+		float castHeight = this.getBarFillHeight(canvas);
+		
+		Color barFadedColor = barColor.cpy().mul(Constants.CAST_COLOR.cpy());
+		
+		canvas.drawBox(xPos, yPos, castWidth, castHeight, barFadedColor);
+		
+		float xPosSelecting = xPos + castWidth;
+		
+		float selectingWidth = lengthSelectedAction;
+		
+		Color lerpingBarColor = barColor.lerp(barFadedColor, lerpVal);
+		
+		canvas.drawBox(xPosSelecting,yPos, selectingWidth, castHeight,lerpingBarColor);
+	}
+	
 	
 	// draw gauge style 
 	public void draw(GameCanvas canvas,int count,Color barColor,Color fillColor, 
 			float castPosition,boolean leftside,boolean isSelecting,List<ActionNode> selectingActions, 
 			Action curSelectedAction, List<ActionNode> queuedActions,
-			List<ActionNode> castActions, float lerpVal, List<Effect> effects){
+			List<ActionNode> castActions, float lerpVal, List<Effect> effects,
+			float lengthSelectedAction,float lengthQueuedActions){
 		
 		float xPosBar = getX(canvas);
 		float yPosBar = getY(canvas,count);
@@ -670,6 +686,10 @@ public class CharActionBar {
 		
 		// draw the fill on the cast bar
 		this.drawCastFill(canvas, xPosBar, count, barColor,castPosition);
+		
+		// draw the fill of the lerping selecting action of other character
+		this.drawSelectingActionFill(canvas,xPosBar,count,barColor,
+				castPosition,lengthSelectedAction,lengthQueuedActions,isSelecting,lerpVal);
 		
 		// draw icon
 		this.drawCenterIcon(canvas, xPosBar,yPosBar,barColor);

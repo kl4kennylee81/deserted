@@ -1214,7 +1214,7 @@ public class Character implements GUIElement {
 			chosenColor = chosenColor.lerp(this.color.cpy(), lerpVal);
 		}
 		else if (shouldDim){
-			chosenColor = Color.LIGHT_GRAY.cpy().mul(1,1,1,0.9f);
+			chosenColor = Color.GRAY.cpy().mul(1,1,1,0.9f);
 		}
 		else if (charState == CharacterState.CAST || charState == CharacterState.EXECUTE){
 			chosenColor = Color.GOLD.cpy();

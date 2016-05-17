@@ -21,7 +21,7 @@ public class HighlightScreen {
 	private static List<CurrentHighlight> currentHighlights;
 	private static Color highlightColor;
 	private static boolean justScreen;
-	private static float SCREEN_OPACITY = 0.55f;
+	private static float SCREEN_OPACITY = 0.60f;
 	float lerpVal;
 	boolean increasing;
 	int maxY;
