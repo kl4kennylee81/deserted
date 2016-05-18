@@ -491,4 +491,106 @@
       - 9
       - 9
       - 9
+109:
+  name: Ghost Head
+  texture: "models/ghost_boss/ghost_bossHead.png"
+  rows: 1
+  cols: 19
+  size: 19
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 1
+      frameData:
+      - 100
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 8
+      - 8
+      - 8
+      - 8
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 4
+      length: 9
+      frameData:
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 11
+      length: 3
+      frameData:
+      - 8
+      - 8
+      - 8
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 14
+      length: 5
+      frameData:
+      - 6
+      - 6
+      - 8
+      - 8
+      - 8
+
+110:
+  name: Ghost Arm
+  texture: "models/ghost_boss/ghost_bossArm.png"
+  rows: 1
+  cols: 18
+  size: 18
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 1
+      frameData:
+      - 100
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 8
+      - 8
+      - 8
+      - 8
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 4
+      length: 10
+      frameData:
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 6
+      length: 1
+      frameData:
+      - 8
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 13
+      length: 5
+      frameData:
+      - 6
+      - 6
+      - 8
+      - 8
+      - 8
 ...

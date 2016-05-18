@@ -613,7 +613,7 @@
   - 32
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
-  animationId: 103
+  animationId: 110
   bossId: 9
   sharedStatus: true
 
@@ -631,6 +631,6 @@
   - 34
   texture: models/CHARA_3.png
   icon: models/bunmage_icon.png
-  animationId: 108
+  animationId: 109
   bossId: 9
   sharedStatus: true

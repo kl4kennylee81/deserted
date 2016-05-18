@@ -958,7 +958,7 @@ public class GameCanvas {
 	
 	public void drawCharArrow(Texture screen, float x, float y, float x_width, float y_width, Color color, GridBoard board){
 		TextureRegion arrowTexture = new TextureRegion(screen,(int)x,(int)y,(int)x_width,(int)y_width);
-		float charScale = Character.getCharScale(this, arrowTexture, board);
+		float charScale = Character.getStaticCharScale(this, arrowTexture, board);
 		spriteBatch.setColor(color);
 		spriteBatch.draw(downArrow, (int)(x), (int)(y + y_width), 135, 135);
 	}

@@ -91,7 +91,7 @@ public class HighlightScreen {
 	
 	public void addCurrentHighlight(CurrentHighlight current, GameCanvas canvas, GridBoard board){
 		TextureRegion highlightTexture = new TextureRegion(screen,(int)current.xPos,(int)current.yPos,(int)current.width,(int)current.height);
-		float charScale = Character.getCharScale(canvas, highlightTexture, board);
+		float charScale = Character.getStaticCharScale(canvas, highlightTexture, board);
 		current.width = (int)(current.width * charScale);
 		current.height = (int)(current.height * charScale);
 		currentHighlights.add(current);

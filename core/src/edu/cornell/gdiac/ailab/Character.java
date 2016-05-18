@@ -29,9 +29,9 @@ public class Character implements GUIElement {
 	
 	// character width is 120 and at tile size 150 proportion of current tile size
 	//
-	public static float CHARACTER_PROPORTION = 0.7f;
+	public static float CHARACTER_PROPORTION = 0.8f;
 	
-	float PROJECTILE_PROPORTION = 0.7f;
+	float PROJECTILE_PROPORTION = 0.75f;
 
 	/** Name of character */
 	String name;
@@ -341,6 +341,14 @@ public class Character implements GUIElement {
 	public void setStartPos(int x, int y) {
 		this.startingXPosition = this.xPosition = x;
 		this.startingYPosition = this.yPosition = y;
+	}
+	
+	public float getXPosition(){
+		return this.xPosition;
+	}
+	
+	public float getYPosition(){
+		return this.yPosition;
 	}
 	
 	public float getX(){
@@ -831,15 +839,21 @@ public class Character implements GUIElement {
 		}
 	}
 	
-	public static float getCharScale(GameCanvas canvas, Texture texture,GridBoard board){
+	public float getCharScale(GameCanvas canvas, Texture texture,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		return (tileW*CHARACTER_PROPORTION)/texture.getWidth();
 	}
 	
-	public static float getCharScale(GameCanvas canvas, TextureRegion region,GridBoard board){
+	public static float getStaticCharScale(GameCanvas canvas, TextureRegion region,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
 		return (tileW*CHARACTER_PROPORTION)/region.getRegionWidth();
 	}
+	
+	public float getCharScale(GameCanvas canvas, TextureRegion region,GridBoard board){
+		float tileW = board.getTileWidth(canvas);
+		return (tileW*CHARACTER_PROPORTION)/region.getRegionWidth();
+	}
+	
 	
 	public float getProjectileScale(GameCanvas canvas, TextureRegion region,GridBoard board){
 		float tileW = board.getTileWidth(canvas);
@@ -908,7 +922,10 @@ public class Character implements GUIElement {
 
 		float tileW = board.getTileWidth(canvas);
 		float tileH = board.getTileHeight(canvas);
-		Coordinate c = board.offsetBoard(canvas,tileW*xPosition,tileH*yPosition);
+		// these two function will be overriden by the bosses to position correctly
+		float charXPos = tileW * this.getXPosition();
+		float charYPos = tileH * this.getYPosition();
+		Coordinate c = board.offsetBoard(canvas,charXPos,charYPos);
 		float canvasX = c.x;
 		float canvasY = c.y;
 		c.free();

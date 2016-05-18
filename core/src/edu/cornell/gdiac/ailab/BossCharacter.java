@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class BossCharacter extends Character{
 	/** pointer to a parent character **/
@@ -12,6 +13,8 @@ public class BossCharacter extends Character{
 	boolean sharedStatus;
 	
 	boolean sharedBar;
+	
+	private static final float BOSS_CHARACTER_PROPORTION = 1.3f;
 	
 	public boolean isBoss(){
 		return this.parentChar != null;
@@ -92,5 +95,38 @@ public class BossCharacter extends Character{
 	public void setLeftSide(boolean ls) {
 		super.setLeftSide(ls);
 		this.parentChar.setLeftSide(ls);
+	}
+	
+	@Override
+	public float getCharScale(GameCanvas canvas, Texture texture,GridBoard board){
+		if (this.sharedStatus){
+			float tileW = board.getTileWidth(canvas);
+			return (tileW*BOSS_CHARACTER_PROPORTION)/texture.getWidth();
+		}
+		else{
+			return super.getCharScale(canvas, texture, board);
+		}
+	}
+	
+	@Override
+	public float getCharScale(GameCanvas canvas, TextureRegion region,GridBoard board){
+		if (this.sharedStatus){	
+			float tileW = board.getTileWidth(canvas);
+			return (tileW*BOSS_CHARACTER_PROPORTION)/region.getRegionWidth();
+		}
+		else{
+			return super.getCharScale(canvas, region, board);
+		}
+	}
+	
+	@Override
+	public float getXPosition(){
+		//only on the enemy side offset back to allow it to be on the tile
+		if (!this.leftside){
+			return this.xPosition - 0.35f;
+		}
+		else{
+			return super.getXPosition();
+		}
 	}
 }
