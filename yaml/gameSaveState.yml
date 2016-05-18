@@ -1,7 +1,7 @@
 characters:
   0:
     characterId: 0
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -29,7 +29,7 @@ characters:
     - 35
   1:
     characterId: 1
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 7
@@ -42,7 +42,7 @@ characters:
     - 5
   2:
     characterId: 2
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 16
@@ -55,7 +55,7 @@ characters:
     - 18
   3:
     characterId: 5
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 23
@@ -69,20 +69,20 @@ characters:
 levels:
   0:
     levelName: tutorial1
-    beaten: true
+    beaten: false
     boss: false
     preNarrative: yaml/narratives/test.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/test.yml
-    seenPost: true
+    seenPost: false
   1:
     levelName: tutorial2
-    beaten: true
+    beaten: false
     boss: false
     preNarrative: yaml/narratives/test.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/test.yml
-    seenPost: true
+    seenPost: false
   3:
     levelName: tutorial4
     beaten: false
@@ -121,7 +121,7 @@ levels:
     needsSelect: true
   14:
     levelName: Level5
-    beaten: false
+    beaten: true
     boss: false
     needsSelect: true
     gainedSP: 1
@@ -137,7 +137,7 @@ levels:
     boss: false
   17:
     levelName: BossTest
-    beaten: false
+    beaten: true
     needsSelect: true
     boss: false
 availableCharacters:
@@ -145,9 +145,9 @@ availableCharacters:
 - 1
 - 2
 - 5
+- 5
 unlockableCharacters:
 - 2
-- 5
 selectedCharacters:
 - 0
 - 1

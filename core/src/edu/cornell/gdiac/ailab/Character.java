@@ -1026,6 +1026,10 @@ public class Character implements GUIElement {
 		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
 		for (ActionNode an : actions){
 			if (an.action.pattern == Action.Pattern.MOVE){
+				// TODO check this later
+				if (an.direction == null){
+					return;
+				}
 				switch (an.direction){
 				case UP:
 					nowY++;
