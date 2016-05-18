@@ -319,6 +319,7 @@
   - 0
   - 4
   - 38
+
   texture: models/CHARA_3.png
   icon: models/sulus_icon.png
   animationId: 101
