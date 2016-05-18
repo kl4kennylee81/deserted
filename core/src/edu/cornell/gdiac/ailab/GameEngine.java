@@ -410,7 +410,12 @@ public class GameEngine implements Screen {
 				if (narrativeController.isPre){
 					loadNextMenu(curLevelData.levelName, "", false);
 				} else {
-					loadNextMenu(curLevelData.getNextLevelName(), "",true);
+					if (curLevelData.getNextLevelName() != null){
+						loadNextMenu(curLevelData.getNextLevelName(), "",true);
+					} else {
+						mainMenuController.resetMenu();
+			    		gameState = GameState.MENU;
+					}
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -556,12 +561,16 @@ public class GameEngine implements Screen {
     		if (curGameplayController.playerWon()){
 	    		//check if levelb eaten and update savestate
 	    		if (curLevelData.postNarrative != null && !curLevelData.seenPost){
-	    			curLevelData.seenPost = true;
 	    			narrativeController.reset(curLevelData.postNarrative, false);
 	    			gameState = GameState.NARRATIVE;
 	    		} else {
 	    			try {
-						loadNextMenu(curLevelData.getNextLevelName(), "",true);
+	    				if (curLevelData.getNextLevelName() != null){
+	    					loadNextMenu(curLevelData.getNextLevelName(), "",true);
+	    				} else {
+	    					mainMenuController.resetMenu();
+	    		    		gameState = GameState.MENU;
+	    				}
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

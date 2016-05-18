@@ -136,7 +136,7 @@ levels:
     boss: false
   17:
     levelName: BossTest
-    beaten: false
+    beaten: true
     needsSelect: true
     boss: false
 availableCharacters:
