@@ -30,8 +30,9 @@ public class GameplayController {
     /** Subcontroller for managing mouse over highlighting */
     protected MouseOverController mouseOverController;
 	
-    private CompletionMenuController compMenuController;
+    protected CompletionMenuController compMenuController;
     
+    protected PauseMenuController pauseMenuController;
     
 	/** Current Models */
     protected GridBoard board;
@@ -65,20 +66,23 @@ public class GameplayController {
     
     boolean temp;
     
+    InGameState prePauseState;
     
     public static enum InGameState {
 		NORMAL,
 		SELECTION,
 		ATTACK,
 		PAUSED,
+		PAUSEMENU,
 		DONE,
 		WARNING
 	}
     
-    public GameplayController(MouseOverController moc, CompletionMenuController cmc,
-    						FileHandle file, int fileNum, boolean isTutorial){
+    public GameplayController(MouseOverController moc, CompletionMenuController cmc, 
+    				PauseMenuController pmc, FileHandle file, int fileNum, boolean isTutorial){
     	mouseOverController = moc;
     	compMenuController = cmc;
+    	pauseMenuController = pmc;
     	fileNumFile = file;
     	this.fileNum = fileNum;
     	
@@ -125,7 +129,7 @@ public class GameplayController {
     	this.surviveFor = surviveFor;
     }
     
-    public void update(){
+    public void update(){  	
     	screen.noScreen();
     	switch(inGameState){
     	case NORMAL:
@@ -167,6 +171,23 @@ public class GameplayController {
     			}
     		}
     		this.animations.sort();
+    		break;
+    	case PAUSEMENU:
+    		screen.setJustScreen();
+    		pauseMenuController.update();
+    		if (pauseMenuController.doneSelecting){
+    			String selected = pauseMenuController.selected;
+    			if (selected.equals("Resume Game")){
+    				inGameState = prePauseState;
+    			}
+    			else if (selected.equals("Retry")){
+    				//if we end the game without winning, the level will be reset in gameEngine
+    				inGameState = InGameState.DONE;
+    			}else if (selected.equals("Main Menu")){
+    				InputController.artificialRPressed = true;
+    			}
+    			pauseMenuController.reset();
+    		}
     		break;
     	case WARNING:
     		screen.setJustScreen();
@@ -220,6 +241,18 @@ public class GameplayController {
     		}
     		ObjectLoader.getInstance().unloadCurrentLevel();
     	}
+    	
+       	if (InputController.pressedESC()){
+       		if (inGameState != InGameState.PAUSEMENU){
+       			prePauseState = inGameState;
+        		inGameState = InGameState.PAUSEMENU;
+       		}
+       		else{
+       			inGameState = prePauseState;
+       			pauseMenuController.reset();
+       		}
+       	}
+       	
     }
     
     public void removeDead(){
@@ -233,7 +266,7 @@ public class GameplayController {
     }
     
     public void drawPlay(GameCanvas canvas){
-		
+    	
 		if (TutorialGameplayController.highlight_action > 0){
 			//make a custom highlight and shift it by highlight_action
 			 
@@ -341,6 +374,10 @@ public class GameplayController {
 			cs.setIsWin(false);
 			cs.draw(canvas);
 		}
+		
+		if (inGameState == InGameState.PAUSEMENU){
+    		PauseMenu.getInstance().draw(canvas);
+    	}
     }
     
     private boolean isHitByAnimation(Character c){

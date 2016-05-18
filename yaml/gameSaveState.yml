@@ -72,7 +72,7 @@ levels:
     beaten: false
     boss: false
     preNarrative: yaml/narratives/test.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/test.yml
     seenPost: false
   1:
@@ -80,7 +80,7 @@ levels:
     beaten: false
     boss: false
     preNarrative: yaml/narratives/test.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/test.yml
     seenPost: false
   3:

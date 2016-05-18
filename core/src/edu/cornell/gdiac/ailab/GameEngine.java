@@ -198,13 +198,12 @@ public class GameEngine implements Screen {
 		
 		mouseOverController = new MouseOverController(canvas);
 		CompletionMenuController cmc = new CompletionMenuController(canvas);
+		PauseMenuController pmc = new PauseMenuController(canvas);
 		
 		editorController = null;
-		gameplayController = new GameplayController(mouseOverController, cmc,file, fileNum, false);
-		tutorialGameplayController = new TutorialGameplayController(mouseOverController, cmc,file, fileNum);
+		gameplayController = new GameplayController(mouseOverController, cmc, pmc, file, fileNum, false);
+		tutorialGameplayController = new TutorialGameplayController(mouseOverController, cmc, pmc, file, fileNum);
 		narrativeController = new NarrativeController();
-		gameplayController = new GameplayController(mouseOverController, cmc, file, fileNum, false);
-		tutorialGameplayController = new TutorialGameplayController(mouseOverController, cmc, file, fileNum);
 		
 		updateMeasures();
 	}
@@ -470,15 +469,9 @@ public class GameEngine implements Screen {
 	/** 
 	 * Returns true if the user reset the game.
 	 *
-	 * It also exits the game if the player chose to exit.
-	 *
 	 * @return true if the user reset the game.
 	 */
 	private boolean checkReset() {
-		if (InputController.pressedESC()) {
-        	Gdx.app.exit();
-        }
-		
 		// If the player presses 'R', reset the game.
         if (gameState != GameState.LOAD && gameState != GameState.EDITOR
         		&& InputController.pressedR()) {
@@ -797,6 +790,10 @@ public class GameEngine implements Screen {
 		CompletionScreen.getInstance().setUnlock(manager.get(Constants.UNLOCK_TEXTURE, Texture.class));
 		
 		CompletionScreen.getInstance().setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE, Texture.class));
+		
+		PauseMenu.getInstance().setBackground(manager.get(Constants.VSELECT_TEXTURE, Texture.class));
+		
+		PauseMenu.getInstance().setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE, Texture.class));
 		
 		// load all the level defs in GameSaveStateController
 		gameSaveStateController = new GameSaveStateController();
