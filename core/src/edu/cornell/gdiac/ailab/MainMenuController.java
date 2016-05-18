@@ -342,7 +342,7 @@ public class MainMenuController {
 	
 	public void resetMenu(){
 		this.levelName = "";
-		this.menu.reset();
+		this.menu = createMainMenu();
 		this.isDone = false;
 	}
 

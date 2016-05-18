@@ -622,8 +622,8 @@
 
 30:
   name: Arm
-  health: 5
-  maxHealth: 5
+  health: 0
+  maxHealth: 0
   hexColor: CD2626FF
   speed: 5.0
   castSpeed: 9.0
@@ -640,8 +640,8 @@
 
 31:
   name: Boss
-  health: 5
-  maxHealth: 5
+  health: 1
+  maxHealth: 1
   hexColor: CD2626FF
   speed: 6.5
   castSpeed: 10.0

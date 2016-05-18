@@ -259,7 +259,15 @@ public class CharacterSelect extends Menu{
 					canvas.drawTexture(optionHighlight,x,y,width,height,Color.WHITE);
 				}
 			}
-			options[i].draw(canvas);
+			if (i < 3){
+				options[i].draw(canvas);
+			} else {
+				Color col = options[i].color;
+				if (options[i].isSelected) {
+					col = Color.BLACK;
+				}
+				canvas.drawCenteredText(options[i].text, x+width/2, y+height*3/4, col);
+			}
 		}
 		
 		TextureRegion temp = null;
@@ -285,7 +293,7 @@ public class CharacterSelect extends Menu{
 				float x = charOption.xPosition * canvas.width;
 				float y = charOption.yPosition * canvas.height;
 				
-				canvas.drawCenteredText(characters.get(i).name, x+width/2, 0.92f*canvas.height, Color.WHITE);
+				canvas.drawCenteredText(characters.get(i).name, x+width/2, 0.9f*canvas.height, Color.WHITE);
 				
 				String optionKey = charOption.optionKey;
 				if (charOption.optionKey.contains(CHARACTER_ID_STRING)){
