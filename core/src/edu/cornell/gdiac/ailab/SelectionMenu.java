@@ -98,7 +98,7 @@ public class SelectionMenu {
 		this.actions = actions;
 		this.options = new Option[actions.length+1];
 		setOptions();
-		selectedAction = 0;
+		setSelectedAction(0);
 		takenSlots = 0;
 		choosingTarget = false;
 		selectedActions = new LinkedList<ActionNode>();
@@ -210,13 +210,13 @@ public class SelectionMenu {
 		int usableNumSlots = actionBar.getUsableNumSlots();
 		if (i == actions.length){
 			if (isSelecting){
-				selectedAction = i;
+				setSelectedAction(i);
 			}
 		}
 		else if (i >= 0 && i < actions.length){
 			if (canDoAction(actions[i], usableNumSlots) || !isSelecting){
 				setChoosingTarget(false);
-				selectedAction = i;
+				setSelectedAction(i);
 			} 
 		}
 	}
@@ -264,23 +264,19 @@ public class SelectionMenu {
 		int modVar = isSelecting ? actions.length+1 : actions.length;
 		if (up){
 			for (int i = 0; i <= actions.length; i++){
-				selectedAction += 1;
-				selectedAction %= modVar;
+				setSelectedAction(selectedAction + 1);
+				setSelectedAction(selectedAction & modVar);
 				if (canDoAction(selectedAction,numSlots)){
-					if (this.getSelectedAction() != null) {
-						TutorialGameplayController.highlight_action = takenSlots + this.getSelectedAction().cost;
-					}
 					return true;
 				}
 			}
 		} else {
 			for (int i = 0; i <= actions.length; i++){
-				selectedAction -= 1;
+				setSelectedAction(selectedAction - 1);
 				if (selectedAction < 0){
-					selectedAction += modVar;
+					setSelectedAction(selectedAction + modVar);
 				}
 				if (canDoAction(selectedAction,numSlots)){
-					if (this.getSelectedAction() != null) TutorialGameplayController.highlight_action = takenSlots + this.getSelectedAction().cost;
 					return true;
 				}
 			}
@@ -291,21 +287,19 @@ public class SelectionMenu {
 	public boolean changeSelected(boolean up,int numSlots){
 		if (up){
 			for (int i = 0; i <= actions.length; i++){
-				selectedAction += 1;
-				selectedAction %= actions.length+1;
+				setSelectedAction(selectedAction + 1);
+				setSelectedAction(selectedAction % actions.length+1);
 				if (canDoAction(selectedAction,numSlots)){
-					if (this.getSelectedAction() != null) TutorialGameplayController.highlight_action = takenSlots + this.getSelectedAction().cost;
 					return true;
 				}
 			}
 		} else {
 			for (int i = 0; i <= actions.length; i++){
-				selectedAction -= 1;
+				setSelectedAction(selectedAction - 1);
 				if (selectedAction < 0){
-					selectedAction += actions.length+1;
+					setSelectedAction(selectedAction + actions.length+1);
 				}
 				if (canDoAction(selectedAction,numSlots)){
-					if (this.getSelectedAction() != null) TutorialGameplayController.highlight_action = takenSlots + this.getSelectedAction().cost;
 					return true;
 				}
 			}
@@ -320,7 +314,7 @@ public class SelectionMenu {
 	public boolean resetPointer(int numSlots){
 		if (selectedAction >= 0 && selectedAction < actions.length && actions[selectedAction].cost > numSlots - takenSlots){
 			for (int i = 0; i <= actions.length; i++){
-				selectedAction = i;
+				setSelectedAction(i);
 				if (canDoAction(selectedAction,numSlots)){
 					return true;
 				}
@@ -330,7 +324,7 @@ public class SelectionMenu {
 	}
 	
 	public void reset(){
-		selectedAction = 0;
+		setSelectedAction(0);
 		takenSlots = 0;
 		choosingTarget = false;
 		while(selectedActions.peek() != null){
@@ -555,6 +549,7 @@ public class SelectionMenu {
 	
 	public void setSelectedAction(int num){
 		selectedAction = num;
+		if (this.getSelectedAction() != null) TutorialGameplayController.highlight_action = takenSlots + this.getSelectedAction().cost;
 	}
 
 	public void updateActionInfo(GameCanvas canvas) {

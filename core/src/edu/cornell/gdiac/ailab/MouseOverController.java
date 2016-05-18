@@ -7,6 +7,7 @@ import java.util.List;
 import com.badlogic.gdx.graphics.Color;
 
 import edu.cornell.gdiac.ailab.ActionNode;
+import edu.cornell.gdiac.ailab.SelectionMenuController.MenuState;
 
 public class MouseOverController {
 	
@@ -47,7 +48,7 @@ public class MouseOverController {
 		}
 	}
 
-	public void update(SelectionMenu currMenu1,Characters characters){
+	public void update(SelectionMenu currMenu1,Characters characters,boolean canPeek){
 		if (DISABLE_MOUSE){
 			return;
 		}
@@ -123,9 +124,12 @@ public class MouseOverController {
 				if (InputController.leftMouseClicked && !isHovering && currMenu1 != null
 						&& !currMenu1.getChoosingTarget() && actionChar == null) {
 					clickedChar = c;
-					c.selectionMenu.selectedAction = -1;
+					c.selectionMenu.setSelectedAction(-1);
 				}
 			}
+		}
+		if(canPeek){
+			return;
 		}
 
 		if (clickedChar != null){
@@ -134,7 +138,7 @@ public class MouseOverController {
 			}	
 			clickedChar.isClicked = true;
 			if (!clickedChar.selectionMenu.equals(currMenu1) && currMenu1 != null && !currMenu1.getChoosingTarget()){
-				currMenu1.selectedAction = -1;
+				currMenu1.setSelectedAction(-1);
 			}
 		}
 		

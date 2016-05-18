@@ -127,7 +127,7 @@ public class GameplayController {
     		effectController.update(characters,board);
     		actionBarController.update();
     		//persistingController.update();
-    		mouseOverController.update(selectionMenuController.getMenu(),characters);
+    		mouseOverController.update(selectionMenuController.getMenu(),characters,selectionMenuController.choosingTarget);
     		if (actionBarController.isAISelection) {
     			aiController.update();
     		}
@@ -140,7 +140,7 @@ public class GameplayController {
     	case SELECTION:
     		screen.setJustScreen();
     		mouseOverController.clearAll();
-    		mouseOverController.update(selectionMenuController.getMenu(),characters);
+    		mouseOverController.update(selectionMenuController.getMenu(),characters,selectionMenuController.choosingTarget);
     		selectionMenuController.update();
     		if (selectionMenuController.isDone()){
     			inGameState = InGameState.NORMAL;
