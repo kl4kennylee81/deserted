@@ -3,33 +3,44 @@ package edu.cornell.gdiac.ailab;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
-public class CompletionMenu extends Menu {
-	
+public class PauseMenu extends Menu {
+
 	Texture background;
 	
 	Texture optionHighlight;
 	
-	private static final float VSELECT_X_POS = 0.4f;
+	private static final float BACKGROUND_X_POS = 0.35f;
 	
-	private static final float VSELECT_Y_POS = 0.16f;
+	private static final float BACKGROUND_Y_POS = 0.5f;
 	
-	private static final float VSELECT_WIDTH = 0.2f;
+	private static final float BACKGROUND_WIDTH = 0.3f;
 	
-	private static final float VSELECT_HEIGHT = 0.15f;
+	private static final float BACKGROUND_HEIGHT = 0.2f;
 	
 	private static final float RELATIVE_HIGHLIGHT_X_OFFSET = 0.02f;
 	
-	public CompletionMenu(){
-
-		Option[] ops = new Option[2];
-		Option nl = new Option("Next Level", "Next Level");
-		nl.setBounds(0.43f, 0.28f, 0.17f, 0.05f);
+	private static PauseMenu instance = null;
+	
+	protected PauseMenu(){
+		Option[] ops = new Option[3];
+		Option rg = new Option("Resume Game", "Resume Game");
+		rg.setBounds(0.4f, 0.67f, 0.23f, 0.05f);
+		Option retry = new Option("Retry", "Retry");
+		retry.setBounds(0.4f, 0.62f, 0.23f, 0.05f);
 		Option mm = new Option("Main Menu", "Main Menu");
-		mm.setBounds(0.43f, 0.23f, 0.17f, 0.05f);
-		ops[0] = nl;
-		ops[1] = mm;
+		mm.setBounds(0.4f, 0.57f, 0.23f, 0.05f);
+		ops[0] = rg;
+		ops[1] = retry;
+		ops[2] = mm;
 		
 		this.options = ops;
+	}
+
+	public static PauseMenu getInstance(){
+		if (instance == null) {
+			instance = new PauseMenu();
+		}
+		return instance;
 	}
 	
 	public void setBackground(Texture bg){
@@ -44,13 +55,14 @@ public class CompletionMenu extends Menu {
 		for (Option opt : this.options){
 			opt.isSelected = false;
 		}
+		setOption(0);
 	}
 	
 	public void draw(GameCanvas canvas, float w, float h) {
-		float bgX = VSELECT_X_POS * w;
-		float bgY = VSELECT_Y_POS * h;
-		float bgWidth = VSELECT_WIDTH * w;
-		float bgHeight = VSELECT_HEIGHT * h;
+		float bgX = BACKGROUND_X_POS * w;
+		float bgY = BACKGROUND_Y_POS * h;
+		float bgWidth = BACKGROUND_WIDTH * w;
+		float bgHeight = BACKGROUND_HEIGHT * h;
 		
 		canvas.drawTexture(background, bgX, bgY, bgWidth, bgHeight, Color.WHITE);
 		
@@ -72,15 +84,7 @@ public class CompletionMenu extends Menu {
 		
 	}
 	
-	public void setWin(boolean won){
-		Option topOption = this.options[0];
-		if (won){
-			topOption.setText("Next Level");
-		}else{
-			topOption.setText("Retry");
-		}
-	}
-
+	
 	@Override
 	public void draw(GameCanvas canvas) {
 		float w = canvas.getWidth();
@@ -88,5 +92,5 @@ public class CompletionMenu extends Menu {
 		draw(canvas, w, h);
 		
 	}
-
+	
 }
