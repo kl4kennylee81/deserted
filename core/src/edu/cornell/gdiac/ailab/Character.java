@@ -334,6 +334,10 @@ public class Character implements GUIElement {
 		return this.castPosition;
 	}
 	
+	public Texture getTexture(){
+		return texture;
+	}
+	
 	public void setLeftSide(boolean ls) {
 		leftside = ls;
 	}

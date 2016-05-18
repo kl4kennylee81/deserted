@@ -30,8 +30,8 @@ public class TutorialGameplayController extends GameplayController{
 
     public static int highlight_action = 0;
 
-	public TutorialGameplayController(MouseOverController moc, FileHandle file, int fileNum) {
-		super(moc, file, fileNum, true);
+	public TutorialGameplayController(MouseOverController moc, CompletionMenuController cmc, FileHandle file, int fileNum) {
+		super(moc, cmc, file, fileNum, true);
 		// TODO Auto-generated constructor stub
 	}
 

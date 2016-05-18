@@ -765,6 +765,14 @@ public class ObjectLoader {
 					cd.bigIcon = bigIconTexture;
 				}
 			}
+			if (cd.getTexture() == null){
+				String textureName = (String) character.get("texture");
+				manager.load(textureName, Texture.class);
+				assets.add(textureName);
+				manager.finishLoading();
+				Texture t = manager.get(textureName, Texture.class);
+				cd.setTexture(t);
+			}
 			if (cd.getAnimation() == null){
 				Integer animationId = (Integer) character.get("animationId");
 				HashMap<String, Object> animation = animations.get(animationId);

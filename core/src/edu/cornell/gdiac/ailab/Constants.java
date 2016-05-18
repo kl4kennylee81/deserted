@@ -4,11 +4,13 @@ import com.badlogic.gdx.graphics.Color;
 
 public class Constants {
 	
-	public static final String COMPLETION_TEXTURE = "images/completed.png";
+	public static final String VICTORY_TEXTURE = "images/completionscreen/victory.png";
 	
-	public static final String STAR_TEXTURE = "images/star.png";
+	public static final String DEFEAT_TEXTURE = "images/completionscreen/defeat.png";
 	
-	public static final String CHEST_TEXTURE = "images/chest.png";
+	public static final String VSELECT_TEXTURE = "images/completionscreen/vselect.png";
+	
+	public static final String UNLOCK_TEXTURE = "images/completionscreen/unlock.png";
 	
 	public static final String TILE_TEXTURE = "models/Tile.png";
 	

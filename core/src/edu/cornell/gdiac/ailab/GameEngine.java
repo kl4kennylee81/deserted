@@ -197,11 +197,14 @@ public class GameEngine implements Screen {
 		fileNum = Integer.parseInt(file.readString());
 		
 		mouseOverController = new MouseOverController(canvas);
-
+		CompletionMenuController cmc = new CompletionMenuController(canvas);
+		
 		editorController = null;
-		gameplayController = new GameplayController(mouseOverController, file, fileNum, false);
-		tutorialGameplayController = new TutorialGameplayController(mouseOverController, file, fileNum);
+		gameplayController = new GameplayController(mouseOverController, cmc,file, fileNum, false);
+		tutorialGameplayController = new TutorialGameplayController(mouseOverController, cmc,file, fileNum);
 		narrativeController = new NarrativeController();
+		gameplayController = new GameplayController(mouseOverController, cmc, file, fileNum, false);
+		tutorialGameplayController = new TutorialGameplayController(mouseOverController, cmc, file, fileNum);
 		
 		updateMeasures();
 	}
@@ -696,14 +699,17 @@ public class GameEngine implements Screen {
 		manager.setLoader(Mesh.class, new MeshLoader(new InternalFileHandleResolver()));
 		assets = new Array<String>();
 		
-		manager.load(Constants.COMPLETION_TEXTURE, Texture.class);
-		assets.add(Constants.COMPLETION_TEXTURE);
+		manager.load(Constants.VICTORY_TEXTURE, Texture.class);
+		assets.add(Constants.VICTORY_TEXTURE);
 		
-		manager.load(Constants.STAR_TEXTURE, Texture.class);
-		assets.add(Constants.STAR_TEXTURE);
+		manager.load(Constants.DEFEAT_TEXTURE, Texture.class);
+		assets.add(Constants.DEFEAT_TEXTURE);
 		
-		manager.load(Constants.CHEST_TEXTURE, Texture.class);
-		assets.add(Constants.CHEST_TEXTURE);
+		manager.load(Constants.VSELECT_TEXTURE, Texture.class);
+		assets.add(Constants.VSELECT_TEXTURE);
+		
+		manager.load(Constants.UNLOCK_TEXTURE, Texture.class);
+		assets.add(Constants.UNLOCK_TEXTURE);
 		
 		manager.load(Constants.BCKGD_TEXTURE,Texture.class);
 		assets.add(Constants.BCKGD_TEXTURE);
@@ -781,11 +787,15 @@ public class GameEngine implements Screen {
 		
 		manager.finishLoading();
 		
-		CompletionScreen.getInstance().setImage(manager.get(Constants.COMPLETION_TEXTURE,Texture.class));
+		CompletionScreen.getInstance().setVictory(manager.get(Constants.VICTORY_TEXTURE,Texture.class));
 		
-		CompletionScreen.getInstance().setStar(manager.get(Constants.STAR_TEXTURE, Texture.class));
+		CompletionScreen.getInstance().setDefeat(manager.get(Constants.DEFEAT_TEXTURE,Texture.class));
 		
-		CompletionScreen.getInstance().setChest(manager.get(Constants.CHEST_TEXTURE, Texture.class));
+		CompletionScreen.getInstance().setVSelect(manager.get(Constants.VSELECT_TEXTURE, Texture.class));
+		
+		CompletionScreen.getInstance().setUnlock(manager.get(Constants.UNLOCK_TEXTURE, Texture.class));
+		
+		CompletionScreen.getInstance().setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE, Texture.class));
 		
 		// load all the level defs in GameSaveStateController
 		gameSaveStateController = new GameSaveStateController();

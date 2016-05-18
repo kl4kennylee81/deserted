@@ -30,6 +30,9 @@ public class GameplayController {
     /** Subcontroller for managing mouse over highlighting */
     protected MouseOverController mouseOverController;
 	
+    private CompletionMenuController compMenuController;
+    
+    
 	/** Current Models */
     protected GridBoard board;
     protected Characters characters;
@@ -62,6 +65,7 @@ public class GameplayController {
     
     boolean temp;
     
+    
     public static enum InGameState {
 		NORMAL,
 		SELECTION,
@@ -71,8 +75,10 @@ public class GameplayController {
 		WARNING
 	}
     
-    public GameplayController(MouseOverController moc, FileHandle file, int fileNum, boolean isTutorial){
+    public GameplayController(MouseOverController moc, CompletionMenuController cmc,
+    						FileHandle file, int fileNum, boolean isTutorial){
     	mouseOverController = moc;
+    	compMenuController = cmc;
     	fileNumFile = file;
     	this.fileNum = fileNum;
     	
@@ -111,6 +117,7 @@ public class GameplayController {
         effectController = new EffectController();
         mouseOverController.init(screen, board);
         warningTime = 0;
+        
     }
     
     public void setWinCondition(Integer winIn, Integer surviveFor){
@@ -162,20 +169,37 @@ public class GameplayController {
     		this.animations.sort();
     		break;
     	case WARNING:
-    		
-    		if (InputController.pressedEnter()){
-    			System.out.println("ENTER 1");
-    			temp = true;
-    			inGameState = InGameState.DONE;
-    			if (this.isTutorial){
-	    			if (this.leftsideDead()){
-	    				GameEngine.nextLevel = TutorialSteps.levelName;
-	    			}
-	    			else if (this.rightsideDead()){
-	    				GameEngine.nextLevel = TutorialSteps.nextLevel;
-	    			}
+    		screen.setJustScreen();
+    		//notifications processed first
+    		if (CompletionScreen.getInstance().notifications.size() > 0){
+    			if (InputController.pressedEnter() || InputController.leftMouseClicked){
+    				CompletionScreen.getInstance().notifications.remove(0);
     			}
+    		}else{
+    			//all notifications have been processed
+    			compMenuController.update();
+    			//have made a selection on the completion menu
+        		if (compMenuController.doneSelecting){
+        			if (compMenuController.selected.equals("Next Level")){
+    	    			System.out.println("ENTER 1");
+    	    			temp = true;
+    	    			if (this.isTutorial){
+    		    			if (this.leftsideDead()){
+    		    				GameEngine.nextLevel = TutorialSteps.levelName;
+    		    			}
+    		    			else if (this.rightsideDead()){
+    		    				GameEngine.nextLevel = TutorialSteps.nextLevel;
+    		    			}
+    	    			}
+        			}else{
+        				InputController.artificialRPressed = true;
+        			}
+        			inGameState = InGameState.DONE;
+        			compMenuController.reset();
+        			CompletionScreen.getInstance().reset();
+        		}
     		}
+    		
     		return;
 		default:
 			break;	
@@ -297,9 +321,9 @@ public class GameplayController {
     		//canvas.drawCenteredText("You have Won", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
     		CompletionScreen cs = CompletionScreen.getInstance();
     		GameSaveStateController gss = GameSaveStateController.getInstance();
-    		gss.beatLevel(levelName);
     		cs.skill_point = gss.getLevelSP(levelName);
     		cs.characters_unlocked = gss.getLevelUnlockedChars(levelName);
+    		gss.beatLevel(levelName);
     		cs.setIsWin(true);
     		cs.draw(canvas);
     	}
