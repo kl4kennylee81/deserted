@@ -172,7 +172,7 @@ levels:
     beaten: false
     needsSelect: false
     boss: false
-    surviveFor: 8
+    surviveFor: 4
   19:
     levelName: BossTest3
     beaten: false

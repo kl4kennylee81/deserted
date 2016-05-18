@@ -129,7 +129,7 @@ levels:
     needsSelect: true
   11:
     levelName: Level2
-    beaten: true
+    beaten: false
     boss: false
     needsSelect: true
   12:
@@ -167,10 +167,10 @@ levels:
     boss: false
   18:
     levelName: BossTest2
-    beaten: false
+    beaten: true
     needsSelect: false
     boss: false
-    surviveFor: 8
+    surviveFor: 4
   19:
     levelName: BossTest3
     beaten: false

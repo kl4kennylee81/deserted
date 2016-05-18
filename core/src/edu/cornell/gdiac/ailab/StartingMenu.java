@@ -25,9 +25,11 @@ public class StartingMenu extends Menu {
 	
 	boolean isDone;
 	boolean gameStart;
+	boolean isNew;
 	
 	public StartingMenu(){
 		isDone = false;
+		isNew = false;
 		Option[] options = new Option[1];
 		options[0] = new Option(START_GAME_NAME,START_GAME_NAME);
 		options[0].setBounds(RELATIVE_X_POS, 0.5f, RELATIVE_WIDTH, RELATIVE_HEIGHT);
@@ -51,6 +53,7 @@ public class StartingMenu extends Menu {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			isNew = true;
 		case CONTINUE_NAME:
 			isDone = true;
 			break;

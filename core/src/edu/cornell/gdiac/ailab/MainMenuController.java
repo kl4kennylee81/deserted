@@ -114,7 +114,11 @@ public class MainMenuController {
 		if (menu instanceof StartingMenu){
 			((StartingMenu) menu).updateLevel(levelName);
 			if (((StartingMenu) menu).isDone){
-				this.menu = createMainMenu();
+				if (((StartingMenu) menu).isNew){
+					//do w.e to start game
+				} else {
+					this.menu = createMainMenu();
+				}
 			}
 		}
 		if (menu instanceof MainMenu){
