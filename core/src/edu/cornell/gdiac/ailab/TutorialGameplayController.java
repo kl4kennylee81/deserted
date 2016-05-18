@@ -30,8 +30,9 @@ public class TutorialGameplayController extends GameplayController{
 
     public static int highlight_action = 0;
 
-	public TutorialGameplayController(MouseOverController moc, CompletionMenuController cmc, FileHandle file, int fileNum) {
-		super(moc, cmc, file, fileNum, true);
+	public TutorialGameplayController(MouseOverController moc, CompletionMenuController cmc, 
+						PauseMenuController pmc, FileHandle file, int fileNum) {
+		super(moc, cmc, pmc, file, fileNum, true);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -125,6 +126,24 @@ public class TutorialGameplayController extends GameplayController{
     		}
     		//updateTutorial();
     		break;
+    	case PAUSEMENU:
+    		screen.setJustScreen();
+    		pauseMenuController.update();
+    		if (pauseMenuController.doneSelecting){
+    			String selected = pauseMenuController.selected;
+    			if (selected.equals("Resume Game")){
+    				inGameState = prePauseState;
+    			}
+    			else if (selected.equals("Retry")){
+    				//if we end the game without winning, the level will be reset in gameEngine
+    				GameEngine.nextLevel = TutorialSteps.levelName;
+    				inGameState = InGameState.DONE;
+    			}else if (selected.equals("Main Menu")){
+    				InputController.artificialRPressed = true;
+    			}
+    			pauseMenuController.reset();
+    		}
+    		break;
     	case PAUSED:
     		if (regGameState == InGameState.SELECTION){
             	screen.setJustScreen();
@@ -151,8 +170,10 @@ public class TutorialGameplayController extends GameplayController{
 			//updateTutorial();
 			break;
     	}
-    	updateTutorial();
-    	updateTextMessages();
+    	if (inGameState != InGameState.PAUSEMENU){
+    		updateTutorial();
+        	updateTextMessages();
+    	}
     	removeDead();
     	if (gameOver()){
     		// you are set to done state after the warning time has elapsed
@@ -166,6 +187,16 @@ public class TutorialGameplayController extends GameplayController{
     		}
     		ObjectLoader.getInstance().unloadCurrentLevel();
     	}
+    	if (InputController.pressedESC()){
+       		if (inGameState != InGameState.PAUSEMENU){
+       			prePauseState = inGameState;
+        		inGameState = InGameState.PAUSEMENU;
+       		}
+       		else{
+       			inGameState = prePauseState;
+       			pauseMenuController.reset();
+       		}
+       	}
     }
 
 	public boolean isDone(){
@@ -333,6 +364,9 @@ public class TutorialGameplayController extends GameplayController{
         	}
         }
         tutorialSteps.drawText(canvas);
+        if (inGameState == InGameState.PAUSEMENU){
+    		PauseMenu.getInstance().draw(canvas);
+    	}
     }
 
 	private void updateTutorial() {
