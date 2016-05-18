@@ -69,20 +69,20 @@ characters:
 levels:
   0:
     levelName: tutorial1
-    beaten: false
+    beaten: true
     boss: false
     preNarrative: yaml/narratives/test.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/test.yml
-    seenPost: false
+    seenPost: true
   1:
     levelName: tutorial2
-    beaten: false
+    beaten: true
     boss: false
     preNarrative: yaml/narratives/test.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/test.yml
-    seenPost: false
+    seenPost: true
   3:
     levelName: tutorial4
     beaten: false
@@ -102,13 +102,11 @@ levels:
     beaten: false
     boss: false
     needsSelect: true
-    #winIn: 1
   11:
     levelName: Level2
     beaten: false
     boss: false
     needsSelect: true
-    #surviveFor: 1
   12:
     levelName: Level3
     beaten: false
