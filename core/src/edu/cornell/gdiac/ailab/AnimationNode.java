@@ -62,6 +62,11 @@ public class AnimationNode implements Comparable{
  			return animation.filmStrip;
  		}
 		
+		// hotfix not sure what the problem is
+		if (charState == null){
+			return animation.filmStrip;
+		}
+		
 		if (charState.id != curSegment){
 			curSegment = charState.id;
 			curFrameIndex = 0;

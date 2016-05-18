@@ -227,6 +227,7 @@ public class TutorialGameplayController extends GameplayController{
 		if (highlight_action > 0){//must change
 			//make a custom highlight and shift it by highlight_action
     		Character selectedChar = selectionMenuController.selected;
+
     		if (selectionMenuController.menuState != MenuState.PEEKING){
 	    		if (selectedChar != null){
 	    			highlight_action = Math.min(highlight_action, selectedChar.actionBar.getTotalNumSlots());

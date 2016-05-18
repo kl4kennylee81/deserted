@@ -12,14 +12,13 @@
   note: player presses space
   
 1:
-   text: ""
+   text: "If you get hit while charging an attack, your attack gets CANCELLED!"
    paused: false
    spaceToContinue: false
-
   
 2:
-  text: "If you get hit while charging an attack, your attack gets CANCELLED!"
-  paused: true
+  text: "You can press backspace to undo a selection."
+  paused: false
   spaceToContinue: false
   note:
   
