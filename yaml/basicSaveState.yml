@@ -141,6 +141,12 @@ levels:
     beaten: false
     needsSelect: true
     boss: false
+  18:
+    levelName: BossTest2
+    beaten: false
+    needsSelect: true
+    boss: false
+    surviveFor: 5
 availableCharacters:
 - 0
 - 1

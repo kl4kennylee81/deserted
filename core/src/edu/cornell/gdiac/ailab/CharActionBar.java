@@ -163,13 +163,11 @@ public class CharActionBar {
 		case 0:
 			return 1;
 		case 1:
-			return 3/2f;
-		case 2:
 			return 2f;
 		default:
 			if (speedMod < -2){
 				return 1/2f;
-			} else if (speedMod > 2){
+			} else if (speedMod > 1){
 				return 2f;
 			}
 			else{

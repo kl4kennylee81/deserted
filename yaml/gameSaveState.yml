@@ -101,13 +101,11 @@ levels:
     beaten: false
     boss: false
     needsSelect: true
-    #winIn: 1
   11:
     levelName: Level2
     beaten: false
     boss: false
     needsSelect: true
-    #surviveFor: 1
   12:
     levelName: Level3
     beaten: false
@@ -141,6 +139,12 @@ levels:
     beaten: false
     needsSelect: true
     boss: false
+  18:
+    levelName: BossTest2
+    beaten: false
+    needsSelect: true
+    boss: false
+    surviveFor: 5
 availableCharacters:
 - 0
 - 1

@@ -175,21 +175,40 @@
   animationId: 107
 
 10:  
-  name: boss minions
-  health: 5
-  maxHealth: 5
+  name: Dark Bunny
+  health: 6
+  maxHealth: 6
   hexColor: FF9900FF
-  speed: 5.
-  castSpeed: 5.
-  slots: 2
+  speed: 4.5
+  castSpeed: 12.
+  slots: 3
   availableActions:
   - 0
-  - 5
-  - 6
   - 38
+  - 42
+  - 40
   texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconyellow.png
-  animationId: 107
+  icon: models/bunmage_icon.png
+  animationId: 108
+  bossId: 9
+  sharedStatus: true
+
+11:  
+  name: Light Bunny
+  health: 6
+  maxHealth: 6
+  hexColor: FF9900FF
+  speed: 7.
+  castSpeed: 6.5
+  slots: 3
+  availableActions:
+  - 0
+  - 6
+  - 10
+  - 22
+  texture: models/CHARA_5.png
+  icon: models/bunmage_icon.png
+  animationId: 108
   bossId: 9
   sharedStatus: true
 
