@@ -25,7 +25,11 @@ characters:
     currentActions:
     - 0
     - 4
+<<<<<<< HEAD
     - 25
+=======
+    - 18
+>>>>>>> ca1c26ff5f3f3dda6a2693d0a532d3435422f1e4
     - 35
   1:
     characterId: 1

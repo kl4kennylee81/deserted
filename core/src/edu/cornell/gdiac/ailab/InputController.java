@@ -29,6 +29,8 @@ public class InputController {
 	
 	public static boolean leftMouseClicked = false;
 	
+	static boolean artificialRPressed = false;
+	
 	public static void update(){	
 		if (leftMouseClickedLast){
 			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
@@ -101,7 +103,9 @@ public class InputController {
     
     //Reset
     public static boolean pressedR() {
-    	return Gdx.input.isKeyJustPressed(Input.Keys.R);
+    	boolean result = Gdx.input.isKeyJustPressed(Input.Keys.R) || artificialRPressed;
+    	artificialRPressed = false;
+    	return result;
     }
     
     public static boolean pressedUp() {

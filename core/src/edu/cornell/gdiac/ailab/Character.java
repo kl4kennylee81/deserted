@@ -218,6 +218,11 @@ public class Character implements GUIElement {
 		this.healthUI = new TextureRegion(healthTexture);
 	}
 	
+	public void setActions(Action[] actions){
+		availableActions = actions;
+		selectionMenu.actions = actions;
+	}
+	
 	
 	public Character(Character c){
 		this.id = c.id;
@@ -332,6 +337,10 @@ public class Character implements GUIElement {
 	
 	public float getCastPosition(){
 		return this.castPosition;
+	}
+	
+	public Texture getTexture(){
+		return texture;
 	}
 	
 	public void setLeftSide(boolean ls) {
