@@ -15,20 +15,10 @@
 
 2:
   text: "When you are overwhelmed you can shield yourself!"
-  paused: false
-  spaceToContinue: false
+  paused: true
+  spaceToContinue: true
 
 3:
-  text: ""
-  paused: false
-  spaceToContinue: false
-
-4:
-  text: ""
-  paused: false
-  spaceToContinue: false
-
-5:
-  text: ""
-  paused: false
-  spaceToContinue: false
+  text: "Shields protect you for two hits!"
+  paused: true
+  spaceToContinue: true
