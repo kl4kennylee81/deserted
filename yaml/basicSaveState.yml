@@ -84,16 +84,15 @@ levels:
     postNarrative: yaml/narratives/test.yml
     seenPost: false
   3:
-    levelName: tutorial4
+    levelName: tutorial3
     beaten: false
     boss: false
   4:
-    levelName: tutorial5
+    levelName: tutorial4
     beaten: false
     boss: false
-    background: backgrounds/environment.png
   5:
-    levelName: tutorial6
+    levelName: tutorial5
     beaten: false
     boss: false
     gainedSP: 1

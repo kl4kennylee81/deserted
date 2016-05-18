@@ -46,7 +46,7 @@ public class TutorialGameplayController extends GameplayController{
 		effectController.update(characters, board);
 		actionBarController.update();
 		persistingController.update();
-		mouseOverController.update(selectionMenuController.getMenu(),characters);
+		mouseOverController.update(selectionMenuController.getMenu(),characters,selectionMenuController.choosingTarget);
 		pauseTimer = 0;
 		targetPauseTime = -1;
         GameEngine.nextLevel = TutorialSteps.nextLevel;
@@ -73,7 +73,7 @@ public class TutorialGameplayController extends GameplayController{
     		effectController.update(characters, board);
     		actionBarController.update();
     		//persistingController.update();
-    		mouseOverController.update(selectionMenuController.getMenu(),characters);
+    		mouseOverController.update(selectionMenuController.getMenu(),characters,selectionMenuController.choosingTarget);
     		if (actionBarController.isAISelection) {
     			pauseTimer = 0;
     			targetPauseTime = tutorialSteps.currStep().timeToPause;
@@ -104,7 +104,7 @@ public class TutorialGameplayController extends GameplayController{
     		screen.setJustScreen();
     		mouseOverController.clearAll();
     		selectionMenuController.update();
-    		mouseOverController.update(selectionMenuController.getMenu(),characters);
+    		mouseOverController.update(selectionMenuController.getMenu(),characters,selectionMenuController.choosingTarget);
     		prompt = "";//prompt = "Choose an Action";
     		selectionMenuController.setPrompt(prompt);
     		if (selectionMenuController.isDone()){
@@ -230,6 +230,7 @@ public class TutorialGameplayController extends GameplayController{
 
     		if (selectionMenuController.menuState != MenuState.PEEKING){
 	    		if (selectedChar != null){
+	    			highlight_action = Math.min(highlight_action, selectedChar.actionBar.getTotalNumSlots());
 	    			int count = 0;
 	    			for (int i=0; i< characters.size();i++){
 	    				Character c = characters.get(i);

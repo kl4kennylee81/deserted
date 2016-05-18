@@ -9,12 +9,12 @@
   nextLevel: tutorial5
 
 1:
-  text: ""
+  text: "Lightning attacks can strike behind a shield!"
   paused: false
   spaceToContinue: false
 
 2:
-  text: "When you are overwhelmed you can shield yourself!"
+  text:  "Click on any character to view its attacks."
   paused: false
   spaceToContinue: false
 
@@ -24,11 +24,6 @@
   spaceToContinue: false
 
 4:
-  text: ""
-  paused: false
-  spaceToContinue: false
-
-5:
   text: ""
   paused: false
   spaceToContinue: false

@@ -7,42 +7,18 @@
   restart: true
   levelName: tutorial3
   nextLevel: tutorial4
-  wrongText: "Try not to get interrupted!"
-  rightText: "Well done!"
 
 1:
-  text: "Hover over an enemy to highlight his action bar"
-  paused: true
+  text: ""
+  paused: false
   spaceToContinue: false
 
 2:
-  text: ""
-  paused: false
-  spaceToContinue: false
-  note: enemy is faster so he reaches cast time
-
-3:
-  text: "Try to INTERRUPT your opponent!"
+  text: "When you are overwhelmed you can shield yourself!"
   paused: true
   spaceToContinue: true
 
-4:
-  text: "Click on an enemy to view his attacks"
+3:
+  text: "Shields protect you for two hits!"
   paused: true
-  spaceToContinue: false
-  note:
-
-5:
-  text: ""
-  paused: false
-  spaceToContinue: false
-
-6:
-  text: ""
-  paused: false
-  spaceToContinue: false
-
-7:
-  text: ""
-  paused: false
-  spaceToContinue: false
+  spaceToContinue: true

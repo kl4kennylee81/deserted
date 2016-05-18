@@ -9,21 +9,12 @@
   nextLevel: tutorial6
 
 1:
-  text: "Darker shields last for two hits."
-  paused: false
-  spaceToContinue: false
-
-2:
-  text: "Lightning attacks can strike behind a shield!"
+  text: "Slow down an enemy to gain an advantage!"
   paused: true
   spaceToContinue: true
-
-3:
-  text: ""
-  paused: false
-  spaceToContinue: false
-
-4:
-  text: ""
-  paused: false
-  spaceToContinue: false
+  #highlightRegions:
+  #  - xPos: 0.5
+  #    yPos: 0.15
+  #    width: 0.1
+  #    height: 0.22
+  #    arrow: down
