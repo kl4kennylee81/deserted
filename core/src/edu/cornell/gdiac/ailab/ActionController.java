@@ -113,7 +113,7 @@ public class ActionController {
 				curActionExecuted = true;
 				executeAction(curAction);
 			}
-			if (selected!= null && curActionExecuted && animations.pool.isEmpty()){
+			if (selected!= null && curActionExecuted && animations.pool.isEmpty() && selected.getPersistingActions().isEmpty()){
 				shields.removeShields();
 				selected = null;
 			}
