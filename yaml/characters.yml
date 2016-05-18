@@ -342,12 +342,13 @@
   health: 2
   maxHealth: 2
   hexColor: FF9900FF
-  speed: 3.0
-  castSpeed: 7.0
+  speed: 4.0
+  castSpeed: 5.0
   slots: 2
   availableActions:
   - 0
-  - 9
+  - 36
+  - 4
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconblue.png
   animationId: 105
@@ -367,11 +368,11 @@
   animationId: 107
 99:
   name: Tutorial_Single_Straight
-  health: 4
-  maxHealth: 4
+  health: 2
+  maxHealth: 2
   hexColor: 3299FFFF
-  speed: 4.5
-  castSpeed: 7.0
+  speed: 7.5
+  castSpeed: 5.0
   slots: 4
   availableActions:
   - 0

@@ -1,13 +1,25 @@
 SHIELD_BRANCH:
   branch_type: ATTACK
   type: index
-  can_protect: SHIELD
+  first_move: SHIELD
+  can_hit: ATTACK_QUICK
+  adjacent_attack_square: MOVE_AGGRESSIVE
   default: MOVE_SHIELD
 
 SHIELD:
   type: leaf
   my_tactic: SPECIFIC
   my_actions: [SHIELD]
+  
+ATTACK_QUICK: 
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK]
+  
+MOVE_AGGRESSIVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE]
   
 MOVE_SHIELD:
   type: leaf

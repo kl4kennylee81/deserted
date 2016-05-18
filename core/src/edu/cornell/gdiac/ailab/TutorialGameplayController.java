@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
+import edu.cornell.gdiac.ailab.SelectionMenuController.MenuState;
 import edu.cornell.gdiac.ailab.CurrentHighlight;
 
 public class TutorialGameplayController extends GameplayController{
@@ -226,7 +227,8 @@ public class TutorialGameplayController extends GameplayController{
 		if (highlight_action > 0){//must change
 			//make a custom highlight and shift it by highlight_action
     		Character selectedChar = selectionMenuController.selected;
-    		if (selectedChar.isSelecting){
+
+    		if (selectionMenuController.menuState != MenuState.PEEKING){
 	    		if (selectedChar != null){
 	    			int count = 0;
 	    			for (int i=0; i< characters.size();i++){
