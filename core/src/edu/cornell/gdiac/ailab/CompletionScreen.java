@@ -16,8 +16,6 @@ public class CompletionScreen {
 	private static final float RELATIVE_Y_POS = 0.35f;
 	
 	private static final float RELATIVE_WIDTH = 0.6f;
-	
-	private static final float RELATIVE_HEIGHT = 0.6f;
 
 	
 	Texture victory;
@@ -121,10 +119,11 @@ public class CompletionScreen {
 		float x = RELATIVE_X_POS * w;
 		float y = RELATIVE_Y_POS * h;
 		float width = RELATIVE_WIDTH * w;
-		float height = RELATIVE_HEIGHT * h;
 		if (isWin){
+			float height = victory.getHeight()* width/victory.getWidth();
 			canvas.drawTexture(victory, x, y, width, height, Color.WHITE);
 		}else{
+			float height = defeat.getHeight()* width/defeat.getWidth();
 			canvas.drawTexture(defeat, x, y, width, height, Color.WHITE);
 		}
 	}

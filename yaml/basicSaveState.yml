@@ -10,7 +10,7 @@ characters:
         cost: 1
       - actionId: 11
         cost: 1
-    - actionId: 25
+    - actionId: 3
       nextAction:
       - actionId: 18
         cost: 1

@@ -10,7 +10,7 @@ characters:
         cost: 1
       - actionId: 11
         cost: 1
-    - actionId: 25
+    - actionId: 3
       nextAction:
       - actionId: 18
         cost: 1
@@ -25,11 +25,7 @@ characters:
     currentActions:
     - 0
     - 4
-<<<<<<< HEAD
     - 25
-=======
-    - 18
->>>>>>> ca1c26ff5f3f3dda6a2693d0a532d3435422f1e4
     - 35
   1:
     characterId: 1
@@ -145,7 +141,7 @@ levels:
     boss: false
   18:
     levelName: BossTest2
-    beaten: true
+    beaten: false
     needsSelect: true
     boss: false
     surviveFor: 8
