@@ -288,7 +288,7 @@ public class SelectionMenu {
 		if (up){
 			for (int i = 0; i <= actions.length; i++){
 				setSelectedAction(selectedAction + 1);
-				setSelectedAction(selectedAction % actions.length+1);
+				setSelectedAction(selectedAction % (actions.length+1));
 				if (canDoAction(selectedAction,numSlots)){
 					return true;
 				}
