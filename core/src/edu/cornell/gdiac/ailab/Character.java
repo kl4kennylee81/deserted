@@ -1181,7 +1181,7 @@ public class Character implements GUIElement {
 			
 			canvas.draw(healthUI, c, 0,0, healthX, healthY,0, healthSx, healthSy); 
 			
-			float textX = healthX + healthWidth/2;
+			float textX = healthX + 0.4f*healthWidth;
 			canvas.drawText(healthText, textX,textY, Color.WHITE.cpy());
 		}
 		else{
