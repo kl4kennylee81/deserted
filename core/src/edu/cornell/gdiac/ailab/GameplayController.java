@@ -293,7 +293,6 @@ public class GameplayController {
         	System.out.println("check here");
         }
         
-        
 		if (this.gameOver() && this.playerWon() && inGameState == InGameState.WARNING){
     		//canvas.drawCenteredText("You have Won", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
     		CompletionScreen cs = CompletionScreen.getInstance();

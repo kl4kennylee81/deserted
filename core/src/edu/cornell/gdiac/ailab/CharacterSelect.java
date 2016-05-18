@@ -293,7 +293,7 @@ public class CharacterSelect extends Menu{
 				float x = charOption.xPosition * canvas.width;
 				float y = charOption.yPosition * canvas.height;
 				
-				canvas.drawCenteredText(characters.get(i).name, x+width/2, 0.92f*canvas.height, Color.WHITE);
+				canvas.drawCenteredText(characters.get(i).name, x+width/2, 0.9f*canvas.height, Color.WHITE);
 				
 				String optionKey = charOption.optionKey;
 				if (charOption.optionKey.contains(CHARACTER_ID_STRING)){
