@@ -843,5 +843,27 @@
   animationId: 0
   icon: models/effect_icons/slow_icon.png
 
+38:
+  name: Slow All
+  cost: 2
+  damage: 0
+  range: 4
+  size: 1
+  pattern: SINGLEPATH
+  path: "0,0 1,0 0,1 1,1 2,0 0,2 2,2 2,1 1,2 3,0 3,1 3,2 2,3 1,3 0,3"
+  oneHit: false
+  needsToggle: true
+  canBlock: false
+  isBuff: false
+  effect:
+    type: SPEED
+    name: Slowed
+    numRounds: 3
+    magnitude: -10
+    effectIcon: models/effect_icons/slow_icon.png
+  description: Square Attack
+  animationId: 1
+  icon: models/action_tokens/lightning_token.png
+  
 ...
 
