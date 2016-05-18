@@ -10,12 +10,12 @@ import edu.cornell.gdiac.ailab.GameSaveState.CharacterData;
 public class CompletionScreen {
 	
 	private static CompletionScreen instance = null;
-
-	private static final float RELATIVE_X_POS = 0.2f;
 	
 	private static final float RELATIVE_Y_POS = 0.35f;
 	
-	private static final float RELATIVE_WIDTH = 0.6f;
+	private static final float RELATIVE_WIDTH = 0.65f;
+	
+	private static final float RELATIVE_X_POS = (1-RELATIVE_WIDTH)/2;
 
 	
 	Texture victory;
