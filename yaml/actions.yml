@@ -273,6 +273,7 @@
     numRounds: 0
     magnitude: 0
   description: instant zig zag hit path 1 damage
+  animationId: 0
   projectileAnimationId: 2
   icon: models/action_tokens/projectile_token.png
 
