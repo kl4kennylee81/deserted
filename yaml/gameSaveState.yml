@@ -84,16 +84,15 @@ levels:
     postNarrative: yaml/narratives/test.yml
     seenPost: false
   3:
+    levelName: tutorial3
+    beaten: true
+    boss: false
+  4:
     levelName: tutorial4
     beaten: false
     boss: false
-  4:
-    levelName: tutorial5
-    beaten: false
-    boss: false
-    background: backgrounds/environment.png
   5:
-    levelName: tutorial6
+    levelName: tutorial5
     beaten: false
     boss: false
     gainedSP: 1
@@ -102,13 +101,11 @@ levels:
     beaten: false
     boss: false
     needsSelect: true
-    #winIn: 1
   11:
     levelName: Level2
     beaten: false
     boss: false
     needsSelect: true
-    #surviveFor: 1
   12:
     levelName: Level3
     beaten: false

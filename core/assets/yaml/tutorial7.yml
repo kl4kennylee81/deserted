@@ -1,20 +1,48 @@
 0:
-  text: "Level 8"
+  text: "Level 3"
   paused: true
   finishGame: false
   levelColor: WHITE
   spaceToContinue: true
   restart: true
-  levelName: tutorial8
-  nextLevel: tutorial9
+  levelName: tutorial3
+  nextLevel: tutorial4
+  wrongText: "Try not to get interrupted!"
+  rightText: "Well done!"
 
 1:
-  text: "He can bypass your shield! So beware"
+  text: "Hover over an enemy to highlight his action bar"
+  paused: true
+  spaceToContinue: false
+
+2:
+  text: ""
+  paused: false
+  spaceToContinue: false
+  note: enemy is faster so he reaches cast time
+
+3:
+  text: "Try to INTERRUPT your opponent!"
   paused: true
   spaceToContinue: true
-  highlightRegions:
-    - xPos: 0.5
-      yPos: 0.15
-      width: 0.1
-      height: 0.22
-      arrow: down
+
+4:
+  text: "Click on an enemy to view his attacks"
+  paused: true
+  spaceToContinue: false
+  note:
+
+5:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+6:
+  text: ""
+  paused: false
+  spaceToContinue: false
+
+7:
+  text: ""
+  paused: false
+  spaceToContinue: false

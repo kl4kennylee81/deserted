@@ -257,7 +257,7 @@ tutorial2:
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/straight-easy.yml"]
 
-tutorial3:
+tutorial6:
     allies:
         - id: 104
           xPosition: 1
@@ -282,14 +282,14 @@ tutorial3:
           difficulty: EASY
 
     nextLevel:
-    tutorialFileName: "yaml/tutorial3.yml"
+    tutorialFileName: "yaml/tutorial6.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/straight-easy.yml"]
 
-tutorial4:
+tutorial3:
     allies:
         - id: 95
           xPosition: 1
@@ -313,14 +313,14 @@ tutorial4:
           intelligence: 0.3
           difficulty: EASY
     nextLevel:
-    tutorialFileName: "yaml/tutorial4.yml"
+    tutorialFileName: "yaml/tutorial3.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/straight-easy.yml"]
 
-tutorial5:
+tutorial4:
     allies:
         - id: 99
           xPosition: 1
@@ -345,14 +345,14 @@ tutorial5:
           difficulty: EASY
 
     nextLevel:
-    tutorialFileName: "yaml/tutorial5.yml"
+    tutorialFileName: "yaml/tutorial4.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/tutorial5ai.yml","aiyaml/shield-easy.yml","aiyaml/straight-medium.yml"]
 
-tutorial6:
+tutorial5:
     allies:
         - id: 96
           xPosition: 1
@@ -372,7 +372,7 @@ tutorial6:
           difficulty: EASY
 
     nextLevel:
-    tutorialFileName: "yaml/tutorial6.yml"
+    tutorialFileName: "yaml/tutorial5.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
