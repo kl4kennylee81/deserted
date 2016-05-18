@@ -1,7 +1,7 @@
 characters:
   0:
     characterId: 0
-    totalSP: 0
+    totalSP: 3
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -25,7 +25,7 @@ characters:
     currentActions:
     - 0
     - 4
-    - 3
+    - 18
     - 35
   1:
     characterId: 1
@@ -69,10 +69,10 @@ characters:
 levels:
   0:
     levelName: tutorial1
-    beaten: true
+    beaten: false
     boss: false
     preNarrative: yaml/narratives/test.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/test.yml
     seenPost: false
   1:

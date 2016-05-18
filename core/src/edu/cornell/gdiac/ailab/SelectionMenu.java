@@ -359,6 +359,7 @@ public class SelectionMenu {
 	//TODO: update for dazed
 	public void draw(GameCanvas canvas,CharActionBar actionBar,int count, boolean charIsClicked, float centerX, float centerY,
 			float radius, boolean leftside, boolean writeDescription, boolean isSelecting){
+		
 		int totalNumSlots = actionBar.getTotalNumSlots();
 		int usableNumSlots = actionBar.getUsableNumSlots();
 		

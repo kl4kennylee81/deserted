@@ -271,6 +271,7 @@ public class GameEngine implements Screen {
 	        		curGameplayController = tutorialGameplayController;
 	        		gameState = GameState.PLAY;
 	        	}
+	        	
 	        	curGameplayController.setWinCondition(curLevelData.winIn, curLevelData.surviveFor);
     		}
     	}

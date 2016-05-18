@@ -189,7 +189,6 @@ public class ObjectLoader {
 		loadedLevel.setNextLevel(nextLevel);
 		loadedLevel.setTacticalManager(tacticalManager);
 
-
 		if (tutorialFileName != null){
 			FileHandle tutorialFile = Gdx.files.internal(tutorialFileName);
 			HashMap<Integer, HashMap<String, Object>> steps;
@@ -215,7 +214,7 @@ public class ObjectLoader {
 			setUpTileEffects(tiles, board);
 		}
 		loadedLevel.setBoard(board);
-
+		
 		return loadedLevel;
 	}
 
@@ -328,12 +327,8 @@ public class ObjectLoader {
 			}
 			
 			Character modelChar = availableCharacters.get(charId);
-			Character charToAdd = null;
-			if (actionArray != null){
-				charToAdd = new Character(modelChar, actionArray);
-			}else{
-				charToAdd = new Character(modelChar);
-			}
+			Character charToAdd = new Character(modelChar);
+			
 			// create the boss and replace the charToAdd with the boss
 			if (modelChar instanceof BossCharacter){
 				BossCharacter bossModel = (BossCharacter) modelChar;
@@ -354,6 +349,10 @@ public class ObjectLoader {
 				
 				// constructor sets the action bar to be set to the bosses action bar thus sharing
 				charToAdd = new BossCharacter(bossModel,parentModel);
+			}
+			
+			if (actionArray != null){
+				charToAdd.setActions(actionArray);
 			}
 			
 			charToAdd.setStartPos(xPosition, yPosition);

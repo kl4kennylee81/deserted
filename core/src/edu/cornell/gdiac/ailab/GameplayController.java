@@ -204,6 +204,7 @@ public class GameplayController {
 		default:
 			break;	
     	}
+    	
     	updateTextMessages();
     	removeDead();
     	if (gameOver()){

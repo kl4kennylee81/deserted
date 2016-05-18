@@ -218,6 +218,11 @@ public class Character implements GUIElement {
 		this.healthUI = new TextureRegion(healthTexture);
 	}
 	
+	public void setActions(Action[] actions){
+		availableActions = actions;
+		selectionMenu.actions = actions;
+	}
+	
 	
 	public Character(Character c){
 		this.id = c.id;
