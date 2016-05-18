@@ -54,6 +54,32 @@ characters:
     - 17
     - 18
   3:
+    characterId: 3
+    totalSP: 0
+    actionTree:
+    - actionId: 0
+    - actionId: 16
+    - actionId: 17
+    - actionId: 18
+    currentActions:
+    - 0
+    - 13
+    - 14
+    - 15
+  4:
+    characterId: 4
+    totalSP: 0
+    actionTree:
+    - actionId: 0
+    - actionId: 22
+    - actionId: 5
+    - actionId: 24
+    currentActions:
+    - 0
+    - 22
+    - 5
+    - 24
+  5:
     characterId: 5
     totalSP: 0
     actionTree:
@@ -80,7 +106,7 @@ levels:
     beaten: false
     boss: false
     preNarrative: yaml/narratives/test.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/test.yml
     seenPost: false
   3:
@@ -103,7 +129,7 @@ levels:
     needsSelect: true
   11:
     levelName: Level2
-    beaten: false
+    beaten: true
     boss: false
     needsSelect: true
   12:
@@ -142,16 +168,26 @@ levels:
   18:
     levelName: BossTest2
     beaten: false
-    needsSelect: true
+    needsSelect: false
     boss: false
     surviveFor: 8
+  19:
+    levelName: BossTest3
+    beaten: false
+    needsSelect: false
+    boss: false
 availableCharacters:
 - 0
 - 1
 - 2
+- 3
+- 4
 - 5
 unlockableCharacters:
+- 1
 - 2
+- 3
+- 4
 - 5
 selectedCharacters:
 - 0

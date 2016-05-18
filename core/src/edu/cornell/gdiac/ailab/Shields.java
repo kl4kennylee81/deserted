@@ -100,10 +100,13 @@ public class Shields {
 		//Character attacks from leftside, hits rightside
 		for (Iterator<ActionNode> iterator = shieldsToCheck.iterator(); iterator.hasNext();) {
 		    ActionNode an = iterator.next();
-		    if (!an.hitThisRound && shieldContains(an,coordX,coordY)){
+//		    if (!an.hitThisRound && shieldContains(an,coordX,coordY)){
+		    if (shieldContains(an,coordX,coordY)){
 				an.shieldHitsLeft-=1;
-				an.hitThisRound = true;
-				textMessages.addOtherMessage("SHIELDED", coordX, coordY, 2*TextMessage.SECOND, Color.BROWN);
+				if (!an.hitThisRound){
+					textMessages.addOtherMessage("SHIELDED", coordX, coordY, 2*TextMessage.SECOND, Color.BROWN);
+					an.hitThisRound = true;
+				}
 			}
 		}
 		resetShieldedCoordinates();

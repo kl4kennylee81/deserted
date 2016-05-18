@@ -606,11 +606,11 @@ public class Character implements GUIElement {
 		switch (e.type){
 		case SPEED:
 			translateCastPosition(e,true);
+			updateSpeedEffect(e);
 			break;
 		default:
 			break;
 		}
-		this.getEffects().add(e);
 		this.updateSpeedModifier();
 	}
 	
@@ -641,6 +641,37 @@ public class Character implements GUIElement {
 			this.translateCastingCastPosition(e,adding);
 		}
 		this.updateSpeedModifier();
+	}
+	
+	private void updateSpeedEffect(Effect e){
+		boolean replacedEffect = false;
+		for (Effect curEff: this.getEffects()){
+			if (curEff.type == Type.SPEED){
+				// both positive
+				if (curEff.magnitude > 0 && e.magnitude > 0){
+					if (curEff.roundsLeft < e.roundsLeft){
+						curEff.roundsLeft = e.roundsLeft;
+						curEff.maxRounds = e.maxRounds;
+					}
+					// no need to replace magnitude because its capped at 1
+					replacedEffect = true;
+					break;
+				}
+				// both negative
+				else if (curEff.magnitude < 0 && e.magnitude < 0){
+					if (curEff.roundsLeft < e.roundsLeft){
+						curEff.roundsLeft = e.roundsLeft;
+						curEff.maxRounds = e.maxRounds;
+					}
+					curEff.magnitude = Math.max(-2, curEff.magnitude+e.magnitude);
+					replacedEffect = true;
+					break;
+				}
+			}	
+		}
+		if (!replacedEffect){
+			this.getEffects().add(e);
+		}
 	}
 	
 	void translateWaitCastPosition(Effect e,boolean adding){

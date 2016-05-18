@@ -55,6 +55,7 @@ public class EffectController {
 					for (Effect e: effectRemoved){
 						child.translateCastPosition(e, false);
 					}
+					child.updateSpeedModifier();
 				}
 			}
 		}

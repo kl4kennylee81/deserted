@@ -68,6 +68,7 @@
   - 15
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconyellow.png
+  bigIcon: models/sulus_icon_big.png
   animationId: 107
   bossId: 1000
 4:
@@ -85,6 +86,7 @@
   - 24
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
+  bigIcon: models/sulus_icon_big.png
   animationId: 103
   bossId: 1000
 5:
@@ -176,11 +178,11 @@
 
 10:  
   name: Dark Bunny
-  health: 6
-  maxHealth: 6
+  health: 12
+  maxHealth: 12
   hexColor: FF9900FF
-  speed: 4.5
-  castSpeed: 12.
+  speed: 4.
+  castSpeed: 11.
   slots: 3
   availableActions:
   - 0
@@ -195,8 +197,8 @@
 
 11:  
   name: Light Bunny
-  health: 6
-  maxHealth: 6
+  health: 0
+  maxHealth: 0
   hexColor: FF9900FF
   speed: 7.
   castSpeed: 6.5

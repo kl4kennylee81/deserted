@@ -110,7 +110,7 @@ public class BossCharacter extends Character{
 	
 	@Override
 	public float getCharScale(GameCanvas canvas, TextureRegion region,GridBoard board){
-		if (this.sharedStatus){	
+		if (false){	
 			float tileW = board.getTileWidth(canvas);
 			return (tileW*BOSS_CHARACTER_PROPORTION)/region.getRegionWidth();
 		}
@@ -122,7 +122,7 @@ public class BossCharacter extends Character{
 	@Override
 	public float getXPosition(){
 		//only on the enemy side offset back to allow it to be on the tile
-		if (!this.leftside){
+		if (false){
 			return this.xPosition - 0.35f;
 		}
 		else{

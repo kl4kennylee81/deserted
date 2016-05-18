@@ -120,7 +120,7 @@
 
 6:
   name: Barrier
-  cost: 2
+  cost: 3
   damage: 0
   range: 2
   size: 1
@@ -157,7 +157,7 @@
   effect:
     type: SPEED
     name: Slowed
-    numRounds: 1
+    numRounds: 2
     magnitude: -1
     effectIcon: models/effect_icons/slow_icon.png
   description: Target a single square to slow down enemy
@@ -180,7 +180,7 @@
   effect:
     type: SPEED
     name: Slowed
-    numRounds: 2
+    numRounds: 1
     magnitude: -1
     effectIcon: models/effect_icons/slow_icon.png
   description: Launch a projectile 3 tiles straight ahead for 2 damage and slows
@@ -485,7 +485,7 @@
   effect:
     type: SPEED
     name: Hasten
-    numRounds: 3
+    numRounds: 2
     magnitude: 1
     effectIcon: models/effect_icons/hasten_icon.png
   description: Target a single square to Hasten an ally
@@ -838,7 +838,7 @@
   effect:
     type: SPEED
     name: Slowed
-    numRounds: 3
+    numRounds: 1
     magnitude: -1
     effectIcon: models/effect_icons/slow_icon.png
   description: Target a single square to slow down enemy
@@ -847,8 +847,8 @@
 
 38:
   name: Slow All
-  cost: 2
-  damage: 0
+  cost: 3
+  damage: 1
   range: 4
   size: 1
   pattern: SINGLEPATH
@@ -929,8 +929,8 @@
 
 42:
   name: Lightning Storm
-  cost: 1
-  damage: 2
+  cost: 2
+  damage: 3
   range: 10
   size: 1
   pattern: HORIZONTAL
@@ -938,9 +938,9 @@
   needsToggle: false
   canBlock: false
   effect:
-    type: REGULAR
-    name: Regular
-    numRounds: 0
+    type: BROKEN
+    name: Break Tile
+    numRounds: 1
     magnitude: 0
   description: Send Lightning Down on the same row as this character's on the enemy's side
   animationId: 0

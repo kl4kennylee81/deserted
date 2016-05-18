@@ -244,7 +244,9 @@ public class GameEngine implements Screen {
     
     public void startGame(String levelName, String backLevelName, boolean needsSelect) throws IOException {
     	if (this.gameSaveStateController.containsLevel(levelName)){
+    		System.out.println("HI" +levelName);
     		curLevelData = this.gameSaveStateController.getLevelData(levelName);
+    		System.out.println("okay"+curLevelData.levelName);
     		if (curLevelData.needsSelect() && needsSelect){
     			characterSelectController.reset();
     			gameState = GameState.SELECT;
@@ -436,7 +438,7 @@ public class GameEngine implements Screen {
 			
 			try {
 				if (characterSelectController.nextLevelName.equals("Start Level")){
-					loadNextMenu(mainMenuController.levelName, "", false);
+					loadNextMenu(curLevelData.levelName, "", false);
 				} else {
 					loadNextMenu(characterSelectController.nextLevelName, "Character Select",false);
 					if (characterSelectController.nextLevelName.equals("Skill Tree")){
