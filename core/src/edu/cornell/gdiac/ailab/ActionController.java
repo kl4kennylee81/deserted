@@ -423,6 +423,7 @@ public class ActionController {
 		} else {
 			shieldedPaths.addAll(shields.leftShieldedCoordinates);
 		}
+		shields.resetShieldsHitThisRound();
 	}
 
 	protected boolean isBlocked(int coordX, int coordY){
@@ -490,7 +491,6 @@ public class ActionController {
 
 	private void processHitPath(ActionNode a_node, Coordinate[] path, boolean oneHit, boolean canBlock){
 		boolean hasHit = false;
-		shields.resetShieldsHitThisRound();
 		for (int i=0;i<path.length;i++){
 			// if you have already hit one character and you only can hit one break out of checking path
 			if (oneHit && hasHit){

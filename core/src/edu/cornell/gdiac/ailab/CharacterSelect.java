@@ -259,7 +259,15 @@ public class CharacterSelect extends Menu{
 					canvas.drawTexture(optionHighlight,x,y,width,height,Color.WHITE);
 				}
 			}
-			options[i].draw(canvas);
+			if (i < 3){
+				options[i].draw(canvas);
+			} else {
+				Color col = options[i].color;
+				if (options[i].isSelected) {
+					col = Color.BLACK;
+				}
+				canvas.drawCenteredText(options[i].text, x+width/2, y+height*3/4, col);
+			}
 		}
 		
 		TextureRegion temp = null;
