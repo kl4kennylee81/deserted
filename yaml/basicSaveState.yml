@@ -1,7 +1,7 @@
 characters:
   0:
     characterId: 0
-    totalSP: 0
+    totalSP: 3
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -10,22 +10,22 @@ characters:
         cost: 1
       - actionId: 11
         cost: 1
-    - actionId: 3
+    - actionId: 25
       nextAction:
       - actionId: 18
         cost: 1
-      - actionId: 22
+      - actionId: 25
         cost: 1
     - actionId: 35
       nextAction:
       - actionId: 7
         cost: 1
-      - actionId: 25
+      - actionId: 30
         cost: 1
     currentActions:
     - 0
     - 4
-    - 3
+    - 25
     - 35
   1:
     characterId: 1
@@ -146,7 +146,7 @@ levels:
     beaten: false
     needsSelect: true
     boss: false
-    surviveFor: 5
+    surviveFor: 8
 availableCharacters:
 - 0
 - 1

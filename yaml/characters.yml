@@ -9,7 +9,7 @@
   availableActions:
   - 0
   - 4
-  - 3
+  - 25
   - 35
   texture: models/CHARA_3.png
   icon: models/sulus_icon.png
@@ -622,8 +622,8 @@
 
 30:
   name: Arm
-  health: 0
-  maxHealth: 0
+  health: 5
+  maxHealth: 5
   hexColor: CD2626FF
   speed: 5.0
   castSpeed: 9.0
@@ -640,8 +640,8 @@
 
 31:
   name: Boss
-  health: 1
-  maxHealth: 1
+  health: 5
+  maxHealth: 5
   hexColor: CD2626FF
   speed: 6.5
   castSpeed: 10.0

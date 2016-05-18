@@ -537,7 +537,7 @@
   icon: models/action_tokens/shatter_token.png
 
 25:
-  name: Splash
+  name: Earthquake
   cost: 3
   damage: 2
   range: 10
@@ -546,11 +546,11 @@
   oneHit: false
   needsToggle: true
   canBlock: false
-  path: "2,0 3,1 3,-1 4,0"
+  path: "3,1 3,0 3,-1 4,0"
   effect:
-    type: REGULAR
-    name: Regular
-    numRounds: 0
+    type: BROKEN
+    name: Break Tile
+    numRounds: 1
     magnitude: 0
   description: Fire a Cross shape for 2 damage
   animationId: 0
@@ -893,7 +893,7 @@
   range: 4
   size: 1
   pattern: SINGLEPATH
-  path: "0,0 1,0 0,1 1,1"
+  path: "0,0 1,0 0,1 1,1 -1,0 -1,-1 -1,1 0,-1 1,-1"
   oneHit: false
   needsToggle: true
   canBlock: false

@@ -142,7 +142,9 @@ public class GridBoard {
 	}
 	
 	public void setTileEffect(int x, int y, TileState effect){
-		tiles[x][y].setEffect(effect);
+		if (this.isInBounds(x, y)){
+			tiles[x][y].setEffect(effect);
+		}
 	}
 	
 	public void addTileEffect(String c,Effect e){

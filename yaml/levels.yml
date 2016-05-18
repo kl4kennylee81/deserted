@@ -209,12 +209,8 @@ BossTest:
 BossTest2:
     allies:
         - selectedId: 0
-          xPosition: 0
-          yPosition: 3
-
-        # - selectedId: 1
-        #   xPosition: 0
-        #   yPosition: 0
+          xPosition: 1
+          yPosition: 1
 
     enemies:
         - id: 31
@@ -223,10 +219,10 @@ BossTest2:
 
         - id: 30
           xPosition: 4
-          yPosition: 2
+          yPosition: 3
         - id: 30
           xPosition: 4
-          yPosition: 1
+          yPosition: 0
     nextLevel:
     boardWidth: 6
     boardHeight: 4
