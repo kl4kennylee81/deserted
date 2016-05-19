@@ -114,14 +114,11 @@ public class Narrative {
 			canvas.setBackground(toShow.backgroundTexture);
 		}
 		for (int i = 0; i < toShow.leftChars.size(); i++){
-			FilmStrip toDraw = toShow.leftChars.get(i).animation.getTexture(CharacterState.IDLE, InGameState.NORMAL);
-			if (toDraw == null){
-				toDraw = toShow.leftChars.get(i).animation.getTexture(CharacterState.IDLE, InGameState.NORMAL);
-			}
+			Texture toDraw = toShow.leftChars.get(i).texture;
 			if (toDraw != null){
-				float width = CHARACTER_WIDTH * canvas.width;
-				float heightToWidthRatio = toDraw.getRegionHeight()*1f/toDraw.getRegionWidth();
-				float height = heightToWidthRatio * width;
+				int width = (int) (CHARACTER_WIDTH * canvas.width);
+				float heightToWidthRatio = toDraw.getHeight()*1f/toDraw.getWidth();
+				int height = (int) (heightToWidthRatio * width);
 				float ratio = (i+1f)/(toShow.leftChars.size()+1);
 				float middleX = ratio * 0.5f * canvas.width;
 				float x = middleX - width/2;
@@ -130,20 +127,15 @@ public class Narrative {
 				if (toShow.highlightChars.contains(toShow.leftChars.get(i).id)){
 					col = Color.WHITE;
 				}
-				toDraw.flip(true, false);
-				canvas.draw(toDraw, col,x,y,width,height);
-				toDraw.flip(true, false);
+				canvas.drawCharacter(toDraw, x, y, width, height, col,true);
 			}
 		}
 		for (int i = 0; i < toShow.rightChars.size(); i++){
-			FilmStrip toDraw = toShow.rightChars.get(i).animation.getTexture(CharacterState.IDLE, InGameState.NORMAL);
-			if (toDraw == null){
-				toDraw = toShow.rightChars.get(i).animation.getTexture(CharacterState.IDLE, InGameState.NORMAL);
-			}
+			Texture toDraw = toShow.leftChars.get(i).texture;
 			if (toDraw != null){
-				float width = CHARACTER_WIDTH * canvas.width;
-				float heightToWidthRatio = toDraw.getRegionHeight()*1f/toDraw.getRegionWidth();
-				float height = heightToWidthRatio * width;
+				int width = (int) (CHARACTER_WIDTH * canvas.width);
+				float heightToWidthRatio = toDraw.getHeight()*1f/toDraw.getWidth();
+				int height = (int) (heightToWidthRatio * width);
 				float ratio = (i+1f)/(toShow.rightChars.size()+1);
 				float middleX = (ratio * 0.5f + 0.5f) * canvas.width;
 				float x = middleX - width/2;
@@ -152,7 +144,7 @@ public class Narrative {
 				if (toShow.highlightChars.contains(toShow.rightChars.get(i).id)){
 					col = Color.WHITE;
 				}
-				canvas.draw(toDraw, col,x,y,width,height);
+				canvas.drawCharacter(toDraw, x, y, width, height, col,false);
 			}
 		}
 		

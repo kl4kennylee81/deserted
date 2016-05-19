@@ -1,7 +1,7 @@
 characters:
   0:
     characterId: 0
-    totalSP: 12
+    totalSP: 10
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -39,7 +39,7 @@ characters:
     - 44
   1:
     characterId: 1
-    totalSP: 2
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 7
@@ -52,7 +52,7 @@ characters:
     - 5
   2:
     characterId: 2
-    totalSP: 2
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 16
@@ -65,7 +65,7 @@ characters:
     - 18
   3:
     characterId: 3
-    totalSP: 2
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 16
@@ -78,7 +78,7 @@ characters:
     - 15
   4:
     characterId: 4
-    totalSP: 2
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 22
@@ -91,7 +91,7 @@ characters:
     - 24
   5:
     characterId: 5
-    totalSP: 2
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 23
@@ -155,7 +155,7 @@ levels:
     needsSelect: true
   10:
     levelName: Level3
-    beaten: true
+    beaten: false
     boss: false
     needsSelect: true
     gainedSP: 1
@@ -193,10 +193,9 @@ availableCharacters:
 - 3
 - 4
 - 5
-- 2
-- 2
 unlockableCharacters:
 - 1
+- 2
 - 3
 - 4
 - 5
