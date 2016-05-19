@@ -115,7 +115,9 @@ public class MainMenuController {
 			((StartingMenu) menu).updateLevel(levelName);
 			if (((StartingMenu) menu).isDone){
 				if (((StartingMenu) menu).isNew){
-					//do w.e to start game
+					//todo new game starting at tutorial1
+					this.levelName = Constants.LEVEL_BEGIN;
+					isDone = true;
 				} else {
 					this.menu = createMainMenu();
 				}

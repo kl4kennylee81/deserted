@@ -182,14 +182,13 @@
   maxHealth: 12
   hexColor: FF9900FF
   speed: 4.
-  castSpeed: 11.
+  castSpeed: 10.
   slots: 3
   availableActions:
   - 0
   - 38
   - 42
   - 40
-  - 33
   texture: models/CHARA_5.png
   icon: models/bunmage_icon.png
   animationId: 108
@@ -340,7 +339,7 @@
   availableActions:
   - 0
   - 4
-  - 38
+  - 36
 
   texture: models/CHARA_3.png
   icon: models/sulus_icon.png
@@ -424,8 +423,8 @@
   health: 2
   maxHealth: 2
   hexColor: FF9900FF
-  speed: 3.0
-  castSpeed: 3.75
+  speed: 4.0
+  castSpeed: 2.5
   slots: 2
   availableActions:
   - 0
