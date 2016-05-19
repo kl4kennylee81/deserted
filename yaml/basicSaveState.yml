@@ -1,32 +1,42 @@
 characters:
   0:
     characterId: 0
-    totalSP: 3
+    totalSP: 10
     actionTree:
     - actionId: 0
     - actionId: 4
       nextAction:
-      - actionId: 23
-        cost: 1
+      - actionId: 43
+        cost: 2
       - actionId: 11
         cost: 1
+      - actionId: 23
+        cost: 1
+      - actionId: 39
+        cost: 2
     - actionId: 3
       nextAction:
-      - actionId: 18
-        cost: 1
+      - actionId: 30
+        cost: 2
       - actionId: 25
         cost: 1
-    - actionId: 35
+      - actionId: 38
+        cost: 2
+      - actionId: 18
+        cost: 1
+    - actionId: 44
       nextAction:
-      - actionId: 7
+      - actionId: 45
         cost: 1
-      - actionId: 30
+      - actionId: 46
         cost: 1
+      - actionId: 47
+        cost: 2
     currentActions:
     - 0
     - 4
     - 3
-    - 35
+    - 44
   1:
     characterId: 1
     totalSP: 0
