@@ -16,6 +16,9 @@ public class Tile {
 	//Available to target
 	boolean canTarget;
 	
+	//single path can hit
+	boolean singleCanTarget;
+	
 	//Tile is attacked
 	boolean isAttacked;
 	
@@ -24,11 +27,11 @@ public class Tile {
 	
 	public Tile(TileState effect) {
 		this.state = effect;
-		isHighlighted = canTarget = isAttacked = isOccupied = false;
+		isHighlighted = canTarget = isAttacked = isOccupied = singleCanTarget = false;
 	}
 	
 	public void reset(){
-		isHighlighted = canTarget = isAttacked = isOccupied = false;
+		isHighlighted = canTarget = isAttacked = isOccupied = singleCanTarget = false;
 	}
 	
 	public void setEffect(TileState effect) {

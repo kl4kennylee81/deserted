@@ -1,35 +1,45 @@
 characters:
   0:
     characterId: 0
-    totalSP: 3
+    totalSP: 11
     actionTree:
     - actionId: 0
     - actionId: 4
       nextAction:
-      - actionId: 23
-        cost: 1
+      - actionId: 43
+        cost: 2
       - actionId: 11
         cost: 1
+      - actionId: 23
+        cost: 1
+      - actionId: 39
+        cost: 2
     - actionId: 3
       nextAction:
-      - actionId: 18
-        cost: 1
+      - actionId: 30
+        cost: 2
       - actionId: 25
         cost: 1
-    - actionId: 35
+      - actionId: 38
+        cost: 2
+      - actionId: 18
+        cost: 1
+    - actionId: 44
       nextAction:
-      - actionId: 7
+      - actionId: 45
         cost: 1
-      - actionId: 30
+      - actionId: 46
         cost: 1
+      - actionId: 47
+        cost: 2
     currentActions:
     - 0
     - 4
-    - 25
-    - 35
+    - 3
+    - 44
   1:
     characterId: 1
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 7
@@ -42,7 +52,7 @@ characters:
     - 5
   2:
     characterId: 2
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 16
@@ -55,7 +65,7 @@ characters:
     - 18
   3:
     characterId: 3
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 16
@@ -68,7 +78,7 @@ characters:
     - 15
   4:
     characterId: 4
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 22
@@ -81,7 +91,7 @@ characters:
     - 24
   5:
     characterId: 5
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 23
@@ -134,7 +144,7 @@ levels:
     needsSelect: true
   12:
     levelName: Level3
-    beaten: false
+    beaten: true
     boss: false
     needsSelect: true
     gainedSP: 1
@@ -167,7 +177,7 @@ levels:
     boss: false
   18:
     levelName: BossTest2
-    beaten: true
+    beaten: false
     needsSelect: false
     boss: false
     surviveFor: 5
@@ -183,9 +193,9 @@ availableCharacters:
 - 3
 - 4
 - 5
+- 2
 unlockableCharacters:
 - 1
-- 2
 - 3
 - 4
 - 5

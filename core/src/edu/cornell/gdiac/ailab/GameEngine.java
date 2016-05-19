@@ -52,6 +52,7 @@ import edu.cornell.gdiac.ailab.GameEngine.GameState;
 import edu.cornell.gdiac.ailab.GameSaveState.LevelData;
 //import edu.cornell.gdiac.util.*;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
+import edu.cornell.gdiac.ailab.TransitionScreen.TransitionState;
 
 /**
  * Primary class for controlling the game.
@@ -183,6 +184,11 @@ public class GameEngine implements Screen {
 	
 	private LevelData curLevelData;
 	
+	/** transition screen used to switch between menu states */
+	private TransitionScreen transitionScreen;
+	
+	private boolean isTransitioning;
+	
 	/** 
 	 * Constructs a new game engine
 	 *
@@ -204,6 +210,9 @@ public class GameEngine implements Screen {
 		gameplayController = new GameplayController(mouseOverController, cmc, pmc, file, fileNum, false);
 		tutorialGameplayController = new TutorialGameplayController(mouseOverController, cmc, pmc, file, fileNum);
 		narrativeController = new NarrativeController();
+		
+		this.transitionScreen = new TransitionScreen();
+		this.isTransitioning = false;
 		
 		updateMeasures();
 	}
@@ -243,7 +252,6 @@ public class GameEngine implements Screen {
     
     public void startGame(String levelName, String backLevelName, boolean needsSelect) throws IOException {
     	if (this.gameSaveStateController.containsLevel(levelName)){
-    		System.out.println("HI" +levelName);
     		curLevelData = this.gameSaveStateController.getLevelData(levelName);
     		System.out.println("okay"+curLevelData.levelName);
     		if (curLevelData.needsSelect() && needsSelect){
@@ -330,10 +338,15 @@ public class GameEngine implements Screen {
 		//play correct sounds depending on game state
 	    SoundController.update(gameState);
 		// What we do depends on the game state
-		switch (gameState) {
+	    
+	    // always update the transitionScreen
+	    this.updateTransition();
+		
+	    switch (gameState) {
 		case LOAD:
 			updateLoad();
 			drawLoad();
+			this.drawTransitionScreen();
 			canvas.end();
 			break;
 		case MENU:
@@ -343,6 +356,7 @@ public class GameEngine implements Screen {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			this.drawTransitionScreen();
 			canvas.end();
 			break;
 		case LEVEL_MENU:
@@ -351,6 +365,7 @@ public class GameEngine implements Screen {
 		case PLAY:
 			updatePlay();
 			drawPlay();
+			this.drawTransitionScreen();
 			canvas.end();
 			break;
 		case FINISH:
@@ -386,14 +401,17 @@ public class GameEngine implements Screen {
 			break;
 		case CUSTOMIZE:
 			updateCustomization();
+			this.drawTransitionScreen();
 			canvas.end();
 			break;
 		case SELECT:
 			updateCharacterSelectMenu();
+			this.drawTransitionScreen();
 			canvas.end();
 			break;
 		case NARRATIVE:
 			updateNarrative();
+			this.drawTransitionScreen();
 			canvas.end();
 			break;
 		}
@@ -437,7 +455,7 @@ public class GameEngine implements Screen {
 			
 			try {
 				if (characterSelectController.nextLevelName.equals("Start Level")){
-					loadNextMenu(curLevelData.levelName, "", false);
+					this.setTransition(curLevelData.levelName, false);
 				} else {
 					loadNextMenu(characterSelectController.nextLevelName, "Character Select",false);
 					if (characterSelectController.nextLevelName.equals("Skill Tree")){
@@ -484,6 +502,64 @@ public class GameEngine implements Screen {
         }
         return false;
     }
+	
+	private boolean getDoneTransition(){
+		return this.isTransitioning && !this.transitionScreen.isActive();
+	}
+	
+	public void setTransition(GameState stateChange, float second){
+		if (!this.isTransitioning && !this.transitionScreen.isActive()){
+			this.isTransitioning = true;
+    		// game is switching to the menu will have a transition phase
+    		this.transitionScreen.setFadeOut(second,stateChange);
+		}
+	}
+	
+	public void setTransition(GameState stateChange){
+		setTransition(stateChange,Constants.TRANSITION_TIME);
+	}
+	
+	public void setTransition(String nextLevel,boolean needsSelect){
+		setTransition(nextLevel,needsSelect,Constants.TRANSITION_TIME);
+	}
+	
+	public void setTransition(String nextLevel,boolean needsSelect, float second){
+		//TODO hotifx not sure what this continue is
+		
+		if (nextLevel == "" || nextLevel == "Continue"){
+			return;
+		}
+		if (!this.isTransitioning && !this.transitionScreen.isActive()){
+			this.isTransitioning = true;
+    		// game is switching to the menu will have a transition phase
+    		this.transitionScreen.setFadeOut(second,nextLevel,needsSelect);
+		}
+	}
+	
+	public void updateTransition(){
+		if (this.getDoneTransition()){
+			this.isTransitioning = false;
+		}
+		else if (this.isTransitioning && this.transitionScreen.isActive()){
+			TransitionState beforeState = this.transitionScreen.getTransitionState();
+			this.transitionScreen.updateScreen();
+			TransitionState afterState = this.transitionScreen.getTransitionState();
+			if (beforeState == TransitionState.FADEOUT && afterState == TransitionState.FADEIN){
+				if (this.transitionScreen.getNextState() != null){
+					this.gameState = this.transitionScreen.getNextState();
+				}
+				if (this.transitionScreen.getNextLevel() != ""){
+					//TODO menu
+					try {
+						loadNextMenu(transitionScreen.getNextLevel(), "Main Menu",transitionScreen.getNeedsSelect());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
 
 	/** 
 	 * Updates the state of the loading screen.
@@ -496,7 +572,7 @@ public class GameEngine implements Screen {
         	if (gameLoad < 1.0f) {
         		gameLoad += 0.01f;
         	} else {
-        		gameState = GameState.MENU;
+        		this.setTransition(GameState.MENU);
         		SoundController.LoadContent(manager);
         	}
       	}
@@ -509,7 +585,7 @@ public class GameEngine implements Screen {
 	private void updateMenu() throws IOException {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
-			loadNextMenu(mainMenuController.levelName, "Main Menu",true);
+			this.setTransition(mainMenuController.levelName,true);
 		}
 	}
 	
@@ -558,30 +634,20 @@ public class GameEngine implements Screen {
     	curGameplayController.update();
     	if (curGameplayController.isDone()){
     		if (curGameplayController.playerWon()){
-	    		//check if levelb eaten and update savestate
+	    		//check if level beaten and update savestate
 	    		if (curLevelData.postNarrative != null && !curLevelData.seenPost){
 	    			narrativeController.reset(curLevelData.postNarrative, false);
 	    			gameState = GameState.NARRATIVE;
 	    		} else {
-	    			try {
 	    				if (curLevelData.getNextLevelName() != null){
-	    					loadNextMenu(curLevelData.getNextLevelName(), "",true);
+	    					this.setTransition(curLevelData.getNextLevelName(), true);
 	    				} else {
+	    					this.setTransition(GameState.MENU);
 	    					mainMenuController.resetMenu();
-	    		    		gameState = GameState.MENU;
 	    				}
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 	    		}
     		} else {
-    			try {
-					loadNextMenu(curLevelData.levelName,"",false);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+    			this.setTransition(curLevelData.levelName, false);
     		}
     	}
     	if (InputController.pressedP()){
@@ -598,6 +664,13 @@ public class GameEngine implements Screen {
     		gameState = GameState.PLAY;
     	}
     }
+    
+    public void drawTransitionScreen(){
+		if (this.transitionScreen.isActive()){
+			this.transitionScreen.draw(canvas);
+		}
+    }
+    
 	/**
 	 * Draws the game board while we are still loading
 	 */
