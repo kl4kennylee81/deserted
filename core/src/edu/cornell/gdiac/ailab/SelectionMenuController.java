@@ -500,15 +500,14 @@ public class SelectionMenuController {
 			int chosenX = chosenTile.x;
 			int chosenY = chosenTile.y;
 			chosenTile.free();
-			//System.out.println(chosenX+" "+chosenY);
+			System.out.println(chosenX+" "+chosenY);
 			boolean canHit = this.board.getcanTarget(chosenX,chosenY);
-			//System.out.println(canHit);
+			System.out.println(canHit);
 			if (canHit){
-				//System.out.println("haha");
+				System.out.println("hi");
 				this.selectedX = chosenX;
 				this.selectedY = chosenY;
 				if (InputController.pressedLeftMouse()){
-					//System.out.println("PRESSED");
 					confirmedAction();
 				}
 				return;
@@ -979,9 +978,11 @@ public class SelectionMenuController {
 				}
 				else if (this.action.needsToggle && choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x,y);
+					board.setCanTarget(x, y);
 				}
 				else if (this.action.needsToggle && !choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x, y);
+					board.setCanTarget(x, y);
 				}
 				else{
 					board.setCanTarget(x, y);
@@ -1004,9 +1005,11 @@ public class SelectionMenuController {
 				}
 				else if (this.action.needsToggle && choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x,y);
+					board.setCanTarget(x, y);
 				}
 				else if (this.action.needsToggle && !choosingTarget && this.direction == Direction.DOWN){
-					board.setHighlighted(x, y);
+					board.setHighlighted(x,y);
+					board.setCanTarget(x, y);
 				}
 				else{
 					board.setCanTarget(x, y);
@@ -1028,9 +1031,11 @@ public class SelectionMenuController {
 
 				else if (this.action.needsToggle && choosingTarget && this.direction == Direction.UP){
 					board.setHighlighted(x,y);
+					board.setCanTarget(x, y);
 				}
 				else if (this.action.needsToggle && !choosingTarget && this.direction == Direction.UP){
-					board.setHighlighted(x, y);
+					board.setHighlighted(x,y);
+					board.setCanTarget(x, y);
 				}
 				else{
 					board.setCanTarget(x, y);
@@ -1051,9 +1056,11 @@ public class SelectionMenuController {
 
 				else if (this.action.needsToggle && choosingTarget && this.direction == Direction.DOWN){
 					board.setHighlighted(x,y);
+					board.setCanTarget(x, y);
 				}
 				else if (this.action.needsToggle && !choosingTarget && this.direction == Direction.DOWN){
-					board.setHighlighted(x, y);
+					board.setHighlighted(x,y);
+					board.setCanTarget(x, y);
 				}
 				else{
 					board.setCanTarget(x, y);

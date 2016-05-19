@@ -455,7 +455,7 @@ public class GameEngine implements Screen {
 			
 			try {
 				if (characterSelectController.nextLevelName.equals("Start Level")){
-					this.setTransition(curLevelData.levelName, false,0.5f);
+					this.setTransition(curLevelData.levelName, false);
 				} else {
 					loadNextMenu(characterSelectController.nextLevelName, "Character Select",false);
 					if (characterSelectController.nextLevelName.equals("Skill Tree")){
@@ -515,6 +515,14 @@ public class GameEngine implements Screen {
 		}
 	}
 	
+	public void setTransition(GameState stateChange){
+		setTransition(stateChange,Constants.TRANSITION_TIME);
+	}
+	
+	public void setTransition(String nextLevel,boolean needsSelect){
+		setTransition(nextLevel,needsSelect,Constants.TRANSITION_TIME);
+	}
+	
 	public void setTransition(String nextLevel,boolean needsSelect, float second){
 		//TODO hotifx not sure what this continue is
 		
@@ -564,7 +572,7 @@ public class GameEngine implements Screen {
         	if (gameLoad < 1.0f) {
         		gameLoad += 0.01f;
         	} else {
-        		this.setTransition(GameState.MENU, 1f);
+        		this.setTransition(GameState.MENU);
         		SoundController.LoadContent(manager);
         	}
       	}
@@ -577,7 +585,7 @@ public class GameEngine implements Screen {
 	private void updateMenu() throws IOException {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
-			this.setTransition(mainMenuController.levelName,true,1f);
+			this.setTransition(mainMenuController.levelName,true);
 		}
 	}
 	
@@ -632,14 +640,14 @@ public class GameEngine implements Screen {
 	    			gameState = GameState.NARRATIVE;
 	    		} else {
 	    				if (curLevelData.getNextLevelName() != null){
-	    					this.setTransition(curLevelData.getNextLevelName(), true,0.5f);
+	    					this.setTransition(curLevelData.getNextLevelName(), true);
 	    				} else {
-	    					this.setTransition(GameState.MENU, 0.5f);
+	    					this.setTransition(GameState.MENU);
 	    					mainMenuController.resetMenu();
 	    				}
 	    		}
     		} else {
-    			this.setTransition(curLevelData.levelName, false,0.5f);
+    			this.setTransition(curLevelData.levelName, false);
     		}
     	}
     	if (InputController.pressedP()){

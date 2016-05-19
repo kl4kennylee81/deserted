@@ -112,4 +112,7 @@ public class Constants {
 	
 	// Starting Game
 	public static final String LEVEL_BEGIN = "tutorial1";
+	
+	//transition constant
+	public static final float TRANSITION_TIME = 0.0f;
 }
