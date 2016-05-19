@@ -30,7 +30,7 @@ public class GridBoard {
 	private static final Color BASIC_COLOR1 = new Color(0.2f, 0.2f, 1.0f, 1.0f);
 	private static final Color BASIC_COLOR2 = new Color(237f/255f, 92f/255f, 92f/255f, 1.0f);//new Color(1.0f, 0.6f, 0.2f, 1.0f);
 	/** Highlight color for power tiles */
-	private static final Color CAN_TARGET_COLOR = new Color( 1f,  1.0f,  0f, 1.0f);
+	private static final Color CAN_TARGET_COLOR = new Color(1f,  1.0f,  0f, 1.0f);
 	private static final Color HIGHLIGHT_COLOR = new Color( 0.0f,  1.0f,  1.0f, 1.0f);
 	private static final Color ATTACK_COLOR = new Color( 1f, 0f, 0f, 1f);
 	private static final Color BROKEN_COLOR = Color.BLACK.cpy();
@@ -86,6 +86,15 @@ public class GridBoard {
 	public boolean getcanTarget(int x,int y){
 		if (this.isInBounds(x, y)){
 			return tiles[x][y].canTarget;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public boolean getSingleCanTarget(int x,int y){
+		if (this.isInBounds(x, y)){
+			return tiles[x][y].singleCanTarget;
 		}
 		else{
 			return false;
@@ -234,6 +243,9 @@ public class GridBoard {
 		float tileY = tileH*y + getBoardOffsetY(canvas);
 
 		Color color = x<width/2 ? BASIC_COLOR1.cpy() : BASIC_COLOR2.cpy();
+//		if (tile.singleCanTarget){
+//			color = SINGLE_TARGET_COLOR;
+//		}
 		if (tile.isHighlighted){
 			if (!controller.choosingTarget){
 				color = CAN_TARGET_COLOR;
@@ -295,6 +307,12 @@ public class GridBoard {
 	public void setHighlighted(int x, int y){
 		if (x>=0 && x<width && y>=0 && y<height){
 			tiles[x][y].isHighlighted = true;
+		}
+	}
+	
+	public void setSingleCanTarget(int x,int y){
+		if (x>=0 && x<width && y>=0 && y<height){
+			tiles[x][y].singleCanTarget = true;
 		}
 	}
 	

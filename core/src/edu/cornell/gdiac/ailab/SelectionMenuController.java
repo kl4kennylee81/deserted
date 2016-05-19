@@ -487,6 +487,21 @@ public class SelectionMenuController {
 			}
 		}
 	}
+	
+	protected boolean actionCanHit(int chosenX,int chosenY){
+		Action curAction = this.getMenu().getSelectedAction();
+		if (curAction != null){
+			switch (curAction.pattern){
+			case SINGLEPATH:
+				return this.board.getSingleCanTarget(chosenX,chosenY);
+			default:
+				return this.board.getcanTarget(chosenX,chosenY);
+			}
+		}
+		else{
+			return false;
+		}
+	}
 
 	protected void mouseHighlight(){
 		// mouse controls for single
@@ -500,17 +515,23 @@ public class SelectionMenuController {
 			int chosenX = chosenTile.x;
 			int chosenY = chosenTile.y;
 			chosenTile.free();
-			System.out.println(chosenX+" "+chosenY);
-			boolean canHit = this.board.getcanTarget(chosenX,chosenY);
-			System.out.println(canHit);
+			boolean canHit = this.actionCanHit(chosenX, chosenY);
+//			System.out.println(canHit);
 			if (canHit){
-				System.out.println("hi");
 				this.selectedX = chosenX;
 				this.selectedY = chosenY;
 				if (InputController.pressedLeftMouse()){
 					confirmedAction();
 				}
 				return;
+			}
+			
+			// this is to allow people to still confirm their single paths when in the box
+			else if (this.action.pattern == Pattern.SINGLEPATH
+					&& actionCanHit(this.selectedX,this.selectedY)){
+				if (InputController.pressedLeftMouse()){
+					confirmedAction();
+				}
 			}
 		}
 	}
@@ -897,6 +918,7 @@ public class SelectionMenuController {
 									board.setCanTarget(ii, jj);
 								}
 							}
+							board.setSingleCanTarget(i, j);
 						}
 					}
 				}
