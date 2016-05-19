@@ -18,21 +18,23 @@ import edu.cornell.gdiac.ailab.GameSaveState.CharacterData;
 public class CharacterCustomization extends Menu {
 	
 	/** start position of the menu's options x Position **/
-	private static final float RELATIVE_X_POS = 0.15f;
+	private static final float RELATIVE_X_POS = 0.05f;
 	
 	/** start position of the menu's options y Position going down **/
-	private static final float RELATIVE_Y_POS = 0.83f;
+	private static final float RELATIVE_Y_POS = 0.7f;
 	
 	/** relative width of options **/
-	private static final float RELATIVE_WIDTH = 0.12f;
+	private static final float RELATIVE_WIDTH = 0.05f;
 	
 	/** relative height of options **/
 	private static final float RELATIVE_HEIGHT = 0.05f;
 	
 	/** relative spacing between options **/
-	private static final float RELATIVE_MENU_SPACING = 0.17f;
+	private static final float RELATIVE_MENU_SPACING = 0.11f;
 	
-	private static final float RELATIVE_HIGHLIGHT_X_OFFSET = 0.02f;
+	private static final float RELATIVE_HIGHLIGHT_X_OFFSET = 0.005f;
+	
+	private static final float RELATIVE_HIGHLIGHT_Y_OFFSET = 0.005f;
 	
 	public static final String CHARACTER_ID_STRING = "CharId:";
 	
@@ -81,7 +83,7 @@ public class CharacterCustomization extends Menu {
 		this.charData = gameSaveState.getCharacterData(selectedCharacterId);
 		
 		//this.options = new Option[3 + gameSaveState.characters.size() + charData.getTotalNumActionUpgrades()];
-		this.options = new Option[3 + gameSaveState.availableCharacters.size() + charData.getTotalNumActionUpgrades()];
+		this.options = new Option[3 + gameSaveState.availableCharacters.size() + charData.getTotalNumActionUpgrades()-1];
 		options[0] = new Option("Back","Back");
 		options[0].setBounds(0.08f, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
 		options[0].setColor(Constants.MENU_COLOR);
@@ -142,23 +144,53 @@ public class CharacterCustomization extends Menu {
 			e.printStackTrace();
 		}
 		
+		
 		for (j = 0; j < charData.actionUpgrades.size(); j++){
-			float spacedY= (RELATIVE_Y_POS - RELATIVE_MENU_SPACING * j);
 			ActionUpgrade actionUpgrade = charData.actionUpgrades.get(j);
-			options[i] = new Option(actionMap.get(actionUpgrade).name, Integer.toString(actionUpgrade.actionId));
-			options[i].setBounds(RELATIVE_X_POS, spacedY, RELATIVE_WIDTH, RELATIVE_HEIGHT);
+			//don't want move 
+			if (actionMap.get(actionUpgrade).name.equals("Move")){
+				continue;
+			}
+			//j is one more than it should be because we encountered useless Move case.
+			float spacedX= (RELATIVE_X_POS + RELATIVE_WIDTH * (j-1) + RELATIVE_MENU_SPACING * (j-1));
+			
+			options[i] = new Option("", Integer.toString(actionUpgrade.actionId));
+			options[i].setImage(actionMap.get(actionUpgrade).menuIcon);
+			options[i].setBounds(spacedX, RELATIVE_Y_POS, RELATIVE_WIDTH, RELATIVE_HEIGHT);
 			options[i].setColor(Constants.MENU_COLOR);
 			i++;
 			k = 0;
+			float tempSpacedX = spacedX - RELATIVE_WIDTH;
 			for (ActionUpgrade au : actionUpgrade.upgrades){
-				float tempSpacedY = spacedY + RELATIVE_MENU_SPACING/6 - RELATIVE_MENU_SPACING*k/3;
-				options[i] = new Option(actionMap.get(au).name, Integer.toString(au.actionId));
-				options[i].setBounds(RELATIVE_X_POS+0.13f, tempSpacedY, RELATIVE_WIDTH, RELATIVE_HEIGHT);
+				tempSpacedX = tempSpacedX + (2*RELATIVE_WIDTH) * k;
+				options[i] = new Option("", Integer.toString(au.actionId));
+				options[i].setImage(actionMap.get(au).menuIcon);
+				options[i].setBounds(tempSpacedX, RELATIVE_Y_POS-0.13f, RELATIVE_WIDTH, RELATIVE_HEIGHT);
 				options[i].setColor(Constants.MENU_COLOR);
 				i++;
 				k++;
 			}
 		}
+		
+		
+		
+//		for (j = 0; j < charData.actionUpgrades.size(); j++){
+//			float spacedY= (RELATIVE_Y_POS - RELATIVE_MENU_SPACING * j);
+//			ActionUpgrade actionUpgrade = charData.actionUpgrades.get(j);
+//			options[i] = new Option(actionMap.get(actionUpgrade).name, Integer.toString(actionUpgrade.actionId));
+//			options[i].setBounds(RELATIVE_X_POS, spacedY, RELATIVE_WIDTH, RELATIVE_HEIGHT);
+//			options[i].setColor(Constants.MENU_COLOR);
+//			i++;
+//			k = 0;
+//			for (ActionUpgrade au : actionUpgrade.upgrades){
+//				float tempSpacedY = spacedY + RELATIVE_MENU_SPACING/6 - RELATIVE_MENU_SPACING*k/3;
+//				options[i] = new Option(actionMap.get(au).name, Integer.toString(au.actionId));
+//				options[i].setBounds(RELATIVE_X_POS+0.13f, tempSpacedY, RELATIVE_WIDTH, RELATIVE_HEIGHT);
+//				options[i].setColor(Constants.MENU_COLOR);
+//				i++;
+//				k++;
+//			}
+//		}
 	}
 	
 	public void setHighlight(Texture t){
@@ -233,7 +265,7 @@ public class CharacterCustomization extends Menu {
 				continue;
 			}
 			float x = options[i].getX(canvas) - RELATIVE_HIGHLIGHT_X_OFFSET*canvas.getWidth();
-			float y = options[i].getY(canvas) - 3*options[i].getHeight(canvas)/4;
+			float y = options[i].getY(canvas)- RELATIVE_HIGHLIGHT_Y_OFFSET*canvas.getHeight();
 			float width = options[i].getWidth(canvas);
 			float height = options[i].getHeight(canvas);
 			
@@ -290,7 +322,7 @@ public class CharacterCustomization extends Menu {
 			miniBoard.reset();
 			drawHighlights(selectedAction);
 			miniBoard.drawMini(canvas);
-			canvas.drawCircle(canvas.width*0.642f, canvas.height*0.41f, canvas.height * 0.06f, Color.BLACK);
+			canvas.drawCircle(canvas.width*0.642f, canvas.height*0.26f, canvas.height * 0.06f, Color.BLACK);
 			
 			//TODO: draw Actions and Costs
 		}
