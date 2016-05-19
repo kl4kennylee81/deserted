@@ -1,7 +1,7 @@
 characters:
   0:
     characterId: 0
-    totalSP: 11
+    totalSP: 10
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -39,7 +39,7 @@ characters:
     - 44
   1:
     characterId: 1
-    totalSP: 1
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 7
@@ -52,7 +52,7 @@ characters:
     - 5
   2:
     characterId: 2
-    totalSP: 1
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 16
@@ -65,7 +65,7 @@ characters:
     - 18
   3:
     characterId: 3
-    totalSP: 1
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 16
@@ -78,7 +78,7 @@ characters:
     - 15
   4:
     characterId: 4
-    totalSP: 1
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 22
@@ -91,7 +91,7 @@ characters:
     - 24
   5:
     characterId: 5
-    totalSP: 1
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 23
@@ -108,7 +108,7 @@ levels:
     beaten: false
     boss: false
     preNarrative: yaml/narratives/test.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/test.yml
     seenPost: false
   1:
@@ -132,59 +132,61 @@ levels:
     beaten: false
     boss: false
     gainedSP: 1
-  10:
+  6:
+    levelName: GhostBossSurvive
+    beaten: false
+    needsSelect: false
+    boss: false
+    surviveFor: 5
+  7:
+    levelName: GhostBossVsRabbit
+    beaten: false
+    needsSelect: false
+    boss: false
+  8:
     levelName: Level1
     beaten: false
     boss: false
     needsSelect: true
-  11:
+    #winIn: 1
+  9:
     levelName: Level2
     beaten: false
     boss: false
     needsSelect: true
-  12:
+    #surviveFor: 1
+  10:
     levelName: Level3
-    beaten: true
+    beaten: false
     boss: false
     needsSelect: true
     gainedSP: 1
     unlockableCharacter: 2
-  13:
+  11:
     levelName: Level4
     beaten: false
     boss: false
     needsSelect: true
-  14:
+  12:
     levelName: Level5
     beaten: false
     boss: false
     needsSelect: true
     gainedSP: 1
     unlockableCharacter: 5
-  15:
+  13:
     levelName: Level6
     beaten: false
     boss: false
     needsSelect: true
-  16:
+  14:
     levelName: pvp
     beaten: false
     boss: false
-  17:
-    levelName: BossTest
+  15:
+    levelName: GhostBoss
     beaten: false
     needsSelect: true
-    boss: false
-  18:
-    levelName: BossTest2
-    beaten: false
-    needsSelect: false
-    boss: false
-    surviveFor: 5
-  19:
-    levelName: BossTest3
-    beaten: false
-    needsSelect: false
     boss: false
 availableCharacters:
 - 0
@@ -193,9 +195,9 @@ availableCharacters:
 - 3
 - 4
 - 5
-- 2
 unlockableCharacters:
 - 1
+- 2
 - 3
 - 4
 - 5

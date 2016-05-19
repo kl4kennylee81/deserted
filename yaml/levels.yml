@@ -181,8 +181,9 @@ Level5:
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/mage.yml", "aiyaml/enchantress.yml", "aiyaml/mage-enchantress.yml"]
-    
-GhostBoss:
+
+# ghost boss 3rd time
+Boss3:
     allies:
         - selectedId: 0
           xPosition: 0
@@ -210,7 +211,8 @@ GhostBoss:
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
 
-GhostBossSurvive:
+# ghost boss survive
+Boss1:
     allies:
         - selectedId: 0
           xPosition: 0
@@ -237,7 +239,8 @@ GhostBossSurvive:
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
 
-GhostBossVsRabbit:
+# ghost boss vs rabbit
+Boss2:
     allies:
         - id: 10
           xPosition: 1
