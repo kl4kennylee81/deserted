@@ -1,0 +1,27 @@
+0:
+  leftCharacters:
+  - 0
+  rightCharacters:
+  highlightCharacters:
+  - 0
+  background: backgrounds/environment.png
+  text: ....I haven't eaten in days
+1:
+  leftCharacters:
+  - 0
+  rightCharacters:
+  highlightCharacters:
+  - 0
+  text: *Stomach Growls
+2:
+  leftCharacters:
+  - 0
+  highlightCharacters:
+  - 0
+  text: Tummy you know complaining won't help
+3:
+  leftCharacters:
+  rightCharacters:
+  highlightCharacters:
+
+  text: Okay

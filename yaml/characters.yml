@@ -159,61 +159,6 @@
   icon: models/tutorial_characters/basic_iconyellow.png
   animationId: 107
 
-9:
-  name: Parent Boss
-  health: 0
-  maxHealth: 0
-  hexColor: FF9900FF
-  speed: 5.
-  castSpeed: 10.
-  slots: 3
-  availableActions:
-  - 0
-  - 1
-  - 2
-  - 3
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconyellow.png
-  animationId: 107
-
-10:  
-  name: Dark Bunny
-  health: 12
-  maxHealth: 12
-  hexColor: FF9900FF
-  speed: 3.5
-  castSpeed: 10.0
-  slots: 3
-  availableActions:
-  - 0
-  - 38
-  - 42
-  - 40
-  texture: models/CHARA_5.png
-  icon: models/bunmage_icon.png
-  animationId: 108
-  bossId: 9
-  sharedStatus: true
-
-11:  
-  name: Light Bunny
-  health: 0
-  maxHealth: 0
-  hexColor: FF9900FF
-  speed: 7.
-  castSpeed: 6.5
-  slots: 3
-  availableActions:
-  - 0
-  - 6
-  - 10
-  - 22
-  texture: models/CHARA_5.png
-  icon: models/bunmage_icon.png
-  animationId: 108
-  bossId: 9
-  sharedStatus: true
-
 89:
   name: Tutorial_part_3
   health: 4
@@ -577,6 +522,7 @@
   animationId: 103
 
 # 1000+ This is where we have the parent characters
+# and the potrait characters
 1000:
   name: Dara
   health: 0
@@ -608,8 +554,86 @@
   icon: models/CASTICON_4.png
   animationId: 103
 
+# Jaffar the ghost spirit wielder
 1002:
-  name: Enemy Character
+  name: Jaffar
+  health: 0
+  maxHealth: 0
+  hexColor: CD2626FF
+  speed: 5.0
+  castSpeed: 7.5
+  slots: 5
+  availableActions:
+  - 0
+  texture: models/CHARA_2.png
+  icon: models/CASTICON_2.png
+  animationId: 103
+
+# Potrait characters
+# fruit seller martha
+1003:
+  name: Martha
+  health: 0
+  maxHealth: 0
+  hexColor: CD2626FF
+  speed: 5.0
+  castSpeed: 7.5
+  slots: 5
+  availableActions:
+  - 0
+  texture: models/CHARA_2.png
+  icon: models/CASTICON_2.png
+  animationId: 103
+
+# Potrait Characters
+# husband/dad of fruit seller martha
+1004:
+  name: Tom
+  health: 0
+  maxHealth: 0
+  hexColor: CD2626FF
+  speed: 5.0
+  castSpeed: 7.5
+  slots: 5
+  availableActions:
+  - 0
+  texture: models/CHARA_2.png
+  icon: models/CASTICON_2.png
+  animationId: 103
+
+# the spirit guide
+1005:
+  name: Arash
+  health: 0
+  maxHealth: 0
+  hexColor: CD2626FF
+  speed: 5.0
+  castSpeed: 7.5
+  slots: 5
+  availableActions:
+  - 0
+  texture: models/CHARA_2.png
+  icon: models/CASTICON_2.png
+  animationId: 103
+
+# elder rock
+1006:
+  name: Elder Rock
+  health: 0
+  maxHealth: 0
+  hexColor: CD2626FF
+  speed: 5.0
+  castSpeed: 7.5
+  slots: 5
+  availableActions:
+  - 0
+  texture: models/CHARA_2.png
+  icon: models/CASTICON_2.png
+  animationId: 103
+
+# Male Noble
+1006:
+  name: Hakim
   health: 0
   maxHealth: 0
   hexColor: CD2626FF
@@ -655,5 +679,60 @@
   texture: models/CHARA_3.png
   icon: models/bunmage_icon.png
   animationId: 109
+  bossId: 9
+  sharedStatus: true
+
+9:
+  name: Parent Boss
+  health: 0
+  maxHealth: 0
+  hexColor: FF9900FF
+  speed: 5.
+  castSpeed: 10.
+  slots: 3
+  availableActions:
+  - 0
+  - 1
+  - 2
+  - 3
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconyellow.png
+  animationId: 107
+
+10:  
+  name: Dark Bunny
+  health: 12
+  maxHealth: 12
+  hexColor: FF9900FF
+  speed: 3.5
+  castSpeed: 10.0
+  slots: 3
+  availableActions:
+  - 0
+  - 38
+  - 42
+  - 40
+  texture: models/CHARA_5.png
+  icon: models/bunmage_icon.png
+  animationId: 108
+  bossId: 9
+  sharedStatus: true
+
+11:  
+  name: Light Bunny
+  health: 0
+  maxHealth: 0
+  hexColor: FF9900FF
+  speed: 7.
+  castSpeed: 6.5
+  slots: 3
+  availableActions:
+  - 0
+  - 6
+  - 10
+  - 22
+  texture: models/CHARA_5.png
+  icon: models/bunmage_icon.png
+  animationId: 108
   bossId: 9
   sharedStatus: true
