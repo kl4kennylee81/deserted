@@ -35,7 +35,6 @@ public class HighlightScreen {
 		highlight_circle = new Texture(HIGHLIGHT_CIRCLE_TEXTURE);
 		highlight_rect = new Texture(HIGHLIGHT_RECTANGLE_TEXTURE);
 		color = Color.BLACK.cpy();
-		color.mul(1,1,1,SCREEN_OPACITY);
 		highlightColor = new Color(255f/255f, 221f/255f, 153f/255f, 1f);
 		highlightColor.set(highlightColor.r, highlightColor.g, highlightColor.b, 0.4f);
 		currentHighlights = new ArrayList<CurrentHighlight>();
@@ -44,6 +43,10 @@ public class HighlightScreen {
 		maxY = Integer.MAX_VALUE;
 		minY = Integer.MIN_VALUE;
 		x_s = new ArrayList<Integer>();
+	}
+	
+	public float getOpacity(){
+		return SCREEN_OPACITY;
 	}
 	
 	public void setJustScreen(){
@@ -55,8 +58,10 @@ public class HighlightScreen {
 		justScreen = false;
 	}
 	public void draw(GameCanvas canvas){
+		Color highlightColor = color.cpy().mul(1,1,1,this.getOpacity());
+		
 		if (justScreen){
-			canvas.drawScreen(0, 0, screen, canvas.getWidth(), canvas.getHeight(), color);
+			canvas.drawScreen(0, 0, screen, canvas.getWidth(), canvas.getHeight(), highlightColor);
 			return;
 		}
 		if (currentHighlights.size() == 0){
@@ -75,7 +80,7 @@ public class HighlightScreen {
 		}
 		Color toColor = Color.ORANGE.cpy();
 		toColor = toColor.lerp(Color.WHITE.cpy(), lerpVal);
-		canvas.drawScreen(0, 0, screen, canvas.getWidth(), canvas.getHeight(), color);
+		canvas.drawScreen(0, 0, screen, canvas.getWidth(), canvas.getHeight(), highlightColor);
 		for (CurrentHighlight currentHighlight:currentHighlights){
 			canvas.draw(currentHighlight.isSquare? highlight_rect : highlight_circle, toColor, (float)currentHighlight.xPos, 
 					(float)currentHighlight.yPos, (float)currentHighlight.width, 

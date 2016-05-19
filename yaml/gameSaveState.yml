@@ -25,7 +25,7 @@ characters:
     currentActions:
     - 0
     - 4
-    - 25
+    - 3
     - 35
   1:
     characterId: 1
@@ -167,13 +167,13 @@ levels:
     boss: false
   18:
     levelName: BossTest2
-    beaten: true
+    beaten: false
     needsSelect: false
     boss: false
     surviveFor: 5
   19:
     levelName: BossTest3
-    beaten: false
+    beaten: true
     needsSelect: false
     boss: false
 availableCharacters:
@@ -191,4 +191,4 @@ unlockableCharacters:
 - 5
 selectedCharacters:
 - 0
-- 1
+- 2

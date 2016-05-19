@@ -52,6 +52,7 @@ import edu.cornell.gdiac.ailab.GameEngine.GameState;
 import edu.cornell.gdiac.ailab.GameSaveState.LevelData;
 //import edu.cornell.gdiac.util.*;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
+import edu.cornell.gdiac.ailab.TransitionScreen.TransitionState;
 
 /**
  * Primary class for controlling the game.
@@ -183,6 +184,11 @@ public class GameEngine implements Screen {
 	
 	private LevelData curLevelData;
 	
+	/** transition screen used to switch between menu states */
+	private TransitionScreen transitionScreen;
+	
+	private boolean isTransitioning;
+	
 	/** 
 	 * Constructs a new game engine
 	 *
@@ -204,6 +210,9 @@ public class GameEngine implements Screen {
 		gameplayController = new GameplayController(mouseOverController, cmc, pmc, file, fileNum, false);
 		tutorialGameplayController = new TutorialGameplayController(mouseOverController, cmc, pmc, file, fileNum);
 		narrativeController = new NarrativeController();
+		
+		this.transitionScreen = new TransitionScreen();
+		this.isTransitioning = false;
 		
 		updateMeasures();
 	}
@@ -330,10 +339,15 @@ public class GameEngine implements Screen {
 		//play correct sounds depending on game state
 	    SoundController.update(gameState);
 		// What we do depends on the game state
-		switch (gameState) {
+	    
+	    // always update the transitionScreen
+	    this.updateTransition();
+		
+	    switch (gameState) {
 		case LOAD:
 			updateLoad();
 			drawLoad();
+			this.drawTransitionScreen();
 			canvas.end();
 			break;
 		case MENU:
@@ -343,6 +357,7 @@ public class GameEngine implements Screen {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			this.drawTransitionScreen();
 			canvas.end();
 			break;
 		case LEVEL_MENU:
@@ -484,6 +499,34 @@ public class GameEngine implements Screen {
         }
         return false;
     }
+	
+	private boolean getDoneTransition(){
+		return this.isTransitioning && !this.transitionScreen.isActive();
+	}
+	
+	public void setTransition(GameState stateChange, float second){
+		if (!this.isTransitioning && !this.transitionScreen.isActive()){
+			this.isTransitioning = true;
+    		// game is switching to the menu will have a transition phase
+    		this.transitionScreen.setFadeOut(second,stateChange);
+		}
+	}
+	
+	public void updateTransition(){
+		if (this.getDoneTransition()){
+			this.isTransitioning = false;
+		}
+		else if (this.isTransitioning && this.transitionScreen.isActive()){
+			TransitionState beforeState = this.transitionScreen.getTransitionState();
+			this.transitionScreen.updateScreen();
+			TransitionState afterState = this.transitionScreen.getTransitionState();
+			if (beforeState == TransitionState.FADEOUT && afterState == TransitionState.FADEIN){
+				if (this.transitionScreen.getNextState() != null){
+					this.gameState = this.transitionScreen.getNextState();
+				}
+			}
+		}
+	}
 
 	/** 
 	 * Updates the state of the loading screen.
@@ -496,7 +539,7 @@ public class GameEngine implements Screen {
         	if (gameLoad < 1.0f) {
         		gameLoad += 0.01f;
         	} else {
-        		gameState = GameState.MENU;
+        		this.setTransition(GameState.MENU, 1f);
         		SoundController.LoadContent(manager);
         	}
       	}
@@ -598,6 +641,13 @@ public class GameEngine implements Screen {
     		gameState = GameState.PLAY;
     	}
     }
+    
+    public void drawTransitionScreen(){
+		if (this.transitionScreen.isActive()){
+			this.transitionScreen.draw(canvas);
+		}
+    }
+    
 	/**
 	 * Draws the game board while we are still loading
 	 */
