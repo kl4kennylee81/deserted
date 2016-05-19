@@ -159,13 +159,13 @@ Level6:
 
 Level5:
     allies:
-        - id: 10
-          xPosition: 0
-          yPosition: 3
-
-        - id: 11
+        - selectedId: 0
           xPosition: 0
           yPosition: 0
+
+        - selectedId: 1
+          xPosition: 0
+          yPosition: 3
 
     enemies:
         - id: 3
@@ -182,7 +182,7 @@ Level5:
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/mage.yml", "aiyaml/enchantress.yml", "aiyaml/mage-enchantress.yml"]
     
-BossTest:
+GhostBoss:
     allies:
         - selectedId: 0
           xPosition: 0
@@ -210,7 +210,7 @@ BossTest:
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
 
-BossTest2:
+GhostBossSurvive:
     allies:
         - selectedId: 0
           xPosition: 0
@@ -237,7 +237,7 @@ BossTest2:
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
 
-BossTest3:
+GhostBossVsRabbit:
     allies:
         - id: 10
           xPosition: 1

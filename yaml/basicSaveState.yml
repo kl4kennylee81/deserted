@@ -132,61 +132,61 @@ levels:
     beaten: false
     boss: false
     gainedSP: 1
-  10:
+  6:
+    levelName: GhostBossSurvive
+    beaten: false
+    needsSelect: false
+    boss: false
+    surviveFor: 5
+  7:
+    levelName: GhostBossVsRabbit
+    beaten: false
+    needsSelect: false
+    boss: false
+  8:
     levelName: Level1
     beaten: false
     boss: false
     needsSelect: true
     #winIn: 1
-  11:
+  9:
     levelName: Level2
     beaten: false
     boss: false
     needsSelect: true
     #surviveFor: 1
-  12:
+  10:
     levelName: Level3
     beaten: false
     boss: false
     needsSelect: true
     gainedSP: 1
     unlockableCharacter: 2
-  13:
+  11:
     levelName: Level4
     beaten: false
     boss: false
     needsSelect: true
-  14:
+  12:
     levelName: Level5
     beaten: false
     boss: false
     needsSelect: true
     gainedSP: 1
     unlockableCharacter: 5
-  15:
+  13:
     levelName: Level6
     beaten: false
     boss: false
     needsSelect: true
-  16:
+  14:
     levelName: pvp
     beaten: false
     boss: false
-  17:
-    levelName: BossTest
+  15:
+    levelName: GhostBoss
     beaten: false
     needsSelect: true
-    boss: false
-  18:
-    levelName: BossTest2
-    beaten: false
-    needsSelect: false
-    boss: false
-    surviveFor: 5
-  19:
-    levelName: BossTest3
-    beaten: false
-    needsSelect: false
     boss: false
 availableCharacters:
 - 0
