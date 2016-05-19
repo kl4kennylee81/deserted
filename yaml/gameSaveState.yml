@@ -95,7 +95,7 @@ characters:
 levels:
   0:
     levelName: tutorial1
-    beaten: false
+    beaten: true
     boss: false
     preNarrative: yaml/narratives/test.yml
     seenPre: true
@@ -103,10 +103,10 @@ levels:
     seenPost: false
   1:
     levelName: tutorial2
-    beaten: false
+    beaten: true
     boss: false
     preNarrative: yaml/narratives/test.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/test.yml
     seenPost: false
   3:
@@ -173,7 +173,7 @@ levels:
     surviveFor: 5
   19:
     levelName: BossTest3
-    beaten: true
+    beaten: false
     needsSelect: false
     boss: false
 availableCharacters:
@@ -191,4 +191,4 @@ unlockableCharacters:
 - 5
 selectedCharacters:
 - 0
-- 2
+- 1

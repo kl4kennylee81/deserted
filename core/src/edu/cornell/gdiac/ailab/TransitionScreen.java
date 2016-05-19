@@ -20,11 +20,15 @@ public class TransitionScreen extends HighlightScreen{
 	
 	private GameState nextState;
 	
+	private String levelName;
+	
+	private boolean needsSelect;
+	
 	private TransitionState transitionState;
 	
 	// 60 fps so fade in 1 second
 	// will let this be tuneable
-	private static final float FADE_RATE = 1/60f;
+	private static final float DIM_END = 0.9f;
 	
 	private static final float FPS = 60f;
 	
@@ -36,6 +40,8 @@ public class TransitionScreen extends HighlightScreen{
 		this.transitionFramesCount = 0;
 		this.transitionState = TransitionState.NOTHING;
 		this.nextState = null;
+		this.levelName = "";
+		this.needsSelect = false;
 	}
 	
 	public TransitionState getTransitionState(){
@@ -48,6 +54,10 @@ public class TransitionScreen extends HighlightScreen{
 		float transitionRatio = (this.transitionFramesCount/this.transitionFrames);
 		float curOpacity = diff * transitionRatio + this.opacityStart;
 		return curOpacity;
+	}
+	
+	public boolean getNeedsSelect(){
+		return this.needsSelect;
 	}
 	
 	public float getTransitionFrames(){
@@ -86,11 +96,14 @@ public class TransitionScreen extends HighlightScreen{
 	
 	// only call reset after an appropriate fade out and fade in is done then reset
 	public void reset(){
+		this.opacityStart = 1f;
+		this.opacityEnd = 1f;;
 		this.transitionFrames = 0;
 		this.transitionFramesCount = 0;
-		this.opacityStart = 0f;
-		this.opacityEnd = 0f;
 		this.transitionState = TransitionState.NOTHING;
+		this.nextState = null;
+		this.levelName = "";
+		this.needsSelect = false;
 		super.noScreen();
 	}
 	
@@ -98,7 +111,7 @@ public class TransitionScreen extends HighlightScreen{
 		super.setJustScreen();
 		this.setTime(seconds);
 		this.opacityStart = 0f;
-		this.opacityEnd = 1f;
+		this.opacityEnd = DIM_END;
 		this.transitionState = TransitionState.FADEOUT;
 	}
 	
@@ -106,14 +119,24 @@ public class TransitionScreen extends HighlightScreen{
 		return this.nextState;
 	}
 	
+	public String getNextLevel(){
+		return this.levelName;
+	}
+	
 	public void setFadeOut(float seconds,GameState nextState){
 		this.nextState = nextState;
 		this.setFadeOut(seconds);
 	}
 	
+	public void setFadeOut(float seconds,String levelName,boolean needsSelect){
+		this.levelName = levelName;
+		this.needsSelect = needsSelect;
+		this.setFadeOut(seconds);
+	}
+	
 	public void setFadeIn(float seconds){
 		this.setTime(seconds);
-		this.opacityStart = 1f;
+		this.opacityStart = DIM_END;
 		this.opacityEnd = 0f;
 		this.transitionState = TransitionState.FADEIN;
 	}

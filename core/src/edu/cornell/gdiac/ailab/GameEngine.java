@@ -252,7 +252,6 @@ public class GameEngine implements Screen {
     
     public void startGame(String levelName, String backLevelName, boolean needsSelect) throws IOException {
     	if (this.gameSaveStateController.containsLevel(levelName)){
-    		System.out.println("HI" +levelName);
     		curLevelData = this.gameSaveStateController.getLevelData(levelName);
     		System.out.println("okay"+curLevelData.levelName);
     		if (curLevelData.needsSelect() && needsSelect){
@@ -366,6 +365,7 @@ public class GameEngine implements Screen {
 		case PLAY:
 			updatePlay();
 			drawPlay();
+			this.drawTransitionScreen();
 			canvas.end();
 			break;
 		case FINISH:
@@ -401,14 +401,17 @@ public class GameEngine implements Screen {
 			break;
 		case CUSTOMIZE:
 			updateCustomization();
+			this.drawTransitionScreen();
 			canvas.end();
 			break;
 		case SELECT:
 			updateCharacterSelectMenu();
+			this.drawTransitionScreen();
 			canvas.end();
 			break;
 		case NARRATIVE:
 			updateNarrative();
+			this.drawTransitionScreen();
 			canvas.end();
 			break;
 		}
@@ -452,7 +455,7 @@ public class GameEngine implements Screen {
 			
 			try {
 				if (characterSelectController.nextLevelName.equals("Start Level")){
-					loadNextMenu(curLevelData.levelName, "", false);
+					this.setTransition(curLevelData.levelName, false,0.5f);
 				} else {
 					loadNextMenu(characterSelectController.nextLevelName, "Character Select",false);
 					if (characterSelectController.nextLevelName.equals("Skill Tree")){
@@ -512,6 +515,19 @@ public class GameEngine implements Screen {
 		}
 	}
 	
+	public void setTransition(String nextLevel,boolean needsSelect, float second){
+		//TODO hotifx not sure what this continue is
+		
+		if (nextLevel == "" || nextLevel == "Continue"){
+			return;
+		}
+		if (!this.isTransitioning && !this.transitionScreen.isActive()){
+			this.isTransitioning = true;
+    		// game is switching to the menu will have a transition phase
+    		this.transitionScreen.setFadeOut(second,nextLevel,needsSelect);
+		}
+	}
+	
 	public void updateTransition(){
 		if (this.getDoneTransition()){
 			this.isTransitioning = false;
@@ -523,6 +539,15 @@ public class GameEngine implements Screen {
 			if (beforeState == TransitionState.FADEOUT && afterState == TransitionState.FADEIN){
 				if (this.transitionScreen.getNextState() != null){
 					this.gameState = this.transitionScreen.getNextState();
+				}
+				if (this.transitionScreen.getNextLevel() != ""){
+					//TODO menu
+					try {
+						loadNextMenu(transitionScreen.getNextLevel(), "Main Menu",transitionScreen.getNeedsSelect());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -552,7 +577,7 @@ public class GameEngine implements Screen {
 	private void updateMenu() throws IOException {
 		mainMenuController.update();
 		if (mainMenuController.isDone()){
-			loadNextMenu(mainMenuController.levelName, "Main Menu",true);
+			this.setTransition(mainMenuController.levelName,true,1f);
 		}
 	}
 	
@@ -601,30 +626,20 @@ public class GameEngine implements Screen {
     	curGameplayController.update();
     	if (curGameplayController.isDone()){
     		if (curGameplayController.playerWon()){
-	    		//check if levelb eaten and update savestate
+	    		//check if level beaten and update savestate
 	    		if (curLevelData.postNarrative != null && !curLevelData.seenPost){
 	    			narrativeController.reset(curLevelData.postNarrative, false);
 	    			gameState = GameState.NARRATIVE;
 	    		} else {
-	    			try {
 	    				if (curLevelData.getNextLevelName() != null){
-	    					loadNextMenu(curLevelData.getNextLevelName(), "",true);
+	    					this.setTransition(curLevelData.getNextLevelName(), true,0.5f);
 	    				} else {
+	    					this.setTransition(GameState.MENU, 0.5f);
 	    					mainMenuController.resetMenu();
-	    		    		gameState = GameState.MENU;
 	    				}
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 	    		}
     		} else {
-    			try {
-					loadNextMenu(curLevelData.levelName,"",false);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+    			this.setTransition(curLevelData.levelName, false,0.5f);
     		}
     	}
     	if (InputController.pressedP()){
