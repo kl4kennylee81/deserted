@@ -22,7 +22,7 @@ public class CharacterCustomization extends Menu {
 	private static final float RELATIVE_X_POS = 0.17f;
 	
 	/** start position of the menu's options y Position going down **/
-	private static final float RELATIVE_Y_POS = 0.7f;
+	private static final float RELATIVE_Y_POS = 0.58f;
 	
 	/** relative width of options **/
 	private static final float RELATIVE_WIDTH = 0.05f;
@@ -84,22 +84,19 @@ public class CharacterCustomization extends Menu {
 		this.charData = gameSaveState.getCharacterData(selectedCharacterId);
 		
 		//this.options = new Option[3 + gameSaveState.characters.size() + charData.getTotalNumActionUpgrades()];
-		this.options = new Option[3 + gameSaveState.availableCharacters.size() + charData.getTotalNumActionUpgrades()-1];
+		this.options = new Option[2 + gameSaveState.availableCharacters.size() + charData.getTotalNumActionUpgrades()-1];
 		options[0] = new Option("Back","Back");
 		options[0].setBounds(0.08f, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
 		options[0].setColor(Constants.MENU_COLOR);
 		options[1] = new Option("Reset Points","Reset");
-		options[1].setBounds(0.4f, 0.53f, RELATIVE_WIDTH*3, RELATIVE_HEIGHT);
+		options[1].setBounds(0.4f, 0.11f, RELATIVE_WIDTH*3, RELATIVE_HEIGHT);
 		options[1].setColor(Constants.MENU_COLOR);
-		options[2] = new Option("Select","Select");
-		options[2].setBounds(0.8f, 0.2f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
-		options[2].setColor(Constants.MENU_COLOR);
 		
 		characterOptions = new ArrayList<Option>();
 		
 		List<CharacterData> availableCharacters = gameSaveState.getAvailableCharactersData();
 		List<CharacterData> unlockableCharacters = gameSaveState.getUnlockableCharactersData();
-		int i = 3;
+		int i = 2;
 		int j, k;
 		float curX = 0.05f;
 		float incrY = 0.1f;
@@ -161,12 +158,13 @@ public class CharacterCustomization extends Menu {
 			options[i].setColor(Constants.MENU_COLOR);
 			i++;
 			k = 0;
-			float tempSpacedX = spacedX - RELATIVE_WIDTH;
+			float spacedY = RELATIVE_Y_POS-0.08f;
 			for (ActionUpgrade au : actionUpgrade.upgrades){
-				tempSpacedX = tempSpacedX + (2*RELATIVE_WIDTH) * k;
+				float tempSpacedX = (spacedX-RELATIVE_WIDTH) + (2*RELATIVE_WIDTH) * (k%2);
+				float tempSpacedY = spacedY - 0.08f * (k/2);
 				options[i] = new Option("", Integer.toString(au.actionId));
 				options[i].setImage(actionMap.get(au).menuIcon);
-				options[i].setBounds(tempSpacedX, RELATIVE_Y_POS-0.13f, RELATIVE_WIDTH, RELATIVE_HEIGHT);
+				options[i].setBounds(tempSpacedX, tempSpacedY, RELATIVE_WIDTH, RELATIVE_HEIGHT);
 				options[i].setColor(Constants.MENU_COLOR);
 				i++;
 				k++;
@@ -179,12 +177,17 @@ public class CharacterCustomization extends Menu {
 		this.optionHighlight = t;
 	}
 	
+	
 	public void resetSP(){
 		charData.resetSP();
 	}
 	
 	public void setAction(int actionId){
-		this.selectedActionId = actionId;
+		if (this.selectedActionId!=null && this.selectedActionId == actionId){
+			selectAction();
+		}else{
+			this.selectedActionId = actionId;
+		}
 	}
 	
 	public void selectAction(){
@@ -240,16 +243,24 @@ public class CharacterCustomization extends Menu {
 
 	@Override
 	public void draw(GameCanvas canvas) {
+		//draw first tree container
+		canvas.drawActionBackground(0.115f*canvas.width, 0.13f * canvas.height , 0.165f * canvas.width, 0.52f * canvas.height, Color.DARK_GRAY);
+		//draw second tree container
+		canvas.drawActionBackground(0.315f*canvas.width, 0.13f * canvas.height , 0.165f * canvas.width, 0.52f * canvas.height, Color.BLUE);
+		//draw third tree container
+		canvas.drawActionBackground(0.515f*canvas.width, 0.13f * canvas.height , 0.165f * canvas.width, 0.52f * canvas.height, Color.RED);
+		
 		String topTxt = "Choose a character and spend skill points to customize your character's skills!";
 		canvas.drawCenteredText(topTxt, canvas.width/2, 0.96f * canvas.height, Color.WHITE, 1.2f);
-		canvas.drawCenteredText("Skill Points: " + charData.getRemainingSP(), canvas.getWidth() * 0.2f, 0.53f * canvas.height, Color.BLACK);
+		canvas.drawCenteredText("Skill Points: " + charData.getRemainingSP(), canvas.getWidth() * 0.3f, 0.11f * canvas.height, Color.BLACK);
 		// draw the menu options
 		for (int i=0;i<options.length;i++){
 			if (options[i].optionKey.equals("Select") && selectedActionId == null){
 				continue;
 			}
-			float x = options[i].getX(canvas) - RELATIVE_HIGHLIGHT_X_OFFSET*canvas.getWidth();
-			float y = options[i].getY(canvas)- RELATIVE_HIGHLIGHT_Y_OFFSET*canvas.getHeight();
+			
+			float x = options[i].getX(canvas);
+			float y = options[i].getY(canvas);
 			float width = options[i].getWidth(canvas);
 			float height = options[i].getHeight(canvas);
 			
@@ -265,29 +276,23 @@ public class CharacterCustomization extends Menu {
 			}
 			
 			try{
+				options[i].setImageColor(Color.WHITE);
 				int actionId = Integer.parseInt(options[i].optionKey);
 				if (charData.currentlyUsingAction(actionId)){
-					canvas.drawTexture(optionHighlight,x,y,width,height,Color.WHITE.cpy().lerp(Color.CLEAR, 0.3f));
+					options[i].setImageColor(Color.ORANGE);
 				}
-				if (selectedActionId != null && actionId == selectedActionId){
-					canvas.drawTexture(optionHighlight,x,y,width,height,Color.WHITE.cpy().lerp(Color.CLEAR, 0.2f));
+				else if (selectedActionId != null && actionId == selectedActionId){
+					options[i].setImageColor(Color.YELLOW);
 				}
 			} catch (NumberFormatException e) {
 				// not an integer!
 			}
-			options[i].draw(canvas);
+			options[i].drawForSkillTree(canvas);
 		}
 		
 		drawIcons(canvas);
 		drawActionInfo(canvas);
 		
-		if (pressingCharacter){
-			Texture icon = charData.getIcon();
-			float mouseX = InputController.getMouseX();
-			float mouseY = InputController.getMouseY();
-			float width = canvas.width*0.06f;
-			canvas.drawTexture(icon, mouseX-width/2, mouseY-width/2, width, width, Color.WHITE);
-		}
 	}
 	
 	public ActionUpgrade getSelectedActionUpgrade(){
@@ -308,7 +313,7 @@ public class CharacterCustomization extends Menu {
 			miniBoard.reset();
 			drawHighlights(selectedAction);
 			miniBoard.drawMini(canvas);
-			canvas.drawCircle(canvas.width*0.642f, canvas.height*0.26f, canvas.height * 0.06f, Color.BLACK);
+			canvas.drawCircle(canvas.width*0.292f, canvas.height*0.72f, canvas.height * 0.06f, Color.BLACK);
 			
 			//TODO: draw Actions and Costs
 		}

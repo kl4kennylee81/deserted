@@ -125,6 +125,30 @@ public class Option implements GUIElement{
 		}
 	}
 	
+	public void drawForSkillTree(GameCanvas canvas) {
+		float x = this.xPosition * canvas.getWidth();
+		float y = this.yPosition * canvas.getHeight();
+		float height = this.height * canvas.getHeight();
+		float width = this.width * canvas.getWidth();
+		Color textColor = this.getColor();
+		canvas.drawText(this.text, x, y, textColor);
+
+		
+		if (sameWidthHeight){
+			height = width;
+		} 
+		
+		if (image != null){
+			if(isHighlighted){
+				//canvas.drawHighlightToken(image, x, y, width, height, Color.YELLOW);
+				canvas.drawLeftArrow(x + (width + 10), y + (width / 2) + 10, Color.GOLD);
+			}
+			//canvas.drawTexture(image, x, y, width,height, Color.WHITE);
+			canvas.drawTexture(image, x, y, width,height, imageColor);
+			
+		}
+	}
+	
 	public void setColor(Color c){
 		this.color = c;
 	}

@@ -23,6 +23,10 @@ public class ActionDescription {
 	
 	private static final Texture DESCRIPTION_BACKGROUND = new Texture("models/description_background.png");
 	
+	public void drawEmpty(GameCanvas canvas, float x, float y, float width, float height, Color c){
+		canvas.drawTexture(DESCRIPTION_BACKGROUND, x, y, width, height, c);
+	}
+	
 	public void draw(GameCanvas canvas, Action action, float x, float y, float width, float height, boolean highlight){
 		float h = canvas.getHeight();
 		float middle_x = x + width/2;

@@ -44,6 +44,7 @@ public class CharacterCustomizationController {
 //		}
 	}
 	
+	
 	public void setCharacter(int charId){
 		characterCustomization.setCharacter(charId);
 	}

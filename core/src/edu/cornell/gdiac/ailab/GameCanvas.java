@@ -1094,6 +1094,10 @@ public class GameCanvas {
 		actionDescription.draw(this,action,x,y,width,height, highlight);
 	}
 	
+	public void drawActionBackground(float x, float y, float width, float height, Color c){
+		actionDescription.drawEmpty(this, x, y, width, height, c);
+	}
+	
 	public void drawHighlightBackground(float x, float y, float width, float height){
 		Color c = Color.YELLOW;
 		spriteBatch.setColor(c.r, c.g, c.b, 0.8f);

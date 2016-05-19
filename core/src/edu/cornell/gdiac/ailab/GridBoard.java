@@ -202,8 +202,8 @@ public class GridBoard {
 		Tile tile = tiles[x][y];
 		float tileW = 0.06f*canvas.width;
 		float tileH = 0.06f*canvas.height;
-		float tileX = 0.57f*canvas.width+tileW*x;
-		float tileY = 0.2f*canvas.height+tileH*y;
+		float tileX = 0.22f*canvas.width+tileW*x;
+		float tileY = 0.66f*canvas.height+tileH*y;
 		
 		Color color = x<width/2 ? BASIC_COLOR1.cpy() : BASIC_COLOR2.cpy();
 		if (tile.isHighlighted){

@@ -348,7 +348,7 @@ public class MainMenuController {
 	
 	public void resetMenu(){
 		this.levelName = "";
-		this.menu = createMainMenu();
+		this.menu = createStartingMenu();
 		this.isDone = false;
 	}
 
