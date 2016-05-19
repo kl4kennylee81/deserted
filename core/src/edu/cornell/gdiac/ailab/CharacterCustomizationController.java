@@ -36,11 +36,12 @@ public class CharacterCustomizationController {
 		} 
 		if (InputController.leftMouseClickedLast){
 			handleCharacterPress(optionKey);
-		} else {
-			if (characterCustomization.pressingCharacter){
-				characterCustomization.dropCharacter();
-			}
-		}
+		} 
+//		else {
+//			if (characterCustomization.pressingCharacter){
+//				characterCustomization.dropCharacter();
+//			}
+//		}
 	}
 	
 	public void setCharacter(int charId){
@@ -73,7 +74,7 @@ public class CharacterCustomizationController {
 			String charIdString = optionKey.substring(characterCustomization.CHARACTER_ID_STRING.length());
 			int charId = Integer.parseInt(charIdString);
 			characterCustomization.setCharacter(charId);
-			characterCustomization.pressingCharacter = true;
+			//characterCustomization.pressingCharacter = true;
 			return;
 		}
 	}

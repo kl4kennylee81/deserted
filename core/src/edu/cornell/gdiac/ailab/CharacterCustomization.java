@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
+import java.awt.Canvas;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import edu.cornell.gdiac.ailab.GameSaveState.CharacterData;
 public class CharacterCustomization extends Menu {
 	
 	/** start position of the menu's options x Position **/
-	private static final float RELATIVE_X_POS = 0.05f;
+	private static final float RELATIVE_X_POS = 0.17f;
 	
 	/** start position of the menu's options y Position going down **/
 	private static final float RELATIVE_Y_POS = 0.7f;
@@ -30,7 +31,7 @@ public class CharacterCustomization extends Menu {
 	private static final float RELATIVE_HEIGHT = 0.05f;
 	
 	/** relative spacing between options **/
-	private static final float RELATIVE_MENU_SPACING = 0.11f;
+	private static final float RELATIVE_MENU_SPACING = 0.15f;
 	
 	private static final float RELATIVE_HIGHLIGHT_X_OFFSET = 0.005f;
 	
@@ -87,8 +88,8 @@ public class CharacterCustomization extends Menu {
 		options[0] = new Option("Back","Back");
 		options[0].setBounds(0.08f, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
 		options[0].setColor(Constants.MENU_COLOR);
-		options[1] = new Option("Reset","Reset");
-		options[1].setBounds(0.88f, 0.1f, RELATIVE_WIDTH, RELATIVE_HEIGHT);
+		options[1] = new Option("Reset Points","Reset");
+		options[1].setBounds(0.4f, 0.53f, RELATIVE_WIDTH*3, RELATIVE_HEIGHT);
 		options[1].setColor(Constants.MENU_COLOR);
 		options[2] = new Option("Select","Select");
 		options[2].setBounds(0.8f, 0.2f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
@@ -100,11 +101,11 @@ public class CharacterCustomization extends Menu {
 		List<CharacterData> unlockableCharacters = gameSaveState.getUnlockableCharactersData();
 		int i = 3;
 		int j, k;
-		float curX = 0.6f;
-		float incrX = 0.1f;
+		float curX = 0.05f;
+		float incrY = 0.1f;
 		float curY = 0.68f;
 		for (j = 0; j < availableCharacters.size(); j++){
-			float relX = curX + incrX*j;
+			float relY = curY - incrY*j;
 			CharacterData cd = availableCharacters.get(j);
 			Texture toDraw = cd.getIcon();
 			Color col = Color.WHITE;
@@ -112,7 +113,7 @@ public class CharacterCustomization extends Menu {
 				col = SELECTED_CHARACTER_COLOR;
 			}
 			options[i] = new Option("",CHARACTER_ID_STRING+cd.characterId);
-			options[i].setBounds(relX, curY, 0.06f, 0.06f);
+			options[i].setBounds(curX, relY, 0.06f, 0.06f);
 			options[i].sameWidthHeight = true;
 			options[i].setColor(col);;
 			options[i].setImageColor(col);
@@ -172,25 +173,6 @@ public class CharacterCustomization extends Menu {
 			}
 		}
 		
-		
-		
-//		for (j = 0; j < charData.actionUpgrades.size(); j++){
-//			float spacedY= (RELATIVE_Y_POS - RELATIVE_MENU_SPACING * j);
-//			ActionUpgrade actionUpgrade = charData.actionUpgrades.get(j);
-//			options[i] = new Option(actionMap.get(actionUpgrade).name, Integer.toString(actionUpgrade.actionId));
-//			options[i].setBounds(RELATIVE_X_POS, spacedY, RELATIVE_WIDTH, RELATIVE_HEIGHT);
-//			options[i].setColor(Constants.MENU_COLOR);
-//			i++;
-//			k = 0;
-//			for (ActionUpgrade au : actionUpgrade.upgrades){
-//				float tempSpacedY = spacedY + RELATIVE_MENU_SPACING/6 - RELATIVE_MENU_SPACING*k/3;
-//				options[i] = new Option(actionMap.get(au).name, Integer.toString(au.actionId));
-//				options[i].setBounds(RELATIVE_X_POS+0.13f, tempSpacedY, RELATIVE_WIDTH, RELATIVE_HEIGHT);
-//				options[i].setColor(Constants.MENU_COLOR);
-//				i++;
-//				k++;
-//			}
-//		}
 	}
 	
 	public void setHighlight(Texture t){
@@ -258,7 +240,9 @@ public class CharacterCustomization extends Menu {
 
 	@Override
 	public void draw(GameCanvas canvas) {
-		canvas.drawCenteredText("Skill Points: " + charData.getRemainingSP(), canvas.getWidth()/2, 50, Color.BLACK);
+		String topTxt = "Choose a character and spend skill points to customize your character's skills!";
+		canvas.drawCenteredText(topTxt, canvas.width/2, 0.96f * canvas.height, Color.WHITE, 1.2f);
+		canvas.drawCenteredText("Skill Points: " + charData.getRemainingSP(), canvas.getWidth() * 0.2f, 0.53f * canvas.height, Color.BLACK);
 		// draw the menu options
 		for (int i=0;i<options.length;i++){
 			if (options[i].optionKey.equals("Select") && selectedActionId == null){
@@ -273,6 +257,9 @@ public class CharacterCustomization extends Menu {
 				if (optionHighlight == null){
 					return;
 				}
+				
+				x = options[i].getX(canvas) - RELATIVE_HIGHLIGHT_X_OFFSET*canvas.getWidth();
+				y = options[i].getY(canvas) - 3*options[i].getHeight(canvas)/4;
 				// we will draw the highlighting behind the option
 				canvas.drawTexture(optionHighlight,x,y,width,height,Color.WHITE);
 			}
@@ -317,8 +304,7 @@ public class CharacterCustomization extends Menu {
 		if (selectedActionId != null){
 			ActionUpgrade selectedAU = getSelectedActionUpgrade();
 			Action selectedAction = actionMap.get(selectedAU);
-			canvas.drawCenteredText(selectedAction.description, canvas.width*0.75f, canvas.height*0.28f, Color.BLACK);
-			canvas.drawCenteredText("SP Cost: "+selectedAU.cost, canvas.width*0.7f, canvas.height*0.2f, Color.BLACK);
+			canvas.drawAction(selectedAction, canvas.width*0.75f, canvas.height*0.5f, 0.18f * canvas.width, 0.37f * canvas.height, false);
 			miniBoard.reset();
 			drawHighlights(selectedAction);
 			miniBoard.drawMini(canvas);
@@ -436,26 +422,15 @@ public class CharacterCustomization extends Menu {
 	}
 	
 	public void drawIcons(GameCanvas canvas){
-		ArrayList<CharacterData> selChars = gameSaveState.getSelectedCharacters();
+
+		float x = 0.05f * canvas.getWidth();
+		float y = 0.82f * canvas.getHeight();
+		Texture selectedIcon = charData.getIcon();
+		float circleXOffset = selectedIcon.getWidth() * 0.25f;
+		float circleYOffset = selectedIcon.getHeight() * 0.25f;
+		canvas.drawCircle(x-circleXOffset,y-circleYOffset,selectedIcon.getWidth()*2f, Color.GOLD);
+		canvas.drawTexture(selectedIcon,x,y,selectedIcon.getWidth()*1.5f,selectedIcon.getHeight()*1.5f,Color.WHITE);
 		
-		float curX = 0.67f;
-		float incrX = 0.15f;
-		float curY = 0.82f;
-		for (int i = 0; i < selChars.size(); i++){
-			float relX = curX + incrX*i;
-			float xx = relX * canvas.width;
-			float yy = curY * canvas.height;
-			Texture toDraw = selChars.get(i).getIcon();
-			float circleXOffset = toDraw.getWidth() * 0.25f;
-			float circleYOffset = toDraw.getHeight() * 0.25f;
-			canvas.drawCircle(xx-circleXOffset,yy-circleYOffset,toDraw.getWidth()*3.5f, Color.GOLD);
-			canvas.drawTexture(toDraw,xx,yy,toDraw.getWidth()*3,toDraw.getHeight()*3,Color.WHITE);
-			
-			//print statements to help figure out where to drop
-			//System.out.println((yy-circleYOffset)/canvas.height);
-			//System.out.println((yy-circleYOffset+toDraw.getWidth()*3.5f)/canvas.height);
-			
-		}
 	}
 
 }
