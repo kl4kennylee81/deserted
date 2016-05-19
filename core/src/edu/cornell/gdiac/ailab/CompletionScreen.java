@@ -5,7 +5,10 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+
+import edu.cornell.gdiac.ailab.AnimationNode.CharacterState;
 import edu.cornell.gdiac.ailab.GameSaveState.CharacterData;
+import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 
 public class CompletionScreen {
 	
@@ -90,7 +93,11 @@ public class CompletionScreen {
 		}
 		
 		for (CharacterData cd : characters_unlocked){
-			Texture t = cd.getTexture();
+			AnimationNode an = cd.getAnimation();
+			FilmStrip t = an.getTexture(CharacterState.IDLE, InGameState.NORMAL);
+			if (t == null){
+				t = an.getTexture(CharacterState.IDLE, InGameState.NORMAL);
+			}
 			String txt = "You have unlocked a spirit!";
 			UnlockNotification un = new UnlockNotification(txt, unlock, t);
 			notifications.add(un);
