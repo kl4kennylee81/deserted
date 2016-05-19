@@ -133,13 +133,13 @@ levels:
     boss: false
     gainedSP: 1
   6:
-    levelName: GhostBossSurvive
+    levelName: Boss1
     beaten: false
     needsSelect: false
     boss: false
     surviveFor: 5
   7:
-    levelName: GhostBossVsRabbit
+    levelName: Boss2
     beaten: false
     needsSelect: false
     boss: false
@@ -184,7 +184,7 @@ levels:
     beaten: false
     boss: false
   15:
-    levelName: GhostBoss
+    levelName: Boss3
     beaten: false
     needsSelect: true
     boss: false
