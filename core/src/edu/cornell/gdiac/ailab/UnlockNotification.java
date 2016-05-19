@@ -2,12 +2,13 @@ package edu.cornell.gdiac.ailab;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class UnlockNotification {
 
 	String text;
 	Texture background;
-	Texture unlockedCharTexture;
+	TextureRegion unlockedCharTexture;
 	
 	private static final float UNLOCK_X_POS = 0.33f;
 	
@@ -30,7 +31,7 @@ public class UnlockNotification {
 	private static final float CHAR_HEIGHT = 0.2f;
 	
 	
-	public UnlockNotification(String msg, Texture bg, Texture texture){
+	public UnlockNotification(String msg, Texture bg, TextureRegion texture){
 		this.text = msg;
 		this.background = bg;
 		this.unlockedCharTexture = texture;
@@ -64,7 +65,7 @@ public class UnlockNotification {
 		float y = CHAR_Y_POS * h;
 		float width = CHAR_WIDTH * w;
 		float height = CHAR_HEIGHT * h;
-		canvas.drawTexture(unlockedCharTexture, x, y, width, height, Color.WHITE);
+		canvas.draw(unlockedCharTexture, Color.WHITE, x, y, width, height);
 	}
 	
 	

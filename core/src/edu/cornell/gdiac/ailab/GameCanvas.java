@@ -886,6 +886,11 @@ public class GameCanvas {
 		spriteBatch.draw(texture,x,y,0,0,tWidth,tHeight,scale,scale,0,0,0,tWidth,tHeight, leftside, false);
 	}
 	
+	public void drawCharacter(Texture texture, float x, float y, int width, int height, Color color, boolean leftside){
+		spriteBatch.setColor(color);
+		spriteBatch.draw(texture,x,y,0,0,width,height,1,1,0,0,0,texture.getWidth(),texture.getHeight(), leftside, false);
+	}
+	
 	public void drawCharacter(TextureRegion texture, float x, float y, Color color, boolean leftside,float scale){
 		spriteBatch.setColor(color);
 		if (leftside){

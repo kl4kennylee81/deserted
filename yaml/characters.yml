@@ -110,8 +110,8 @@
 
 6:
   name: Rock Spirit
-  health: 8
-  maxHealth: 8
+  health: 0
+  maxHealth: 0
   hexColor: 00cc00FF
   speed: 2.5
   castSpeed: 7.0
@@ -506,8 +506,8 @@
 
 27:
   name: Enchantress Spirit
-  health: 4
-  maxHealth: 4
+  health: 0
+  maxHealth: 0
   hexColor: CD2626FF
   speed: 5.0
   castSpeed: 7.5
