@@ -192,7 +192,7 @@
   icon: models/action_tokens/attack_icon.png
 
 9:
-  name: Shield2
+  name: Shield
   cost: 1
   damage: 0
   range: 2

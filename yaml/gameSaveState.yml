@@ -180,7 +180,7 @@ levels:
     needsSelect: true
     background: backgrounds/inTheSkybg.png
     preNarrative: yaml/narratives/Boss3Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Boss3Post.yml
     seenPost: false
   11:
@@ -224,7 +224,7 @@ levels:
     beaten: false
     needsSelect: true
     boss: false
-    seenPre: false
+    seenPre: true
     seenPost: false
   16:
     levelName: BunnyTest
