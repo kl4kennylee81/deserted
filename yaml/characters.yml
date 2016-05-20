@@ -31,7 +31,7 @@
   - 15
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconyellow.png
-  bigIcon: largeicons/rock_largeiconyellow.png
+  bigIcon: largeicons/rock_largeiconyellowSymbol.png
   animationId: 115
   bossId: 1000
 2:
@@ -49,7 +49,7 @@
   - 7
   texture: models/CHARA_1.png
   icon: models/tutorial_characters/basic_iconred.png
-  bigIcon: largeicons/rock_largeiconred.png
+  bigIcon: largeicons/rock_largeiconredSymbol.png
   animationId: 114
   bossId: 1000
 3:
@@ -67,7 +67,7 @@
   - 24
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
-  bigIcon: largeicons/rock_largeiconbasic.png
+  bigIcon: largeicons/rock_largeiconbasicSymbol.png
   animationId: 116
   bossId: 1000
 4:
@@ -85,7 +85,7 @@
   - 18
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icongreen.png
-  bigIcon: largeicons/rock_largeicongreen.png
+  bigIcon: largeicons/rock_largeicongreenSymbol.png
   animationId: 117
   bossId: 1000
 5:
@@ -193,7 +193,7 @@
   - 15
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconyellow.png
-  bigIcon: largeicons/rock_largeiconyellow.png
+  bigIcon: largeicons/rock_largeiconyellowSymbol.png
   animationId: 115
   bossId: 1003
 
@@ -213,7 +213,7 @@
   - 7
   texture: models/CHARA_1.png
   icon: models/tutorial_characters/basic_iconred.png
-  bigIcon: largeicons/rock_largeiconred.png
+  bigIcon: largeicons/rock_largeiconredSymbol.png
   animationId: 114
   bossId: 1003
 12:
@@ -231,7 +231,7 @@
   - 24
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
-  bigIcon: largeicons/rock_largeiconbasic.png
+  bigIcon: largeicons/rock_largeiconbasicSymbol.png
   animationId: 116
   bossId: 1003
 13:
@@ -249,7 +249,7 @@
   - 18
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icongreen.png
-  bigIcon: largeicons/rock_largeicongreen.png
+  bigIcon: largeicons/rock_largeicongreenSymbol.png
   animationId: 117
   bossId: 1003
 
