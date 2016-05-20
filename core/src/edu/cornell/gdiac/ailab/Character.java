@@ -228,6 +228,7 @@ public class Character implements GUIElement {
 		this.id = c.id;
 		this.texture = c.texture;
 		this.icon = c.icon;
+		this.bigIcon = c.bigIcon;
 		this.animation = c.animation;
 		this.name = c.name;
 		this.health = c.health;
@@ -262,6 +263,7 @@ public class Character implements GUIElement {
 		this.id = c.id;
 		this.texture = c.texture;
 		this.icon = c.icon;
+		this.bigIcon = c.bigIcon;
 		this.animation = c.animation;
 		this.name = c.name;
 		this.health = c.health;
@@ -1201,9 +1203,11 @@ public class Character implements GUIElement {
 		
 		float healthSy = healthHeight/this.healthUI.getRegionHeight();
 		
+		Texture drawIcon = (this.bigIcon != null) ? this.bigIcon : this.icon;
+		
 		float iconWidth = Constants.HEALTH_TOKEN_WIDTH * canvas.getWidth();
 		
-		float iconHeight = this.icon.getHeight()* iconWidth/this.icon.getWidth();
+		float iconHeight = drawIcon.getHeight()* iconWidth/drawIcon.getWidth();
 		
 		float healthY = (Constants.HEALTH_UI_Y * canvas.getHeight())-(count*(healthHeight + healthSpacing+iconHeight));
 		
@@ -1217,7 +1221,7 @@ public class Character implements GUIElement {
 			
 			float iconX = healthX + iconWidth/2;
 			
-			canvas.draw(this.icon,c,iconX,iconY,iconWidth,iconHeight);
+			canvas.draw(drawIcon,c,iconX,iconY,iconWidth,iconHeight);
 			
 			canvas.draw(healthUI, c, 0,0, healthX, healthY,0, healthSx, healthSy); 
 			
@@ -1231,7 +1235,7 @@ public class Character implements GUIElement {
 			
 			float iconX = healthX - 1.7f*iconWidth;
 			
-			canvas.draw(this.icon,c,iconX,iconY,iconWidth,iconHeight);
+			canvas.draw(drawIcon,c,iconX,iconY,iconWidth,iconHeight);
 			
 			canvas.draw(healthUI, c, 0,0, healthX, healthY,0, -healthSx, healthSy); 
 			
