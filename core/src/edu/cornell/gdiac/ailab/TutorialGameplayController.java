@@ -104,8 +104,8 @@ public class TutorialGameplayController extends GameplayController{
     	case SELECTION:
     		screen.setJustScreen();
     		mouseOverController.clearAll();
-    		selectionMenuController.update();
     		mouseOverController.update(selectionMenuController.getMenu(),characters,selectionMenuController.choosingTarget);
+    		selectionMenuController.update();
     		prompt = "";//prompt = "Choose an Action";
     		selectionMenuController.setPrompt(prompt);
     		if (selectionMenuController.isDone()){
