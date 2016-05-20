@@ -336,7 +336,7 @@ Level3:
           yPosition: 3
 
     enemies:
-        - id: 10
+        - id: 15
           xPosition: 5
           yPosition: 0
           difficulty: HARD

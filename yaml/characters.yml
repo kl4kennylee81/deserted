@@ -21,7 +21,7 @@
   health: 6
   maxHealth: 6
   hexColor: FF9900FF
-  speed: 4.0
+  speed: 4.5
   castSpeed: 8.0
   slots: 4
   availableActions:
@@ -31,13 +31,13 @@
   - 15
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconyellow.png
-  bigIcon: largeicons/rock_largeiconyellow.png
+  bigIcon: largeicons/rock_largeiconyellowSymbol.png
   animationId: 115
   bossId: 1000
 2:
   name: Fighter Spirit
-  health: 8
-  maxHealth: 8
+  health: 7
+  maxHealth: 7
   hexColor: 3299FFFF
   speed: 5.5
   castSpeed: 6.
@@ -49,13 +49,13 @@
   - 7
   texture: models/CHARA_1.png
   icon: models/tutorial_characters/basic_iconred.png
-  bigIcon: largeicons/rock_largeiconred.png
+  bigIcon: largeicons/rock_largeiconredSymbol.png
   animationId: 114
   bossId: 1000
 3:
   name: Enchantress Spirit
-  health: 6
-  maxHealth: 6
+  health: 5
+  maxHealth: 5
   hexColor: CD2626FF
   speed: 6.5
   castSpeed: 7.
@@ -67,15 +67,15 @@
   - 24
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
-  bigIcon: largeicons/rock_largeiconbasic.png
+  bigIcon: largeicons/rock_largeiconbasicSymbol.png
   animationId: 116
   bossId: 1000
 4:
   name: Rock Spirit
-  health: 10
-  maxHealth: 10
+  health: 8
+  maxHealth: 8
   hexColor: 00cc00FF
-  speed: 1.75
+  speed: 2.0
   castSpeed: 7.5
   slots: 2
   availableActions:
@@ -85,13 +85,13 @@
   - 18
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icongreen.png
-  bigIcon: largeicons/rock_largeicongreen.png
+  bigIcon: largeicons/rock_largeicongreenSymbol.png
   animationId: 117
   bossId: 1000
 5:
   name: Dark Bunny
-  health: 6
-  maxHealth: 6
+  health: 7
+  maxHealth: 7
   hexColor: FF9900FF
   speed: 3.5
   castSpeed: 9.0
@@ -109,8 +109,8 @@
   sharedStatus: true
 6:
   name: Light Bunny
-  health: 6
-  maxHealth: 6
+  health: 7
+  maxHealth: 7
   hexColor: FF9900FF
   speed: 7.
   castSpeed: 6.5
@@ -183,7 +183,7 @@
   health: 6
   maxHealth: 6
   hexColor: FF9900FF
-  speed: 5.
+  speed: 4.5
   castSpeed: 8.0
   slots: 4
   availableActions:
@@ -193,7 +193,7 @@
   - 15
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconyellow.png
-  bigIcon: largeicons/rock_largeiconyellow.png
+  bigIcon: largeicons/rock_largeiconyellowSymbol.png
   animationId: 115
   bossId: 1003
 
@@ -213,7 +213,7 @@
   - 7
   texture: models/CHARA_1.png
   icon: models/tutorial_characters/basic_iconred.png
-  bigIcon: largeicons/rock_largeiconred.png
+  bigIcon: largeicons/rock_largeiconredSymbol.png
   animationId: 114
   bossId: 1003
 12:
@@ -231,7 +231,7 @@
   - 24
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
-  bigIcon: largeicons/rock_largeiconbasic.png
+  bigIcon: largeicons/rock_largeiconbasicSymbol.png
   animationId: 116
   bossId: 1003
 13:
@@ -239,7 +239,7 @@
   health: 10
   maxHealth: 10
   hexColor: 00cc00FF
-  speed: 2.5
+  speed: 2.0
   castSpeed: 7.5
   slots: 2
   availableActions:
@@ -249,7 +249,7 @@
   - 18
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icongreen.png
-  bigIcon: largeicons/rock_largeicongreen.png
+  bigIcon: largeicons/rock_largeicongreenSymbol.png
   animationId: 117
   bossId: 1003
   
@@ -258,10 +258,10 @@
 #=============================================================  
 15:
   name: Mage Spirit
-  health: 6
-  maxHealth: 6
+  health: 2
+  maxHealth: 2
   hexColor: FF9900FF
-  speed: 5.
+  speed: 4.5
   castSpeed: 8.0
   slots: 4
   availableActions:
@@ -317,7 +317,7 @@
   health: 6
   maxHealth: 6
   hexColor: 00cc00FF
-  speed: 2.5
+  speed: 2.0
   castSpeed: 7.5
   slots: 2
   availableActions:
@@ -417,7 +417,6 @@
   - 4
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconred.png
-  
   animationId: 106
 95:
   name: Tutorial_part_2
@@ -583,76 +582,6 @@
   icon: models/portraits/owner_rockdude.png
   bigIcon: models/portraits/owner_rockdude.png
   animationId: 103
-
-30:
-  name: Arm
-  health: 4
-  maxHealth: 4
-  hexColor: CD2626FF
-  speed: 5.0
-  castSpeed: 9.0
-  slots: 2
-  availableActions:
-  - 0
-  - 9
-  - 32
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_icon.png
-  animationId: 110
-  bossId: 9
-  sharedStatus: true
-
-31:
-  name: Boss
-  health: 4
-  maxHealth: 4
-  hexColor: CD2626FF
-  speed: 6.5
-  castSpeed: 10.0
-  slots: 2
-  availableActions:
-  - 0
-  - 33
-  - 34
-  texture: models/CHARA_3.png
-  icon: models/bunmage_icon.png
-  animationId: 109
-  bossId: 9
-  sharedStatus: true
-
-9:
-  name: Parent Boss
-  health: 0
-  maxHealth: 0
-  hexColor: CD2626FF
-  speed: 5.0
-  castSpeed: 7.5
-  slots: 5
-  availableActions:
-  - 0
-  texture: models/portraits/girlopponent.png
-  icon: models/portraits/owner_opponent.png
-  bigIcon: models/portraits/owner_opponent.png
-  animationId: 103
-
-11:  
-  name: Light Bunny
-  health: 0
-  maxHealth: 0
-  hexColor: FF9900FF
-  speed: 7.
-  castSpeed: 6.5
-  slots: 3
-  availableActions:
-  - 0
-  - 49
-  - 51
-  - 22
-  texture: models/CHARA_5.png
-  icon: models/bunmage_icon.png
-  animationId: 108
-  bossId: 9
-  sharedStatus: true
 
 1005:
   name: Spirit Master
