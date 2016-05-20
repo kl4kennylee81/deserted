@@ -1017,8 +1017,8 @@ public class GameCanvas {
 			displayFont.setColor(color);
 		}
 		float width = (float)GridBoard.BOARD_WIDTH*getWidth();
-		float x = getWidth()/2-width/3;
-		float y = ((float)getHeight())/2f;
+		float x = GridBoard.BOARD_OFFSET_X * getWidth() + Constants.TILE_SHEAR*GridBoard.BOARD_HEIGHT*getHeight();
+		float y = ((float)2*getHeight())/3f;
 //		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, alignment, true);
 		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
 		setFont(currFont);

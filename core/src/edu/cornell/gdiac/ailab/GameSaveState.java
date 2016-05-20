@@ -231,6 +231,7 @@ public class GameSaveState {
 		Boolean seenPre;
 		String postNarrative;
 		Boolean seenPost;
+		String displayName;
 		
 		public boolean needsSelect(){
 			boolean ns = needsSelect;
@@ -324,6 +325,7 @@ public class GameSaveState {
 			ld.seenPre = (Boolean) levData.get("seenPre");
 			ld.postNarrative = (String) levData.get("postNarrative");
 			ld.seenPost = (Boolean) levData.get("seenPost");
+			ld.displayName = (String) levData.get("displayName");
 			
 			this.levels.add(ld);
 			

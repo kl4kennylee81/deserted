@@ -15,9 +15,9 @@ public class LevelMenu extends Menu {
 	/** start position of the menu's options y Position going down **/
 	private static final float RELATIVE_Y_POS = 0.7f;
 	
-	private static final int NUM_ROWS_TOTAL = 3;
+	private static final int NUM_ROWS_TOTAL = 7;
 	
-	private static final int NUM_COLUMNS_TOTAL = 7; 
+	private static final int NUM_COLUMNS_TOTAL = 2; 
 	
 	/** relative spacing between options **/
 	private static final float RELATIVE_MENU_SPACING_X = 0.025f;
@@ -26,38 +26,37 @@ public class LevelMenu extends Menu {
 	private static final float RELATIVE_MENU_SPACING_Y = 0.05f;
 	
 	/** relative width of options **/
-	private static final float RELATIVE_WIDTH = 0.12f;
+	private static final float RELATIVE_WIDTH = 0.33f;
 	
 	/** relative height of options **/
-	private static final float RELATIVE_HEIGHT = 0.05f;
+	private static final float RELATIVE_HEIGHT = 0.1f;
 	
 	private static final float RELATIVE_HIGHLIGHT_X_OFFSET = 0.02f;
 	
 	Texture optionHighlight;
 	
+	Texture logoTexture;
+	
+	// TODO change when free
 	// the menu options are set in their proper position by the constructor
 	public LevelMenu(Option[] options){
+		
+		this.logoTexture = new Texture(Constants.LEVEL_SELECT_LOGO);
+		
 		this.options = options;
-
-		float width = (RELATIVE_WIDTH_ROW - NUM_COLUMNS_TOTAL*RELATIVE_MENU_SPACING_X)/NUM_COLUMNS_TOTAL;
 		
-		float height = (RELATIVE_HEIGHT_COLUMN - NUM_ROWS_TOTAL*RELATIVE_MENU_SPACING_Y)/NUM_ROWS_TOTAL;
-		
-		int numRows = (int) Math.ceil((width * (options.length-1))/(RELATIVE_WIDTH_ROW - NUM_COLUMNS_TOTAL*RELATIVE_MENU_SPACING_X));
-		
-		for (int i =0;i<numRows;i++){
-			int itemsLeft = options.length - i*NUM_COLUMNS_TOTAL - 1;
-			for (int j =0;j<itemsLeft;j++){
-				int index = i*NUM_COLUMNS_TOTAL + j;
-				float spacedX= (RELATIVE_X_POS + (RELATIVE_MENU_SPACING_X +width)*j);
-				float spacedY = (RELATIVE_Y_POS - (RELATIVE_MENU_SPACING_Y+height)*i);
-				options[index].setBounds(spacedX, spacedY, width, height);
+		for (int i =0; i< 2;i++){
+			for (int j =0;j<7;j++){
+				int index= i*7+ j;
+				float spacedX = RELATIVE_X_POS + i*(RELATIVE_WIDTH + 0.14f);
+				float spacedY = RELATIVE_Y_POS - j*(RELATIVE_HEIGHT);
+				options[index].setBounds(spacedX, spacedY, RELATIVE_WIDTH,RELATIVE_HEIGHT);
 				// set the color to something else
 				options[index].setColor(Color.WHITE);
 			}
 		}
 		
-		options[options.length-1].setBounds(0.18f - RELATIVE_WIDTH/2, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
+		options[options.length-1].setBounds(0.1f - RELATIVE_WIDTH/2, 0f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
 		options[options.length-1].setColor(Constants.MENU_COLOR);
 	}
 	
@@ -76,14 +75,14 @@ public class LevelMenu extends Menu {
 			float y = options[i].getY(canvas);
 			float width = options[i].getWidth(canvas);
 			float height = options[i].getHeight(canvas);
-			Color textColor = options[i].getColor();
-			canvas.drawCenteredText(options[i].text, x+width/2, y, textColor);
-
 			Color imageColor = options[i].getColorImages();
 			//canvas.drawTexture(image, x, y, width,height, Color.WHITE);
 			if (options[i].image != null){
 				canvas.drawTexture(options[i].image, x, y, width,height, imageColor);
 			}
+			
+			Color textColor = options[i].getColor();
+			canvas.drawCenteredText(options[i].text, x+width/2, y+3*height/5, Color.BLACK);
 				
 		}
 		int i = options.length-1;
@@ -102,5 +101,12 @@ public class LevelMenu extends Menu {
 			col = Color.BLACK;
 		}
 		canvas.drawCenteredText(options[i].text, x+width/2, y+height*3/4, col);
+		
+		float logoX = 0.2f*canvas.getWidth();
+		float logoY = 0.87f*canvas.getHeight();
+		float logoW = 0.6f*canvas.getWidth();
+		float logoH = 0.1f*canvas.getHeight();
+		
+		canvas.drawTexture(this.logoTexture,logoX,logoY,logoW,logoH,Color.WHITE);
 	}
 }

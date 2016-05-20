@@ -1,7 +1,7 @@
 characters:
   0:
     characterId: 0
-    totalSP: 10
+    totalSP: 0
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -199,27 +199,9 @@ levels:
     seenPre: false
     postNarrative: yaml/narratives/Boss5Post.yml
     seenPost: false
-  14:
-    levelName: pvp
-    beaten: false
-    boss: false
-    needsSelect: false
-  15:
-    levelName: Boss3
-    beaten: false
-    needsSelect: true
-    boss: false
-  16:
-    levelName: BunnyTest
-    beaten: false
-    needsSelect: true
-    boss: false
 availableCharacters:
 - 0
 - 1
-- 2
-- 3
-- 4
 unlockableCharacters:
 - 1
 - 2
