@@ -499,6 +499,10 @@ public class GameEngine implements Screen {
             gameState = GameState.MENU;
             return true;
         }
+        if (InputController.pressedESC() && gameState != GameState.PLAY && gameState != GameState.PAUSED){
+        	Gdx.app.exit();
+        	return true;
+        }
         return false;
     }
 	
