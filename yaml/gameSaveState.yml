@@ -108,7 +108,7 @@ levels:
     beaten: false
     boss: false
     preNarrative: yaml/narratives/test.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/test.yml
     seenPost: false
   1:
@@ -183,6 +183,11 @@ levels:
     boss: false
   15:
     levelName: Boss3
+    beaten: false
+    needsSelect: true
+    boss: false
+  16:
+    levelName: BunnyTest
     beaten: false
     needsSelect: true
     boss: false

@@ -770,7 +770,7 @@
   - 0
   - 38
   - 42
-  - 40
+  - 50
   texture: models/CHARA_5.png
   icon: models/bunmage_icon.png
   animationId: 108
@@ -787,8 +787,8 @@
   slots: 3
   availableActions:
   - 0
-  - 6
-  - 10
+  - 49
+  - 11
   - 22
   texture: models/CHARA_5.png
   icon: models/bunmage_icon.png

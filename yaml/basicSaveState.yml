@@ -188,6 +188,12 @@ levels:
     beaten: false
     needsSelect: true
     boss: false
+  16:
+    levelName: BunnyTest
+    beaten: false
+    needsSelect: true
+    boss: false
+    
 availableCharacters:
 - 0
 - 1

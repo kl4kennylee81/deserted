@@ -1,0 +1,61 @@
+LIGHT_ATTACK:
+  type: index
+  branch_type: ATTACK
+  no_interrupt_chance/is_inside_shield: LIGHT_POWER
+  no_interrupt_chance: LIGHT_POWER_MOVE
+  low_interrupt_chance/is_inside_shield: LIGHT_POWER
+  low_interrupt_chance: LIGHT_POWER_MOVE
+  adjacent_attack_square: LIGHT_MOVE_POWER
+  default: LIGHT_MOVE_SHIELD
+  
+LIGHT_POSITION:
+  type: index
+  branch_type: POSITION
+  first_move: LIGHT_HASTEN_MOVE
+  is_inside_shield: LIGHT_HASTEN
+  adjacent_attack_square: LIGHT_MOVE_POWER
+  low_interrupt_chance/can_protect: LIGHT_SHIELD
+  low_interrupt_chance: LIGHT_HASTEN_MOVE
+  can_protect_with_move: LIGHT_MOVE_SHIELD
+  can_protect: LIGHT_MOVE_SHIELD
+  default: LIGHT_MOVE_MOVE
+
+LIGHT_POWER:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [POWERFUL_ATTACK]
+
+LIGHT_POWER_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [POWERFUL_ATTACK, MOVE_GOAL]
+
+LIGHT_MOVE_POWER:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, POWERFUL_ATTACK]
+  
+LIGHT_HASTEN:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_SELF]
+  
+LIGHT_SHIELD:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SHIELD]
+  
+LIGHT_HASTEN_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_SELF, MOVE_GOAL]
+
+LIGHT_MOVE_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, MOVE_GOAL]
+  
+LIGHT_MOVE_SHIELD:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_PROTECT, SHIELD]

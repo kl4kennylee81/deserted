@@ -45,6 +45,7 @@ public class ConditionalManager {
     		"alone",
     		"enemy_has_wall", 
     		"is_protected", 
+    		"is_inside_shield",
     		"can_protect",
     		"can_protect_with_move",
     		"protected_by_move",
@@ -58,7 +59,9 @@ public class ConditionalManager {
     		"ally_almost_done_waiting",
     		"can_interrupt_enemy",
     		"first_move",
-    		"not_hastened"
+    		"not_hastened",
+    		"overheat_can_hit",
+    		"enemy_not_slowed"
     };
 
 	
@@ -74,7 +77,7 @@ public class ConditionalManager {
 		map.put("safe_from_single", isSafeFromSingle());
 		map.put("not_safe", isNotSafe());
 		map.put("can_hit", canHitOpponent());
-		map.put("quick_attack_can_hit", canHitQuickAttack());
+		map.put("overheat_can_hit", canHitOverheat());
 		map.put("adjacent_attack_square", attackSquareAdjacent());
 	    map.put("adjacent_attack_square_single", attackSquareAdjacentSingle());
 	    map.put("adjacent_attack_square_quick", attackSquareAdjacentQuick());
@@ -107,12 +110,24 @@ public class ConditionalManager {
 		map.put("can_interrupt_enemy", canInterruptEnemy());
 		map.put("first_move", firstMove());
 		map.put("not_hastened", notHastened());
+		map.put("is_inside_shield", isInsideShield());
+		map.put("overheat_can_hit", canHitOverheat());
+		map.put("enemy_not_slowed", canHitOverheat());
 		map.put("default", true);
 		
 //		System.out.println("----------------------------------------------");
 //		for(String s: map.keySet()){
 //			System.out.println(s + ": "+ map.get(s));
 //		}
+	}
+	
+	public boolean enemyNotSlowed(){
+		for(Character c: enemies){
+			if(c.getSpeedModifier() < 0){
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public boolean notHastened(){
@@ -160,6 +175,20 @@ public class ConditionalManager {
 		return !isSafeSquare(selected.xPosition, selected.yPosition);
 	}
 	
+	public boolean canHitOverheat(){
+		for(Action a: selected.availableActions){
+			if(a.name.equals("Fire Blast")){
+				for(Character c: enemies){
+					if(a.hitsTarget(selected.xPosition, selected.yPosition, c.xPosition, c.yPosition, selected.leftside, board)){
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	
 	/**
 	 * Returns true if the next ally to enter the cast phase is currently at a 
 	 * a safe square
@@ -199,7 +228,7 @@ public class ConditionalManager {
 	public boolean canHitQuickAttack(){
 		Action quickest = null;
 		for(Action a : selected.availableActions){
-			if(a.damage > 0 && (quickest == null || a.cost < quickest.cost)){
+			if(a.damage > 0 && (quickest == null || a.cost <= quickest.cost)){
 				quickest = a;
 			}
 		}
@@ -227,16 +256,16 @@ public class ConditionalManager {
 			}
 		}
 		if(quickest == null) return false;
-		if(canHitEnemyFrom(selected, x+1, y) && board.canMove(selected.leftside, x+1, y)){
+		if(canHitEnemyFrom(selected, x+1, y) && board.canMove(selected.leftside, x+1, y)&&!board.isOccupied(x+1, y)){
 			return true;
 		}
-		if(canHitEnemyFrom(selected, x, y+1) && board.canMove(selected.leftside, x, y+1)){
+		if(canHitEnemyFrom(selected, x, y+1) && board.canMove(selected.leftside, x, y+1)&&!board.isOccupied(x, y+1)){
 			return true;
 		}
-		if(canHitEnemyFrom(selected, x-1, y) && board.canMove(selected.leftside, x-1, y)){
+		if(canHitEnemyFrom(selected, x-1, y) && board.canMove(selected.leftside, x-1, y)&&!board.isOccupied(x-1, y)){
 			return true;
 		}
-		if(canHitEnemyFrom(selected, x, y-1) && board.canMove(selected.leftside, x, y-1)){
+		if(canHitEnemyFrom(selected, x, y-1) && board.canMove(selected.leftside, x, y-1)&& !board.isOccupied(x, y-1)){
 			return true;
 		}
 		return false;
@@ -245,16 +274,16 @@ public class ConditionalManager {
 	public boolean attackSquareAdjacentSingle(){
 		int x = selected.xPosition;
 		int y = selected.yPosition;
-		if(canHitEnemyFromSingle(selected, x+1, y) && board.canMove(selected.leftside, x+1, y)){
+		if(canHitEnemyFromSingle(selected, x+1, y) && board.canMove(selected.leftside, x+1, y) &&!board.isOccupied(x+1, y)){
 			return true;
 		}
-		if(canHitEnemyFromSingle(selected, x, y+1) && board.canMove(selected.leftside, x, y+1)){
+		if(canHitEnemyFromSingle(selected, x, y+1) && board.canMove(selected.leftside, x, y+1) &&!board.isOccupied(x, y+1)){
 			return true;
 		}
-		if(canHitEnemyFromSingle(selected, x-1, y) && board.canMove(selected.leftside, x-1, y)){
+		if(canHitEnemyFromSingle(selected, x-1, y) && board.canMove(selected.leftside, x-1, y) &&!board.isOccupied(x-1, y)){
 			return true;
 		}
-		if(canHitEnemyFromSingle(selected, x, y-1) && board.canMove(selected.leftside, x, y-1)){
+		if(canHitEnemyFromSingle(selected, x, y-1) && board.canMove(selected.leftside, x, y-1) &&!board.isOccupied(x, y-1)){
 			return true;
 		}
 		return false;
@@ -270,19 +299,18 @@ public class ConditionalManager {
 			}
 		}
 		if(quick == null) return false;
-		if(canHitEnemyFromAction(selected, x+1, y, quick) && board.canMove(selected.leftside, x+1, y)){
+		if(canHitEnemyFromAction(selected, x+1, y, quick) && board.canMove(selected.leftside, x+1, y) &&!board.isOccupied(x+1, y)){
 
 			return true;
 		}
-		if(canHitEnemyFromAction(selected, x, y+1, quick) && board.canMove(selected.leftside, x, y+1)){
+		if(canHitEnemyFromAction(selected, x, y+1, quick) && board.canMove(selected.leftside, x, y+1) &&!board.isOccupied(x, y+1)){
+			return true;
+		}
+		if(canHitEnemyFromAction(selected, x-1, y, quick) && board.canMove(selected.leftside, x-1, y) &&!board.isOccupied(x-1, y)){
 
 			return true;
 		}
-		if(canHitEnemyFromAction(selected, x-1, y, quick) && board.canMove(selected.leftside, x-1, y)){
-
-			return true;
-		}
-		if(canHitEnemyFromAction(selected, x, y-1, quick) && board.canMove(selected.leftside, x, y-1)){
+		if(canHitEnemyFromAction(selected, x, y-1, quick) && board.canMove(selected.leftside, x, y-1) &&!board.isOccupied(x, y-1)){
 
 			return true;
 		}
@@ -298,16 +326,16 @@ public class ConditionalManager {
 	public boolean safeSquareAdjacent(){
 		int x = selected.xPosition;
 		int y = selected.yPosition;
-		if(isSafeSquare(x+1, y) && board.canMove(selected.leftside, x+1, y)){
+		if(isSafeSquare(x+1, y) && board.canMove(selected.leftside, x+1, y) &&!board.isOccupied(x+1, y)){
 			return true;
 		}
-		if(isSafeSquare(x, y+1) && board.canMove(selected.leftside, x, y+1)){
+		if(isSafeSquare(x, y+1) && board.canMove(selected.leftside, x, y+1) &&!board.isOccupied(x, y+1)){
 			return true;
 		}
-		if(isSafeSquare(x-1, y) && board.canMove(selected.leftside, x-1, y)){
+		if(isSafeSquare(x-1, y) && board.canMove(selected.leftside, x-1, y) &&!board.isOccupied(x-1, y)){
 			return true;
 		}
-		if(isSafeSquare(x, y-1) && board.canMove(selected.leftside, x, y-1)){
+		if(isSafeSquare(x, y-1) && board.canMove(selected.leftside, x, y-1) &&!board.isOccupied(x, y-1)){
 			return true;
 		}
 		return false;
@@ -538,6 +566,22 @@ public class ConditionalManager {
 	
 		return false;
 		
+	}
+	
+	public boolean isInsideShield(){
+		List<Coordinate> list = shields.leftShieldedCoordinates;
+		for(Coordinate coord: list){
+			if(coord.x == selected.xPosition && coord.y == selected.yPosition){
+				return true;
+			}
+		}
+		list = shields.rightShieldedCoordinates;
+		for(Coordinate coord: list){
+			if(coord.x == selected.xPosition && coord.y == selected.yPosition){
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	
@@ -849,7 +893,7 @@ public class ConditionalManager {
 	 */
 	public boolean canAttackSquareNoSingle(Character c, int x1, int y1, int x2, int y2){
 		for(Action a: c.availableActions){
-			if(a.pattern != Pattern.SINGLE){
+			if(a.pattern != Pattern.SINGLE && !a.name.equals("Slow All")){
 				if(canAttackSquareFrom(x1, y1, x2, y2, a)) return true;
 			}
 		}

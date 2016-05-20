@@ -263,6 +263,30 @@ Boss2:
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
+    
+# Fight against bunnies!
+BunnyTest:
+    allies:
+        - id: 0
+          xPosition: 0
+          yPosition: 0
+        - id: 1
+          xPosition: 0
+          yPosition: 3
+
+    enemies:
+        - id: 10
+          xPosition: 5
+          yPosition: 3
+        - id: 11
+          xPosition: 5
+          yPosition: 0
+    nextLevel:
+    boardWidth: 6
+    boardHeight: 4
+    boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
+    AI: ["aiyaml/light-dark.yml","aiyaml/lightbunny.yml","aiyaml/darkbunny.yml"]
 
 tutorial1:
     allies:

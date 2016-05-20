@@ -244,6 +244,9 @@ public class TacticalManager extends ConditionalManager{
 				case MOVE_TOWARDS_ATTACK_SQUARE:
 					a = moveTowardsAttackSquare(c, startSlot, x, y);
 					break;
+				case SLOW_ALL:
+					a = slowAll(c, startSlot);
+					break;
 				default:
 					//System.out.println("nopnode");
 					a = nopNode(c, startSlot);
@@ -299,6 +302,15 @@ public class TacticalManager extends ConditionalManager{
 	//			                     ||----w |								 //
 	//			                     ||     ||								 //
     //=======================================================================//
+	
+	public ActionNode slowAll(Character c, int startPoint){
+		for(Action a: c.availableActions){
+			if(a.pattern == Pattern.SINGLEPATH && a.path.length > 13){
+				return new ActionNode(a, getCastTime(c, a, startPoint), board.width/2, board.height/2);
+			}
+		}
+		return nopNode(c, startPoint);
+	}
 	
 	/**
 	 * Returns a single-square Action object if c has one

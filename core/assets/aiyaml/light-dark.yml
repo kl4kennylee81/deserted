@@ -1,0 +1,36 @@
+ROOT:
+  type: index
+  can_hit: ATTACK
+  default: POSITION
+
+#-------------------------------------------
+
+ATTACK:
+  type: leaf
+  my_tactic: ATTACK
+
+POSITION:
+  type: leaf
+  my_tactic: POSITION
+ 
+#--------------------------------------------- 
+
+Dark Bunny:
+  type: character
+  branches: [DARK_ATTACK, DARK_POSITION]
+
+Light Bunny:
+  type: character
+  branches: [LIGHT_ATTACK, LIGHT_POSITION]
+  
+#--------------------------------------------
+
+DEFAULT:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, POWERFUL_ATTACK]
+  
+RANDOM:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [RANDOM_DECENT, POWERFUL_ATTACK]
