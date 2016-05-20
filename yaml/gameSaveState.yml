@@ -216,7 +216,7 @@ levels:
     seenPost: false
   14:
     levelName: pvp
-    beaten: false
+    beaten: true
     boss: false
     needsSelect: false
   15:
