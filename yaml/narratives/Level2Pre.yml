@@ -1,0 +1,55 @@
+-1:
+  background: backgrounds/chap2.png
+0:
+  leftCharacters:
+  - 1000
+  - 0
+  highlightCharacters:
+  - 1000
+  background: backgrounds/rockbg.png
+  text: "Dara: Is anyone there?"
+1:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1003
+  highlightCharacters:
+  - 1003
+  text: "Rock Elder: Hello young spirit user."
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1003
+  highlightCharacters:
+  - 1000
+  text: "Dara: Where were you earlier?"
+3:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1003
+  highlightCharacters:
+  - 1003
+  text: "Rock Elder: You had Arash earlier."
+4:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1003
+  highlightCharacters:
+  - 1000
+  text: "Dara: Please, lend me your guidance."
+5:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1003
+  highlightCharacters:
+  - 1003
+  text: "Rock Elder: Very well, friend of Arash."

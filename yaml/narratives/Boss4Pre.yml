@@ -1,0 +1,66 @@
+-1:
+  background: backgrounds/chap3_66.png
+0:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1005
+  highlightCharacters:
+  - 1005
+  background: backgrounds/inTheSkybg.png
+  text: "Spirit Master: Dara, your next opponent is Arash."
+1:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 5
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Arash: We meet again"
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 5
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Dara: Yes, when did you meet those?"
+3:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 5
+  - 6
+  - 1002
+  highlightCharacters:
+  - 5
+  - 6
+  text: "Spirit Bunnies: Pii! Pii! Pii! Pii!"
+4:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 5
+  - 6
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Arash: I have learned a spell that can split a spirit into dual forms."
+5:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 5
+  - 6
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Arash: Show me just how far you have progressed."

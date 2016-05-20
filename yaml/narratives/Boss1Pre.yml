@@ -1,3 +1,5 @@
+-1:
+  background: backgrounds/chap1.png
 0:
   leftCharacters:
   - 1000
@@ -5,6 +7,7 @@
   - 1004
   highlightCharacters:
   - 1004
+  background: backgrounds/villagebg.png
   text: "Villager: Help! The village is under attack!"
 1:
   leftCharacters:

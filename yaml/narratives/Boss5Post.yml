@@ -1,0 +1,32 @@
+0:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 9
+  highlightCharacters:
+  - 9
+  text: "Dark Solus: Nooo!"
+1:
+  leftCharacters:
+  - 1000
+  - 0
+  highlightCharacters:
+  - 0
+  text: "Light Solus: It had to be done. She would have destroyed the barrier between mortals and spirits."
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  highlightCharacters:
+  - 1000
+  text: "Dara: But ... would that have been so bad? Most mortals live their entire lives suffering for the likes of these 'Spirit Masters'."
+3:
+  leftCharacters:
+  - 1000
+  - 0
+  highlightCharacters:
+  - 1000
+  text: "Dara: Maybe it is time for a change. After all, I was never meant to be here. I was and forever will be ... deserted."
+4:
+  background: backgrounds/fin.png

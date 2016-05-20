@@ -1,5 +1,7 @@
+-1:
+  background: backgrounds/chap0.png
 0:
-  background: backgrounds/environment.png
+  background: backgrounds/dark.png
   text: (I have always been alone)
 1:
   background: backgrounds/inTheSkybg.png
