@@ -21,7 +21,7 @@
   health: 6
   maxHealth: 6
   hexColor: FF9900FF
-  speed: 5.
+  speed: 4.0
   castSpeed: 8.0
   slots: 4
   availableActions:
@@ -75,7 +75,7 @@
   health: 10
   maxHealth: 10
   hexColor: 00cc00FF
-  speed: 3.
+  speed: 1.75
   castSpeed: 7.5
   slots: 2
   availableActions:
