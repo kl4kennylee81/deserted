@@ -62,7 +62,9 @@ public class ConditionalManager {
     		"first_move",
     		"not_hastened",
     		"overheat_can_hit",
-    		"enemy_not_slowed"
+    		"enemy_not_slowed",
+    		"straight_can_hit",
+    		"horizontal_can_hit"
     };
 
 	
@@ -114,13 +116,35 @@ public class ConditionalManager {
 		map.put("not_hastened", notHastened());
 		map.put("is_inside_shield", isInsideShield());
 		map.put("overheat_can_hit", canHitOverheat());
-		map.put("enemy_not_slowed", canHitOverheat());
+		map.put("enemy_not_slowed", enemyNotSlowed());
+		map.put("straight_can_hit", straightCanHit());
+		map.put("horizontal_can_hit", horizontalCanHit());
+
 		map.put("default", true);
 		
 //		System.out.println("----------------------------------------------");
 //		for(String s: map.keySet()){
 //			System.out.println(s + ": "+ map.get(s));
 //		}
+	}
+	
+	public boolean straightCanHit(){
+		for(Character c: enemies){
+			if(c.yPosition == selected.yPosition){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean horizontalCanHit(){
+		for(Character c: enemies){
+			if( c.xPosition == board.width - 1 - selected.xPosition){
+				return true;
+			}
+
+		}
+		return false;
 	}
 	
 	public boolean enemyNotSlowed(){
@@ -530,7 +554,7 @@ public class ConditionalManager {
 	 */
 	public boolean singleInRange(){
 		for(Action a: selected.availableActions){
-			if(a.pattern == Pattern.SINGLE){
+			if(a.pattern == Pattern.SINGLE || a.pattern == Pattern.SINGLEPATH){
 				for(Character c: enemies){
 					if(a.hitsTarget(selected.xPosition, selected.yPosition, 
 							c.xPosition, c.yPosition, selected.leftside, board)){
@@ -913,7 +937,7 @@ public class ConditionalManager {
 	 */
 	public boolean canAttackSquareNoSingle(Character c, int x1, int y1, int x2, int y2){
 		for(Action a: c.availableActions){
-			if(a.pattern != Pattern.SINGLE && !a.name.equals("Slow All")){
+			if(a.pattern != Pattern.SINGLE && a.pattern != Pattern.SINGLEPATH && !a.name.equals("Slow All")){
 				if(canAttackSquareFrom(x1, y1, x2, y2, a)) return true;
 			}
 		}

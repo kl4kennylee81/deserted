@@ -1,0 +1,150 @@
+ROOT:
+  type: index
+  first_move: RANDOM
+  
+  is_inside_shield/single_in_range/quick_attack_can_hit: SINGLE_QUICK
+  is_inside_shield/single_in_range: SINGLE
+  is_inside_shield: HORIZONTAL_STRAIGHT_HORIZONTAL
+  
+  no_interrupt_chance/single_in_range/horizontal_can_hit: SINGLE_QUICK
+  no_interrupt_chance/single_in_range/straight_can_hit: SINGLE_QUICK
+  no_interrupt_chance/single_in_range/adjacent_safe_square/adjacent_safe_square: SINGLE_MOVE
+  no_interrupt_chance/single_in_range: SINGLE_SHIELD
+    
+  low_interrupt_chance/horizontal_can_hit/straight_can_hit/adjacent_attack_square/adjacent_safe_square: HORIZONTAL_SHIELD_STRAIGHT
+  low_interrupt_chance/horizontal_can_hit/straight_can_hit: HORIZONTAL_STRAIGHT_SHIELD
+  low_interrupt_chance/horizontal_can_hit/adjacent_attack_square_quick: HORIZONTAL_MOVE_QUICK
+  low_interrupt_chance/straight_can_hit/adjacent_attack_square_quick: STRAIGHT_MOVE_QUICK
+  low_interrupt_chance/horizontal_can_hit: HORIZONTAL_SHIELD_HORIZONTAL
+  low_interrupt_chance/straight_can_hit: STRAIGHT_SHIELD_STRAIGHT
+  low_interrupt_chance/adjacent_attack_square_quick: MOVE_QUICK_SHIELD
+  low_interrupt_chance/adjacent_attack_square: MOVE_SINGLE
+  low_interrupt_chance: HORIZONTAL_MOVE_STRAIGHT  
+  
+  
+  medium_interrupt_chance/horizontal_can_hit/straight_can_hit: HORIZONTAL_STRAIGHT_HORIZONTAL
+  medium_interrupt_chance/adjacent_attack_square_quick: MOVE_QUICK_SHIELD
+  medium_interrupt_chance/adjacent_attack_square: MOVE_SINGLE
+  medium_interrupt_chance: MOVE_SHIELD_HORIZONTAL
+  
+  
+  adjacent_attack_square_quick: MOVE_QUICK_SHIELD
+  adjacent_attack_square: MOVE_SINGLE
+  adjacent_safe_square: MOVE_HORIZONTAL_STRAIGHT
+  default: MOVE_MOVE_QUICK
+
+MOVE_MOVE_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, MOVE_GOAL, QUICK_ATTACK]
+  
+MOVE_HORIZONTAL_STRAIGHT:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, HORIZONTAL, STRAIGHT]
+  
+MOVE_QUICK_SHIELD:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK, SHIELD]
+  
+MOVE_SHIELD_HORIZTONAL:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, SHIELD, HORIZONTAL]
+  
+MOVE_SINGLE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, SINGLE_OPTIMAL]
+
+
+  
+
+STRAIGHT_MOVE_STRAIGHT:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [STRAIGHT, MOVE_AGGRESSIVE, STRAIGHT]
+  
+STRAIGHT_SHIELD_HORIZONTAL:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [STRAIGHT, SHIELD, HORIZONTAL]
+  
+STRAIGHT_MOVE_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [STRAIGHT, MOVE_AGGRESSIVE, QUICK_ATTACK]
+  
+STRAIGHT_SHIELD_STRAIGHT:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [STRAIGHT, SHIELD, STRAIGHT]
+
+
+  
+HORIZONTAL_STRAIGHT_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [HORIZONTAL, STRAIGHT, MOVE_GOAL]
+
+HORIZONTAL_STRAIGHT_SHIELD:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [HORIZONTAL, STRAIGHT, SHIELD]
+
+HORIZONTAL_MOVE_STRAIGHT:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [HORIZONTAL, MOVE_AGGRESSIVE, STRAIGHT]
+  
+HORIZONTAL_SHIELD_HORIZONTAL:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [HORIZONTAL, SHIELD, HORIZONTAL]
+  
+HORIZONTAL_MOVE_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [HORIZONTAL, MOVE_AGGRESSIVE, QUICK_ATTACK]
+  
+HORIZONTAL_STRAIGHT_HORIZONTAL:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [HORIZONTAL, STRAIGHT, HORIZONTAL]
+  
+  
+
+
+SINGLE_QUICK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_OPTIMAL, QUICK_ATTACK]
+  
+SINGLE_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_OPTIMAL, MOVE_GOAL]
+
+SINGLE_SHIELD:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_OPTIMAL, SHIELD]
+  
+SINGLE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_OPTIMAL]
+
+
+
+RANDOM:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [RANDOM_DECENT, RANDOM_DECENT]
+
+
+
+ 
+
+

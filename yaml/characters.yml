@@ -163,17 +163,18 @@
   sharedStatus: true
 9:
   name: Dark Solus
-  health: 6
-  maxHealth: 6
+  health: 15
+  maxHealth: 15
   hexColor: CD2626FF
-  speed: 5.5
-  castSpeed: 7.0
-  slots: 4
+  speed: 3.0
+  castSpeed: 8.0
+  slots: 3
   availableActions:
   - 0
-  - 4
-  - 3
-  - 35
+  - 100
+  - 101
+  - 102
+  - 103
   texture: models/portraits/darksolus.png
   icon: models/Solus/darksolus_miniicon.png
   bigIcon: models/Solus/darksolus_miniicon.png
@@ -332,6 +333,8 @@
   bossId: 1003
 
 #=========================================================
+
+
 
 89:
   name: Tutorial_part_3

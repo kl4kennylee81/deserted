@@ -248,6 +248,12 @@ public class TacticalManager extends ConditionalManager{
 				case SLOW_ALL:
 					a = slowAll(c, startSlot);
 					break;
+				case STRAIGHT:
+					a = straight(c, startSlot);
+					break;
+				case HORIZONTAL:
+					a = horizontal(c, startSlot);
+					break;
 				default:
 					//System.out.println("nopnode");
 					a = nopNode(c, startSlot);
@@ -318,7 +324,7 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	public Action single(Character c){
 		for(Action a: c.availableActions){
-			if(a.pattern == Pattern.SINGLE){
+			if(a.pattern == Pattern.SINGLE || a.pattern == Pattern.SINGLEPATH){
 				return a;
 			}
 		}
@@ -544,6 +550,29 @@ public class TacticalManager extends ConditionalManager{
 		}
 		return nopNode(c, startPoint);
 	}
+	
+	/**QUICK HACK FOR GDIAC */
+	private ActionNode straight(Character c, int startPoint){
+		for(Action a: c.availableActions){
+			if(a.pattern == Pattern.INSTANT){
+				return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.UP);
+			}
+		}
+		return nopNode(c, startPoint);
+	}
+	
+	/**QUICK HACK FOR GDIAC */
+	private ActionNode horizontal(Character c, int startPoint){
+		for(Action a: c.availableActions){
+			if(a.pattern == Pattern.HORIZONTAL){
+				return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.UP);
+			}
+		}
+		return nopNode(c, startPoint);
+	}
+	
+	
+	
 	
 	
 	

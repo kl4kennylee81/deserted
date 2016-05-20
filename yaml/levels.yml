@@ -402,17 +402,17 @@ Boss4:
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: []
+    AI: ["aiyaml/light-dark.yml","aiyaml/lightbunny.yml","aiyaml/darkbunny.yml"]
 
 # dark solus 
 Boss5:
     allies:
         - selectedId: 0
-          xPosition: 0
+          xPosition: 1
           yPosition: 3
 
         - selectedId: 1
-          xPosition: 0
+          xPosition: 1
           yPosition: 0
 
     enemies:
@@ -424,5 +424,5 @@ Boss5:
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: []
+    AI: ["aiyaml/darksolus.yml"]
 
