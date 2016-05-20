@@ -22,7 +22,7 @@ public class Constants {
 	/** The size of the messages */
 	public static final int MENU_FONT_SIZE = 24;
 	
-	public static final String LOAD_FONT_FILE = "fonts/MarkerFelt.ttf";
+	public static final String LOAD_FONT_FILE = "fonts/MarkerFeltcpy.ttf";
 	/** The size of the messages */
 	public static final int LOAD_FONT_SIZE = 40;
 	
