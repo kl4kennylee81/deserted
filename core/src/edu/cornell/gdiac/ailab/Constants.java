@@ -122,5 +122,5 @@ public class Constants {
 	public static final String LEVEL_BEGIN = "Tutorial1";
 	
 	//transition constant
-	public static final float TRANSITION_TIME = 0.0f;
+	public static final float TRANSITION_TIME = 0.75f;
 }

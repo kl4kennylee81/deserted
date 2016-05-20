@@ -52,12 +52,12 @@ public class LevelMenu extends Menu {
 				float spacedY = RELATIVE_Y_POS - j*(RELATIVE_HEIGHT);
 				options[index].setBounds(spacedX, spacedY, RELATIVE_WIDTH,RELATIVE_HEIGHT);
 				// set the color to something else
-				options[index].setColor(Color.WHITE);
+				options[index].setColor(Color.BLACK.cpy());
 			}
 		}
 		
 		options[options.length-1].setBounds(0.1f - RELATIVE_WIDTH/2, 0f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
-		options[options.length-1].setColor(Constants.MENU_COLOR);
+		options[options.length-1].setColor(Constants.MENU_COLOR.cpy());
 	}
 	
 	public void setImage(Texture t){
@@ -82,7 +82,7 @@ public class LevelMenu extends Menu {
 			}
 			
 			Color textColor = options[i].getColor();
-			canvas.drawCenteredText(options[i].text, x+width/2, y+3*height/5, Color.BLACK);
+			canvas.drawCenteredText(options[i].text, x+width/2, y+3*height/5, textColor);
 				
 		}
 		int i = options.length-1;
@@ -91,22 +91,24 @@ public class LevelMenu extends Menu {
 		float width = options[i].getWidth(canvas);
 		float height = options[i].getHeight(canvas);
 		
+		Color col = options[i].getColorImages();
+		
 		if (options[i].isSelected){
 			if (optionHighlight != null){
-				canvas.drawTexture(optionHighlight,x,y,width,height,Color.WHITE);
+				canvas.drawTexture(optionHighlight,x,y,width,height,col);
 			}
 		}
-		Color col = options[i].color;
-		if (options[i].isSelected) {
-			col = Color.BLACK;
+		Color textColor = options[i].getColor();
+		if (options[i].isSelected){
+			textColor = Color.BLACK;
 		}
-		canvas.drawCenteredText(options[i].text, x+width/2, y+height*3/4, col);
+		canvas.drawCenteredText(options[i].text, x+width/2, y+height*3/4f,textColor);
 		
 		float logoX = 0.2f*canvas.getWidth();
 		float logoY = 0.87f*canvas.getHeight();
 		float logoW = 0.6f*canvas.getWidth();
 		float logoH = 0.1f*canvas.getHeight();
 		
-		canvas.drawTexture(this.logoTexture,logoX,logoY,logoW,logoH,Color.WHITE);
+		canvas.drawTexture(this.logoTexture,logoX,logoY,logoW,logoH,Color.WHITE.cpy());
 	}
 }

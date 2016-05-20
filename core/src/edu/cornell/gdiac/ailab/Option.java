@@ -162,7 +162,7 @@ public class Option implements GUIElement{
 	
 	public Color getColorImages(){
 		if (this.isSelected){
-			return Color.WHITE.cpy().add(Color.BLACK);
+			return Color.GOLD.cpy();
 		}
 		else if (this.imageColor != null) {
 			return this.imageColor.cpy();

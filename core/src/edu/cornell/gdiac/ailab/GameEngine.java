@@ -576,7 +576,7 @@ public class GameEngine implements Screen {
         		gameLoad += 0.01f;
         	} else {
         		// press enter to start the game
-        		if (InputController.pressedLeftMouse()){
+        		if (InputController.pressedLeftMouse() || InputController.pressedEnter()){
 	        		this.setTransition(GameState.MENU);
 	        		SoundController.LoadContent(manager);
         		}

@@ -93,7 +93,7 @@ levels:
     beaten: false
     boss: false
     preNarrative: yaml/narratives/Tutorial1Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Tutorial1Post.yml
     seenPost: false
   1:
@@ -114,7 +114,7 @@ levels:
     boss: false
     postNarrative: yaml/narratives/Tutorial5Post.yml
     seenPost: false
-  5: 
+  5:
     levelName: Level1
     beaten: false
     boss: false
@@ -210,4 +210,3 @@ unlockableCharacters:
 selectedCharacters:
 - 0
 - 1
-
