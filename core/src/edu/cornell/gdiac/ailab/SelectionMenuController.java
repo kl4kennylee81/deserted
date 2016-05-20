@@ -451,13 +451,20 @@ public class SelectionMenuController {
 		for (Coordinate c : hitCoords){
 			int ii = c.x;
 			int jj = c.y;
+			if (ii < 0 || ii >= board.getWidth() || jj < 0 || jj >= board.getHeight()){
+				continue;
+			}
+			boolean add = false;
 			if (leftside && ii >= (int)board.getWidth()/2){
-				i++;
+				add = true;
 			}
 			else if (!leftside && ii < (int)board.getWidth()/2){
-				i++;
+				add = true;
 			}
 			else if(isBuff){
+				add = true;
+			}
+			if (add){
 				i++;
 			}
 		}
@@ -503,7 +510,7 @@ public class SelectionMenuController {
 		}
 	}
 
-	protected void mouseHighlight(){
+	protected boolean mouseHighlight(){
 		// mouse controls for single
 		float mouseX = InputController.getMouseX();
 		float mouseY = InputController.getMouseY();
@@ -522,8 +529,9 @@ public class SelectionMenuController {
 				this.selectedY = chosenY;
 				if (InputController.pressedLeftMouse()){
 					confirmedAction();
+					return true;
 				}
-				return;
+				return false;
 			}
 			
 			// this is to allow people to still confirm their single paths when in the box
@@ -531,9 +539,11 @@ public class SelectionMenuController {
 					&& actionCanHit(this.selectedX,this.selectedY)){
 				if (InputController.pressedLeftMouse()){
 					confirmedAction();
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 	protected void updateChoosingTarget(){

@@ -68,6 +68,8 @@ public class GameplayController {
     
     InGameState prePauseState;
     
+    boolean reset;
+    
     public static enum InGameState {
 		NORMAL,
 		SELECTION,
@@ -93,6 +95,7 @@ public class GameplayController {
     }
     
     public void resetGame(Level level){
+    	reset = false;
     	inGameState = InGameState.NORMAL;
     	fileNum++;
 		dataFile = GameEngine.dataGen ? new FileHandle(Constants.DATA_PATH+"data/data"+fileNum) : null;
@@ -181,8 +184,8 @@ public class GameplayController {
     				inGameState = prePauseState;
     			}
     			else if (selected.equals("Retry")){
-    				//if we end the game without winning, the level will be reset in gameEngine
     				inGameState = InGameState.DONE;
+    				reset = true;
     			}else if (selected.equals("Main Menu")){
     				InputController.artificialRPressed = true;
     			}
@@ -242,7 +245,7 @@ public class GameplayController {
     		ObjectLoader.getInstance().unloadCurrentLevel();
     	}
     	
-       	if (InputController.pressedESC()){
+       	if (InputController.pressedESC() || InputController.pressedP()){
        		if (inGameState != InGameState.PAUSEMENU){
        			prePauseState = inGameState;
         		inGameState = InGameState.PAUSEMENU;
@@ -289,10 +292,8 @@ public class GameplayController {
 		}
         screen.draw(canvas);
         board.draw(canvas, selectionMenuController);
-        /*
-        if (inGameState == InGameState.SELECTION){
-        	board.draw(canvas);
-        }*/
+       
+
     	
     	
     	if (inGameState == InGameState.SELECTION){
@@ -368,8 +369,7 @@ public class GameplayController {
 			cs.draw(canvas);
 		}
 		else if (this.gameOver() && this.tieGame() && inGameState == InGameState.WARNING){
-    		//canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);	
-			System.out.println("gameplaycontroller tie game make a completion screen for it");
+    		//canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
 			CompletionScreen cs = CompletionScreen.getInstance();
 			cs.setIsWin(false);
 			cs.draw(canvas);

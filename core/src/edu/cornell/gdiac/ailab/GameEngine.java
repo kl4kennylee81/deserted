@@ -253,7 +253,6 @@ public class GameEngine implements Screen {
     public void startGame(String levelName, String backLevelName, boolean needsSelect) throws IOException {
     	if (this.gameSaveStateController.containsLevel(levelName)){
     		curLevelData = this.gameSaveStateController.getLevelData(levelName);
-    		System.out.println("okay"+curLevelData.levelName);
     		if (curLevelData.needsSelect() && needsSelect){
     			characterSelectController.reset();
     			gameState = GameState.SELECT;
@@ -620,6 +619,18 @@ public class GameEngine implements Screen {
 		} else if (keyword == "Level Select") {
         	mainMenuController.setLevelSelect();
             gameState = GameState.MENU;
+		} else if (keyword == "Play"){
+			String nextUnbeatenLevel = gameSaveStateController.getNextUnbeatenLevel();
+			if (nextUnbeatenLevel != null){
+				try {
+					loadNextMenu(nextUnbeatenLevel,"",true);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				startKeyword("Level Select","");
+			}
 		}
 	}
 
@@ -633,7 +644,14 @@ public class GameEngine implements Screen {
     public void updatePlay() {
     	curGameplayController.update();
     	if (curGameplayController.isDone()){
-    		if (curGameplayController.playerWon()){
+    		if (curGameplayController.reset){
+    			try {
+					loadNextMenu(curGameplayController.levelName,"",false);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    		} else if (curGameplayController.playerWon()){
 	    		//check if level beaten and update savestate
 	    		if (curLevelData.postNarrative != null && !curLevelData.seenPost){
 	    			narrativeController.reset(curLevelData.postNarrative, false);
@@ -650,9 +668,6 @@ public class GameEngine implements Screen {
     			this.setTransition(curLevelData.levelName, false);
     		}
     	}
-    	if (InputController.pressedP()){
-    		gameState = GameState.PAUSED;
-    	}
     }
 	
     
@@ -661,7 +676,7 @@ public class GameEngine implements Screen {
      */
     public void updatePaused(){
     	if(InputController.pressedP()){
-    		gameState = GameState.PLAY;
+    		//gameState = GameState.PLAY;
     	}
     }
     

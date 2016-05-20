@@ -1,10 +1,13 @@
 LIGHT_ATTACK:
   type: index
   branch_type: ATTACK
+  is_inside_shield: LIGHT_POWER
+  can_move_to_protect: LIGHT_MOVE_SHIELD
   no_interrupt_chance/is_inside_shield: LIGHT_POWER
   no_interrupt_chance: LIGHT_POWER_MOVE
   low_interrupt_chance/is_inside_shield: LIGHT_POWER
   low_interrupt_chance: LIGHT_POWER_MOVE
+  can_move_to_protect: LIGHT_MOVE_SHIELD
   adjacent_attack_square: LIGHT_MOVE_POWER
   default: LIGHT_MOVE_SHIELD
   
@@ -13,10 +16,10 @@ LIGHT_POSITION:
   branch_type: POSITION
   first_move: LIGHT_HASTEN_MOVE
   is_inside_shield: LIGHT_HASTEN
-  adjacent_attack_square: LIGHT_MOVE_POWER
   low_interrupt_chance/can_protect: LIGHT_SHIELD
+  adjacent_attack_square: LIGHT_MOVE_POWER
+  can_move_to_protect: LIGHT_MOVE_SHIELD
   low_interrupt_chance: LIGHT_HASTEN_MOVE
-  can_protect_with_move: LIGHT_MOVE_SHIELD
   can_protect: LIGHT_MOVE_SHIELD
   default: LIGHT_MOVE_MOVE
 
@@ -33,7 +36,7 @@ LIGHT_POWER_MOVE:
 LIGHT_MOVE_POWER:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_GOAL, POWERFUL_ATTACK]
+  my_actions: [MOVE_AGGRESSIVE, POWERFUL_ATTACK]
   
 LIGHT_HASTEN:
   type: leaf

@@ -50,6 +50,7 @@ public class ConditionalManager {
     		"can_protect_with_move",
     		"protected_by_move",
     		"maybe_protected_by_move",
+    		"can_move_to_protect",
     		"could_be_blocked",
     		"one_enemy_left", 
     		"has_shield",
@@ -97,6 +98,7 @@ public class ConditionalManager {
 		map.put("is_protected", isProtected());
 		map.put("can_protect", canProtect());
 		map.put("can_protect_with_move", canProtectFriendWithMove());
+		map.put("can_move_to_protect", canMoveToProtect());
 		map.put("protected_by_move", wouldBeProtectedWithMove());
 		map.put("maybe_protected_by_move", canBeProtectedWithMove());
 		map.put("could_be_blocked", projectileCouldBeBlocked());
@@ -671,6 +673,24 @@ public class ConditionalManager {
 			}
 			if(x1 <= x2 && Math.abs(c.yPosition - selected.yPosition) <= 2){
 				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if a friend could move into a protected spot if I put a shield up
+	 */
+	public boolean canMoveToProtect(){
+		for(Character c: friends){
+			if(c != selected){
+				if(Math.abs(selected.xPosition - c.xPosition) == 1 && 
+					Math.abs(selected.yPosition - c.yPosition) == 1){
+					return true;
+				}
+				if(selected.xPosition == c.xPosition && Math.abs(selected.yPosition - c.yPosition) <= 2){
+					return true;
+				}
 			}
 		}
 		return false;

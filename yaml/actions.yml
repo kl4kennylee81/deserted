@@ -93,7 +93,6 @@
   description: Hit 4 tiles straight ahead for 2 damage.
   animationId: 1
   icon: models/action_tokens/fire_token.png
- 
 
 5:
   name: Diagonal
@@ -312,11 +311,7 @@
     numRounds: 0
     magnitude: 0
   description: Fire a straight projectile 4 squares forward for 2 damage.
-  persisting_action:
-    numRounds: 10
-    moveSpeed: 0.06
-  animationId: 0
-  projectileAnimationId: 2
+  animationId: 1
   icon: models/action_tokens/projectile_token.png
 
 15:
@@ -1119,5 +1114,29 @@
   description: Super powerful attack
   animationId: 1
   icon: models/action_tokens/fire_token.png
+  
+51:
+  name: Spirit Ball
+  cost: 2
+  damage: 2
+  range: 2
+  size: 1
+  pattern: PROJECTILE
+  path: "0,0 1,0 2,0 3,0 3,1 3,2"
+  oneHit: true
+  needsToggle: true
+  canBlock: true
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Launch a L shape projectile for 3 damage
+  persisting_action:
+    numRounds: 10
+    moveSpeed: 0.05
+  animationId: 0
+  projectileAnimationId: 2
+  icon: models/action_tokens/projectile_token.png
 ...
 

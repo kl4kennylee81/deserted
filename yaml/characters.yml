@@ -11,49 +11,12 @@
   - 4
   - 3
   - 35
-  texture: models/CHARA_3.png
+  texture: models/portraits/solus.png
   icon: models/sulus_icon.png
   bigIcon: largeicons/chara_largeicon.png
   animationId: 101
   bossId: 1000
 1:
-  name: Spirit
-  health: 6
-  maxHealth: 6
-  hexColor: CD2626FF
-  speed: 5.5
-  castSpeed: 7.5
-  slots: 4
-  availableActions:
-  - 0
-  - 7
-  - 20
-  - 5
-  texture: models/CHARA_3.png
-  icon: models/bunmage_icon.png
-  bigIcon: largeicons/bunmage_largeicon.png
-  animationId: 108
-  bossId: 1001
-
-2:
-  name: Rock Spirit
-  health: 10
-  maxHealth: 10
-  hexColor: 00cc00FF
-  speed: 3.
-  castSpeed: 7.5
-  slots: 2
-  availableActions:
-  - 0
-  - 16
-  - 17
-  - 18
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconblue.png
-  bigIcon: largeicons/rock_largeiconblue.png
-  animationId: 105
-  bossId: 1000
-3:
   name: Mage Spirit
   health: 6
   maxHealth: 6
@@ -71,25 +34,7 @@
   bigIcon: largeicons/rock_largeiconyellow.png
   animationId: 107
   bossId: 1000
-4:
-  name: Enchantress Spirit
-  health: 6
-  maxHealth: 6
-  hexColor: CD2626FF
-  speed: 6.5
-  castSpeed: 7.
-  slots: 4
-  availableActions:
-  - 0
-  - 22
-  - 5
-  - 24
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_icon.png
-  bigIcon: largeicons/rock_largeiconbasic.png
-  animationId: 103
-  bossId: 1000
-5:
+2:
   name: Fighter Spirit
   health: 8
   maxHealth: 8
@@ -107,14 +52,31 @@
   bigIcon: largeicons/rock_largeiconred.png
   animationId: 106
   bossId: 1000
-
-6:
+3:
+  name: Enchantress Spirit
+  health: 6
+  maxHealth: 6
+  hexColor: CD2626FF
+  speed: 6.5
+  castSpeed: 7.
+  slots: 4
+  availableActions:
+  - 0
+  - 22
+  - 5
+  - 24
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
+  bigIcon: largeicons/rock_largeiconbasic.png
+  animationId: 103
+  bossId: 1000
+4:
   name: Rock Spirit
-  health: 0
-  maxHealth: 0
+  health: 10
+  maxHealth: 10
   hexColor: 00cc00FF
-  speed: 2.5
-  castSpeed: 7.0
+  speed: 3.
+  castSpeed: 7.5
   slots: 2
   availableActions:
   - 0
@@ -125,98 +87,95 @@
   icon: models/tutorial_characters/basic_iconblue.png
   bigIcon: largeicons/rock_largeiconblue.png
   animationId: 105
-
-7:
-  name: Fighter Spirit
+  bossId: 1000
+5:  
+  name: Dark Bunny
   health: 6
   maxHealth: 6
-  hexColor: 3299FFFF
-  speed: 2.5
-  castSpeed: 8.
-  slots: 4
-  availableActions:
-  - 0
-  - 23
-  - 20
-  - 7
-  texture: models/CHARA_1.png
-  icon: models/tutorial_characters/basic_iconred.png
-  bigIcon: largeicons/rock_largeiconred.png
-  animationId: 106
-
-8:
-  name: Mage Spirit
-  health: 5
-  maxHealth: 5
   hexColor: FF9900FF
   speed: 3.5
-  castSpeed: 6.5
-  slots: 4
-  availableActions:
-  - 0
-  - 13
-  - 14
-  - 15
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconyellow.png
-  bigIcon: largeicons/rock_largeiconyellow.png
-  animationId: 107
-
-9:
-  name: Parent Boss
-  health: 0
-  maxHealth: 0
-  hexColor: FF9900FF
-  speed: 5.
-  castSpeed: 10.
-  slots: 3
-  availableActions:
-  - 0
-  - 1
-  - 2
-  - 3
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconyellow.png
-  bigIcon: largeicons/rock_largeiconyellow.png
-  animationId: 107
-
-10:  
-  name: Dark Bunny
-  health: 12
-  maxHealth: 12
-  hexColor: FF9900FF
-  speed: 3.5
-  castSpeed: 10.0
+  castSpeed: 9.0
   slots: 3
   availableActions:
   - 0
   - 38
   - 42
-  - 40
+  - 50
   texture: models/CHARA_5.png
   icon: models/bunmage_icon.png
-  animationId: 108
-  bossId: 9
+  animationId: 111
+  bossId: 1002
   sharedStatus: true
-
-11:  
+6:  
   name: Light Bunny
-  health: 0
-  maxHealth: 0
+  health: 6
+  maxHealth: 6
   hexColor: FF9900FF
   speed: 7.
   castSpeed: 6.5
   slots: 3
   availableActions:
   - 0
-  - 6
-  - 10
+  - 49
+  - 51
   - 22
-  texture: models/CHARA_5.png
+  texture: models/portraits/bunny.png
   icon: models/bunmage_icon.png
-  animationId: 108
-  bossId: 9
+  animationId: 112
+  bossId: 1002
   sharedStatus: true
+7:
+  name: Boss
+  health: 4
+  maxHealth: 4
+  hexColor: CD2626FF
+  speed: 6.5
+  castSpeed: 10.0
+  slots: 2
+  availableActions:
+  - 0
+  - 33
+  - 34
+  texture: models/CHARA_3.png
+  icon: models/ghost_boss/bosshead_smallicon.png
+  bigIcon: largeicons/bosshead_icon.png
+  animationId: 109
+  bossId: 1001
+  sharedStatus: true
+8:
+  name: Arm
+  health: 4
+  maxHealth: 4
+  hexColor: CD2626FF
+  speed: 5.0
+  castSpeed: 9.0
+  slots: 2
+  availableActions:
+  - 0
+  - 9
+  - 32
+  texture: models/CHARA_5.png
+  icon: models/ghost_boss/boss_handicon.png
+  animationId: 110
+  bossId: 1001
+  sharedStatus: true
+9:
+  name: Dark Solus
+  health: 6
+  maxHealth: 6
+  hexColor: CD2626FF
+  speed: 5.5
+  castSpeed: 7.0
+  slots: 4
+  availableActions:
+  - 0
+  - 4
+  - 3
+  - 35
+  texture: models/portraits/solus.png
+  icon: models/sulus_icon.png
+  bigIcon: largeicons/chara_largeicon.png
+  animationId: 101
 
 89:
   name: Tutorial_part_3
@@ -274,36 +233,6 @@
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
   animationId: 103
-93:
-  name: Tutorial3_straight
-  health: 4
-  maxHealth: 4
-  hexColor: FF9900FF
-  speed: 7.0
-  castSpeed: 6.0
-  slots: 2
-  availableActions:
-  - 0
-  - 4
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_icon.png
-  animationId: 103
-  
-1000:
-  name: Tutorial3_straight
-  health: 4
-  maxHealth: 4
-  hexColor: FF9900FF
-  speed: 7.0
-  castSpeed: 6.0
-  slots: 2
-  availableActions:
-  - 0
-  - 4
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconred.png
-  animationId: 106
-  
 94:
   name: Tutorial4_straight
   health: 2
@@ -373,55 +302,12 @@
   slots: 2
   availableActions:
   - 0
-  - 36
+  - 45
   - 4
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconblue.png
   animationId: 105
-98:
-  name: Tutorial_Single
-  health: 4
-  maxHealth: 4
-  hexColor: FF9900FF
-  speed: 0.0
-  castSpeed: 7.0
-  slots: 2
-  availableActions:
-  - 0
-  - 3
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconyellow.png
-  animationId: 107
-99:
-  name: Tutorial_Single_Straight
-  health: 2
-  maxHealth: 2
-  hexColor: 3299FFFF
-  speed: 7.5
-  castSpeed: 5.0
-  slots: 4
-  availableActions:
-  - 0
-  - 3
-  - 4
-  texture: models/CHARA_3.png
-  icon: models/sulus_icon.png
-  animationId: 101
-100:
-  name: Tutorial_Straight_Shield
-  health: 4
-  maxHealth: 4
-  hexColor: FF9900FF
-  speed: 2.0
-  castSpeed: 7.0
-  slots: 3
-  availableActions:
-  - 0
-  - 9
-  - 4
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconblue.png
-  animationId: 105
+
 101:
   name: Tutorial_Fast
   health: 2
@@ -457,131 +343,17 @@
   maxHealth: 2
   hexColor: FF9900FF
   speed: 5.5
-  castSpeed: 7.0
+  castSpeed: 5.0
   slots: 2
   availableActions:
   - 0
   - 4
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_icon.png
-  animationId: 103
-104:
-  name: Tutorial3_user
-  health: 4
-  maxHealth: 4
-  hexColor: FF9900FF
-  speed: 2.0
-  castSpeed: 7.0
-  slots: 4
-  availableActions:
-  - 0
-  - 4
-  texture: models/CHARA_3.png
-  icon: models/sulus_icon.png
-  animationId: 101
-105:
-  name: Tutorial7_main
-  health: 10
-  maxHealth: 10
-  hexColor: FF9900FF
-  speed: 4.5
-  castSpeed: 7.0
-  slots: 4
-  availableActions:
-  - 0
-  - 4
-  - 9
-  - 25
-  texture: models/CHARA_5.png
-  icon: models/bunmage_icon.png
-  animationId: 108
-106:
-  name: Tutorial7_ally
-  health: 10
-  maxHealth: 10
-  hexColor: FF9900FF
-  speed: 3.0
-  castSpeed: 8.0
-  slots: 3
-  availableActions:
-  - 0
-  - 7
-  - 5
-  - 10
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconyellow.png
-  animationId: 107
-  
-24:
-  name: Rock Spirit
-  health: 5
-  maxHealth: 5
-  hexColor: 00cc00FF
-  speed: 1.0
-  castSpeed: 7.0
-  slots: 2
-  availableActions:
-  - 0
-  - 16
-  - 17
-  - 18
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconblue.png
-  animationId: 105
-  
-25:
-  name: Fighter Spirit
-  health: 4
-  maxHealth: 4
-  hexColor: 3299FFFF
-  speed: 2.5
-  castSpeed: 8.5
-  slots: 4
-  availableActions:
-  - 0
-  - 20
-  - 27
-  - 7
-  texture: models/CHARA_1.png
-  icon: models/tutorial_characters/basic_iconred.png
-  animationId: 106
-  
-26:
-  name: Mage Spirit
-  health: 4
-  maxHealth: 4
-  hexColor: FF9900FF
-  speed: 4.0
-  castSpeed: 6.5
-  slots: 4
-  availableActions:
-  - 0
-  - 13
-  - 14
-  - 15
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconyellow.png
-  animationId: 107
-
-27:
-  name: Enchantress Spirit
-  health: 0
-  maxHealth: 0
-  hexColor: CD2626FF
-  speed: 5.0
-  castSpeed: 7.5
-  slots: 4
-  availableActions:
-  - 0
-  - 22
-  - 5
-  - 24
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
   animationId: 103
 
 # 1000+ This is where we have the parent characters
-# and the potrait characters
+# and the portrait characters
 1000:
   name: Dara
   health: 0
@@ -595,12 +367,14 @@
   - 4
   - 3
   - 6
-  texture: models/CHARA_3.png
-  icon: models/CASTICON_3.png
+  texture: models/portraits/dara.png
+  icon: models/portraits/owner_dara.png
+  bigIcon: models/portraits/owner_dara.png
   animationId: 101
 
+# Ishaan the ghost spirit wielder
 1001:
-  name: Friend
+  name: Ishaan
   health: 0
   maxHealth: 0
   hexColor: CD2626FF
@@ -609,59 +383,13 @@
   slots: 5
   availableActions:
   - 0
-  texture: models/CHARA_4.png
-  icon: models/CASTICON_4.png
-  animationId: 103
-
-# Jaffar the ghost spirit wielder
-1002:
-  name: Jaffar
-  health: 0
-  maxHealth: 0
-  hexColor: CD2626FF
-  speed: 5.0
-  castSpeed: 7.5
-  slots: 5
-  availableActions:
-  - 0
-  texture: models/CHARA_2.png
-  icon: models/CASTICON_2.png
-  animationId: 103
-
-# Potrait characters
-# fruit seller martha
-1003:
-  name: Martha
-  health: 0
-  maxHealth: 0
-  hexColor: CD2626FF
-  speed: 5.0
-  castSpeed: 7.5
-  slots: 5
-  availableActions:
-  - 0
-  texture: models/CHARA_2.png
-  icon: models/CASTICON_2.png
-  animationId: 103
-
-# Potrait Characters
-# husband/dad of fruit seller martha
-1004:
-  name: Tom
-  health: 0
-  maxHealth: 0
-  hexColor: CD2626FF
-  speed: 5.0
-  castSpeed: 7.5
-  slots: 5
-  availableActions:
-  - 0
-  texture: models/CHARA_2.png
-  icon: models/CASTICON_2.png
+  texture: models/portraits/girlopponent.png
+  icon: models/portraits/owner_opponent.png
+  bigIcon: models/portraits/owner_opponent.png
   animationId: 103
 
 # the spirit guide
-1005:
+1002:
   name: Arash
   health: 0
   maxHealth: 0
@@ -671,12 +399,13 @@
   slots: 5
   availableActions:
   - 0
-  texture: models/CHARA_2.png
-  icon: models/CASTICON_2.png
+  texture: models/portraits/arash.png
+  icon: models/portraits/owner_arash.png
+  bigIcon: models/portraits/owner_arash.png
   animationId: 103
 
 # elder rock
-1006:
+1003:
   name: Elder Rock
   health: 0
   maxHealth: 0
@@ -686,23 +415,9 @@
   slots: 5
   availableActions:
   - 0
-  texture: models/CHARA_2.png
-  icon: models/CASTICON_2.png
-  animationId: 103
-
-# Male Noble
-1006:
-  name: Hakim
-  health: 0
-  maxHealth: 0
-  hexColor: CD2626FF
-  speed: 5.0
-  castSpeed: 7.5
-  slots: 5
-  availableActions:
-  - 0
-  texture: models/CHARA_2.png
-  icon: models/CASTICON_2.png
+  texture: models/portraits/rockdude.png
+  icon: models/portraits/owner_rockdude.png
+  bigIcon: models/portraits/owner_rockdude.png
   animationId: 103
 
 30:
@@ -788,7 +503,7 @@
   availableActions:
   - 0
   - 49
-  - 11
+  - 51
   - 22
   texture: models/CHARA_5.png
   icon: models/bunmage_icon.png

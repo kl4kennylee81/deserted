@@ -59,12 +59,9 @@ public class MainMenuController {
 	}
 	
 	private Option[] makeMainMenuOptions(){
-		Option[] options = new Option[5];
-		options[0] = new Option(LEVEL_SELECT_NAME,LEVEL_SELECT_NAME);
-		options[1] = new Option("Action Editor","Action Editor");
-		options[2] = new Option("Character Editor","Character Editor");
-		options[3] = new Option("Level Editor","Level Editor");
-		options[4] = new Option("Skill Tree","Skill Tree");
+		Option[] options = new Option[2];
+		options[0] = new Option("Play","Play");
+		options[1] = new Option(LEVEL_SELECT_NAME,LEVEL_SELECT_NAME);
 		return options;
 	}
 	
@@ -77,12 +74,12 @@ public class MainMenuController {
 		
 		options = new Option[this.levelDefs.size()+1];
 		
-		options[0] = new Option("Back",MAIN_MENU_NAME);
-		int i = 1;
+		int i = 0;
 		for (LevelData ld : levelDefs){
 			options[i] = new Option(ld.levelName,ld.levelName);
 			i++;
 		}
+		options[i] = new Option("Back",MAIN_MENU_NAME);
 		return options;
 	}
 
@@ -195,6 +192,9 @@ public class MainMenuController {
 			LevelMenu levelMenu = (LevelMenu) menu;
 			if (manager.isLoaded(Constants.LEVEL_SELECT_REG) && levelMenu.getImage() == null){
 				levelMenu.setImage(manager.get(Constants.LEVEL_SELECT_REG,Texture.class));
+			}
+			if (levelMenu.optionHighlight == null && manager.isLoaded(Constants.MENU_HIGHLIGHT_TEXTURE)){
+				levelMenu.optionHighlight = manager.get(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class);
 			}
 		}
 	}
@@ -348,7 +348,7 @@ public class MainMenuController {
 	
 	public void resetMenu(){
 		this.levelName = "";
-		this.menu = createStartingMenu();
+		this.menu = createMainMenu();
 		this.isDone = false;
 	}
 

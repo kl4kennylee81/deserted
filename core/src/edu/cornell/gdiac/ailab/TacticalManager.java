@@ -1176,42 +1176,42 @@ public class TacticalManager extends ConditionalManager{
 	 * Output data to a file
 	 */
 	public void outputData(Character c, JSONArray jsonArray){
-		JSONObject json = new JSONObject();
-		StringBuilder vectorBuilder = new StringBuilder();
-		for(String s: conditions){
-			if(map.get(s)){
-				vectorBuilder.append('1');
-			}
-			else{
-				vectorBuilder.append('0');
-			}
-		}
-		String vector = vectorBuilder.toString();
-
-		JSONArray array = new JSONArray();
-		int startSlot = 0;
-		int xPos = c.xPosition;
-		int yPos = c.yPosition;
-		for(ActionNode a: c.queuedActions){
-			JSONObject moveMap = new JSONObject();
-			xPos += applyMoveX(a);
-			yPos += applyMoveY(a);
-			ArrayList<Specific> moves = getPossibleMoves(c, a, xPos, yPos, startSlot);
-			JSONArray possibleMoves = new JSONArray();
-			for(Specific move: moves){
-				possibleMoves.add(move.toString());
-			}
-			moveMap.put(a.action.name, possibleMoves);
-			array.add(moveMap);
-			startSlot += a.action.cost;
-		}
-		
-		json.put("vector", vector);
-		json.put("actions", array);
-		jsonArray.add(json);
-		if (PRINT_MODE){
-			System.out.println(json.toString());
-		}
+//		JSONObject json = new JSONObject();
+//		StringBuilder vectorBuilder = new StringBuilder();
+//		for(String s: conditions){
+//			if(map.get(s)){
+//				vectorBuilder.append('1');
+//			}
+//			else{
+//				vectorBuilder.append('0');
+//			}
+//		}
+//		String vector = vectorBuilder.toString();
+//
+//		JSONArray array = new JSONArray();
+//		int startSlot = 0;
+//		int xPos = c.xPosition;
+//		int yPos = c.yPosition;
+//		for(ActionNode a: c.queuedActions){
+//			JSONObject moveMap = new JSONObject();
+//			xPos += applyMoveX(a);
+//			yPos += applyMoveY(a);
+//			ArrayList<Specific> moves = getPossibleMoves(c, a, xPos, yPos, startSlot);
+//			JSONArray possibleMoves = new JSONArray();
+//			for(Specific move: moves){
+//				possibleMoves.add(move.toString());
+//			}
+//			moveMap.put(a.action.name, possibleMoves);
+//			array.add(moveMap);
+//			startSlot += a.action.cost;
+//		}
+//		
+//		json.put("vector", vector);
+//		json.put("actions", array);
+//		jsonArray.add(json);
+//		if (PRINT_MODE){
+//			System.out.println(json.toString());
+//		}
 	}
 	
 	

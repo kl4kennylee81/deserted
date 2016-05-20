@@ -20,12 +20,12 @@ DARK_POSITION:
 DARK_POWER_MOVE:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [POWERFUL_ATTACK, MOVE_GOAL]
+  my_actions: [QUICK_ATTACK, MOVE_GOAL]
 
 DARK_POWER:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [POWERFUL_ATTACK, MOVE_GOAL]
+  my_actions: [QUICK_ATTACK, MOVE_GOAL]
 
 DARK_SLOW_ALL:
   type: leaf
@@ -35,7 +35,7 @@ DARK_SLOW_ALL:
 DARK_MOVE_ATTACK:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_GOAL, POWERFUL_ATTACK]
+  my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK]
   
 DARK_MOVE_MOVE:
   type: leaf

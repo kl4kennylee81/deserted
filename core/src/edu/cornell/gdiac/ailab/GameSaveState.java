@@ -397,6 +397,9 @@ public class GameSaveState {
 				}
 			}
 		}
+		/*if (selChars.size() == 1){
+			selChars.add(null);
+		}*/
 		return selChars;
 	}
 	

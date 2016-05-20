@@ -55,6 +55,15 @@ public class GameSaveStateController {
 		return instance;
 	}
 	
+	public String getNextUnbeatenLevel(){
+		for (LevelData ld : gameSaveState.levels){
+			if (!ld.beaten){
+				return ld.levelName;
+			}
+		}
+		return null;
+	}
+	
 	public List<LevelData> getLevelData(){
 		return gameSaveState.levels;
 	}
@@ -72,7 +81,14 @@ public class GameSaveStateController {
 	}
 	
 	public List<Integer> getSelectedCharactersId(){
-		return gameSaveState.selectedCharacters;
+		List<Integer> temp = new ArrayList<Integer>();
+		for (Integer i : gameSaveState.selectedCharacters){
+			temp.add(i);
+		}
+		if (temp.size() == 1){
+			temp.add(null);
+		}
+		return temp;
 	}
 	
 	public void setSelectedCharactersId(int[] ids){

@@ -40,7 +40,7 @@ public class Constants {
 	public static final String DATA_PATH = "../core/assets/";
 	
 	/** Background image for the canvas */
-	public static final String BCKGD_TEXTURE = "images/bg.png";
+	public static final String BCKGD_TEXTURE = "backgrounds/bg.png";
 	/** Background image for the menu */
 	public static final String MENU_BCKGD_TEXTURE = "images/mainmenu/backgroundLogo.png";
 	
@@ -111,7 +111,7 @@ public class Constants {
 	public static final float LERP_RATE = 0.04f;
 	
 	// Starting Game
-	public static final String LEVEL_BEGIN = "tutorial1";
+	public static final String LEVEL_BEGIN = "Tutorial1";
 	
 	//transition constant
 	public static final float TRANSITION_TIME = 0.0f;

@@ -86,10 +86,10 @@ public class CharacterCustomization extends Menu {
 		//this.options = new Option[3 + gameSaveState.characters.size() + charData.getTotalNumActionUpgrades()];
 		this.options = new Option[2 + gameSaveState.availableCharacters.size() + charData.getTotalNumActionUpgrades()-1];
 		options[0] = new Option("Back","Back");
-		options[0].setBounds(0.08f, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
+		options[0].setBounds(0.08f, 0.1f, RELATIVE_WIDTH*1.8f,  RELATIVE_HEIGHT);
 		options[0].setColor(Constants.MENU_COLOR);
 		options[1] = new Option("Reset Points","Reset");
-		options[1].setBounds(0.4f, 0.11f, RELATIVE_WIDTH*3, RELATIVE_HEIGHT);
+		options[1].setBounds(0.4f, 0.11f, RELATIVE_WIDTH*3.5f, RELATIVE_HEIGHT);
 		options[1].setColor(Constants.MENU_COLOR);
 		
 		characterOptions = new ArrayList<Option>();
@@ -409,7 +409,7 @@ public class CharacterCustomization extends Menu {
 		for (Coordinate c : hitCoords){
 			int ii = c.x;
 			int jj = c.y;
-			if (ii < 0 || i >= miniBoard.getWidth() || jj < 0 || jj >= miniBoard.getHeight()){
+			if (ii < 0 || ii >= miniBoard.getWidth() || jj < 0 || jj >= miniBoard.getHeight()){
 				continue;
 			}
 			boolean add = false;
