@@ -125,7 +125,7 @@ public class Option implements GUIElement{
 		}
 	}
 	
-	public void drawForSkillTree(GameCanvas canvas) {
+	public void drawForSkillTree(GameCanvas canvas,boolean drawCircle) {
 		float x = this.xPosition * canvas.getWidth();
 		float y = this.yPosition * canvas.getHeight();
 		float height = this.height * canvas.getHeight();
@@ -142,6 +142,9 @@ public class Option implements GUIElement{
 			if(isHighlighted){
 				//canvas.drawHighlightToken(image, x, y, width, height, Color.YELLOW);
 				canvas.drawLeftArrow(x + (width + 10), y + (width / 2) + 10, Color.GOLD);
+			}
+			if (drawCircle){
+				canvas.drawCircle(x-width/6,y-width/6,width*4/3, Color.GOLD);
 			}
 			//canvas.drawTexture(image, x, y, width,height, Color.WHITE);
 			canvas.drawTexture(image, x, y, width,height, imageColor);

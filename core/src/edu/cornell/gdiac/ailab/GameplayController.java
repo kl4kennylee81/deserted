@@ -337,15 +337,15 @@ public class GameplayController {
         }
         //screen should be drawn after greyed out characters
         //but before selected characters
-        float turnX = canvas.getWidth() * 0.9f;
-    	float turnY1 = canvas.getHeight() * 0.9f;
-    	float turnY2 = canvas.getHeight() * 0.85f;
+        float turnX = canvas.getWidth() * 0.1f;
+    	float turnY1 = canvas.getHeight() * 0.75f;
+    	float turnY2 = canvas.getHeight() * 0.72f;
         if (winIn != null){
-        	canvas.drawCenteredText("Win in", turnX, turnY1, Color.BLACK);
-        	canvas.drawCenteredText(winIn - turnsCompleted() + " turns", turnX, turnY2, Color.BLACK);
+        	canvas.drawCenteredText("Win in", turnX, turnY1, Color.WHITE);
+        	canvas.drawCenteredText(winIn - turnsCompleted() + " turns", turnX, turnY2, Color.WHITE);
         } else if (surviveFor != null){
-        	canvas.drawCenteredText("Survive for", turnX, turnY1, Color.BLACK);
-        	canvas.drawCenteredText(surviveFor - turnsCompleted() + " turns", turnX, turnY2, Color.BLACK);
+        	canvas.drawCenteredText("Survive for", turnX, turnY1, Color.WHITE);
+        	canvas.drawCenteredText(surviveFor - turnsCompleted() + " turns", turnX, turnY2, Color.WHITE);
         }
         
         if (temp){

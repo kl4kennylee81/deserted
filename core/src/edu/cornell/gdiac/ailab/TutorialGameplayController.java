@@ -274,7 +274,7 @@ public class TutorialGameplayController extends GameplayController{
 	    			float highlightX = selectedChar.actionBar.getBarCastPoint(canvas) + (highlight_action)*selectedChar.actionBar.getSlotWidth(canvas);
 	    			float highlightY = selectedChar.actionBar.getY(canvas, count) - selectedChar.actionBar.getBarHeight(canvas);//characters.indexOf(selectedChar));
 	    			if(selectionMenuController.menu != null && selectionMenuController.menu.actions != null && selectionMenuController.menu.selectedAction != selectionMenuController.menu.actions.length){
-	        			canvas.drawDownTextArrow(highlightX + 20, highlightY + 8, Color.YELLOW, "Action executes here");
+	        			canvas.drawDownTextArrow(highlightX + 20, highlightY + 8, Color.WHITE.cpy(), "Action executes here");
 	    			}
 	    		}
     		}
@@ -294,22 +294,22 @@ public class TutorialGameplayController extends GameplayController{
 	    					(float)highlight.width*canvas.getWidth(), 
 	    					(float)highlight.yPos*canvas.getHeight(),
 	    					(float)highlight.height*canvas.getHeight(),
-	    					Color.GOLD, board);
+	    					Color.WHITE.cpy(), board);
 	    			continue;
 	    		}
 	    		if (highlight.arrow.equals("up")){
 		    		canvas.drawUpArrow((float)(highlight.xPos*canvas.getWidth() + (highlight.width*canvas.getWidth())/2f),
 		    				(float)highlight.yPos*canvas.getHeight(),
-		    				Color.GOLD);
+		    				Color.WHITE.cpy());
 
 	    		} else if (highlight.arrow.equals("down")) {
 		    		canvas.drawDownArrow((float)(highlight.xPos*canvas.getWidth() + highlight.width*canvas.getWidth()),
 		    				(float)(highlight.yPos*canvas.getHeight() + (highlight.height*canvas.getHeight())/2f),
-		    				Color.GOLD);
+		    				Color.WHITE.cpy());
 	    		} else {
 		    		canvas.drawLeftArrow((float)(highlight.xPos*canvas.getWidth() + highlight.width*canvas.getWidth()),
 		    				(float)(highlight.yPos*canvas.getHeight() + (highlight.height*canvas.getHeight())/2f),
-		    				Color.GOLD);
+		    				Color.WHITE.cpy());
 	    		}
 	    	}
 		}
