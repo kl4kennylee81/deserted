@@ -21,7 +21,7 @@
   health: 6
   maxHealth: 6
   hexColor: FF9900FF
-  speed: 5.
+  speed: 4.5
   castSpeed: 8.0
   slots: 4
   availableActions:
@@ -36,8 +36,8 @@
   bossId: 1000
 2:
   name: Fighter Spirit
-  health: 8
-  maxHealth: 8
+  health: 7
+  maxHealth: 7
   hexColor: 3299FFFF
   speed: 5.5
   castSpeed: 6.
@@ -54,8 +54,8 @@
   bossId: 1000
 3:
   name: Enchantress Spirit
-  health: 6
-  maxHealth: 6
+  health: 5
+  maxHealth: 5
   hexColor: CD2626FF
   speed: 6.5
   castSpeed: 7.
@@ -72,10 +72,10 @@
   bossId: 1000
 4:
   name: Rock Spirit
-  health: 10
-  maxHealth: 10
+  health: 8
+  maxHealth: 8
   hexColor: 00cc00FF
-  speed: 3.
+  speed: 2.0
   castSpeed: 7.5
   slots: 2
   availableActions:
@@ -90,8 +90,8 @@
   bossId: 1000
 5:
   name: Dark Bunny
-  health: 6
-  maxHealth: 6
+  health: 7
+  maxHealth: 7
   hexColor: FF9900FF
   speed: 3.5
   castSpeed: 9.0
@@ -109,8 +109,8 @@
   sharedStatus: true
 6:
   name: Light Bunny
-  health: 6
-  maxHealth: 6
+  health: 7
+  maxHealth: 7
   hexColor: FF9900FF
   speed: 7.
   castSpeed: 6.5
@@ -183,7 +183,7 @@
   health: 6
   maxHealth: 6
   hexColor: FF9900FF
-  speed: 5.
+  speed: 4.5
   castSpeed: 8.0
   slots: 4
   availableActions:
@@ -200,8 +200,8 @@
 # duplicate under the rock elders boss id 11 - 14
 11:
   name: Fighter Spirit
-  health: 8
-  maxHealth: 8
+  health: 7
+  maxHealth: 7
   hexColor: 3299FFFF
   speed: 5.5
   castSpeed: 6.
@@ -239,7 +239,7 @@
   health: 10
   maxHealth: 10
   hexColor: 00cc00FF
-  speed: 3.
+  speed: 2.0
   castSpeed: 7.5
   slots: 2
   availableActions:
@@ -252,6 +252,86 @@
   bigIcon: largeicons/rock_largeicongreenSymbol.png
   animationId: 117
   bossId: 1003
+  
+#=============================================================
+#         Weaker enemy versions
+#=============================================================  
+15:
+  name: Mage Spirit
+  health: 2
+  maxHealth: 2
+  hexColor: FF9900FF
+  speed: 4.5
+  castSpeed: 8.0
+  slots: 4
+  availableActions:
+  - 0
+  - 13
+  - 14
+  - 15
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconyellow.png
+  bigIcon: largeicons/rock_largeiconyellow.png
+  animationId: 115
+  bossId: 1003
+
+# duplicate under the rock elders boss id 11 - 14
+16:
+  name: Fighter Spirit
+  health: 0
+  maxHealth: 0
+  hexColor: 3299FFFF
+  speed: 5.5
+  castSpeed: 6.
+  slots: 4
+  availableActions:
+  - 0
+  - 23
+  - 20
+  - 7
+  texture: models/CHARA_1.png
+  icon: models/tutorial_characters/basic_iconred.png
+  bigIcon: largeicons/rock_largeiconred.png
+  animationId: 114
+  bossId: 1003
+17:
+  name: Enchantress Spirit
+  health: 5
+  maxHealth: 5
+  hexColor: CD2626FF
+  speed: 6.5
+  castSpeed: 7.
+  slots: 4
+  availableActions:
+  - 0
+  - 22
+  - 5
+  - 24
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
+  bigIcon: largeicons/rock_largeiconbasic.png
+  animationId: 116
+  bossId: 1003
+18:
+  name: Rock Spirit
+  health: 6
+  maxHealth: 6
+  hexColor: 00cc00FF
+  speed: 2.0
+  castSpeed: 7.5
+  slots: 2
+  availableActions:
+  - 0
+  - 16
+  - 17
+  - 18
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icongreen.png
+  bigIcon: largeicons/rock_largeicongreen.png
+  animationId: 117
+  bossId: 1003
+
+#=========================================================
 
 89:
   name: Tutorial_part_3
