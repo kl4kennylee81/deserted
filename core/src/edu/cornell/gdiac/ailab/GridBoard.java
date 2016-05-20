@@ -247,11 +247,12 @@ public class GridBoard {
 //			color = SINGLE_TARGET_COLOR;
 //		}
 		if (tile.isHighlighted){
-			if (!controller.choosingTarget){
+			/*if (!controller.choosingTarget){
 				color = CAN_TARGET_COLOR;
 			} else {
 				color.lerp(HIGHLIGHT_COLOR,lerpVal);
-			}
+			}*/
+			color.lerp(HIGHLIGHT_COLOR,lerpVal);
 		} else if (tile.canTarget){
 			color = CAN_TARGET_COLOR;
 		} else if (tile.isAttacked){
