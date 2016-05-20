@@ -347,8 +347,12 @@ public class ObjectLoader {
 				// set the max health to be the health of all its children
 				parentModel.setMaxHealth(charToAdd.getHealth()+parentModel.getMaxHealth());
 				
+				// set the big icon to the icon in teh chartoAdd
+				Texture charBigIcon = charToAdd.bigIcon;
+				
 				// constructor sets the action bar to be set to the bosses action bar thus sharing
 				charToAdd = new BossCharacter(bossModel,parentModel);
+				charToAdd.bigIcon = charBigIcon;
 			}
 			
 			if (actionArray != null){
