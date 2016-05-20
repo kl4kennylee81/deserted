@@ -100,7 +100,7 @@ levels:
     seenPost: false
   1:
     levelName: Tutorial2
-    beaten: false
+    beaten: true
     boss: false
   2:
     levelName: Tutorial3
