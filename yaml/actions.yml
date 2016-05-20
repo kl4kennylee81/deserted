@@ -971,7 +971,7 @@
   icon: models/action_tokens/shield_token.png
 
 45:
-  name: Blue Barrier
+  name: Barrier
   cost: 2
   damage: 0
   range: 2

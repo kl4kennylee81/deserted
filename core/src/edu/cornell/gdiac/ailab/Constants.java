@@ -45,7 +45,9 @@ public class Constants {
 	public static final String MENU_BCKGD_TEXTURE = "images/mainmenu/backgroundLogo.png";
 	
 	/** Background image for the canvas */
-	public static final String LOADING_TEXTURE = "images/mainmenu/backgroundLogo.png";
+	public static final String LOADING_TEXTURE = "images/startScreenbg.png";
+	
+	public static final String START_SCREEN_TEXTURE = "images/startScreenbg.png";
 
 	/** image for the loading bar  */
 	public static final String PRGRSBR_TEXTURE = "images/progressbar.png";

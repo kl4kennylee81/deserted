@@ -24,19 +24,17 @@ characters:
         cost: 2
       - actionId: 18
         cost: 1
-    - actionId: 44
+    - actionId: 45
       nextAction:
-      - actionId: 45
-        cost: 1
       - actionId: 46
         cost: 1
       - actionId: 47
-        cost: 2
+        cost: 1
     currentActions:
     - 0
     - 4
     - 3
-    - 44
+    - 45
   1:
     characterId: 1
     totalSP: 0
@@ -178,7 +176,7 @@ levels:
     gainedSP: 1
     unlockableCharacter: 4
     preNarrative: yaml/narratives/Level4Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Level4Post.yml
     seenPost: false
   12:

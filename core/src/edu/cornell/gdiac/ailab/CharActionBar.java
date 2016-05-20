@@ -433,7 +433,7 @@ public class CharActionBar {
 		float rightEndHeight = this.getBarHeight(canvas);
 		
 		float rightEndX = xPosBar + this.getWidth(canvas);
-		float rightEndY = yPosBar - rightEndHeight*0.018f;
+		float rightEndY = yPosBar;
 		
 		canvas.drawTexture(actionBar_rightend, rightEndX, rightEndY, rightEndWidth, rightEndHeight, barColor);
 	}

@@ -30,11 +30,7 @@ public class StartingMenu extends Menu {
 	public StartingMenu(){
 		isDone = false;
 		isNew = false;
-		Option[] options = new Option[1];
-		options[0] = new Option(START_GAME_NAME,START_GAME_NAME);
-		options[0].setBounds(0.5f-RELATIVE_WIDTH/2, 0.5f, RELATIVE_WIDTH, RELATIVE_HEIGHT);
-		options[0].setColor(Constants.MENU_COLOR);
-		this.options = options;
+		this.showNewContinue();
 	}
 
 	public void setHighlight(Texture t){
