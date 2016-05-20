@@ -1,4 +1,4 @@
-pvp:
+PVP:
     allies:
         - id: 0
           xPosition: 0
@@ -27,7 +27,7 @@ pvp:
     rimTexture: "models/tiles_bottomrim.png"
     AI: []
 
-tutorial1:
+Tutorial1:
     allies:
         - id: 90
           xPosition: 1
@@ -51,7 +51,7 @@ tutorial1:
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/straight-easy.yml"]
 
-tutorial2:
+Tutorial2:
     allies:
         - id: 89
           xPosition: 1
@@ -75,7 +75,7 @@ tutorial2:
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/straight-easy.yml"]
 
-tutorial3:
+Tutorial3:
     allies:
         - id: 95
           xPosition: 1
@@ -106,7 +106,7 @@ tutorial3:
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/straight-easy.yml"]
 
-tutorial4:
+Tutorial4:
     allies:
         - id: 99
           xPosition: 1
@@ -138,7 +138,7 @@ tutorial4:
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/tutorial5ai.yml","aiyaml/shield-easy.yml","aiyaml/straight-medium.yml"]
 
-tutorial5:
+Tutorial5:
     allies:
         - id: 96
           xPosition: 1

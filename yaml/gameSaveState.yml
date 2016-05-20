@@ -35,8 +35,8 @@ characters:
     currentActions:
     - 0
     - 4
-    - 3
-    - 44
+    - 30
+    - 45
   1:
     characterId: 1
     totalSP: 0
@@ -104,7 +104,7 @@ characters:
     - 7
 levels:
   0:
-    levelName: tutorial1
+    levelName: Tutorial1
     beaten: false
     boss: false
     preNarrative: yaml/narratives/test.yml
@@ -112,7 +112,7 @@ levels:
     postNarrative: yaml/narratives/test.yml
     seenPost: false
   1:
-    levelName: tutorial2
+    levelName: Tutorial2
     beaten: false
     boss: false
     preNarrative: yaml/narratives/test.yml
@@ -120,15 +120,15 @@ levels:
     postNarrative: yaml/narratives/test.yml
     seenPost: false
   2:
-    levelName: tutorial3
+    levelName: Tutorial3
     beaten: false
     boss: false
   3:
-    levelName: tutorial4
+    levelName: Tutorial4
     beaten: false
     boss: false
   4:
-    levelName: tutorial5
+    levelName: Tutorial5
     beaten: false
     boss: false
   5:

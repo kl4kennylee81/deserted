@@ -136,8 +136,8 @@ public class TutorialGameplayController extends GameplayController{
     			}
     			else if (selected.equals("Retry")){
     				//if we end the game without winning, the level will be reset in gameEngine
-    				GameEngine.nextLevel = TutorialSteps.levelName;
     				inGameState = InGameState.DONE;
+    				reset = true;
     			}else if (selected.equals("Main Menu")){
     				InputController.artificialRPressed = true;
     			}
@@ -170,7 +170,7 @@ public class TutorialGameplayController extends GameplayController{
 			//updateTutorial();
 			break;
     	}
-    	if (inGameState != InGameState.PAUSEMENU){
+    	if (inGameState != InGameState.PAUSEMENU && inGameState != InGameState.DONE){
     		updateTutorial();
         	updateTextMessages();
     	}
@@ -187,7 +187,7 @@ public class TutorialGameplayController extends GameplayController{
     		}
     		ObjectLoader.getInstance().unloadCurrentLevel();
     	}
-    	if (InputController.pressedESC()){
+    	if (InputController.pressedESC() || InputController.pressedP()){
        		if (inGameState != InGameState.PAUSEMENU){
        			prePauseState = inGameState;
         		inGameState = InGameState.PAUSEMENU;
@@ -197,11 +197,12 @@ public class TutorialGameplayController extends GameplayController{
        			pauseMenuController.reset();
        		}
        	}
+    	
     }
 
 	public boolean isDone(){
 		boolean endNow = false;//take this from the yaml file eventually
-		return (tutorialSteps.finishGame && tutorialSteps.isDone() && inGameState != InGameState.PAUSED || super.isDone()) || endNow;
+		return ((tutorialSteps.finishGame && tutorialSteps.isDone() && inGameState != InGameState.PAUSED) || super.isDone()) || endNow;
 	}
 
 	public void drawPlay(GameCanvas canvas){

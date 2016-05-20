@@ -111,7 +111,7 @@ public class Constants {
 	public static final float LERP_RATE = 0.04f;
 	
 	// Starting Game
-	public static final String LEVEL_BEGIN = "tutorial1";
+	public static final String LEVEL_BEGIN = "Tutorial1";
 	
 	//transition constant
 	public static final float TRANSITION_TIME = 0.0f;

@@ -91,15 +91,15 @@ public class CharacterSelect extends Menu{
 		Option[] options = new Option[4+characters.size()];
 		
 		options[0] = new Option("Play","Play");
-		options[0].setBounds(0.88f, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
+		options[0].setBounds(0.88f - RELATIVE_WIDTH/2, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
 		options[0].setColor(Constants.MENU_COLOR);
 		
 		options[1] = new Option("Skill Tree","Skill Tree");
-		options[1].setBounds(0.48f, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
+		options[1].setBounds(0.5f-RELATIVE_WIDTH*0.7f, 0.1f, RELATIVE_WIDTH*1.4f,  RELATIVE_HEIGHT);
 		options[1].setColor(Constants.MENU_COLOR);
 		
 		options[2] = new Option("Back","Back");
-		options[2].setBounds(0.08f, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
+		options[2].setBounds(0.12f - RELATIVE_WIDTH/2, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
 		options[2].setColor(Constants.MENU_COLOR);
 		
 		String text;
@@ -260,15 +260,11 @@ public class CharacterSelect extends Menu{
 					canvas.drawTexture(optionHighlight,x,y,width,height,Color.WHITE);
 				}
 			}
-			if (i < 3){
-				options[i].draw(canvas);
-			} else {
-				Color col = options[i].color;
-				if (options[i].isSelected) {
-					col = Color.BLACK;
-				}
-				canvas.drawCenteredText(options[i].text, x+width/2, y+height*3/4, col);
+			Color col = options[i].color;
+			if (options[i].isSelected) {
+				col = Color.BLACK;
 			}
+			canvas.drawCenteredText(options[i].text, x+width/2, y+height*3/4, col);
 		}
 		
 		TextureRegion temp = null;

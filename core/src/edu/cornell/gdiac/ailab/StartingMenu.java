@@ -32,7 +32,7 @@ public class StartingMenu extends Menu {
 		isNew = false;
 		Option[] options = new Option[1];
 		options[0] = new Option(START_GAME_NAME,START_GAME_NAME);
-		options[0].setBounds(RELATIVE_X_POS, 0.5f, RELATIVE_WIDTH, RELATIVE_HEIGHT);
+		options[0].setBounds(0.5f-RELATIVE_WIDTH/2, 0.5f, RELATIVE_WIDTH, RELATIVE_HEIGHT);
 		options[0].setColor(Constants.MENU_COLOR);
 		this.options = options;
 	}
@@ -66,10 +66,10 @@ public class StartingMenu extends Menu {
 	public void showNewContinue(){
 		Option[] options = new Option[2];
 		options[0] = new Option(NEW_GAME_NAME,NEW_GAME_NAME);
-		options[0].setBounds(RELATIVE_X_POS, 0.5f, RELATIVE_WIDTH, RELATIVE_HEIGHT);
+		options[0].setBounds(0.5f-RELATIVE_WIDTH/2, 0.5f, RELATIVE_WIDTH, RELATIVE_HEIGHT);
 		options[0].setColor(Constants.MENU_COLOR);
 		options[1] = new Option(CONTINUE_NAME,CONTINUE_NAME);
-		options[1].setBounds(RELATIVE_X_POS, 0.43f, RELATIVE_WIDTH, RELATIVE_HEIGHT);
+		options[1].setBounds(0.5f-RELATIVE_WIDTH/2, 0.43f, RELATIVE_WIDTH, RELATIVE_HEIGHT);
 		options[1].setColor(Constants.MENU_COLOR);
 		this.options = options;
 	}
@@ -79,7 +79,7 @@ public class StartingMenu extends Menu {
 		for (int i = 0; i < options.length; i++){
 			float x = options[i].getX(canvas) - RELATIVE_HIGHLIGHT_X_OFFSET*canvas.getWidth();
 			float y = options[i].getY(canvas) - 3*options[i].getHeight(canvas)/4;
-			float width = options[i].getWidth(canvas);
+			float width = options[i].getWidth(canvas)*1.5f;
 			float height = options[i].getHeight(canvas);
 			
 			if (options[i].isSelected){
@@ -89,7 +89,11 @@ public class StartingMenu extends Menu {
 				// we will draw the highlighting behind the option
 				canvas.drawTexture(optionHighlight,x,y,width,height,Color.WHITE);
 			}
-			options[i].draw(canvas);
+			Color col = options[i].color;
+			if (options[i].isSelected) {
+				col = Color.BLACK;
+			}
+			canvas.drawCenteredText(options[i].text, x+width/2, y+height*3/4, col);
 		}
 		
 	}
