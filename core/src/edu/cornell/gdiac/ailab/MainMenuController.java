@@ -76,7 +76,7 @@ public class MainMenuController {
 		
 		int i = 0;
 		for (LevelData ld : levelDefs){
-			options[i] = new Option(ld.levelName,ld.levelName);
+			options[i] = new Option(ld.displayName,ld.levelName);
 			i++;
 		}
 		options[i] = new Option("Back",MAIN_MENU_NAME);
