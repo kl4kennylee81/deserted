@@ -40,7 +40,7 @@ public class Constants {
 	public static final String DATA_PATH = "../core/assets/";
 	
 	/** Background image for the canvas */
-	public static final String BCKGD_TEXTURE = "images/bg.png";
+	public static final String BCKGD_TEXTURE = "backgrounds/bg.png";
 	/** Background image for the menu */
 	public static final String MENU_BCKGD_TEXTURE = "images/mainmenu/backgroundLogo.png";
 	
