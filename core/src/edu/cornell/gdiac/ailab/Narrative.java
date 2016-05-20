@@ -150,8 +150,8 @@ public class Narrative {
 		
 		float x = 0.03f * canvas.width;
 		float y = 0.12f * canvas.height;
-		canvas.draw(TEXT_BACKGROUND, Color.WHITE,x,y,canvas.width*0.94f,canvas.height*0.2f);
 		if (toShow.text != null){
+			canvas.draw(TEXT_BACKGROUND, Color.WHITE,x,y,canvas.width*0.94f,canvas.height*0.2f);
 			x += 0.05f * canvas.width;
 			y += 0.15f * canvas.height;
 			float textWidth = canvas.width - x*2;

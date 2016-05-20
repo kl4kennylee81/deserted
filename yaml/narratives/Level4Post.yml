@@ -1,0 +1,28 @@
+0:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1003
+  highlightCharacters:
+  - 1003
+  background: backgrounds/rockbg.png
+  text: "Rock Elder: Well, I have nothing more to teach you."
+1:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1003
+  highlightCharacters:
+  - 1000
+  text: "Dara: Thank you. If I become a master, I will invite you back to the sky."
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1003
+  highlightCharacters:
+  - 1003
+  text: "Rock Elder: Thank you."

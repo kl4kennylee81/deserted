@@ -136,7 +136,7 @@
   - 0
   - 33
   - 34
-  texture: models/CHARA_3.png
+  texture: largeicons/bosshead_icon.png
   icon: models/ghost_boss/bosshead_smallicon.png
   bigIcon: largeicons/bosshead_icon.png
   animationId: 109
@@ -431,6 +431,21 @@
   availableActions:
   - 0
   texture: models/portraits/girlopponent.png
+  icon: models/portraits/owner_opponent.png
+  bigIcon: models/portraits/owner_opponent.png
+  animationId: 103
+
+1005:
+  name: Spirit Master
+  health: 0
+  maxHealth: 0
+  hexColor: CD2626FF
+  speed: 5.0
+  castSpeed: 7.5
+  slots: 5
+  availableActions:
+  - 0
+  texture: models/portraits/boynoble.png
   icon: models/portraits/owner_opponent.png
   bigIcon: models/portraits/owner_opponent.png
   animationId: 103

@@ -142,31 +142,47 @@ levels:
     beaten: false
     boss: true
     surviveFor: 6
+    background: backgrounds/villagebg.png
     preNarrative: yaml/narratives/Boss1Pre.yml
     seenPre: false
+    postNarrative: yaml/narratives/Boss1Post.yml
+    seenPost: false
   7:
     levelName: Boss2
     beaten: false
     boss: true
+    background: backgrounds/villagebg.png
+    preNarrative: yaml/narratives/Boss2Pre.yml
+    seenPre: false
+    postNarrative: yaml/narratives/Boss2Post.yml
+    seenPost: false
   8:
     levelName: Level2
     beaten: false
     boss: false
     background: backgrounds/rockbg.png
-    gainedSP: 2
     unlockableCharacter: 2
+    preNarrative: yaml/narratives/Level2Pre.yml
+    seenPre: false
   9:
-    levelName: Boss3
-    beaten: false
-    boss: true
-    needsSelect: true
-    background: backgrounds/inTheSkybg.png
-  10:
     levelName: Level3
     beaten: false
     boss: false
     background: backgrounds/rockbg.png
     unlockableCharacter: 3
+    gainedSP: 2
+    postNarrative: yaml/narratives/Level3Post.yml
+    seenPost: false
+  10:
+    levelName: Boss3
+    beaten: false
+    boss: true
+    needsSelect: true
+    background: backgrounds/inTheSkybg.png
+    preNarrative: yaml/narratives/Boss3Pre.yml
+    seenPre: false
+    postNarrative: yaml/narratives/Boss3Post.yml
+    seenPost: false
   11:
     levelName: Level4
     beaten: false
@@ -174,6 +190,10 @@ levels:
     background: backgrounds/rockbg.png
     gainedSP: 1
     unlockableCharacter: 4
+    preNarrative: yaml/narratives/Level4Pre.yml
+    seenPre: false
+    postNarrative: yaml/narratives/Level4Post.yml
+    seenPost: false
   12:
     levelName: Boss4
     beaten: false

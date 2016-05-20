@@ -1,0 +1,38 @@
+0:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Arash: Dara! You fool!"
+1:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1000
+  text: "Dara: Who's with you?"
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  - 5
+  highlightCharacters:
+  - 1002
+  text: "Arash: My spirit companion. Go find shelter, we'll take care of this."
+3:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  - 5
+  highlightCharacters:
+  - 5
+  text: "Spirit Rabbit: Pii! Pii!"

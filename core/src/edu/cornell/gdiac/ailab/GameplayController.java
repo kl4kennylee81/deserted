@@ -441,7 +441,8 @@ public class GameplayController {
     			dead = false;
     		}
     	}
-    	return dead;
+    	//return dead;
+    	return true;
     }
     public boolean turnGameOver(){
     	if (winIn != null){

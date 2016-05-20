@@ -1,0 +1,41 @@
+0:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1001
+  highlightCharacters:
+  - 1001
+  text: "Ishaan: Impossible!"
+1:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1001
+  highlightCharacters:
+  - 1000
+  text: "Dara: Spirits should not be forced to kill!"
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  highlightCharacters:
+  - 1000
+  text: "Dara: Good job Solus!"
+3:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1005
+  highlightCharacters:
+  - 1005
+  text: "Spirit Master: Congratulations, your next opponent is Arash."
+4:
+  leftCharacters:
+  - 1000
+  - 0
+  highlightCharacters:
+  - 1000
+  text: "Dara: Arash? He is strong, I must train more."
