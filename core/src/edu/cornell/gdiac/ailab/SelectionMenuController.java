@@ -523,7 +523,6 @@ public class SelectionMenuController {
 			int chosenY = chosenTile.y;
 			chosenTile.free();
 			boolean canHit = this.actionCanHit(chosenX, chosenY);
-			System.out.println(canHit);
 			if (canHit){
 				this.selectedX = chosenX;
 				this.selectedY = chosenY;
