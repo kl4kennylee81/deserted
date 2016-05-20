@@ -1,0 +1,28 @@
+0:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Arash: You seem ready to train with the rock spirits."
+1:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1000
+  text: "Dara: With the ... rock spirits?"
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1002
+  background: backgrounds/rockbg.png
+  text: "Arash: This cave is full of forgotten rock spirits. They will help you get stronger."

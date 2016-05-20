@@ -419,3 +419,18 @@
   icon: models/portraits/owner_rockdude.png
   bigIcon: models/portraits/owner_rockdude.png
   animationId: 103
+
+1004:
+  name: Villager
+  health: 0
+  maxHealth: 0
+  hexColor: CD2626FF
+  speed: 5.0
+  castSpeed: 7.5
+  slots: 5
+  availableActions:
+  - 0
+  texture: models/portraits/girlopponent.png
+  icon: models/portraits/owner_opponent.png
+  bigIcon: models/portraits/owner_opponent.png
+  animationId: 103

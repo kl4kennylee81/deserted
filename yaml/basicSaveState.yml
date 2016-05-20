@@ -107,18 +107,14 @@ levels:
     levelName: Tutorial1
     beaten: false
     boss: false
-    preNarrative: yaml/narratives/test.yml
+    preNarrative: yaml/narratives/Tutorial1Pre.yml
     seenPre: false
-    postNarrative: yaml/narratives/test.yml
+    postNarrative: yaml/narratives/Tutorial1Post.yml
     seenPost: false
   1:
     levelName: Tutorial2
     beaten: false
     boss: false
-    preNarrative: yaml/narratives/test.yml
-    seenPre: false
-    postNarrative: yaml/narratives/test.yml
-    seenPost: false
   2:
     levelName: Tutorial3
     beaten: false
@@ -131,24 +127,32 @@ levels:
     levelName: Tutorial5
     beaten: false
     boss: false
-  5:
-    levelName: Boss1
-    beaten: false
-    boss: true
-    surviveFor: 1
-  6:
-    levelName: Boss2
-    beaten: false
-    boss: true
-  7: 
+    postNarrative: yaml/narratives/Tutorial5Post.yml
+    seenPost: false
+  5: 
     levelName: Level1
     beaten: false
     boss: false
+    background: backgrounds/rockbg.png
     unlockableCharacter: 1
+    postNarrative: yaml/narratives/Level1Post.yml
+    seenPost: false
+  6:
+    levelName: Boss1
+    beaten: false
+    boss: true
+    surviveFor: 6
+    preNarrative: yaml/narratives/Boss1Pre.yml
+    seenPre: false
+  7:
+    levelName: Boss2
+    beaten: false
+    boss: true
   8:
     levelName: Level2
     beaten: false
     boss: false
+    background: backgrounds/rockbg.png
     gainedSP: 2
     unlockableCharacter: 2
   9:
@@ -160,11 +164,13 @@ levels:
     levelName: Level3
     beaten: false
     boss: false
+    background: backgrounds/rockbg.png
     unlockableCharacter: 3
   11:
     levelName: Level4
     beaten: false
     boss: false
+    background: backgrounds/rockbg.png
     gainedSP: 1
     unlockableCharacter: 4
   12:
@@ -180,6 +186,9 @@ levels:
 availableCharacters:
 - 0
 - 1
+- 2
+- 3
+- 4
 unlockableCharacters:
 - 1
 - 2
