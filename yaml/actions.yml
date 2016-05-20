@@ -76,7 +76,7 @@
   animationId: 0
   icon: models/action_tokens/lightning_token.png
 4:
-  name: Firebolt
+  name: SpiritShot
   cost: 2
   damage: 2
   range: 4
@@ -96,7 +96,7 @@
     moveSpeed: 0.05
   animationId: 0
   projectileAnimationId: 2
-  icon: models/action_tokens/fire_token.png
+  icon: models/action_tokens/projectile_token.png
 
 5:
   name: Diagonal
@@ -316,7 +316,7 @@
     magnitude: 0
   description: Fire a straight projectile 4 squares forward for 2 damage.
   animationId: 1
-  icon: models/action_tokens/projectile_token.png
+  icon: models/action_tokens/fire_token.png
 
 15:
   name: Spirit Barrier
@@ -370,7 +370,7 @@
   icon: models/action_tokens/shield_token.png
 
 17:
-  name: Avalanche
+  name: Inferno
   cost: 1
   damage: 2
   range: 1
@@ -390,7 +390,7 @@
   icon: models/action_tokens/fire_token.png
 
 18:
-  name: Shattering Earth
+  name: Aftershock
   cost: 2
   damage: 2
   range: 5
@@ -447,7 +447,7 @@
     numRounds: 1
     magnitude: 1
   description: Invoke fire on the tile 2 squares in front and the square behind it.
-  animationId: 0
+  animationId: 1
   icon: models/action_tokens/fire_token.png
 
 21:
@@ -600,7 +600,7 @@
   icon: models/action_tokens/projectile_token.png
 
 28:
-  name: Avalanche
+  name: Inferno
   cost: 2
   damage: 2
   range: 1
@@ -616,7 +616,7 @@
     numRounds: 0
     magnitude: 0
   description: Deal 2 damage in a cone shaped T.
-  animationId: 0
+  animationId: 1
   icon: models/action_tokens/fire_token.png
 
 29:
@@ -640,7 +640,7 @@
   animationId: 0
   icon: models/action_tokens/fire_token.png
 30:
-  name: Single Cross
+  name: Thunder Blast
   cost: 4
   damage: 2
   range: 5
@@ -657,7 +657,7 @@
     numRounds: 2
     magnitude: 0
   description: Cross Attack
-  animationId: 1
+  animationId: 0
   icon: models/action_tokens/lightning_token.png
 31:
   name: Single Square
@@ -842,7 +842,7 @@
     effectIcon: models/effect_icons/slow_icon.png
   description: Square Attack
   animationId: 8
-  icon: models/action_tokens/lightning_token.png
+  icon: models/action_tokens/slow_icon.png
 
 39:
   name: Twin Fire
@@ -1120,7 +1120,7 @@
   icon: models/action_tokens/fire_token.png
   
 51:
-  name: Spirit Ball
+  name: Spirit Shot
   cost: 2
   damage: 2
   range: 2
@@ -1182,7 +1182,7 @@
   icon: models/action_tokens/lightning_token.png
   
 101:
-  name: Single Cross
+  name: Thunderblast
   cost: 2
   damage: 4
   range: 5
