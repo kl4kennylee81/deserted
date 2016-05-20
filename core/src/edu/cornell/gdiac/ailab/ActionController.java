@@ -527,7 +527,7 @@ public class ActionController {
 				hasHit = true;
 			}
 			// if it has hit someone at that coordinate we don't break that tile
-			if (!hitThisRound){
+			if (!hitThisRound && !board.isOnSide(selected.leftside, path[i].x, path[i].y)){
 				applyTileEffect(a_node.action.effect,path[i].x,path[i].y);
 			}
 		}

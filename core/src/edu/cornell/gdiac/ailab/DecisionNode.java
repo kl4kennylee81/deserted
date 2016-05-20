@@ -48,7 +48,11 @@ public class DecisionNode {
 		/** Try to move towards the nearest attack square */
 		MOVE_TOWARDS_ATTACK_SQUARE,
 		/** Only use this shit if you have a slow all */
-		SLOW_ALL
+		SLOW_ALL,
+		/** Only use this shit if you have a straight */
+		STRAIGHT,
+		 /** Only use this shit if you have a horiztonal */
+		HORIZONTAL
 		
 		
 	}
