@@ -122,15 +122,6 @@
      xPos: 0
      yPos: 0
      direction: NONE
-12:
-  text: "Press Enter again to confirm."
-  spaceToContinue: false
-  paused: false
-  #actions:
-  #  - actionId: 1
-  #    xPos: 0
-  #    yPos: 0
-  #    direction: NONE
 
 
 13:
