@@ -307,6 +307,7 @@
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconblue.png
   animationId: 105
+
 101:
   name: Tutorial_Fast
   health: 2
