@@ -241,6 +241,12 @@ public class TacticalManager extends ConditionalManager{
 				case RANDOM_DECENT:
 					a = randomDecentMove(c, startSlot, x, y);
 					break;
+				case MOVE_TOWARDS_ATTACK_SQUARE:
+					a = moveTowardsAttackSquare(c, startSlot, x, y);
+					break;
+				case SLOW_ALL:
+					a = slowAll(c, startSlot);
+					break;
 				default:
 					//System.out.println("nopnode");
 					a = nopNode(c, startSlot);
@@ -296,6 +302,15 @@ public class TacticalManager extends ConditionalManager{
 	//			                     ||----w |								 //
 	//			                     ||     ||								 //
     //=======================================================================//
+	
+	public ActionNode slowAll(Character c, int startPoint){
+		for(Action a: c.availableActions){
+			if(a.pattern == Pattern.SINGLEPATH && a.path.length > 13){
+				return new ActionNode(a, getCastTime(c, a, startPoint), board.width/2, board.height/2);
+			}
+		}
+		return nopNode(c, startPoint);
+	}
 	
 	/**
 	 * Returns a single-square Action object if c has one
@@ -428,18 +443,20 @@ public class TacticalManager extends ConditionalManager{
 	
 	
 	private Direction findToggleDirection(Character c, Action a, int xPos, int yPos){
+		if(yPos == 0){
+			return Direction.UP;
+		}
+		if(yPos == 3){
+			return Direction.DOWN;
+		}
 		for(Character e: enemies){
 			//System.out.println("myPos: ("+xPos+","+yPos+")"+"   theirPos: ("+e.xPosition+","+e.yPosition+")");
 			if(a.hitsTarget(xPos, yPos, e.xPosition, e.yPosition, c.leftside, board)){
-				//System.out.println("my y: " + c.yPosition + "   their y: "+ e.yPosition);
-				if(yPos == e.yPosition){
-					return yPos == board.height - 1 ? Direction.DOWN : Direction.UP;
-				}
 				return e.yPosition < yPos ? Direction.DOWN : Direction.UP;
 			}
 		}
 		//System.out.println("none: "+a.name+" "+xPos+" "+yPos+"   "+a.getNeedsToggle());
-		return Direction.NONE;
+		return Direction.UP;
 	}
 	/**
 	 * Find any normal attack from the character that can hit an opponent, assuming
@@ -633,7 +650,7 @@ public class TacticalManager extends ConditionalManager{
 			int dist = Math.abs(goal.x - coord.x) + Math.abs(goal.y - coord.y);
 			boolean adjacent = Math.abs(coord.x - xPos) + Math.abs(coord.y - yPos) == 1;
         	//System.out.println(coord.toString() + " prev: "+ prevDist + " dist: "+ dist+ "adjacent: "+adjacent);
-			if(dist < prevDist && adjacent && board.canMove(c.leftside, coord.x, coord.y)){
+			if(dist < prevDist && adjacent && board.canMove(c.leftside, coord.x, coord.y) && !board.isOccupied(coord.x, coord.y)){
 				if(coord.x < xPos){
 					return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.LEFT);
 				}
@@ -649,6 +666,68 @@ public class TacticalManager extends ConditionalManager{
 			}
 		}
 		return moveDefensive(c, startPoint, xPos, yPos);
+	}
+	
+	/**
+	 * Move closer to nearest attacking square
+	 */
+	private ActionNode moveTowardsAttackSquare(Character c, int startPoint, int xPos, int yPos){
+		Coordinate coord = findNearestAttackSquare(c, xPos, yPos);
+		int dist = distance(coord.x, coord.y, xPos, yPos);
+		ArrayList<Direction> list = new ArrayList<Direction>();
+		if(distance(coord.x, coord.y, xPos-1, yPos) < dist && board.canMove(c.leftside, xPos-1, yPos) &&!board.isOccupied(xPos -1 , yPos)){
+			list.add(Direction.LEFT);
+		}
+		if(distance(coord.x, coord.y, xPos, yPos+1) < dist && board.canMove(c.leftside, xPos, yPos+1) &&!board.isOccupied(xPos , yPos+1)){
+			list.add(Direction.UP);
+		}
+		if(distance(coord.x, coord.y, xPos, yPos-1) < dist && board.canMove(c.leftside, xPos, yPos-1) &&!board.isOccupied(xPos , yPos-1)){
+			list.add(Direction.DOWN);
+		}
+		if(distance(coord.x, coord.y, xPos+1, yPos) < dist && board.canMove(c.leftside, xPos+1, yPos) &&!board.isOccupied(xPos+1 , yPos)){
+			list.add(Direction.RIGHT);
+		}
+		if(list.size() == 0){
+			if(distance(coord.x, coord.y, xPos-1, yPos) <= dist && board.canMove(c.leftside, xPos-1, yPos)&&!board.isOccupied(xPos -1 , yPos)){
+				list.add(Direction.LEFT);
+			}
+			if(distance(coord.x, coord.y, xPos, yPos+1) <= dist && board.canMove(c.leftside, xPos, yPos+1) &&!board.isOccupied(xPos, yPos+1)){
+				list.add(Direction.UP);
+			}
+			if(distance(coord.x, coord.y, xPos, yPos-1) <= dist && board.canMove(c.leftside, xPos, yPos-1) &&!board.isOccupied(xPos, yPos-1)){
+				list.add(Direction.DOWN);
+			}
+			if(distance(coord.x+1, coord.y, xPos+1, yPos) <= dist && board.canMove(c.leftside, xPos+1, yPos) &&!board.isOccupied(xPos +1, yPos)){
+				list.add(Direction.RIGHT);
+			}		
+		}
+		Action a = move(c);
+		if(list.size() == 0){
+			return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(c, xPos, yPos));
+		}
+		Random r = new Random();
+		Direction d = list.get(r.nextInt(list.size()));
+		return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, d);
+	}
+	
+	
+	private Coordinate findNearestAttackSquare(Character c, int xPos, int yPos){
+		Coordinates coordinates = Coordinates.getInstance();
+		Coordinate start = coordinates.newCoordinate(xPos, yPos);
+		for(int i = start.x; i < board.width; i++){
+			for(int j = 0; j < board.height; j++){
+				int dist1 = distance(start.x, start.y, xPos, yPos);
+				int dist2 = distance(i, j, xPos, yPos);
+				if(i != xPos && j != yPos && canHitEnemyFrom(c,i,j) && dist2 < dist1 &&board.canMove(c.leftside, i, j) &&!board.isOccupied(i, j)){
+					start = coordinates.newCoordinate(i, j);
+				}
+			}
+		}
+		return start;
+	}
+
+	private static int distance(int x1, int y1, int x2, int y2){
+		return Math.abs(x1 - y1) + Math.abs(x2 - y2);
 	}
 	
 	/**
@@ -745,29 +824,29 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	private Direction optimalDirection(Character c, int xPos, int yPos){
 		ArrayList<Direction> list = new ArrayList<Direction>();
-		if(canHitEnemyFrom(c, xPos-1, yPos) && isSafeSquare(xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)){
+		if(canHitEnemyFrom(c, xPos-1, yPos) && isSafeSquare(xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)&&!board.isOccupied(xPos-1 , yPos)){
 			list.add(Direction.LEFT);
 		}
-		if(canHitEnemyFrom(c, xPos, yPos+1) && isSafeSquare(xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)){
+		if(canHitEnemyFrom(c, xPos, yPos+1) && isSafeSquare(xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)&&!board.isOccupied(xPos , yPos+1)){
 			list.add(Direction.UP);
 		}
-		if(canHitEnemyFrom(c, xPos, yPos-1) && isSafeSquare(xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)){
+		if(canHitEnemyFrom(c, xPos, yPos-1) && isSafeSquare(xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)&&!board.isOccupied(xPos , yPos-1)){
 			list.add(Direction.DOWN);
 		}
-		if(canHitEnemyFrom(c, xPos+1, yPos) && isSafeSquare(xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)){
+		if(canHitEnemyFrom(c, xPos+1, yPos) && isSafeSquare(xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)&&!board.isOccupied(xPos+1 , yPos)){
 			list.add(Direction.RIGHT);
 		}
 		if(list.size() == 0){
-			if(canHitEnemyFromSingle(c, xPos-1, yPos) && isSafeSquare(xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)){
+			if(canHitEnemyFromSingle(c, xPos-1, yPos) && isSafeSquare(xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)&&!board.isOccupied(xPos-1 , yPos)){
 				list.add(Direction.LEFT);
 			}
-			if(canHitEnemyFromSingle(c, xPos, yPos+1) && isSafeSquare(xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)){
+			if(canHitEnemyFromSingle(c, xPos, yPos+1) && isSafeSquare(xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)&&!board.isOccupied(xPos , yPos+1)){
 				list.add(Direction.UP);
 			}
-			if(canHitEnemyFromSingle(c, xPos, yPos-1) && isSafeSquare(xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)){
+			if(canHitEnemyFromSingle(c, xPos, yPos-1) && isSafeSquare(xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)&&!board.isOccupied(xPos , yPos-1)){
 				list.add(Direction.DOWN);
 			}
-			if(canHitEnemyFromSingle(c, xPos+1, yPos) && isSafeSquare(xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)){
+			if(canHitEnemyFromSingle(c, xPos+1, yPos) && isSafeSquare(xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)&&!board.isOccupied(xPos+1 , yPos)){
 				list.add(Direction.RIGHT);
 			}
 		}
@@ -784,29 +863,29 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	private Direction attackingDirection(Character c, int xPos, int yPos){
 		ArrayList<Direction> list = new ArrayList<Direction>();
-		if(canHitEnemyFrom(c, xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)){
+		if(canHitEnemyFrom(c, xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)&&!board.isOccupied(xPos -1 , yPos)){
 			list.add(Direction.LEFT);
 		}
-		if(canHitEnemyFrom(c, xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)){
+		if(canHitEnemyFrom(c, xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)&&!board.isOccupied(xPos , yPos+1)){
 			list.add(Direction.UP);
 		}
-		if(canHitEnemyFrom(c, xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)){
+		if(canHitEnemyFrom(c, xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)&&!board.isOccupied(xPos, yPos-1)){
 			list.add(Direction.DOWN);
 		}
 		if(canHitEnemyFrom(c, xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)){
 			list.add(Direction.RIGHT);
 		}
 		if(list.size() == 0){
-			if(canHitEnemyFromSingle(c, xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)){
+			if(canHitEnemyFromSingle(c, xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)&&!board.isOccupied(xPos -1 , yPos)){
 				list.add(Direction.LEFT);
 			}
-			if(canHitEnemyFromSingle(c, xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)){
+			if(canHitEnemyFromSingle(c, xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)&&!board.isOccupied(xPos , yPos+1)){
 				list.add(Direction.UP);
 			}
-			if(canHitEnemyFromSingle(c, xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)){
+			if(canHitEnemyFromSingle(c, xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)&&!board.isOccupied(xPos, yPos-1)){
 				list.add(Direction.DOWN);
 			}
-			if(canHitEnemyFromSingle(c, xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)){
+			if(canHitEnemyFromSingle(c, xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)&&!board.isOccupied(xPos , yPos+1)){
 				list.add(Direction.RIGHT);
 			}		
 		}
@@ -823,16 +902,16 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	private Direction defensiveDirection(Character c, int xPos, int yPos){
 		ArrayList<Direction> list = new ArrayList<Direction>();
-		if(isSafeSquare(xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)){
+		if(isSafeSquare(xPos+1, yPos) && board.canMove(c.leftside, xPos+1, yPos)&&!board.isOccupied(xPos , yPos+1)){
 			list.add(Direction.RIGHT);
 		}
-		if(isSafeSquare(xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)){
+		if(isSafeSquare(xPos, yPos+1) && board.canMove(c.leftside, xPos, yPos+1)&&!board.isOccupied(xPos , yPos+1)){
 			list.add(Direction.UP);
 		}
-		if(isSafeSquare(xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)){
+		if(isSafeSquare(xPos, yPos-1) && board.canMove(c.leftside, xPos, yPos-1)&&!board.isOccupied(xPos, yPos-1)){
 			list.add(Direction.DOWN);
 		}
-		if(isSafeSquare(xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)){
+		if(isSafeSquare(xPos-1, yPos) && board.canMove(c.leftside, xPos-1, yPos)&&!board.isOccupied(xPos -1 , yPos)){
 			list.add(Direction.LEFT);
 		}
 		if(list.size() == 0){
@@ -848,16 +927,16 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	private Direction randomDirection(Character c, int xPos, int yPos){
 		ArrayList<Direction> directions = new ArrayList<Direction>();
-		if(board.canMove(c.leftside, xPos + 1, yPos)  && ownSide(xPos + 1)){
+		if(board.canMove(c.leftside, xPos + 1, yPos)  && ownSide(xPos + 1)&&!board.isOccupied(xPos , yPos+1)){
 			directions.add(Direction.RIGHT);
 		}
-		if(board.canMove(c.leftside, xPos, yPos + 1)){
+		if(board.canMove(c.leftside, xPos, yPos + 1)&&!board.isOccupied(xPos , yPos+1)){
 			directions.add(Direction.UP);
 		}
-		if(board.canMove(c.leftside, xPos - 1, yPos) && ownSide(xPos - 1)){
+		if(board.canMove(c.leftside, xPos - 1, yPos) && ownSide(xPos - 1)&&!board.isOccupied(xPos -1 , yPos)){
 			directions.add(Direction.LEFT);
 		}
-		if(board.canMove(c.leftside, xPos, yPos - 1)){
+		if(board.canMove(c.leftside, xPos, yPos - 1)&&!board.isOccupied(xPos, yPos-1)){
 			directions.add(Direction.DOWN);
 		}
 		Random r = new Random();
@@ -1097,42 +1176,42 @@ public class TacticalManager extends ConditionalManager{
 	 * Output data to a file
 	 */
 	public void outputData(Character c, JSONArray jsonArray){
-		JSONObject json = new JSONObject();
-		StringBuilder vectorBuilder = new StringBuilder();
-		for(String s: conditions){
-			if(map.get(s)){
-				vectorBuilder.append('1');
-			}
-			else{
-				vectorBuilder.append('0');
-			}
-		}
-		String vector = vectorBuilder.toString();
-
-		JSONArray array = new JSONArray();
-		int startSlot = 0;
-		int xPos = c.xPosition;
-		int yPos = c.yPosition;
-		for(ActionNode a: c.queuedActions){
-			JSONObject moveMap = new JSONObject();
-			xPos += applyMoveX(a);
-			yPos += applyMoveY(a);
-			ArrayList<Specific> moves = getPossibleMoves(c, a, xPos, yPos, startSlot);
-			JSONArray possibleMoves = new JSONArray();
-			for(Specific move: moves){
-				possibleMoves.add(move.toString());
-			}
-			moveMap.put(a.action.name, possibleMoves);
-			array.add(moveMap);
-			startSlot += a.action.cost;
-		}
-		
-		json.put("vector", vector);
-		json.put("actions", array);
-		jsonArray.add(json);
-		if (PRINT_MODE){
-			System.out.println(json.toString());
-		}
+//		JSONObject json = new JSONObject();
+//		StringBuilder vectorBuilder = new StringBuilder();
+//		for(String s: conditions){
+//			if(map.get(s)){
+//				vectorBuilder.append('1');
+//			}
+//			else{
+//				vectorBuilder.append('0');
+//			}
+//		}
+//		String vector = vectorBuilder.toString();
+//
+//		JSONArray array = new JSONArray();
+//		int startSlot = 0;
+//		int xPos = c.xPosition;
+//		int yPos = c.yPosition;
+//		for(ActionNode a: c.queuedActions){
+//			JSONObject moveMap = new JSONObject();
+//			xPos += applyMoveX(a);
+//			yPos += applyMoveY(a);
+//			ArrayList<Specific> moves = getPossibleMoves(c, a, xPos, yPos, startSlot);
+//			JSONArray possibleMoves = new JSONArray();
+//			for(Specific move: moves){
+//				possibleMoves.add(move.toString());
+//			}
+//			moveMap.put(a.action.name, possibleMoves);
+//			array.add(moveMap);
+//			startSlot += a.action.cost;
+//		}
+//		
+//		json.put("vector", vector);
+//		json.put("actions", array);
+//		jsonArray.add(json);
+//		if (PRINT_MODE){
+//			System.out.println(json.toString());
+//		}
 	}
 	
 	

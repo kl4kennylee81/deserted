@@ -1,10 +1,10 @@
-PVP:
+pvp:
     allies:
-        # - id: 0
-        #   xPosition: 0
-        #   yPosition: 0
+        - id: 2
+          xPosition: 0
+          yPosition: 0
 
-        - id: 5
+        - id: 3
           xPosition: 0
           yPosition: 3
 
@@ -170,28 +170,29 @@ Boss1:
     allies:
         - selectedId: 0
           xPosition: 0
-          yPosition: 1
+          yPosition: 2
 
     enemies:
         - id: 7
-          xPosition: 5
-          yPosition: 1
+          xPosition: 4
+          yPosition: 2
         - id: 7
           xPosition: 5
-          yPosition: 2
+          yPosition: 1
 
         - id: 8
-          xPosition: 5
+          xPosition: 4
           yPosition: 0
         - id: 8
-          xPosition: 5
+          xPosition: 3
           yPosition: 3
+
     nextLevel:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
+    AI: ["aiyaml/boss-arm.yml","aiyaml/attackboss.yml","aiyaml/attackarm.yml"]
 
 # dark bunny vs ghost
 Boss2:
@@ -217,6 +218,30 @@ Boss2:
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
+    
+# Fight against bunnies!
+BunnyTest:
+    allies:
+        - id: 0
+          xPosition: 0
+          yPosition: 0
+        - id: 3
+          xPosition: 0
+          yPosition: 3
+
+    enemies:
+        - id: 5
+          xPosition: 5
+          yPosition: 1
+        - id: 6
+          xPosition: 5
+          yPosition: 2
+    nextLevel:
+    boardWidth: 6
+    boardHeight: 4
+    boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
+    AI: ["aiyaml/light-dark.yml","aiyaml/lightbunny.yml","aiyaml/darkbunny.yml"]
 
 # mage vs figher/rock
 Level1:

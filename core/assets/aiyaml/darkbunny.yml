@@ -1,0 +1,43 @@
+DARK_ATTACK:
+  type: index
+  branch_type: ATTACK
+  is_inside_shield/enemy_not_slowed: DARK_SLOW_ALL
+  is_inside_shield: DARK_POWER
+  no_interrupt_chance/adjacent_safe_square: DARK_POWER_MOVE
+  no_interrupt_chance/enemy_not_slowed: DARK_SLOW_ALL
+  low_interrupt_chance/safe: DARK_POWER
+  low_interrupt_chance: DARK_POWER_MOVE
+  adjacent_attack_square: DARK_MOVE_ATTACK
+  default: DARK_MOVE_MOVE  
+  
+DARK_POSITION:
+  type: index
+  branch_type: POSITION
+  is_inside_shield: DARK_SLOW_ALL
+  adjacent_attack_square: DARK_MOVE_ATTACK
+  default: DARK_MOVE_MOVE  
+
+DARK_POWER_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, MOVE_GOAL]
+
+DARK_POWER:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK, MOVE_GOAL]
+
+DARK_SLOW_ALL:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SLOW_ALL, MOVE_GOAL]
+  
+DARK_MOVE_ATTACK:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE, QUICK_ATTACK]
+  
+DARK_MOVE_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_GOAL, MOVE_GOAL]

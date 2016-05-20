@@ -44,7 +44,12 @@ public class DecisionNode {
 		/** Try to move towards an optimal goal tile */
 		MOVE_GOAL,		
 		/** Try to pick a random decent action */
-		RANDOM_DECENT
+		RANDOM_DECENT,
+		/** Try to move towards the nearest attack square */
+		MOVE_TOWARDS_ATTACK_SQUARE,
+		/** Only use this shit if you have a slow all */
+		SLOW_ALL
+		
 		
 	}
 	

@@ -94,15 +94,16 @@
   maxHealth: 6
   hexColor: FF9900FF
   speed: 3.5
-  castSpeed: 10.0
+  castSpeed: 9.0
   slots: 3
   availableActions:
   - 0
   - 38
   - 42
-  - 40
-  texture: models/CHARA_5.png
-  icon: models/bunmage_icon.png
+  - 50
+  texture: models/portraits/darkbunnyportrait.png
+  icon: largeicons/bunmage_miniicondark.png
+  largeIcon: largeicons/bunmage_largeicondark.png
   animationId: 111
   bossId: 1002
   sharedStatus: true
@@ -116,11 +117,12 @@
   slots: 3
   availableActions:
   - 0
-  - 6
-  - 10
+  - 49
+  - 51
   - 22
-  texture: models/portraits/bunny.png
-  icon: models/bunmage_icon.png
+  texture: models/portraits/lightbunnyportrait.png
+  icon: largeicons/bunmage_miniiconlight.png
+  largeIcon: largeicons/bunmage_largeiconlight.png
   animationId: 112
   bossId: 1002
   sharedStatus: true
@@ -172,10 +174,10 @@
   - 4
   - 3
   - 35
-  texture: models/portraits/solus.png
-  icon: models/sulus_icon.png
-  bigIcon: largeicons/chara_largeicon.png
-  animationId: 101
+  texture: models/portraits/darksolus.png
+  icon: models/Solus/darksolus_miniicon.png
+  bigIcon: models/Solus/darksolus_miniicon.png
+  animationId: 113
 
 89:
   name: Tutorial_part_3
@@ -384,9 +386,9 @@
   slots: 5
   availableActions:
   - 0
-  texture: models/portraits/girlopponent.png
-  icon: models/portraits/owner_opponent.png
-  bigIcon: models/portraits/owner_opponent.png
+  texture: models/portraits/boyopponent.png
+  icon: models/portraits/owner_ishaan.png
+  bigIcon: models/portraits/owner_ishaan.png
   animationId: 103
 
 # the spirit guide
@@ -419,4 +421,19 @@
   texture: models/portraits/rockdude.png
   icon: models/portraits/owner_rockdude.png
   bigIcon: models/portraits/owner_rockdude.png
+  animationId: 103
+
+1004:
+  name: Villager
+  health: 0
+  maxHealth: 0
+  hexColor: CD2626FF
+  speed: 5.0
+  castSpeed: 7.5
+  slots: 5
+  availableActions:
+  - 0
+  texture: models/portraits/girlopponent.png
+  icon: models/portraits/owner_opponent.png
+  bigIcon: models/portraits/owner_opponent.png
   animationId: 103
