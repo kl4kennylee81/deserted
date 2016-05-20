@@ -842,7 +842,7 @@
     effectIcon: models/effect_icons/slow_icon.png
   description: Square Attack
   animationId: 8
-  icon: models/action_tokens/slow_icon.png
+  icon: models/effect_icons/slow_icon.png
 
 39:
   name: Twin Fire
