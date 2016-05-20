@@ -1,23 +1,23 @@
 pvp:
     allies:
-        - id: 4
+        - id: 6
           xPosition: 0
           yPosition: 0
 
-        - id: 1
+        - id: 5
           xPosition: 0
           yPosition: 3
 
     enemies:
-        - id: 2
+        - id: 8
           xPosition: 4
           yPosition: 0
 
-        - id: 3
+        - id: 8
           xPosition: 4
           yPosition: 3
 
-        - id: 4
+        - id: 7
           xPosition: 5
           yPosition: 1
     nextLevel:

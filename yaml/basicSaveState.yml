@@ -126,7 +126,7 @@ levels:
     levelName: Boss1
     beaten: false
     boss: true
-    surviveFor: 6
+    surviveFor: 5
     background: backgrounds/villagebg.png
     preNarrative: yaml/narratives/Boss1Pre.yml
     seenPre: false

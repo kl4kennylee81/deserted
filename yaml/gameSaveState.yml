@@ -93,7 +93,7 @@ levels:
     beaten: false
     boss: false
     preNarrative: yaml/narratives/Tutorial1Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Tutorial1Post.yml
     seenPost: false
   1:
@@ -126,7 +126,7 @@ levels:
     levelName: Boss1
     beaten: false
     boss: true
-    surviveFor: 6
+    surviveFor: 5
     background: backgrounds/villagebg.png
     preNarrative: yaml/narratives/Boss1Pre.yml
     seenPre: true
@@ -176,7 +176,7 @@ levels:
     gainedSP: 1
     unlockableCharacter: 4
     preNarrative: yaml/narratives/Level4Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Level4Post.yml
     seenPost: false
   12:
