@@ -55,6 +55,15 @@ public class GameSaveStateController {
 		return instance;
 	}
 	
+	public String getNextUnbeatenLevel(){
+		for (LevelData ld : gameSaveState.levels){
+			if (!ld.beaten){
+				return ld.levelName;
+			}
+		}
+		return null;
+	}
+	
 	public List<LevelData> getLevelData(){
 		return gameSaveState.levels;
 	}
