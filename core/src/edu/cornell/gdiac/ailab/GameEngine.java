@@ -162,7 +162,7 @@ public class GameEngine implements Screen {
 	/** Ratio of the bar width to the screen */
 	private static float BAR_WIDTH_RATIO  = 0.66f;
 	/** Ration of the bar height to the screen */
-	private static float BAR_HEIGHT_RATIO = 0.25f;	
+	private static float BAR_HEIGHT_RATIO = 0.11f;	
 	/** Height of the progress bar */
 	private static int PROGRESS_HEIGHT = 30;
 	/** Width of the rounded cap on left or right */
@@ -580,6 +580,9 @@ public class GameEngine implements Screen {
 	        		this.setTransition(GameState.MENU);
 	        		SoundController.LoadContent(manager);
         		}
+        		else{
+        			initializeCanvas(Constants.LOADING_TEXTURE, Constants.LOAD_FONT_FILE);
+        		}
         	}
       	}
 	}
@@ -713,6 +716,7 @@ public class GameEngine implements Screen {
 		}
 		else {
 			// draw a Start Game Option or a Button
+			canvas.drawCenteredText("Press Enter", centerX, centerY, Color.WHITE);
 		}
     }
 	
@@ -908,6 +912,14 @@ public class GameEngine implements Screen {
 		size2Params.fontParameters.color = Color.WHITE;
 		manager.load(Constants.MENU_FONT_FILE, BitmapFont.class, size2Params);
 		assets.add(Constants.MENU_FONT_FILE);
+		
+		size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+		size2Params.fontFileName = Constants.LOAD_FONT_FILE;
+		size2Params.fontParameters.size = Constants.LOAD_FONT_SIZE;
+		size2Params.fontParameters.color = Color.WHITE;
+		manager.load(Constants.LOAD_FONT_FILE, BitmapFont.class, size2Params);
+		assets.add(Constants.LOAD_FONT_FILE);
+
 
 		size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
 		size2Params.fontFileName = Constants.SELECT_FONT_FILE;

@@ -20,7 +20,11 @@ public class Constants {
 	/** The message font to use */
 	public static final String MENU_FONT_FILE  = "fonts/tw-cen-mt.ttf";
 	/** The size of the messages */
-	public static final int MENU_FONT_SIZE = 20;
+	public static final int MENU_FONT_SIZE = 24;
+	
+	public static final String LOAD_FONT_FILE = "fonts/MarkerFelt.ttf";
+	/** The size of the messages */
+	public static final int LOAD_FONT_SIZE = 40;
 	
 	public static final String MENU_HIGHLIGHT_TEXTURE = "images/mainmenu/gradient.png";
 	
