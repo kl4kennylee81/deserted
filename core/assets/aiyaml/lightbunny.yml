@@ -3,6 +3,8 @@ LIGHT_ATTACK:
   branch_type: ATTACK
   is_inside_shield: LIGHT_POWER
   can_move_to_protect: LIGHT_MOVE_SHIELD
+  no_interrupt_chance/can_protect: LIGHT_SHIELD
+  low_interrupt_chance/can_protect: LIGHT_SHIELD
   no_interrupt_chance/is_inside_shield: LIGHT_POWER
   no_interrupt_chance: LIGHT_POWER_MOVE
   low_interrupt_chance/is_inside_shield: LIGHT_POWER

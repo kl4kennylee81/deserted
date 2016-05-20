@@ -1,0 +1,84 @@
+-1:
+  background: backgrounds/chap4.png
+0:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 9
+  highlightCharacters:
+  - 1000
+  background: backgrounds/inTheSkybg.png
+  text: "Dara: Now we can win this together!"
+1:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 9
+  highlightCharacters:
+  - 0
+  text: "Light Solus: Yes, we can do it!"
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 9
+  highlightCharacters:
+  - 9
+  text: "Dark Solus: ... I refuse."
+3:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 9
+  highlightCharacters:
+  - 1000
+  text: "Dara: What?"
+4:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 9
+  highlightCharacters:
+  - 9
+  text: "Dark Solus: Do you not see what is happening? We are mere puppets for these Spirit Masters! All these fights are simply for their amusement!"
+5:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 9
+  highlightCharacters:
+  - 9
+  text: "Dark Solus: Let us fight back! And reclaim our freedom!"
+6:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 9
+  highlightCharacters:
+  - 1000
+  text: "Dara: Are you crazy? There's no way that will work!"
+7:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 9
+  highlightCharacters:
+  - 0
+  text: "Light Solus: Please, come to your senses!"
+8:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 9
+  highlightCharacters:
+  - 9
+  text: "Dark Solus: ... I'm disappointed in both of you. So be it, I have no need for you anyways!"

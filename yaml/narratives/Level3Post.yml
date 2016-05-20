@@ -1,0 +1,19 @@
+0:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1003
+  highlightCharacters:
+  - 1003
+  background: backgrounds/rockbg.png
+  text: "Rock Elder: You seem to be ready for the tournament. You have my children to aid you."
+1:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1003
+  highlightCharacters:
+  - 1000
+  text: "Dara: Thank you for your help."

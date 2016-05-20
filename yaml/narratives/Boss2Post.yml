@@ -1,0 +1,50 @@
+0:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  - 5
+  highlightCharacters:
+  - 1000
+  text: "Dara: Are you all right?"
+1:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  - 5
+  highlightCharacters:
+  - 1002
+  text: "Arash: Yes but the spirits have gone rampant. You are not safe here."
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  - 5
+  highlightCharacters:
+  - 1002
+  text: "Arash: Return to the caves. The rock spirits will protect you."
+3:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  - 5
+  highlightCharacters:
+  - 1000
+  text: "Dara: What about you?"
+4:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  - 5
+  highlightCharacters:
+  - 1002
+  text: "Arash: We will meet again."

@@ -1,0 +1,30 @@
+-1:
+  background: backgrounds/chap3_33.png
+0:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1003
+  highlightCharacters:
+  - 1003
+  background: backgrounds/rockbg.png
+  text: "Rock Elder: Welcome back, friend of Arash."
+1:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1003
+  highlightCharacters:
+  - 1000
+  text: "Dara: I beg you. I need to be stronger. Stronger than Arash."
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1003
+  highlightCharacters:
+  - 1003
+  text: "Rock Elder: I see. Very well then, I shall introduce you to my favorite child."

@@ -1,10 +1,10 @@
 pvp:
     allies:
-        - id: 2
+        - id: 6
           xPosition: 0
           yPosition: 0
 
-        - id: 3
+        - id: 5
           xPosition: 0
           yPosition: 3
 

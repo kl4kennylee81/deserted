@@ -1,19 +1,22 @@
 MAGE_ATTACK:
   type: index
   branch_type: ATTACK
-  is_protected: POWER
+  is_inside_shield: POWER
+  no_interrupt_chance/can_protect: SHIELD_NOP
   no_interrupt_chance/safe: POWER_SHIELD
   no_interrupt_chance/adjacent_safe_square: POWER_MOVE
   no_interrupt_chance/quick_attack_can_hit: QUICK_QUICK
   no_interrupt_chance: POWER_SHIELD
-  low_interrupt_chance/quick_attack_can_hit/adjacent_safe_square/adjacent_attack_square: QUICK_MOVE_SHIELD
   low_interrupt_chance/quick_attack_can_hit/adjacent_safe_square: QUICK_MOVE_SHIELD
   low_interrupt_chance/quick_attack_can_hit: QUICK_QUICK
-  low_interrupt_chance: SHIELD_POWER
-  medium_interrupt_chance/adjacent_attack_square_quick: MOVE_QUICK_SHIELD
+  low_interrupt_chance/adjacent_attack_square_quick: MOVE_QUICK_MOVE
+  low_interrupt_chance/can_move_to_protect: MOVE_SHIELD
+  low_interrupt_chance: POWER_MOVE
+  can_move_to_protect: MOVE_SHIELD
+  medium_interrupt_chance/adjacent_attack_square_quick: MOVE_QUICK_MOVE
   medium_interrupt_chance/adjacent_attack_square: MOVE_POWER
-  medium_interrupt_chance: SHIELD_POWER
-  adjacent_attack_square_quick: MOVE_QUICK_SHIELD
+  medium_interrupt_chance: MOVE_GOAL_SHIELD
+  adjacent_attack_square_quick: MOVE_QUICK_MOVE
   adjacent_attack_square/high_health: MOVE_POWER  
   high_health: MOVE_GOAL_ATTACK
   default: MOVE_GOAL_SHIELD
@@ -21,6 +24,10 @@ MAGE_ATTACK:
 MAGE_POSITION:
   type: index
   branch_type: POSITION
+  is_inside_shield/adjacent_attack_square/adjacent_safe_square: MOVE_POWER
+  can_move_to_protect: MOVE_SHIELD
+  no_interrupt_chance/can_protect: SHIELD
+  low_interrupt_chance/can_protect: SHIELD
   adjacent_attack_square/adjacent_safe_square: MOVE_POWER
   adjacent_attack_square_quick: MOVE_QUICK_MOVE
   adjacent_attack_square: MOVE_POWER
@@ -38,6 +45,11 @@ MOVE_POWER:
   my_tactic: SPECIFIC
   my_actions: [MOVE_AGGRESSIVE, POWERFUL_ATTACK, SHIELD]
 
+MOVE_SHIELD:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_PROTECT, SHIELD]
+  
 SHIELD_NOP:
   type: leaf
   my_tactic: SPECIFIC
@@ -91,4 +103,4 @@ MOVE_QUICK_MOVE:
 MOVE_GOAL_SHIELD:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_GOAL, MOVE_GOAL, SHIELD]
+  my_actions: [MOVE_GOAL, SHIELD]

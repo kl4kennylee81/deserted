@@ -1,0 +1,44 @@
+0:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Arash: I have high hopes for you. Win for the both of us."
+1:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Arash: Before I take my leave, I have one final way to help you."
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Arash: I will split Solus into two, like my rabbits."
+3:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Arash: Elementum recolligo ... Huic commodo locus ... mihi vestri vox!"
+4:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 9
+  - 1002
+  text: "!!"

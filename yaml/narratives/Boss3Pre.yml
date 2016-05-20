@@ -1,0 +1,76 @@
+-1:
+  background: backgrounds/chap3.png
+0:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 1000
+  background: backgrounds/inTheSkybg.png
+  text: "Dara: At last! My chance to become a spirit master."
+1:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 0
+  text: "Solu: Yes, at last."
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1005
+  highlightCharacters:
+  - 1005
+  text: "Spirit Master: Welcome, Dara! Your first opponent is Ishaan. May the spirits be with you."
+4:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1001
+  highlightCharacters:
+  - 1001
+  text: "Ishaan: Why is a runt in this tournament? No matter you will be gone soon ... when I defeat you!"
+5:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1001
+  - 7
+  text: "..."
+6:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1001
+  - 7
+  highlightCharacters:
+  - 1000
+  text: "Dara: The spirit that attacked my village!"
+7:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1001
+  - 7
+  highlightCharacters:
+  - 1001
+  text: "Ishaan: Yes! I need more power, so why not get it from the good-for-nothings?"
+8:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1001
+  - 7
+  highlightCharacters:
+  - 1000
+  text: "Dara: You'll pay for what you've done!"
+
