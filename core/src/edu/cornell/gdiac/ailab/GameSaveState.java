@@ -355,7 +355,9 @@ public class GameSaveState {
 					}
 					if (ld.unlockableCharacter != null){
 						unlockableCharacters.remove(ld.unlockableCharacter);
-						availableCharacters.add(ld.unlockableCharacter);
+						if (!availableCharacters.contains(ld.unlockableCharacter)){
+							availableCharacters.add(ld.unlockableCharacter);
+						}
 					}
 				}	
 				break;
