@@ -96,24 +96,29 @@ levels:
     seenPre: true
     postNarrative: yaml/narratives/Tutorial1Post.yml
     seenPost: false
+    displayedName: SPIRIT - ONE
   1:
     levelName: Tutorial2
     beaten: false
     boss: false
+    displayedName: SPIRIT - TWO
   2:
     levelName: Tutorial3
     beaten: false
     boss: false
+    displayedName: SPIRIT - TWO
   3:
     levelName: Tutorial4
     beaten: false
     boss: false
+    displayedName: SPIRIT - TWO
   4:
     levelName: Tutorial5
     beaten: false
     boss: false
     postNarrative: yaml/narratives/Tutorial5Post.yml
     seenPost: false
+    displayedName: SPIRIT - TWO
   5:
     levelName: Level1
     beaten: false
@@ -122,6 +127,7 @@ levels:
     unlockableCharacter: 1
     postNarrative: yaml/narratives/Level1Post.yml
     seenPost: false
+    displayedName: SPIRIT - TWO
   6:
     levelName: Boss1
     beaten: false
@@ -132,6 +138,7 @@ levels:
     seenPre: true
     postNarrative: yaml/narratives/Boss1Post.yml
     seenPost: false
+    displayedName: SPIRIT - TWO
   7:
     levelName: Boss2
     beaten: false
@@ -141,6 +148,7 @@ levels:
     seenPre: false
     postNarrative: yaml/narratives/Boss2Post.yml
     seenPost: false
+    displayedName: SPIRIT - TWO
   8:
     levelName: Level2
     beaten: false
@@ -149,6 +157,7 @@ levels:
     unlockableCharacter: 2
     preNarrative: yaml/narratives/Level2Pre.yml
     seenPre: false
+    displayedName: SPIRIT - TWO
   9:
     levelName: Level3
     beaten: false
@@ -158,6 +167,7 @@ levels:
     gainedSP: 2
     postNarrative: yaml/narratives/Level3Post.yml
     seenPost: false
+    displayedName: SPIRIT - TWO
   10:
     levelName: Boss3
     beaten: false
@@ -168,6 +178,7 @@ levels:
     seenPre: false
     postNarrative: yaml/narratives/Boss3Post.yml
     seenPost: false
+    displayedName: SPIRIT - TWO
   11:
     levelName: Level4
     beaten: false
@@ -179,6 +190,7 @@ levels:
     seenPre: false
     postNarrative: yaml/narratives/Level4Post.yml
     seenPost: false
+    displayedName: SPIRIT - TWO
   12:
     levelName: Boss4
     beaten: false
@@ -189,6 +201,7 @@ levels:
     seenPre: false
     postNarrative: yaml/narratives/Boss4Post.yml
     seenPost: false
+    displayedName: SPIRIT - TWO
   13:
     levelName: Boss5
     beaten: false
@@ -199,23 +212,7 @@ levels:
     seenPre: false
     postNarrative: yaml/narratives/Boss5Post.yml
     seenPost: false
-  14:
-    levelName: pvp
-    beaten: false
-    boss: false
-    needsSelect: false
-  15:
-    levelName: Boss3
-    beaten: false
-    needsSelect: true
-    boss: false
-    seenPre: false
-    seenPost: false
-  16:
-    levelName: BunnyTest
-    beaten: false
-    needsSelect: true
-    boss: false
+    displayedName: SPIRIT - TWO
 availableCharacters:
 - 0
 - 1
