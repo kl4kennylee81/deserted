@@ -83,7 +83,7 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	public void selectActions(Character c){
 		System.out.print(c.name+": ");
-		System.out.println(map.get("is_protected"));
+		System.out.println(map.get("can_move_to_protect"));
 		// System.out.println(map.get("single_in_range")+" ");
 		//System.out.print(map.get("MED_INT_CHANCE")+" ");
 		//System.out.println(map.get("HIGH_INT_CHANCE")+" ");
@@ -238,6 +238,7 @@ public class TacticalManager extends ConditionalManager{
 					break;
 				case MOVE_PROTECT:
 					a = moveProtect(c, startSlot, x, y);
+					break;
 				case RANDOM_DECENT:
 					a = randomDecentMove(c, startSlot, x, y);
 					break;
@@ -780,35 +781,25 @@ public class TacticalManager extends ConditionalManager{
 		if(d != Direction.NONE){
 			return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
-		d = attackingDirection(c, xPos, yPos);
-		if(d != Direction.NONE){
-			d = xPos < board.width/2 ? Direction.RIGHT : Direction.LEFT;
-		}
-		return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, d);
+		return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(c, xPos, yPos));
 	}
 	
 	
 	private Direction protectDirection(Character c, int xPos, int yPos){
 		for(Character ally: friends){
-			if(c.leftside){
-				if(ally.xPosition == xPos+1 && Math.abs(ally.yPosition - yPos) == 1 && board.canMove(c.leftside,xPos+1, yPos)){
-					return Direction.RIGHT;
-				}
-				else if(ally.xPosition <= xPos && ally.yPosition - yPos == 2 && board.canMove(c.leftside, xPos, yPos+1)){
-					return Direction.UP;
-				}
-				else if(ally.xPosition <= xPos && yPos - ally.yPosition == 2 && board.canMove(c.leftside,xPos, yPos-1)){
-					return Direction.DOWN;
-				}
-			}
-			else{
-				if(ally.xPosition == xPos -1 && Math.abs(ally.yPosition - yPos) == 1 && board.canMove(c.leftside,xPos - 1, yPos)){
+			if(ally != c){
+				if(Math.abs(c.yPosition - ally.yPosition) == 1 && 
+					c.xPosition > ally.xPosition){
 					return Direction.LEFT;
 				}
-				else if(ally.xPosition >= xPos && ally.yPosition - yPos == 2 && board.canMove(c.leftside, xPos, yPos+1)){
+				if(Math.abs(c.yPosition - ally.yPosition) == 1 && 
+						c.xPosition < ally.xPosition){
+						return Direction.RIGHT;
+					}
+				if(c.xPosition == ally.xPosition && c.yPosition < ally.yPosition){
 					return Direction.UP;
 				}
-				else if(ally.xPosition >= xPos && yPos - ally.yPosition == 2 && board.canMove(c.leftside,xPos, yPos-1)){
+				if(c.xPosition == ally.xPosition && c.yPosition > ally.yPosition){
 					return Direction.DOWN;
 				}
 			}

@@ -422,7 +422,6 @@
   bigIcon: models/portraits/owner_rockdude.png
   animationId: 103
 
-<<<<<<< HEAD
 30:
   name: Arm
   health: 4
@@ -513,7 +512,6 @@
   animationId: 108
   bossId: 9
   sharedStatus: true
-=======
 1004:
   name: Villager
   health: 0
@@ -528,4 +526,3 @@
   icon: models/portraits/owner_opponent.png
   bigIcon: models/portraits/owner_opponent.png
   animationId: 103
->>>>>>> d1eb8e6bc99abc13e2b0b610d9f0f902617af3e8
