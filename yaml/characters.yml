@@ -3,8 +3,8 @@
   health: 6
   maxHealth: 6
   hexColor: CD2626FF
-  speed: 5.5
-  castSpeed: 7.0
+  speed: 6.0
+  castSpeed: 8.0
   slots: 4
   availableActions:
   - 0
@@ -32,7 +32,7 @@
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconyellow.png
   bigIcon: largeicons/rock_largeiconyellow.png
-  animationId: 107
+  animationId: 115
   bossId: 1000
 2:
   name: Fighter Spirit
@@ -50,7 +50,7 @@
   texture: models/CHARA_1.png
   icon: models/tutorial_characters/basic_iconred.png
   bigIcon: largeicons/rock_largeiconred.png
-  animationId: 106
+  animationId: 114
   bossId: 1000
 3:
   name: Enchantress Spirit
@@ -68,7 +68,7 @@
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
   bigIcon: largeicons/rock_largeiconbasic.png
-  animationId: 103
+  animationId: 116
   bossId: 1000
 4:
   name: Rock Spirit
@@ -84,9 +84,9 @@
   - 17
   - 18
   texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconblue.png
-  bigIcon: largeicons/rock_largeiconblue.png
-  animationId: 105
+  icon: models/tutorial_characters/basic_icongreen.png
+  bigIcon: largeicons/rock_largeicongreen.png
+  animationId: 117
   bossId: 1000
 5:  
   name: Dark Bunny
@@ -178,6 +178,80 @@
   icon: models/Solus/darksolus_miniicon.png
   bigIcon: models/Solus/darksolus_miniicon.png
   animationId: 113
+10:
+  name: Mage Spirit
+  health: 6
+  maxHealth: 6
+  hexColor: FF9900FF
+  speed: 5.
+  castSpeed: 8.0
+  slots: 4
+  availableActions:
+  - 0
+  - 13
+  - 14
+  - 15
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconyellow.png
+  bigIcon: largeicons/rock_largeiconyellow.png
+  animationId: 115
+  bossId: 1003
+
+# duplicate under the rock elders boss id 11 - 14
+11:
+  name: Fighter Spirit
+  health: 8
+  maxHealth: 8
+  hexColor: 3299FFFF
+  speed: 5.5
+  castSpeed: 6.
+  slots: 4
+  availableActions:
+  - 0
+  - 23
+  - 20
+  - 7
+  texture: models/CHARA_1.png
+  icon: models/tutorial_characters/basic_iconred.png
+  bigIcon: largeicons/rock_largeiconred.png
+  animationId: 114
+  bossId: 1003
+12:
+  name: Enchantress Spirit
+  health: 6
+  maxHealth: 6
+  hexColor: CD2626FF
+  speed: 6.5
+  castSpeed: 7.
+  slots: 4
+  availableActions:
+  - 0
+  - 22
+  - 5
+  - 24
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
+  bigIcon: largeicons/rock_largeiconbasic.png
+  animationId: 116
+  bossId: 1003
+13:
+  name: Rock Spirit
+  health: 10
+  maxHealth: 10
+  hexColor: 00cc00FF
+  speed: 3.
+  castSpeed: 7.5
+  slots: 2
+  availableActions:
+  - 0
+  - 16
+  - 17
+  - 18
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icongreen.png
+  bigIcon: largeicons/rock_largeicongreen.png
+  animationId: 117
+  bossId: 1003
 
 89:
   name: Tutorial_part_3
@@ -204,8 +278,9 @@
   availableActions:
   - 0
   - 4
-  texture: models/CHARA_3.png
+  texture: models/portraits/solus.png
   icon: models/sulus_icon.png
+  bigIcon: largeicons/chara_largeicon.png
   animationId: 101
 91:
   name: Tutorial1_straight
@@ -262,6 +337,7 @@
   - 4
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconred.png
+  
   animationId: 106
 95:
   name: Tutorial_part_2
@@ -275,9 +351,9 @@
   - 0
   - 4
   - 36
-
-  texture: models/CHARA_3.png
+  texture: models/portraits/solus.png
   icon: models/sulus_icon.png
+  bigIcon: largeicons/chara_largeicon.png
   animationId: 101
 96:
   name: Tutorial_part_3
@@ -291,8 +367,9 @@
   - 0
   - 4
   - 9
-  texture: models/CHARA_3.png
+  texture: models/portraits/solus.png
   icon: models/sulus_icon.png
+  bigIcon: largeicons/chara_largeicon.png
   animationId: 101
 97:
   name: Tutorial_Shield
@@ -308,6 +385,7 @@
   - 4
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconblue.png
+  bigIcon: largeicons/rock_largeiconblue.png
   animationId: 105
 
 101:
@@ -323,6 +401,7 @@
   - 4
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconyellow.png
+  bigIcon: largeicons/rock_largeiconyellow.png
   animationId: 107
 102:
   name: Tutorial_Slow
@@ -338,6 +417,7 @@
   - 37
   texture: models/CHARA_3.png
   icon: models/bunmage_icon.png
+  bigIcon: largeicons/bunmage_largeicon.png
   animationId: 108
 103:
   name: Tutorial6_straight
@@ -352,6 +432,7 @@
   - 4
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
+  bigIcon: largeicons/rock_largeiconbasic.png
   animationId: 103
 
 # 1000+ This is where we have the parent characters
@@ -408,7 +489,7 @@
 
 # elder rock
 1003:
-  name: Elder Rock
+  name: Rock Elder
   health: 0
   maxHealth: 0
   hexColor: CD2626FF
