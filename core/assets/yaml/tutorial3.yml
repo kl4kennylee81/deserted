@@ -19,6 +19,6 @@
   spaceToContinue: true
 
 3:
-  text: "Shields protect you for two hits!"
+  text: "Shields last until they are hit!"
   paused: true
   spaceToContinue: true
