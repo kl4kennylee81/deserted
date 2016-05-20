@@ -502,7 +502,7 @@ public class SelectionMenuController {
 			case SINGLEPATH:
 				return this.board.getSingleCanTarget(chosenX,chosenY);
 			default:
-				return this.board.getcanTarget(chosenX,chosenY);
+				return this.board.getcanTarget(chosenX,chosenY)||this.board.getIsHighlighted(chosenX,chosenY);
 			}
 		}
 		else{
@@ -523,7 +523,7 @@ public class SelectionMenuController {
 			int chosenY = chosenTile.y;
 			chosenTile.free();
 			boolean canHit = this.actionCanHit(chosenX, chosenY);
-//			System.out.println(canHit);
+			System.out.println(canHit);
 			if (canHit){
 				this.selectedX = chosenX;
 				this.selectedY = chosenY;

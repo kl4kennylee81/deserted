@@ -13,7 +13,7 @@
       - 20
       - 20
 1:
-  name: Ground Fire
+  name: Fire Red
   texture: "actions/flame_sim_spritesheet.png"
   rows: 1
   cols: 4
@@ -29,7 +29,7 @@
       - 10
       - 10
 2:
-  name: Projectile
+  name: Projectile Purple
   texture: "actions/projectile_spritesheet.png"
   rows: 1
   cols: 5
@@ -45,9 +45,116 @@
       - 8
       - 8
       - 8
+3:
+  name: Projectile Blue
+  texture: "actions/projectile_spritesheetblue.png"
+  rows: 1
+  cols: 5
+  size: 5
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 5
+      frameData:
+      - 8
+      - 8
+      - 8
+      - 8
+      - 8
+4:
+  name: Projectile Green
+  texture: "actions/projectile_spritesheetgreen.png"
+  rows: 1
+  cols: 5
+  size: 5
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 5
+      frameData:
+      - 8
+      - 8
+      - 8
+      - 8
+      - 8
+5:
+  name: Fire Blue
+  texture: "actions/flame_sim_spritesheetblue.png"
+  rows: 1
+  cols: 4
+  size: 4
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 10
+      - 10
+      - 10
+      - 10
+6:
+  name: Fire Green
+  texture: "actions/flame_sim_spritesheetgreen.png"
+  rows: 1
+  cols: 4
+  size: 4
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 10
+      - 10
+      - 10
+      - 10
+
+7:
+  name: Hasten
+  texture: "actions/quicken_spritesheet.png"
+  rows: 1
+  cols: 4
+  size: 4
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 8
+      frameData:
+      - 7
+      - 7
+      - 7
+      - 6
+      - 5
+      - 5
+      - 5
+      - 5
+8:
+  name: Slow
+  texture: "actions/slow_spritesheet.png"
+  rows: 1
+  cols: 4
+  size: 4
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 8
+      frameData:
+      - 7
+      - 7
+      - 7
+      - 6
+      - 5
+      - 5
+      - 5
+      - 5
 
 101:
-  name: Sulus
+  name: Solus
   texture: "models/sulus_spritesheet.png"
   rows: 1
   cols: 27
@@ -727,4 +834,64 @@
       - 9
       - 9
       - 9
+113:
+  name: Dark Solus
+  texture: "models/Solus/darksolus_spritesheet.png"
+  rows: 1
+  cols: 27
+  size: 27
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 1
+      frameData:
+      - 500
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 7
+      - 7
+      - 7
+      - 7
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 4
+      length: 12
+      frameData:
+      - 4
+      - 4
+      - 5
+      - 5
+      - 5
+      - 5
+      - 6
+      - 6
+      - 6
+      - 6
+      - 5
+      - 5
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 16
+      length: 6
+      frameData:
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
+      - 7
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 22
+      length: 5
+      frameData:
+      - 6
+      - 6
+      - 8
+      - 8
+      - 8
 ...

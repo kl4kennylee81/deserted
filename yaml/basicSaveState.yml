@@ -131,20 +131,20 @@ levels:
     levelName: Tutorial5
     beaten: false
     boss: false
-  5:
-    levelName: Boss1
-    beaten: false
-    boss: true
-    surviveFor: 1
-  6:
-    levelName: Boss2
-    beaten: false
-    boss: true
-  7: 
+  5: 
     levelName: Level1
     beaten: false
     boss: false
     unlockableCharacter: 1
+  6:
+    levelName: Boss1
+    beaten: false
+    boss: true
+    surviveFor: 1
+  7:
+    levelName: Boss2
+    beaten: false
+    boss: true
   8:
     levelName: Level2
     beaten: false
@@ -183,7 +183,7 @@ levels:
   14:
     levelName: pvp
     beaten: false
-    boss: true
+    boss: false
     needsSelect: false
 
 availableCharacters:
