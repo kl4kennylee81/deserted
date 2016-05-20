@@ -200,18 +200,35 @@ levels:
     boss: true
     needsSelect: true
     background: backgrounds/inTheSkybg.png
+    preNarrative: yaml/narratives/Boss4Pre.yml
+    seenPre: false
+    postNarrative: yaml/narratives/Boss4Post.yml
+    seenPost: false
   13:
     levelName: Boss5
     beaten: false
     boss: true
     needsSelect: true
     background: backgrounds/inTheSkybg.png
+    preNarrative: yaml/narratives/Boss5Pre.yml
+    seenPre: false
+    postNarrative: yaml/narratives/Boss5Post.yml
+    seenPost: false
   14:
     levelName: pvp
     beaten: false
-    boss: true
+    boss: false
     needsSelect: false
-
+  15:
+    levelName: Boss3
+    beaten: false
+    needsSelect: true
+    boss: false
+  16:
+    levelName: BunnyTest
+    beaten: false
+    needsSelect: true
+    boss: false
 availableCharacters:
 - 0
 - 1

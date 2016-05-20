@@ -1,0 +1,31 @@
+BOSS_ATTACK:
+  type: index
+  branch_type: ATTACK
+  default: BOSS_POWER
+  
+BOSS_POSITION:
+  type: index
+  branch_type: POSITION
+  not_hastened: BOSS_HASTEN
+  adjacent_attack_square: BOSS_MOVE
+  default: BOSS_MOVE_TWICE
+
+BOSS_HASTEN:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [SINGLE_SELF]
+  
+BOSS_MOVE: 
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_AGGRESSIVE]
+  
+BOSS_MOVE_TWICE: 
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_TOWARDS_ATTACK_SQUARE, MOVE_TOWARDS_ATTACK_SQUARE]
+  
+BOSS_POWER:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [QUICK_ATTACK]

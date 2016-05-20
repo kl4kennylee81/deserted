@@ -838,7 +838,7 @@ public class GameCanvas {
 		float xTranslate = y*shearX;
 		local.translate(xTranslate,0);
 		
-		float translateBack = -this.getWidth()*0.005f;
+		float translateBack = -this.getWidth()*0.003f;
 		local.translate(translateBack,0);
 
 	}
@@ -1005,6 +1005,8 @@ public class GameCanvas {
 		return g;
 	}
 	
+	
+	// TODO text wrap around
 	public GlyphLayout drawTutorialText(String msg, Color color, int alignment) {
 		BitmapFont currFont = getFont();
 		displayFont.getData().setScale(1);

@@ -160,7 +160,7 @@
     magnitude: -1
     effectIcon: models/effect_icons/slow_icon.png
   description: Target a single square to slow down enemy
-  animationId: 0
+  animationId: 8
   icon: models/effect_icons/slow_icon.png
 
 8:
@@ -484,7 +484,7 @@
     magnitude: 1
     effectIcon: models/effect_icons/hasten_icon.png
   description: Target a single square to Hasten an ally
-  animationId: 0
+  animationId: 7
   icon: models/effect_icons/hasten_icon.png
 
 23:
@@ -741,7 +741,7 @@
     magnitude: 1
     effectIcon: models/effect_icons/hasten_icon.png
   description: Target a single square to Hasten an ally
-  animationId: 0
+  animationId: 7
   icon: models/effect_icons/hasten_icon.png
 
 35:
@@ -814,9 +814,10 @@
     magnitude: -2
     effectIcon: models/effect_icons/slow_icon.png
   description: Target a single square to slow down enemy
-  animationId: 0
+  animationId: 8
   icon: models/effect_icons/slow_icon.png
 
+#TELL KYLE IF YOU CHANGE THIS NAME 
 38:
   name: Slow All
   cost: 3
@@ -836,7 +837,7 @@
     magnitude: -1
     effectIcon: models/effect_icons/slow_icon.png
   description: Square Attack
-  animationId: 1
+  animationId: 8
   icon: models/action_tokens/lightning_token.png
 
 39:
@@ -861,7 +862,7 @@
 40:
   name: Overheat
   cost: 2
-  damage: 3
+  damage: 2
   range: 4
   size: 1
   pattern: SINGLEPATH
@@ -1041,5 +1042,101 @@
   animationId: 0
   projectileAnimationId: 2
   icon: models/action_tokens/shield_token.png
+  
+48:
+  name: L - PATH
+  cost: 2
+  damage: 2
+  range: 2
+  size: 1
+  pattern: PROJECTILE
+  path: "0,0 1,0 2,0 3,0 3,1 3,2"
+  oneHit: true
+  needsToggle: true
+  canBlock: true
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Launch a L shape projectile for 3 damage
+  persisting_action:
+    numRounds: 10
+    moveSpeed: 0.05
+  animationId: 0
+  projectileAnimationId: 2
+  icon: models/action_tokens/projectile_token.png
+  
+49:
+  name: Barrier
+  cost: 2
+  damage: 0
+  range: 2
+  size: 1
+  pattern: SHIELD
+  shieldNumberHits: 2
+  shieldColor0: 7EF9F5FF
+  oneHit: false
+  needsToggle: true
+  canBlock: false
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Creates a 3-tile wide shield (Cannot move after)
+  persisting_action:
+    numRounds: 1
+    moveSpeed: 0.0
+  animationId: 0
+  projectileAnimationId: 2
+  icon: models/action_tokens/shield_token.png
+ 
+#TELL KYLE IF YOU CHANGE THIS NAME 
+50:
+  name: Fire Blast  
+  cost: 2
+  damage: 2
+  range: 4
+  size: 1
+  pattern: INSTANT
+  oneHit: false
+  needsToggle: false
+  canBlock: true
+  path: "0,0 1,0 2,0 3,0 4,0 1,1 2,1 3,1 4,1 1,-1 2,-1 3,-1 4,-1"
+  icon: models/action_tokens/fire_token.png
+
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Super powerful attack
+  animationId: 1
+  icon: models/action_tokens/fire_token.png
+  
+51:
+  name: Spirit Ball
+  cost: 2
+  damage: 2
+  range: 2
+  size: 1
+  pattern: PROJECTILE
+  path: "0,0 1,0 2,0 3,0 3,1 3,2"
+  oneHit: true
+  needsToggle: true
+  canBlock: true
+  effect:
+    type: REGULAR
+    name: Regular
+    numRounds: 0
+    magnitude: 0
+  description: Launch a L shape projectile for 3 damage
+  persisting_action:
+    numRounds: 10
+    moveSpeed: 0.05
+  animationId: 0
+  projectileAnimationId: 2
+  icon: models/action_tokens/projectile_token.png
 ...
 
