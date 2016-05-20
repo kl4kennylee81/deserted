@@ -1,10 +1,10 @@
 pvp:
     allies:
-        - id: 2
+        - id: 6
           xPosition: 0
           yPosition: 0
 
-        - id: 3
+        - id: 5
           xPosition: 0
           yPosition: 3
 
@@ -254,11 +254,11 @@ Level1:
           xPosition: 0
           yPosition: 3
     enemies:
-        - id: 2
+        - id: 11
           xPosition: 5
           yPosition: 0
 
-        - id: 4
+        - id: 13
           xPosition: 5
           yPosition: 3
     nextLevel:
@@ -279,12 +279,12 @@ Level2:
           yPosition: 3
 
     enemies:
-        - id: 1
+        - id: 10
           xPosition: 5
           yPosition: 0
           difficulty: HARD
 
-        - id: 3
+        - id: 12
           xPosition: 5
           yPosition: 3
           difficulty: HARD
@@ -336,12 +336,12 @@ Level3:
           yPosition: 3
 
     enemies:
-        - id: 1
+        - id: 10
           xPosition: 5
           yPosition: 0
           difficulty: HARD
 
-        - id: 4
+        - id: 13
           xPosition: 5
           yPosition: 3
           difficulty: HARD
@@ -364,11 +364,11 @@ Level4:
           yPosition: 3
 
     enemies:
-        - id: 2
+        - id: 11
           xPosition: 5
           yPosition: 0
 
-        - id: 3
+        - id: 12
           xPosition: 5
           yPosition: 3
     nextLevel:

@@ -700,7 +700,7 @@
     numRounds: 10
     moveSpeed: 0.05
   animationId: 0
-  projectileAnimationId: 2
+  projectileAnimationId: 4
   icon: models/action_tokens/projectile_token.png
 
 33:
@@ -724,7 +724,7 @@
     numRounds: 0
     magnitude: 0
   description: Super powerful attack
-  animationId: 1
+  animationId: 6
   icon: models/action_tokens/fire_token.png
 
 34:
@@ -1116,7 +1116,7 @@
     numRounds: 0
     magnitude: 0
   description: Super powerful attack
-  animationId: 1
+  animationId: 5
   icon: models/action_tokens/fire_token.png
   
 51:
@@ -1140,7 +1140,7 @@
     numRounds: 10
     moveSpeed: 0.05
   animationId: 0
-  projectileAnimationId: 2
+  projectileAnimationId: 3
   icon: models/action_tokens/projectile_token.png
 ...
 
