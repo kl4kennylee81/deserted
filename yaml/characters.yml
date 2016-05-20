@@ -10,12 +10,12 @@
   - 0
   - 4
   - 3
-  - 35
+  - 45
   texture: models/portraits/solus.png
   icon: models/sulus_icon.png
   bigIcon: largeicons/chara_largeicon.png
   animationId: 101
-  # bossId: 1000
+  bossId: 1000
 1:
   name: Mage Spirit
   health: 6
@@ -518,7 +518,7 @@
   - 0
   - 4
   texture: models/CHARA_5.png
-  bigIcon: largeicons/rock_largeiconbasic.png
+  bigIcon: largeicons/rock_largeiconred.png
   icon: models/tutorial_characters/basic_iconred.png
   animationId: 106
 

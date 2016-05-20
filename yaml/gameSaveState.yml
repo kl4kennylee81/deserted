@@ -24,19 +24,17 @@ characters:
         cost: 2
       - actionId: 18
         cost: 1
-    - actionId: 44
+    - actionId: 45
       nextAction:
-      - actionId: 45
-        cost: 1
       - actionId: 46
         cost: 1
       - actionId: 47
-        cost: 2
+        cost: 1
     currentActions:
     - 0
     - 4
     - 3
-    - 44
+    - 45
   1:
     characterId: 1
     totalSP: 0
@@ -167,7 +165,7 @@ levels:
     needsSelect: true
     background: backgrounds/inTheSkybg.png
     preNarrative: yaml/narratives/Boss3Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Boss3Post.yml
     seenPost: false
   11:
@@ -188,17 +186,17 @@ levels:
     needsSelect: true
     background: backgrounds/inTheSkybg.png
     preNarrative: yaml/narratives/Boss4Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Boss4Post.yml
     seenPost: false
   13:
     levelName: Boss5
-    beaten: true
+    beaten: false
     boss: true
     needsSelect: true
     background: backgrounds/inTheSkybg.png
     preNarrative: yaml/narratives/Boss5Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Boss5Post.yml
     seenPost: false
   14:
@@ -211,7 +209,7 @@ levels:
     beaten: false
     needsSelect: true
     boss: false
-    seenPre: true
+    seenPre: false
     seenPost: false
   16:
     levelName: BunnyTest
@@ -231,4 +229,4 @@ unlockableCharacters:
 - 4
 selectedCharacters:
 - 0
-- 3
+- 1
