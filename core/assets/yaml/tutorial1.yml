@@ -98,8 +98,8 @@
   highlightTokens: ["0"]
   actions:
     - actionId: 0
-      xPos: 0
-      yPos: 0
+      xPos: 1
+      yPos: 2
       direction: UP
 
 10:
@@ -108,8 +108,8 @@
   paused: false
   actions:
     - actionId: 0
-      xPos: 0
-      yPos: 0
+      xPos: 1
+      yPos: 2
       direction: UP
 
 11:
