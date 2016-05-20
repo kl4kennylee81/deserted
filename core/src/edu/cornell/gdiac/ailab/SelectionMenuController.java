@@ -510,7 +510,7 @@ public class SelectionMenuController {
 		}
 	}
 
-	protected void mouseHighlight(){
+	protected boolean mouseHighlight(){
 		// mouse controls for single
 		float mouseX = InputController.getMouseX();
 		float mouseY = InputController.getMouseY();
@@ -529,8 +529,9 @@ public class SelectionMenuController {
 				this.selectedY = chosenY;
 				if (InputController.pressedLeftMouse()){
 					confirmedAction();
+					return true;
 				}
-				return;
+				return false;
 			}
 			
 			// this is to allow people to still confirm their single paths when in the box
@@ -538,9 +539,11 @@ public class SelectionMenuController {
 					&& actionCanHit(this.selectedX,this.selectedY)){
 				if (InputController.pressedLeftMouse()){
 					confirmedAction();
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 	protected void updateChoosingTarget(){

@@ -292,10 +292,8 @@ public class GameplayController {
 		}
         screen.draw(canvas);
         board.draw(canvas, selectionMenuController);
-        /*
-        if (inGameState == InGameState.SELECTION){
-        	board.draw(canvas);
-        }*/
+       
+
     	
     	
     	if (inGameState == InGameState.SELECTION){

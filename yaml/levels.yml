@@ -1,12 +1,12 @@
 PVP:
     allies:
-        - id: 0
-          xPosition: 0
-          yPosition: 0
-
-        # - id: 11
+        # - id: 0
         #   xPosition: 0
-        #   yPosition: 3
+        #   yPosition: 0
+
+        - id: 5
+          xPosition: 0
+          yPosition: 3
 
     enemies:
         - id: 8

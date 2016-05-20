@@ -160,6 +160,7 @@ levels:
     beaten: false
     boss: true
     needsSelect: true
+    background: backgrounds/inTheSkybg.png
   10:
     levelName: Level3
     beaten: false
@@ -178,11 +179,19 @@ levels:
     beaten: false
     boss: true
     needsSelect: true
+    background: backgrounds/inTheSkybg.png
   13:
     levelName: Boss5
     beaten: false
     boss: true
     needsSelect: true
+    background: backgrounds/inTheSkybg.png
+  14:
+    levelName: pvp
+    beaten: false
+    boss: true
+    needsSelect: false
+
 availableCharacters:
 - 0
 - 1
