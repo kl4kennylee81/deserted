@@ -113,7 +113,7 @@
       direction: UP
 
 11:
-  text: "Now, go to \"Firebolt\" and press Enter."
+  text: "Now, go to \"Spirit Shot\" and press Enter."
   spaceToContinue: false
   paused: false
   highlightTokens: ["1"]

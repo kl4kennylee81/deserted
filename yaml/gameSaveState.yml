@@ -93,7 +93,7 @@ levels:
     beaten: false
     boss: false
     preNarrative: yaml/narratives/Tutorial1Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Tutorial1Post.yml
     seenPost: false
   1:
@@ -196,7 +196,7 @@ levels:
     needsSelect: true
     background: backgrounds/inTheSkybg.png
     preNarrative: yaml/narratives/Boss5Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Boss5Post.yml
     seenPost: false
   14:

@@ -76,7 +76,7 @@
   animationId: 0
   icon: models/action_tokens/lightning_token.png
 4:
-  name: SpiritShot
+  name: Spirit Shot
   cost: 2
   damage: 2
   range: 4
