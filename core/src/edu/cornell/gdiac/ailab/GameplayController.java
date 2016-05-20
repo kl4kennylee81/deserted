@@ -368,8 +368,7 @@ public class GameplayController {
 			cs.draw(canvas);
 		}
 		else if (this.gameOver() && this.tieGame() && inGameState == InGameState.WARNING){
-    		//canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);	
-			System.out.println("gameplaycontroller tie game make a completion screen for it");
+    		//canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
 			CompletionScreen cs = CompletionScreen.getInstance();
 			cs.setIsWin(false);
 			cs.draw(canvas);

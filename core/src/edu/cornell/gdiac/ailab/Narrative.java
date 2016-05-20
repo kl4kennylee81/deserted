@@ -154,7 +154,9 @@ public class Narrative {
 		if (toShow.text != null){
 			x += 0.03f * canvas.width;
 			y += 0.15f * canvas.height;
-			canvas.drawText(toShow.text, x, y, Color.WHITE);
+			float textWidth = canvas.width - x*2;
+			//canvas.drawText(toShow.text, x, y, Color.WHITE);
+			canvas.drawWrapText(toShow.text, x, y, textWidth, Color.WHITE);
 		}
 	}
 	

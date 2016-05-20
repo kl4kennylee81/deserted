@@ -78,7 +78,8 @@ public class CharacterSelect extends Menu{
 	public void setCharactersInPlay(List<Integer> charactersInPlay){
 		this.charactersInPlay = new int[charactersInPlay.size()];
 		for (int i = 0; i < charactersInPlay.size(); i++){
-			if (containsCharacterId(charactersInPlay.get(i))){
+			
+			if (charactersInPlay.get(i) != null && containsCharacterId(charactersInPlay.get(i))){
 				this.charactersInPlay[i] = charactersInPlay.get(i);
 			} else {
 				this.charactersInPlay[i] = NULL_ID;

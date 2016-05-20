@@ -345,6 +345,9 @@ public class CharacterCustomization extends Menu {
 		case PROJECTILE:
 			drawPath(action);
 			break;
+		case SINGLEPATH:
+			drawSinglePath(action);
+			break;
 		case NOP:
 			break;
 		default:
@@ -371,6 +374,107 @@ public class CharacterCustomization extends Menu {
 						miniBoard.setCanTarget(i,j);
 					}
 				}
+			}
+		}
+	}
+	
+	private Coordinate[] singlePathHitPath(Action action, int selectedX, int selectedY, boolean leftside){
+		Coordinates coords = Coordinates.getInstance();
+		// when we pass in coordinate for the path we can go out of bounds it is checked in execution time
+		if (action== null || action.path == null){
+			System.out.println("line action controller 187: error input pattern projectile or instant did not have path");
+			return null;
+		}
+		Coordinate[] relativePath = action.path;
+		Coordinate[] absolutePath = new Coordinate[relativePath.length];
+		for (int i = 0;i<relativePath.length;i++){
+			// if on leftside we increment x in opposite direction
+			int x;int y;
+			if (leftside){
+				x = selectedX + relativePath[i].x;
+				y = selectedY + relativePath[i].y;
+			}
+			else{
+				x = selectedX - relativePath[i].x;
+				y = selectedY + relativePath[i].y;
+			}
+			absolutePath[i] = coords.obtain();
+			absolutePath[i].set(x, y);
+		}
+		return absolutePath;
+	}
+	
+	private int getHitSize(Coordinate[] hitCoords, boolean leftside, boolean isBuff){
+		int i = 0;
+		for (Coordinate c : hitCoords){
+			int ii = c.x;
+			int jj = c.y;
+			if (ii < 0 || ii >= miniBoard.getWidth() || jj < 0 || jj >= miniBoard.getHeight()){
+				continue;
+			}
+			boolean add = false;
+			if (leftside && ii >= (int)miniBoard.getWidth()/2){
+				add = true;
+			}
+			else if (!leftside && ii < (int)miniBoard.getWidth()/2){
+				add = true;
+			}
+			else if(isBuff){
+				add = true;
+			}
+			if (add){
+				i++;
+			}
+		}
+		return i;
+	}
+	
+	public void drawSinglePath(Action action){
+		if (action.path == null){
+			return;
+		}
+		int maxHitSize = 0;
+		int selectedX = 0;
+		int selectedY = 0;
+		for (int i=0;i<miniBoard.getWidth();i++){
+			for (int j = 0;j<miniBoard.getHeight();j++){
+				if (action.singleCanTarget(BOARD_X_POS,BOARD_Y_POS,i,j, true,miniBoard)){
+					if (i >= (int)miniBoard.getWidth()/2){
+						Coordinate[] hitCoords = singlePathHitPath(action,i,j,true);
+						int curHitSize = getHitSize(hitCoords, true, action.isBuff);
+						if (curHitSize > maxHitSize){
+							selectedX = i;
+							selectedY = j;
+							maxHitSize = curHitSize;
+						}
+						for (Coordinate c : singlePathHitPath(action,i,j,true)){
+							int ii = c.x;
+							int jj = c.y;
+							if (ii >= (int)miniBoard.getWidth()/2){
+								miniBoard.setCanTarget(ii,jj);
+							}
+							else if(action.isBuff){
+								miniBoard.setCanTarget(ii, jj);
+							}
+						}
+						miniBoard.setSingleCanTarget(i, j);
+					}
+				}
+			}
+		}
+		
+		Coordinate[] path = action.path;
+		for (int i = 0; i < path.length; i++){
+			int x = selectedX + path[i].x;
+			int y = selectedY + path[i].y;
+			if (BOARD_X_POS == x && BOARD_Y_POS == y){
+				continue;
+			}
+			else if ((!miniBoard.isInBounds(x,y))){
+				continue;
+			}
+			if (!miniBoard.isOnSide(true, x, y)){
+				miniBoard.setHighlighted(x,y);
 			}
 		}
 	}
