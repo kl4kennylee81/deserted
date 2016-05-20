@@ -1,27 +1,192 @@
-0:
+15:
   leftCharacters:
-  - 0
   rightCharacters:
+  - 1005
   highlightCharacters:
-  - 0
+  - 1005
   background: backgrounds/environment.png
-  text: ....I haven't eaten in days
-1:
-  leftCharacters:
-  - 0
-  rightCharacters:
-  highlightCharacters:
-  - 0
-  text: *Stomach Growls
-2:
-  leftCharacters:
-  - 0
-  highlightCharacters:
-  - 0
-  text: Tummy you know complaining won't help
-3:
-  leftCharacters:
-  rightCharacters:
-  highlightCharacters:
+  text: I sense spiritual energy within him...
 
-  text: Okay
+16:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  highlightCharacters:
+  - 1000
+  text: Ahh peace at last
+
+17:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  highlightCharacters:
+  text: help....
+
+18:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  highlightCharacters:
+  - 1000
+  text: who's there!?
+19:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 0
+  text: Quick concentrate your energy into the tip of your finger and touch my forehead child.
+
+20:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  text: -Dara touches her forehead-
+
+21:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 0 
+  text: Thank you child. You have replenished my spiritual energy with yours.
+
+22:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 1000
+  text: What are you?
+
+23:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 0
+  text: I am Sulus a spirit from the outer realm. 
+
+
+24:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 0
+  text: We are bound to that world and need spiritual energy to maintain our form in yours. There is a place I must be.
+
+25:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 0
+  text: I will take my leave. Goodbye
+
+26:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  highlightCharacters:
+  - 1000
+  text: Wait where's my compensation..HEY HEYYY
+
+27:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  highlightCharacters:
+  - 1000
+  text: What's that noise...?
+
+28:
+  leftCharacters:
+  - 0
+  rightCharacters:
+  - 2
+  highlightCharacters:
+  - 0
+  text: Tell your master I do not wish to fight.
+
+29:
+  leftCharacters:
+  - 0
+  - 1000
+  rightCharacters:
+  - 2
+  highlightCharacters:
+  - 1000
+  text: STOP! I have unfinished business with her. You can’t take from me and run.
+
+
+30: 
+  leftCharacters:
+  - 0
+  - 1000
+  rightCharacters:
+  - 2
+  highlightCharacters:
+  - 1000
+  text: That’s what I do and no one takes from me without paying their dues.
+
+31:
+  leftCharacters:
+  - 0
+  - 1000
+  rightCharacters:
+  - 2
+  - 1005
+  highlightCharacters:
+  - 1005
+  text: Spirits do no not belong untethered in our world. Begone
+
+32:
+  leftCharacters:
+  - 0
+  - 1000
+  rightCharacters:
+  - 2
+  - 1005
+  highlightCharacters:
+  - 0
+  text: To Fight I will need your energy
+
+33:
+  leftCharacters:
+  - 0
+  - 1000
+  rightCharacters:
+  - 2
+  - 1005
+  highlightCharacters:
+  - 1000
+  text: I'll increase the debt. Put it on my tab.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

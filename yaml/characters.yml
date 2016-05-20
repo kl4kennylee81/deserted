@@ -314,7 +314,7 @@
   slots: 2
   availableActions:
   - 0
-  - 36
+  - 45
   - 4
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconblue.png
@@ -398,7 +398,7 @@
   maxHealth: 2
   hexColor: FF9900FF
   speed: 5.5
-  castSpeed: 7.0
+  castSpeed: 5.0
   slots: 2
   availableActions:
   - 0
