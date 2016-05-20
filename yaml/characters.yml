@@ -422,98 +422,6 @@
   bigIcon: models/portraits/owner_rockdude.png
   animationId: 103
 
-<<<<<<< HEAD
-30:
-  name: Arm
-  health: 4
-  maxHealth: 4
-  hexColor: CD2626FF
-  speed: 5.0
-  castSpeed: 9.0
-  slots: 2
-  availableActions:
-  - 0
-  - 9
-  - 32
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_icon.png
-  animationId: 110
-  bossId: 9
-  sharedStatus: true
-
-31:
-  name: Boss
-  health: 4
-  maxHealth: 4
-  hexColor: CD2626FF
-  speed: 6.5
-  castSpeed: 10.0
-  slots: 2
-  availableActions:
-  - 0
-  - 33
-  - 34
-  texture: models/CHARA_3.png
-  icon: models/bunmage_icon.png
-  animationId: 109
-  bossId: 9
-  sharedStatus: true
-
-9:
-  name: Parent Boss
-  health: 0
-  maxHealth: 0
-  hexColor: FF9900FF
-  speed: 5.
-  castSpeed: 10.
-  slots: 3
-  availableActions:
-  - 0
-  - 1
-  - 2
-  - 3
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconyellow.png
-  animationId: 107
-
-10:  
-  name: Dark Bunny
-  health: 12
-  maxHealth: 12
-  hexColor: FF9900FF
-  speed: 3.5
-  castSpeed: 10.0
-  slots: 3
-  availableActions:
-  - 0
-  - 38
-  - 42
-  - 50
-  texture: models/CHARA_5.png
-  icon: models/bunmage_icon.png
-  animationId: 108
-  bossId: 9
-  sharedStatus: true
-
-11:  
-  name: Light Bunny
-  health: 0
-  maxHealth: 0
-  hexColor: FF9900FF
-  speed: 7.
-  castSpeed: 6.5
-  slots: 3
-  availableActions:
-  - 0
-  - 49
-  - 51
-  - 22
-  texture: models/CHARA_5.png
-  icon: models/bunmage_icon.png
-  animationId: 108
-  bossId: 9
-  sharedStatus: true
-=======
 1004:
   name: Villager
   health: 0
@@ -528,4 +436,3 @@
   icon: models/portraits/owner_opponent.png
   bigIcon: models/portraits/owner_opponent.png
   animationId: 103
->>>>>>> d1eb8e6bc99abc13e2b0b610d9f0f902617af3e8

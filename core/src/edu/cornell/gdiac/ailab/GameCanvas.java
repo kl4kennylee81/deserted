@@ -1005,6 +1005,8 @@ public class GameCanvas {
 		return g;
 	}
 	
+	
+	// TODO text wrap around
 	public GlyphLayout drawTutorialText(String msg, Color color, int alignment) {
 		BitmapFont currFont = getFont();
 		displayFont.getData().setScale(1);
