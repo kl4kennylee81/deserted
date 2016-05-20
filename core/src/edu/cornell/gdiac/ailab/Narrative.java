@@ -13,10 +13,10 @@ import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 public class Narrative {
 	private static final Color FADED_COLOR = Color.GRAY;
 	
-	private static final float CHARACTER_WIDTH = 0.15f;
-	private static final float CHARACTER_Y = 0.3f;
+	private static final float CHARACTER_WIDTH = 0.25f;
+	private static final float CHARACTER_Y = 0.32f;
 	
-	private static final Texture TEXT_BACKGROUND = new Texture("models/description_background.png");
+	private static final Texture TEXT_BACKGROUND = new Texture("models/box.png");
 	
 	ArrayList<Panel> panels = new ArrayList<Panel>();
 	int index;
@@ -119,7 +119,7 @@ public class Narrative {
 				int width = (int) (CHARACTER_WIDTH * canvas.width);
 				float heightToWidthRatio = toDraw.getHeight()*1f/toDraw.getWidth();
 				int height = (int) (heightToWidthRatio * width);
-				float ratio = (i+1f)/(toShow.leftChars.size()+1);
+				float ratio = (i*2+1f)/(toShow.leftChars.size()*2);
 				float middleX = ratio * 0.5f * canvas.width;
 				float x = middleX - width/2;
 				float y = CHARACTER_Y * canvas.height;
@@ -136,7 +136,7 @@ public class Narrative {
 				int width = (int) (CHARACTER_WIDTH * canvas.width);
 				float heightToWidthRatio = toDraw.getHeight()*1f/toDraw.getWidth();
 				int height = (int) (heightToWidthRatio * width);
-				float ratio = (i+1f)/(toShow.rightChars.size()+1);
+				float ratio = (i*2+1f)/(toShow.rightChars.size()*2);
 				float middleX = (ratio * 0.5f + 0.5f) * canvas.width;
 				float x = middleX - width/2;
 				float y = CHARACTER_Y * canvas.height;
@@ -149,7 +149,7 @@ public class Narrative {
 		}
 		
 		float x = 0.05f * canvas.width;
-		float y = 0.05f * canvas.height;
+		float y = 0.12f * canvas.height;
 		canvas.draw(TEXT_BACKGROUND, Color.WHITE,x,y,canvas.width*0.9f,canvas.height*0.2f);
 		if (toShow.text != null){
 			x += 0.03f * canvas.width;

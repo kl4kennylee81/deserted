@@ -57,6 +57,8 @@ public class SelectionMenu {
 	
 	private static final Texture CONFIRM_BUTTON_PRESSED = new Texture("models/confirmbutton_pressed.png");
 	
+	private static final Texture CONFIRM_BUTTON = new Texture("models/confirm.png");
+	
 	private static final Texture DESCRIPTION_BACKGROUND = new Texture("models/description_background.png");
 
 	/** Currently used up slots */
@@ -116,7 +118,8 @@ public class SelectionMenu {
 			options[i].setImage(actions[i].menuIcon);
 		}
 		Option confirm = new Option("","Confirm");
-		confirm.setImage(CONFIRM_BUTTON_UNPRESSED);
+		confirm.setImage(CONFIRM_BUTTON);
+		confirm.sameWidthHeight = true;
 		confirm.setImageColor(Color.WHITE);
 		options[actions.length] = confirm;
 	}
@@ -400,7 +403,7 @@ public class SelectionMenu {
 		if (isSelecting){
 			if (!this.choosingTarget){
 				for (int i = 0; i < actions.length; i++){
-					float frac = (i+1f)/(actions.length+1);
+					float frac = (i+1f)/(actions.length+2);
 					Action action = actions[i];
 					Option option = options[i];
 					float x;
@@ -419,20 +422,22 @@ public class SelectionMenu {
 				}
 
 				Option confirm = options[actions.length];
-				float x = centerX/canvas.width;
-				float y = (centerY - radius)/canvas.height;
-				confirm.setBounds(x-CONFIRM_WIDTH/2, y-CONFIRM_HEIGHT/2, CONFIRM_WIDTH, CONFIRM_HEIGHT);
+				float frac = (actions.length+1f)/(actions.length+2);
+				float x;
+				if (leftside){
+					x = (float) (centerX + radius*Math.sin(frac*Math.PI));
+				} else {
+					x = (float) (centerX - radius*Math.sin(frac*Math.PI));
+				}
+				float y = (float) (centerY + radius*Math.cos(frac*Math.PI));
+				x /= canvas.width;
+				y /= canvas.height;
+				confirm.setBounds(x-RELATIVE_ICON_LENGTH/2, y-RELATIVE_ICON_LENGTH/2, RELATIVE_ICON_LENGTH, RELATIVE_ICON_LENGTH);
 				
 				if (confirm.currentlyHovered || selectedAction == actions.length){
-					confirm.setImage(CONFIRM_BUTTON_PRESSED);
+					confirm.setImageColor(Color.YELLOW.cpy().lerp(Color.CORAL, tokenLerpVal));
 				} else {
-					confirm.setImage(CONFIRM_BUTTON_UNPRESSED);
-				}
-				
-				if (canAct(usableNumSlots)){
 					confirm.setImageColor(Color.WHITE);
-				} else {
-					confirm.setImageColor(Color.WHITE.cpy().lerp(Color.GOLD,lerpVal));
 				}
 				
 				confirm.draw(canvas);
