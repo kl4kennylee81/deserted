@@ -57,7 +57,7 @@ public class LevelMenu extends Menu {
 			}
 		}
 		
-		options[options.length-1].setBounds(0.18f - RELATIVE_WIDTH/2, 0.2f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
+		options[options.length-1].setBounds(0.18f - RELATIVE_WIDTH/2, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
 		options[options.length-1].setColor(Constants.MENU_COLOR);
 	}
 	
