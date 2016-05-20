@@ -1,0 +1,24 @@
+0:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 1004
+  highlightCharacters:
+  - 1004
+  text: "Villager: Help! The village is under attack!"
+1:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 0
+  text: "Solus: It seems your people are in danger."
+2:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 1000
+  text: "Dara: No worries, we are powerful!"

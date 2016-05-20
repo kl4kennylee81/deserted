@@ -1,0 +1,43 @@
+0:
+  background: backgrounds/environment.png
+  text: (I have always been alone)
+1:
+  background: backgrounds/inTheSkybg.png
+  text: (The spirit masters live in the castles in the sky)
+2:
+  background: backgrounds/bg.png
+  text: (But I am no spirit master)
+3:
+  leftCharacters: 
+  - 1000
+  text: "(Until one day)"
+4:
+  leftCharacters:
+  - 1000
+  highlightCharacters:
+  - 1000
+  text: "Dara: Who's there?"
+5:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 0
+  text: "Solus: You can see me? I am a spirit."
+6:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 1000
+  text: "Dara: A spirit? Why are you not controlled by the spirit masters?"
+7:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 0
+  text: "Solus: Join forces with me. If you are worthy you could join the spirit masters."

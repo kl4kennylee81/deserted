@@ -13,7 +13,7 @@ import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 public class Narrative {
 	private static final Color FADED_COLOR = Color.GRAY;
 	
-	private static final float CHARACTER_WIDTH = 0.25f;
+	private static final float CHARACTER_HEIGHT = 0.25f;
 	private static final float CHARACTER_Y = 0.32f;
 	
 	private static final Texture TEXT_BACKGROUND = new Texture("models/box.png");
@@ -116,9 +116,9 @@ public class Narrative {
 		for (int i = 0; i < toShow.leftChars.size(); i++){
 			Texture toDraw = toShow.leftChars.get(i).texture;
 			if (toDraw != null){
-				int width = (int) (CHARACTER_WIDTH * canvas.width);
-				float heightToWidthRatio = toDraw.getHeight()*1f/toDraw.getWidth();
-				int height = (int) (heightToWidthRatio * width);
+				int height = (int) (CHARACTER_HEIGHT * canvas.height);
+				float widthToHeightRatio = toDraw.getWidth()*1f/toDraw.getHeight();
+				int width = (int) (widthToHeightRatio * height);
 				float ratio = (i*2+1f)/(toShow.leftChars.size()*2);
 				float middleX = ratio * 0.5f * canvas.width;
 				float x = middleX - width/2;
@@ -133,9 +133,9 @@ public class Narrative {
 		for (int i = 0; i < toShow.rightChars.size(); i++){
 			Texture toDraw = toShow.rightChars.get(i).texture;
 			if (toDraw != null){
-				int width = (int) (CHARACTER_WIDTH * canvas.width);
-				float heightToWidthRatio = toDraw.getHeight()*1f/toDraw.getWidth();
-				int height = (int) (heightToWidthRatio * width);
+				int height = (int) (CHARACTER_HEIGHT * canvas.height);
+				float widthToHeightRatio = toDraw.getWidth()*1f/toDraw.getHeight();
+				int width = (int) (widthToHeightRatio * height);
 				float ratio = (i*2+1f)/(toShow.rightChars.size()*2);
 				float middleX = (ratio * 0.5f + 0.5f) * canvas.width;
 				float x = middleX - width/2;
@@ -148,11 +148,11 @@ public class Narrative {
 			}
 		}
 		
-		float x = 0.05f * canvas.width;
+		float x = 0.03f * canvas.width;
 		float y = 0.12f * canvas.height;
-		canvas.draw(TEXT_BACKGROUND, Color.WHITE,x,y,canvas.width*0.9f,canvas.height*0.2f);
+		canvas.draw(TEXT_BACKGROUND, Color.WHITE,x,y,canvas.width*0.94f,canvas.height*0.2f);
 		if (toShow.text != null){
-			x += 0.03f * canvas.width;
+			x += 0.05f * canvas.width;
 			y += 0.15f * canvas.height;
 			float textWidth = canvas.width - x*2;
 			//canvas.drawText(toShow.text, x, y, Color.WHITE);
