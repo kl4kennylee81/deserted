@@ -160,7 +160,7 @@
     magnitude: -1
     effectIcon: models/effect_icons/slow_icon.png
   description: Target a single square to slow down enemy
-  animationId: 0
+  animationId: 8
   icon: models/effect_icons/slow_icon.png
 
 8:
@@ -484,7 +484,7 @@
     magnitude: 1
     effectIcon: models/effect_icons/hasten_icon.png
   description: Target a single square to Hasten an ally
-  animationId: 0
+  animationId: 7
   icon: models/effect_icons/hasten_icon.png
 
 23:
@@ -741,7 +741,7 @@
     magnitude: 1
     effectIcon: models/effect_icons/hasten_icon.png
   description: Target a single square to Hasten an ally
-  animationId: 0
+  animationId: 7
   icon: models/effect_icons/hasten_icon.png
 
 35:
@@ -814,7 +814,7 @@
     magnitude: -2
     effectIcon: models/effect_icons/slow_icon.png
   description: Target a single square to slow down enemy
-  animationId: 0
+  animationId: 8
   icon: models/effect_icons/slow_icon.png
 
 #TELL KYLE IF YOU CHANGE THIS NAME 
@@ -837,7 +837,7 @@
     magnitude: -1
     effectIcon: models/effect_icons/slow_icon.png
   description: Square Attack
-  animationId: 1
+  animationId: 8
   icon: models/action_tokens/lightning_token.png
 
 39:

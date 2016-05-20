@@ -1,11 +1,11 @@
 0:
   leftCharacters:
-  - 0
-  - 1
+  - 9
+  - 6
   rightCharacters:
-  - 2
+  - 5
   highlightCharacters:
-  - 1
+  - 9
   background: backgrounds/environment.png
 1:
   leftCharacters:

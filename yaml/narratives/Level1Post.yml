@@ -1,0 +1,34 @@
+0:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1000
+  text: "Dara: When is the tournament? I feel more than ready!"
+1:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Arash: Do not be overconfident. You still have much to learn."
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Arash: I have someone to find. Return to the village without me."
+3:
+  leftCharacters:
+  - 1000
+  - 0
+  highlightCharacters:
+  - 1000
+  text: "Dara: Alright let's head back."

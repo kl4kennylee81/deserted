@@ -1,0 +1,54 @@
+0:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 0
+  text: "Solus: You seem worthy."
+1:
+  leftCharacters:
+  - 1000
+  rightCharacters:
+  - 0
+  highlightCharacters:
+  - 1000
+  text: "Dara: But why - is someone there?"
+2:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "???: You appear to have the power to form spirit bonds."
+3:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Arash: I am a traveller. There is a tournament coming up for the spiritually gifted."
+4:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1002
+  text: "Arash: I can train you to become an able contender. Would you like to be more than a mere human?"
+5:
+  leftCharacters:
+  - 1000
+  - 0
+  rightCharacters:
+  - 1002
+  highlightCharacters:
+  - 1000
+  text: "Dara: (Seems suspicious but I have nothing to lose) Please take me as your pupil."
+
+

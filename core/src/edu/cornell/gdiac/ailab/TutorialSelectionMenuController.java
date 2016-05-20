@@ -272,7 +272,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
         			return action == selected.availableActions[ta.actionId];
         		}
         		else {
-        			System.out.println("check why no tutorial step on line 165");
+//        			System.out.println("check why no tutorial step on line 165");
         			return true;//if tas.size() == 0 this means the user is choosing any action of their choice
         		}
     }
