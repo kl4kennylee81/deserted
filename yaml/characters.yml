@@ -423,7 +423,6 @@
   bigIcon: models/portraits/owner_rockdude.png
   animationId: 103
 
-<<<<<<< HEAD
 30:
   name: Arm
   health: 4
@@ -462,10 +461,6 @@
 
 9:
   name: Parent Boss
-=======
-1004:
-  name: Villager
->>>>>>> d4abbb0f38026bb5b35997eb7939e374a882f549
   health: 0
   maxHealth: 0
   hexColor: CD2626FF
