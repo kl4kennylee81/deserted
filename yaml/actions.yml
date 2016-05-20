@@ -57,7 +57,7 @@
   animationId: 1
   icon: models/action_tokens/fire_token.png
 3:
-  name: Single
+  name: Lightning
   cost: 3
   damage: 2
   range: 5

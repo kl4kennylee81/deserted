@@ -216,9 +216,12 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
             if (correctDirection()){
                 int actionExecute = menu.takenSlots + action.cost;
                 int numSlots = selected.actionBar.getUsableNumSlots();
-                menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
-                menu.setChoosingTarget(false);
-                menu.resetPointer(numSlots);
+                // TODO hack solution we already confirmed the action in highlightAction
+                if (!mouseCondition){
+	                menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
+	                menu.setChoosingTarget(false);
+	                menu.resetPointer(numSlots);
+                }
                 if (tutorialSteps.stepOnSelection) {
                     if (tutorialSteps.currStep() != null ) prevText = tutorialSteps.currStep().text;
                     tutorialSteps.nextStep();
