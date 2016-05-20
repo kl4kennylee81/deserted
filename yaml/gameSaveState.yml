@@ -185,7 +185,7 @@ levels:
     boss: false
   15:
     levelName: Boss3
-    beaten: false
+    beaten: true
     needsSelect: true
     boss: false
 availableCharacters:
