@@ -124,14 +124,14 @@
       startingIndex: 0
       length: 8
       frameData:
-      - 7
-      - 7
-      - 7
+      - 5
+      - 5
       - 6
-      - 5
-      - 5
-      - 5
-      - 5
+      - 6
+      - 6
+      - 9
+      - 10
+      - 10
 8:
   name: Slow
   texture: "actions/slow_spritesheet.png"
@@ -144,12 +144,12 @@
       startingIndex: 0
       length: 8
       frameData:
-      - 7
-      - 7
-      - 7
+      - 10
+      - 10
+      - 9
       - 6
-      - 5
-      - 5
+      - 6
+      - 6
       - 5
       - 5
 
@@ -284,7 +284,7 @@
 
 103:
   name: Tutorial Original
-  texture: "models/tutorial_characters/tutorial_og_sprite.png"
+  texture: "models/tutorial_characters/spritesheet_original.png"
   rows: 1
   cols: 17
   size: 17
@@ -376,7 +376,7 @@
 
 105:
   name: Tutorial Shield
-  texture: "models/tutorial_characters/tutorial_blue_sprite.png"
+  texture: "models/tutorial_characters/spritesheet_blue.png"
   rows: 1
   cols: 17
   size: 17
@@ -429,7 +429,7 @@
 
 106:
   name: Tutorial Slow
-  texture: "models/tutorial_characters/tutorial_red_sprite.png"
+  texture: "models/tutorial_characters/spritesheet_red.png"
   rows: 1
   cols: 17
   size: 17
@@ -482,7 +482,7 @@
 
 107:
   name: Tutorial Single
-  texture: "models/tutorial_characters/tutorial_yellow_sprite.png"
+  texture: "models/tutorial_characters/spritesheet_yellow.png"
   rows: 1
   cols: 17
   size: 17
@@ -894,4 +894,215 @@
       - 8
       - 8
       - 8
+
+114:
+  name: Fighter
+  texture: "models/tutorial_characters/spritesheet_redupdatedwithsymbol.png"
+  rows: 1
+  cols: 17
+  size: 17
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 1
+      frameData:
+      - 100
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 9
+      - 10
+      - 9
+      - 10
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 4
+      length: 4
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 7
+      length: 5
+      frameData:
+      - 4
+      - 6
+      - 6
+      - 8
+      - 4
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 11
+      length: 6
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+
+115:
+  name: Mage
+  texture: "models/tutorial_characters/spritesheet_yellowupdatedwithsymbol.png"
+  rows: 1
+  cols: 17
+  size: 17
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 1
+      frameData:
+      - 100
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 9
+      - 10
+      - 9
+      - 10
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 4
+      length: 4
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 7
+      length: 5
+      frameData:
+      - 4
+      - 6
+      - 6
+      - 8
+      - 4
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 11
+      length: 6
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+116:
+  name: Enchantress
+  texture: "models/tutorial_characters/spritesheet_updatedwithsymbol.png"
+  rows: 1
+  cols: 17
+  size: 17
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 1
+      frameData:
+      - 100
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 9
+      - 10
+      - 9
+      - 10
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 4
+      length: 4
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 7
+      length: 5
+      frameData:
+      - 4
+      - 6
+      - 6
+      - 8
+      - 4
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 11
+      length: 6
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+117:
+  name: Tank Rock Spirit
+  texture: "models/tutorial_characters/spritesheet_greenupdatedwithsymbol.png"
+  rows: 1
+  cols: 17
+  size: 17
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 1
+      frameData:
+      - 100
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 9
+      - 10
+      - 9
+      - 10
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 4
+      length: 4
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 7
+      length: 5
+      frameData:
+      - 4
+      - 6
+      - 6
+      - 8
+      - 4
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 11
+      length: 6
+      frameData:
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+      - 6
+
 ...
