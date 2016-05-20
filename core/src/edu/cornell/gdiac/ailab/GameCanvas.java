@@ -986,6 +986,13 @@ public class GameCanvas {
 		displayFont.getData().setScale(1);
 		displayFont.setColor(color);
 		float width = (GridBoard.BOARD_OFFSET_X - GridBoard.EXTRA_OFFSET)*getWidth();
+		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, 500, Align.left, true);
+		return g;
+	}
+	
+	public GlyphLayout drawWrapText(String msg, float x, float y, float width, Color color) {
+		displayFont.getData().setScale(1);
+		displayFont.setColor(color);
 		GlyphLayout g = displayFont.draw(spriteBatch, msg, x,y, width, Align.left, true);
 		return g;
 	}

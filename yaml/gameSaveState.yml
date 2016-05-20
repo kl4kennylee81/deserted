@@ -108,7 +108,7 @@ levels:
     beaten: false
     boss: false
     preNarrative: yaml/narratives/test.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/test.yml
     seenPost: false
   1:
@@ -148,11 +148,13 @@ levels:
     beaten: false
     boss: false
     needsSelect: true
+    #winIn: 1
   9:
     levelName: Level2
     beaten: false
     boss: false
     needsSelect: true
+    #surviveFor: 1
   10:
     levelName: Level3
     beaten: false

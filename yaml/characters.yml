@@ -13,7 +13,7 @@
   - 35
   texture: models/CHARA_3.png
   icon: models/sulus_icon.png
-  bigIcon: models/sulus_icon_big.png
+  bigIcon: largeicons/chara_largeicon.png
   animationId: 101
   bossId: 1000
 1:
@@ -31,7 +31,7 @@
   - 5
   texture: models/CHARA_3.png
   icon: models/bunmage_icon.png
-  bigIcon: models/bunmage_largeicon.png
+  bigIcon: largeicons/bunmage_largeicon.png
   animationId: 108
   bossId: 1001
 
@@ -50,7 +50,7 @@
   - 18
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconblue.png
-  bigIcon: models/sulus_icon_big.png
+  bigIcon: largeicons/rock_largeiconblue.png
   animationId: 105
   bossId: 1000
 3:
@@ -68,7 +68,7 @@
   - 15
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconyellow.png
-  bigIcon: models/sulus_icon_big.png
+  bigIcon: largeicons/rock_largeiconyellow.png
   animationId: 107
   bossId: 1000
 4:
@@ -86,7 +86,7 @@
   - 24
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_icon.png
-  bigIcon: models/sulus_icon_big.png
+  bigIcon: largeicons/rock_largeiconbasic.png
   animationId: 103
   bossId: 1000
 5:
@@ -104,7 +104,7 @@
   - 7
   texture: models/CHARA_1.png
   icon: models/tutorial_characters/basic_iconred.png
-  bigIcon: models/sulus_icon_big.png
+  bigIcon: largeicons/rock_largeiconred.png
   animationId: 106
   bossId: 1000
 
@@ -123,6 +123,7 @@
   - 18
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconblue.png
+  bigIcon: largeicons/rock_largeiconblue.png
   animationId: 105
 
 7:
@@ -140,6 +141,7 @@
   - 7
   texture: models/CHARA_1.png
   icon: models/tutorial_characters/basic_iconred.png
+  bigIcon: largeicons/rock_largeiconred.png
   animationId: 106
 
 8:
@@ -157,6 +159,7 @@
   - 15
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconyellow.png
+  bigIcon: largeicons/rock_largeiconyellow.png
   animationId: 107
 
 9:
@@ -174,6 +177,7 @@
   - 3
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconyellow.png
+  bigIcon: largeicons/rock_largeiconyellow.png
   animationId: 107
 
 10:  
