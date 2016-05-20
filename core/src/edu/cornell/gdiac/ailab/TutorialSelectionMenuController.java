@@ -112,8 +112,15 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 		if ((InputController.pressedEnter() || mouseCondition)){
 			if (action != null && menu.canAct(numSlots)){
 				if (correctAction()){
-					updateTargetedAction();
-					prompt = "Choose a Target";
+					// allows for bypassing the targetting phase
+					if (action.getNeedsToggle() && this.isActionToggleable()){
+						updateTargetedAction();
+						prompt = "Choose a Target";
+					} else {
+						int actionExecute = menu.takenSlots + action.cost;
+						menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
+						menu.resetPointer(numSlots);
+					}
 					if (tutorialSteps.stepOnSelection) {
 						if (tutorialSteps.currStep() != null) prevText = tutorialSteps.currStep().text;
 						tutorialSteps.nextStep();

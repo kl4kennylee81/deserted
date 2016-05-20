@@ -978,7 +978,7 @@ public class GameCanvas {
 	}
 	
 	public void drawLeftArrow(float x, float y, Color color){
-		spriteBatch.setColor(color);
+		spriteBatch.setColor(Color.WHITE.cpy());
 		spriteBatch.draw(leftArrow, x-35, y-80, 135, 135);
 	}
 	

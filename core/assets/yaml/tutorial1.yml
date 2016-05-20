@@ -117,12 +117,11 @@
   spaceToContinue: false
   paused: false
   highlightTokens: ["1"]
-  #actions:
-  #  - actionId: 1
-  #    xPos: 0
-  #    yPos: 0
-  #    direction: NONE
-  
+  actions:
+   - actionId: 1
+     xPos: 0
+     yPos: 0
+     direction: NONE
 12:
   text: "Press Enter again to confirm."
   spaceToContinue: false
