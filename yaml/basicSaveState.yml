@@ -42,55 +42,16 @@ characters:
     totalSP: 0
     actionTree:
     - actionId: 0
-    - actionId: 7
-    - actionId: 20
-    - actionId: 5
-    currentActions:
-    - 0
-    - 7
-    - 20
-    - 5
-  2:
-    characterId: 2
-    totalSP: 0
-    actionTree:
-    - actionId: 0
-    - actionId: 16
-    - actionId: 17
-    - actionId: 18
-    currentActions:
-    - 0
-    - 16
-    - 17
-    - 18
-  3:
-    characterId: 3
-    totalSP: 0
-    actionTree:
-    - actionId: 0
-    - actionId: 16
-    - actionId: 17
-    - actionId: 18
+    - actionId: 13
+    - actionId: 14
+    - actionId: 15
     currentActions:
     - 0
     - 13
     - 14
     - 15
-  4:
-    characterId: 4
-    totalSP: 0
-    actionTree:
-    - actionId: 0
-    - actionId: 22
-    - actionId: 5
-    - actionId: 24
-    currentActions:
-    - 0
-    - 22
-    - 5
-    - 24
-  5:
-    characterId: 5
+  2:
+    characterId: 2
     totalSP: 0
     actionTree:
     - actionId: 0
@@ -102,6 +63,32 @@ characters:
     - 23
     - 20
     - 7
+  3:
+    characterId: 3
+    totalSP: 0
+    actionTree:
+    - actionId: 0
+    - actionId: 22
+    - actionId: 5
+    - actionId: 24
+    currentActions:
+    - 0
+    - 22
+    - 5
+    - 24
+  4:
+    characterId: 4
+    totalSP: 0
+    actionTree:
+    - actionId: 0
+    - actionId: 16
+    - actionId: 17
+    - actionId: 18
+    currentActions:
+    - 0
+    - 16
+    - 17
+    - 18
 levels:
   0:
     levelName: Tutorial1

@@ -42,55 +42,16 @@ characters:
     totalSP: 0
     actionTree:
     - actionId: 0
-    - actionId: 7
-    - actionId: 20
-    - actionId: 5
-    currentActions:
-    - 0
-    - 7
-    - 20
-    - 5
-  2:
-    characterId: 2
-    totalSP: 0
-    actionTree:
-    - actionId: 0
-    - actionId: 16
-    - actionId: 17
-    - actionId: 18
-    currentActions:
-    - 0
-    - 16
-    - 17
-    - 18
-  3:
-    characterId: 3
-    totalSP: 0
-    actionTree:
-    - actionId: 0
-    - actionId: 16
-    - actionId: 17
-    - actionId: 18
+    - actionId: 13
+    - actionId: 14
+    - actionId: 15
     currentActions:
     - 0
     - 13
     - 14
     - 15
-  4:
-    characterId: 4
-    totalSP: 0
-    actionTree:
-    - actionId: 0
-    - actionId: 22
-    - actionId: 5
-    - actionId: 24
-    currentActions:
-    - 0
-    - 22
-    - 5
-    - 24
-  5:
-    characterId: 5
+  2:
+    characterId: 2
     totalSP: 0
     actionTree:
     - actionId: 0
@@ -102,10 +63,36 @@ characters:
     - 23
     - 20
     - 7
+  3:
+    characterId: 3
+    totalSP: 0
+    actionTree:
+    - actionId: 0
+    - actionId: 22
+    - actionId: 5
+    - actionId: 24
+    currentActions:
+    - 0
+    - 22
+    - 5
+    - 24
+  4:
+    characterId: 4
+    totalSP: 0
+    actionTree:
+    - actionId: 0
+    - actionId: 16
+    - actionId: 17
+    - actionId: 18
+    currentActions:
+    - 0
+    - 16
+    - 17
+    - 18
 levels:
   0:
     levelName: Tutorial1
-    beaten: true
+    beaten: false
     boss: false
     preNarrative: yaml/narratives/Tutorial1Pre.yml
     seenPre: true
@@ -144,7 +131,7 @@ levels:
     surviveFor: 6
     background: backgrounds/villagebg.png
     preNarrative: yaml/narratives/Boss1Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Boss1Post.yml
     seenPost: false
   7:
@@ -180,7 +167,7 @@ levels:
     needsSelect: true
     background: backgrounds/inTheSkybg.png
     preNarrative: yaml/narratives/Boss3Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Boss3Post.yml
     seenPost: false
   11:
@@ -224,7 +211,7 @@ levels:
     beaten: false
     needsSelect: true
     boss: false
-    seenPre: false
+    seenPre: true
     seenPost: false
   16:
     levelName: BunnyTest
