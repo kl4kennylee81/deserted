@@ -108,7 +108,7 @@ levels:
     beaten: false
     boss: false
     preNarrative: yaml/narratives/Tutorial1Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Tutorial1Post.yml
     seenPost: false
   1:
@@ -129,31 +129,21 @@ levels:
     boss: false
     postNarrative: yaml/narratives/Tutorial5Post.yml
     seenPost: false
-  5:
+  5: 
     levelName: Level1
-<<<<<<< HEAD
     beaten: false
-    boss: false
-    unlockableCharacter: 1
-=======
-    beaten: true
     boss: false
     background: backgrounds/rockbg.png
     unlockableCharacter: 1
     postNarrative: yaml/narratives/Level1Post.yml
     seenPost: false
->>>>>>> a0bf55d58eab4390f6ee61c57f3509b10f34dec1
   6:
     levelName: Boss1
     beaten: false
     boss: true
-<<<<<<< HEAD
-    surviveFor: 1
-=======
     surviveFor: 6
     preNarrative: yaml/narratives/Boss1Pre.yml
     seenPre: false
->>>>>>> a0bf55d58eab4390f6ee61c57f3509b10f34dec1
   7:
     levelName: Boss2
     beaten: false
@@ -201,17 +191,19 @@ levels:
     beaten: false
     boss: false
     needsSelect: false
+
 availableCharacters:
 - 0
 - 1
 - 2
 - 3
 - 4
-- 1
 unlockableCharacters:
+- 1
 - 2
 - 3
 - 4
 selectedCharacters:
 - 0
 - 1
+
