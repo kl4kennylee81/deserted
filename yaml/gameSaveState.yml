@@ -108,7 +108,7 @@ levels:
     beaten: false
     boss: false
     preNarrative: yaml/narratives/Tutorial1Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Tutorial1Post.yml
     seenPost: false
   1:
@@ -153,7 +153,7 @@ levels:
     boss: true
     background: backgrounds/villagebg.png
     preNarrative: yaml/narratives/Boss2Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Boss2Post.yml
     seenPost: false
   8:
@@ -180,7 +180,7 @@ levels:
     needsSelect: true
     background: backgrounds/inTheSkybg.png
     preNarrative: yaml/narratives/Boss3Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Boss3Post.yml
     seenPost: false
   11:
@@ -191,7 +191,7 @@ levels:
     gainedSP: 1
     unlockableCharacter: 4
     preNarrative: yaml/narratives/Level4Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Level4Post.yml
     seenPost: false
   12:
@@ -201,7 +201,7 @@ levels:
     needsSelect: true
     background: backgrounds/inTheSkybg.png
     preNarrative: yaml/narratives/Boss4Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Boss4Post.yml
     seenPost: false
   13:
@@ -224,7 +224,7 @@ levels:
     beaten: false
     needsSelect: true
     boss: false
-    seenPre: true
+    seenPre: false
     seenPost: false
   16:
     levelName: BunnyTest

@@ -971,7 +971,13 @@ public class Character implements GUIElement {
 		c.free();
 		if(isHighlighted){
 			float charScale = getCharScale(canvas,texture,board);
-			canvas.drawHighlightCharacter(texture, canvasX, canvasY, Color.YELLOW, charScale);
+			if(texture.getWidth() == 483){
+				canvas.drawHighlightCharacter(texture, canvasX, canvasY, Color.YELLOW, charScale, true);
+
+			}
+			else{
+				canvas.drawHighlightCharacter(texture, canvasX, canvasY, Color.YELLOW, charScale, false);
+			}
 		}
 		Color color = getColor(shouldDim);
 		if (isHitByAnimation){
