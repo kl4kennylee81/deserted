@@ -9,15 +9,15 @@ pvp:
         #   yPosition: 3
 
     enemies:
-        - id: 30
+        - id: 8
           xPosition: 4
           yPosition: 0
 
-        - id: 30
+        - id: 8
           xPosition: 4
           yPosition: 3
 
-        - id: 31
+        - id: 7
           xPosition: 5
           yPosition: 1
     nextLevel:
@@ -26,243 +26,6 @@ pvp:
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: []
-
-Level1:
-    allies:
-        - selectedId: 0
-          xPosition: 0
-          yPosition: 0
-
-        - selectedId: 1
-          xPosition: 0
-          yPosition: 3
-
-    enemies:
-        - id: 24
-          xPosition: 5
-          yPosition: 0
-
-        - id: 25
-          xPosition: 5
-          yPosition: 3
-    nextLevel:
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/fighter-rock.yml", "aiyaml/rock.yml", "aiyaml/fighter.yml"]
-    
-Level2:
-    allies:
-        - selectedId: 0
-          xPosition: 0
-          yPosition: 0
-
-        - selectedId: 1
-          xPosition: 0
-          yPosition: 3
-
-    enemies:
-        - id: 24
-          xPosition: 5
-          yPosition: 0
-          difficulty: HARD
-
-        - id: 26
-          xPosition: 5
-          yPosition: 3
-          difficulty: HARD
-    nextLevel:
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/rock-mage.yml", "aiyaml/rock.yml", "aiyaml/mage.yml"]
-    
-Level3:
-    allies:
-        - selectedId: 0
-          xPosition: 0
-          yPosition: 0
-
-        - selectedId: 1
-          xPosition: 0
-          yPosition: 3
-
-    enemies:
-        - id: 6
-          xPosition: 5
-          yPosition: 0
-          difficulty: HARD
-
-        - id: 27
-          xPosition: 5
-          yPosition: 3
-          difficulty: HARD
-    nextLevel:
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/rock-enchantress.yml", "aiyaml/rock.yml", "aiyaml/enchantress.yml"]
-
-
-Level4:
-    allies:
-        - selectedId: 0
-          xPosition: 0
-          yPosition: 0
-
-        - selectedId: 1
-          xPosition: 0
-          yPosition: 3
-
-    enemies:
-        - id: 7
-          xPosition: 5
-          yPosition: 1
-
-        - id: 8
-          xPosition: 5
-          yPosition: 2
-    nextLevel:
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/mage.yml", "aiyaml/fighter.yml", "aiyaml/fighter-mage.yml"]
-
-Level6:
-    allies:
-        - selectedId: 0
-          xPosition: 0
-          yPosition: 0
-
-        - selectedId: 1
-          xPosition: 0
-          yPosition: 3
-
-    enemies:
-        - id: 4
-          xPosition: 5
-          yPosition: 1
-
-        - id: 5
-          xPosition: 5
-          yPosition: 2
-    nextLevel:
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/fighter.yml", "aiyaml/enchantress.yml", "aiyaml/fighter-enchantress.yml"]
-
-Level5:
-    allies:
-        - selectedId: 0
-          xPosition: 0
-          yPosition: 0
-
-        - selectedId: 1
-          xPosition: 0
-          yPosition: 3
-
-    enemies:
-        - id: 3
-          xPosition: 5
-          yPosition: 1
-
-        - id: 4
-          xPosition: 5
-          yPosition: 2
-    nextLevel:
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/mage.yml", "aiyaml/enchantress.yml", "aiyaml/mage-enchantress.yml"]
-
-# ghost boss 3rd time
-Boss3:
-    allies:
-        - selectedId: 0
-          xPosition: 0
-          yPosition: 3
-
-        - selectedId: 1
-          xPosition: 0
-          yPosition: 0
-
-    enemies:
-        - id: 31
-          xPosition: 5
-          yPosition: 1
-
-        - id: 30
-          xPosition: 4
-          yPosition: 2
-        - id: 30
-          xPosition: 4
-          yPosition: 1
-    nextLevel:
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
-
-# ghost boss survive
-Boss1:
-    allies:
-        - selectedId: 0
-          xPosition: 0
-          yPosition: 1
-
-    enemies:
-        - id: 31
-          xPosition: 5
-          yPosition: 1
-        - id: 31
-          xPosition: 5
-          yPosition: 2
-
-        - id: 30
-          xPosition: 5
-          yPosition: 0
-        - id: 30
-          xPosition: 5
-          yPosition: 3
-    nextLevel:
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
-
-# ghost boss vs rabbit
-Boss2:
-    allies:
-        - id: 10
-          xPosition: 1
-          yPosition: 1
-
-    enemies:
-        - id: 31
-          xPosition: 5
-          yPosition: 1
-
-        - id: 30
-          xPosition: 4
-          yPosition: 3
-        - id: 30
-          xPosition: 4
-          yPosition: 0
-    nextLevel:
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
 
 tutorial1:
     allies:
@@ -306,38 +69,6 @@ tutorial2:
 
     nextLevel:
     tutorialFileName: "yaml/tutorial2.yml"
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/straight-easy.yml"]
-
-tutorial6:
-    allies:
-        - id: 104
-          xPosition: 1
-          yPosition: 1
-
-    enemies:
-        - id: 93
-          xPosition: 4
-          yPosition: 1
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-        - id: 93
-          xPosition: 4
-          yPosition: 2
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-
-    nextLevel:
-    tutorialFileName: "yaml/tutorial6.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
@@ -434,143 +165,239 @@ tutorial5:
     rimTexture: "models/tiles_bottomrim.png"
     AI: ["aiyaml/straight-easy.yml"]
 
-tutorial7:
+# ghost boss survive
+Boss1:
     allies:
-        - id: 105
+        - selectedId: 0
           xPosition: 0
-          yPosition: 0
-        - id: 106
-          xPosition: 0
-          yPosition: 3
+          yPosition: 1
 
     enemies:
-        - id: 24
+        - id: 7
+          xPosition: 5
+          yPosition: 1
+        - id: 7
+          xPosition: 5
+          yPosition: 2
+
+        - id: 8
           xPosition: 5
           yPosition: 0
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-        - id: 25
+        - id: 8
           xPosition: 5
           yPosition: 3
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-    #tutorialFileName: "yaml/tutorial7.yml"
+    nextLevel:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/fighter-rock.yml","aiyaml/rock.yml","aiyaml/fighter.yml"]
+    AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
 
-tutorial8:
+# dark bunny vs ghost
+Boss2:
     allies:
-        - id: 96
+        - id: 5
           xPosition: 1
-          yPosition: 2
+          yPosition: 1
 
     enemies:
-        - id: 97
-          xPosition: 3
+        - id: 7
+          xPosition: 5
           yPosition: 1
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-        - id: 99
+
+        - id: 8
           xPosition: 4
-          yPosition: 1
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-        - id: 93
+          yPosition: 3
+        - id: 8
           xPosition: 4
-          yPosition: 2
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-    tutorialFileName: "yaml/tutorial8.yml"
+          yPosition: 0
+    nextLevel:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/tutorial8ai.yml","aiyaml/single-easy.yml","aiyaml/straight-medium.yml","aiyaml/shield-easy.yml"]
+    AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
 
-tutorial9:
+# mage vs figher/rock
+Level1:
     allies:
-        - id: 96
-          xPosition: 1
-          yPosition: 1
+        - selectedId: 0
+          xPosition: 0
+          yPosition: 0
+
+        - id: 1
+          xPosition: 0
+          yPosition: 3
+    enemies:
+        - id: 2
+          xPosition: 5
+          yPosition: 0
+
+        - id: 4
+          xPosition: 5
+          yPosition: 3
+    nextLevel:
+    boardWidth: 6
+    boardHeight: 4
+    boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
+    AI: ["aiyaml/fighter-rock.yml", "aiyaml/rock.yml", "aiyaml/fighter.yml"]
+# figher vs mage/enchant
+Level2:
+    allies:
+        - selectedId: 0
+          xPosition: 0
+          yPosition: 0
+
+        - id: 2
+          xPosition: 0
+          yPosition: 3
 
     enemies:
-        - id: 100
-          xPosition: 3
+        - id: 1
+          xPosition: 5
+          yPosition: 0
+          difficulty: HARD
+
+        - id: 3
+          xPosition: 5
+          yPosition: 3
+          difficulty: HARD
+    nextLevel:
+    boardWidth: 6
+    boardHeight: 4
+    boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
+    AI: ["aiyaml/mage-enchantress.yml", "aiyaml/enchantress.yml", "aiyaml/mage.yml"]
+
+# selected 01 vs ghost
+Boss3:
+    allies:
+        - selectedId: 0
+          xPosition: 0
+          yPosition: 3
+
+        - selectedId: 1
+          xPosition: 0
+          yPosition: 0
+
+    enemies:
+        - id: 7
+          xPosition: 5
           yPosition: 1
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-        - id: 99
+
+        - id: 8
           xPosition: 4
-          yPosition: 1
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-    # tutorialFileName: "yaml/tutorial9.yml"
+          yPosition: 3
+        - id: 8
+          xPosition: 4
+          yPosition: 0
+    nextLevel:
+    boardWidth: 6
+    boardHeight: 4
+    boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
+    AI: ["aiyaml/boss-arm.yml","aiyaml/boss.yml","aiyaml/arm.yml"]
+
+#enchant vs mage/rock
+Level3:
+    allies:
+        - selectedId: 0
+          xPosition: 0
+          yPosition: 0
+
+        - id: 3
+          xPosition: 0
+          yPosition: 3
+
+    enemies:
+        - id: 1
+          xPosition: 5
+          yPosition: 0
+          difficulty: HARD
+
+        - id: 4
+          xPosition: 5
+          yPosition: 3
+          difficulty: HARD
+    nextLevel:
+    boardWidth: 6
+    boardHeight: 4
+    boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
+    AI: ["aiyaml/rock-mage.yml", "aiyaml/rock.yml", "aiyaml/mage.yml"]
+
+#rock vs fighter/enchant
+Level4:
+    allies:
+        - selectedId: 0
+          xPosition: 0
+          yPosition: 0
+
+        - id: 4
+          xPosition: 0
+          yPosition: 3
+
+    enemies:
+        - id: 2
+          xPosition: 5
+          yPosition: 0
+
+        - id: 3
+          xPosition: 5
+          yPosition: 3
+    nextLevel:
+    boardWidth: 6
+    boardHeight: 4
+    boardTexture: "models/Tile.png"
+    rimTexture: "models/tiles_bottomrim.png"
+    AI: ["aiyaml/enchantress.yml", "aiyaml/fighter.yml", "aiyaml/fighter-enchantress.yml"]
+
+# selected 01 vs light/dark bunny
+Boss4:
+    allies:
+        - selectedId: 0
+          xPosition: 0
+          yPosition: 3
+
+        - selectedId: 1
+          xPosition: 0
+          yPosition: 0
+
+    enemies:
+        - id: 5
+          xPosition: 5
+          yPosition: 3
+
+        - id: 6
+          xPosition: 5
+          yPosition: 0
+    nextLevel:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: []
 
-tutorial10:
+# dark solus 
+Boss5:
     allies:
-        - id: 96
-          xPosition: 1
-          yPosition: 1
-        - id: 96
-          xPosition: 1
-          yPosition: 2
+        - selectedId: 0
+          xPosition: 0
+          yPosition: 3
+
+        - selectedId: 1
+          xPosition: 0
+          yPosition: 0
+
     enemies:
-        - id: 99
-          xPosition: 3
-          yPosition: 2
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-        - id: 100
-          xPosition: 4
-          yPosition: 2
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-        - id: 100
-          xPosition: 4
+        - id: 9
+          xPosition: 5
           yPosition: 1
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-    # tutorialFileName: "yaml/tutorial9.yml"
+    nextLevel:
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
     AI: []
+

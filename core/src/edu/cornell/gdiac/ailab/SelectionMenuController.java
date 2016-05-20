@@ -451,13 +451,20 @@ public class SelectionMenuController {
 		for (Coordinate c : hitCoords){
 			int ii = c.x;
 			int jj = c.y;
+			if (ii < 0 || ii >= board.getWidth() || jj < 0 || jj >= board.getHeight()){
+				continue;
+			}
+			boolean add = false;
 			if (leftside && ii >= (int)board.getWidth()/2){
-				i++;
+				add = true;
 			}
 			else if (!leftside && ii < (int)board.getWidth()/2){
-				i++;
+				add = true;
 			}
 			else if(isBuff){
+				add = true;
+			}
+			if (add){
 				i++;
 			}
 		}

@@ -593,4 +593,138 @@
       - 8
       - 8
       - 8
+
+111:
+  name: Dark Bunny Mage
+  texture: "spritesheets/spritesheet_darkmagefinal.png"
+  rows: 1
+  cols: 33
+  size: 33
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 1
+      frameData:
+      - 100
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 8
+      - 8
+      - 8
+      - 8
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 4
+      length: 16
+      frameData:
+      - 3
+      - 3
+      - 3
+      - 3
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 6
+      - 6
+      - 6
+      - 6
+      - 5
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 18
+      length: 10
+      frameData:
+      - 5
+      - 4
+      - 4
+      - 3
+      - 3
+      - 3
+      - 3
+      - 8
+      - 9
+      - 9
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 28
+      length: 5
+      frameData:
+      - 6
+      - 6
+      - 9
+      - 9
+      - 9
+
+112:
+  name: Light Bunny Mage
+  texture: "spritesheets/spritesheet_lightmagefinal.png"
+  rows: 1
+  cols: 33
+  size: 33
+  segments:
+    - segmentName: IDLE
+      segmentId: 0
+      startingIndex: 0
+      length: 1
+      frameData:
+      - 100
+    - segmentName: ACTIVE
+      segmentId: 1
+      startingIndex: 0
+      length: 4
+      frameData:
+      - 8
+      - 8
+      - 8
+      - 8
+    - segmentName: CAST
+      segmentId: 2
+      startingIndex: 4
+      length: 16
+      frameData:
+      - 3
+      - 3
+      - 3
+      - 3
+      - 4
+      - 4
+      - 4
+      - 4
+      - 4
+      - 6
+      - 6
+      - 6
+      - 6
+      - 5
+    - segmentName: EXECUTE
+      segmentId: 3
+      startingIndex: 18
+      length: 10
+      frameData:
+      - 5
+      - 4
+      - 4
+      - 3
+      - 3
+      - 3
+      - 3
+      - 8
+      - 9
+      - 9
+    - segmentName: HURT
+      segmentId: 4
+      startingIndex: 28
+      length: 5
+      frameData:
+      - 6
+      - 6
+      - 9
+      - 9
+      - 9
 ...

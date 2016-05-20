@@ -409,7 +409,7 @@ public class CharacterCustomization extends Menu {
 		for (Coordinate c : hitCoords){
 			int ii = c.x;
 			int jj = c.y;
-			if (ii < 0 || i >= miniBoard.getWidth() || jj < 0 || jj >= miniBoard.getHeight()){
+			if (ii < 0 || ii >= miniBoard.getWidth() || jj < 0 || jj >= miniBoard.getHeight()){
 				continue;
 			}
 			boolean add = false;
