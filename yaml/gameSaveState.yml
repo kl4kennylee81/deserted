@@ -105,10 +105,10 @@ characters:
 levels:
   0:
     levelName: Tutorial1
-    beaten: false
+    beaten: true
     boss: false
     preNarrative: yaml/narratives/Tutorial1Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Tutorial1Post.yml
     seenPost: false
   1:
@@ -129,7 +129,7 @@ levels:
     boss: false
     postNarrative: yaml/narratives/Tutorial5Post.yml
     seenPost: false
-  5: 
+  5:
     levelName: Level1
     beaten: false
     boss: false
@@ -144,7 +144,7 @@ levels:
     surviveFor: 6
     background: backgrounds/villagebg.png
     preNarrative: yaml/narratives/Boss1Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Boss1Post.yml
     seenPost: false
   7:
@@ -153,7 +153,7 @@ levels:
     boss: true
     background: backgrounds/villagebg.png
     preNarrative: yaml/narratives/Boss2Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Boss2Post.yml
     seenPost: false
   8:
@@ -191,7 +191,7 @@ levels:
     gainedSP: 1
     unlockableCharacter: 4
     preNarrative: yaml/narratives/Level4Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Level4Post.yml
     seenPost: false
   12:
@@ -224,6 +224,8 @@ levels:
     beaten: false
     needsSelect: true
     boss: false
+    seenPre: false
+    seenPost: false
   16:
     levelName: BunnyTest
     beaten: false
@@ -243,4 +245,3 @@ unlockableCharacters:
 selectedCharacters:
 - 0
 - 1
-
