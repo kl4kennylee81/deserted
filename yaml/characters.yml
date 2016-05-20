@@ -349,6 +349,7 @@
   - 4
   texture: models/CHARA_3.png
   icon: models/sulus_icon.png
+  bigIcon: largeicons/chara_largeicon.png
   animationId: 101
 90:
   name: Tutorial_part_1

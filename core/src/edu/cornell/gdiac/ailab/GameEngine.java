@@ -575,8 +575,11 @@ public class GameEngine implements Screen {
         	if (gameLoad < 1.0f) {
         		gameLoad += 0.01f;
         	} else {
-        		this.setTransition(GameState.MENU);
-        		SoundController.LoadContent(manager);
+        		// press enter to start the game
+        		if (InputController.pressedLeftMouse()){
+	        		this.setTransition(GameState.MENU);
+	        		SoundController.LoadContent(manager);
+        		}
         	}
       	}
 	}
