@@ -174,9 +174,6 @@ Boss1:
 
     enemies:
         - id: 7
-          xPosition: 4
-          yPosition: 2
-        - id: 7
           xPosition: 5
           yPosition: 1
 

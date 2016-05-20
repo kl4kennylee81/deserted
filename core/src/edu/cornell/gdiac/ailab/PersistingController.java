@@ -154,6 +154,11 @@ public class PersistingController extends ActionController{
 				return;
 			}
 			
+			if (!board.isInBounds((int)selectedActionNode.getCurrentX(),(int)selectedActionNode.getCurrentY())){
+				selected.popPersistingCast(selectedActionNode);
+				return;
+			}
+			
 			if (isBlocked(curIntX, curIntY)){
 				shields.hitShield(curIntX, curIntY, selected.leftside,textMessages);
 				selected.popPersistingCast(selectedActionNode);
