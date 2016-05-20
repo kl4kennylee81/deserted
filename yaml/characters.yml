@@ -11,7 +11,7 @@
   - 4
   - 3
   - 35
-  texture: models/CHARA_3.png
+  texture: models/portraits/solus.png
   icon: models/sulus_icon.png
   bigIcon: largeicons/chara_largeicon.png
   animationId: 101
@@ -104,7 +104,7 @@
   texture: models/CHARA_5.png
   icon: models/bunmage_icon.png
   animationId: 111
-  bossId: 9
+  bossId: 1002
   sharedStatus: true
 6:  
   name: Light Bunny
@@ -119,10 +119,10 @@
   - 6
   - 10
   - 22
-  texture: models/CHARA_5.png
+  texture: models/portraits/bunny.png
   icon: models/bunmage_icon.png
   animationId: 112
-  bossId: 9
+  bossId: 1002
   sharedStatus: true
 7:
   name: Boss
@@ -137,9 +137,10 @@
   - 33
   - 34
   texture: models/CHARA_3.png
-  icon: models/bunmage_icon.png
+  icon: models/ghost_boss/bosshead_smallicon.png
+  bigIcon: largeicons/bosshead_icon.png
   animationId: 109
-  bossId: 9
+  bossId: 1001
   sharedStatus: true
 8:
   name: Arm
@@ -154,9 +155,9 @@
   - 9
   - 32
   texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_icon.png
+  icon: models/ghost_boss/boss_handicon.png
   animationId: 110
-  bossId: 9
+  bossId: 1001
   sharedStatus: true
 9:
   name: Dark Solus
@@ -171,11 +172,10 @@
   - 4
   - 3
   - 35
-  texture: models/CHARA_3.png
+  texture: models/portraits/solus.png
   icon: models/sulus_icon.png
   bigIcon: largeicons/chara_largeicon.png
   animationId: 101
-  bossId: 1000
 
 89:
   name: Tutorial_part_3
@@ -302,11 +302,12 @@
   slots: 2
   availableActions:
   - 0
-  - 36
+  - 45
   - 4
   texture: models/CHARA_5.png
   icon: models/tutorial_characters/basic_iconblue.png
   animationId: 105
+
 101:
   name: Tutorial_Fast
   health: 2
@@ -342,7 +343,7 @@
   maxHealth: 2
   hexColor: FF9900FF
   speed: 5.5
-  castSpeed: 7.0
+  castSpeed: 5.0
   slots: 2
   availableActions:
   - 0
@@ -352,7 +353,7 @@
   animationId: 103
 
 # 1000+ This is where we have the parent characters
-# and the potrait characters
+# and the portrait characters
 1000:
   name: Dara
   health: 0
@@ -366,12 +367,14 @@
   - 4
   - 3
   - 6
-  texture: models/CHARA_3.png
-  icon: models/CASTICON_3.png
+  texture: models/portraits/dara.png
+  icon: models/portraits/owner_dara.png
+  bigIcon: models/portraits/owner_dara.png
   animationId: 101
 
+# Ishaan the ghost spirit wielder
 1001:
-  name: Friend
+  name: Ishaan
   health: 0
   maxHealth: 0
   hexColor: CD2626FF
@@ -380,59 +383,13 @@
   slots: 5
   availableActions:
   - 0
-  texture: models/CHARA_4.png
-  icon: models/CASTICON_4.png
-  animationId: 103
-
-# Jaffar the ghost spirit wielder
-1002:
-  name: Jaffar
-  health: 0
-  maxHealth: 0
-  hexColor: CD2626FF
-  speed: 5.0
-  castSpeed: 7.5
-  slots: 5
-  availableActions:
-  - 0
-  texture: models/CHARA_2.png
-  icon: models/CASTICON_2.png
-  animationId: 103
-
-# Potrait characters
-# fruit seller martha
-1003:
-  name: Martha
-  health: 0
-  maxHealth: 0
-  hexColor: CD2626FF
-  speed: 5.0
-  castSpeed: 7.5
-  slots: 5
-  availableActions:
-  - 0
-  texture: models/CHARA_2.png
-  icon: models/CASTICON_2.png
-  animationId: 103
-
-# Potrait Characters
-# husband/dad of fruit seller martha
-1004:
-  name: Tom
-  health: 0
-  maxHealth: 0
-  hexColor: CD2626FF
-  speed: 5.0
-  castSpeed: 7.5
-  slots: 5
-  availableActions:
-  - 0
-  texture: models/CHARA_2.png
-  icon: models/CASTICON_2.png
+  texture: models/portraits/girlopponent.png
+  icon: models/portraits/owner_opponent.png
+  bigIcon: models/portraits/owner_opponent.png
   animationId: 103
 
 # the spirit guide
-1005:
+1002:
   name: Arash
   health: 0
   maxHealth: 0
@@ -442,12 +399,13 @@
   slots: 5
   availableActions:
   - 0
-  texture: models/CHARA_2.png
-  icon: models/CASTICON_2.png
+  texture: models/portraits/arash.png
+  icon: models/portraits/owner_arash.png
+  bigIcon: models/portraits/owner_arash.png
   animationId: 103
 
 # elder rock
-1006:
+1003:
   name: Elder Rock
   health: 0
   maxHealth: 0
@@ -457,21 +415,7 @@
   slots: 5
   availableActions:
   - 0
-  texture: models/CHARA_2.png
-  icon: models/CASTICON_2.png
-  animationId: 103
-
-# Male Noble
-1006:
-  name: Hakim
-  health: 0
-  maxHealth: 0
-  hexColor: CD2626FF
-  speed: 5.0
-  castSpeed: 7.5
-  slots: 5
-  availableActions:
-  - 0
-  texture: models/CHARA_2.png
-  icon: models/CASTICON_2.png
+  texture: models/portraits/rockdude.png
+  icon: models/portraits/owner_rockdude.png
+  bigIcon: models/portraits/owner_rockdude.png
   animationId: 103

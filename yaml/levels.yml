@@ -108,7 +108,7 @@ Tutorial3:
 
 Tutorial4:
     allies:
-        - id: 99
+        - id: 95
           xPosition: 1
           yPosition: 1
 

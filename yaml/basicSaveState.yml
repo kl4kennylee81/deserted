@@ -107,7 +107,7 @@ levels:
     levelName: Tutorial1
     beaten: false
     boss: false
-    preNarrative: yaml/narratives/test.yml
+    preNarrative: yaml/narratives/Tutorial1Pre.yml
     seenPre: false
     postNarrative: yaml/narratives/test.yml
     seenPost: false

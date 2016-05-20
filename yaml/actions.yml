@@ -93,7 +93,6 @@
   description: Hit 4 tiles straight ahead for 2 damage.
   animationId: 1
   icon: models/action_tokens/fire_token.png
- 
 
 5:
   name: Diagonal
@@ -312,11 +311,7 @@
     numRounds: 0
     magnitude: 0
   description: Fire a straight projectile 4 squares forward for 2 damage.
-  persisting_action:
-    numRounds: 10
-    moveSpeed: 0.06
-  animationId: 0
-  projectileAnimationId: 2
+  animationId: 1
   icon: models/action_tokens/projectile_token.png
 
 15:

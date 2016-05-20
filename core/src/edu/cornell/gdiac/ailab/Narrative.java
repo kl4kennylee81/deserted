@@ -131,7 +131,7 @@ public class Narrative {
 			}
 		}
 		for (int i = 0; i < toShow.rightChars.size(); i++){
-			Texture toDraw = toShow.leftChars.get(i).texture;
+			Texture toDraw = toShow.rightChars.get(i).texture;
 			if (toDraw != null){
 				int width = (int) (CHARACTER_WIDTH * canvas.width);
 				float heightToWidthRatio = toDraw.getHeight()*1f/toDraw.getWidth();
