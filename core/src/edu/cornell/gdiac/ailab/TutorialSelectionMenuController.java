@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.omg.CORBA.SystemException;
 
+import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNode;
 import edu.cornell.gdiac.ailab.ActionNode.Direction;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
@@ -147,8 +148,15 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 //        		System.out.println("highlight action is set to " + TutorialGameplayController.highlight_action);
 //        	}
         } else if (InputController.pressedBack()){
-            if (menu.removeLast() != null){
-                if (tutorialSteps.stepOnSelection) tutorialSteps.prevStep();
+        	// peek at it if its a move go back twice hotfix
+        	ActionNode removed = menu.removeLast();
+            if (removed != null){
+                if (tutorialSteps.stepOnSelection) {
+                	if (removed.action.pattern == Pattern.MOVE) {
+                		tutorialSteps.prevStep();
+                		tutorialSteps.prevStep();
+                	} else tutorialSteps.prevStep();
+                }
             }
             //		} else if (InputController.pressedD() && menu.canNop(numSlots)){
             /*float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,0);
@@ -163,7 +171,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
     }
 
     protected void updateChoosingTarget(){
-      this.mouseHighlight();
+      boolean mouseCondition = this.mouseHighlight();
       // null check
       if (this.action == null){
         return;
@@ -204,7 +212,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
             default:
                 break;
         }
-        if (InputController.pressedEnter()){
+        if (InputController.pressedEnter() || mouseCondition){
             if (correctDirection()){
                 int actionExecute = menu.takenSlots + action.cost;
                 int numSlots = selected.actionBar.getUsableNumSlots();
