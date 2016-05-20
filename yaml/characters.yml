@@ -331,6 +331,25 @@
   bigIcon: largeicons/rock_largeicongreen.png
   animationId: 117
   bossId: 1003
+  
+19:
+  name: Mage Spirit
+  health: 0
+  maxHealth: 0
+  hexColor: FF9900FF
+  speed: 4.5
+  castSpeed: 8.0
+  slots: 4
+  availableActions:
+  - 0
+  - 13
+  - 14
+  - 15
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_iconyellow.png
+  bigIcon: largeicons/rock_largeiconyellow.png
+  animationId: 115
+  bossId: 1000
 
 #=========================================================
 
