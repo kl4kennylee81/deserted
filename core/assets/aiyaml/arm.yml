@@ -2,6 +2,7 @@ ARM_ATTACK:
   type: index
   branch_type: ATTACK
   is_protected: ARM_ATTACK_ATTACK
+  can_move_to_protect: ARM_MOVE_SHIELD
   no_interrupt_chance/can_protect: ARM_SHIELD_ATTACK
   no_interrupt_chance: ARM_ATTACK_SHIELD 
   low_interrupt_chance/is_protected: ARM_ATTACK_ATTACK
@@ -11,6 +12,7 @@ ARM_ATTACK:
   medium_interrupt_chance/is_protected: ARM_ATTACK_ATTACK
   medium_interrupt_chance/adjacent_attack_square: ARM_MOVE_ATTACK
   medium_interrupt_chance: ARM_MOVE_SHIELD
+  can_protect: ARM_SHIELD_ATTACK
   adjacent_attack_square: ARM_MOVE_ATTACK
   default: ARM_MOVE_SHIELD
   
@@ -19,7 +21,7 @@ ARM_POSITION:
   branch_type: POSITION
   adjacent_attack_square: ARM_MOVE_ATTACK
   is_protected: ARM_QUICK
-  default: ARM_MOVE_SHIELD  
+  default: ARM_DOUBLE_MOVE  
 
 ARM_ATTACK_ATTACK:
   type: leaf
@@ -65,3 +67,11 @@ ARM_MOVE_MOVE:
   type: leaf
   my_tactic: SPECIFIC
   my_actions: [MOVE_GOAL, MOVE_GOAL]
+ 
+ARM_DOUBLE_MOVE:
+  type: leaf
+  my_tactic: SPECIFIC
+  my_actions: [MOVE_TOWARDS_ATTACK_SQUARE, MOVE_TOWARDS_ATTACK_SQUARE]
+  
+  
+  

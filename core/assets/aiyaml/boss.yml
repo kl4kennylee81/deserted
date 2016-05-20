@@ -32,7 +32,7 @@ BOSS_MOVE_AGGRESSIVE:
 BOSS_MOVE_GOAL:
   type: leaf
   my_tactic: SPECIFIC
-  my_actions: [MOVE_GOAL]
+  my_actions: [MOVE_TOWARDS_ATTACK_SQUARE]
   
 BOSS_POWER:
   type: leaf
