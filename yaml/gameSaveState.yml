@@ -1,7 +1,7 @@
 characters:
   0:
     characterId: 0
-    totalSP: 10
+    totalSP: 13
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -37,7 +37,7 @@ characters:
     - 45
   1:
     characterId: 1
-    totalSP: 0
+    totalSP: 3
     actionTree:
     - actionId: 0
     - actionId: 13
@@ -50,7 +50,7 @@ characters:
     - 15
   2:
     characterId: 2
-    totalSP: 0
+    totalSP: 3
     actionTree:
     - actionId: 0
     - actionId: 23
@@ -63,7 +63,7 @@ characters:
     - 7
   3:
     characterId: 3
-    totalSP: 0
+    totalSP: 3
     actionTree:
     - actionId: 0
     - actionId: 22
@@ -76,7 +76,7 @@ characters:
     - 24
   4:
     characterId: 4
-    totalSP: 0
+    totalSP: 3
     actionTree:
     - actionId: 0
     - actionId: 16
@@ -90,7 +90,7 @@ characters:
 levels:
   0:
     levelName: Tutorial1
-    beaten: false
+    beaten: true
     boss: false
     preNarrative: yaml/narratives/Tutorial1Pre.yml
     seenPre: true
@@ -98,25 +98,25 @@ levels:
     seenPost: false
   1:
     levelName: Tutorial2
-    beaten: false
+    beaten: true
     boss: false
   2:
     levelName: Tutorial3
-    beaten: false
+    beaten: true
     boss: false
   3:
     levelName: Tutorial4
-    beaten: false
+    beaten: true
     boss: false
   4:
     levelName: Tutorial5
-    beaten: false
+    beaten: true
     boss: false
     postNarrative: yaml/narratives/Tutorial5Post.yml
     seenPost: false
   5:
     levelName: Level1
-    beaten: false
+    beaten: true
     boss: false
     background: backgrounds/rockbg.png
     unlockableCharacter: 1
@@ -124,26 +124,26 @@ levels:
     seenPost: false
   6:
     levelName: Boss1
-    beaten: false
+    beaten: true
     boss: true
     surviveFor: 5
     background: backgrounds/villagebg.png
     preNarrative: yaml/narratives/Boss1Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Boss1Post.yml
     seenPost: false
   7:
     levelName: Boss2
-    beaten: false
+    beaten: true
     boss: true
     background: backgrounds/villagebg.png
     preNarrative: yaml/narratives/Boss2Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Boss2Post.yml
     seenPost: false
   8:
     levelName: Level2
-    beaten: false
+    beaten: true
     boss: false
     background: backgrounds/rockbg.png
     unlockableCharacter: 2
@@ -151,7 +151,7 @@ levels:
     seenPre: true
   9:
     levelName: Level3
-    beaten: false
+    beaten: true
     boss: false
     background: backgrounds/rockbg.png
     unlockableCharacter: 3
@@ -160,7 +160,7 @@ levels:
     seenPost: false
   10:
     levelName: Boss3
-    beaten: false
+    beaten: true
     boss: true
     needsSelect: true
     background: backgrounds/inTheSkybg.png
@@ -170,7 +170,7 @@ levels:
     seenPost: false
   11:
     levelName: Level4
-    beaten: false
+    beaten: true
     boss: false
     background: backgrounds/rockbg.png
     gainedSP: 1
@@ -196,37 +196,16 @@ levels:
     needsSelect: true
     background: backgrounds/inTheSkybg.png
     preNarrative: yaml/narratives/Boss5Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Boss5Post.yml
     seenPost: false
-  14:
-    levelName: pvp
-    beaten: false
-    boss: false
-    needsSelect: false
-  15:
-    levelName: Boss3
-    beaten: false
-    needsSelect: true
-    boss: false
-    seenPre: true
-    seenPost: false
-  16:
-    levelName: BunnyTest
-    beaten: false
-    needsSelect: true
-    boss: false
 availableCharacters:
 - 0
 - 1
 - 2
 - 3
 - 4
-unlockableCharacters:
-- 1
-- 2
-- 3
-- 4
+unlockableCharacters: []
 selectedCharacters:
 - 0
 - 1
