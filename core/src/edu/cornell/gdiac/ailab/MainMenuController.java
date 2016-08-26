@@ -59,9 +59,10 @@ public class MainMenuController {
 	}
 	
 	private Option[] makeMainMenuOptions(){
-		Option[] options = new Option[2];
+		Option[] options = new Option[3];
 		options[0] = new Option("Play","Play");
 		options[1] = new Option(LEVEL_SELECT_NAME,LEVEL_SELECT_NAME);
+		options[2] = new Option("Play Online", "Networking");
 		return options;
 	}
 	
