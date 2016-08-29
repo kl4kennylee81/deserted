@@ -33,6 +33,18 @@ public class MouseOverController {
 		
 	}
 	
+	public void update(List<Option> options) {
+		float x = InputController.getMouseX();
+		float y = InputController.getMouseY();
+		for (int i = 0; i < options.size(); i++) {
+			Option o = options.get(i);
+			o.isSelected = false;
+			if (o.contains(x, y, canvas, board)){
+				o.isSelected = true;
+			}
+		}
+	}
+	
 	public void update(Option[] options, Menu Menu, boolean reset){
 		if (!InputController.mouseJustMoved()) return;
 		if (reset){

@@ -93,7 +93,9 @@ public class GameEngine implements Screen {
 		/** When we are in character select */
 		SELECT,
 		/** Narrative */
-		NARRATIVE
+		NARRATIVE,
+		/** Networking */
+		NETWORKING,
 	}
 
 
@@ -151,6 +153,7 @@ public class GameEngine implements Screen {
     private GameSaveStateController gameSaveStateController;
     private CharacterCustomizationController characterCustomizationController;
     private CharacterSelectController characterSelectController;
+    private NetworkingController networkingController;
     
     
 //	/** Default budget for asset loader (do nothing but load 60 fps) */
@@ -210,6 +213,7 @@ public class GameEngine implements Screen {
 		gameplayController = new GameplayController(mouseOverController, cmc, pmc, file, fileNum, false);
 		tutorialGameplayController = new TutorialGameplayController(mouseOverController, cmc, pmc, file, fileNum);
 		narrativeController = new NarrativeController();
+		networkingController = new NetworkingController();
 		
 		this.transitionScreen = new TransitionScreen();
 		this.isTransitioning = false;
@@ -413,6 +417,10 @@ public class GameEngine implements Screen {
 			this.drawTransitionScreen();
 			canvas.end();
 			break;
+		case NETWORKING:
+			updateNetworking();
+			canvas.end();
+			break;
 		}
 		
 	}
@@ -420,6 +428,15 @@ public class GameEngine implements Screen {
 	private void updateLevelMenu() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	private void updateNetworking() {
+		networkingController.update();
+		networkingController.draw(canvas);
+		if (networkingController.isDone()) {
+			mainMenuController.resetMenu();
+			gameState = GameState.MENU;
+		}
 	}
 	
 	private void updateNarrative(){
@@ -641,6 +658,9 @@ public class GameEngine implements Screen {
 			} else {
 				startKeyword("Level Select","");
 			}
+		} else if (keyword == "Networking"){
+			networkingController.reset();
+			gameState = GameState.NETWORKING;
 		}
 	}
 
