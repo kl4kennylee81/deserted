@@ -90,10 +90,10 @@ characters:
 levels:
   0:
     levelName: Tutorial1
-    beaten: false
+    beaten: true
     boss: false
     preNarrative: yaml/narratives/Tutorial1Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Tutorial1Post.yml
     seenPost: false
     displayName: SPIRIT - 1
