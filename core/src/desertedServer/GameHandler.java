@@ -15,15 +15,16 @@ public class GameHandler extends Handler{
 	
 	@Override
     public void run() {
-    	while(c.isAlive()){
+//    	while(c.isAlive()){
+//    		
+//    		c.read()
     		
     		
     		
     		
     		
     		
-    		
-    	}
+//    	}
     }
 
 }
