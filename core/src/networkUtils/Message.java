@@ -1,31 +1,70 @@
 package networkUtils;
 
-public class Message {
+import flexjson.JSONSerializer;
+import flexjson.locators.TypeLocator;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+
+import flexjson.JSONDeserializer;
+
+public abstract class Message {
 	
-	enum MessageType {NORMAL};
-	
-	Integer fromId;
-	Integer toId;
+	public enum MessageType {NORMAL,USERNAME,LOBBY,CHALLENGE,INGAME,BACK};
 	
 	MessageType m_type;
-	String text;
-
-	public Message(int from,int to,String m){
+	
+	public Message(){
 		m_type = MessageType.NORMAL;
-		fromId = from;
-		toId = to;
-		text = m;
 	}
 	
-	public String getMessage(){
-		return text;
+	public MessageType getType(){
+		return this.m_type;
 	}
 	
-	public int getDest(){
-		return toId;
+	public static String byteBufferToString(ByteBuffer bb){
+	      Charset cs = Charset.forName("UTF-8");
+	      int limits = bb.limit();
+	      byte bytes[] = new byte[limits];
+	      bb.rewind();
+	      bb.get(bytes, 0, limits);
+	      bb.rewind();
+	      String msg = new String(bytes, cs);
+	      return msg;
 	}
 	
-	public int getFrom(){
-		return fromId;
+	public static Message byteBufferToMsg(ByteBuffer bb){
+		String s = byteBufferToString(bb);
+		Message msg = jsonToMsg(s);
+		return msg;
+	}
+	
+	public ByteBuffer msgToByteBuffer(ByteBuffer bb){
+		return strToByteBuffer(bb,this.toString());
+	}
+	
+	public ByteBuffer msgToByteBuffer(){
+		return ByteBuffer.wrap(this.toString().getBytes());
+	}
+	
+	public static ByteBuffer strToByteBuffer(ByteBuffer bb,String msg){
+		bb.clear();
+	    Charset cs = Charset.forName("UTF-8");
+	    byte[] data = msg.toString().getBytes(cs);
+	    bb.put(data);
+	    bb.flip();
+	    return bb;
+	}
+	
+	public static ByteBuffer strToByteBuffer(String msg){
+	    Charset cs = Charset.forName("UTF-8");
+	    ByteBuffer bb = ByteBuffer.wrap(msg.getBytes(cs));
+	    return bb;
+	}
+	
+	public static Message jsonToMsg(String s){
+		Message m = (new JSONDeserializer<Message>()).deserialize(s);
+		System.out.println(m.toString());
+		return m;
 	}
 }

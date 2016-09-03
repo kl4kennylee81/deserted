@@ -170,12 +170,12 @@ levels:
     displayName: ELDER - 10
   10:
     levelName: Boss3
-    beaten: false
+    beaten: true
     boss: true
     needsSelect: true
     background: backgrounds/inTheSkybg.png
     preNarrative: yaml/narratives/Boss3Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Boss3Post.yml
     seenPost: false
     displayName: TOURNAMENT - 11
@@ -187,7 +187,7 @@ levels:
     gainedSP: 1
     unlockableCharacter: 4
     preNarrative: yaml/narratives/Level4Pre.yml
-    seenPre: false
+    seenPre: true
     postNarrative: yaml/narratives/Level4Post.yml
     seenPost: false
     displayName: RETURN - 12
