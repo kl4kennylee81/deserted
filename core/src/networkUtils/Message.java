@@ -64,7 +64,7 @@ public abstract class Message {
 	
 	public static Message jsonToMsg(String s){
 		Message m = (new JSONDeserializer<Message>()).deserialize(s);
-		System.out.println(m.toString());
+		//System.out.println(m.toString());
 		return m;
 	}
 }

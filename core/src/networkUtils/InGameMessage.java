@@ -1,5 +1,9 @@
 package networkUtils;
 
+import java.util.ArrayList;
+
+import edu.cornell.gdiac.ailab.CharacterActions;
+import edu.cornell.gdiac.ailab.Characters;
 import flexjson.JSONSerializer;
 import networkUtils.Message.MessageType;
 
@@ -7,8 +11,8 @@ public class InGameMessage extends Message {
 	
 	// actually when we move this into the proper game repo 
 	// the message will be of type of list of actionNodes
-	String actionNodeList;
 	
+	CharacterActions characterActions;
 	String from;
 	String to;
 	
@@ -17,14 +21,14 @@ public class InGameMessage extends Message {
 		m_type = MessageType.INGAME;
 		from = "";
 		to = "";
-		actionNodeList = "";
+		characterActions = null;
 	}
 
-	public InGameMessage(String from, String to,String actionNodeList) {
+	public InGameMessage(String from, String to,CharacterActions characterActions) {
 		this.m_type = MessageType.INGAME;
 		this.from = from;
 		this.to = to;
-		this.actionNodeList = actionNodeList;
+		this.characterActions = characterActions;;
 	}
 	
 	public String getTo(){
@@ -39,6 +43,10 @@ public class InGameMessage extends Message {
 	public String toString() {
 		String m = new JSONSerializer().deepSerialize(this);
 		return m;
+	}
+	
+	public CharacterActions getCharacterActions() {
+		return this.characterActions;
 	}
 
 

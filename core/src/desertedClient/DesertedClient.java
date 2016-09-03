@@ -81,7 +81,7 @@ public class DesertedClient {
 			}
 			else{
 				String msg = "Blaze it 420 from the client2\n";
-				InGameMessage igm = new InGameMessage(this.username,this.oppUsername,msg);
+				InGameMessage igm = new InGameMessage(this.username,this.oppUsername,null);
 				this.sentMessage = true;
 				this.write(igm);
 			}

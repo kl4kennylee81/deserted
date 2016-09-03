@@ -7,6 +7,7 @@ public class ChallengeMessage extends Message {
 	String from;
 	String to;
 	String opponent;
+	Boolean isFirst;
 	
 	public ChallengeMessage(){
 		super();
@@ -14,14 +15,16 @@ public class ChallengeMessage extends Message {
 		from = "";
 		to = "";
 		opponent = "";
+		isFirst = false;
 	}
 	
-	public ChallengeMessage(String from,String to,String opponent) {
+	public ChallengeMessage(String from,String to,String opponent,Boolean isFirst) {
 		super();
 		this.from = from;
 		this.to = to;
 		this.m_type = MessageType.CHALLENGE;
 		this.opponent = opponent;
+		this.isFirst = isFirst;
 	}
 
 	@Override
@@ -34,4 +37,16 @@ public class ChallengeMessage extends Message {
 		return this.opponent;
 	}
 
+	public Boolean getIsFirst(){
+		return this.isFirst;
+	}
+	
+	public String getFrom(){
+		return this.from;
+	}
+	
+	public String getTo(){
+		return this.to;
+	}
+	
 }

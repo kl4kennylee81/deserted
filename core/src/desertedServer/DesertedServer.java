@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentHashMap.KeySetView;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -85,7 +84,12 @@ public class DesertedServer {
 		return users;
 	}
 	
-	public String getChallenger(AsynchronousSocketChannel user) throws InterruptedException{
+	/** returns true if he connected first 
+	 *  returns false if he connected second
+	 * @param user
+	 * @throws InterruptedException
+	 */
+	public boolean getChallenger(AsynchronousSocketChannel user) throws InterruptedException{
 		
 		AsynchronousSocketChannel opp = waitingQueue.poll();
 		synchronized(waitingQueue){
@@ -94,7 +98,7 @@ public class DesertedServer {
 				p1vp2.put(user, opp);
 				p1vp2.put(opp, user);
 				waitingQueue.notifyAll();
-				return getUserFromSocket(opp);
+				return false;
 			}
 			else {
 				boolean addedSelf = false;
@@ -106,7 +110,7 @@ public class DesertedServer {
 					waitingQueue.wait();
 				}
 				opp = p1vp2.get(user);
-				return getUserFromSocket(opp);
+				return true;
 			}
 		}
 	}
@@ -216,7 +220,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 		processUsername(attach,m);
 		break;
 	case CHALLENGE:
-		processChallenge(attach,m);
+		//processChallenge(attach,m);
 		break;
 	case INGAME:
 		processInGame(attach,m);
@@ -236,6 +240,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
   }
   
   public void processInGame(Attachment attach,Message m) throws InterruptedException, ExecutionException {
+  	System.out.println("INGAME MSG");
 	  InGameMessage igm = (InGameMessage) m;
 	  String playerName = attach.server.getUserFromSocket(attach.client);
 	  assert(igm.getFrom() == playerName);
@@ -252,16 +257,18 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	  String username = um.getUsername();
 	  attach.server.addUsername(username, attach.client);
 	  ArrayList<String> users = attach.server.getUsers();
-	  LobbyMessage lm = new LobbyMessage(users);
-	  ByteBuffer bb = lm.msgToByteBuffer();
-	  attach.client.write(bb).get();
+	  processChallenge(attach,m);
+//	  LobbyMessage lm = new LobbyMessage(users);
+//	  ByteBuffer bb = lm.msgToByteBuffer();
+//	  attach.client.write(bb).get();
   }
   
   public void processChallenge(Attachment attach,Message m) throws InterruptedException, ExecutionException{
-	  String oppName = attach.server.getChallenger(attach.client);
+	  boolean isFirst = !attach.server.getChallenger(attach.client);
 	  String yourName = attach.server.getUserFromSocket(attach.client);
+	  String oppName = attach.server.getPlayersOppName(yourName);
 	  AsynchronousSocketChannel clientopp = attach.server.getSockFromUser(oppName);
-	  ChallengeMessage cm = new ChallengeMessage(yourName,oppName,yourName);
+	  ChallengeMessage cm = new ChallengeMessage(yourName,oppName,yourName,isFirst);
 	  ByteBuffer bb = cm.msgToByteBuffer();
 	  
 	  // call a synchronous write

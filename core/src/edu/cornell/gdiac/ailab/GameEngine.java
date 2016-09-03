@@ -212,8 +212,9 @@ public class GameEngine implements Screen {
 		editorController = null;
 		gameplayController = new GameplayController(mouseOverController, cmc, pmc, file, fileNum, false);
 		tutorialGameplayController = new TutorialGameplayController(mouseOverController, cmc, pmc, file, fileNum);
+		NetworkingGameplayController ngc = new NetworkingGameplayController(mouseOverController, cmc, pmc, file, fileNum, false);
 		narrativeController = new NarrativeController();
-		networkingController = new NetworkingController();
+		networkingController = new NetworkingController(ngc);
 		
 		this.transitionScreen = new TransitionScreen();
 		this.isTransitioning = false;
@@ -419,7 +420,7 @@ public class GameEngine implements Screen {
 			break;
 		case NETWORKING:
 			updateNetworking();
-			canvas.end();
+			//make sure to call canvas.end() in networkingcontroller
 			break;
 		}
 		
@@ -510,7 +511,7 @@ public class GameEngine implements Screen {
 	private boolean checkReset() {
 		// If the player presses 'R', reset the game.
         if (gameState != GameState.LOAD && gameState != GameState.EDITOR
-        		&& InputController.pressedR()) {
+        		&& gameState != GameState.NETWORKING && InputController.pressedR()) {
         	GameEngine.nextLevel = "";
         	mainMenuController.resetMenu();
             gameState = GameState.MENU;
@@ -660,6 +661,12 @@ public class GameEngine implements Screen {
 			}
 		} else if (keyword == "Networking"){
 			networkingController.reset();
+			try {
+				networkingController.level = getLevel("Level2");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			gameState = GameState.NETWORKING;
 		}
 	}
