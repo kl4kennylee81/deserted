@@ -7,7 +7,7 @@ public class InGameMessage extends Message {
 	
 	// actually when we move this into the proper game repo 
 	// the message will be of type of list of actionNodes
-	String actionNodeList;
+	String anList;
 	
 	String from;
 	String to;
@@ -17,14 +17,15 @@ public class InGameMessage extends Message {
 		m_type = MessageType.INGAME;
 		from = "";
 		to = "";
-		actionNodeList = "";
+		anList = "";
 	}
 
 	public InGameMessage(String from, String to,String actionNodeList) {
+		super();
 		this.m_type = MessageType.INGAME;
 		this.from = from;
 		this.to = to;
-		this.actionNodeList = actionNodeList;
+		this.anList = actionNodeList;
 	}
 	
 	public String getTo(){
@@ -33,6 +34,10 @@ public class InGameMessage extends Message {
 	
 	public String getFrom(){
 		return from;
+	}
+	
+	public String getAnList(){
+		return anList;
 	}
 	
 	@Override
