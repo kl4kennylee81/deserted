@@ -164,7 +164,7 @@ public class GameSaveStateController {
 			return new ArrayList<CharacterData>();
 		}
 	}
-	
+		
 	/**Code taken from http://stackoverflow.com/questions/5527744/java-jar-writing-to-a-file 
 	 * @throws URISyntaxException */
 	public void setRoot() {

@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
  *
  */
 public class GameSaveState {
-	public class ActionUpgrade{
+	public static class ActionUpgrade{
 		int actionId;
 		int cost;
 		List<ActionUpgrade> upgrades;
@@ -61,7 +61,7 @@ public class GameSaveState {
 		}
 	}
 	
-	public class CharacterData {
+	public static class CharacterData {
 		int characterId;
 		// Skill points
 		int totalSP;

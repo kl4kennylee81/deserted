@@ -96,6 +96,8 @@ public class GameEngine implements Screen {
 		NARRATIVE,
 		/** Networking */
 		NETWORKING,
+		/** Draft for networking */
+		DRAFT
 	}
 
 
@@ -154,6 +156,7 @@ public class GameEngine implements Screen {
     private CharacterCustomizationController characterCustomizationController;
     private CharacterSelectController characterSelectController;
     private NetworkingController networkingController;
+    private DraftController draftController;
     
     
 //	/** Default budget for asset loader (do nothing but load 60 fps) */
@@ -256,6 +259,7 @@ public class GameEngine implements Screen {
     
     public void startGame(String levelName, String backLevelName, boolean needsSelect) throws IOException {
     	if (this.gameSaveStateController.containsLevel(levelName)){
+    		System.out.println("in game save state controller");
     		curLevelData = this.gameSaveStateController.getLevelData(levelName);
     		if (curLevelData.needsSelect() && needsSelect){
     			characterSelectController.reset();
@@ -275,6 +279,9 @@ public class GameEngine implements Screen {
 	    		level = this.getLevel(levelName);
 	    		
 	        	if (level.getTutorialSteps() == null){
+	        		if(level.getName().equals("pvp")){
+	        			level.setCharacters(draftController.getSelectedChars());
+	        		}
 	        		gameplayController.resetGame(level);
 	        		curGameplayController = gameplayController;
 	            	gameState = GameState.PLAY;
@@ -289,6 +296,7 @@ public class GameEngine implements Screen {
     	}
     	// start matching with keywords to get to levels, options, etc. atm its just editors
     	else {
+    		System.out.println("heloooooo");
     		this.startKeyword(levelName, backLevelName);
     	}
     }
@@ -421,7 +429,11 @@ public class GameEngine implements Screen {
 			updateNetworking();
 			canvas.end();
 			break;
-		}
+		case DRAFT:
+			updateDraft();
+			canvas.end();
+			break;
+	    }
 		
 	}
 
@@ -478,6 +490,19 @@ public class GameEngine implements Screen {
 						characterCustomizationController.setCharacter(characterSelectController.getSelectedCharacterId());
 					}
 				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void updateDraft() {
+		draftController.update();
+		draftController.draw(canvas);
+		if(draftController.isDone()){
+			try {
+				startGame("pvp","",false);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -547,11 +572,13 @@ public class GameEngine implements Screen {
 		//TODO hotifx not sure what this continue is
 		
 		if (nextLevel == "" || nextLevel == "Continue"){
+			System.out.println("continue");
 			return;
 		}
 		if (!this.isTransitioning && !this.transitionScreen.isActive()){
 			this.isTransitioning = true;
     		// game is switching to the menu will have a transition phase
+			System.out.println("fade out");
     		this.transitionScreen.setFadeOut(second,nextLevel,needsSelect);
 		}
 	}
@@ -571,6 +598,7 @@ public class GameEngine implements Screen {
 				if (this.transitionScreen.getNextLevel() != ""){
 					//TODO menu
 					try {
+						System.out.println("loading screen");
 						loadNextMenu(transitionScreen.getNextLevel(), "Main Menu",transitionScreen.getNeedsSelect());
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -647,6 +675,7 @@ public class GameEngine implements Screen {
         	mainMenuController.setLevelSelect();
             gameState = GameState.MENU;
 		} else if (keyword == "Play"){
+			System.out.println("keyword == play");
 			String nextUnbeatenLevel = gameSaveStateController.getNextUnbeatenLevel();
 			if (nextUnbeatenLevel != null){
 				try {
@@ -660,11 +689,12 @@ public class GameEngine implements Screen {
 			}
 		} else if (keyword == "Networking"){
 			networkingController.reset();
-			gameState = GameState.NETWORKING;
+			gameState = GameState.DRAFT;
 		}
 	}
 
 	private void loadNextMenu(String levelName, String backLevelName, boolean needsSelect) throws IOException {
+		System.out.println("starting game");
 		startGame(levelName, backLevelName, needsSelect);
 	}
 
@@ -927,6 +957,7 @@ public class GameEngine implements Screen {
 		gameSaveStateController = new GameSaveStateController();
 		mainMenuController = new MainMenuController(canvas, manager, mouseOverController,gameSaveStateController.getLevelData());
 		characterSelectController = new CharacterSelectController(canvas, manager, mouseOverController, gameSaveStateController);
+		draftController = new DraftController(canvas, manager, mouseOverController, this.getLevel("pvp"));
 		
 		//for some reason the font loading has to be after the call to manager.finishLoading();
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();

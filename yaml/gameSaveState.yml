@@ -1,7 +1,7 @@
 characters:
   0:
     characterId: 0
-    totalSP: 0
+    totalSP: 1
     actionTree:
     - actionId: 0
     - actionId: 4
@@ -90,10 +90,10 @@ characters:
 levels:
   0:
     levelName: Tutorial1
-    beaten: true
+    beaten: false
     boss: false
     preNarrative: yaml/narratives/Tutorial1Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Tutorial1Post.yml
     seenPost: false
     displayName: SPIRIT - 1
@@ -135,7 +135,7 @@ levels:
     surviveFor: 5
     background: backgrounds/villagebg.png
     preNarrative: yaml/narratives/Boss1Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Boss1Post.yml
     seenPost: false
     displayName: VILLAGE - 7
@@ -145,7 +145,7 @@ levels:
     boss: true
     background: backgrounds/villagebg.png
     preNarrative: yaml/narratives/Boss2Pre.yml
-    seenPre: true
+    seenPre: false
     postNarrative: yaml/narratives/Boss2Post.yml
     seenPost: false
     displayName: VILLAGE - 8
@@ -156,7 +156,7 @@ levels:
     background: backgrounds/rockbg.png
     unlockableCharacter: 2
     preNarrative: yaml/narratives/Level2Pre.yml
-    seenPre: true
+    seenPre: false
     displayName: ELDER - 9
   9:
     levelName: Level3
@@ -164,7 +164,7 @@ levels:
     boss: false
     background: backgrounds/rockbg.png
     unlockableCharacter: 3
-    gainedSP: 2
+    gainedSP: 1
     postNarrative: yaml/narratives/Level3Post.yml
     seenPost: false
     displayName: ELDER - 10
@@ -213,9 +213,18 @@ levels:
     postNarrative: yaml/narratives/Boss5Post.yml
     seenPost: false
     displayName: SOLUS - 14
+  14:
+    levelName: pvp
+    beaten: false
+    needsSelect: false
+    boss: false
+    background: backgrounds/inTheSkybg.png
 availableCharacters:
 - 0
 - 1
+- 2
+- 3
+- 4
 unlockableCharacters:
 - 1
 - 2
@@ -223,4 +232,4 @@ unlockableCharacters:
 - 4
 selectedCharacters:
 - 0
-- 1
+- 2
