@@ -2,6 +2,8 @@ package networkUtils;
 
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+
 import flexjson.JSONSerializer;
 import networkUtils.Message.MessageType;
 
@@ -23,8 +25,7 @@ public class LobbyMessage extends Message{
 	
 	@Override
 	public String toString() {
-		String m = new JSONSerializer().deepSerialize(this);
-		return m;
+		return (new Gson()).toJson(this);
 	}
 
 }

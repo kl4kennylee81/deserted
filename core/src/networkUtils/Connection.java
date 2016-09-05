@@ -16,7 +16,7 @@ import networkUtils.Message;
 public class Connection {
 
 	private static AtomicInteger atomic_int = new AtomicInteger(0);
-	private final int BUFFER_SIZE = 4096;
+	private final int BUFFER_SIZE = 16384;
 	int id;
 	AsynchronousSocketChannel sChannel;
 

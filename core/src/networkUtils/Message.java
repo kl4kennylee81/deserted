@@ -6,11 +6,39 @@ import flexjson.locators.TypeLocator;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.SerializedName;
+
 import flexjson.JSONDeserializer;
 
-public abstract class Message {
+public class Message {
 	
-	public enum MessageType {NORMAL,USERNAME,LOBBY,CHALLENGE,INGAME,BACK};
+	public enum MessageType {
+		@SerializedName("0")
+		NORMAL (0),
+		@SerializedName("1")
+		USERNAME (1),
+		@SerializedName("2")
+		LOBBY (2),
+		@SerializedName("3")
+		CHALLENGE (3),
+		@SerializedName("4")
+		INGAME (4),
+		@SerializedName("5")
+		BACK (5);
+		
+	    private final int value;
+	    public int getValue() {
+	        return value;
+	    }
+
+	    private MessageType(int value) {
+	        this.value = value;
+	    }
+	
+	
+	};
 	
 	MessageType m_type;
 	
@@ -63,8 +91,19 @@ public abstract class Message {
 	}
 	
 	public static Message jsonToMsg(String s){
-		Message m = (new JSONDeserializer<Message>()).deserialize(s);
-		//System.out.println(m.toString());
+		RuntimeTypeAdapterFactory<Message> messageAdapter = RuntimeTypeAdapterFactory.of(Message.class, new MessageTypePredicate())
+		        .registerSubtype(NormalMessage.class)
+		        .registerSubtype(UsernameMessage.class)
+		        .registerSubtype(LobbyMessage.class)
+		        .registerSubtype(ChallengeMessage.class)
+		        .registerSubtype(InGameMessage.class)
+		        .registerSubtype(BackMessage.class);
+
+		Gson gson = new GsonBuilder()
+		        .enableComplexMapKeySerialization()
+		        .registerTypeAdapterFactory(messageAdapter).create();
+		
+		Message m = gson.fromJson(s,Message.class);
 		return m;
 	}
 }

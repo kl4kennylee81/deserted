@@ -2,6 +2,8 @@ package networkUtils;
 
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+
 import edu.cornell.gdiac.ailab.CharacterActions;
 import edu.cornell.gdiac.ailab.Characters;
 import flexjson.JSONSerializer;
@@ -41,8 +43,7 @@ public class InGameMessage extends Message {
 	
 	@Override
 	public String toString() {
-		String m = new JSONSerializer().deepSerialize(this);
-		return m;
+		return (new Gson()).toJson(this);
 	}
 	
 	public CharacterActions getCharacterActions() {
