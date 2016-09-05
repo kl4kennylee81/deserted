@@ -2,7 +2,6 @@ package networkUtils;
 
 import com.google.gson.Gson;
 
-import flexjson.JSONSerializer;
 import networkUtils.Message.MessageType;
 
 public class NormalMessage extends Message{

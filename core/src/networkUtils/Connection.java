@@ -90,7 +90,6 @@ public class Connection {
 			}
 		}
 		else {
-			readBuffer.clear();
 			readFuture = sChannel.read(readBuffer);
 			
 			if (readFuture.isDone()) {

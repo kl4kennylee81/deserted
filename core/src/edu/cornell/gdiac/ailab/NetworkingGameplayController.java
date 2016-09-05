@@ -51,9 +51,8 @@ public class NetworkingGameplayController extends GameplayController {
 			e.printStackTrace();
 		}
 		if (s != null) {
-			System.out.println(s);
 			Message m = Message.jsonToMsg(s);
-			try {
+//			try {
 				InGameMessage igm = (InGameMessage) m;
 				CharacterActions ca = igm.getCharacterActions();
 				for (CharacterAction sentChar : ca.charActions) {
@@ -68,10 +67,11 @@ public class NetworkingGameplayController extends GameplayController {
 				} else {
 					inGameState = InGameState.NORMAL;
 				}
-			}
-			catch (ClassCastException e){
-				return;
-			}
+//			}
+//			catch (ClassCastException e){
+//				System.out.println("are we here\n");
+//				return;
+//			}
 		}
 	}
 	

@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 
 import edu.cornell.gdiac.ailab.CharacterActions;
 import edu.cornell.gdiac.ailab.Characters;
-import flexjson.JSONSerializer;
 import networkUtils.Message.MessageType;
 
 public class InGameMessage extends Message {

@@ -2,8 +2,6 @@ package networkUtils;
 
 import com.google.gson.Gson;
 
-import flexjson.JSONSerializer;
-
 public class ChallengeMessage extends Message {
 
 	String from;

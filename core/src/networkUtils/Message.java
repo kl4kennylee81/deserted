@@ -50,13 +50,14 @@ public class Message {
 	}
 	
 	public static String byteBufferToString(ByteBuffer bb){
+		  bb.flip();
 	      Charset cs = Charset.forName("UTF-8");
 	      int limits = bb.limit();
 	      byte bytes[] = new byte[limits];
-	      bb.rewind();
 	      bb.get(bytes, 0, limits);
-	      bb.rewind();
 	      String msg = new String(bytes, cs);
+	      System.out.println(msg);
+	      bb.clear();
 	      return msg;
 	}
 	
@@ -75,9 +76,9 @@ public class Message {
 	}
 	
 	public static ByteBuffer strToByteBuffer(ByteBuffer bb,String msg){
-		bb.clear();
 	    Charset cs = Charset.forName("UTF-8");
 	    byte[] data = msg.toString().getBytes(cs);
+	    bb.clear();
 	    bb.put(data);
 	    bb.flip();
 	    return bb;
@@ -91,6 +92,7 @@ public class Message {
 	
 	public static Message jsonToMsg(String s){
 		String processedS = s.trim();
+		System.out.println(processedS);
 		RuntimeTypeAdapterFactory<Message> messageAdapter = RuntimeTypeAdapterFactory.of(Message.class, new MessageTypePredicate())
 		        .registerSubtype(NormalMessage.class)
 		        .registerSubtype(UsernameMessage.class)
