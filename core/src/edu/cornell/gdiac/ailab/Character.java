@@ -339,6 +339,10 @@ public class Character implements GUIElement {
 		}
 		}
 	
+	public Action[] getAvailableActions(){
+		return this.availableActions;
+	}
+	
 	public float getCastPosition(){
 		return this.castPosition;
 	}
@@ -462,7 +466,7 @@ public class Character implements GUIElement {
 		ListIterator<ActionNode> iter = actions.listIterator();
 		while(iter.hasNext()){
 			ActionNode an = iter.next();
-			queuedSlots+=an.action.cost;
+			queuedSlots+=an.getAction().cost;
 			if (queuedSlots > numSlots){
 				// throw it away from the list
 				iter.remove();
@@ -512,7 +516,7 @@ public class Character implements GUIElement {
 	boolean needShadow() {
 		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
 		for (ActionNode an : actions){
-			if (an.action!= null && an.action.pattern == Pattern.MOVE){
+			if (an.getAction()!= null && an.getAction().pattern == Pattern.MOVE){
 				return needsShadow;
 			}
 		}
@@ -527,7 +531,7 @@ public class Character implements GUIElement {
 	public boolean hasAttacks() {
 		ActionNode anode = queuedActions.peek();
 		if (anode!= null){
-			if ((anode.isInterrupted && anode.action.pattern != Pattern.MOVE) && queuedActions.size() == 1){
+			if ((anode.isInterrupted && anode.getAction().pattern != Pattern.MOVE) && queuedActions.size() == 1){
 				queuedActions.poll();
 				this.castActions.add(anode);
 				return false;
@@ -598,7 +602,7 @@ public class Character implements GUIElement {
 		shieldedCoordinates.clear();
 
 		for (ActionNode an : persistingActions){
-			if (an.action.pattern == Pattern.SHIELD){
+			if (an.getAction().pattern == Pattern.SHIELD){
 				for (Coordinate c:an.path){
 					shieldedCoordinates.add(c);
 				}
@@ -719,11 +723,11 @@ public class Character implements GUIElement {
 	 */
 	void addPersisting(ActionNode an){
 		an.setAnimation();
-		if (an.action.pattern == Pattern.SHIELD){
+		if (an.getAction().pattern == Pattern.SHIELD){
 			an.setPersisting(castPosition, xPosition, yPosition);
 			persistingActions.add(an);
 			resetShieldedCoordinates();
-		} else if (an.action.pattern == Pattern.DIAGONAL || an.action.pattern == Pattern.STRAIGHT){
+		} else if (an.getAction().pattern == Pattern.DIAGONAL || an.getAction().pattern == Pattern.STRAIGHT){
 			if (leftside){
 				an.setPersisting(castPosition, xPosition+1, yPosition);
 			} else {
@@ -735,7 +739,7 @@ public class Character implements GUIElement {
 	
 	void addPersisting(ActionNode an,Coordinate[] path){
 		an.setAnimation();
-		switch (an.action.pattern){
+		switch (an.getAction().pattern){
 		case SHIELD:
 			an.setPersisting(castPosition, xPosition, yPosition,path);
 			persistingActions.add(an);
@@ -759,7 +763,7 @@ public class Character implements GUIElement {
 	
 	void popPersistingCast(ActionNode an){
 		persistingActions.remove(an);
-		if (an.action != null && an.action.pattern == Pattern.SHIELD){
+		if (an.getAction() != null && an.getAction().pattern == Pattern.SHIELD){
 			for (Coordinate c: an.path){
 				c.free();
 			}
@@ -838,7 +842,7 @@ public class Character implements GUIElement {
 		int shadX = xPosition;
 		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
 		for (ActionNode an : actions){
-			if (an.action.pattern == Pattern.MOVE){
+			if (an.getAction().pattern == Pattern.MOVE){
 				if (an.direction == Direction.LEFT){
 					shadX--;
 				} else if (an.direction == Direction.RIGHT){
@@ -853,7 +857,7 @@ public class Character implements GUIElement {
 		int shadY = yPosition;
 		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
 		for (ActionNode an : actions){
-			if (an.action != null && an.action.pattern == Pattern.MOVE){
+			if (an.getAction() != null && an.getAction().pattern == Pattern.MOVE){
 				if (an.direction == Direction.UP){
 					shadY++;
 				} else if (an.direction == Direction.DOWN){
@@ -1092,7 +1096,7 @@ public class Character implements GUIElement {
 		int nowY = tempY;
 		List<ActionNode> actions = isSelecting ? selectionMenu.selectedActions : queuedActions;
 		for (ActionNode an : actions){
-			if (an.action.pattern == Action.Pattern.MOVE){
+			if (an.getAction().pattern == Action.Pattern.MOVE){
 				// TODO check this later
 				if (an.direction == null){
 					return;
@@ -1169,7 +1173,7 @@ public class Character implements GUIElement {
 		float tileH = board.getTileHeight(canvas);
 		boolean paused = gameState == InGameState.PAUSED ? true : false;
 		for (ActionNode an : persistingActions){
-			switch (an.action.pattern){
+			switch (an.getAction().pattern){
 			case SHIELD:
 				drawShield(canvas,board,an);
 				break;

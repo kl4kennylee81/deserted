@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import com.google.gson.JsonArray;
+
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNode;
 import edu.cornell.gdiac.ailab.ActionNode.Direction;
@@ -19,7 +21,6 @@ import edu.cornell.gdiac.ailab.DecisionNode.MoveList;
 import edu.cornell.gdiac.ailab.DecisionNode.Specific;
 import edu.cornell.gdiac.ailab.DecisionNode.Tactic;
 import edu.cornell.gdiac.ailab.Effect.Type;
-import org.json.simple.*;
 
 
 public class TacticalManager extends ConditionalManager{
@@ -259,7 +260,7 @@ public class TacticalManager extends ConditionalManager{
 					a = nopNode(c, startSlot);
 					break;
 			}
-			startSlot+=a.action.cost;
+			startSlot+=a.getAction().cost;
 			x = x + applyMoveX(a);
 			y = y + applyMoveY(a);
 			nodes.add(a);
@@ -273,10 +274,10 @@ public class TacticalManager extends ConditionalManager{
 	 * Returns -1 if this is a move left, +1 if this is a move right, 0 otherwise
 	 */
 	private int applyMoveX(ActionNode a){
-		if(a.action.pattern == Pattern.MOVE && a.direction == Direction.LEFT){
+		if(a.getAction().pattern == Pattern.MOVE && a.direction == Direction.LEFT){
 			return -1;
 		}
-		if(a.action.pattern == Pattern.MOVE && a.direction == Direction.RIGHT){
+		if(a.getAction().pattern == Pattern.MOVE && a.direction == Direction.RIGHT){
 			return 1;
 		}
 		return 0;
@@ -287,10 +288,10 @@ public class TacticalManager extends ConditionalManager{
 	 * Returns -1 if this is a move down, +1 if this is a move up, 0 otherwise
 	 */
 	private int applyMoveY(ActionNode a){
-		if(a.action.pattern == Pattern.MOVE && a.direction == Direction.DOWN){
+		if(a.getAction().pattern == Pattern.MOVE && a.direction == Direction.DOWN){
 			return -1;
 		}
-		if(a.action.pattern == Pattern.MOVE && a.direction == Direction.UP){
+		if(a.getAction().pattern == Pattern.MOVE && a.direction == Direction.UP){
 			return 1;
 		}
 		return 0;
@@ -313,7 +314,7 @@ public class TacticalManager extends ConditionalManager{
 	public ActionNode slowAll(Character c, int startPoint){
 		for(Action a: c.availableActions){
 			if(a.pattern == Pattern.SINGLEPATH && a.path.length > 13){
-				return new ActionNode(a, getCastTime(c, a, startPoint), board.width/2, board.height/2);
+				return new GameActionNode(a, getCastTime(c, a, startPoint), board.width/2, board.height/2);
 			}
 		}
 		return nopNode(c, startPoint);
@@ -351,7 +352,7 @@ public class TacticalManager extends ConditionalManager{
 		if(opt == null){
 			return nopNode(c, startPoint);
 		}
-		return new ActionNode(a, getCastTime(c, a, startPoint), opt.xPosition, opt.yPosition);
+		return new GameActionNode(a, getCastTime(c, a, startPoint), opt.xPosition, opt.yPosition);
 	}
 	
 
@@ -410,7 +411,7 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	public ActionNode singleNode(Character c, int startPoint, int xTarget, int yTarget){
 		Action a = single(c);
-		return new ActionNode(a, getCastTime(c, a, startPoint), xTarget, yTarget, Direction.NONE);
+		return new GameActionNode(a, getCastTime(c, a, startPoint), xTarget, yTarget, Direction.NONE);
 	}
 	
 	
@@ -440,11 +441,11 @@ public class TacticalManager extends ConditionalManager{
 		}
 		else if(a.pattern == Pattern.DIAGONAL){
 			Direction d = findToggleDirection(c, a, xPos, yPos);
-			return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
+			return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
 		else{
 			Direction d = findToggleDirection(c, a, xPos, yPos);
-			return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
+			return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
 	}
 	
@@ -545,7 +546,7 @@ public class TacticalManager extends ConditionalManager{
 	private ActionNode anyAttack(Character c, int startPoint){
 		for(Action a: c.availableActions){
 			if(a.damage > 0 && a.pattern != Pattern.SINGLE){
-				return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.NONE);
+				return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.NONE);
 			}
 		}
 		return nopNode(c, startPoint);
@@ -555,7 +556,7 @@ public class TacticalManager extends ConditionalManager{
 	private ActionNode straight(Character c, int startPoint){
 		for(Action a: c.availableActions){
 			if(a.pattern == Pattern.INSTANT){
-				return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.UP);
+				return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.UP);
 			}
 		}
 		return nopNode(c, startPoint);
@@ -565,7 +566,7 @@ public class TacticalManager extends ConditionalManager{
 	private ActionNode horizontal(Character c, int startPoint){
 		for(Action a: c.availableActions){
 			if(a.pattern == Pattern.HORIZONTAL){
-				return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.UP);
+				return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.UP);
 			}
 		}
 		return nopNode(c, startPoint);
@@ -608,36 +609,36 @@ public class TacticalManager extends ConditionalManager{
 		int x1;
 		int x2;
 		if(yPos == 0){
-			return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.UP);
+			return new GameActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.UP);
 		}
 		if(yPos == board.height-1){
-			return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.DOWN);
+			return new GameActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.DOWN);
 		}
 		for(Character f: friends){
 			x1 = c.leftside? xPos : f.xPosition;
 			x2 = c.leftside? f.xPosition : xPos;
 			if(x1 + 1 >= xPos && x2 - yPos == 1){
-				return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.UP);
+				return new GameActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.UP);
 			}
 			if(x1 + 1 >= x2 && f.yPosition - yPos == -1){
-				return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.DOWN);
+				return new GameActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.DOWN);
 			}
 		}
 		for(Character f: friends){
 			x1 = c.leftside? xPos : f.xPosition;
 			x2 = c.leftside? f.xPosition : xPos;
 			if(x1 >= x2 && f.yPosition - yPos == 2){
-				return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.UP);
+				return new GameActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.UP);
 			}
 			if(x1 >= x2 && f.yPosition - yPos == -2){
-				return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.DOWN);
+				return new GameActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.DOWN);
 			}
 		}
 		if(yPos >= board.height - 1){
-			return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.DOWN);
+			return new GameActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.DOWN);
 		}
 		else{
-			return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.UP);
+			return new GameActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, Direction.UP);
 		}
 	}
 	
@@ -682,16 +683,16 @@ public class TacticalManager extends ConditionalManager{
         	//System.out.println(coord.toString() + " prev: "+ prevDist + " dist: "+ dist+ "adjacent: "+adjacent);
 			if(dist < prevDist && adjacent && board.canMove(c.leftside, coord.x, coord.y) && !board.isOccupied(coord.x, coord.y)){
 				if(coord.x < xPos){
-					return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.LEFT);
+					return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.LEFT);
 				}
 				if(coord.x > xPos){
-					return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.RIGHT);
+					return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.RIGHT);
 				}
 				if(coord.y < yPos){
-					return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.DOWN);
+					return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.DOWN);
 				}
 				if(coord.y > yPos){
-					return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.UP);
+					return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.UP);
 				}
 			}
 		}
@@ -733,11 +734,11 @@ public class TacticalManager extends ConditionalManager{
 		}
 		Action a = move(c);
 		if(list.size() == 0){
-			return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(c, xPos, yPos));
+			return new GameActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(c, xPos, yPos));
 		}
 		Random r = new Random();
 		Direction d = list.get(r.nextInt(list.size()));
-		return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, d);
+		return new GameActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, d);
 	}
 	
 	
@@ -771,14 +772,14 @@ public class TacticalManager extends ConditionalManager{
 
 		Direction d = optimalDirection(c, xPos, yPos);
 		if(d != Direction.NONE){
-			return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
+			return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
 		d = defensiveDirection(c, xPos, yPos);
 		if(d != Direction.NONE){
-			return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
+			return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
 		
-		return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(c, xPos, yPos));
+		return new GameActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(c, xPos, yPos));
 	}
 	
 	
@@ -792,13 +793,13 @@ public class TacticalManager extends ConditionalManager{
 		Action a = move(c);
 		Direction d = optimalDirection(c, xPos, yPos);
 		if(d != Direction.NONE){
-			return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
+			return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
 		d = attackingDirection(c, xPos, yPos);
 		if(d != Direction.NONE){
-			return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
+			return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
-		return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(c, xPos, yPos));
+		return new GameActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(c, xPos, yPos));
 	}
 	
 	/** 
@@ -808,9 +809,9 @@ public class TacticalManager extends ConditionalManager{
 		Action a = move(c);
 		Direction d = protectDirection(c, xPos, yPos);
 		if(d != Direction.NONE){
-			return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
+			return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, d);
 		}
-		return new ActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(c, xPos, yPos));
+		return new GameActionNode(a, getCastTime(c, a, startPoint), xPos, yPos, randomDirection(c, xPos, yPos));
 	}
 	
 	
@@ -1093,7 +1094,7 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	public ActionNode nopNode(Character c, int startPoint){
 		Action a = nop();
-		return new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.NONE);
+		return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.NONE);
 	}
 	
 	//=======================================================================//
@@ -1139,7 +1140,7 @@ public class TacticalManager extends ConditionalManager{
 						}
 						else{
 							Direction d = xPos < yPos ? Direction.DOWN : Direction.UP;
-							attacks.add(new ActionNode(a, getCastTime(c, a, startPoint), 0, 0, d));
+							attacks.add(new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, d));
 						}
 					}
 				}
@@ -1195,7 +1196,7 @@ public class TacticalManager extends ConditionalManager{
 	/**
 	 * Output data to a file
 	 */
-	public void outputData(Character c, JSONArray jsonArray){
+	public void outputData(Character c, JsonArray jsonArray){
 //		JSONObject json = new JSONObject();
 //		StringBuilder vectorBuilder = new StringBuilder();
 //		for(String s: conditions){
@@ -1241,7 +1242,7 @@ public class TacticalManager extends ConditionalManager{
 	public ArrayList<Specific> getPossibleMoves(Character c, ActionNode a, int xPos, int yPos, int startSlot){
 		ArrayList<Specific> moves = new ArrayList<Specific>();
 		addSinglePossibilities(c, a, moves, startSlot, xPos, yPos);
-		if(a.action.pattern == Pattern.SHIELD){
+		if(a.getAction().pattern == Pattern.SHIELD){
 			moves.add(Specific.SHIELD);
 		}
 		addAttackPossibilities(c, a, moves, xPos, yPos);
@@ -1251,22 +1252,22 @@ public class TacticalManager extends ConditionalManager{
 	
 	
 	private void addAttackPossibilities(Character c, ActionNode a, ArrayList<Specific> moves, int xPos, int yPos){
-		if(a.action.pattern == Pattern.SINGLE) return;
-		if(a.action.pattern == Pattern.MOVE) return;
-		if(a.action.pattern == Pattern.SHIELD) return;
+		if(a.getAction().pattern == Pattern.SINGLE) return;
+		if(a.getAction().pattern == Pattern.MOVE) return;
+		if(a.getAction().pattern == Pattern.SHIELD) return;
 		Action power = powerfulAttack(c, xPos, yPos);
-		if(a.action.damage == power.cost){
+		if(a.getAction().damage == power.cost){
 			moves.add(Specific.POWERFUL_ATTACK);
 		}
 		Action quick = quickAttack(c, xPos, yPos);
-		if(a.action.cost == quick.cost){
+		if(a.getAction().cost == quick.cost){
 			moves.add(Specific.QUICK_ATTACK);
 		}
 		moves.add(Specific.NORMAL_ATTACK);
 	}
 	
 	private void addSinglePossibilities(Character c, ActionNode a, ArrayList<Specific> moves, int startSlot, int xPos, int yPos){
-		if(a.action.pattern != Pattern.SINGLE) return;
+		if(a.getAction().pattern != Pattern.SINGLE) return;
 		ArrayList<Character> weakest = new ArrayList<Character>();
 		ArrayList<Character> strongest = new ArrayList<Character>();
 		int minHealth = Integer.MAX_VALUE;
@@ -1307,7 +1308,7 @@ public class TacticalManager extends ConditionalManager{
 	}
 	
 	private void addMovePossibilities(Character c, ActionNode a, ArrayList<Specific> moves, int xPos, int yPos){
-		if(a.action.pattern != Pattern.MOVE){
+		if(a.getAction().pattern != Pattern.MOVE){
 			return;
 		}
 		boolean added = false;
