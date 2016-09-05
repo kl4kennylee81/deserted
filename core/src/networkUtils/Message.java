@@ -25,7 +25,9 @@ public class Message {
 		@SerializedName("4")
 		INGAME (4),
 		@SerializedName("5")
-		BACK (5);
+		BACK (5),
+		@SerializedName("6")
+		DRAFT (6);
 		
 	    private final int value;
 	    public int getValue() {
@@ -99,7 +101,8 @@ public class Message {
 		        .registerSubtype(LobbyMessage.class)
 		        .registerSubtype(ChallengeMessage.class)
 		        .registerSubtype(InGameMessage.class)
-		        .registerSubtype(BackMessage.class);
+		        .registerSubtype(BackMessage.class)
+		        .registerSubtype(DraftMessage.class);
 		
 		RuntimeTypeAdapterFactory<ActionNode> anAdapter = RuntimeTypeAdapterFactory.of(ActionNode.class, new ActionNodeTypePredicate())
 		        .registerSubtype(MessageActionNode.class)

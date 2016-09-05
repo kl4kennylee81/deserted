@@ -22,6 +22,7 @@ public class MessageTypePredicate extends RuntimeTypeAdapterPredicate {
         	case 3: return "ChallengeMessage";
             case 4: return "InGameMessage";
             case 5: return "BackMessage";
+            case 6: return "DraftMessage";
         }
         return "NormalMessage";
     }
