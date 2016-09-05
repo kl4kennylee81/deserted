@@ -1,6 +1,7 @@
 package networkUtils;
 
-import flexjson.JSONSerializer;
+import com.google.gson.Gson;
+
 import networkUtils.Message.MessageType;
 
 public class UsernameMessage extends Message {
@@ -26,8 +27,7 @@ public class UsernameMessage extends Message {
 	
 	@Override
 	public String toString() {
-		String m = new JSONSerializer().deepSerialize(this);
-		return m;
+		return (new Gson()).toJson(this);
 	}
 
 	

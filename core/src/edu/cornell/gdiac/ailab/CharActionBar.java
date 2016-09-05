@@ -497,19 +497,19 @@ public class CharActionBar {
 	
 	public int drawSlot(GameCanvas canvas,int curSlots,
 			ActionNode actionNode,float xPosBar,float yPosBar,Color slotColor,boolean drawBoxes){
-		if (actionNode != null && curSlots + actionNode.action.cost <= this.getTotalNumSlots()){
+		if (actionNode != null && curSlots + actionNode.getAction().cost <= this.getTotalNumSlots()){
 			float tickHeight = this.getBarHeight(canvas)/CharActionBar.ACTIONBAR_HEIGHT_CONTAINER_FILL_RATIO;
 			float tickY = yPosBar;
 			float intervalSize = this.getSlotWidth(canvas);
 			float startCastX = xPosBar + this.getWaitWidth(canvas) + intervalSize*curSlots;
 
 			if (drawBoxes){
-				this.drawSlotBox(canvas,curSlots,actionNode.action,xPosBar,yPosBar,slotColor,true);
+				this.drawSlotBox(canvas,curSlots,actionNode.getAction(),xPosBar,yPosBar,slotColor,true);
 			}
 			
 			canvas.drawBox(startCastX, tickY, BAR_DIVIDER_WIDTH,tickHeight, Color.DARK_GRAY);		
 			
-			return curSlots + actionNode.action.cost;
+			return curSlots + actionNode.getAction().cost;
 		}
 		else{
 			return curSlots;
@@ -592,13 +592,13 @@ public class CharActionBar {
 		for (ActionNode a: queuedActions){
 			// length relative
 			float executePoint = this.getExecutePoint(a);
-			float centeredCast = this.getCenteredActionX(canvas, executePoint, a.action.cost);
+			float centeredCast = this.getCenteredActionX(canvas, executePoint, a.getAction().cost);
 			
 			float x_pos = actionSlot_x + centeredCast;
 			float y_pos = actionSlot_y;
 			float y_icon = this.getFillY(canvas, count);
 			
-			if (a.isInterrupted && a.action.pattern != Pattern.MOVE){
+			if (a.isInterrupted && a.getAction().pattern != Pattern.MOVE){
 				canvas.drawCenteredText(INTERRUPT_TEXT,x_pos,y_pos,Color.WHITE);
 				
 				float scale =this.getBarFillHeight(canvas)/cancel_token.getHeight();
@@ -607,13 +607,13 @@ public class CharActionBar {
 				canvas.drawTexture(cancel_token, x_pos, y_icon, width_icon,height_icon, Color.WHITE);
 			}
 			else{
-				String text = a.action.name;
+				String text = a.getAction().name;
 				canvas.drawCenteredText(text,x_pos,y_pos,Color.WHITE);
 				
-				float scale = this.getBarFillHeight(canvas)/a.action.barIcon.getHeight();
-				float width_icon = a.action.barIcon.getWidth() * scale;
-				float height_icon = a.action.barIcon.getHeight() * scale;
-				canvas.drawTexture(a.action.barIcon, x_pos, y_icon, width_icon,height_icon, Color.WHITE);
+				float scale = this.getBarFillHeight(canvas)/a.getAction().barIcon.getHeight();
+				float width_icon = a.getAction().barIcon.getWidth() * scale;
+				float height_icon = a.getAction().barIcon.getHeight() * scale;
+				canvas.drawTexture(a.getAction().barIcon, x_pos, y_icon, width_icon,height_icon, Color.WHITE);
 			}
 		}
 	}

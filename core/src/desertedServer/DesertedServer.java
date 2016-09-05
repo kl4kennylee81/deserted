@@ -196,7 +196,6 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
       try {
 		processMessage(attach,m);
 	    attach.isRead = true;
-	    attach.buffer.clear();
 	    attach.client.read(attach.buffer, attach, this);
 	} catch (InterruptedException | ExecutionException e) {
 		e.printStackTrace();
@@ -207,7 +206,6 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
   public Message processReadToMessage(Attachment attach){
 	  // you do a flip reading it to do get operations so it will write out up to that point
 	  // it is ready for getting what was in it.
-      attach.buffer.flip();
       Message msg = Message.byteBufferToMsg(attach.buffer);
       System.out.format("Client at  %s  says: %s%n", attach.clientAddr,
           msg.toString());

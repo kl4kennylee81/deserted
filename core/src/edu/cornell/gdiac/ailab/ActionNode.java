@@ -1,9 +1,30 @@
 package edu.cornell.gdiac.ailab;
 
-import edu.cornell.gdiac.ailab.Action.Pattern;
-import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
+import com.google.gson.annotations.SerializedName;
 
-public class ActionNode {
+import edu.cornell.gdiac.ailab.Action.Pattern;
+import edu.cornell.gdiac.ailab.CharacterActions.MessageActionNode;
+import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
+import com.google.gson.annotations.SerializedName;
+
+public abstract class ActionNode {
+	
+	public enum ActionNodeType {
+		@SerializedName("0")
+		MESSAGE (0),
+		@SerializedName("1")
+		GAME (1);
+		
+	    private final int value;
+	    public int getValue() {
+	        return value;
+	    }
+
+	    private ActionNodeType(int value) {
+	        this.value = value;
+	    }
+	}
+	
 	public static enum Direction {
 		UP,
 		DOWN,
@@ -12,7 +33,7 @@ public class ActionNode {
 		NONE
 	}
 	
-	Action action;
+	ActionNodeType an_type;
 	int executeSlot;
 	boolean isInterrupted;
 	
@@ -39,8 +60,31 @@ public class ActionNode {
 	int shieldHitsLeft;
 	boolean hitThisRound;
 	
+	public ActionNode(ActionNode an){
+		this.executeSlot = an.executeSlot;
+		this.isInterrupted = an.isInterrupted;
+		
+		this.xPosition = an.xPosition;
+		this.yPosition = an.yPosition;
+		
+		//current info for persisting actions
+		this.castPosition = an.castPosition;
+		this.curX = an.curX;
+		this.curY = an.curY;
+		this.curRound = an.curRound;
+		
+		this.direction = an.direction;
+		
+		this.path = an.path;
+		this.pathIndex = an.pathIndex;
+		
+		this.animation = an.animation;
+		
+		this.shieldHitsLeft = an.shieldHitsLeft;
+	    this.hitThisRound = an.hitThisRound;
+	}
+
 	public ActionNode(Action action, int executeSlot, int xPos, int yPos){
-		this.action = action;
 		this.executeSlot = executeSlot;
 		this.xPosition = xPos;
 		this.yPosition = yPos;
@@ -53,7 +97,6 @@ public class ActionNode {
 	}
 	
 	public ActionNode(Action action, int executeSlot, int xPos, int yPos, Direction direction){
-		this.action = action;
 		this.executeSlot = executeSlot;
 		this.xPosition = xPos;
 		this.yPosition = yPos;
@@ -81,8 +124,15 @@ public class ActionNode {
 		curRound = 0;
 	}
 	
+	public abstract Action getAction();
+	
+	public ActionNodeType getType(){
+		return this.an_type;
+	}
+	
+	
 	public void setAnimation(){
-		this.animation = new AnimationNode(this.action.projectileAnimation);
+		this.animation = new AnimationNode(this.getAction().projectileAnimation);
 	}
 
 	public int getCurrentX(){

@@ -97,6 +97,14 @@ public class Action implements GUIElement {
 		}
 	}
 	
+	public Action() {
+		this("N/A", 0, 0, 0, 0, Pattern.NOP, false, false, false, null, "", null);
+	}
+
+	public String getName(){
+		return this.name;
+	}
+	
 	
 	/**
 	 * helper function that tells if this action would hit (targetX, targetY) starting

@@ -128,11 +128,11 @@ public class SelectionMenu {
 	 * Adds an action node to current queue
 	 */
 	public void add(ActionNode actionNode,int numSlots){
-		int slots_taken = this.takenSlots + actionNode.action.cost;
+		int slots_taken = this.takenSlots + actionNode.getAction().cost;
 		if (slots_taken <= numSlots){
 			selectedActions.addLast(actionNode);
-			this.takenSlots+=actionNode.action.cost;
-			TutorialGameplayController.highlight_action += actionNode.action.cost;
+			this.takenSlots+=actionNode.getAction().cost;
+			TutorialGameplayController.highlight_action += actionNode.getAction().cost;
 		}
 	}
 	
@@ -141,7 +141,7 @@ public class SelectionMenu {
 	 */
 	public boolean canMove(){
 		for (ActionNode an : selectedActions){
-			if (an.action.pattern == Pattern.SHIELD){
+			if (an.getAction().pattern == Pattern.SHIELD){
 				return false;
 			}
 		}
@@ -154,8 +154,8 @@ public class SelectionMenu {
 	public ActionNode removeLast(){
 		ActionNode an = selectedActions.pollLast();
 		if (an != null) {
-			takenSlots -= an.action.cost;
-			TutorialGameplayController.highlight_action -= an.action.cost;
+			takenSlots -= an.getAction().cost;
+			TutorialGameplayController.highlight_action -= an.getAction().cost;
 		}
 		return an;
 	}

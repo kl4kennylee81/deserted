@@ -36,11 +36,11 @@ public class PersistingController extends ActionController{
 				List<ActionNode> actionNodes = c.getPersistingActions();
 				List<ActionNode> toDelete = new LinkedList<ActionNode>();
 				for (ActionNode an:actionNodes){
-					if (an.action.pattern != Pattern.SHIELD){
+					if (an.getAction().pattern != Pattern.SHIELD){
 						continue;
 					}
 					an.curRound+= c.castMoved;
-					if (an.curRound >= ((PersistingAction) an.action).totalNumRounds){
+					if (an.curRound >= ((PersistingAction) an.getAction()).totalNumRounds){
 						toDelete.add(an);
 					} else {
 						selectedActionNode = an;
@@ -65,12 +65,12 @@ public class PersistingController extends ActionController{
 				List<ActionNode> actionNodes = c.getPersistingActions();
 				List<ActionNode> toDelete = new LinkedList<ActionNode>();
 				for (ActionNode an:actionNodes){
-					if (an.action.pattern == Pattern.SHIELD){
+					if (an.getAction().pattern == Pattern.SHIELD){
 						continue;
 					}
 					isDone = false;
 					an.curRound+= c.castMoved;
-					if (an.curRound >= ((PersistingAction) an.action).totalNumRounds){
+					if (an.curRound >= ((PersistingAction) an.getAction()).totalNumRounds){
 						toDelete.add(an);
 					} else {
 						selectedActionNode = an;
@@ -87,7 +87,7 @@ public class PersistingController extends ActionController{
 	}
 	
 	public void executeAction(){
-		switch (selectedActionNode.action.pattern){
+		switch (selectedActionNode.getAction().pattern){
 		case STRAIGHT:
 			executePath();
 			break;
@@ -110,7 +110,7 @@ public class PersistingController extends ActionController{
 	}
 	
 	public void moveAlongPath(){
-		PersistingAction selectedAction = (PersistingAction) selectedActionNode.action;
+		PersistingAction selectedAction = (PersistingAction) selectedActionNode.getAction();
 		
 		Coordinate cur_pos = selectedActionNode.getCurInPath();
 		Coordinate next_pos = selectedActionNode.getNextInPath();

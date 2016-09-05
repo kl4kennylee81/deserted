@@ -1,6 +1,6 @@
 package networkUtils;
 
-import flexjson.JSONSerializer;
+import com.google.gson.Gson;
 
 public class ChallengeMessage extends Message {
 
@@ -29,8 +29,7 @@ public class ChallengeMessage extends Message {
 
 	@Override
 	public String toString() {
-		String m = new JSONSerializer().deepSerialize(this);
-		return m;
+		return (new Gson()).toJson(this);
 	}
 	
 	public String getOpponent(){

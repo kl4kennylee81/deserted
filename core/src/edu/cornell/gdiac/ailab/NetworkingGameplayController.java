@@ -52,20 +52,26 @@ public class NetworkingGameplayController extends GameplayController {
 		}
 		if (s != null) {
 			Message m = Message.jsonToMsg(s);
-			InGameMessage igm = (InGameMessage) m;
-			CharacterActions ca = igm.getCharacterActions();
-			for (CharacterAction sentChar : ca.charActions) {
-				for (Character myChar : this.characters) {
-					if (sentChar.charId == myChar.id && myChar.isNetworkingOpponent) {
-						myChar.queuedActions = sentChar.queuedActions;
+//			try {
+				InGameMessage igm = (InGameMessage) m;
+				CharacterActions ca = igm.getCharacterActions();
+				for (CharacterAction sentChar : ca.charActions) {
+					for (Character myChar : this.characters) {
+						if (sentChar.charId == myChar.id && myChar.isNetworkingOpponent) {
+							myChar.queuedActions = sentChar.convertToActionGameNodes(myChar.getAvailableActions());
+						}
 					}
 				}
-			}
-			if (actionBarController.isPlayerSelection){
-				inGameState = InGameState.SELECTION;
-			} else {
-				inGameState = InGameState.NORMAL;
-			}
+				if (actionBarController.isPlayerSelection){
+					inGameState = InGameState.SELECTION;
+				} else {
+					inGameState = InGameState.NORMAL;
+				}
+//			}
+//			catch (ClassCastException e){
+//				System.out.println("are we here\n");
+//				return;
+//			}
 		}
 	}
 	

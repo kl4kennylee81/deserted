@@ -245,17 +245,17 @@ public class Shields {
 		}
 		
 		Color col = Color.WHITE;
-		if (an.shieldHitsLeft == an.action.shieldNumberHits){
-			if (an.action.shieldColor0 != null){
-				col = an.action.shieldColor0;
+		if (an.shieldHitsLeft == an.getAction().shieldNumberHits){
+			if (an.getAction().shieldColor0 != null){
+				col = an.getAction().shieldColor0;
 			} else {
 				col = Color.CYAN;
 			}
 		} else {
-			if (an.action.shieldColor1 != null){
-				col = an.action.shieldColor1;
-			} else if (an.action.shieldColor0 != null){
-				col = an.action.shieldColor0;
+			if (an.getAction().shieldColor1 != null){
+				col = an.getAction().shieldColor1;
+			} else if (an.getAction().shieldColor0 != null){
+				col = an.getAction().shieldColor0;
 			} else {
 				col = Color.CYAN;
 			}
