@@ -3,12 +3,11 @@ package edu.cornell.gdiac.ailab;
 import java.util.Iterator;
 import java.util.List;
 
-import org.json.simple.JSONArray;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.google.gson.JsonArray;
 
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
 import edu.cornell.gdiac.ailab.TextMessage.Message;
@@ -56,7 +55,7 @@ public class GameplayController {
     protected FileHandle fileNumFile;
     protected int fileNum;
     protected FileHandle dataFile;
-    protected JSONArray jsonArray;
+    protected JsonArray jsonArray;
     
     protected String levelName;
     private static Texture DESCRIPTION_BOX_TEXTURE;
@@ -100,7 +99,7 @@ public class GameplayController {
     	inGameState = InGameState.NORMAL;
     	fileNum++;
 		dataFile = GameEngine.dataGen ? new FileHandle(Constants.DATA_PATH+"data/data"+fileNum) : null;
-		jsonArray = new JSONArray();
+		jsonArray = new JsonArray();
 		levelName = level.getName();
     	
         // Create the models.

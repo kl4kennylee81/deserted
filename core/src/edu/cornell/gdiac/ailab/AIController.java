@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import org.json.simple.JSONArray;
+import com.google.gson.JsonArray;
 
 import edu.cornell.gdiac.ailab.ActionNode.Direction;
 import edu.cornell.gdiac.ailab.ActionNode;
@@ -84,7 +84,7 @@ public class AIController {
 		}
 	}
 	
-	public void outputData(JSONArray jsonArray){
+	public void outputData(JsonArray jsonArray){
 		for (Character c : chars){
 			if(c.needsDataOutput){
 				c.needsDataOutput = false;

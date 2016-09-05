@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import com.google.gson.JsonArray;
+
 import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNode;
 import edu.cornell.gdiac.ailab.ActionNode.Direction;
@@ -19,7 +21,6 @@ import edu.cornell.gdiac.ailab.DecisionNode.MoveList;
 import edu.cornell.gdiac.ailab.DecisionNode.Specific;
 import edu.cornell.gdiac.ailab.DecisionNode.Tactic;
 import edu.cornell.gdiac.ailab.Effect.Type;
-import org.json.simple.*;
 
 
 public class TacticalManager extends ConditionalManager{
@@ -1195,7 +1196,7 @@ public class TacticalManager extends ConditionalManager{
 	/**
 	 * Output data to a file
 	 */
-	public void outputData(Character c, JSONArray jsonArray){
+	public void outputData(Character c, JsonArray jsonArray){
 //		JSONObject json = new JSONObject();
 //		StringBuilder vectorBuilder = new StringBuilder();
 //		for(String s: conditions){
