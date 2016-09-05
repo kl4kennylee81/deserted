@@ -18,6 +18,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import networkUtils.ChallengeMessage;
 import networkUtils.Connection;
+import networkUtils.DraftMessage;
 import networkUtils.InGameMessage;
 import networkUtils.LobbyMessage;
 import networkUtils.Message;
@@ -231,6 +232,8 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 		break;
 	case BACK:
 		break;
+	case DRAFT:
+		processDraft(attach, m);
 	default:
 		break;
 	  
@@ -245,6 +248,16 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	  
 	  String oppName = attach.server.getPlayersOppName(playerName);
 	  assert(igm.getTo() == oppName);
+	  
+	  AsynchronousSocketChannel oppSock = attach.server.getPlayersOppSock(playerName);
+	  oppSock.write(m.msgToByteBuffer()).get();
+  }
+  
+  public void processDraft(Attachment attach,Message m) throws InterruptedException, ExecutionException {
+	  DraftMessage igm = (DraftMessage) m;
+	  String playerName = attach.server.getUserFromSocket(attach.client);
+	  
+	  String oppName = attach.server.getPlayersOppName(playerName);
 	  
 	  AsynchronousSocketChannel oppSock = attach.server.getPlayersOppSock(playerName);
 	  oppSock.write(m.msgToByteBuffer()).get();

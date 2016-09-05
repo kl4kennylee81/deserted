@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,6 +8,11 @@ import java.util.List;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+
+import networkUtils.ChallengeMessage;
+import networkUtils.Connection;
+import networkUtils.DraftMessage;
+import networkUtils.Message;
 
 public class DraftController {
 	private boolean isDone;
@@ -16,8 +22,20 @@ public class DraftController {
 	private MouseOverController mouseOverController;
 	private DraftScreen draftScreen;
 	private boolean isFirst;
+	private String from;
+	private String to;
+	private DraftState draftState;
+	private Connection connection;
 	public String nextLevelName;
 	public int playerNum = 1;
+	
+	private int charIdToWrite;
+	
+	private static enum DraftState {
+		PICKING,
+		WAITING,
+		WRITING,
+	}
 	
 	public DraftController(GameCanvas canvas, MouseOverController mouseOverController){
 		this.canvas = canvas;
@@ -36,17 +54,41 @@ public class DraftController {
 		draftScreen.setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class));
 	}
 	
-	public void setIsFirst(boolean isFirst) {
-		this.isFirst = isFirst;
+	public Level getLevel(){ 
+		return level;
 	}
 	
-	public void reset(){
+	public void reset(Connection connection, boolean isFirst, String from, String to) {
+		this.connection = connection;
+		this.isFirst = isFirst;
+		this.from = from;
+		this.to = to;
+		this.draftState = isFirst ? DraftState.PICKING : DraftState.WAITING;
+		
 		isDone = false;
 		this.draftScreen = new DraftScreen(level.getCharacters());
 		draftScreen.setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class));
 	}
 	
 	public void update(){
+		if (draftState !=  DraftState.WRITING && draftScreen.doneDrafting()) {
+			handleNextLevel("pvp");
+			return;
+		}
+		switch (draftState) {
+		case PICKING:
+			updatePicking();
+			break;
+		case WAITING:
+			updateWaiting();
+			break;
+		case WRITING:
+			updateWriting();
+			break;
+		}
+	}
+	
+	public void updatePicking(){
 		mouseOverController.update(draftScreen.options, draftScreen, true);
 		boolean mouseCondition = false;
 		if (draftScreen.selectedIndex!=-1){
@@ -61,6 +103,37 @@ public class DraftController {
 		}
 	}
 	
+	public void updateWriting(){
+		Message msg = new DraftMessage(charIdToWrite);
+		Integer bytes_written = null;
+		try {
+			bytes_written = connection.write(msg);
+		} catch (Exception e) {
+			//hi
+		}
+		if (bytes_written != null) {
+			draftState = DraftState.WAITING;
+		}
+	}
+	
+	public void updateWaiting(){
+		String s = null;
+		try {
+			s = connection.read();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (s != null) {
+			Message m = Message.jsonToMsg(s);
+			DraftMessage dm = (DraftMessage) m;
+			int charId = dm.getId();
+			draftScreen.setPlayerCharacter(playerNum, charId);
+			playerNum = playerNum == 1 ? 2 : 1;
+			draftState = DraftState.PICKING;
+		}
+	}
+	
 	public void handlePress(String optionKey){
 		switch (optionKey){
 		case "Back":
@@ -72,6 +145,8 @@ public class DraftController {
 		case "Select":
 			if(draftScreen.selectCurrentCharacter(playerNum)){
 				playerNum = playerNum == 1 ? 2 : 1;
+				charIdToWrite = draftScreen.selectedCharacterId;
+				draftState = DraftState.WRITING;
 			}
 			break;
 		default:
@@ -106,6 +181,8 @@ public class DraftController {
 			c.setLeftSide(true);
 			list.add(c);
 			health1 += c.health;
+			c.isNetworkingOpponent = !isFirst;
+			c.isAI = false;
 		}
 		parent1.setHealth(health1);
 		parent1.setMaxHealth(health1);
@@ -118,6 +195,8 @@ public class DraftController {
 			c.setLeftSide(false);
 			list.add(c);
 			health2 += c.health;
+			c.isNetworkingOpponent = isFirst;
+			c.isAI = false;
 		}
 		parent2.setHealth(health2);
 		parent2.setMaxHealth(health2);
@@ -130,6 +209,9 @@ public class DraftController {
 	
 	public void draw(GameCanvas canvas){
 		draftScreen.draw(canvas);
+		if (draftState == DraftState.WAITING) {
+			canvas.drawCenteredText("Waiting for opponent to pick", canvas.width/2, canvas.height/2, Color.BLACK);
+		}
 	}
 	
 	public boolean isDone(){

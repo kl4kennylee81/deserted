@@ -90,19 +90,7 @@ public class DraftScreen extends Menu{
 	}
 	
 	public void setOptions(){
-		Option[] options = new Option[4+characters.size()];
-		
-		options[0] = new Option("Play","Play");
-		options[0].setBounds(0.88f - RELATIVE_WIDTH/2, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
-		options[0].setColor(Constants.MENU_COLOR);
-		
-		options[1] = new Option("Confirm","Confirm");
-		options[1].setBounds(0.5f-RELATIVE_WIDTH*0.7f, 0.1f, RELATIVE_WIDTH*1.4f,  RELATIVE_HEIGHT);
-		options[1].setColor(Constants.MENU_COLOR);
-		
-		options[2] = new Option("Nah","Nah");
-		options[2].setBounds(0.12f - RELATIVE_WIDTH/2, 0.1f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
-		options[2].setColor(Constants.MENU_COLOR);
+		Option[] options = new Option[1+characters.size()];
 		
 		String text;
 	    text = "Select";
@@ -116,14 +104,14 @@ public class DraftScreen extends Menu{
 		float leftRatio = PLAYER1_CHARACTER_LIST_X_OFFSET + ((1 - RELATIVE_CHARACTERS_SIZE) * 0.5f) - 0.05f;
 		float curCharacterRatio = (index+1f) * RELATIVE_CHARACTERS_SIZE / (characters.size()+1);
 		
-		options[3] = new Option(text,"Select");
-		options[3].setBounds(curCharacterRatio-(RELATIVE_CHARACTER_WIDTH/2)+leftRatio, 0.6f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
-		options[3].setColor(Constants.MENU_COLOR);
+		options[0] = new Option(text,"Select");
+		options[0].setBounds(curCharacterRatio-(RELATIVE_CHARACTER_WIDTH/2)+leftRatio, 0.6f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
+		options[0].setColor(Constants.MENU_COLOR);
 
 		
 		characterOptions.clear();
 		
-		int i = 4;
+		int i = 1;
 		int j;
 		for (j = 0; j < characters.size(); j++){
 			Character cd = characters.get(j);
@@ -163,6 +151,10 @@ public class DraftScreen extends Menu{
 		setOptions();
 	}
 	
+	public boolean doneDrafting(){
+		return canLeave(1) && canLeave(2);
+	}
+	
 	public boolean canLeave(int playerNum){
 		int[] array = playerNum == 1? player1Characters : player2Characters;
 		for (int n : array){
@@ -187,6 +179,13 @@ public class DraftScreen extends Menu{
 		boolean toReturn = addUnselectedToPlay(playerNum);
 		setOptions();		
 		return toReturn;
+	}
+	
+	public void setPlayerCharacter(int playernum, int charId){
+		int prevSelectedCharacter = selectedCharacterId;
+		selectedCharacterId = charId;
+		selectCurrentCharacter(playernum);
+		selectedCharacterId = prevSelectedCharacter;
 	}
 	
 	public void removeSelectedFromPlay(int playerNum){
@@ -268,7 +267,7 @@ public class DraftScreen extends Menu{
 		int canvasH = canvas.getHeight();
 		
 		// TODO Auto-generated method stub
-		for (int i=0;i<4;i++){
+		for (int i=0;i<1;i++){
 			float x = options[i].getX(canvas);
 			float y = options[i].getY(canvas) - 3*options[i].getHeight(canvas)/4;
 			float width = options[i].getWidth(canvas);

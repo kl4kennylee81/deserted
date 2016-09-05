@@ -28,6 +28,8 @@ public class NetworkingController {
 	private Connection connection;
 	
 	private boolean isFirst;
+	private String from;
+	private String to;
 	
 	boolean connected;
 	boolean isDone;
@@ -81,7 +83,9 @@ public class NetworkingController {
 				Message m = Message.jsonToMsg(s);
 				ChallengeMessage cm = (ChallengeMessage) m;
 				isFirst = cm.getIsFirst();
-				draftController.setIsFirst(isFirst);
+				from = cm.getFrom();
+				to = cm.getTo();
+				draftController.reset(connection, isFirst, from, to);
 				//gameplayController.resetGame(level)
 				setState(NetworkingState.CHARACTER_SELECTION);
 			}
@@ -90,7 +94,11 @@ public class NetworkingController {
 			draftController.update();
 			if (draftController.isDone()){
 				//get game info and start game
-				gameplayController.setupGame(isFirst, "FROM", "TO");
+				Level level = draftController.getLevel();
+				level.setCharacters(draftController.getSelectedChars());
+				gameplayController.resetGame(level);
+				gameplayController.setupGame(from, to);
+				setState(NetworkingState.PLAYING);
 			}
 			break;
 		case PLAYING:

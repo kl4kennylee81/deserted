@@ -79,16 +79,7 @@ public class NetworkingGameplayController extends GameplayController {
 		this.connection = connection;
 	}
 	
-	public void setupGame(Boolean isFirst, String from, String to) {
-		//temp character setting
-		for (Character c : characters) {
-			if (isFirst) {
-				c.isNetworkingOpponent = c.isAI;
-			} else {
-				c.isNetworkingOpponent = !c.isAI;
-			}
-			c.isAI = false;
-		}
+	public void setupGame(String from, String to) {
 		this.from = from;
 		this.to = to;
 	}
