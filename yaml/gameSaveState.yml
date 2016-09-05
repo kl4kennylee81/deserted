@@ -119,7 +119,7 @@ levels:
     postNarrative: yaml/narratives/Tutorial5Post.yml
     seenPost: false
     displayName: SPIRIT - 5
-  5:
+  5: 
     levelName: Level1
     beaten: false
     boss: false
@@ -137,6 +137,7 @@ levels:
     preNarrative: yaml/narratives/Boss1Pre.yml
     seenPre: false
     postNarrative: yaml/narratives/Boss1Post.yml
+    seenPost: false
     seenPost: false
     displayName: VILLAGE - 7
   7:
@@ -232,4 +233,5 @@ unlockableCharacters:
 - 4
 selectedCharacters:
 - 0
-- 2
+- 1
+

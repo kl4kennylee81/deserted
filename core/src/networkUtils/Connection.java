@@ -1,47 +1,167 @@
 package networkUtils;
 
 import java.net.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousSocketChannel;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.io.*;
+import networkUtils.Message;
 
 public class Connection {
 
-	Socket sock;
-    BufferedReader reader;
-    DataOutputStream writer;
-    
-    public Connection(Socket s) throws IOException{
-    	sock = s;
-    	reader = new BufferedReader(new InputStreamReader(s.getInputStream()));
-    	writer = new DataOutputStream(s.getOutputStream());
-    }
+	private static AtomicInteger atomic_int = new AtomicInteger(0);
+	private final int BUFFER_SIZE = 4096;
+	int id;
+	AsynchronousSocketChannel sChannel;
+
+	Future<Integer> readFuture;
+	ByteBuffer readBuffer;
 	
-	public int getRemotePort(){
-		return sock.getPort();
-	}
+	Future<Integer> writeFuture;
+	ByteBuffer writeBuffer;
 	
-	public InetAddress getRemoteAddress(){
-		return sock.getInetAddress();
-	}
-	
-	public InetAddress getLocalAddress(){
-		return sock.getLocalAddress();
-	}
-	
-	public int getLocalPort(){
-		return sock.getLocalPort();
-	}
-	
-	public void closeConnection(){
+	public Connection() throws IOException{
+    	id = atomic_int.incrementAndGet();
+		sChannel = AsynchronousSocketChannel.open();
+		readFuture = null;
+		readBuffer = ByteBuffer.allocate(BUFFER_SIZE);
 		
+		writeFuture = null;
+		writeBuffer =  ByteBuffer.allocate(BUFFER_SIZE);
+	}
+
+	public Connection(AsynchronousSocketChannel s) throws IOException {
+    	id = atomic_int.incrementAndGet();
+		sChannel = s;
+		readFuture = null;
+		readBuffer = ByteBuffer.allocate(BUFFER_SIZE);
+		
+		writeFuture = null;
+		writeBuffer =  ByteBuffer.allocate(BUFFER_SIZE);
+	}
+
+	public AsynchronousSocketChannel socketChannel() {
+		return sChannel;
+	}
+
+	public SocketAddress getRemoteAddress() throws IOException {
+		return socketChannel().getRemoteAddress();
+	}
+
+	public SocketAddress getLocalAddress() throws IOException {
+		return socketChannel().getLocalAddress();
+	}
+
+	public void closeConnection() throws IOException {
+		socketChannel().close();
 	}
 	
-	public String read() throws IOException{
-		return reader.readLine();
+	public boolean connect(String host,int port){
+	    SocketAddress saddr = new InetSocketAddress(host,port);
+	    return connect(saddr);
 	}
 	
-	public int write(String m) throws IOException{
-		int size_before = writer.size();
-		writer.writeBytes(m);
-		return writer.size() - size_before;
+	public boolean connect(SocketAddress saddr){
+	    Future<Void> result = sChannel.connect(saddr);
+	    try {
+			result.get();
+			return true;
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public String read() throws IOException {
+		if (readFuture != null){
+			if (readFuture.isDone()) {
+			     String s = Message.byteBufferToString(readBuffer);
+			     readFuture = null;
+			     return s;
+			}
+			else {
+				return null;
+			}
+		}
+		else {
+			readBuffer.clear();
+			readFuture = sChannel.read(readBuffer);
+			
+			if (readFuture.isDone()) {
+			     String s = Message.byteBufferToString(readBuffer);
+			     readFuture = null;
+			     return s;
+			}
+			else {
+				return null;
+			}
+		}
+	}
+	
+	public Message readMsg() throws IOException{
+		String s = this.read();
+		Message msg = Message.jsonToMsg(s);
+		return msg;
+	}
+	
+	public Integer write(Message msg) throws IOException, InterruptedException, ExecutionException{
+		String s = msg.toString();
+		return write(s);
+	}
+	
+	public boolean isDoneWriting() throws InterruptedException, ExecutionException{
+		if (writeFuture == null){
+			return true;
+		}
+		else if (writeFuture != null && writeFuture.isDone()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
+	public boolean isDoneReading() {
+		if (readFuture == null){
+			return true;
+		}
+		else if (readFuture != null && readFuture.isDone()){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public Integer write(String msg) throws IOException, InterruptedException, ExecutionException {
+		if (writeFuture != null){
+			if (writeFuture.isDone()){
+				int bytes_written = writeFuture.get();
+				writeFuture = null;
+				return bytes_written;
+			}
+			else {
+				return null;
+			}
+		}
+		else {
+			Message.strToByteBuffer(writeBuffer, msg);
+			writeFuture = sChannel.write(writeBuffer);
+			
+			if (writeFuture.isDone()){
+				int bytes_written = writeFuture.get();
+				writeFuture = null;
+				return bytes_written;
+			}
+			else {
+				return null;
+			}
+		}
 	}
 }

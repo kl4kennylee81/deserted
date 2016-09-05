@@ -42,7 +42,7 @@ public class GameplayController {
     protected Shields shields;
     
     protected boolean isTutorial;
-    
+    protected boolean canPause;
     
     protected HighlightScreen screen;
     
@@ -77,7 +77,8 @@ public class GameplayController {
 		PAUSED,
 		PAUSEMENU,
 		DONE,
-		WARNING
+		WARNING,
+		WAITING,
 	}
     
     public GameplayController(MouseOverController moc, CompletionMenuController cmc, 
@@ -132,7 +133,7 @@ public class GameplayController {
     	this.surviveFor = surviveFor;
     }
     
-    public void update(){  	
+    public void update(){ 
     	screen.noScreen();
     	switch(inGameState){
     	case NORMAL:
@@ -147,9 +148,11 @@ public class GameplayController {
     		}
     		if (actionBarController.isAttack){
     			inGameState = InGameState.ATTACK;
-    		} else if (actionBarController.isPlayerSelection) {
-    			inGameState = InGameState.SELECTION;
-    		}
+    		} else if (actionBarController.isPlayerSelection && actionBarController.selectingFirst){
+  				inGameState = InGameState.SELECTION;
+  			} else if (actionBarController.isNetworkingOpponentSelection){
+  				inGameState = InGameState.WAITING;
+  			}
     		break;
     	case SELECTION:
     		screen.setJustScreen();
@@ -157,18 +160,26 @@ public class GameplayController {
     		mouseOverController.update(selectionMenuController.getMenu(),characters,selectionMenuController.choosingTarget);
     		selectionMenuController.update();
     		if (selectionMenuController.isDone()){
-    			inGameState = InGameState.NORMAL;
-    			prompt = null;
-    			board.reset();
-    			aiController.outputData(jsonArray);
+    			if (handleSelectionDone()) {
+	    			prompt = null;
+	    			board.reset();
+	    			aiController.outputData(jsonArray);
+	    			if (actionBarController.isNetworkingOpponentSelection) {
+	    				inGameState = InGameState.WAITING;
+	    			} else {
+	    				inGameState = InGameState.NORMAL;
+	    			}
+    			}
     		}
     		break;
     	case ATTACK:
     		actionController.update();
     		persistingController.updateProjs();
     		if (actionController.isDone() && persistingController.isDone()){
-    			if (actionBarController.isPlayerSelection){
+    			if (actionBarController.isPlayerSelection && actionBarController.selectingFirst){
     				inGameState = InGameState.SELECTION;
+    			} else if (actionBarController.isNetworkingOpponentSelection){
+    				inGameState = InGameState.WAITING;
     			} else {
     				inGameState = InGameState.NORMAL;
     			}
@@ -225,8 +236,11 @@ public class GameplayController {
     		}
     		
     		return;
-		default:
-			break;	
+    	case WAITING: 
+    		handleWaiting();
+    		break;
+			default:
+				break;	
     	}
     	
     	updateTextMessages();
@@ -245,7 +259,7 @@ public class GameplayController {
     		ObjectLoader.getInstance().unloadCurrentLevel();
     	}
     	
-       	if (InputController.pressedESC() || InputController.pressedP()){
+       	if ((InputController.pressedESC() || InputController.pressedP()) && canPause){
        		if (inGameState != InGameState.PAUSEMENU){
        			prePauseState = inGameState;
         		inGameState = InGameState.PAUSEMENU;
@@ -256,6 +270,14 @@ public class GameplayController {
        		}
        	}
        	
+    }
+    
+    public boolean handleSelectionDone(){
+    	return true;
+    }
+    
+    public void handleWaiting(){
+    	return;
     }
     
     public void removeDead(){
@@ -294,7 +316,9 @@ public class GameplayController {
         board.draw(canvas, selectionMenuController);
        
 
-    	
+    	if (inGameState == InGameState.WAITING) {
+    		canvas.drawCenteredText("Waiting for opponent", canvas.width/2, canvas.height/2, Color.BLACK);
+    	}
     	
     	if (inGameState == InGameState.SELECTION){
     		shields.draw(canvas,false,true);

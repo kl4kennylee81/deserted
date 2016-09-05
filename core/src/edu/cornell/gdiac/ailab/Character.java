@@ -103,6 +103,8 @@ public class Character implements GUIElement {
 	boolean isAI;
 	Difficulty diff;
 	
+	boolean isNetworkingOpponent;
+	
 	/** List of available actions */
 	Action[] availableActions; 
 	

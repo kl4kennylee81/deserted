@@ -15,22 +15,29 @@ public class DraftController {
 	private Level level;
 	private MouseOverController mouseOverController;
 	private DraftScreen draftScreen;
+	private boolean isFirst;
 	public String nextLevelName;
 	public int playerNum = 1;
 	
-	public DraftController(GameCanvas canvas, AssetManager manager, MouseOverController mouseOverController, Level level){
+	public DraftController(GameCanvas canvas, MouseOverController mouseOverController){
 		this.canvas = canvas;
-		this.manager = manager;
 		this.mouseOverController = mouseOverController;
-		this.level = level;
 		this.isDone = false;
-		
+	}
+	
+	public void setLevel(AssetManager manager, Level level) {
+		this.level = level;
+		this.manager = manager;
 		this.draftScreen = new DraftScreen(level.getCharacters());
 		
 		manager.load(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class);
 		manager.finishLoading();
 		
 		draftScreen.setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class));
+	}
+	
+	public void setIsFirst(boolean isFirst) {
+		this.isFirst = isFirst;
 	}
 	
 	public void reset(){

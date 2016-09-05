@@ -96,8 +96,6 @@ public class GameEngine implements Screen {
 		NARRATIVE,
 		/** Networking */
 		NETWORKING,
-		/** Draft for networking */
-		DRAFT
 	}
 
 
@@ -156,7 +154,6 @@ public class GameEngine implements Screen {
     private CharacterCustomizationController characterCustomizationController;
     private CharacterSelectController characterSelectController;
     private NetworkingController networkingController;
-    private DraftController draftController;
     
     
 //	/** Default budget for asset loader (do nothing but load 60 fps) */
@@ -215,8 +212,10 @@ public class GameEngine implements Screen {
 		editorController = null;
 		gameplayController = new GameplayController(mouseOverController, cmc, pmc, file, fileNum, false);
 		tutorialGameplayController = new TutorialGameplayController(mouseOverController, cmc, pmc, file, fileNum);
+		NetworkingGameplayController ngc = new NetworkingGameplayController(mouseOverController, cmc, pmc, file, fileNum, false);
 		narrativeController = new NarrativeController();
-		networkingController = new NetworkingController();
+		DraftController dc = new DraftController(canvas, mouseOverController);
+		networkingController = new NetworkingController(ngc, dc);
 		
 		this.transitionScreen = new TransitionScreen();
 		this.isTransitioning = false;
@@ -279,9 +278,6 @@ public class GameEngine implements Screen {
 	    		level = this.getLevel(levelName);
 	    		
 	        	if (level.getTutorialSteps() == null){
-	        		if(level.getName().equals("pvp")){
-	        			level.setCharacters(draftController.getSelectedChars());
-	        		}
 	        		gameplayController.resetGame(level);
 	        		curGameplayController = gameplayController;
 	            	gameState = GameState.PLAY;
@@ -427,11 +423,7 @@ public class GameEngine implements Screen {
 			break;
 		case NETWORKING:
 			updateNetworking();
-			canvas.end();
-			break;
-		case DRAFT:
-			updateDraft();
-			canvas.end();
+			//make sure to call canvas.end() in networkingcontroller
 			break;
 	    }
 		
@@ -496,20 +488,7 @@ public class GameEngine implements Screen {
 			}
 		}
 	}
-	
-	private void updateDraft() {
-		draftController.update();
-		draftController.draw(canvas);
-		if(draftController.isDone()){
-			try {
-				startGame("pvp","",false);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	
+
 	private void updateCustomization() {
 		characterCustomizationController.update();
 		characterCustomizationController.draw(canvas);
@@ -535,7 +514,7 @@ public class GameEngine implements Screen {
 	private boolean checkReset() {
 		// If the player presses 'R', reset the game.
         if (gameState != GameState.LOAD && gameState != GameState.EDITOR
-        		&& InputController.pressedR()) {
+        		&& gameState != GameState.NETWORKING && InputController.pressedR()) {
         	GameEngine.nextLevel = "";
         	mainMenuController.resetMenu();
             gameState = GameState.MENU;
@@ -689,7 +668,13 @@ public class GameEngine implements Screen {
 			}
 		} else if (keyword == "Networking"){
 			networkingController.reset();
-			gameState = GameState.DRAFT;
+			try {
+				networkingController.setLevel(manager, getLevel("pvp"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			gameState = GameState.NETWORKING;
 		}
 	}
 
@@ -957,7 +942,6 @@ public class GameEngine implements Screen {
 		gameSaveStateController = new GameSaveStateController();
 		mainMenuController = new MainMenuController(canvas, manager, mouseOverController,gameSaveStateController.getLevelData());
 		characterSelectController = new CharacterSelectController(canvas, manager, mouseOverController, gameSaveStateController);
-		draftController = new DraftController(canvas, manager, mouseOverController, this.getLevel("pvp"));
 		
 		//for some reason the font loading has to be after the call to manager.finishLoading();
 		FreetypeFontLoader.FreeTypeFontLoaderParameter size2Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();

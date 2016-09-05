@@ -116,8 +116,8 @@
   name: Hasten
   texture: "actions/quicken_spritesheet.png"
   rows: 1
-  cols: 4
-  size: 4
+  cols: 8
+  size: 8
   segments:
     - segmentName: IDLE
       segmentId: 0
@@ -136,8 +136,8 @@
   name: Slow
   texture: "actions/slow_spritesheet.png"
   rows: 1
-  cols: 4
-  size: 4
+  cols: 8
+  size: 8
   segments:
     - segmentName: IDLE
       segmentId: 0

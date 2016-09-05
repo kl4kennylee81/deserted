@@ -21,7 +21,7 @@ import networkUtils.NormalMessage;
 import networkUtils.UsernameMessage;
 
 
-public class DesertedClient {
+public class DesertedClient2 {
   
 	String username;
 	String oppUsername;
@@ -37,7 +37,7 @@ public class DesertedClient {
 	
 	public enum NetworkState {READ,WRITE,NORMAL}
 	
-	public DesertedClient(Connection c,boolean sendFirst){
+	public DesertedClient2(Connection c,boolean sendFirst){
 	  connect = c;
 	  oppUsername = "";
 	  gstate = GameState.PRE;
@@ -71,6 +71,7 @@ public class DesertedClient {
 		case NORMAL:
 			if (this.sentMessage){
 				String s = this.connect.read();
+				System.out.println("haha");
 				if (s != null){
 					Message m = Message.jsonToMsg(s);
 					InGameMessage igm = (InGameMessage) m;
@@ -126,6 +127,7 @@ public class DesertedClient {
 			break;
 		case READ:
 			if (this.connect.isDoneReading()){
+				System.out.println("hi");
 				this.nstate = NetworkState.NORMAL;
 			}
 			break;
@@ -148,7 +150,6 @@ public class DesertedClient {
 	
 	public void write(Message m) throws IOException, InterruptedException, ExecutionException{
 	    this.nstate = NetworkState.WRITE;
-	    System.out.println(m.toString());
 	    this.connect.write(m);
 	}
 	
@@ -157,10 +158,8 @@ public class DesertedClient {
 	public void processPreState() throws Exception{
 		switch (this.nstate){
 		case NORMAL:
-			System.out.println("are we here in normal\n");
 			if (this.sentUsername){
 				String s = this.connect.read();
-				System.out.println("haha");
 				if (s != null){
 					Message m = Message.jsonToMsg(s);
 					LobbyMessage lm = (LobbyMessage) m;
@@ -172,13 +171,11 @@ public class DesertedClient {
 			}
 			break;
 		case READ:
-			System.out.println("am i here reading\n");
 			if (this.connect.isDoneReading()){
 				this.nstate = NetworkState.NORMAL;
 			}
 			break;
 		case WRITE:
-			System.out.println("am i here writing \n");
 			if (this.connect.isDoneWriting()){
 				this.nstate = NetworkState.NORMAL;
 			}
@@ -192,10 +189,9 @@ public class DesertedClient {
   public static void main(String[] args) throws Exception {
 
     Connection c = new Connection();
-    DesertedClient dc = new DesertedClient(c,true);
+    DesertedClient2 dc = new DesertedClient2(c,false);
     dc.connect.connect("localhost", 8989);
     
-//    int count = 0;
     while(true){
 //	    String s = getTextFromUser();
 //	    Message msg = new NormalMessage(s);
@@ -208,7 +204,6 @@ public class DesertedClient {
 //	    }
 //	    count++;
 //	    System.out.printf("%d:%s\n",count,response.getMessage());
-    	
     	dc.processState();
     }
     

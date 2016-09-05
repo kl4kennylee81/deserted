@@ -135,7 +135,7 @@ public class SelectionMenuController {
 			case WAITING:
 				isDone = true;
 				for (Character c : characters){
-					if (c.needsSelection && c.isAlive() && !c.isAI){
+					if (c.needsSelection && c.isAlive() && !c.isAI && !c.isNetworkingOpponent){
 						isDone = false;
 						selected = c;
 						SelectionMenu menu = c.getSelectionMenu();

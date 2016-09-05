@@ -9,8 +9,11 @@ public class ActionBarController {
 	
 	/** State variables */
 	boolean isPlayerSelection;
+	boolean isNetworkingOpponentSelection;
 	boolean isAISelection;
 	boolean isAttack;
+	boolean characterSelectionNeeded;
+	boolean selectingFirst;
 	
 	int turnsCompleted;
 	
@@ -21,8 +24,11 @@ public class ActionBarController {
 	
 	public void update(){
 		this.isPlayerSelection = false;
+		this.isNetworkingOpponentSelection = false;
 		this.isAISelection = false;
 		this.isAttack = false;
+		this.characterSelectionNeeded = false;
+		this.selectingFirst = false;
 		for (Character c : characters){
 			if (!c.isAlive()){
 				continue;
@@ -48,8 +54,18 @@ public class ActionBarController {
 					c.startingCast();
 					if (c.isAI){
 						this.isAISelection = true;
+					} else if (c.isNetworkingOpponent){
+						if (!this.characterSelectionNeeded) { 
+							this.selectingFirst = false;
+							this.characterSelectionNeeded = true;
+						}
+						this.isNetworkingOpponentSelection = true;
 					} else {
 						c.needsDataOutput = true;
+						if (!this.characterSelectionNeeded) { 
+							this.selectingFirst = true;
+							this.characterSelectionNeeded = true;
+						}
 						this.isPlayerSelection = true;
 					}
 				}
