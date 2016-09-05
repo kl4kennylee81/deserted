@@ -48,6 +48,9 @@ public class LevelMenu extends Menu {
 		for (int i =0; i< 2;i++){
 			for (int j =0;j<7;j++){
 				int index= i*7+ j;
+				if (index >= options.length){
+					break;
+				}
 				float spacedX = RELATIVE_X_POS + i*(RELATIVE_WIDTH + 0.14f);
 				float spacedY = RELATIVE_Y_POS - j*(RELATIVE_HEIGHT);
 				options[index].setBounds(spacedX, spacedY, RELATIVE_WIDTH,RELATIVE_HEIGHT);
@@ -71,6 +74,9 @@ public class LevelMenu extends Menu {
 	public void draw(GameCanvas canvas) {	
 		// draw the menu options
 		for (int i=0;i<options.length-1;i++){
+			if (options[i].equals(null) || options[i].text == null){
+				break;
+			}
 			float x = options[i].getX(canvas);
 			float y = options[i].getY(canvas);
 			float width = options[i].getWidth(canvas);

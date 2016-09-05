@@ -257,6 +257,7 @@ public class GameEngine implements Screen {
     }
     
     public void startGame(String levelName, String backLevelName, boolean needsSelect) throws IOException {
+    	System.out.println(levelName);
     	if (this.gameSaveStateController.containsLevel(levelName)){
     		System.out.println("in game save state controller");
     		curLevelData = this.gameSaveStateController.getLevelData(levelName);

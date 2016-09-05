@@ -89,46 +89,6 @@ characters:
     - 18
 levels:
   0:
-    levelName: Tutorial1
-    beaten: false
-    boss: false
-    preNarrative: yaml/narratives/Tutorial1Pre.yml
-    seenPre: false
-    postNarrative: yaml/narratives/Tutorial1Post.yml
-    seenPost: false
-    displayName: SPIRIT - 1
-  1:
-    levelName: Tutorial2
-    beaten: false
-    boss: false
-    displayName: SPIRIT - 2
-  2:
-    levelName: Tutorial3
-    beaten: false
-    boss: false
-    displayName: SPIRIT - 3
-  3:
-    levelName: Tutorial4
-    beaten: false
-    boss: false
-    displayName: SPIRIT - 4
-  4:
-    levelName: Tutorial5
-    beaten: false
-    boss: false
-    postNarrative: yaml/narratives/Tutorial5Post.yml
-    seenPost: false
-    displayName: SPIRIT - 5
-  5: 
-    levelName: Level1
-    beaten: false
-    boss: false
-    background: backgrounds/rockbg.png
-    unlockableCharacter: 1
-    postNarrative: yaml/narratives/Level1Post.yml
-    seenPost: false
-    displayName: VILLAGE - 6
-  6:
     levelName: Boss1
     beaten: false
     boss: true
@@ -140,7 +100,7 @@ levels:
     seenPost: false
     seenPost: false
     displayName: VILLAGE - 7
-  7:
+  1:
     levelName: Boss2
     beaten: false
     boss: true
@@ -150,7 +110,7 @@ levels:
     postNarrative: yaml/narratives/Boss2Post.yml
     seenPost: false
     displayName: VILLAGE - 8
-  8:
+  2:
     levelName: Level2
     beaten: false
     boss: false
@@ -159,7 +119,7 @@ levels:
     preNarrative: yaml/narratives/Level2Pre.yml
     seenPre: false
     displayName: ELDER - 9
-  9:
+  3:
     levelName: Level3
     beaten: false
     boss: false
@@ -169,7 +129,7 @@ levels:
     postNarrative: yaml/narratives/Level3Post.yml
     seenPost: false
     displayName: ELDER - 10
-  10:
+  4:
     levelName: Boss3
     beaten: false
     boss: true
@@ -180,7 +140,7 @@ levels:
     postNarrative: yaml/narratives/Boss3Post.yml
     seenPost: false
     displayName: TOURNAMENT - 11
-  11:
+  5:
     levelName: Level4
     beaten: false
     boss: false
@@ -192,7 +152,7 @@ levels:
     postNarrative: yaml/narratives/Level4Post.yml
     seenPost: false
     displayName: RETURN - 12
-  12:
+  6:
     levelName: Boss4
     beaten: false
     boss: true
@@ -203,7 +163,7 @@ levels:
     postNarrative: yaml/narratives/Boss4Post.yml
     seenPost: false
     displayName: ARASH - 13
-  13:
+  7:
     levelName: Boss5
     beaten: false
     boss: true
@@ -214,12 +174,21 @@ levels:
     postNarrative: yaml/narratives/Boss5Post.yml
     seenPost: false
     displayName: SOLUS - 14
-  14:
+  8:
     levelName: pvp
     beaten: false
     needsSelect: false
     boss: false
     background: backgrounds/inTheSkybg.png
+    displayName: PVP-ONLINE
+  9:
+    levelName: pvp_local
+    beaten: false
+    needsSelect: false
+    boss: false
+    background: backgrounds/inTheSkybg.png
+    displayName: PVP-LOCAL
+
 availableCharacters:
 - 0
 - 1

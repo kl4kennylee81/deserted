@@ -23,143 +23,27 @@ pvp:
     rimTexture: "models/tiles_bottomrim.png"
     AI: []
 
-Tutorial1:
+pvp_local:
     allies:
-        - id: 90
-          xPosition: 1
-          yPosition: 1
-
-    enemies:
-        - id: 91
-          xPosition: 4
-          yPosition: 2
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-
-    nextLevel:
-    tutorialFileName: "yaml/tutorial1.yml"
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/straight-easy.yml"]
-
-Tutorial2:
-    allies:
-        - id: 89
-          xPosition: 1
-          yPosition: 1
-
-    enemies:
-        - id: 92
-          xPosition: 4
-          yPosition: 1
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-
-    nextLevel:
-    tutorialFileName: "yaml/tutorial2.yml"
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/straight-easy.yml"]
-
-Tutorial3:
-    allies:
-        - id: 95
-          xPosition: 1
+        - id: 0
+          xPosition: 0
           yPosition: 0
-
+        - id: 1
+          xPosition: 0
+          yPosition: 3
     enemies:
-        - id: 110
+        - id: 2
           xPosition: 4
-          yPosition: 1
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-        - id: 94
-          xPosition: 4
-          yPosition: 0
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-    nextLevel:
-    tutorialFileName: "yaml/tutorial3.yml"
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/straight-easy.yml"]
-
-Tutorial4:
-    allies:
-        - id: 95
-          xPosition: 1
-          yPosition: 1
-
-    enemies:
-        - id: 103
+          yPosition: 3
+        - id: 3
           xPosition: 5
           yPosition: 1
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-        - id: 97
-          xPosition: 4
-          yPosition: 2
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-
     nextLevel:
-    tutorialFileName: "yaml/tutorial4.yml"
     boardWidth: 6
     boardHeight: 4
     boardTexture: "models/Tile.png"
     rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/tutorial5ai.yml","aiyaml/shield-easy.yml","aiyaml/straight-medium.yml"]
-
-Tutorial5:
-    allies:
-        - id: 96
-          xPosition: 1
-          yPosition: 1
-        - id: 102
-          xPosition: 2
-          yPosition: 3
-
-    enemies:
-        - id: 101
-          xPosition: 3
-          yPosition: 1
-          aggression: 0.5
-          risk: 0.5
-          defensiveness: 0.5
-          intelligence: 0.3
-          difficulty: EASY
-
-    nextLevel:
-    tutorialFileName: "yaml/tutorial5.yml"
-    boardWidth: 6
-    boardHeight: 4
-    boardTexture: "models/Tile.png"
-    rimTexture: "models/tiles_bottomrim.png"
-    AI: ["aiyaml/straight-easy.yml"]
+    AI: []
 
 # ghost boss survive
 Boss1:
