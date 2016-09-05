@@ -118,7 +118,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
 						prompt = "Choose a Target";
 					} else {
 						int actionExecute = menu.takenSlots + action.cost;
-						menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
+						menu.add(new GameActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 						menu.resetPointer(numSlots);
 					}
 					if (tutorialSteps.stepOnSelection) {
@@ -159,7 +159,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
         	ActionNode removed = menu.removeLast();
             if (removed != null){
                 if (tutorialSteps.stepOnSelection) {
-                	if (removed.action.pattern == Pattern.MOVE) {
+                	if (removed.getAction().pattern == Pattern.MOVE) {
                 		tutorialSteps.prevStep();
                 		tutorialSteps.prevStep();
                 	} else tutorialSteps.prevStep();
@@ -167,7 +167,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
             }
             //		} else if (InputController.pressedD() && menu.canNop(numSlots)){
             /*float actionExecute = selected.actionBar.actionExecutionTime(menu.takenSlots,0);
-             menu.add(new ActionNode(nop,actionExecute,0,0,Direction.NONE),numSlots);
+             menu.add(new GameActionNode(nop,actionExecute,0,0,Direction.NONE),numSlots);
              menu.resetPointer(numSlots);*/
         } else if (InputController.pressedUp() && !InputController.pressedDown()){
             //Actions go from up down, so we need to flip
@@ -225,7 +225,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
                 int numSlots = selected.actionBar.getUsableNumSlots();
                 // TODO hack solution we already confirmed the action in highlightAction
                 if (!mouseCondition){
-	                menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
+	                menu.add(new GameActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 	                menu.setChoosingTarget(false);
 	                menu.resetPointer(numSlots);
                 }
@@ -302,7 +302,7 @@ public class TutorialSelectionMenuController extends SelectionMenuController{
         		for (int i = 0; i < tas.size(); i++){
         			ActionNode an = selectedActions.get(i);
         			TutorialAction ta = tas.get(i);
-        			if (an.action != selected.availableActions[ta.actionId]){
+        			if (an.getAction() != selected.availableActions[ta.actionId]){
         				return false;
         			}
         			if (ta.direction != Direction.NONE && ta.direction != an.direction){

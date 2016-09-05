@@ -7,6 +7,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
+import edu.cornell.gdiac.ailab.ActionNode;
+import edu.cornell.gdiac.ailab.GameActionNode;
+import edu.cornell.gdiac.ailab.CharacterActions.MessageActionNode;
+
 public class Message {
 	
 	public enum MessageType {
@@ -94,10 +98,15 @@ public class Message {
 		        .registerSubtype(ChallengeMessage.class)
 		        .registerSubtype(InGameMessage.class)
 		        .registerSubtype(BackMessage.class);
+		
+		RuntimeTypeAdapterFactory<ActionNode> anAdapter = RuntimeTypeAdapterFactory.of(ActionNode.class, new ActionNodeTypePredicate())
+		        .registerSubtype(MessageActionNode.class)
+				.registerSubtype(GameActionNode.class);
 
 		Gson gson = new GsonBuilder()
 		        .enableComplexMapKeySerialization()
-		        .registerTypeAdapterFactory(messageAdapter).create();
+		        .registerTypeAdapterFactory(messageAdapter)
+		        .registerTypeAdapterFactory(anAdapter).create();
 		
 		Message m = gson.fromJson(processedS,Message.class);
 		return m;

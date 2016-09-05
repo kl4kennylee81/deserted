@@ -6,6 +6,7 @@ import edu.cornell.gdiac.ailab.Action.Pattern;
 import edu.cornell.gdiac.ailab.ActionNode.Direction;
 import edu.cornell.gdiac.ailab.Coordinates.Coordinate;
 import edu.cornell.gdiac.ailab.Effect.Type;
+import edu.cornell.gdiac.ailab.GameActionNode;
 
 public class SelectionMenuController {
 
@@ -325,7 +326,7 @@ public class SelectionMenuController {
 					prompt = "Choose a Target";
 				} else {
 					int actionExecute = menu.takenSlots + action.cost;
-					menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
+					menu.add(new GameActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 					menu.resetPointer(numSlots);
 				}
 			} else {
@@ -623,7 +624,7 @@ public class SelectionMenuController {
 	private void confirmedAction(){
 		int actionExecute =menu.takenSlots+action.cost;
 		int numSlots = selected.getActionBar().getUsableNumSlots();
-		menu.add(new ActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
+		menu.add(new GameActionNode(action,actionExecute,selectedX,selectedY,direction),numSlots);
 		this.setChoosingTarget(false);
 		menu.resetPointer(numSlots);
 
