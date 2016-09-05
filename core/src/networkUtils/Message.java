@@ -1,16 +1,11 @@
 package networkUtils;
 
-import flexjson.JSONSerializer;
-import flexjson.locators.TypeLocator;
-
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
-
-import flexjson.JSONDeserializer;
 
 public class Message {
 	
@@ -91,6 +86,7 @@ public class Message {
 	}
 	
 	public static Message jsonToMsg(String s){
+		String processedS = s.trim();
 		RuntimeTypeAdapterFactory<Message> messageAdapter = RuntimeTypeAdapterFactory.of(Message.class, new MessageTypePredicate())
 		        .registerSubtype(NormalMessage.class)
 		        .registerSubtype(UsernameMessage.class)
@@ -103,7 +99,7 @@ public class Message {
 		        .enableComplexMapKeySerialization()
 		        .registerTypeAdapterFactory(messageAdapter).create();
 		
-		Message m = gson.fromJson(s,Message.class);
+		Message m = gson.fromJson(processedS,Message.class);
 		return m;
 	}
 }
