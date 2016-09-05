@@ -51,8 +51,8 @@ public class NetworkingGameplayController extends GameplayController {
 			e.printStackTrace();
 		}
 		if (s != null) {
+			System.out.println(s);
 			Message m = Message.jsonToMsg(s);
-			System.out.println(m);
 			try {
 				InGameMessage igm = (InGameMessage) m;
 				CharacterActions ca = igm.getCharacterActions();
@@ -70,7 +70,6 @@ public class NetworkingGameplayController extends GameplayController {
 				}
 			}
 			catch (ClassCastException e){
-				System.out.println("we are in class cast exception");
 				return;
 			}
 		}

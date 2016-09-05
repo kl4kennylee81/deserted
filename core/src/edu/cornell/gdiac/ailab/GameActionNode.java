@@ -25,7 +25,6 @@ public class GameActionNode extends ActionNode {
 		this.action = new Action();
 		for (Action a:char_actions){
 			if (msg_an.getActionName().equals(a.getName())){
-				System.out.println(a.getName());
 				this.action = a;
 			}
 		}
