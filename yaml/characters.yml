@@ -3,7 +3,7 @@
   health: 4
   maxHealth: 4
   hexColor: FF9900FF
-  speed: 4.0
+  speed: 3.0
   castSpeed: 3.0
   slots: 2
   availableActions:
@@ -36,7 +36,7 @@
   maxHealth: 3
   hexColor: CD2626FF
   speed: 3.0
-  castSpeed: 8.0
+  castSpeed: 9.
   slots: 3
   availableActions:
   - 0
@@ -52,7 +52,7 @@
   maxHealth: 4
   hexColor: CD2626FF
   speed: 3.0
-  castSpeed: 8.0
+  castSpeed: 8.
   slots: 3
   availableActions:
   - 0
@@ -68,7 +68,7 @@
   maxHealth: 6
   hexColor: CD2626FF
   speed: 5.0
-  castSpeed: 6.
+  castSpeed: 6.0
   slots: 2
   availableActions:
   - 0
@@ -85,7 +85,7 @@
   maxHealth: 6
   hexColor: CD2626FF
   speed: 5.0
-  castSpeed: 6.
+  castSpeed: 6.0
   slots: 2
   availableActions:
   - 0

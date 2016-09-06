@@ -1300,7 +1300,7 @@
   range: 1
   size: 1
   pattern: INSTANT
-  path: "2,0"
+  path: "3,0"
   oneHit: true
   needsToggle: false
   canBlock: true
@@ -1317,7 +1317,7 @@
   name: Lightning
   cost: 2
   damage: 2
-  range: 4
+  range: 5
   size: 1
   pattern: SINGLE
   oneHit: true
