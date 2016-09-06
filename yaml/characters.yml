@@ -14,7 +14,6 @@
   texture: models/portraits/lightbunnyportrait.png
   icon: largeicons/bunmage_miniiconlight.png
   bigIcon: largeicons/bunmage_largeiconlight.png
-  largeIcon: largeicons/bunmage_largeiconlight.png
   animationId: 112
   bossId: 1000
 21:
@@ -32,7 +31,6 @@
   texture: models/portraits/darkbunnyportrait.png
   icon: largeicons/bunmage_miniicondark.png
   bigIcon: largeicons/bunmage_largeicondark.png
-  largeIcon: largeicons/bunmage_largeicondark.png
   animationId: 111
   bossId: 1000
 22:
