@@ -28,7 +28,7 @@ pvp_local:
         - id: 21
           xPosition: 0
           yPosition: 0
-        - id: 25
+        - id: 23
           xPosition: 0
           yPosition: 3
     enemies:

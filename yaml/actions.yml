@@ -1345,19 +1345,19 @@
   needsToggle: false
   canBlock: false
   effect:
-    type: BROKEN
-    name: Break Tile
-    numRounds: 1
-    magnitude: 1
+    type: REGULAR
+    name: Regular
+    numRounds: 2
+    magnitude: 0
   description: Send Lightning Down on the same row as this character's on the enemy's side
   animationId: 0
   icon: models/action_tokens/lightning_token.png
 
 205:
   name: Single Square
-  cost: 2
+  cost: 3
   damage: 2
-  range: 4
+  range: 5
   size: 1
   pattern: SINGLEPATH
   path: "0,0 1,0 0,1 1,1"
@@ -1379,10 +1379,10 @@
   name: Cage
   cost: 2
   damage: 1
-  range: 5
+  range: 4
   size: 1
   pattern: SINGLEPATH
-  path: "0,0 1,0 0,1 -1,0 0,-1"
+  path: "1,0 0,1 -1,0 0,-1"
   oneHit: false
   needsToggle: true
   canBlock: false
