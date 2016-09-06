@@ -1,3 +1,100 @@
+20:
+  name: Rogue
+  health: 4
+  maxHealth: 4
+  hexColor: FF9900FF
+  speed: 3.5
+  castSpeed: 3.0
+  slots: 2
+  availableActions:
+  - 0
+  - 200
+  - 201
+  texture: models/portraits/lightbunnyportrait.png
+  icon: largeicons/bunmage_miniiconlight.png
+  largeIcon: largeicons/bunmage_largeiconlight.png
+  animationId: 112
+21:
+  name: Assassin
+  health: 3
+  maxHealth: 3
+  hexColor: FF9900FF
+  speed: 7.
+  castSpeed: 3.0
+  slots: 2
+  availableActions:
+  - 0
+  - 202
+  - 203
+  texture: models/portraits/darkbunnyportrait.png
+  icon: largeicons/bunmage_miniicondark.png
+  largeIcon: largeicons/bunmage_largeicondark.png
+  animationId: 111
+22:
+  name: Mage
+  health: 3
+  maxHealth: 3
+  hexColor: CD2626FF
+  speed: 2.0
+  castSpeed: 8.0
+  slots: 3
+  availableActions:
+  - 0
+  - 204
+  - 205
+  texture: models/portraits/solus.png
+  icon: models/sulus_icon.png
+  bigIcon: largeicons/chara_largeicon.png
+  animationId: 101
+23:
+  name: Hexer
+  health: 4
+  maxHealth: 4
+  hexColor: CD2626FF
+  speed: 2.0
+  castSpeed: 8.0
+  slots: 3
+  availableActions:
+  - 0
+  - 206
+  - 207
+  texture: models/portraits/darksolus.png
+  icon: models/Solus/darksolus_miniicon.png
+  bigIcon: models/Solus/darksolus_miniicon.png
+  animationId: 113
+24:
+  name: Support
+  health: 6
+  maxHealth: 6
+  hexColor: CD2626FF
+  speed: 5.0
+  castSpeed: 6.
+  slots: 2
+  availableActions:
+  - 0
+  - 208
+  - 209
+  - 210
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
+  bigIcon: largeicons/rock_largeiconbasicSymbol.png
+  animationId: 116
+25:
+  name: Tank
+  health: 6
+  maxHealth: 6
+  hexColor: CD2626FF
+  speed: 5.0
+  castSpeed: 6.
+  slots: 2
+  availableActions:
+  - 0
+  - 211
+  - 212
+  texture: largeicons/bosshead_icon.png
+  icon: models/ghost_boss/bosshead_smallicon.png
+  bigIcon: largeicons/bosshead_icon.png
+  animationId: 109
 0:
   name: Main Character
   health: 6
@@ -331,7 +428,7 @@
   bigIcon: largeicons/rock_largeicongreen.png
   animationId: 117
   bossId: 1003
-  
+
 19:
   name: Mage Spirit
   health: 0
@@ -350,197 +447,6 @@
   bigIcon: largeicons/rock_largeiconyellow.png
   animationId: 115
   bossId: 1000
-
-#=========================================================
-
-
-
-89:
-  name: Tutorial_part_3
-  health: 4
-  maxHealth: 4
-  hexColor: 3299FFFF
-  speed: 7.0
-  castSpeed: 7.0
-  slots: 4
-  availableActions:
-  - 0
-  - 4
-  texture: models/CHARA_3.png
-  icon: models/sulus_icon.png
-  bigIcon: largeicons/chara_largeicon.png
-  animationId: 101
-90:
-  name: Tutorial_part_1
-  health: 2
-  maxHealth: 2
-  hexColor: 3299FFFF
-  speed: 3.0
-  castSpeed: 7.0
-  slots: 4
-  availableActions:
-  - 0
-  - 4
-  texture: models/portraits/solus.png
-  icon: models/sulus_icon.png
-  bigIcon: largeicons/chara_largeicon.png
-  animationId: 101
-91:
-  name: Tutorial1_straight
-  health: 2
-  maxHealth: 2
-  hexColor: FF9900FF
-  speed: 5.0
-  castSpeed: 7.0
-  slots: 2
-  availableActions:
-  - 0
-  - 4
-  texture: models/CHARA_5.png
-  bigIcon: largeicons/rock_largeiconbasic.png
-  icon: models/tutorial_characters/basic_icon.png
-  animationId: 103
-92:
-  name: Tutorial2_straight
-  health: 4
-  maxHealth: 4
-  hexColor: FF9900FF
-  speed: 5.0
-  castSpeed: 5.0
-  slots: 2
-  availableActions:
-  - 0
-  - 4
-  texture: models/CHARA_5.png
-  bigIcon: largeicons/rock_largeiconbasic.png
-  icon: models/tutorial_characters/basic_icon.png
-  animationId: 103
-94:
-  name: Tutorial4_straight
-  health: 2
-  maxHealth: 2
-  hexColor: FF9900FF
-  speed: 4.0
-  castSpeed: 5.0
-  slots: 2
-  availableActions:
-  - 0
-  - 4
-  texture: models/CHARA_5.png
-  bigIcon: largeicons/rock_largeiconbasic.png
-  icon: models/tutorial_characters/basic_icon.png
-  animationId: 103
-110:
-  name: Tutorial4_straight
-  health: 2
-  maxHealth: 2
-  hexColor: FF9900FF
-  speed: 4.5
-  castSpeed: 5.0
-  slots: 2
-  availableActions:
-  - 0
-  - 4
-  texture: models/CHARA_5.png
-  bigIcon: largeicons/rock_largeiconbasic.png
-  icon: models/tutorial_characters/basic_iconred.png
-  animationId: 106
-95:
-  name: Tutorial_part_2
-  health: 2
-  maxHealth: 2
-  hexColor: FF9900FF
-  speed: 6.5
-  castSpeed: 7.5
-  slots: 4
-  availableActions:
-  - 0
-  - 4
-  - 52
-  - 36
-  texture: models/portraits/solus.png
-  icon: models/sulus_icon.png
-  bigIcon: largeicons/chara_largeicon.png
-  animationId: 101
-96:
-  name: Tutorial_part_3
-  health: 4
-  maxHealth: 4
-  hexColor: FF9900FF
-  speed: 9.5
-  castSpeed: 10.0
-  slots: 4
-  availableActions:
-  - 0
-  - 4
-  - 9
-  texture: models/portraits/solus.png
-  icon: models/sulus_icon.png
-  bigIcon: largeicons/chara_largeicon.png
-  animationId: 101
-97:
-  name: Tutorial_Shield
-  health: 2
-  maxHealth: 2
-  hexColor: FF9900FF
-  speed: 3.5
-  castSpeed: 5.0
-  slots: 2
-  availableActions:
-  - 0
-  - 45
-  - 4
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconblue.png
-  bigIcon: largeicons/rock_largeiconblue.png
-  animationId: 105
-
-101:
-  name: Tutorial_Fast
-  health: 2
-  maxHealth: 2
-  hexColor: FF9900FF
-  speed: 4.0
-  castSpeed: 2.5
-  slots: 2
-  availableActions:
-  - 0
-  - 4
-  texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_iconyellow.png
-  bigIcon: largeicons/rock_largeiconyellow.png
-  animationId: 107
-102:
-  name: Tutorial_Slow
-  health: 2
-  maxHealth: 2
-  hexColor: FF9900FF
-  speed: 3.5
-  castSpeed: 5.0
-  slots: 2
-  availableActions:
-  - 0
-  - 4
-  - 37
-  texture: models/CHARA_3.png
-  icon: models/bunmage_icon.png
-  bigIcon: largeicons/bunmage_largeicon.png
-  animationId: 108
-103:
-  name: Tutorial6_straight
-  health: 2
-  maxHealth: 2
-  hexColor: FF9900FF
-  speed: 5.5
-  castSpeed: 5.0
-  slots: 2
-  availableActions:
-  - 0
-  - 4
-  texture: models/CHARA_5.png
-  bigIcon: largeicons/rock_largeiconred.png
-  icon: models/tutorial_characters/basic_iconred.png
-  animationId: 106
 
 # 1000+ This is where we have the parent characters
 # and the portrait characters
