@@ -105,6 +105,7 @@ levels:
     seenPre: false
     postNarrative: yaml/narratives/Boss1Post.yml
     seenPost: false
+    seenPost: false
     displayName: VILLAGE - 7
   2:
     levelName: Boss2
@@ -189,11 +190,12 @@ levels:
     displayName: PVP-ONLINE
   10:
     levelName: pvp_local
-    beaten: true
+    beaten: false
     needsSelect: false
     boss: false
     background: backgrounds/inTheSkybg.png
     displayName: PVP-LOCAL
+
 availableCharacters:
 - 0
 - 1
@@ -208,3 +210,4 @@ unlockableCharacters:
 selectedCharacters:
 - 0
 - 1
+

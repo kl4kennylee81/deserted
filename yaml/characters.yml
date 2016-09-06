@@ -1,7 +1,8 @@
+# These are the new potential characters
 20:
   name: Rogue
-  health: 4
-  maxHealth: 4
+  health: 3
+  maxHealth: 3
   hexColor: FF9900FF
   speed: 3.0
   castSpeed: 3.0
@@ -14,6 +15,7 @@
   icon: largeicons/bunmage_miniiconlight.png
   largeIcon: largeicons/bunmage_largeiconlight.png
   animationId: 112
+  bossId: 1000
 21:
   name: Assassin
   health: 3
@@ -30,6 +32,7 @@
   icon: largeicons/bunmage_miniicondark.png
   largeIcon: largeicons/bunmage_largeicondark.png
   animationId: 111
+  bossId: 1000
 22:
   name: Mage
   health: 3
@@ -46,10 +49,11 @@
   icon: models/sulus_icon.png
   bigIcon: largeicons/chara_largeicon.png
   animationId: 101
+  bossId: 1000
 23:
   name: Hexer
-  health: 4
-  maxHealth: 4
+  health: 3
+  maxHealth: 3
   hexColor: CD2626FF
   speed: 3.0
   castSpeed: 8.
@@ -62,10 +66,11 @@
   icon: models/Solus/darksolus_miniicon.png
   bigIcon: models/Solus/darksolus_miniicon.png
   animationId: 113
+  bossId: 1000
 24:
   name: Support
-  health: 6
-  maxHealth: 6
+  health: 3
+  maxHealth: 3
   hexColor: CD2626FF
   speed: 5.0
   castSpeed: 6.0
@@ -79,10 +84,11 @@
   icon: models/tutorial_characters/basic_icon.png
   bigIcon: largeicons/rock_largeiconbasicSymbol.png
   animationId: 116
+  bossId: 1000
 25:
   name: Tank
-  health: 6
-  maxHealth: 6
+  health: 3
+  maxHealth: 3
   hexColor: CD2626FF
   speed: 5.0
   castSpeed: 6.0
@@ -95,6 +101,7 @@
   icon: models/ghost_boss/bosshead_smallicon.png
   bigIcon: largeicons/bosshead_icon.png
   animationId: 109
+  bossId: 1000
 0:
   name: Main Character
   health: 6
