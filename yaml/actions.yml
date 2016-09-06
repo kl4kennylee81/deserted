@@ -1357,7 +1357,7 @@
   name: Single Square
   cost: 2
   damage: 2
-  range: 5
+  range: 4
   size: 1
   pattern: SINGLEPATH
   path: "0,0 1,0 0,1 1,1"

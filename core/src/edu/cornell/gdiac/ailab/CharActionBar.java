@@ -589,6 +589,7 @@ public class CharActionBar {
 		float actionSlot_x = this.getX(canvas);
 		float actionSlot_y = this.getY(canvas, count);
 
+		int i = 0;
 		for (ActionNode a: queuedActions){
 			// length relative
 			float executePoint = this.getExecutePoint(a);
@@ -615,6 +616,7 @@ public class CharActionBar {
 				float height_icon = a.getAction().barIcon.getHeight() * scale;
 				canvas.drawTexture(a.getAction().barIcon, x_pos, y_icon, width_icon,height_icon, Color.WHITE);
 			}
+			i++;
 		}
 	}
 	
@@ -707,8 +709,9 @@ public class CharActionBar {
 		tempActions.clear();
 		
 		// temporary code for revealing only the next action for opponents
+		// this is to test pvp without full reveal
 		List<ActionNode> queuedSubList = queuedActions;
-		if (queuedActions.size() > 0 && !leftside){
+		if (queuedActions.size() > 0 ){
 			queuedSubList = queuedActions.subList(0, 1);
 		}
 		
