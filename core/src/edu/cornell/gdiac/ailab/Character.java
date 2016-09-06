@@ -43,6 +43,8 @@ public class Character implements GUIElement {
 	private float speed;
 	/** Speed when moving through cast par of bar */
 	private float castSpeed;
+	/** Defense of this character */
+	private int defense;
 	
 	/** Current x position */
 	int xPosition;
@@ -140,7 +142,7 @@ public class Character implements GUIElement {
 	/**Constructor used by GameEngine to create characters from yaml input. */
 	public Character (int id,Texture texture, Texture icon, AnimationNode animation, String name, 
 						int health, int maxHealth, Color color, 
-						float speed, float castSpeed, int xPosition, int yPosition,
+						float speed, float castSpeed, int defense, int xPosition, int yPosition,
 						boolean leftSide, Action[] actions,int numSlots){
 		this.id = id;
 		this.texture = texture;
@@ -155,6 +157,7 @@ public class Character implements GUIElement {
 		/* Randomize so that its not always the same thing */
 		this.speed = speed;
 		this.castSpeed = castSpeed;
+		this.defense = defense;
 		
 		this.startingXPosition = this.xPosition = xPosition;
 		this.startingYPosition = this.yPosition = yPosition;
@@ -182,7 +185,7 @@ public class Character implements GUIElement {
 	
 	public Character (int id,Texture texture, Texture icon, AnimationNode animation, String name, 
 			int health, int maxHealth, Color color, 
-			float speed, float castSpeed,  Action[] actions,int numSlots){
+			float speed, float castSpeed,  int defense, Action[] actions,int numSlots){
 		this.id = id;
 		this.texture = texture;
 		this.icon = icon;
@@ -196,6 +199,7 @@ public class Character implements GUIElement {
 		/* Randomize so that its not always the same thing */
 		this.speed = speed;
 		this.castSpeed = castSpeed;
+		this.defense = defense;
 
 		lastCastStart = 0;
 		castPosition = 0;
@@ -237,10 +241,12 @@ public class Character implements GUIElement {
 		this.maxHealth = c.maxHealth;
 
 		this.color = c.color;
+		
 
 		/* Randomize so that its not always the same thing */
 		this.speed = c.speed;
 		this.castSpeed = c.castSpeed;
+		this.defense = c.defense;
 
 		lastCastStart = 0;
 		castPosition = 0;
@@ -276,6 +282,7 @@ public class Character implements GUIElement {
 		/* Randomize so that its not always the same thing */
 		this.speed = c.speed;
 		this.castSpeed = c.castSpeed;
+		this.defense = c.defense;
 
 		lastCastStart = 0;
 		castPosition = 0;
@@ -1349,6 +1356,11 @@ public class Character implements GUIElement {
 
 	public void setHovering() {
 		isHovering = true;
+		
+	}
+	
+	public int getDefense() {
+		return defense;
 		
 	}
 

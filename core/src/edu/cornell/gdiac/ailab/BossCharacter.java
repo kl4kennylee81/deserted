@@ -29,9 +29,9 @@ public class BossCharacter extends Character{
 	}
 	
 	public BossCharacter (int id,Texture texture, Texture icon, AnimationNode animation, String name, 
-			int health, int maxHealth, Color color,float speed, float castSpeed, 
+			int health, int maxHealth, Color color,float speed, float castSpeed, int defense, 
 			Action[] actions,int numSlots,Character parent,boolean sharedStatus){
-		super(id,texture,icon,animation,name,health,maxHealth,color,speed,castSpeed,actions,numSlots);
+		super(id,texture,icon,animation,name,health,maxHealth,color,speed,castSpeed,defense,actions,numSlots);
 		this.parentChar = parent;
 		this.sharedStatus = sharedStatus;
 	}

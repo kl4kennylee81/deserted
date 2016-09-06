@@ -43,20 +43,20 @@ public class ActionDescription {
 		toShow.add("Cast Time: "+action.cost);
 		switch (action.pattern){
 		case DIAGONAL:
-			toShow.add("Damage: "+action.damage);
+			toShow.add("Damage: "+action.getDamage(null));
 			break;
 		case HORIZONTAL:
-			toShow.add("Damage: "+action.damage);
+			toShow.add("Damage: "+action.getDamage(null));
 			break;
 		case INSTANT:
-			toShow.add("Damage: "+action.damage);
+			toShow.add("Damage: "+action.getDamage(null));
 			break;
 		case MOVE:
 			break;
 		case NOP:
 			break;
 		case PROJECTILE:
-			toShow.add("Damage: "+action.damage);
+			toShow.add("Damage: "+action.getDamage(null));
 			break;
 		case SHIELD:
 			toShow.add("Hits Taken: "+action.shieldNumberHits);
@@ -65,14 +65,14 @@ public class ActionDescription {
 		case SINGLE:
 		case SINGLEPATH:
 			if (action.effect.icon == null){
-				toShow.add("Damage: "+action.damage);
+				toShow.add("Damage: "+action.getDamage(null));
 			} else {
 				toShow.add("EFFECT");
 			}
 			toShow.add("Range: "+action.range);
 			break;
 		case STRAIGHT:
-			toShow.add("Damage: "+action.damage);
+			toShow.add("Damage: "+action.getDamage(null));
 			break;
 		default:
 			break;

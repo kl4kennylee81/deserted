@@ -507,7 +507,7 @@ public class ActionController {
 			}
 			
 			if (isBlocked(path[i].x, path[i].y)){
-				if (a_node.getAction().damage > 0){
+				if (a_node.getAction().getDamage(null) > 0){
 					shields.hitShield(path[i].x, path[i].y, selected.leftside,textMessages);
 				}
 				hitThisRound = true;
@@ -569,8 +569,8 @@ public class ActionController {
 
 		//add text bubble for amount of damage in front of target
 		// only add the text damage if any damage has been done
-		if (a_node.getAction().damage > 0){
-			String attack_damage = Integer.toString(a_node.getAction().damage);
+		if (a_node.getAction().getDamage(target) > 0){
+			String attack_damage = Integer.toString(a_node.getAction().getDamage(target));
 			textMessages.addDamageMessage(attack_damage, target.xPosition, target.yPosition, 2*TextMessage.SECOND, Color.WHITE);
 			target.setHurt();
 			ActionNode nextAttack = target.queuedActions.peek();
@@ -587,7 +587,7 @@ public class ActionController {
 	}
 
 	protected void applyDamage(ActionNode a_node,Character target){
-		target.setHealth(Math.max(target.getHealth()-a_node.getAction().damage, 0));
+		target.setHealth(Math.max(target.getHealth()-a_node.getAction().getDamage(target), 0));
 	}
 
 	protected void applyEffect(ActionNode a_node, Character target){
