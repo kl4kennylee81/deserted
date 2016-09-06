@@ -20,7 +20,7 @@
   maxHealth: 3
   hexColor: FF9900FF
   speed: 6.0
-  castSpeed: 4.0
+  castSpeed: 3.5
   slots: 2
   availableActions:
   - 0
