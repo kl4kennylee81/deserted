@@ -472,7 +472,7 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	public Action normalAttack(Character c, int xPos, int yPos){
 		for(Action a: c.availableActions){
-			if(a.damage > 0 && a.pattern != Pattern.SINGLE){
+			if(a.getDamage(null) > 0 && a.pattern != Pattern.SINGLE){
 				for(Character e: enemies){
 					if(canAttackSquareFrom(xPos, yPos, e.xPosition, e.yPosition, a)){
 						return a;
@@ -492,7 +492,7 @@ public class TacticalManager extends ConditionalManager{
 		Action quickest = nop();
 		int minCost = Integer.MAX_VALUE;
 		for(Action a: c.availableActions){
-			if(a.damage > 0){
+			if(a.getDamage(null) > 0){
 				for(Character e: enemies){
 					if(a.cost < minCost && canAttackSquareFrom(xPos, yPos, e.xPosition, e.yPosition, a)){
 						quickest = a;
@@ -513,7 +513,7 @@ public class TacticalManager extends ConditionalManager{
 		Action powerful = nop();
 		int maxCost = Integer.MIN_VALUE;
 		for(Action a: c.availableActions){
-			if(a.damage > 0){
+			if(a.getDamage(null) > 0){
 				for(Character e: enemies){
 					if(a.cost > maxCost && canAttackSquareFrom(xPos, yPos, e.xPosition, e.yPosition, a)){
 						powerful = a;
@@ -545,7 +545,7 @@ public class TacticalManager extends ConditionalManager{
 	 */
 	private ActionNode anyAttack(Character c, int startPoint){
 		for(Action a: c.availableActions){
-			if(a.damage > 0 && a.pattern != Pattern.SINGLE){
+			if(a.getDamage(null) > 0 && a.pattern != Pattern.SINGLE){
 				return new GameActionNode(a, getCastTime(c, a, startPoint), 0, 0, Direction.NONE);
 			}
 		}
@@ -1256,7 +1256,7 @@ public class TacticalManager extends ConditionalManager{
 		if(a.getAction().pattern == Pattern.MOVE) return;
 		if(a.getAction().pattern == Pattern.SHIELD) return;
 		Action power = powerfulAttack(c, xPos, yPos);
-		if(a.getAction().damage == power.cost){
+		if(a.getAction().getDamage(null) == power.cost){
 			moves.add(Specific.POWERFUL_ATTACK);
 		}
 		Action quick = quickAttack(c, xPos, yPos);

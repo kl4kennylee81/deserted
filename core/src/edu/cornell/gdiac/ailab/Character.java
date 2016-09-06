@@ -1358,6 +1358,11 @@ public class Character implements GUIElement {
 		isHovering = true;
 		
 	}
+	
+	public int getDefense() {
+		return defense;
+		
+	}
 
 	@Override
 	public boolean contains(float x, float y, GameCanvas canvas, GridBoard board) {

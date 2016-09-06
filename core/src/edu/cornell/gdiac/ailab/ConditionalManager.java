@@ -254,7 +254,7 @@ public class ConditionalManager {
 	public boolean canHitQuickAttack(){
 		Action quickest = null;
 		for(Action a : selected.availableActions){
-			if(a.damage > 0 && (quickest == null || a.cost <= quickest.cost)){
+			if(a.getDamage(null) > 0 && (quickest == null || a.cost <= quickest.cost)){
 				quickest = a;
 			}
 		}
@@ -277,7 +277,7 @@ public class ConditionalManager {
 		int y = selected.yPosition;
 		Action quickest = null;
 		for(Action a : selected.availableActions){
-			if(a.damage > 0 && (quickest == null || a.cost < quickest.cost)){
+			if(a.getDamage(null) > 0 && (quickest == null || a.cost < quickest.cost)){
 				quickest = a;
 			}
 		}
@@ -320,7 +320,7 @@ public class ConditionalManager {
 		int y = selected.yPosition;
 		Action quick = null;
 		for(Action a : selected.availableActions){
-			if(a.damage > 0 && (quick == null || a.cost < quick.cost)){
+			if(a.getDamage(null) > 0 && (quick == null || a.cost < quick.cost)){
 				quick = a;
 			}
 		}
@@ -862,7 +862,7 @@ public class ConditionalManager {
 	public int quickestAttack(Character c){
 		int minCost = Integer.MAX_VALUE;
 		for(Action a: c.availableActions){
-			if(a.damage >= 0 && a.pattern != Pattern.SINGLE){
+			if(a.getDamage(null) >= 0 && a.pattern != Pattern.SINGLE){
 				minCost = Math.max(a.cost, minCost);
 			}
 		}
