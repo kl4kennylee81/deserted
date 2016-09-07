@@ -272,10 +272,12 @@ public class GameplayController {
     }
     
     public boolean handleSelectionDone(){
+    	actionBarController.isPlayerSelection = false;
     	return true;
     }
     
     public void handleWaiting(){
+    	actionBarController.isNetworkingOpponentSelection = false;
     	return;
     }
     

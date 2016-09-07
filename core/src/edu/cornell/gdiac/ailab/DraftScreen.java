@@ -63,7 +63,7 @@ public class DraftScreen extends Menu{
 	
 	public DraftScreen(Characters characters){
 		this.characters = characters;
-		this.selectedCharacterId = 0;
+		this.selectedCharacterId = characters.get(0).id;
 		actions = new HashMap<Integer,ArrayList<Action>>();
 		
 		loadCharacterInfo();
