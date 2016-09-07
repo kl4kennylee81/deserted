@@ -9,7 +9,7 @@ import edu.cornell.gdiac.mesh.TexturedMesh;
 public class Action implements GUIElement {
 	String name;
 	int cost;
-	int damage;
+	private int damage;
 	int range;
 	/** horizontal width of action, used for projectiles*/
 	int size;
@@ -266,5 +266,13 @@ public class Action implements GUIElement {
 		float yMin = this.y;
 		float yMax = this.y + this.height;
 		return x <= xMax && x >= xMin && y <= yMax && y >= yMin;
+	}
+	
+	public int getDamage(Character hitChar){
+		if (hitChar != null){
+			return Integer.max(1, damage - hitChar.getDefense());
+		} else {
+			return damage;
+		}
 	}
 }

@@ -421,6 +421,7 @@ public class ObjectLoader {
 		String hexColor = (String) character.get("hexColor");
 		Float speed = (Float) ((Double) character.get("speed")).floatValue();
 		Float castSpeed = (Float) ((Double) character.get("castSpeed")).floatValue();
+		Integer defense = (Integer) character.get("defense");
 		ArrayList<Integer> actions;
 		actions = (ArrayList<Integer>) character.get("availableActions");
 		Action[] actionArray = new Action[actions.size()];
@@ -458,12 +459,12 @@ public class ObjectLoader {
 			}
 			characterToAdd = new BossCharacter(charId,charTexture, iconTexture, animNode,
 					name, health, maxHealth, Color.valueOf(hexColor), speed,
-					castSpeed, actionArray,numSlots,bossChar,sharedStatus);
+					castSpeed, defense, actionArray,numSlots,bossChar,sharedStatus);
 		}
 		else{
 			characterToAdd = new Character(charId,charTexture, iconTexture, animNode,
 					name, health, maxHealth, Color.valueOf(hexColor), speed,
-					castSpeed, actionArray,numSlots);
+					castSpeed, defense, actionArray,numSlots);
 		}
 		
 		String bigIconName = (String) character.get("bigIcon");
