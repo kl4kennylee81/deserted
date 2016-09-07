@@ -179,8 +179,8 @@ public class DraftController {
 
 		Texture t1 = manager.get(PLAYER1_TEXTURE, Texture.class);
 		Texture t2 = manager.get(PLAYER2_TEXTURE, Texture.class);
-		Character parent1 = new Character(2000, t1, t1, c1.animation, "Ishaan", 10, 10, Color.BLUE, 0, 0, new Action[]{},0);
-		Character parent2 = new Character(2001, t2, t2, c2.animation, "Ishaan", 10, 10, Color.YELLOW, 0, 0, new Action[]{},0);
+		Character parent1 = new Character(2000, t1, t1, c1.animation, "Ishaan", 10, 10, Color.BLUE, 0, 0, 0,new Action[]{},0);
+		Character parent2 = new Character(2001, t2, t2, c2.animation, "Ishaan", 10, 10, Color.YELLOW, 0, 0, 0,new Action[]{},0);
 
 		int health1 = 0;
 		for(int i = 0; i < draftScreen.player1Characters.length; i++){
