@@ -214,12 +214,12 @@ levels:
     postNarrative: yaml/narratives/Boss5Post.yml
     seenPost: false
     displayName: SOLUS - 14
-  14:
-    levelName: pvp
-    beaten: false
-    needsSelect: false
-    boss: false
-    background: backgrounds/inTheSkybg.png
+  # 14:
+  #   levelName: pvp
+  #   beaten: false
+  #   needsSelect: false
+  #   boss: false
+  #   background: backgrounds/inTheSkybg.png
 availableCharacters:
 - 0
 - 1
