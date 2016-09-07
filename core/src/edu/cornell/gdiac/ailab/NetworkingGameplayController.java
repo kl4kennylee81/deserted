@@ -80,6 +80,13 @@ public class NetworkingGameplayController extends GameplayController {
 		}
 	}
 	
+	@Override
+	public void drawCompletedGame(GameCanvas canvas){
+		CompletionScreen cs = CompletionScreen.getInstance();
+		cs.setIsWin(true);
+		cs.draw(canvas);
+	}
+	
 	public void setConnection(Connection connection) {
 		this.connection = connection;
 	}

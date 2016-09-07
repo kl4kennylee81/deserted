@@ -379,13 +379,7 @@ public class GameplayController {
         
 		if (this.gameOver() && this.playerWon() && inGameState == InGameState.WARNING){
     		//canvas.drawCenteredText("You have Won", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
-    		CompletionScreen cs = CompletionScreen.getInstance();
-    		GameSaveStateController gss = GameSaveStateController.getInstance();
-    		cs.skill_point = gss.getLevelSP(levelName);
-    		cs.characters_unlocked = gss.getLevelUnlockedChars(levelName);
-    		gss.beatLevel(levelName);
-    		cs.setIsWin(true);
-    		cs.draw(canvas);
+			drawCompletedGame(canvas);
     	}
 		else if (this.gameOver() && this.playerLost() && inGameState == InGameState.WARNING){
     		//canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);	
@@ -412,6 +406,16 @@ public class GameplayController {
     		}
     	}
     	return false;
+    }
+    
+    protected void drawCompletedGame(GameCanvas canvas){
+		CompletionScreen cs = CompletionScreen.getInstance();
+		GameSaveStateController gss = GameSaveStateController.getInstance();
+		cs.skill_point = gss.getLevelSP(levelName);
+		cs.characters_unlocked = gss.getLevelUnlockedChars(levelName);
+		gss.beatLevel(levelName);
+		cs.setIsWin(true);
+		cs.draw(canvas);
     }
     
     //Change how i do this.
