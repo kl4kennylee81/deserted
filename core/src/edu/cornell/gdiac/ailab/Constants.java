@@ -124,4 +124,11 @@ public class Constants {
 	//transition constant
 	// 0.75f
 	public static final float TRANSITION_TIME = 0.0f;
+	
+	//draft stuff
+	public static final String BLUE_BAR = "draft!/blue_bar.png";
+	public static final String RED_BAR = "draft!/red_bar.png";
+	public static final String GREEN_BAR = "draft!/green_bar.png";
+	public static final String YELLOW_BAR = "draft!/yellow_bar.png";
+	public static final String LIGHT_BLUE_BAR = "draft!/light_blue_bar.png";
 }

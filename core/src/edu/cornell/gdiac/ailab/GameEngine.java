@@ -903,6 +903,19 @@ public class GameEngine implements Screen {
 		manager.load(Constants.LEVEL_SELECT_LOGO, Texture.class);
 		assets.add(Constants.LEVEL_SELECT_LOGO);
 		
+		/** THIS IS FOR THE DRAFT SCREEN **/
+		manager.load(Constants.BLUE_BAR, Texture.class);
+		assets.add(Constants.BLUE_BAR);
+		manager.load(Constants.YELLOW_BAR, Texture.class);
+		assets.add(Constants.YELLOW_BAR);
+		manager.load(Constants.LIGHT_BLUE_BAR, Texture.class);
+		assets.add(Constants.LIGHT_BLUE_BAR);
+		manager.load(Constants.RED_BAR, Texture.class);
+		assets.add(Constants.RED_BAR);
+		manager.load(Constants.GREEN_BAR, Texture.class);
+		assets.add(Constants.GREEN_BAR);
+		
+		
 		statusBar = new Texture(Constants.PRGRSBR_TEXTURE);
 		statusBkgLeft   = new TextureRegion(statusBar,0,0,PROGRESS_CAP,PROGRESS_HEIGHT);
 		statusBkgRight  = new TextureRegion(statusBar,statusBar.getWidth()-PROGRESS_CAP,0,PROGRESS_CAP,PROGRESS_HEIGHT);

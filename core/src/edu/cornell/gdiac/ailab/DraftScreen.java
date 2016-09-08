@@ -50,6 +50,13 @@ public class DraftScreen extends Menu{
 			
 	private static final int NULL_ID= -1;
 	
+	private static final Texture RED_BAR = new Texture(Constants.RED_BAR);
+	private static final Texture YELLOW_BAR = new Texture(Constants.YELLOW_BAR);
+	private static final Texture BLUE_BAR = new Texture(Constants.BLUE_BAR);
+	private static final Texture GREEN_BAR = new Texture(Constants.GREEN_BAR);
+	private static final Texture LIGHT_BLUE_BAR = new Texture(Constants.LIGHT_BLUE_BAR);
+	private static final Texture LOGO = new Texture(Constants.LEVEL_SELECT_LOGO);
+	
 	Characters characters;
 	Character parent1;
 	Character parent2;
@@ -367,7 +374,18 @@ public class DraftScreen extends Menu{
 			canvas.draw(character, Color.WHITE,x,y,width,height);
 
 			
-			canvas.drawCenteredText(characters.get(selectedCharacterId).name, x+width/2, 0.9f*canvas.height, Color.WHITE);
+			canvas.drawCenteredText(characters.get(selectedCharacterId).name, x+width/2, (RELATIVE_DESCRIPTION_Y_POS + 0.385f)*canvas.height, Color.WHITE);
+			
+			float increment = 0.375f/5f;
+			float ypos = RELATIVE_DESCRIPTION_Y_POS;
+			for(int i = 0; i < 5; i++){
+				float currenty = (ypos + (increment/10)) * canvas.height;
+				float heighty = (canvas.height * (0.8f * increment));
+				float widthx = descript_width  / 8f;
+				float posx = middle_x - (widthx / 2);
+				canvas.drawTexture(BLUE_BAR, posx, currenty, widthx, heighty, Color.WHITE);
+				ypos += increment;
+			}
 			
 		}
 			/*canvas.drawTexture(DESCRIPTION_BACKGROUND, descript_x, descript_y, descript_width, descript_height, Color.WHITE);
