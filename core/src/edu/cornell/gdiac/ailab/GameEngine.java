@@ -215,7 +215,7 @@ public class GameEngine implements Screen {
 		NetworkingGameplayController ngc = new NetworkingGameplayController(mouseOverController, cmc, pmc, file, fileNum, false);
 		narrativeController = new NarrativeController();
 		DraftController dc = new DraftController(canvas, mouseOverController);
-		networkingController = new NetworkingController(ngc, dc);
+		networkingController = new NetworkingController(ngc, dc, this);
 		
 		this.transitionScreen = new TransitionScreen();
 		this.isTransitioning = false;
@@ -668,12 +668,6 @@ public class GameEngine implements Screen {
 			}
 		} else if (keyword == "Networking"){
 			networkingController.reset();
-			try {
-				networkingController.setLevel(manager, getLevel("pvp"));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			gameState = GameState.NETWORKING;
 		}
 	}
@@ -806,7 +800,7 @@ public class GameEngine implements Screen {
 	public void resume() {}
 
 	@SuppressWarnings("unchecked")
-	private Level getLevel(String levelId) throws IOException{
+	public Level getLevel(String levelId) throws IOException{
 		Yaml yaml = new Yaml();
 		File levelFile = new File(ROOT,"yaml/levels.yml");
 		HashMap<String, Object> targetLevelDef;
@@ -976,6 +970,8 @@ public class GameEngine implements Screen {
 		initializeCanvas(Constants.LOADING_TEXTURE, Constants.MENU_FONT_FILE);
         // Sound controller manages its own material
         SoundController.PreLoadContent(manager);
+        
+    networkingController.setAssetManager(manager);
     }
     
 	/**
@@ -985,7 +981,7 @@ public class GameEngine implements Screen {
 	 * needed to draw anything at all, we block until the assets have finished
 	 * loading.
 	 */
-    private void initializeCanvas(String texture_msg, String fontFile) { 
+    public void initializeCanvas(String texture_msg, String fontFile) { 
     	canvas.setFont(new BitmapFont());
     	if (!manager.isLoaded(texture_msg)){
     		manager.load(texture_msg,Texture.class);

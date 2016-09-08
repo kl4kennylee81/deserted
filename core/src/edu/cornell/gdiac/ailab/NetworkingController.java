@@ -20,10 +20,16 @@ public class NetworkingController {
 		PLAYING,
 	}
 	
+	private final String PVP_LEVEL_NAME = "pvp";
+	private final String SET_NAME_BACKGROUND = "images/mainmenu/backgroundLogo.png";
+	private final String CHARACTER_SELECTION_BACKGROUND = "images/mainmenu/backgroundLogo.png";
+	private final String PLAYING_BACKGROUND = "backgrounds/inTheSkybg.png";
+	
 	private NetworkingState networkingState;
 	private NetworkingMenu networkingMenu;
 	private NetworkingGameplayController gameplayController;
 	private DraftController draftController;
+	private Level level;
 	
 	private Connection connection;
 	
@@ -34,12 +40,14 @@ public class NetworkingController {
 	boolean connected;
 	boolean isDone;
 	
-	public NetworkingController(NetworkingGameplayController ngc, DraftController dc) {
+  GameEngine ge;
+	
+	public NetworkingController(NetworkingGameplayController ngc, DraftController dc, GameEngine ge) {
 		networkingMenu = new NetworkingMenu();
-		setState(NetworkingState.SET_NAME);
 		isDone = false;
 		gameplayController = ngc;
 		draftController = dc;
+		this.ge = ge;
 		try {
 			connection = new Connection();
 			connection.connect("localhost", 8989);
@@ -85,8 +93,7 @@ public class NetworkingController {
 				isFirst = cm.getIsFirst();
 				from = cm.getFrom();
 				to = cm.getTo();
-				draftController.reset(connection, isFirst, from, to);
-				//gameplayController.resetGame(level)
+				setupDraftController();
 				setState(NetworkingState.CHARACTER_SELECTION);
 			}
 			break;
@@ -97,12 +104,21 @@ public class NetworkingController {
 				Level level = draftController.getLevel();
 				level.setCharacters(draftController.getSelectedChars());
 				gameplayController.resetGame(level);
-				gameplayController.setupGame(from, to);
+				gameplayController.setupGame(isFirst, from, to);
 				setState(NetworkingState.PLAYING);
 			}
 			break;
 		case PLAYING:
 			gameplayController.update();
+			if (gameplayController.isDone()) {
+				if (gameplayController.playAgain) {
+					isFirst = !isFirst;
+					setupDraftController();
+					setState(NetworkingState.CHARACTER_SELECTION);
+				} else {
+					isDone = true;
+				}
+			}
 			break;
 		}
 	}
@@ -130,22 +146,35 @@ public class NetworkingController {
 		
 	}
 	
+	private void setupDraftController(){ 
+		try {
+			draftController.setLevel(ge.getLevel(PVP_LEVEL_NAME));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		draftController.reset(connection, isFirst, from, to);
+	}
+	
 	public void setState(NetworkingState state) {
 		networkingState = state;
 		switch (networkingState) {
 		case SET_NAME:
+			ge.initializeCanvas(SET_NAME_BACKGROUND, Constants.SELECT_FONT_FILE);
 			break;
 		case GAMEROOM:
 			break;
 		case CHARACTER_SELECTION:
+			ge.initializeCanvas(CHARACTER_SELECTION_BACKGROUND, Constants.SELECT_FONT_FILE);
 			break;
 		case PLAYING:
+			ge.initializeCanvas(PLAYING_BACKGROUND, Constants.SELECT_FONT_FILE);
 			break;
 		}
 	}
 	
-	public void setLevel(AssetManager manager, Level level) {
-		draftController.setLevel(manager, level);
+	public void setAssetManager(AssetManager manager) {
+		draftController.setAssets(manager);
 	}
 	
 	public void reset() {

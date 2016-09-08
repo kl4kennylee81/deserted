@@ -3,6 +3,7 @@ package edu.cornell.gdiac.ailab;
 import java.io.IOException;
 
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 
 import edu.cornell.gdiac.ailab.CharacterActions.CharacterAction;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
@@ -14,14 +15,33 @@ import networkUtils.Message;
 public class NetworkingGameplayController extends GameplayController {
 
 	Connection connection;
+	boolean isFirst;
 	String from;
 	String to;
+	
+	boolean playAgain;
 	
 	public NetworkingGameplayController(MouseOverController moc,
 			CompletionMenuController cmc, PauseMenuController pmc, FileHandle file,
 			int fileNum, boolean isTutorial) {
 		super(moc, cmc, pmc, file, fileNum, isTutorial);
 		canPause = false;
+		playAgain = false;
+	}
+	
+	@Override
+	public void updateCompletionMenu() {
+		compMenuController.update();
+		if (compMenuController.doneSelecting){
+			inGameState = InGameState.DONE;
+			playAgain = compMenuController.selected.equals("Next Level");
+			compMenuController.reset();
+			CompletionScreen.getInstance().reset();
+		}
+	}
+	
+	public boolean onlinePlayerWon(){
+		return (isFirst && super.playerWon()) || (!isFirst && super.playerLost());
 	}
 	
 	@Override
@@ -81,17 +101,21 @@ public class NetworkingGameplayController extends GameplayController {
 	}
 	
 	@Override
-	public void drawCompletedGame(GameCanvas canvas){
-		CompletionScreen cs = CompletionScreen.getInstance();
-		cs.setIsWin(true);
-		cs.draw(canvas);
+	public void drawGameOver(GameCanvas canvas){
+		if (this.gameOver()){
+			CompletionScreen cs = CompletionScreen.getInstance();
+			cs.setIsWin(onlinePlayerWon());
+			cs.setTopText("Play Again");
+			cs.draw(canvas);
+		}
 	}
 	
 	public void setConnection(Connection connection) {
 		this.connection = connection;
 	}
 	
-	public void setupGame(String from, String to) {
+	public void setupGame(boolean isFirst, String from, String to) {
+		this.isFirst = isFirst;
 		this.from = from;
 		this.to = to;
 	}
