@@ -28,17 +28,17 @@ pvp:
 
 pvp_local:
     allies:
-        - id: 24
+        - id: 20
           xPosition: 0
           yPosition: 0
-        - id: 20
+        - id: 21
           xPosition: 0
           yPosition: 3
     enemies:
-        - id: 21
+        - id: 24
           xPosition: 5
           yPosition: 3
-        - id: 23
+        - id: 25
           xPosition: 5
           yPosition: 1
     nextLevel:

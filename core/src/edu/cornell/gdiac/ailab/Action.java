@@ -270,7 +270,7 @@ public class Action implements GUIElement {
 	
 	public int getDamage(Character hitChar){
 		if (hitChar != null){
-			return Integer.max(1, damage - hitChar.getDefense());
+			return Math.max(1, damage - hitChar.getDefense());
 		} else {
 			return damage;
 		}
