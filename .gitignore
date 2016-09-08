@@ -4,7 +4,7 @@
 *.war
 *.ear
 hs_err_pid*
-yaml/gameSaveState
+yaml/gameSaveState.yml
 
 ## GWT
 war/
