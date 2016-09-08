@@ -1251,7 +1251,7 @@
 200:
   name: Diagonal
   cost: 2
-  damage: 1
+  damage: 2
   range: 4
   size: 1
   pattern: DIAGONAL
@@ -1270,7 +1270,7 @@
 201:
   name: SideShot
   cost: 2
-  damage: 1
+  damage: 2
   range: 4
   size: 1
   pattern: PROJECTILE
@@ -1296,7 +1296,7 @@
 202:
   name: Immolate
   cost: 1
-  damage: 4
+  damage: 5
   range: 1
   size: 1
   pattern: INSTANT
@@ -1316,7 +1316,7 @@
 203:
   name: Lightning
   cost: 2
-  damage: 2
+  damage: 4
   range: 5
   size: 1
   pattern: SINGLE
@@ -1337,7 +1337,7 @@
 204:
   name: Lightning Storm
   cost: 2
-  damage: 2
+  damage: 4
   range: 10
   size: 1
   pattern: HORIZONTAL
@@ -1356,7 +1356,7 @@
 205:
   name: Single Square
   cost: 3
-  damage: 2
+  damage: 3
   range: 5
   size: 1
   pattern: SINGLEPATH
@@ -1378,7 +1378,7 @@
 206:
   name: Cage
   cost: 2
-  damage: 1
+  damage: 3
   range: 4
   size: 1
   pattern: SINGLEPATH
@@ -1467,7 +1467,7 @@
 210:
   name: ScatterShot
   cost: 1
-  damage: 1
+  damage: 3
   range: 10
   size: 1
   pattern: INSTANT
@@ -1511,7 +1511,7 @@
 212:
   name: Inferno
   cost: 1
-  damage: 1
+  damage: 2
   range: 1
   size: 1
   pattern: INSTANT

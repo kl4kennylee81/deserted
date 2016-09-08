@@ -1,8 +1,8 @@
 # These are the new potential characters
 20:
   name: Rogue
-  health: 3
-  maxHealth: 3
+  health: 5
+  maxHealth: 5
   hexColor: FF9900FF
   speed: 3.0
   castSpeed: 3.0
@@ -19,8 +19,8 @@
   bossId: 1000
 21:
   name: Assassin
-  health: 3
-  maxHealth: 3
+  health: 5
+  maxHealth: 5
   hexColor: FF9900FF
   speed: 6.0
   castSpeed: 3.5
@@ -37,8 +37,8 @@
   bossId: 1000
 22:
   name: Mage
-  health: 3
-  maxHealth: 3
+  health: 5
+  maxHealth: 5
   hexColor: CD2626FF
   speed: 3.0
   castSpeed: 9.
@@ -55,8 +55,8 @@
   bossId: 1000
 23:
   name: Hexer
-  health: 3
-  maxHealth: 3
+  health: 5
+  maxHealth: 5
   hexColor: CD2626FF
   speed: 3.0
   castSpeed: 8.
@@ -73,8 +73,8 @@
   bossId: 1000
 24:
   name: Support
-  health: 3
-  maxHealth: 3
+  health: 5
+  maxHealth: 5
   hexColor: CD2626FF
   speed: 5.0
   castSpeed: 6.0
@@ -92,8 +92,8 @@
   bossId: 1000
 25:
   name: Tank
-  health: 3
-  maxHealth: 3
+  health: 5
+  maxHealth: 5
   hexColor: CD2626FF
   speed: 5.0
   castSpeed: 6.0

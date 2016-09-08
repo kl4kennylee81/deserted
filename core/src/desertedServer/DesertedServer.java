@@ -1,5 +1,6 @@
 package desertedServer;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
@@ -122,7 +123,7 @@ public class DesertedServer {
 	
   public static void main(String[] args) throws Exception {
 	// default host and port
-	String host = "localhost";
+	String host = "0.0.0.0";
 	int port = 8989;
 	if (args.length > 2){
 		host = args[0];
@@ -131,8 +132,13 @@ public class DesertedServer {
 	  
     AsynchronousServerSocketChannel server = AsynchronousServerSocketChannel
         .open();
-    InetSocketAddress sAddr = new InetSocketAddress(host, port);
+    InetSocketAddress sAddr = new InetSocketAddress(port);
     server.bind(sAddr);
+    
+    InetAddress iAddress = InetAddress.getLocalHost();
+    String currentIp = iAddress.getHostAddress();
+    System.out.println("Current IP address : " +currentIp); //gives only host address
+    
     System.out.format("Server is listening at %s%n", sAddr);
     
     DesertedServer dserver = new DesertedServer(server);

@@ -42,7 +42,7 @@ public class NetworkingController {
 		draftController = dc;
 		try {
 			connection = new Connection();
-			connection.connect("localhost", 8989);
+			connection.connect("10.148.12.193", 8989);
 			connected = true;
 		} catch (IOException e) {
 			connected = false;
