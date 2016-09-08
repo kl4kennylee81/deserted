@@ -149,8 +149,9 @@ public class Character implements GUIElement {
 		this.icon = icon;
 		this.animation = animation;
 		this.name = name;
-		this.health = health;
-		this.maxHealth = maxHealth;
+		/* TODO this is hacky change it into the yaml file */
+		this.health = health*10;
+		this.maxHealth = maxHealth*10;
 
 		this.color = color;
 		
@@ -191,8 +192,8 @@ public class Character implements GUIElement {
 		this.icon = icon;
 		this.animation = animation;
 		this.name = name;
-		this.health = health;
-		this.maxHealth = maxHealth;
+		this.health = health*10;
+		this.maxHealth = maxHealth*10;
 
 		this.color = color;
 
@@ -352,6 +353,19 @@ public class Character implements GUIElement {
 	
 	public float getCastPosition(){
 		return this.castPosition;
+	}
+	
+	public boolean getIsLocalPlayer(){
+		if (this.isAI){
+			return false;
+		}
+		else{
+			if (this.isNetworkingOpponent){
+				return false;
+			} else{
+				return true;
+			}
+		}
 	}
 	
 	public Texture getTexture(){
@@ -552,6 +566,8 @@ public class Character implements GUIElement {
 		}
 	}
 	
+	
+	
 	public boolean hasPersisting() {
 		return persistingActions.peek() != null;
 	}
@@ -599,6 +615,12 @@ public class Character implements GUIElement {
 	public float getInterval(){
 		//System.out.println(name+" "+actionBar.getCastPoint());
 		return (1f-actionBar.getCastPoint()) / this.getActionBar().getTotalNumSlots();
+	}
+	
+	public int damageTaken(int damage) {
+		float damage_reduction = this.defense*0.25f;
+		int actual_damage = Math.round(damage*(1-damage_reduction));
+		return actual_damage;
 	}
 	
 	/**
