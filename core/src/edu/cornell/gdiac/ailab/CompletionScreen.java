@@ -108,6 +108,10 @@ public class CompletionScreen {
 		return cm;
 	}
 	
+	public void setTopText(String s){
+		cm.setTopText(s);
+	}
+	
 	public void draw(GameCanvas canvas) {
 		
 		float cWidth = canvas.getWidth();

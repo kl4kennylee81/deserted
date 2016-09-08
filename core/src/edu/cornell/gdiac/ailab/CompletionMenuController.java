@@ -16,7 +16,6 @@ public class CompletionMenuController {
 		this.canvas = canvas;
 	}
 	
-	
 	public void update(){
 		boolean mouseCondition = false;
 		if (menu.selectedIndex!=-1){

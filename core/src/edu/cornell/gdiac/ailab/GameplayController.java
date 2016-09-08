@@ -211,27 +211,7 @@ public class GameplayController {
     			}
     		}else{
     			//all notifications have been processed
-    			compMenuController.update();
-    			//have made a selection on the completion menu
-        		if (compMenuController.doneSelecting){
-        			if (compMenuController.selected.equals("Next Level")){
-    	    			System.out.println("ENTER 1");
-    	    			temp = true;
-    	    			if (this.isTutorial){
-    		    			if (this.leftsideDead()){
-    		    				GameEngine.nextLevel = TutorialSteps.levelName;
-    		    			}
-    		    			else if (this.rightsideDead()){
-    		    				GameEngine.nextLevel = TutorialSteps.nextLevel;
-    		    			}
-    	    			}
-        			}else{
-        				InputController.artificialRPressed = true;
-        			}
-        			inGameState = InGameState.DONE;
-        			compMenuController.reset();
-        			CompletionScreen.getInstance().reset();
-        		}
+    			updateCompletionMenu();
     		}
     		
     		return;
@@ -269,6 +249,30 @@ public class GameplayController {
        		}
        	}
        	
+    }
+    
+    public void updateCompletionMenu(){
+    	compMenuController.update();
+			//have made a selection on the completion menu
+    		if (compMenuController.doneSelecting){
+    			if (compMenuController.selected.equals("Next Level")){
+	    			System.out.println("ENTER 1");
+	    			temp = true;
+	    			if (this.isTutorial){
+		    			if (this.leftsideDead()){
+		    				GameEngine.nextLevel = TutorialSteps.levelName;
+		    			}
+		    			else if (this.rightsideDead()){
+		    				GameEngine.nextLevel = TutorialSteps.nextLevel;
+		    			}
+	    			}
+    			}else{
+    				InputController.artificialRPressed = true;
+    			}
+    			inGameState = InGameState.DONE;
+    			compMenuController.reset();
+    			CompletionScreen.getInstance().reset();
+    		}
     }
     
     public boolean handleSelectionDone(){
@@ -377,22 +381,7 @@ public class GameplayController {
         	System.out.println("check here");
         }
         
-		if (this.gameOver() && this.playerWon() && inGameState == InGameState.WARNING){
-    		//canvas.drawCenteredText("You have Won", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
-			drawCompletedGame(canvas);
-    	}
-		else if (this.gameOver() && this.playerLost() && inGameState == InGameState.WARNING){
-    		//canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);	
-			CompletionScreen cs = CompletionScreen.getInstance();
-			cs.setIsWin(false);
-			cs.draw(canvas);
-		}
-		else if (this.gameOver() && this.tieGame() && inGameState == InGameState.WARNING){
-    		//canvas.drawCenteredText("Try Again!", canvas.getWidth()/2, canvas.getHeight()/2, Color.WHITE);
-			CompletionScreen cs = CompletionScreen.getInstance();
-			cs.setIsWin(false);
-			cs.draw(canvas);
-		}
+        drawGameOver(canvas);
 		
 		if (inGameState == InGameState.PAUSEMENU){
     		PauseMenu.getInstance().draw(canvas);
@@ -408,8 +397,22 @@ public class GameplayController {
     	return false;
     }
     
-    protected void drawCompletedGame(GameCanvas canvas){
-		CompletionScreen cs = CompletionScreen.getInstance();
+    protected void drawGameOver(GameCanvas canvas){
+    	CompletionScreen cs = CompletionScreen.getInstance();
+    	if (this.gameOver() && this.playerWon() && inGameState == InGameState.WARNING){
+			drawCompletedGame(canvas, cs);
+    	}
+		else if (this.gameOver() && this.playerLost() && inGameState == InGameState.WARNING){
+			cs.setIsWin(false);
+			cs.draw(canvas);
+		}
+		else if (this.gameOver() && this.tieGame() && inGameState == InGameState.WARNING){
+			cs.setIsWin(false);
+			cs.draw(canvas);
+		}
+    }
+    
+    protected void drawCompletedGame(GameCanvas canvas, CompletionScreen cs){
 		GameSaveStateController gss = GameSaveStateController.getInstance();
 		cs.skill_point = gss.getLevelSP(levelName);
 		cs.characters_unlocked = gss.getLevelUnlockedChars(levelName);

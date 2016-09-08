@@ -33,6 +33,8 @@ public class DraftController {
 	public String nextLevelName;
 	public int playerNum = 1;
 	
+	private Texture draftScreenHighlight;
+	
 	private int charIdToWrite;
 	
 	private static enum DraftState {
@@ -47,17 +49,25 @@ public class DraftController {
 		this.isDone = false;
 	}
 	
-	public void setLevel(AssetManager manager, Level level) {
-		this.level = level;
+	public void setAssets(AssetManager manager) {
+		if (this.manager != null) {
+			return;
+		}
 		this.manager = manager;
-		this.draftScreen = new DraftScreen(level.getCharacters());
 		
 		manager.load(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class);
 		manager.load(PLAYER1_TEXTURE, Texture.class);
 		manager.load(PLAYER2_TEXTURE, Texture.class);
 		manager.finishLoading();
 		
-		draftScreen.setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class));
+		draftScreenHighlight = manager.get(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class);
+	}
+	
+	public void setLevel(Level level) {
+		this.level = level;
+		this.draftScreen = new DraftScreen(level.getCharacters());
+		
+		draftScreen.setHighlight(draftScreenHighlight);
 	}
 	
 	public Level getLevel(){ 

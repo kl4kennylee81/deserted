@@ -80,6 +80,11 @@ public class CompletionMenu extends Menu {
 			topOption.setText("Retry");
 		}
 	}
+	
+	public void setTopText(String s){
+		Option topOption = this.options[0];
+		topOption.setText(s);
+	}
 
 	@Override
 	public void draw(GameCanvas canvas) {
