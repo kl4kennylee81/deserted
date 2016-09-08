@@ -1296,7 +1296,7 @@
 202:
   name: Immolate
   cost: 1
-  damage: 5
+  damage: 4
   range: 1
   size: 1
   pattern: INSTANT
