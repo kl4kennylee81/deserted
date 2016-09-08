@@ -382,10 +382,14 @@ public class GameplayController {
         }
         
         drawGameOver(canvas);
-		
+        drawPlayerNames(canvas);
 		if (inGameState == InGameState.PAUSEMENU){
     		PauseMenu.getInstance().draw(canvas);
     	}
+    }
+    
+    public void drawPlayerNames(GameCanvas canvas){
+    	return;
     }
     
     private boolean isHitByAnimation(Character c){

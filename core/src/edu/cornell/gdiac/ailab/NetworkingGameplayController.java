@@ -18,6 +18,7 @@ public class NetworkingGameplayController extends GameplayController {
 	boolean isFirst;
 	String from;
 	String to;
+	ActionDescription boxDrawer;
 	
 	boolean playAgain;
 	
@@ -27,6 +28,7 @@ public class NetworkingGameplayController extends GameplayController {
 		super(moc, cmc, pmc, file, fileNum, isTutorial);
 		canPause = false;
 		playAgain = false;
+		boxDrawer = new ActionDescription();
 	}
 	
 	@Override
@@ -42,6 +44,27 @@ public class NetworkingGameplayController extends GameplayController {
 	
 	public boolean onlinePlayerWon(){
 		return (isFirst && super.playerWon()) || (!isFirst && super.playerLost());
+	}
+	
+	@Override
+	public void drawPlayerNames(GameCanvas canvas) {
+		String leftName = isFirst ? to : from;
+		String rightName = isFirst ? from : to;
+		
+		float box_width = 0.07f * canvas.width;
+		float box_height = 0.05f * canvas.height;
+		float box_y = 0.76f * canvas.height;
+		float box_left_x = 0.075f*canvas.width-box_width/2;
+		float box_right_x = 0.925f*canvas.width-box_width/2;
+		
+		boxDrawer.drawEmpty(canvas, box_left_x, box_y, box_width, box_height, Color.WHITE);
+		boxDrawer.drawEmpty(canvas, box_right_x, box_y, box_width, box_height, Color.WHITE);
+		
+		float text_left_x = 0.075f*canvas.width;
+		float text_right_x = 0.925f * canvas.width;
+		float text_y = 0.7975f * canvas.height;
+		canvas.drawCenteredText(leftName, text_left_x, text_y, Color.WHITE);
+		canvas.drawCenteredText(rightName, text_right_x, text_y, Color.WHITE);
 	}
 	
 	@Override

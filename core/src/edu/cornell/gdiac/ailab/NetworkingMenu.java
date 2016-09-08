@@ -55,7 +55,7 @@ public class NetworkingMenu {
 	}
 	
 	public void update() {
-		if (submitWasClicked() && usernameField.getText().length() > 0) {
+		if (submitWasClicked() && usernameField.getText().length() > 0 && usernameField.getText().length() < 10) {
 			username = usernameField.getText();
 			stage.dispose();
 			goNext = true;

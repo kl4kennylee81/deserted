@@ -37,7 +37,6 @@ public class NetworkingController {
 	private String from;
 	private String to;
 	
-	boolean connected;
 	boolean isDone;
 	
   GameEngine ge;
@@ -48,14 +47,6 @@ public class NetworkingController {
 		gameplayController = ngc;
 		draftController = dc;
 		this.ge = ge;
-		try {
-			connection = new Connection();
-			connection.connect("localhost", 8989);
-			connected = true;
-		} catch (IOException e) {
-			connected = false;
-		}
-		gameplayController.setConnection(connection);
 	}
 	
 	public void update() {
@@ -180,6 +171,12 @@ public class NetworkingController {
 	public void reset() {
 		isDone = false;
 		networkingMenu = new NetworkingMenu();
+		try {
+			connection = new Connection();
+			connection.connect("localhost", 8989);
+		} catch (IOException e) {
+		}
+		gameplayController.setConnection(connection);
 		setState(NetworkingState.SET_NAME);
 	}
 	
