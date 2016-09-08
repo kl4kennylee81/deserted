@@ -322,7 +322,7 @@ public class GameplayController {
        
 
     	if (inGameState == InGameState.WAITING) {
-    		canvas.drawCenteredText("Waiting for opponent", canvas.width/2, canvas.height/2, Color.BLACK);
+    		canvas.drawCenteredText("Waiting for opponent", canvas.width/2, canvas.height*.6f, Color.BLACK);
     	}
     	
     	if (inGameState == InGameState.SELECTION){

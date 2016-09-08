@@ -37,6 +37,8 @@ public class DraftController {
 	
 	private int charIdToWrite;
 	
+	boolean broken;
+	
 	private static enum DraftState {
 		PICKING,
 		WAITING,
@@ -47,6 +49,7 @@ public class DraftController {
 		this.canvas = canvas;
 		this.mouseOverController = mouseOverController;
 		this.isDone = false;
+		this.broken = false;
 	}
 	
 	public void setAssets(AssetManager manager) {
@@ -82,6 +85,7 @@ public class DraftController {
 		this.draftState = isFirst ? DraftState.PICKING : DraftState.WAITING;
 		
 		isDone = false;
+		broken = false;
 		this.draftScreen = new DraftScreen(level.getCharacters());
 		draftScreen.setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class));
 	}
@@ -142,6 +146,10 @@ public class DraftController {
 		}
 		if (s != null) {
 			Message m = Message.jsonToMsg(s);
+			if (!(m instanceof DraftMessage)) {
+				broken = true;
+				return;
+			}
 			DraftMessage dm = (DraftMessage) m;
 			int charId = dm.getId();
 			draftScreen.setPlayerCharacter(playerNum, charId);

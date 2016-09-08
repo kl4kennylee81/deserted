@@ -21,6 +21,7 @@ public class NetworkingGameplayController extends GameplayController {
 	ActionDescription boxDrawer;
 	
 	boolean playAgain;
+	boolean broken;
 	
 	public NetworkingGameplayController(MouseOverController moc,
 			CompletionMenuController cmc, PauseMenuController pmc, FileHandle file,
@@ -28,6 +29,7 @@ public class NetworkingGameplayController extends GameplayController {
 		super(moc, cmc, pmc, file, fileNum, isTutorial);
 		canPause = false;
 		playAgain = false;
+		broken = false;
 		boxDrawer = new ActionDescription();
 	}
 	
@@ -100,6 +102,10 @@ public class NetworkingGameplayController extends GameplayController {
 		if (s != null) {
 			actionBarController.isNetworkingOpponentSelection = false;
 			Message m = Message.jsonToMsg(s);
+			if (!(m instanceof InGameMessage)) {
+				broken = true;
+				return;
+			}
 //			try {
 				InGameMessage igm = (InGameMessage) m;
 				CharacterActions ca = igm.getCharacterActions();
@@ -141,5 +147,6 @@ public class NetworkingGameplayController extends GameplayController {
 		this.isFirst = isFirst;
 		this.from = from;
 		this.to = to;
+		broken = false;
 	}
 }

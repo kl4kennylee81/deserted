@@ -80,6 +80,10 @@ public class NetworkingController {
 			}
 			if (s != null) {
 				Message m = Message.jsonToMsg(s);
+				if (!(m instanceof ChallengeMessage)) {
+					isDone = true;
+					return;
+				}
 				ChallengeMessage cm = (ChallengeMessage) m;
 				isFirst = cm.getIsFirst();
 				from = cm.getFrom();
@@ -90,6 +94,10 @@ public class NetworkingController {
 			break;
 		case CHARACTER_SELECTION:
 			draftController.update();
+			if (draftController.broken){
+				isDone = true;
+				return;
+			}
 			if (draftController.isDone()){
 				//get game info and start game
 				Level level = draftController.getLevel();
@@ -101,6 +109,10 @@ public class NetworkingController {
 			break;
 		case PLAYING:
 			gameplayController.update();
+			if (gameplayController.broken){
+				isDone = true;
+				return;
+			}
 			if (gameplayController.isDone()) {
 				if (gameplayController.playAgain) {
 					isFirst = !isFirst;
