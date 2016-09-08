@@ -1432,7 +1432,7 @@
   effect:
     type: SPEED
     name: Hasten
-    numRounds: 2
+    numRounds: 3
     magnitude: 1
     effectIcon: models/effect_icons/hasten_icon.png
   description: Target a single square to Hasten an ally
