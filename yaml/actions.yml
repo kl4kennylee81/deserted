@@ -1378,7 +1378,7 @@
 206:
   name: Cage
   cost: 2
-  damage: 3
+  damage: 2
   range: 4
   size: 1
   pattern: SINGLEPATH
