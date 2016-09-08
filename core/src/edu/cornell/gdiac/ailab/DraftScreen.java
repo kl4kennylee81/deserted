@@ -322,19 +322,19 @@ public class DraftScreen extends Menu{
 		float iconX2 = canvasW - iconX1 - iconWidth;
 		float iconHeight = canvasH * (0.15f);
 		if (cd0 != null){
-			float iconY = canvasH * (0.625f);
+			float iconY = canvasH * (0.375f);
 			canvas.drawTexture(cd0.bigIcon, iconX1, iconY, iconWidth, iconHeight, Color.WHITE);
 		}
 		if (cd1 != null){
-			float iconY = canvasH * (0.325f);
+			float iconY = canvasH * (0.125f);
 			canvas.drawTexture(cd1.bigIcon, iconX1, iconY, iconWidth, iconHeight, Color.WHITE);
 		}
 		if (cd2 != null){
-			float iconY = canvasH * (0.625f);
+			float iconY = canvasH * (0.375f);
 			canvas.drawTexture(cd2.bigIcon, iconX2, iconY, iconWidth, iconHeight, Color.WHITE);
 		}
 		if (cd3 != null){
-			float iconY = canvasH * (0.325f);
+			float iconY = canvasH * (0.125f);
 			canvas.drawTexture(cd3.bigIcon, iconX2, iconY, iconWidth, iconHeight, Color.WHITE);
 		}
 		
