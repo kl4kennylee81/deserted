@@ -38,7 +38,11 @@ public class NetworkingGameplayController extends GameplayController {
 			bytes_written = connection.write(m);
 		} catch (Exception e) {
 		}
-		return bytes_written != null;
+		boolean messageSent = bytes_written != null;
+		if (messageSent) {
+			actionBarController.isPlayerSelection = false;
+		}
+		return messageSent;
 	}
 	
 	@Override
@@ -51,6 +55,7 @@ public class NetworkingGameplayController extends GameplayController {
 			e.printStackTrace();
 		}
 		if (s != null) {
+			actionBarController.isNetworkingOpponentSelection = false;
 			Message m = Message.jsonToMsg(s);
 //			try {
 				InGameMessage igm = (InGameMessage) m;
