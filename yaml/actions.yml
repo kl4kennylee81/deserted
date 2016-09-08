@@ -1488,7 +1488,7 @@
 # Head Tank
 211:
   name: Slow Square
-  cost: 2
+  cost: 1
   damage: 0
   range: 4
   size: 1
