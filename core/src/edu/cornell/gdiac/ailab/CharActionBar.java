@@ -365,6 +365,14 @@ public class CharActionBar {
 		return modifiedWaitTime/newTotalTime;
 	}
 	
+	public List<ActionNode> getShowableActions(List<ActionNode> queuedActions,boolean isPlayer){
+		List<ActionNode> queuedSubList = queuedActions;
+		if (queuedActions.size() > 0 && !isPlayer){
+			queuedSubList = queuedActions.subList(0, 1);
+		}
+		return queuedSubList;
+		
+	}
 	float getExecutePoint(ActionNode an){
 		if (an != null){
 			float executePoint = an.executeSlot*this.getSlotWidth() + this.getCastPoint();
@@ -687,7 +695,7 @@ public class CharActionBar {
 	
 	// draw gauge style 
 	public void draw(GameCanvas canvas,int count,Color barColor,Color fillColor, 
-			float castPosition,boolean leftside,boolean isSelecting,List<ActionNode> selectingActions, 
+			float castPosition,boolean isPlayer,boolean isSelecting,List<ActionNode> selectingActions, 
 			Action curSelectedAction, List<ActionNode> queuedActions,
 			List<ActionNode> castActions, float lerpVal, List<Effect> effects,
 			float lengthSelectedAction,float lengthQueuedActions){
@@ -695,7 +703,7 @@ public class CharActionBar {
 		float xPosBar = getX(canvas);
 		float yPosBar = getY(canvas,count);
 			
-		this.drawLeftEndpoint(canvas, xPosBar, yPosBar, leftside, barColor);
+		this.drawLeftEndpoint(canvas, xPosBar, yPosBar, isPlayer, barColor);
 		this.drawBar(canvas, xPosBar, yPosBar, barColor);
 		this.drawRightEndpoint(canvas, xPosBar, yPosBar, barColor);
 		
@@ -707,10 +715,7 @@ public class CharActionBar {
 		tempActions.clear();
 		
 		// temporary code for revealing only the next action for opponents
-		List<ActionNode> queuedSubList = queuedActions;
-		if (queuedActions.size() > 0 && !leftside){
-			queuedSubList = queuedActions.subList(0, 1);
-		}
+		List<ActionNode> queuedSubList = getShowableActions(queuedActions,isPlayer);
 		
 		// draw action queuing
 		this.drawSlots(canvas, castActions,queuedSubList,
