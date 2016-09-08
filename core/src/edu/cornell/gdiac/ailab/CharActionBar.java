@@ -160,9 +160,9 @@ public class CharActionBar {
 	float getSpeedModifier(int speedMod) {
 		switch (speedMod) {
 		case -2:
-			return 2.6f - this.waitTime/5f;
+			return 1 / (2.6f - this.waitTime/5f);
 		case -1:
-			return 3.25f - this.waitTime/4f;
+			return 1 / (3.25f - this.waitTime/4f);
 		case 0:
 			return 1;
 		case 1:

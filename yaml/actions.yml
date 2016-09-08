@@ -1491,7 +1491,7 @@
   name: Slow Square
   cost: 2
   damage: 0
-  range: 4
+  range: 5
   size: 1
   pattern: SINGLEPATH
   path: "0,0 1,0 0,1 1,1"
