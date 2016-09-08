@@ -90,6 +90,9 @@ public class CharActionBar {
 	// slots affected by daze
 	int dazedSlots;
 	
+	float waitTime;
+	float castTime;
+	
 	ArrayList<Option> actionOptions;
 	ArrayList<Action> actions;
 	
@@ -105,6 +108,8 @@ public class CharActionBar {
 		float totalTime = waitTime + castTime;
 		this.length = totalTime/MAX_TIME;
 		this.castPoint = waitTime/totalTime;
+		this.waitTime= waitTime;
+		this.castTime = castTime;
 		this.speedModifier = 0;
 		
 		actionBar_center = new Texture(Constants.ACTIONBAR_CENTER_TEXTURE);
@@ -155,11 +160,9 @@ public class CharActionBar {
 	float getSpeedModifier(int speedMod) {
 		switch (speedMod) {
 		case -2:
-			// gets you 2x more time
-			return 1/2f;
+			return 2.6f - this.waitTime/5f;
 		case -1:
-			// gets you 1.5x more time
-			return 2/3f;
+			return 3.25f - this.waitTime/4f;
 		case 0:
 			return 1;
 		case 1:
