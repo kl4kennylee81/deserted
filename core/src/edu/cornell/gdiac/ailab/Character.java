@@ -355,6 +355,19 @@ public class Character implements GUIElement {
 		return this.castPosition;
 	}
 	
+	public boolean getIsLocalPlayer(){
+		if (this.isAI){
+			return false;
+		}
+		else{
+			if (this.isNetworkingOpponent){
+				return false;
+			} else{
+				return true;
+			}
+		}
+	}
+	
 	public Texture getTexture(){
 		return texture;
 	}

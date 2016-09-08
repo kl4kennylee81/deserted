@@ -37,7 +37,8 @@ public class Characters extends LinkedList<Character>{
 			count++;
 			Color barColor = c.getActionBarColor(shouldDim, Color.WHITE.cpy());
 			Color fillColor= c.getActionBarColor(shouldDim, Color.WHITE.cpy());	
-			c.actionBar.draw(canvas, count, barColor,fillColor,c.castPosition,c.leftside,c.isSelecting(),
+			boolean isPlayer = c.getIsLocalPlayer();
+			c.actionBar.draw(canvas, count, barColor,fillColor,c.castPosition,isPlayer,c.isSelecting(),
 					c.selectionMenu.getQueuedActions(),c.selectionMenu.getSelectedAction(),c.getQueuedActions(),
 					c.castActions,lerpVal, c.getEffects(),lengthSelectedAction,lengthQueuedActions);
 		}
