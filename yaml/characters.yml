@@ -95,8 +95,8 @@
   health: 5
   maxHealth: 5
   hexColor: CD2626FF
-  speed: 5.0
-  castSpeed: 6.0
+  speed: 6.0
+  castSpeed: 7.0
   defense: 2
   slots: 2
   availableActions:

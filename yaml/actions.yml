@@ -1271,7 +1271,7 @@
   name: SideShot
   cost: 2
   damage: 2
-  range: 4
+  range: 3
   size: 1
   pattern: PROJECTILE
   oneHit: true
