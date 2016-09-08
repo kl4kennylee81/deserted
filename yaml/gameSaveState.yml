@@ -156,7 +156,7 @@ levels:
     background: backgrounds/rockbg.png
     unlockableCharacter: 2
     preNarrative: yaml/narratives/Level2Pre.yml
-    seenPre: false
+    seenPre: true
     displayName: ELDER - 9
   9:
     levelName: Level3

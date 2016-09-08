@@ -12,7 +12,7 @@ import edu.cornell.gdiac.ailab.Tile.TileState;
 public class EffectController {
 	
 	// constant a global effects one round = 8 seconds
-	private static final float ROUNDS_TO_SECONDS = 7.5f;
+	private static final float ROUNDS_TO_SECONDS = 7.0f;
 	
 	private static final float FPS = 60f;
 	
