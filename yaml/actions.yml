@@ -1469,7 +1469,7 @@
   name: ScatterShot
   cost: 1
   damage: 2
-  range: 4
+  range: 10
   size: 1
   pattern: INSTANT
   oneHit: false
