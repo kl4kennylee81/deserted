@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import desertedServer.Client.ClientStage;
 import networkUtils.ChallengeMessage;
 import networkUtils.Connection;
 import networkUtils.DraftMessage;
@@ -27,17 +28,17 @@ import networkUtils.UsernameMessage;
 public class DesertedServer {
 	
 	AsynchronousServerSocketChannel server;
-	ConcurrentHashMap<AsynchronousSocketChannel,AsynchronousSocketChannel> p1vp2;
-	ConcurrentHashMap<String,AsynchronousSocketChannel> userNameToConnect;
-	Queue<AsynchronousSocketChannel> waitingQueue;
+	ConcurrentHashMap<Client,Client> p1vp2;
+	ConcurrentHashMap<String,Client> userNameToConnect;
+	Queue<Client> waitingQueue;
 	
 	public DesertedServer(){
-		waitingQueue = new LinkedBlockingQueue<AsynchronousSocketChannel>();
-		p1vp2 = new ConcurrentHashMap<AsynchronousSocketChannel,AsynchronousSocketChannel>();
-		userNameToConnect = new ConcurrentHashMap<String,AsynchronousSocketChannel>();
+		waitingQueue = new LinkedBlockingQueue<Client>();
+		p1vp2 = new ConcurrentHashMap<Client,Client>();
+		userNameToConnect = new ConcurrentHashMap<String,Client>();
 	}
 	
-	public void addUsername(String username, AsynchronousSocketChannel socket){
+	public void addUsername(String username, Client socket){
 		userNameToConnect.put(username, socket);
 	}
 	
@@ -46,33 +47,55 @@ public class DesertedServer {
 		this.server = serverSock;
 	}
 	
-	public AsynchronousSocketChannel getPlayersOppSock(String playerUsername){
-		AsynchronousSocketChannel sockPlayer = userNameToConnect.get(playerUsername);
-		AsynchronousSocketChannel sockOpp = p1vp2.get(sockPlayer);
+	public void close(Client client) throws IOException{
+		Client opp = null;
+		switch(client.getStage()){
+		case DRAFT:
+			opp = p1vp2.get(client);
+			if (opp != null){
+				p1vp2.remove(client);
+				p1vp2.remove(opp);
+				this.close(opp);
+			}
+			break;
+		case INGAME:
+			opp = p1vp2.get(client);
+			if (opp != null){
+				p1vp2.remove(client);
+				p1vp2.remove(opp);
+				this.close(opp);
+			}
+			break;
+		case WAITING:
+			waitingQueue.poll();
+			break;
+		default:
+			break;
+		}
+		
+		userNameToConnect.remove(client);
+		client.getSock().close();
+	}
+	
+	public Client getPlayersOppSock(String playerUsername){
+		Client sockPlayer = userNameToConnect.get(playerUsername);
+		Client sockOpp = p1vp2.get(sockPlayer);
 		return sockOpp;
 	}
 	
 	public String getPlayersOppName(String playerUsername){
-		AsynchronousSocketChannel sockPlayer = userNameToConnect.get(playerUsername);
-		AsynchronousSocketChannel sockOpp = p1vp2.get(sockPlayer);
+		Client sockPlayer = userNameToConnect.get(playerUsername);
+		Client sockOpp = p1vp2.get(sockPlayer);
 		String oppName = this.getUserFromSocket(sockOpp);
 		return oppName;
 	}
 	
-	public AsynchronousSocketChannel getSockFromUser(String username){
+	public Client getSockFromUser(String username){
 		return userNameToConnect.get(username);
 	}
 	
-	public String getUserFromSocket(AsynchronousSocketChannel user){
-		String name = null;
-		Set<Entry<String,AsynchronousSocketChannel>> setEntries = userNameToConnect.entrySet();
-		for (Entry<String,AsynchronousSocketChannel> entries : setEntries){
-			if (entries.getValue().equals(user)){
-				name = entries.getKey();
-				break;
-			}
-		}
-		return name;
+	public String getUserFromSocket(Client user){
+		return user.name;
 	}
 	
 	public ArrayList<String> getUsers(){
@@ -90,9 +113,9 @@ public class DesertedServer {
 	 * @param user
 	 * @throws InterruptedException
 	 */
-	public boolean getChallenger(AsynchronousSocketChannel user) throws InterruptedException{
+	public boolean getChallenger(Client user) throws InterruptedException{
 		
-		AsynchronousSocketChannel opp = waitingQueue.poll();
+		Client opp = waitingQueue.poll();
 		synchronized(waitingQueue){
 			if (opp != null) {
 				System.out.println("did we pop something\n");
@@ -144,7 +167,7 @@ public class DesertedServer {
 }
 class Attachment {
   DesertedServer server;
-  AsynchronousSocketChannel client;
+  Client client;
   ByteBuffer buffer;
   SocketAddress clientAddr;
   boolean isRead;
@@ -161,7 +184,7 @@ class ConnectionHandler implements
       ReadWriteHandler rwHandler = new ReadWriteHandler();
       Attachment newAttach = new Attachment();
       newAttach.server = attach.server;
-      newAttach.client = client;
+      newAttach.client = new Client(client,ClientStage.WAITING);
       newAttach.buffer = ByteBuffer.allocate(2048);
       newAttach.isRead = true;
       newAttach.clientAddr = clientAddr;
@@ -179,11 +202,19 @@ class ConnectionHandler implements
 }
 
 class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
+	
+	public void shutdownClient(Attachment attach) throws IOException{
+		attach.server.close(attach.client);
+	}
+	
+	
   @Override
   public void completed(Integer result, Attachment attach) {
     if (result == -1) {
       try {
-        attach.client.close();
+    	// shutdown client
+        this.shutdownClient(attach);
+        
         System.out.format("Stopped   listening to the   client %s%n",
             attach.clientAddr);
       } catch (IOException ex) {
@@ -197,7 +228,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
       try {
 		processMessage(attach,m);
 	    attach.isRead = true;
-	    attach.client.read(attach.buffer, attach, this);
+	    attach.client.getSock().read(attach.buffer, attach, this);
 	} catch (InterruptedException | ExecutionException e) {
 		e.printStackTrace();
 	}
@@ -249,8 +280,8 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	  String oppName = attach.server.getPlayersOppName(playerName);
 	  assert(igm.getTo() == oppName);
 	  
-	  AsynchronousSocketChannel oppSock = attach.server.getPlayersOppSock(playerName);
-	  oppSock.write(m.msgToByteBuffer()).get();
+	  Client oppSock = attach.server.getPlayersOppSock(playerName);
+	  oppSock.getSock().write(m.msgToByteBuffer()).get();
   }
   
   public void processDraft(Attachment attach,Message m) throws InterruptedException, ExecutionException {
@@ -259,13 +290,14 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	  
 	  String oppName = attach.server.getPlayersOppName(playerName);
 	  
-	  AsynchronousSocketChannel oppSock = attach.server.getPlayersOppSock(playerName);
-	  oppSock.write(m.msgToByteBuffer()).get();
+	  Client oppSock = attach.server.getPlayersOppSock(playerName);
+	  oppSock.getSock().write(m.msgToByteBuffer()).get();
   }
   
   public void processUsername(Attachment attach,Message m) throws InterruptedException, ExecutionException{
 	  UsernameMessage um = (UsernameMessage) m;
 	  String username = um.getUsername();
+	  attach.client.name = username;
 	  attach.server.addUsername(username, attach.client);
 	  ArrayList<String> users = attach.server.getUsers();
 	  processChallenge(attach,m);
@@ -278,12 +310,12 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	  boolean isFirst = !attach.server.getChallenger(attach.client);
 	  String yourName = attach.server.getUserFromSocket(attach.client);
 	  String oppName = attach.server.getPlayersOppName(yourName);
-	  AsynchronousSocketChannel clientopp = attach.server.getSockFromUser(oppName);
+	  Client clientopp = attach.server.getSockFromUser(oppName);
 	  ChallengeMessage cm = new ChallengeMessage(yourName,oppName,yourName,isFirst);
 	  ByteBuffer bb = cm.msgToByteBuffer();
 	  
 	  // call a synchronous write
-      clientopp.write(bb).get();
+      clientopp.getSock().write(bb).get();
   }
 
   @Override
