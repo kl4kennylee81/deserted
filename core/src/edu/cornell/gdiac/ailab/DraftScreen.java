@@ -3,6 +3,7 @@ package edu.cornell.gdiac.ailab;
 import java.awt.Canvas;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -69,6 +70,8 @@ public class DraftScreen extends Menu{
 		"Defense",
 		"Attack"
 	};
+	
+	private static HashMap<Integer, ArrayList<Integer>> map; 
 	private static final Texture LOGO = new Texture(Constants.LEVEL_SELECT_REG);
 	
 	Characters characters;
@@ -84,9 +87,18 @@ public class DraftScreen extends Menu{
 	HashSet<Integer> notAvailable;
 	
 	Texture optionHighlight;
-	
+		
 	public DraftScreen(Characters characters){
 		this.characters = characters;
+		
+		map = new HashMap<Integer, ArrayList<Integer>>();
+		map.put(20, new ArrayList<Integer>(Arrays.asList(1,4,4,2,1)));
+		map.put(21, new ArrayList<Integer>(Arrays.asList(1,4,1,1,4)));
+		map.put(22, new ArrayList<Integer>(Arrays.asList(1,1,4,1,4)));
+		map.put(23, new ArrayList<Integer>(Arrays.asList(2,1,3,2,3)));
+		map.put(24, new ArrayList<Integer>(Arrays.asList(3,2,2,4,2)));
+		map.put(25, new ArrayList<Integer>(Arrays.asList(4,1,2,4,1)));
+
 		this.selectedCharacterId = characters.get(0).id;
 		
 		this.charIdToOptions = new HashMap<Integer,Option>();
@@ -327,9 +339,9 @@ public class DraftScreen extends Menu{
 		float label_y = canvasH * (0.575f);
 		
 		canvas.drawTexture(LOGO, descript1_x - (0.02f * canvas.width), label_y, descript_width + (0.04f * canvas.width), label_height, Color.WHITE);
-		canvas.drawText("Name", descript1_x + (0.032f * canvas.width), label_y + (0.032f * canvas.width), Color.BLACK);
+		canvas.drawText("Player 1", descript1_x + (0.032f * canvas.width), label_y + (0.032f * canvas.width), Color.BLACK);
 		canvas.drawTexture(LOGO, descript2_x - (0.02f * canvas.width), label_y, descript_width + (0.04f * canvas.width), label_height, Color.WHITE);
-		canvas.drawText("Name", descript2_x + (0.032f * canvas.width), label_y + (0.032f * canvas.width), Color.BLACK);
+		canvas.drawText("Player 2", descript2_x + (0.032f * canvas.width), label_y + (0.032f * canvas.width), Color.BLACK);
 
 		canvas.drawTexture(DESCRIPTION_BACKGROUND, descript1_x, descript_y1, descript_width, descript_height, Color.GRAY);
 		canvas.drawTexture(DESCRIPTION_BACKGROUND, descript1_x, descript_y2, descript_width, descript_height, Color.GRAY);
@@ -399,13 +411,15 @@ public class DraftScreen extends Menu{
 			
 			float increment = 0.32f/5f;
 			float ypos = RELATIVE_DESCRIPTION_Y_POS + 0.05f;
+			ArrayList<Integer> vals = map.get(selectedCharacterId);
 			for(int i = 0; i < 5; i++){
 				float currenty = (ypos + (increment * (0.23f))) * canvas.height;
 				float heighty = (canvas.height * (0.54f * increment));
 				float widthx = descript_width  / 7.4f;
 				float posx = middle_x - (canvas.width * 0.05f);
 				canvas.drawText(stats[i], descript_x + (0.02f * canvas.width), currenty+(0.03f * canvas.height), Color.WHITE);
-				for(int j = 0; j < 4; j++){
+				int numBars = vals.get(i);
+				for(int j = 0; j < numBars; j++){
 					canvas.drawTexture(BAR_COLORS[i], posx, currenty, widthx, heighty, Color.WHITE);
 					posx += (widthx + 3);
 				}
