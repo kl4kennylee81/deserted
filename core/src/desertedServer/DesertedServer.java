@@ -282,6 +282,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	  
 	  Client oppSock = attach.server.getPlayersOppSock(playerName);
 	  oppSock.getSock().write(m.msgToByteBuffer()).get();
+      attach.client.setClientStage(ClientStage.INGAME);
   }
   
   public void processDraft(Attachment attach,Message m) throws InterruptedException, ExecutionException {
@@ -297,13 +298,14 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
   public void processUsername(Attachment attach,Message m) throws InterruptedException, ExecutionException{
 	  UsernameMessage um = (UsernameMessage) m;
 	  String username = um.getUsername();
-	  attach.client.name = username;
+	  attach.client.setName(username);
+	  attach.client.setClientStage(ClientStage.WAITING);
 	  attach.server.addUsername(username, attach.client);
 	  ArrayList<String> users = attach.server.getUsers();
 	  processChallenge(attach,m);
-//	  LobbyMessage lm = new LobbyMessage(users);
-//	  ByteBuffer bb = lm.msgToByteBuffer();
-//	  attach.client.write(bb).get();
+	  LobbyMessage lm = new LobbyMessage(users);
+	  ByteBuffer bb = lm.msgToByteBuffer();
+	  attach.client.getSock().write(bb).get();
   }
   
   public void processChallenge(Attachment attach,Message m) throws InterruptedException, ExecutionException{
@@ -316,6 +318,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	  
 	  // call a synchronous write
       clientopp.getSock().write(bb).get();
+      attach.client.setClientStage(ClientStage.DRAFT);
   }
 
   @Override

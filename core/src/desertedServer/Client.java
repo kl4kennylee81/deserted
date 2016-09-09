@@ -20,6 +20,10 @@ public class Client {
 		this.name = name;
 	}
 	
+	public void setClientStage(ClientStage stage){
+		this.stage = stage;
+	}
+	
 	public ClientStage getStage(){
 		return this.stage;
 	}

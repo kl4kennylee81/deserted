@@ -157,10 +157,8 @@ public class DesertedClient {
 	public void processPreState() throws Exception{
 		switch (this.nstate){
 		case NORMAL:
-			System.out.println("are we here in normal\n");
 			if (this.sentUsername){
 				String s = this.connect.read();
-				System.out.println("haha");
 				if (s != null){
 					Message m = Message.jsonToMsg(s);
 					LobbyMessage lm = (LobbyMessage) m;
