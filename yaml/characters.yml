@@ -443,7 +443,7 @@
   - 207
   texture: models/portraits/darksolus.png
   icon: models/Solus/darksolus_miniicon.png
-  bigIcon: models/Solus/darksolus_miniicon.png
+  bigIcon: largeicons/darksolus_largeicon.png
   animationId: 113
   bossId: 1000
 24:
