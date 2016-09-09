@@ -372,7 +372,120 @@
 
 #=========================================================
 
-
+# MULTIPLAYER CHARACTERS 20-25
+# These are the new potential characters
+20:
+  name: Rogue
+  health: 5
+  maxHealth: 5
+  hexColor: FF9900FF
+  speed: 3.0
+  castSpeed: 4.0
+  defense: 1
+  slots: 2
+  availableActions:
+  - 0
+  - 200
+  - 201
+  texture: models/portraits/lightbunnyportrait.png
+  icon: largeicons/bunmage_miniiconlight.png
+  bigIcon: largeicons/bunmage_largeiconlight.png
+  animationId: 112
+  bossId: 1000
+21:
+  name: Assassin
+  health: 5
+  maxHealth: 5
+  hexColor: FF9900FF
+  speed: 6.0
+  castSpeed: 4.0
+  defense: 0
+  slots: 2
+  availableActions:
+  - 0
+  - 202
+  - 203
+  texture: models/portraits/darkbunnyportrait.png
+  icon: largeicons/bunmage_miniicondark.png
+  bigIcon: largeicons/bunmage_largeicondark.png
+  animationId: 111
+  bossId: 1000
+22:
+  name: Mage
+  health: 5
+  maxHealth: 5
+  hexColor: CD2626FF
+  speed: 3.0
+  castSpeed: 9.
+  defense: 0
+  slots: 3
+  availableActions:
+  - 0
+  - 204
+  - 205
+  texture: models/portraits/solus.png
+  icon: models/sulus_icon.png
+  bigIcon: largeicons/chara_largeicon.png
+  animationId: 101
+  bossId: 1000
+23:
+  name: Hexer
+  health: 5
+  maxHealth: 5
+  hexColor: CD2626FF
+  speed: 3.0
+  castSpeed: 8.
+  defense: 1
+  slots: 3
+  availableActions:
+  - 0
+  - 206
+  - 207
+  texture: models/portraits/darksolus.png
+  icon: models/Solus/darksolus_miniicon.png
+  bigIcon: models/Solus/darksolus_miniicon.png
+  animationId: 113
+  bossId: 1000
+24:
+  name: Support
+  health: 5
+  maxHealth: 5
+  hexColor: CD2626FF
+  speed: 5.0
+  castSpeed: 6.0
+  defense: 2
+  slots: 2
+  availableActions:
+  - 0
+  - 208
+  - 209
+  - 210
+  texture: models/CHARA_5.png
+  icon: models/tutorial_characters/basic_icon.png
+  bigIcon: largeicons/rock_largeiconbasicSymbol.png
+  animationId: 116
+  bossId: 1000
+25:
+  name: Tank
+  health: 5
+  maxHealth: 5
+  hexColor: CD2626FF
+  speed: 6.0
+  castSpeed: 6.0
+  defense: 2
+  slots: 2
+  availableActions:
+  - 0
+  - 211
+  - 212
+  - 213
+  texture: largeicons/bosshead_icon.png
+  icon: models/ghost_boss/bosshead_smallicon.png
+  bigIcon: largeicons/bosshead_icon.png
+  animationId: 109
+  bossId: 1000
+  
+#=========================================================
 
 89:
   name: Tutorial_part_3

@@ -72,12 +72,19 @@ public class MainMenuController {
 			options = new Option[0];
 			return options;
 		}
-		
-		options = new Option[this.levelDefs.size()+1];
+		int num_levels = 0;
+		for (LevelData ld : levelDefs){
+			if (ld.displayName != null){
+				num_levels+=1;	
+			}
+		}
+		options = new Option[num_levels+1];
 		
 		int i = 0;
 		for (LevelData ld : levelDefs){
-			options[i] = new Option(ld.displayName,ld.levelName);
+			if (ld.displayName != null){
+				options[i] = new Option(ld.displayName,ld.levelName);
+			}
 			i++;
 		}
 		options[i] = new Option("Back",MAIN_MENU_NAME);

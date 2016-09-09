@@ -63,6 +63,7 @@ public class DraftScreen extends Menu{
 	int selectedCharacterId;
 	HashMap<Integer,ArrayList<Action>> actions;
 	List<Option> characterOptions;
+	HashMap<Integer,Option> charIdToOptions;
 	
 	int[] player1Characters;
 	int[] player2Characters;
@@ -73,6 +74,8 @@ public class DraftScreen extends Menu{
 	public DraftScreen(Characters characters){
 		this.characters = characters;
 		this.selectedCharacterId = characters.get(0).id;
+		
+		this.charIdToOptions = new HashMap<Integer,Option>();
 		actions = new HashMap<Integer,ArrayList<Action>>();
 		
 		loadCharacterInfo();
@@ -132,6 +135,9 @@ public class DraftScreen extends Menu{
 			options[i].xPosition = options[i].xPosition + leftRatio;			
 			options[i].setImage(cd.icon);
 			characterOptions.add(options[i]);
+			
+			charIdToOptions.put(cd.id,options[i]);
+			
 			i++;
 		}
 		
@@ -272,6 +278,7 @@ public class DraftScreen extends Menu{
 
 	@Override
 	public void draw(GameCanvas canvas) {
+		
 		int canvasW = canvas.getWidth();
 		int canvasH = canvas.getHeight();
 		
@@ -353,28 +360,29 @@ public class DraftScreen extends Menu{
 		float descript_x = middle_x - (descript_width/2);
 		canvas.drawTexture(DESCRIPTION_BACKGROUND, descript_x, descript_y, descript_width, descript_height, Color.GRAY);
 		
-		FilmStrip character = characters.get(selectedCharacterId).animation.getTexture(CharacterState.ACTIVE, InGameState.NORMAL);
-		Option option = characterOptions.get(selectedCharacterId);
-		if (character == null){
-			character = characters.get(selectedCharacterId).animation.getTexture(CharacterState.ACTIVE, InGameState.NORMAL);
+		Character selected_char = this.getCharacter(selectedCharacterId);
+		FilmStrip characterImg = this.getCharacter(selectedCharacterId).animation.getTexture(CharacterState.ACTIVE, InGameState.NORMAL);
+		Option option = this.charIdToOptions.get(this.selectedCharacterId);
+		if (characterImg == null){
+			characterImg = this.getCharacter(selectedCharacterId).animation.getTexture(CharacterState.ACTIVE, InGameState.NORMAL);
 		}
-		if (character != null){
-			temp = character;
+		if (characterImg != null){
+			temp = characterImg;
 			//float heightToWidthRatio = toDraw.getRegionHeight()*1f/toDraw.getRegionWidth();
 			//float relativeHeight = charOption.getWidth()*heightToWidthRatio;
 			//charOption.height = relativeHeight;
 			
 			float width = option.getWidth()*canvas.width;
-			float heightToWidthRatio = character.getRegionHeight()*1f/character.getRegionWidth();
+			float heightToWidthRatio = characterImg.getRegionHeight()*1f/characterImg.getRegionWidth();
 			float height = heightToWidthRatio * width;
 			option.height = height/canvas.height;
 			height = option.height * canvas.height;
 			float x = middle_x - (width / 2);
 			float y = (RELATIVE_DESCRIPTION_Y_POS + 0.4f) * canvas.height;
-			canvas.draw(character, Color.WHITE,x,y,width,height);
+			canvas.draw(characterImg, Color.WHITE,x,y,width,height);
 
 			
-			canvas.drawCenteredText(characters.get(selectedCharacterId).name, x+width/2, (RELATIVE_DESCRIPTION_Y_POS + 0.385f)*canvas.height, Color.WHITE);
+			canvas.drawCenteredText(selected_char.name, x+width/2, (RELATIVE_DESCRIPTION_Y_POS + 0.385f)*canvas.height, Color.WHITE);
 			
 			float increment = 0.375f/5f;
 			float ypos = RELATIVE_DESCRIPTION_Y_POS;
