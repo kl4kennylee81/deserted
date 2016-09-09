@@ -87,7 +87,7 @@ public class MainMenuController {
 			}
 			i++;
 		}
-		options[i] = new Option("Back",MAIN_MENU_NAME);
+		options[num_levels] = new Option("Back",MAIN_MENU_NAME);
 		return options;
 	}
 
