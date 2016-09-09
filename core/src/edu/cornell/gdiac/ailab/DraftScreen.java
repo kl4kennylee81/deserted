@@ -1,5 +1,6 @@
 package edu.cornell.gdiac.ailab;
 
+import java.awt.Canvas;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,24 +39,37 @@ public class DraftScreen extends Menu{
 	
 	private static final float RELATIVE_DESCRIPTION_WIDTH = 0.35f;
 	
+	private static final float DRAFT_SLOT_WIDTH = 0.125f;
+	
+	
 	private static final float RELATIVE_DESCRIPTION_HEIGHT = 0.45f;
 	
 	private static final float RELATIVE_CHARACTERS_SIZE = 0.75f;
 	
 	private static final Texture DESCRIPTION_BACKGROUND = new Texture("models/description_background.png");
 	
-	private static final float PLAYER1_CHARACTER_LIST_X_OFFSET = 0.1f;
+	private static final float PLAYER1_CHARACTER_LIST_X_OFFSET = 0.075f;
 	
-	private static final float PLAYER_LABEL_Y_OFFSET = 0.63f;
-			
+	private static final float SELECT_BUTTON_WIDTH = 0.075f;
+				
 	private static final int NULL_ID= -1;
 	
-	private static final Texture RED_BAR = new Texture(Constants.RED_BAR);
-	private static final Texture YELLOW_BAR = new Texture(Constants.YELLOW_BAR);
-	private static final Texture BLUE_BAR = new Texture(Constants.BLUE_BAR);
-	private static final Texture GREEN_BAR = new Texture(Constants.GREEN_BAR);
-	private static final Texture LIGHT_BLUE_BAR = new Texture(Constants.LIGHT_BLUE_BAR);
-	private static final Texture LOGO = new Texture(Constants.LEVEL_SELECT_LOGO);
+	private static final Texture[] BAR_COLORS = new Texture [] {
+		new Texture(Constants.BLUE_BAR),
+		new Texture(Constants.GREEN_BAR),
+		new Texture(Constants.YELLOW_BAR),
+		new Texture(Constants.RED_BAR),
+		new Texture(Constants.LIGHT_BLUE_BAR)
+	};
+	
+	private static final String[] stats = new String [] {
+		"Effects",
+		"Recharge Speed",
+		"Cast Speed",
+		"Defense",
+		"Attack"
+	};
+	private static final Texture LOGO = new Texture(Constants.LEVEL_SELECT_REG);
 	
 	Characters characters;
 	Character parent1;
@@ -113,32 +127,36 @@ public class DraftScreen extends Menu{
 			System.out.println("FIX THIS - CharacterSelect");
 		}
 		
-		float leftRatio = PLAYER1_CHARACTER_LIST_X_OFFSET + ((1 - RELATIVE_CHARACTERS_SIZE) * 0.5f) - 0.05f;
+		float leftRatio = PLAYER1_CHARACTER_LIST_X_OFFSET + DRAFT_SLOT_WIDTH + 0.025f;
 		float curCharacterRatio = (index+1f) * RELATIVE_CHARACTERS_SIZE / (characters.size()+1);
 		
 		options[0] = new Option(text,"Select");
-		options[0].setBounds(curCharacterRatio-(RELATIVE_CHARACTER_WIDTH/2)+leftRatio, RELATIVE_CHARACTER_Y - 0.03f, RELATIVE_WIDTH,  RELATIVE_HEIGHT);
-		options[0].setColor(Constants.MENU_COLOR);
+		options[0].setBounds(0.5f - (SELECT_BUTTON_WIDTH/2), RELATIVE_DESCRIPTION_Y_POS + 0.04f, SELECT_BUTTON_WIDTH,  RELATIVE_HEIGHT);
+		options[0].setColor(Color.WHITE);
 
 		
 		characterOptions.clear();
 		
 		int i = 1;
 		int j;
+		float current_x_pos = leftRatio;
+		float widthToUse = 1 - leftRatio - leftRatio;
+		float characterWidth = widthToUse / characters.size();
+		float margin = characterWidth * 0.12f;
+		characterWidth -= (margin * 2);
+		
 		for (j = 0; j < characters.size(); j++){
 			Character cd = characters.get(j);
 			options[i] = new Option("",CHARACTER_ID_STRING+cd.id);
-			
-			float ratio = (j+1f) * RELATIVE_CHARACTERS_SIZE / (characters.size()+1);
-			
-			options[i].setBounds(ratio-(RELATIVE_CHARACTER_WIDTH/2), RELATIVE_CHARACTER_Y, RELATIVE_CHARACTER_WIDTH,TEMP_HEIGHT);
-			options[i].xPosition = options[i].xPosition + leftRatio;			
+			current_x_pos += margin;
+			options[i].setBounds(current_x_pos, RELATIVE_CHARACTER_Y, characterWidth, TEMP_HEIGHT);
 			options[i].setImage(cd.icon);
 			characterOptions.add(options[i]);
 			
 			charIdToOptions.put(cd.id,options[i]);
 			
 			i++;
+			current_x_pos += (characterWidth + margin);
 		}
 		
 		this.options = options;
@@ -275,35 +293,21 @@ public class DraftScreen extends Menu{
 		return null;
 	}
 	
+	public void drawWaitMessage(GameCanvas canvas, boolean turn){
+		if(turn) canvas.drawCenteredText("Wait for opponent to select!", canvas.width/2f, canvas.height*(RELATIVE_CHARACTER_Y-0.01f), Color.WHITE);
+		else canvas.drawCenteredText("Select a character!", canvas.width/2f, canvas.height*(RELATIVE_CHARACTER_Y- 0.01f), Color.WHITE);
+	}
 
-	@Override
 	public void draw(GameCanvas canvas) {
 		
 		int canvasW = canvas.getWidth();
 		int canvasH = canvas.getHeight();
 		
 		// TODO Auto-generated method stub
-		for (int i=0;i<1;i++){
-			float x = options[i].getX(canvas);
-			float y = options[i].getY(canvas) - 3*options[i].getHeight(canvas)/4;
-			float width = options[i].getWidth(canvas);
-			float height = options[i].getHeight(canvas);
-			
-			if (options[i].isSelected){
-				if (optionHighlight != null){
-					canvas.drawTexture(optionHighlight,x,y,width,height,Color.WHITE);
-				}
-			}
-			Color col = options[i].color;
-			if (options[i].isSelected) {
-				col = Color.BLACK;
-			}
-		    canvas.drawCenteredText(options[i].text, x+width/2, y+height*3/4, col);
-		}
+	
 		
 		TextureRegion temp = null;
 		
-
 
 		ArrayList<Action> actionsToDraw = actions.get(selectedCharacterId);
 		
@@ -315,10 +319,18 @@ public class DraftScreen extends Menu{
 		float descript1_x = canvasW * PLAYER1_CHARACTER_LIST_X_OFFSET;
 		float descript_y1 = canvasH * (0.1f);
 		float descript_y2 = canvasH * (0.35f);
-		float descript_width = canvasW * (1 - RELATIVE_CHARACTERS_SIZE) * ratio;
+		float descript_width = DRAFT_SLOT_WIDTH * canvas.width;
 		float descript2_x = canvasW - descript1_x - descript_width;
 		float descript_height = canvasH * (0.2f);
 		
+		float label_height = descript_height / 2;
+		float label_y = canvasH * (0.575f);
+		
+		canvas.drawTexture(LOGO, descript1_x - (0.02f * canvas.width), label_y, descript_width + (0.04f * canvas.width), label_height, Color.WHITE);
+		canvas.drawText("Name", descript1_x + (0.032f * canvas.width), label_y + (0.032f * canvas.width), Color.BLACK);
+		canvas.drawTexture(LOGO, descript2_x - (0.02f * canvas.width), label_y, descript_width + (0.04f * canvas.width), label_height, Color.WHITE);
+		canvas.drawText("Name", descript2_x + (0.032f * canvas.width), label_y + (0.032f * canvas.width), Color.BLACK);
+
 		canvas.drawTexture(DESCRIPTION_BACKGROUND, descript1_x, descript_y1, descript_width, descript_height, Color.GRAY);
 		canvas.drawTexture(DESCRIPTION_BACKGROUND, descript1_x, descript_y2, descript_width, descript_height, Color.GRAY);
 		
@@ -377,22 +389,27 @@ public class DraftScreen extends Menu{
 			float height = heightToWidthRatio * width;
 			option.height = height/canvas.height;
 			height = option.height * canvas.height;
+			height *= 0.8f;
+			width *= 0.8f;
 			float x = middle_x - (width / 2);
 			float y = (RELATIVE_DESCRIPTION_Y_POS + 0.4f) * canvas.height;
 			canvas.draw(characterImg, Color.WHITE,x,y,width,height);
 
+			canvas.drawCenteredText(selected_char.name, x+width/2, (RELATIVE_DESCRIPTION_Y_POS + 0.4f)*canvas.height, Color.WHITE);
 			
-			canvas.drawCenteredText(selected_char.name, x+width/2, (RELATIVE_DESCRIPTION_Y_POS + 0.385f)*canvas.height, Color.WHITE);
-			
-			float increment = 0.375f/5f;
-			float ypos = RELATIVE_DESCRIPTION_Y_POS;
+			float increment = 0.32f/5f;
+			float ypos = RELATIVE_DESCRIPTION_Y_POS + 0.05f;
 			for(int i = 0; i < 5; i++){
-				float currenty = (ypos + (increment/10)) * canvas.height;
-				float heighty = (canvas.height * (0.8f * increment));
-				float widthx = descript_width  / 8f;
-				float posx = middle_x - (widthx / 2);
-				canvas.drawTexture(BLUE_BAR, posx, currenty, widthx, heighty, Color.WHITE);
-				ypos += increment;
+				float currenty = (ypos + (increment * (0.23f))) * canvas.height;
+				float heighty = (canvas.height * (0.54f * increment));
+				float widthx = descript_width  / 7.4f;
+				float posx = middle_x - (canvas.width * 0.05f);
+				canvas.drawText(stats[i], descript_x + (0.02f * canvas.width), currenty+(0.03f * canvas.height), Color.WHITE);
+				for(int j = 0; j < 4; j++){
+					canvas.drawTexture(BAR_COLORS[i], posx, currenty, widthx, heighty, Color.WHITE);
+					posx += (widthx + 3);
+				}
+				ypos += increment;				
 			}
 			
 		}
@@ -419,6 +436,8 @@ public class DraftScreen extends Menu{
 				//charOption.height = relativeHeight;
 				
 				float width = charOption.getWidth()*canvas.width;
+//				float height = charOption.height * canvas.height;
+			
 				float heightToWidthRatio = toDraw.getHeight()*1f/toDraw.getWidth();
 				float height = heightToWidthRatio * width;
 				charOption.height = height/canvas.height;
@@ -439,6 +458,23 @@ public class DraftScreen extends Menu{
 					}
 				}
 			}
+		}
+		for (int i=0;i<1;i++){
+			float x = options[i].getX(canvas);
+			float y = options[i].getY(canvas) - 3*options[i].getHeight(canvas)/4;
+			float width = options[i].getWidth(canvas);
+			float height = options[i].getHeight(canvas);
+			
+			if (options[i].isSelected){
+				if (optionHighlight != null){
+					canvas.drawTexture(optionHighlight,x,y,width,height,Color.WHITE);
+				}
+			}
+			Color col = options[i].color;
+			if (options[i].isSelected) {
+				col = Color.BLACK;
+			}
+		    canvas.drawCenteredText(options[i].text, x+width/2, y+height*3/4, col);
 		}
 	}
 
