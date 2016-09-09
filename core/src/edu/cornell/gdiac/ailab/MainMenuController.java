@@ -111,7 +111,7 @@ public class MainMenuController {
 		
 		// this is technically cheating this wont be allowed just used for fast testing
 		if (InputController.pressedP()){
-			done("pvp");
+			done("pvp_local");
 		}
 	}
 	

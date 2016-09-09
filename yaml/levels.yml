@@ -34,13 +34,13 @@ pvp_local:
         - id: 21
           xPosition: 0
           yPosition: 3
-        - id: 22
-          xPosition: 0
-          yPosition: 2
+        # - id: 22
+        #   xPosition: 0
+        #   yPosition: 2
     enemies:
-        - id: 23
-          xPosition: 4
-          yPosition: 3
+        # - id: 23
+        #   xPosition: 4
+        #   yPosition: 3
         - id: 24
           xPosition: 5
           yPosition: 1

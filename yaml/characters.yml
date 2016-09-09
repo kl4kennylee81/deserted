@@ -379,7 +379,7 @@
   health: 5
   maxHealth: 5
   hexColor: FF9900FF
-  speed: 3.0
+  speed: 3.5
   castSpeed: 3.5
   defense: 1
   slots: 2

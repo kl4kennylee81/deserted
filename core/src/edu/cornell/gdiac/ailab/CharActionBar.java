@@ -162,7 +162,7 @@ public class CharActionBar {
 		case -2:
 			return 1 / (3.25f - this.waitTime/4f);
 		case -1:
-			return 1 / (2.6f - this.waitTime/5f);
+			return 1 / (2.5f - this.waitTime/5f);
 		case 0:
 			return 1;
 		case 1:

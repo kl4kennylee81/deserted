@@ -220,6 +220,13 @@ levels:
     needsSelect: false
     boss: false
     background: backgrounds/inTheSkybg.png
+
+  14:
+    levelName: pvp_local
+    beaten: false
+    needsSelect: false
+    boss: false
+    background: backgrounds/inTheSkybg.png
 availableCharacters:
 - 0
 - 1
