@@ -237,9 +237,7 @@ public class DraftController {
 	
 	public void draw(GameCanvas canvas){
 		draftScreen.draw(canvas);
-		if (draftState == DraftState.WAITING) {
-			canvas.drawCenteredText("Waiting for opponent to pick", canvas.width/2, canvas.height/2, Color.BLACK);
-		}
+		draftScreen.drawWaitMessage(canvas, draftState == DraftState.WAITING);
 	}
 	
 	public boolean isDone(){
