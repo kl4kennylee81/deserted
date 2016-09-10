@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Color;
 
 public class Constants {
 	
+	public static String ipAddress;
+	
 	public static final String VICTORY_TEXTURE = "images/completionscreen/victory.png";
 	
 	public static final String DEFEAT_TEXTURE = "images/completionscreen/defeat.png";
@@ -131,4 +133,13 @@ public class Constants {
 	public static final String GREEN_BAR = "draft!/green_bar.png";
 	public static final String YELLOW_BAR = "draft!/yellow_bar.png";
 	public static final String LIGHT_BLUE_BAR = "draft!/light_blue_bar.png";
+	
+	
+	public static void setIpAddress(String ip){
+		ipAddress = ip;
+	}
+	
+	public static String getIpAddress(){
+		return ipAddress;
+	}
 }

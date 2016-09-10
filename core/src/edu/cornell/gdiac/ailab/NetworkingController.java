@@ -2,6 +2,7 @@ package edu.cornell.gdiac.ailab;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -24,7 +25,8 @@ public class NetworkingController {
 	private final String PVP_LEVEL_NAME = "pvp";
 	private final String SET_NAME_BACKGROUND = "images/mainmenu/backgroundLogo.png";
 	private final String CHARACTER_SELECTION_BACKGROUND = "images/mainmenu/backgroundLogo.png";
-	private final String PLAYING_BACKGROUND = "backgrounds/inTheSkybg.png";
+	
+	private final String[] PLAYING_BACKGROUNDS = new String[]{"backgrounds/inTheSkybg.png","backgrounds/rockbg.png","backgrounds/villagebg.png","backgrounds/bg.png"};
 	
 	private NetworkingState networkingState;
 	private NetworkingMenu networkingMenu;
@@ -185,7 +187,9 @@ public class NetworkingController {
 			ge.initializeCanvas(CHARACTER_SELECTION_BACKGROUND, Constants.SELECT_FONT_FILE);
 			break;
 		case PLAYING:
-			ge.initializeCanvas(PLAYING_BACKGROUND, Constants.SELECT_FONT_FILE);
+			Random ran = new Random();
+			int index = ran.nextInt(PLAYING_BACKGROUNDS.length);
+			ge.initializeCanvas(PLAYING_BACKGROUNDS[index], Constants.SELECT_FONT_FILE);
 			break;
 		}
 	}
@@ -199,7 +203,7 @@ public class NetworkingController {
 		networkingMenu = new NetworkingMenu();
 		try {
 			connection = new Connection();
-			connection.connect("192.168.0.17", 8989);
+			connection.connect(Constants.getIpAddress(), 8989);
 		} catch (IOException e) {
 		}
 		gameplayController.setConnection(connection);

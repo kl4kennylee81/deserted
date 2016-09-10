@@ -16,6 +16,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import edu.cornell.gdiac.ailab.GDXRoot;
+import edu.cornell.gdiac.ailab.Constants;
 
 /**
  * The main class of the game.
@@ -34,6 +35,10 @@ public class DesktopLauncher {
 	 * @param arg Command line arguments
 	 */ 
 	public static void main (String[] arg) {
+		if (arg.length <= 0){
+			return;
+		}
+		Constants.setIpAddress(arg[0]);
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width  = 600; //1920
 		config.height = 400; //1080

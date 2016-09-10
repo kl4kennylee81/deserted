@@ -157,16 +157,11 @@ public class DesertedServer {
 	
   public static void main(String[] args) throws Exception {
 	// default host and port
-	String host = "localhost";
 	int port = 8989;
-	if (args.length > 2){
-		host = args[0];
-		port = Integer.parseInt(args[1]);
-	}
 	  
     AsynchronousServerSocketChannel server = AsynchronousServerSocketChannel
         .open();
-    InetSocketAddress sAddr = new InetSocketAddress(host, port);
+    InetSocketAddress sAddr = new InetSocketAddress(port);
     server.bind(sAddr);
     System.out.format("Server is listening at %s%n", sAddr);
     
