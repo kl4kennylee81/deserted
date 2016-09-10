@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import desertedServer.Client.ClientStage;
+import networkUtils.BackMessage;
 import networkUtils.ChallengeMessage;
 import networkUtils.Connection;
 import networkUtils.DraftMessage;
@@ -229,7 +230,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 		processMessage(attach,m);
 	    attach.isRead = true;
 	    attach.client.getSock().read(attach.buffer, attach, this);
-	} catch (InterruptedException | ExecutionException e) {
+	} catch (InterruptedException | ExecutionException | IOException e) {
 		e.printStackTrace();
 	}
     }
@@ -244,7 +245,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
       return msg;
   }
   
-  public void processMessage(Attachment attach,Message m) throws InterruptedException, ExecutionException{
+  public void processMessage(Attachment attach,Message m) throws InterruptedException, ExecutionException, IOException{
 	  switch(m.getType()){
 	case USERNAME:
 		processUsername(attach,m);
@@ -262,6 +263,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	case LOBBY:
 		break;
 	case BACK:
+		processBack(attach, m);
 		break;
 	case DRAFT:
 		processDraft(attach, m);
@@ -269,6 +271,12 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 		break;
 	  
 	  }
+  }
+  
+  /** signal the opponent to shutdown **/
+  public void processBack(Attachment attach,Message m) throws IOException{
+	  BackMessage bm = (BackMessage) m;
+	  attach.server.close(attach.client);
   }
   
   public void processInGame(Attachment attach,Message m) throws InterruptedException, ExecutionException {
@@ -303,9 +311,9 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	  attach.server.addUsername(username, attach.client);
 	  ArrayList<String> users = attach.server.getUsers();
 	  processChallenge(attach,m);
-	  LobbyMessage lm = new LobbyMessage(users);
-	  ByteBuffer bb = lm.msgToByteBuffer();
-	  attach.client.getSock().write(bb).get();
+//	  LobbyMessage lm = new LobbyMessage(users);
+//	  ByteBuffer bb = lm.msgToByteBuffer();
+//	  attach.client.getSock().write(bb).get();
   }
   
   public void processChallenge(Attachment attach,Message m) throws InterruptedException, ExecutionException{
