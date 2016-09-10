@@ -35,10 +35,9 @@ public class DesktopLauncher {
 	 * @param arg Command line arguments
 	 */ 
 	public static void main (String[] arg) {
-		if (arg.length <= 0){
-			return;
+		if (arg.length > 0){
+			Constants.setIpAddress(arg[0]);
 		}
-		Constants.setIpAddress(arg[0]);
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.width  = 600; //1920
 		config.height = 400; //1080

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 
 public class Constants {
 	
-	public static String ipAddress;
+	public static String ipAddress = "localhost";
 	
 	public static final String VICTORY_TEXTURE = "images/completionscreen/victory.png";
 	
