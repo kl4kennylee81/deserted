@@ -52,6 +52,7 @@ import edu.cornell.gdiac.ailab.GameEngine.GameState;
 import edu.cornell.gdiac.ailab.GameSaveState.LevelData;
 //import edu.cornell.gdiac.util.*;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
+import edu.cornell.gdiac.ailab.NetworkingController.NetworkingState;
 import edu.cornell.gdiac.ailab.TransitionScreen.TransitionState;
 
 /**
@@ -524,12 +525,14 @@ public class GameEngine implements Screen {
 	 */
 	private boolean checkReset() {
 		// If the player presses 'R', reset the game.
-        if (gameState != GameState.LOAD && gameState != GameState.EDITOR
-        		&& gameState != GameState.NETWORKING && InputController.pressedR()) {
-        	GameEngine.nextLevel = "";
-        	mainMenuController.resetMenu();
-            gameState = GameState.MENU;
-            return true;
+        if (gameState != GameState.LOAD && gameState != GameState.EDITOR && InputController.pressedR()) {
+        	if (this.networkingController.getNetworkingState() != NetworkingState.CHARACTER_SELECTION &&
+        			this.networkingController.getNetworkingState() != NetworkingState.SET_NAME){
+	        	GameEngine.nextLevel = "";
+	        	mainMenuController.resetMenu();
+	            gameState = GameState.MENU;
+	            return true;
+        	}
         }
         if (InputController.pressedESC() && this.canEscExit()){
         	Gdx.app.exit();

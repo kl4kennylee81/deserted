@@ -196,6 +196,16 @@ public class DraftScreen extends Menu{
 		setOptions();
 	}
 	
+	public void setSelectedToFirstAvailable(Integer justSelected){
+		if (justSelected == this.selectedCharacterId){
+			for (Character c : this.characters){
+				if (!this.notAvailable.contains(c.id)){
+					this.selectedCharacterId = c.id;
+				}
+			}
+		}
+	}
+	
 	public boolean doneDrafting(){
 		return canLeave(1) && canLeave(2);
 	}

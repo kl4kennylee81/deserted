@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 
+import networkUtils.BackMessage;
 import networkUtils.ChallengeMessage;
 import networkUtils.Connection;
 import networkUtils.DraftMessage;
@@ -153,6 +155,7 @@ public class DraftController {
 			DraftMessage dm = (DraftMessage) m;
 			int charId = dm.getId();
 			draftScreen.setPlayerCharacter(playerNum, charId);
+			draftScreen.setSelectedToFirstAvailable(charId);
 			playerNum = playerNum == 1 ? 2 : 1;
 			draftState = DraftState.PICKING;
 		}
@@ -161,7 +164,13 @@ public class DraftController {
 	public void handlePress(String optionKey){
 		switch (optionKey){
 		case "Back":
-			handleNextLevel("Level Select");
+			Message bm = new BackMessage();
+			try {
+				connection.blockingWrite(bm);
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+			handleNextLevel("Main Menu");
 			break;
 		case "Play":
 			handleNextLevel("pvp");

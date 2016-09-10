@@ -1,12 +1,14 @@
 package edu.cornell.gdiac.ailab;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 
 import edu.cornell.gdiac.ailab.CharacterActions.CharacterAction;
 import edu.cornell.gdiac.ailab.GameplayController.InGameState;
+import networkUtils.BackMessage;
 import networkUtils.ChallengeMessage;
 import networkUtils.Connection;
 import networkUtils.InGameMessage;
@@ -109,10 +111,12 @@ public class NetworkingGameplayController extends GameplayController {
 //			try {
 				InGameMessage igm = (InGameMessage) m;
 				CharacterActions ca = igm.getCharacterActions();
-				for (CharacterAction sentChar : ca.charActions) {
-					for (Character myChar : this.characters) {
-						if (sentChar.charId == myChar.id && myChar.isNetworkingOpponent) {
-							myChar.queuedActions = sentChar.convertToActionGameNodes(myChar.getAvailableActions());
+				if (ca != null) {
+					for (CharacterAction sentChar : ca.charActions) {
+						for (Character myChar : this.characters) {
+							if (sentChar.charId == myChar.id && myChar.isNetworkingOpponent) {
+								myChar.queuedActions = sentChar.convertToActionGameNodes(myChar.getAvailableActions());
+							}
 						}
 					}
 				}
@@ -128,6 +132,22 @@ public class NetworkingGameplayController extends GameplayController {
 //			}
 		}
 	}
+	
+	@Override
+    public void signalQuit(){
+    	super.signalQuit();
+    	
+    	// send a back message to the server
+    	Message m = new BackMessage();
+    	try {
+			this.connection.blockingWrite(m);
+			System.out.println("finished writing");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
 	
 	@Override
 	public void drawGameOver(GameCanvas canvas){

@@ -16,7 +16,7 @@ public class BackMessage extends Message {
 	
 	public BackMessage(){
 		super();
-		m_type = MessageType.INGAME;
+		m_type = MessageType.BACK;
 		from = "";
 		to = "";
 		disconnect = "";

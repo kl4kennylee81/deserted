@@ -14,7 +14,7 @@ import networkUtils.UsernameMessage;
 
 public class NetworkingController {
 	
-	private static enum NetworkingState {
+	public enum NetworkingState {
 		SET_NAME,
 		GAMEROOM,
 		CHARACTER_SELECTION,
@@ -48,6 +48,10 @@ public class NetworkingController {
 		gameplayController = ngc;
 		draftController = dc;
 		this.ge = ge;
+	}
+	
+	public NetworkingState getNetworkingState(){
+		return this.networkingState;
 	}
 	
 	public void update() {

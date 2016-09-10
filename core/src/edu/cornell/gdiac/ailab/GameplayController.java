@@ -197,7 +197,7 @@ public class GameplayController {
     				inGameState = InGameState.DONE;
     				reset = true;
     			}else if (selected.equals("Main Menu")){
-    				InputController.artificialRPressed = true;
+    				this.signalQuit();
     			}
     			pauseMenuController.reset();
     		}
@@ -249,6 +249,10 @@ public class GameplayController {
        		}
        	}
        	
+    }
+    
+    public void signalQuit(){
+    	InputController.artificialRPressed = true;
     }
     
     public void updateCompletionMenu(){

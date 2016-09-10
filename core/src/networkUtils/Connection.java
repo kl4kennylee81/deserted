@@ -78,6 +78,7 @@ public class Connection {
 		}
 	}
 	
+	
 	public String read() throws IOException {
 		if (readFuture != null){
 			if (readFuture.isDone()) {
@@ -107,6 +108,11 @@ public class Connection {
 		String s = this.read();
 		Message msg = Message.jsonToMsg(s);
 		return msg;
+	}
+	
+	public Integer blockingWrite(Message msg) throws InterruptedException, ExecutionException{
+		Integer bytes_written = this.socketChannel().write(msg.msgToByteBuffer()).get();
+		return bytes_written;
 	}
 	
 	public Integer write(Message msg) throws IOException, InterruptedException, ExecutionException{

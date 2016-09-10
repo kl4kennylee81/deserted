@@ -50,34 +50,38 @@ public class DesertedServer {
 	
 	public void close(Client client) throws IOException{
 		Client opp = null;
-		switch(client.getStage()){
-		case DRAFT:
-			opp = p1vp2.get(client);
-			if (opp != null){
-				p1vp2.remove(client);
-				p1vp2.remove(opp);
-				this.close(opp);
+		if (client != null){
+			userNameToConnect.remove(client);
+			if (client.getSock().isOpen()){
+				client.getSock().close();
 			}
-			break;
-		case INGAME:
-			opp = p1vp2.get(client);
-			if (opp != null){
-				p1vp2.remove(client);
-				p1vp2.remove(opp);
-				this.close(opp);
+			switch(client.getStage()){
+			case DRAFT:
+				opp = p1vp2.get(client);
+				if (opp != null){
+					p1vp2.remove(client);
+					p1vp2.remove(opp);
+					this.close(opp);
+				}
+				break;
+			case INGAME:
+				opp = p1vp2.get(client);
+				if (opp != null){
+					System.out.println("are we here closing");
+					p1vp2.remove(client);
+					p1vp2.remove(opp);
+					this.close(opp);
+				}
+				break;
+			case WAITING:
+				synchronized(waitingQueue){
+					waitingQueue.poll();
+				}
+				break;
+			default:
+				break;
 			}
-			break;
-		case WAITING:
-			synchronized(waitingQueue){
-				waitingQueue.poll();
-			}
-			break;
-		default:
-			break;
 		}
-		
-		userNameToConnect.remove(client);
-		client.getSock().close();
 	}
 	
 	public Client getPlayersOppSock(String playerUsername){
