@@ -68,7 +68,9 @@ public class DesertedServer {
 			}
 			break;
 		case WAITING:
-			waitingQueue.poll();
+			synchronized(waitingQueue){
+				waitingQueue.poll();
+			}
 			break;
 		default:
 			break;
@@ -114,27 +116,30 @@ public class DesertedServer {
 	 * @param user
 	 * @throws InterruptedException
 	 */
-	public boolean getChallenger(Client user) throws InterruptedException{
+	public Boolean getChallenger(Client user) throws InterruptedException{
 		
-		Client opp = waitingQueue.poll();
-		synchronized(waitingQueue){
-			if (opp != null) {
-				System.out.println("did we pop something\n");
-				p1vp2.put(user, opp);
-				p1vp2.put(opp, user);
-				waitingQueue.notifyAll();
-				return false;
-			}
-			else {
-				boolean addedSelf = false;
-				while (!p1vp2.containsKey(user)){
-					System.out.println("are we waiting\n");
-					if (!addedSelf){
-						waitingQueue.add(user);
-					}
-					waitingQueue.wait();
+		if (user.getStage() == null){
+			Client opp = waitingQueue.peek();
+			synchronized(waitingQueue){
+				if (opp != null) {
+					waitingQueue.poll();
+					p1vp2.put(user, opp);
+					p1vp2.put(opp, user);
+					return false;
 				}
-				opp = p1vp2.get(user);
+				else {
+					waitingQueue.add(user);
+					System.out.println("we are here 1\n");
+					return null;
+				}
+			}
+		}
+		else {
+			assert(user.getStage() == ClientStage.WAITING);
+			if (!p1vp2.containsKey(user)) {
+				System.out.println("we are here 2\n");
+				return null;
+			} else {
 				return true;
 			}
 		}
@@ -185,7 +190,7 @@ class ConnectionHandler implements
       ReadWriteHandler rwHandler = new ReadWriteHandler();
       Attachment newAttach = new Attachment();
       newAttach.server = attach.server;
-      newAttach.client = new Client(client,ClientStage.WAITING);
+      newAttach.client = new Client(client);
       newAttach.buffer = ByteBuffer.allocate(2048);
       newAttach.isRead = true;
       newAttach.clientAddr = clientAddr;
@@ -251,7 +256,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 		processUsername(attach,m);
 		break;
 	case CHALLENGE:
-		//processChallenge(attach,m);
+		processChallenge(attach,m);
 		break;
 	case INGAME:
 		processInGame(attach,m);
@@ -307,7 +312,6 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	  UsernameMessage um = (UsernameMessage) m;
 	  String username = um.getUsername();
 	  attach.client.setName(username);
-	  attach.client.setClientStage(ClientStage.WAITING);
 	  attach.server.addUsername(username, attach.client);
 	  ArrayList<String> users = attach.server.getUsers();
 	  processChallenge(attach,m);
@@ -317,16 +321,25 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
   }
   
   public void processChallenge(Attachment attach,Message m) throws InterruptedException, ExecutionException{
-	  boolean isFirst = !attach.server.getChallenger(attach.client);
-	  String yourName = attach.server.getUserFromSocket(attach.client);
-	  String oppName = attach.server.getPlayersOppName(yourName);
-	  Client clientopp = attach.server.getSockFromUser(oppName);
-	  ChallengeMessage cm = new ChallengeMessage(yourName,oppName,yourName,isFirst);
-	  ByteBuffer bb = cm.msgToByteBuffer();
-	  
-	  // call a synchronous write
-      clientopp.getSock().write(bb).get();
-      attach.client.setClientStage(ClientStage.DRAFT);
+	  System.out.println("we are in the challenge");
+	  Boolean isFirst = attach.server.getChallenger(attach.client);
+	  if (isFirst == null){
+		  attach.client.setClientStage(ClientStage.WAITING);
+		  ChallengeMessage cm = new ChallengeMessage();
+		  ByteBuffer bb = cm.msgToByteBuffer();
+		  attach.client.getSock().write(bb).get();
+	  }
+	  else {
+		  String yourName = attach.server.getUserFromSocket(attach.client);
+		  String oppName = attach.server.getPlayersOppName(yourName);
+		  Client clientopp = attach.server.getSockFromUser(oppName);
+		  ChallengeMessage cm = new ChallengeMessage(oppName,yourName,oppName,isFirst);
+		  ByteBuffer bb = cm.msgToByteBuffer();
+		  
+		  // call a synchronous write
+	      attach.client.getSock().write(bb).get();
+	      attach.client.setClientStage(ClientStage.DRAFT);
+	  }
   }
 
   @Override

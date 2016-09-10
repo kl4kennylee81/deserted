@@ -8,6 +8,7 @@ public class ChallengeMessage extends Message {
 	String to;
 	String opponent;
 	Boolean isFirst;
+	Boolean isSuccess;
 	
 	public ChallengeMessage(){
 		super();
@@ -16,6 +17,17 @@ public class ChallengeMessage extends Message {
 		to = "";
 		opponent = "";
 		isFirst = false;
+		isSuccess = false;
+	}
+	
+	public ChallengeMessage(String from,String to,String opponent,Boolean isFirst,Boolean isSuccess) {
+		super();
+		this.from = from;
+		this.to = to;
+		this.m_type = MessageType.CHALLENGE;
+		this.opponent = opponent;
+		this.isFirst = isFirst;
+		this.isSuccess = isSuccess;
 	}
 	
 	public ChallengeMessage(String from,String to,String opponent,Boolean isFirst) {
@@ -25,11 +37,17 @@ public class ChallengeMessage extends Message {
 		this.m_type = MessageType.CHALLENGE;
 		this.opponent = opponent;
 		this.isFirst = isFirst;
+		this.isSuccess = true;
 	}
+
 
 	@Override
 	public String toString() {
 		return (new Gson()).toJson(this);
+	}
+	
+	public Boolean getSuccess(){
+		return this.isSuccess;
 	}
 	
 	public String getOpponent(){

@@ -1,6 +1,7 @@
 package edu.cornell.gdiac.ailab;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutionException;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -85,11 +86,20 @@ public class NetworkingController {
 					return;
 				}
 				ChallengeMessage cm = (ChallengeMessage) m;
-				isFirst = cm.getIsFirst();
-				from = cm.getFrom();
-				to = cm.getTo();
-				setupDraftController();
-				setState(NetworkingState.CHARACTER_SELECTION);
+				if (cm.getSuccess() == true){
+					isFirst = cm.getIsFirst();
+					from = cm.getFrom();
+					to = cm.getTo();
+					setupDraftController();
+					setState(NetworkingState.CHARACTER_SELECTION);
+				} else {
+					ChallengeMessage server_cm_request = new ChallengeMessage();
+					try {
+						this.connection.write(server_cm_request);
+					} catch (Exception e){
+						System.out.println("problem writing out the command message");
+					}
+				}
 			}
 			break;
 		case CHARACTER_SELECTION:

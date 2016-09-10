@@ -10,10 +10,10 @@ public class Client {
 	AsynchronousSocketChannel sock;
 	ClientStage stage;
 	
-	public Client(AsynchronousSocketChannel sock,ClientStage stage){
+	public Client(AsynchronousSocketChannel sock){
 		this.name = "";
 		this.sock = sock;
-		this.stage = stage;
+		this.stage = null;
 	}
 	
 	public void setName(String name){
