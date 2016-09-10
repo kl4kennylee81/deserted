@@ -1264,7 +1264,7 @@
     numRounds: 0
     magnitude: 0
   description: Instant diagonal attack
-  animationId: 1
+  animationId: 3
   icon: models/action_tokens/fire_token.png
 
 201:
@@ -1389,7 +1389,7 @@
     numRounds: 1
     magnitude: 1
   description: Cross Attack
-  animationId: 0
+  animationId: 5
   icon: models/action_tokens/lightning_token.png
 
 207:
@@ -1526,7 +1526,7 @@
     numRounds: 1
     magnitude: 1
   description: Deal 2 damage in a cone shaped T.
-  animationId: 1
+  animationId: 6
   icon: models/action_tokens/fire_token.png
 
 213:
