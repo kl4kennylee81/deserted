@@ -60,7 +60,7 @@
   name: Lightning
   cost: 3
   damage: 3
-  range: 5
+  range: 4
   size: 1
   pattern: SINGLE
   oneHit: true
@@ -1525,7 +1525,7 @@
     name: Break Tile
     numRounds: 1
     magnitude: 1
-  description: Break Tiles in a cone shaped T.
+  description: Break Tiles in a cone shaped T in front of character
   animationId: 6
   icon: models/action_tokens/fire_token.png
 
