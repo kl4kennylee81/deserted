@@ -1231,8 +1231,7 @@ public class Character implements GUIElement {
 		Color c = this.getColor(shouldDim);
 
 		int curHealth = this.getHealth();
-		int maxHealth = this.getMaxHealth();
-		String healthText = Integer.toString(curHealth)+"/"+Integer.toString(maxHealth);
+		String healthText = Integer.toString(curHealth);
 		
 		float healthWidth = Constants.HEALTH_WIDTH * canvas.getWidth();
 		
