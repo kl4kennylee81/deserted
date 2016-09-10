@@ -303,8 +303,10 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	  assert(igm.getTo() == oppName);
 	  
 	  Client oppSock = attach.server.getPlayersOppSock(playerName);
-	  oppSock.getSock().write(m.msgToByteBuffer()).get();
-      attach.client.setClientStage(ClientStage.INGAME);
+	  if (oppSock != null){
+		  oppSock.getSock().write(m.msgToByteBuffer()).get();
+	      attach.client.setClientStage(ClientStage.INGAME);
+	  }
   }
   
   public void processDraft(Attachment attach,Message m) throws InterruptedException, ExecutionException {
@@ -314,7 +316,9 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	  String oppName = attach.server.getPlayersOppName(playerName);
 	  
 	  Client oppSock = attach.server.getPlayersOppSock(playerName);
-	  oppSock.getSock().write(m.msgToByteBuffer()).get();
+	  if (oppSock != null){
+	  	oppSock.getSock().write(m.msgToByteBuffer()).get();
+	  }
   }
   
   public void processUsername(Attachment attach,Message m) throws InterruptedException, ExecutionException{

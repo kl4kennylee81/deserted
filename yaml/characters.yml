@@ -461,9 +461,9 @@
   - 209
   - 210
   texture: models/CHARA_5.png
-  icon: models/tutorial_characters/basic_icon.png
-  bigIcon: largeicons/rock_largeiconbasicSymbol.png
-  animationId: 116
+  icon: models/tutorial_characters/basic_iconred.png
+  bigIcon: largeicons/rock_largeiconred.png
+  animationId: 106
   bossId: 1000
 25:
   name: Tank
