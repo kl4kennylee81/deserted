@@ -55,6 +55,9 @@ public class DraftScreen extends Menu{
 				
 	private static final int NULL_ID= -1;
 	
+	float lerpVal = 0;
+	boolean increasing = true;
+	
 	private static final Texture[] BAR_COLORS = new Texture [] {
 		new Texture(Constants.BLUE_BAR),
 		new Texture(Constants.GREEN_BAR),
@@ -359,9 +362,9 @@ public class DraftScreen extends Menu{
 		String s1 = isFirst ? to : from;
 		String s2 = isFirst ? from : to;
 		canvas.drawTexture(LOGO, descript1_x - (0.02f * canvas.width), label_y, descript_width + (0.04f * canvas.width), label_height, Color.WHITE);
-		canvas.drawText(s1, descript1_x + (0.032f * canvas.width), label_y + (0.032f * canvas.width), Color.BLACK);
+		canvas.drawText(s1, descript1_x + (0.033f * canvas.width), label_y + (0.035f * canvas.width), Color.BLACK);
 		canvas.drawTexture(LOGO, descript2_x - (0.02f * canvas.width), label_y, descript_width + (0.04f * canvas.width), label_height, Color.WHITE);
-		canvas.drawText(s2, descript2_x + (0.032f * canvas.width), label_y + (0.032f * canvas.width), Color.BLACK);
+		canvas.drawText(s2, descript2_x + (0.033f * canvas.width), label_y + (0.035f * canvas.width), Color.BLACK);
 
 		canvas.drawTexture(DESCRIPTION_BACKGROUND, descript1_x, descript_y1, descript_width, descript_height, Color.GRAY);
 		canvas.drawTexture(DESCRIPTION_BACKGROUND, descript1_x, descript_y2, descript_width, descript_height, Color.GRAY);
@@ -403,7 +406,7 @@ public class DraftScreen extends Menu{
 		descript_height = RELATIVE_DESCRIPTION_HEIGHT * canvas.height;
 		float descript_x = middle_x - (descript_width/2);
 		canvas.drawTexture(DESCRIPTION_BACKGROUND, descript_x, descript_y, descript_width, descript_height, Color.GRAY);
-		
+				
 		Character selected_char = this.getCharacter(selectedCharacterId);
 		FilmStrip characterImg = this.getCharacter(selectedCharacterId).animation.getTexture(CharacterState.ACTIVE, InGameState.NORMAL);
 		Option option = this.charIdToOptions.get(this.selectedCharacterId);
@@ -508,7 +511,22 @@ public class DraftScreen extends Menu{
 			if (options[i].isSelected) {
 				col = Color.BLACK;
 			}
-		    canvas.drawCenteredText(options[i].text, x+width/2, y+height*3/4, col);
+//			canvas.drawTexture(new Texture(Constants.DESCRIPTION_BOX_TEXTURE), x, y - height/2, width, height * 1.5f,Color.WHITE);
+			if (increasing){
+				lerpVal += Constants.LERP_RATE/1.5;
+				if (lerpVal >= 0.5){
+					increasing = false;
+				}
+			} else {
+				lerpVal -= Constants.LERP_RATE/1.5;
+				if (lerpVal <= 0){
+					increasing = true;
+				}
+			}
+			Color chosenColor = Color.DARK_GRAY.cpy();
+			chosenColor = chosenColor.lerp(Color.WHITE, lerpVal);
+		    canvas.drawCenteredText(options[i].text, x+width/2, y+height*3/4, chosenColor);
+		    
 		}
 	}
 
