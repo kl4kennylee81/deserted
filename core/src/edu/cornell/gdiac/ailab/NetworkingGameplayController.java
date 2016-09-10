@@ -27,7 +27,7 @@ public class NetworkingGameplayController extends GameplayController {
 			CompletionMenuController cmc, PauseMenuController pmc, FileHandle file,
 			int fileNum, boolean isTutorial) {
 		super(moc, cmc, pmc, file, fileNum, isTutorial);
-		canPause = false;
+		canPause = true;
 		playAgain = false;
 		broken = false;
 		boxDrawer = new ActionDescription();

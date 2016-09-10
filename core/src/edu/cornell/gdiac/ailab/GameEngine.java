@@ -505,6 +505,17 @@ public class GameEngine implements Screen {
 			}
 		}
 	}
+	
+	private boolean canEscExit(){
+		if (this.gameState != GameState.PLAY &&
+				this.gameState != GameState.PAUSED &&
+				this.gameState != GameState.NETWORKING){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	/** 
 	 * Returns true if the user reset the game.
@@ -520,7 +531,7 @@ public class GameEngine implements Screen {
             gameState = GameState.MENU;
             return true;
         }
-        if (InputController.pressedESC() && gameState != GameState.PLAY && gameState != GameState.PAUSED){
+        if (InputController.pressedESC() && this.canEscExit()){
         	Gdx.app.exit();
         	return true;
         }
