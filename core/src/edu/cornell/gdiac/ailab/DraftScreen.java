@@ -103,8 +103,8 @@ public class DraftScreen extends Menu{
 		map.put(21, new ArrayList<Integer>(Arrays.asList(1,1,4,1,4)));
 		map.put(22, new ArrayList<Integer>(Arrays.asList(1,4,1,1,4)));
 		map.put(23, new ArrayList<Integer>(Arrays.asList(2,3,1,2,3)));
-		map.put(24, new ArrayList<Integer>(Arrays.asList(3,2,2,4,2)));
-		map.put(25, new ArrayList<Integer>(Arrays.asList(4,1,2,4,1)));
+		map.put(24, new ArrayList<Integer>(Arrays.asList(3,1,2,4,2)));
+		map.put(25, new ArrayList<Integer>(Arrays.asList(4,2,2,4,1)));
 
 		this.selectedCharacterId = characters.get(0).id;
 		
