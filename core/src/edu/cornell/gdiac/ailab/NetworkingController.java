@@ -199,7 +199,7 @@ public class NetworkingController {
 		networkingMenu = new NetworkingMenu();
 		try {
 			connection = new Connection();
-			connection.connect("192.168.0.17", 8989);
+			connection.connect(Constants.getIpAddress(), 8989);
 		} catch (IOException e) {
 		}
 		gameplayController.setConnection(connection);
