@@ -1264,6 +1264,11 @@
     numRounds: 0
     magnitude: 0
   description: Fire a Diagonal Projectile
+  persisting_action:
+    numRounds: 10
+    moveSpeed: 0.05
+  animationId: 0
+  projectileAnimationId: 3
   animationId: 3
   icon: models/action_tokens/fire_token.png
 
