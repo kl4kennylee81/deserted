@@ -58,7 +58,6 @@ public class Message {
 	      byte bytes[] = new byte[limits];
 	      bb.get(bytes, 0, limits);
 	      String msg = new String(bytes, cs);
-	      System.out.println(msg);
 	      bb.clear();
 	      return msg;
 	}
@@ -94,7 +93,6 @@ public class Message {
 	
 	public static Message jsonToMsg(String s){
 		String processedS = s.trim();
-		System.out.println(processedS);
 		RuntimeTypeAdapterFactory<Message> messageAdapter = RuntimeTypeAdapterFactory.of(Message.class, new MessageTypePredicate())
 		        .registerSubtype(NormalMessage.class)
 		        .registerSubtype(UsernameMessage.class)

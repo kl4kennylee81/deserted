@@ -1,5 +1,6 @@
 package desertedServer;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
@@ -136,7 +137,6 @@ public class DesertedServer {
 				}
 				else {
 					waitingQueue.add(user);
-					System.out.println("we are here 1\n");
 					return null;
 				}
 			}
@@ -144,7 +144,6 @@ public class DesertedServer {
 		else {
 			assert(user.getStage() == ClientStage.WAITING);
 			if (!p1vp2.containsKey(user)) {
-				System.out.println("we are here 2\n");
 				return null;
 			} else {
 				return true;
@@ -170,6 +169,10 @@ public class DesertedServer {
     InetSocketAddress sAddr = new InetSocketAddress(host, port);
     server.bind(sAddr);
     System.out.format("Server is listening at %s%n", sAddr);
+    
+    InetAddress iAddress = InetAddress.getLocalHost();
+    String currentIp = iAddress.getHostAddress();
+    System.out.println("Current IP address : " +currentIp); //gives only host address
     
     DesertedServer dserver = new DesertedServer(server);
     Attachment attach = new Attachment();
@@ -294,7 +297,6 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
   }
   
   public void processInGame(Attachment attach,Message m) throws InterruptedException, ExecutionException {
-  	System.out.println("INGAME MSG");
 	  InGameMessage igm = (InGameMessage) m;
 	  String playerName = attach.server.getUserFromSocket(attach.client);
 	  assert(igm.getFrom() == playerName);
@@ -334,7 +336,6 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
   }
   
   public void processChallenge(Attachment attach,Message m) throws InterruptedException, ExecutionException{
-	  System.out.println("we are in the challenge");
 	  Boolean isFirst = attach.server.getChallenger(attach.client);
 	  if (isFirst == null){
 		  attach.client.setClientStage(ClientStage.WAITING);
