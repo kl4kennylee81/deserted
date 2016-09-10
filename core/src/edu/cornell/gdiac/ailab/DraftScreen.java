@@ -88,7 +88,11 @@ public class DraftScreen extends Menu{
 	
 	Texture optionHighlight;
 		
-	public DraftScreen(Characters characters){
+	String from;
+	String to;
+	boolean isFirst;
+	
+	public DraftScreen(Characters characters, String from, String to, boolean isFirst){
 		this.characters = characters;
 		
 		map = new HashMap<Integer, ArrayList<Integer>>();
@@ -116,6 +120,10 @@ public class DraftScreen extends Menu{
 			this.player2Characters[i] = NULL_ID;
 		}
 		setOptions();
+		
+		this.from = from;
+		this.to = to;
+		this.isFirst = isFirst;
 	}
 	
 	public boolean containsCharacterId(int charId){
@@ -348,10 +356,12 @@ public class DraftScreen extends Menu{
 		float label_height = descript_height / 2;
 		float label_y = canvasH * (0.575f);
 		
+		String s1 = isFirst ? to : from;
+		String s2 = isFirst ? from : to;
 		canvas.drawTexture(LOGO, descript1_x - (0.02f * canvas.width), label_y, descript_width + (0.04f * canvas.width), label_height, Color.WHITE);
-		canvas.drawText("Player 1", descript1_x + (0.032f * canvas.width), label_y + (0.032f * canvas.width), Color.BLACK);
+		canvas.drawText(s1, descript1_x + (0.032f * canvas.width), label_y + (0.032f * canvas.width), Color.BLACK);
 		canvas.drawTexture(LOGO, descript2_x - (0.02f * canvas.width), label_y, descript_width + (0.04f * canvas.width), label_height, Color.WHITE);
-		canvas.drawText("Player 2", descript2_x + (0.032f * canvas.width), label_y + (0.032f * canvas.width), Color.BLACK);
+		canvas.drawText(s2, descript2_x + (0.032f * canvas.width), label_y + (0.032f * canvas.width), Color.BLACK);
 
 		canvas.drawTexture(DESCRIPTION_BACKGROUND, descript1_x, descript_y1, descript_width, descript_height, Color.GRAY);
 		canvas.drawTexture(DESCRIPTION_BACKGROUND, descript1_x, descript_y2, descript_width, descript_height, Color.GRAY);

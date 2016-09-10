@@ -70,7 +70,7 @@ public class DraftController {
 	
 	public void setLevel(Level level) {
 		this.level = level;
-		this.draftScreen = new DraftScreen(level.getCharacters());
+		this.draftScreen = new DraftScreen(level.getCharacters(), from, to, isFirst);
 		
 		draftScreen.setHighlight(draftScreenHighlight);
 	}
@@ -88,7 +88,7 @@ public class DraftController {
 		
 		isDone = false;
 		broken = false;
-		this.draftScreen = new DraftScreen(level.getCharacters());
+		this.draftScreen = new DraftScreen(level.getCharacters(), from, to, isFirst);
 		draftScreen.setHighlight(manager.get(Constants.MENU_HIGHLIGHT_TEXTURE,Texture.class));
 	}
 	
