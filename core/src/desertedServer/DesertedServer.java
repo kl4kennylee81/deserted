@@ -48,29 +48,27 @@ public class DesertedServer {
 		this.server = serverSock;
 	}
 	
-	public void close(Client client) throws IOException{
+	public void close(Client client) throws IOException, InterruptedException, ExecutionException{
 		Client opp = null;
 		if (client != null){
 			userNameToConnect.remove(client);
-			if (client.getSock().isOpen()){
-				client.getSock().close();
-			}
 			switch(client.getStage()){
 			case DRAFT:
 				opp = p1vp2.get(client);
 				if (opp != null){
 					p1vp2.remove(client);
 					p1vp2.remove(opp);
-					this.close(opp);
+					Message m = new BackMessage();
+					opp.getSock().write(m.msgToByteBuffer()).get();
 				}
 				break;
 			case INGAME:
 				opp = p1vp2.get(client);
 				if (opp != null){
-					System.out.println("are we here closing");
 					p1vp2.remove(client);
 					p1vp2.remove(opp);
-					this.close(opp);
+					Message m = new BackMessage();
+					opp.getSock().write(m.msgToByteBuffer()).get();
 				}
 				break;
 			case WAITING:
@@ -102,7 +100,12 @@ public class DesertedServer {
 	}
 	
 	public String getUserFromSocket(Client user){
-		return user.name;
+		if (user != null){
+			return user.name;
+		}
+		else {
+			return "";
+		}
 	}
 	
 	public ArrayList<String> getUsers(){
@@ -213,7 +216,7 @@ class ConnectionHandler implements
 
 class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	
-	public void shutdownClient(Attachment attach) throws IOException{
+	public void shutdownClient(Attachment attach) throws IOException, InterruptedException, ExecutionException{
 		attach.server.close(attach.client);
 	}
 	
@@ -227,7 +230,7 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
         
         System.out.format("Stopped   listening to the   client %s%n",
             attach.clientAddr);
-      } catch (IOException ex) {
+      } catch (IOException | InterruptedException | ExecutionException ex) {
         ex.printStackTrace();
       }
       return;
@@ -282,8 +285,10 @@ class ReadWriteHandler implements CompletionHandler<Integer, Attachment> {
 	  }
   }
   
-  /** signal the opponent to shutdown **/
-  public void processBack(Attachment attach,Message m) throws IOException{
+  /** signal the opponent to shutdown 
+ * @throws ExecutionException 
+ * @throws InterruptedException **/
+  public void processBack(Attachment attach,Message m) throws IOException, InterruptedException, ExecutionException{
 	  BackMessage bm = (BackMessage) m;
 	  attach.server.close(attach.client);
   }

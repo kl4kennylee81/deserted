@@ -105,9 +105,16 @@ public class NetworkingGameplayController extends GameplayController {
 			actionBarController.isNetworkingOpponentSelection = false;
 			Message m = Message.jsonToMsg(s);
 			if (!(m instanceof InGameMessage)) {
-				broken = true;
-				return;
+				if (m instanceof BackMessage){
+					signalQuit();
+					return;
+				}
+				else {
+					broken = true;
+					return;
+				}
 			}
+			else {
 //			try {
 				InGameMessage igm = (InGameMessage) m;
 				CharacterActions ca = igm.getCharacterActions();
@@ -125,6 +132,7 @@ public class NetworkingGameplayController extends GameplayController {
 				} else {
 					inGameState = InGameState.NORMAL;
 				}
+			}
 //			}
 //			catch (ClassCastException e){
 //				System.out.println("are we here\n");
@@ -137,12 +145,9 @@ public class NetworkingGameplayController extends GameplayController {
     public void signalQuit(){
     	super.signalQuit();
     	
-    	// send a back message to the server
-    	Message m = new BackMessage();
     	try {
-			this.connection.blockingWrite(m);
-			System.out.println("finished writing");
-		} catch (Exception e) {
+			this.connection.closeConnection();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -164,10 +164,9 @@ public class DraftController {
 	public void handlePress(String optionKey){
 		switch (optionKey){
 		case "Back":
-			Message bm = new BackMessage();
 			try {
-				connection.blockingWrite(bm);
-			} catch (InterruptedException | ExecutionException e) {
+				connection.closeConnection();
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			handleNextLevel("Main Menu");
